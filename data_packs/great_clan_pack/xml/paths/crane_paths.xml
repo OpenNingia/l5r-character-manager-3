@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="crane" name="Kakita Jester" id="crane_kakita_jester">
+    <Tags>
+      <Tag>artisan</Tag>
+      <Tag>crane_artisan</Tag>
+      <Tag>alternate</Tag>
+      <Tag>crane_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="The Art of Mockery" rank="5" id="crane_the_art_of_mockery">
+        <Description>
+The Kakita Jester is tasked with sardonically puncturing the
+pretense and arrogance of court, reminding all present of
+their fl awed and mortal natures. You may publicly mock a
+suitable target (someone hypocritical, arrogant, dishonorable,
+or otherwise deserving of your attention) by means of
+speech, dance, song, or other such methods. This requires a
+Contested Roll of your [chosen art] / Awareness against the
+target’s Etiquette (Courtesy) / Willpower. If you lose the roll,
+you lose points of Glory equal to the target’s Status Rank. If
+you win the roll, the target loses face in public, suffering a
+loss of Glory points equal to your Glory Rank, and a loss of
+Honor points equal to half as much (rounded up).
+You may not target the same person with this Technique
+more than once per month.
+            </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <RequirementOption text="Replaces Kakita Artisan 5">
+        <Requirement field="crane_undying_name" type="rule"/>
+      </RequirementOption>
+    </Requirements>
+  </School>
+</L5RCM>

@@ -1,0 +1,14 @@
+<L5RCM>
+  <Family clanid="ronin" name="Kaeru" id="ronin_kareu">
+    <Trait>awareness</Trait>
+  </Family>
+  <Family clanid="ronin" name="Tsi" id="ronin_tsi">
+    <Trait>willpower</Trait>
+  </Family>
+  <Family clanid="ronin" name="Tsume" id="ronin_tsume">
+    <Trait>reflexes</Trait>
+  </Family>
+  <Family clanid="ronin" name="Yotsu" id="ronin_yotsu">
+    <Trait>intelligence</Trait>
+  </Family>
+</L5RCM>

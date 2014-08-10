@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <SkillDef trait="varies" type="merchant" id="craft_meishodo" name="Craft (Meishodo)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+</L5RCM>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Merit name="Void Versatility" id="void_versatility" type="spiritual">
+    <Rank id="1" value="4"/>
+  </Merit>
+  <Merit name="Heartless" id="heartless" type="mental">
+    <Rank id="1" value="4"/>
+  </Merit>
+</L5RCM>

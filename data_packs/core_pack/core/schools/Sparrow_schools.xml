@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="sparrow" name="Suzume Bushi School" id="sparrow_suzume_bushi_school">
+    <Trait>willpower</Trait>
+    <Honor>6.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>sparrow_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="calligraphy" rank="1"/>
+      <Skill rank="1" id="kenjutsu" emphases="Katana"/>
+      <Skill id="lore_history" rank="1"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="perform_storytelling" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>lore</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="All Things In Time" rank="1" id="sparrow_all_things_in_time">
+        <Description>
+The Suzume watches the flow of combat to discern the perfect time for assault. At the beginning of the Combat Round, before the first character has taken his Turn, you may reduce your Initiative by 5 to add +1k0 to all your attack and damage rolls for the Round.
+        </Description>
+      </Tech>
+      <Tech name="Purity Of Chi" rank="2" id="sparrow_purity_of_chi">
+        <Description>
+The Suzume's body is filled with disdain for those who indulge in temptations away from the tenets of Bushido. You add +5 to your Armor TN against creatures and against human opponents with lower Honor.
+        </Description>
+      </Tech>
+      <Tech name="Wisdom Is The Greatest Weapon" rank="3" id="sparrow_wisdom_is_the_greatest_weapon">
+        <Description>
+The Suzume is a masterful storyteller, captivating audiences with his words. You may spend a Void Point to add your Honor Rank to any Perform or Lore Skill Roll.
+        </Description>
+      </Tech>
+      <Tech name="Quiet Spirit, Steady Blade" rank="4" id="sparrow_quiet_spirit_steady_blade">
+        <Description>
+The serenity of a Sparrow is often mistaken for complacency, but that is far from the case. You may make melee attacks as a Simple Action instead of a Complex Action while in the Attack Stance.
+        </Description>
+      </Tech>
+      <Tech name="Slow And Deadly" rank="5" id="sparrow_slow_and_deadly">
+        <Description>
+The Suzume strikes when his foes least expect it, even if he must weather the worst of the opponents' attacks. During the Round following your adoption of the Center Stance, you add +10 to your attack and damage rolls. You do not gain this benefit during Iaijutsu duels.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit koku="3" bu="0" zeni="0">
+      <Item>Light or Heavy Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+</L5RCM>

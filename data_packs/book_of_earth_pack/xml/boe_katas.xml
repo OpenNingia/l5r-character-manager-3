@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <KataDef mastery="3" element="earth" id="the_power_of_the_mountain" name="The Power of the Mountain">
+    <Description>When this Kata is activated, you reduce your Armor TN by an amount up to your Earth Ring; this lasts until you deactivate the Kata. All damage rolls you make while this Kata is in effect have their totals increased by the same amount.</Description>
+    <Requirements>
+      <Requirements field="crab_hida_bushi_school" type="tag">Hida Bushi School</Requirements>
+      <Requirements field="crab_hiruma_bushi_school" type="tag">Hiruma Bushi School</Requirements>
+      <Requirements field="lion_matsu_berserker_school" type="tag">Matsu Berserker School</Requirements>
+      <Requirements field="badger_ichiro_bushi_school" type="tag">Ichiro Bushi School</Requirements>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="earth" id="the_strength_of_the_mountain" name="The Strength of the Mountain">
+    <Description>When this Kata is activated, you reduce your Initiative Score by an amount up to your Earth Ring. (This cannot reduce your Initiative below 0.) This Initiative penalty lasts until you deactivate the Kata. While this Kata is in effect, your Armor TN is increased by the same amount.</Description>
+    <Requirements>
+      <Requirements field="crab_hida_bushi_school" type="tag">Hida Bushi School</Requirements>
+      <Requirements field="crab_hiruma_scout_school" type="tag">Hiruma Scout School</Requirements>
+      <Requirements field="phoenix_shiba_bushi_school" type="tag">Matsu Berserker School</Requirements>
+      <Requirements field="crane_daidoji_iron_warrior" type="tag">Daidoji Iron Warrior</Requirements>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="4" element="earth" id="lee_of_the_stone" name="Lee of the Stone">
+    <Description>While you are in the Defense or Full Defense Stances, your Armor TN is increased by an additional amount equal to your Earth Ring</Description>
+    <Requirements>
+      <Requirements field="crab_hida_bushi_school" type="tag">Hida Bushi School</Requirements>
+      <Requirements field="crab_hida_pragmatist_school" type="tag">Hida Pragmatist School</Requirements>
+      <Requirements field="phoenix_shiba_bushi_school" type="tag">Matsu Berserker School</Requirements>
+      <Requirements field="crane_daidoji_iron_warrior" type="tag">Daidoji Iron Warrior</Requirements>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="earth" id="strike_as_the_avalanche" name="Strike as the Avalanche">
+    <Description>When using the Heavy Weapons Skill, your Strength is considered one Rank higher for the purposes of determining damage.</Description>
+    <Requirements>
+      <Requirements field="crab_hida_bushi_school" type="tag">Hida Bushi School</Requirements>
+      <Requirements field="crab_hiruma_bushi_school" type="tag">Hiruma Bushi School</Requirements>
+      <Requirements field="badger_ichiro_bushi_school" type="tag">Ichiro Bushi School</Requirements>
+      <Requirements field="unicorn_moto_bushi_school" type="tag">Moto Bushi School</Requirements>
+      <Requirements field="unicorn_moto_vindicator_school" type="tag">Moto Vindicator School</Requirements>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="5" element="earth" id="weathered_and_unbroken" name="Weathered and Unbroken">
+    <Description>Your Water is considered two Ranks lower (to a minimum of 1) for the purpose of movement. All attack rolls made with the Heavy Weapons Skill gain the benefit of one Free Raise which may only be used for the Knockdown Maneuver.</Description>
+    <Requirements>
+      <Requirements field="crab_hida_bushi_school" type="tag">Hida Bushi School</Requirements>
+      <Requirements field="crab_hiruma_bushi_school" type="tag">Hiruma Bushi School</Requirements>
+      <Requirements field="crab_hiruma_scout_school" type="tag">Hiruma Scout School</Requirements>
+      <Requirements field="badger_ichiro_bushi_school" type="tag">Ichiro Bushi School</Requirements>
+    </Requirements>
+  </KataDef>
+</L5RCM>

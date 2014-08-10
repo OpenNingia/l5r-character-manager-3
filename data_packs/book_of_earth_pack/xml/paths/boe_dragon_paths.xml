@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="dragon" name="Tamori Weaponsmith" id="dragon_tamori_weaponsmith">
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>dragon_shugenja</Tag>
+      <Tag>artisan</Tag>
+      <Tag>dragon_artisan</Tag>
+      <Tag>alternate</Tag>
+      <Tag>dragon_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Soul of the Stone" rank="2" id="soul_of_the_stone"><Description>A true Scorpion duelist knows that intimidation and deception are the keys to victory. When dueling any opponent that you have previously used the Intimidation Skill upon successfully, you gain a bonus of +5 to the total of your roll during the Assessment Phase of the duel. Additionally, by spending a Void Point, you may report one statistic of your choice as being one rank higher during the Assessment Phase.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="craft_weaponsmithing" type="skill" min="3">Craft: Weaponsmithing 3</Requirement>
+      <RequirementOption text="Replaces Tamori Shugenja 2">
+        <Requirement field="dragon_tamori_shugenja" type="school" min="1" max="1" />
+      </RequirementOption>
+      <RequirementOption text="Must be able to cast at least one spell that creates a weapon (i.e Tetsubo of Earth, Katana of Fire, etc)">
+        <Requirement field="katana_of_fire" type="spell" />
+        <Requirement field="tetsubo_of_earth" type="spell" />
+        <Requirement field="bo_of_water" type="spell" />
+        <Requirement field="yari_of_air" type="spell" />
+      </RequirementOption>
+    </Requirements>
+  </School>
+</L5RCM>

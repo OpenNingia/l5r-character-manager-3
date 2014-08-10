@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="scorpion" id="scorpion_bayushi_bushi_school" name="Bayushi Bushi School">
+    <Trait>intelligence</Trait>
+    <Honor>2.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>scorpion_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill emphases="Manipulation" id="courtier" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill id="iaijutsu" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="sincerity" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="scorpion_the_way_of_the_scorpion" name="The Way Of The Scorpion" rank="1">
+        <Description>Scorpion bushi always seem to get the jump on opponents. You gain a bonus +1k1 to your Initiative Rolls. You also gain a bonus of +5 to your Armor TN against any opponent with lower Initiative.
+</Description>
+      </Tech>
+      <Tech id="scorpion_pincers_and_tail" name="Pincers And Tail" rank="2">
+        <Description>The infamous Scorpion feint has been the demise of many foolhardly samurai. You may make the Feint Maneuver for one Raise instead of two.
+</Description>
+      </Tech>
+      <Tech id="scorpion_strike_at_the_tail" name="Strike At The Tail" rank="3">
+        <Description>Scorpion bushi strive to keep their enemies off guard, stopping their attacks and slowing them down. When you assume a Stance at the start of your Turn, you may choose a target within 30'. If you successfully hit him during your Turn, the target is Fatigued as if he had gone without rest for 24 hours. During the Reaction Stage, an affected opponent may attempt an Earth Ring roll against a TN of 25 to negate the effects of this Technique. If he fails, the effects of this Technique end during the next Reactions Stage (the second Reactions Stage after he was struck).
+</Description>
+      </Tech>
+      <Tech id="scorpion_strike_from_above_strike_from_below" name="Strike From Above, Strike From Below" rank="4">
+        <Description>The swiftness of the Scorpion allows him to cut down foes before they realize they have been attacked. You may make melee attacks as a Simple Action instead of a Complex Action.
+</Description>
+      </Tech>
+      <Tech id="scorpion_the_pincers_hold_the_tail_strikes" name="The Pincers Hold, The Tail Strikes" rank="5">
+        <Description>Striking an opponent's weakest point is the Scorpion's true path to victory. Once per encounter, you may spend a Void Point as a Complex Action to attack your opponent with a melee weapon. If the attack is successful, the target is Stunned. During the Reactions Stage, an affected opponent may attempt an Earth Ring roll against at TN equal to the amount of damage dealt to end the Stun effect. If he fails or does not attempt this roll, the Stun effect ends during the next Reactions Stage (the second Reaction Stage after he was struck).
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="5" zeni="0">
+      <Item>Light Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="scorpion" id="scorpion_soshi_shugenja_school" name="Soshi Shugenja School">
+    <Trait>awareness</Trait>
+    <Affinity>air</Affinity>
+    <Deficiency>earth</Deficiency>
+    <Honor>2.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>scorpion_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill emphases="Cipher" id="calligraphy" rank="1"/>
+      <Skill id="courtier" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="spellcraft" rank="1"/>
+      <Skill id="stealth" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="3" element="air"/>
+      <PlayerChoose count="2" element="fire"/>
+      <PlayerChoose count="1" element="water"/>
+    </Spells>
+    <Techs>
+      <Tech id="scorpion_the_kamis_whisper" name="The Kami's Whisper" rank="1">
+        <Description> The Soshi cast their spells as quietly as the kami themselves. You may sacrifice an additional spell slot (of the same Element) when casting any spell with no potential to inflict damage in order to eliminate all visible signs of the spell having been cast. All spell effects take place normally; there is simply no outward sign of what has happened. You also gain a Free Raise on any spell with the Illusion keyword.
+Spells: Sense, Commune, Summon, 3 Air, 2 Fire, and 1 Water
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="5" zeni="0">
+      <Item>Robes</Item>
+      <Item>Wakizashi</Item>
+      <Item>Knife</Item>
+      <Item>Scroll Satchel</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="scorpion" id="scorpion_bayushi_courtier_school" name="Bayushi Courtier School">
+    <Trait>awareness</Trait>
+    <Honor>2.5</Honor>
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>scorpion_courtier</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="calligraphy" rank="1"/>
+      <Skill emphases="Gossip" id="courtier" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill id="investigation" rank="1"/>
+      <Skill emphases="Deceit" id="sincerity" rank="1"/>
+      <Skill id="temptation" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="scorpion_weakness_is_my_strength" name="Weakness Is My Strength" rank="1">
+        <Description>The Bayushi are masters of ferreting out and exploiting the weaknesses and failures of others. Even if they do not know the exact nature of a rival's secrets, there mere realization that he has some sort of secret is enough for them to work with. When you are making a Contested Social Roll against someoen else, you gain a Free Raise to your roll for every 3 points of Mental or Social Disadvantages (rounded off) he possesses. Disadvantages which did not award Experience Pionts still count for their normal point value for the purposes of this Technique. This technique cannot award more than 5 Free Raises.
+The Bayushi are also known as the masters of both truth and lies, speaking so smoothly that both are indistinguishable in their mouths. You gain a Free Raise when using the Courtier skill to spread gossip, and need not Raise in order to conceal that you are the source of that gossip.
+</Description>
+      </Tech>
+      <Tech id="scorpion_shallow_waters" name="Shallow Waters" rank="2">
+        <Description>The Scorpion know how to assess others, sensing their weaknesses so as to determine how best to bring them down. By conversing with someone for a few minutes, you can make a Contested Roll of your Investigation / Awareness against their Etiquette / Awareness. With a success, you learn the identity and rank of their lowerst Mental and their lowest social Skill that has at least one Rank (The GM chooses in the case of ties). You may spend a Void point to also learn their next lowest Mental Trait and next lowest Social Skill.
+</Description>
+      </Tech>
+      <Tech id="scorpion_secrets_are_birthmarks" name="Secrets Are Birthmarks" rank="3">
+        <Description>At this rank, the Scorpion has become so adept at ferreting out secrets that he can lure others in revealing them in casual conversation. By speaking with someone for a few minutes, you may make a Contested Roll of your Courtier (Manipulation) / Awareness against their Etiquette (Courtesy) / Awareness to force them into revealing one Mental or Social Disadvantage they possess. If they have no such Disadvantage, this will instead reveal one Mental or Social Advantage. (Note this will only reveal the rulebook title of the Advantage / Disadvantage, not the specific nature of it. For example, you might learn that the target has "Dark Secret," but not the specific nature of the secret.) If the roll succeeded in revealing a Disadvantage, with the GM's permission you may take a 2-point Blackmail Advantage against this individual, for no cost in Experience Points.
+</Description>
+      </Tech>
+      <Tech id="scorpion_scrutinys_sweet_sting" name="Scrutiny'S Sweet Sting" rank="4">
+        <Description>At this rank, the Bayushi Courtier has learned to use all the information he has collected to subtly wreck his enemies, undermining their every word and deed. Any time you make a Contested Social Skill Roll against someone on whom you have Blackmail, his dice cannot explode. In addition, any time you make a Contested Social Skill Roll against someone, regardless of whether you have Blackmail on them or not, you may spend a Void Point to foce them to use a mental Trait of your choice (instead of the normal Trait used for the roll).
+</Description>
+      </Tech>
+      <Tech id="scorpion_no_more_masks" name="No More Masks" rank="5">
+        <Description>The final lesson of the Bayushi School is to force the rest of the court to see the corrupt, dishonorable world he knows, shattering the reputations of those he speaks against. A number of times per session equal to your School Rank, you may make an Opposed Social Roll of Courtier (Gossip) / Awareness against an opponent's Etiquette (Courtesy) / Awareness. If you have Blackmail on the person you are targeting with his technique, you gain a bonus of +5k0 to the total of this roll. With a success, you may inflict one Social Disadvantage on the target: Bad Reputation, Sworn Enemy, or Obligation (to someone of your choice). The Disadvantage lasts for one month, unless the GM judges that the target has taken action which can expunge it sooner. (This Technique cannot be used on the same target until its effect expires.)
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="5" zeni="0">
+      <Item>Extravagant Clothing</Item>
+      <Item>Wakizashi</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Calligraphy Set</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="scorpion" id="scorpion_shosuro_infiltrator_school" name="Shosuro Infiltrator School">
+    <Trait>reflexes</Trait>
+    <Honor>1.5</Honor>
+    <Tags>
+      <Tag>ninja</Tag>
+      <Tag>scorpion_ninja</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="acting" rank="1"/>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="ninjutsu" rank="1"/>
+      <Skill id="sincerity" rank="1"/>
+      <Skill emphases="Sneaking" id="stealth" rank="2"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="scorpion_the_path_of_shadows" name="The Path Of Shadows" rank="1">
+        <Description>The first lesson of an infiltrator is to mask all signs of one's true nature. You lose no Honor for use of Low Skills or Ninjutsu Weapons in the service of the Scorpion Clan (subject to GM approval). You gain a bonus of +2k0 to the total of all Stealth Skill rolls.
+</Description>
+      </Tech>
+      <Tech id="scorpion_strike_from_darkness" name="Strike From Darkness" rank="2">
+        <Description>A student of the Shosuro Techniques never fails to exploit any advantage held over a foe. Whenever you declare an attack against an opponent who is unaware of your presence until the moment of the attack, your Raises are not limited to your Void and you roll additional dice equal to your School Rank on the attack roll. You also roll half this number of additional unkept dice on an attack roll made against an opponent who is suffering from a Condition effect (such as Stunned or Fatigued). These two effects are not cumulative, and if both could apply, you must choose one of them. (You do not add one and one half times your School Rank in dice to an attack roll against an opponent who is both Blinded and unaware of your presence, for example.)
+</Description>
+      </Tech>
+      <Tech id="scorpion_steel_within_silk" name="Steel Within Silk" rank="3">
+        <Description>Striking quickly and effectively is the hallmark of a true shadow warrior. When attacking from ambush as described above, or when using ninjutsu weapons (including any weapons with the Ninja keyword), you may make a melee attack (or ranged attack, in the case of shuriken or tsubute) as a Simple Action rather than a Complex Action.
+</Description>
+      </Tech>
+      <Tech id="scorpion_whisper_of_steel" name="Whisper Of Steel" rank="4">
+        <Description>A master assassin strikes from shadow without ever revealing his presence. Even after attacking a target, your opponents and bystanders must succeed at a Contested Roll using Investigation (Notice) / Perception against Stealth / Agility to detect you. You may only use this Technique if you make a single attack per round. (The GM may rule that this technique does not work in situations where concealment is impossible.)
+</Description>
+      </Tech>
+      <Tech id="scorpion_the_final_silence" name="The Final Silence" rank="5">
+        <Description>The true assassin requires but a single strike. After you make a damage roll as a result of a successful attack, you may spend a Void Point to increase any two dice to show 10s. These 10s do not explode. You may spend multiple Void Points in this manner, with each Void Point spent increasing the result of up to two damage dice.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="5" zeni="0">
+      <Item>Ashigaru or Light Armor</Item>
+      <Item>Sturdy Black Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>Bow or Knife</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+</L5RCM>

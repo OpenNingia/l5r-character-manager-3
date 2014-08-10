@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="monks" name="Defender of the Brotherhood" id="defender_of_the_brotherhood">
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>monks_courtier</Tag>
+      <Tag>alternate</Tag>
+      <Tag>monks_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Harmony in Chaos" rank="2" id="harmony_in_chaos"><Description>The power of Earth grants infinite patience and endurance, strengthening the inherent tranquillity of monastic reserve and thus allowing a Defender to deliver telling remarks within the courts. Any time you spend a Void Point on an Etiquette or Courtier Social Skill roll, you gain a bonus of +Xk1 to the roll (where X is your Willpower) instead of the normal +1k1.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="willpower" type="trait" min="3">Willpower 3</Requirement>
+      <Requirement field="courtier" type="skill" min="3">Courtier 3</Requirement>
+      <Requirement field="Etiquette" type="skill" min="4">Etiquette 4</Requirement>
+      <RequirementOption text="Replaces any Brotherhood Monk 2 (except Four Temples)">
+        <Requirement field="*monks_brotherhood" type="school" min="1" max="1" />
+      </RequirementOption>
+    </Requirements>
+  </School>
+</L5RCM>

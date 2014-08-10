@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="boar" name="Heichi Bushi School" id="boar_heichi_bushi_school">
+    <Trait>strength</Trait>
+    <Honor>3</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>boar_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="hunting" rank="1"/>
+      <Skill id="intimidation" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill rank="1" id="spears" emphases="Mai Chong"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="The Charge Of The Boar" rank="1" id="boar_the_charge_of_the_boar">
+        <Description>
+The attack of a boar can come from nowhere, with little warning. If you are in the Full Attack stance, you may ready a medium weapon or a spear as a Free Action. When wielding a spear in combat, you gain a damage bonus of +0k1.
+        </Description>
+      </Tech>
+      <Tech name="The Strength Of The Opposition" rank="2" id="boar_the_strength_of_the_opposition">
+        <Description>
+The Boar school specializes in using spears, especially the Mai Chong, to snare an opponent's clothing and armor, rendering them helpless. You may call two Raises to Entangle an opponent with a Mai Chong, or three Raises to Entangle them with another spear-class weapon.
+        </Description>
+      </Tech>
+      <Tech name="The Speed Of The Boar" rank="3" id="boar_the_speed_of_the_boar">
+        <Description>
+The Boar bushi learns to strike with the relentless speed of his namesake animal. You may attack as a Simple Action when wielding a spear.
+        </Description>
+      </Tech>
+      <Tech name="The Anger Of The Boar" rank="4" id="boar_the_anger_of_the_boar">
+        <Description>
+Much like their namesake, Boar bushi keep fighting even when critically injured. You may spend a Void point during the Reactions segment to reduce your Wound TN penalty by one Wound Rank (the wounds still exist, you simply feel less pain from them). This effect lasts the remainder of the skirmish.
+        </Description>
+      </Tech>
+      <Tech name="Beyond The Mountains" rank="5" id="boar_beyond_the_mountains">
+        <Description>
+At this rank the Boar has learned to control his warrior's fury and unleash it at the most unexpected times, even when he appears to be completely defensive. If you are in the Full Defense Stance, you may make one normal attack with a spear or a Samurai-keyword weapon as a Free Action, ingoring the restriction of the Full Defense Stance. This attack gains a bonus of +2k0 to the attack roll.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit koku="3" bu="0" zeni="0">
+      <Item>Light or Heavy Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>any Spear</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+</L5RCM>

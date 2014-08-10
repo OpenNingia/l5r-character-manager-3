@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="lion" name="Akodo Tactical Masters" id="lion_akodo_tactical_masters">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>lion_bushi</Tag>
+      <Tag>advanced</Tag>
+      <Tag>lion_advanced</Tag>
+    </Tags>
+    <Skills/>
+    <Spells/>
+    <Techs>
+      <Tech name="The Eyes Of The General" rank="1" id="lion_the_eyes_of_the_general">
+        <Description>
+The Akodo Tactical Master spends his entire life studying
+the teachings of Lion generals from centuries past. He
+benefi ts from the wisdom of all of his ancestors and hones
+himself into the perfect general. You may reroll any one
+of your dice in each Battle Turn of Mass Combat. You may
+also reroll any one of your dice during an attack roll in
+which you called at least one Raise.
+      </Description>
+      </Tech>
+      <Tech name="Malleable As The Sea" rank="2" id="lion_malleable_as_the_sea">
+        <Description>
+The Tactical Master can navigate the sudden changes in
+the battlefi eld, adapting and reacting so his army can benefi
+t. You may spend a Void Point to choose any one Heroic
+Opportunity from the core rulebook to perform during a
+Mass Battle Turn. (This choice is subject to GM approval,
+since not all options will be suitable for the situation and
+the characters involved.)
+      </Description>
+      </Tech>
+      <Tech name="The Soul Of The Army" rank="3" id="lion_the_soul_of_the_army">
+        <Description>
+The Tactical Master knows he is responsible for his army,
+and directs its strength where it may do the most damage.
+You may spend a Void Point to gain a +5k1 bonus to any
+Battle Skill Roll (rather than the usual +1k1), or to gain a
++2k2 bonus to any Bugei Skill Roll (rather than the usual
++1k1)
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements>
+      <Requirement field="water" type="ring" min="4">Water Ring: 4</Requirement>
+      <Requirement field="intelligence" type="trait" min="5">Intelligence: 5</Requirement>
+      <Requirement field="battle" type="skill" trg="Mass Combat" min="5">Battle (Mass Combat): 5</Requirement>
+      <RequirementOption text="Games (Shoji) or Games (Go): 4">
+        <Requirement field="games_shogi" type="skill" min="4"/>
+        <Requirement field="games_go" type="skill" min="4"/>
+      </RequirementOption>
+      <Requirement field="lion" type="tag">Be a member of the Lion clan</Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

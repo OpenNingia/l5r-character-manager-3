@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="oriole" name="Tsi Smith School" id="oriole_tsi_smith_school">
+    <Trait>intelligence</Trait>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>smith</Tag>
+      <Tag>oriole_smith</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="commerce" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>artisan</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+        <Wildcard>high</Wildcard>
+        <Wildcard>merchant</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="2">
+        <Wildcard>craft</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>weapon</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Tools of the Fortunes" rank="1" id="oriole_tools_of_the_fortunes">
+        <Description>
+The Tsi Smith dedicates his life to reaching perfection in the heat of the furnace. All Craft Skills are considered School Skills for you for the purpose of effects that target School Skills. Whenever you make a Craft Skill Roll, you gain one point of Glory for succeeding, and one additional point for every increment of 5 by which you exceed the TN. This effect only applies to rolls made against a TN equal to 10 plus your School Rank x 5 or higher.
+        </Description>
+      </Tech>
+      <Tech name="Tsi Xings Guo's Blessing" rank="2" id="oriole_tsi_xings_guos_blessing">
+        <Description>
+The Oriole smith seeks to emulate the works of the Fortune of Steel. When wielding or using one of your own creations (such as a weapon in battle or wearing an elaborate kimono in court), you gain a bonus of +2k1 for Void Points spent on relevant Skill Rolls, rather than the usual +1k1. Additionally, when an item you created is given as a gift among members of the samurai caste, both you and the gift-giver gain Glory equal to your School Rank.
+        </Description>
+      </Tech>
+      <Tech name="A Crafter's Dedication" rank="3" id="oriole_a_crafters_dedication">
+        <Description>
+A Tsi Smith knows the worth of everything he creates, years after it has left his forge. When crafting, the price of the object you are creating is reduced by half for the purposes of determining how long it takes to create the object in question. When someone in your presence is using an item you created, you may take a Complex Action to grant them a bonus of +xk1, where X is your School Rank, on the relevant Skill Roll (for example, Kenjutsu for a katana, Defense for armor, or Etiquette for a kimono).
+        </Description>
+      </Tech>
+      <Tech name="Exhaustive Knowledge" rank="4" id="oriole_exhaustive_knowledge">
+        <Description>
+All members of the Tsi smiths are expected to test their own creations for weight, balance, and effectiveness. You may spend a Void Point as a Free Action to allow you to make any attacks with a weapon you created as Simple Actions rather than Complex Actions. This effect lasts for a number of Rounds equal to your School Rank.
+        </Description>
+      </Tech>
+      <Tech name="Star-Filled Steel" rank="5" id="oriole_starfilled_steel">
+        <Description>
+Oriole-made items are rivaled only by the masterful items of the Kaiu Forge. Once per day upon the completion of crafting a weapon, you may spend all your Void Points in order to create a Sacred Weapon (as per the Advantage). this weapon is known as a Tsi Weapon (e.g., a Tsi Blade, Tsi Tetsubo, etc.), and may possess one of the following qualities: Balanced (the wielder gains a bonus of +1k0 on attack rolls made with this weapon), Swift (The wielder gains a bonus of +5 to his Initiative Score while wielding the weapon, or Unbreakable (the weapon may not be broken). At the GM's option, a truly gifted Tsi smith may also be able to make a weapon Radiant (treat the weapon as jade for purposes of harming Invulnerable creatures).
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit koku="3" bu="0" zeni="0">
+      <Item>Sensible Clothing</Item>
+      <Item>Wakizashi</Item>
+      <Item>Calligraphy Set</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+</L5RCM>

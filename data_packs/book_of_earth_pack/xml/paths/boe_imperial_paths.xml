@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="phoenix" name="Shiba Armorsmiths" id="phoenix_shiba_armorsmith">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>phoenix_bushi</Tag>
+      <Tag>artisan</Tag>
+      <Tag>phoenix_artisan</Tag>
+      <Tag>alternate</Tag>
+      <Tag>phoenix_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Brilliant Steel" rank="2" id="brilliant_steel"><Description>A Shiba armorsmith is adept at the creation of beautiful armor, and consequently is also adept at using armor effectively on the battlefield. You gain a +1k0 bonus when making Craft rolls to create armor. When you are wearing armor and spend a Void Point to increase your Armor TN by 10, you may increase your Armor TN by an additional amount equal to twice your Earth Ring.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="craft_armorsmithing" type="skill" min="3">Craft: Armorsmithing 3</Requirement>
+      <Requirement field="defense" type="skill" min="3">Defense 3</Requirement>
+      <RequirementOption text="Replaces Shiba Bushi 2">
+        <Requirement field="phoenix_the_way_of_the_phoenix" type="rule" />
+      </RequirementOption>
+    </Requirements>
+  </School>
+</L5RCM>

@@ -1,0 +1,9 @@
+{
+	"id": "great_clan_pack",
+	"display_name": "Great Clans",
+	"authors": ["Daniele Simonetti", "Dziel Djenn"],
+	"version": "1.2",
+	"update-uri": "",
+	"download-uri": "",
+	"min-cm-version": "3.9"
+}

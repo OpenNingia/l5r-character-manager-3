@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="falcon" name="Toritaka Bushi School" id="falcon_toritaka_bushi_school">
+    <Trait>strength</Trait>
+    <Honor>5.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>falcon_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill rank="1" id="animal_handling" emphases="Falcons"/>
+      <Skill id="hunting" rank="2"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="lore_spirit_realms" rank="1"/>
+      <Skill id="spears" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="The Falcon's Eyes" rank="1" id="falcon_the_falcons_eyes">
+        <Description>A Toritaka must be aware of his surroundings at all times, for his enemies can appear anywhere. You add +1k0 to all Skill and raw Trait rolls involving the Perception Trait. Additionally, when striking a creature from another Spirit Realm (including oni from Jigoku and hungry dead from Gaki-do), you add +1k0 to all damage rolls.
+</Description>
+      </Tech>
+      <Tech name="The Falcon Takes Flight" rank="2" id="falcon_the_falcon_takes_flight">
+        <Description>Through his training, the Toritaka can sense the emanations of nearby spirits as they cross over into the mortal realm. You may attempt to detect the presence of any creatures from other Spirit Realms by making a Perception Trait Roll against a TN equal to the creature's Air Ring x 5.
+</Description>
+      </Tech>
+      <Tech name="The Falcon's Wings" rank="3" id="falcon_the_falcons_wings">
+        <Description>The Toritaka strikes with precision, constantly keeping his enemies at bay. You may make attacks as a Simple Action instead of a Complex Action while wielding a spear or a weapon with the Samurai keyword.
+</Description>
+      </Tech>
+      <Tech name="Vigilant And Strong" rank="4" id="falcon_vigilant_and_strong">
+        <Description>Monsters may have tricks to confuse their enemies, but the Toritaka learns to see the truth through the fog. You may spend a Void Point to negate any darkness or blinding penalties. This effect lasts until the Reactions Phase two Rounds later.
+</Description>
+      </Tech>
+      <Tech name="Claws Of The Falcon" rank="5" id="falcon_claws_of_the_falcon">
+        <Description>Nothing will stop the Toritaka's attack from hitting its target. Your attacks ignore up to 5 points of your opponent's Reduction (if he has any). Against creatures from other Spirit Realms, you may spend a Void Point as a Free Action to reduce the creature's Reduction by 10 for one Round.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+  <Outfit bu="0" koku="3" zeni="0"><Item>Light Armor</Item><Item>Sturdy Clothing</Item><Item>Daisho</Item><Item>any 1 weapon</Item><Item>Traveling Pack</Item></Outfit>
+  </School>
+</L5RCM>

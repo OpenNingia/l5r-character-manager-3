@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Family clanid="lion" name="Akodo" id="lion_akodo">
+    <Trait>agility</Trait>
+  </Family>
+  <Family clanid="lion" name="Ikoma" id="lion_ikoma">
+    <Trait>awareness</Trait>
+  </Family>
+  <Family clanid="lion" name="Kitsu" id="lion_kitsu">
+    <Trait>intelligence</Trait>
+  </Family>
+  <Family clanid="lion" name="Matsu" id="lion_matsu">
+    <Trait>strength</Trait>
+  </Family>
+</L5RCM>

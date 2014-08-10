@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="mantis" name="Child of Chukushudo" id="mantis_child of chikushudo">
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>mantis_shugenja</Tag>
+      <Tag>alternate</Tag>
+      <Tag>mantis_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Born of the Earth" rank="3" id="born_of_the_earth"><Description>A master of earth’s intricacies can project his mind into the soil and be born again in the form of an animal. If you are sitting upon the bare earth, you may sacrifice two Earth spell slots and make a Meditation Skill Roll (TN 
+15). After ten minutes of meditation, you fall into a deep trance and a natural animal erupts forth from the ground before your body. Your mind inhabits and control this animal form until you choose to end the effect, your real body is harmed or disturbed, or the animal form is killed – in any of those circumstances, the animal form crumbles into dirt and your consciousness returns to your real body. You must choose any one natural animal, either from the Book of the Void in the L5R RPG core rulebook or Chapter One of the sourcebook Enemies of the Empire, as the form you adopt. If the animal form has higher physical or mental Trait Ranks than you, you use the animal form’s Traits – otherwise, you use your own. You gain any and 
+all abilities of the creature, but cannot speak (and thus 
+cannot cast spells) while in the animal’s body.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="hunting" type="skill" min="3">Hunting 3</Requirement>
+      <Requirement field="lore_spirit_realms" trg="chikushudo" type="skill" min="2">Lore:Spirit Realms (Chikushudo) 2</Requirement>
+      <Requirement field="mantis_kitsune_shugenja" type="school" min="2" max="2">Replaces Kitsune Shugenja 3</Requirement>
+    </Requirements>
+  </School>
+  <School clanid="mantis" name="Yoritomo Sculptors" id="mantis_yoritomo_sculptors">
+    <Tags>
+      <Tag>artisan</Tag>
+      <Tag>mantis_artisan</Tag>
+      <Tag>alternate</Tag>
+      <Tag>mantis_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Watanabe's Legacy" rank="2" id="watanabes_legacy"><Description>The Yoritomo Sculptors hone their wood-carving skills on ship-board before graduating to actual training in their organization’s tiny school. You gain a +1k1 bonus when using the Skills of Artisan: Sculpture and Craft: Sculpture, and you may ignore any circumstantial or environmental penalties (distractions, weather, noise, etc) to your rolls with those two Skills.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <RequirementOption text="Replaces any Mantis Bushi or Courtier 2">
+        <Requirement field="*mantis_bushi" type="school" min="1" max="1"></Requirement>
+        <Requirement field="*mantis_courtier" type="school" min="1" max="1"></Requirement>
+      </RequirementOption>
+      <RequirementOption text="Artisan: Sculpture or Craft: Sculpture 4">
+        <Requirement field="artisan_sculpture" type="skill" min="4">Artisan: Sculpture 4</Requirement>
+        <Requirement field="craft_sculpture" type="skill" min="4">Craft: Sculpture 4</Requirement>
+      </RequirementOption>
+    </Requirements>
+  </School>
+  <School clanid="mantis" name="Yoritomo Emissaries" id="mantis_yoritomo_emissaries">
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>mantis_courtier</Tag>
+      <Tag>alternate</Tag>
+      <Tag>mantis_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Intrepid Negotiator" rank="4" id="intrepid_negotiator"><Description>Where the standard Yoritomo training focuses on browbeating foes, the Emissary learns to leaven this aggression with the calm patience of the Earth, outlasting opponents’ anger and thus finding peaceful solutions 
+to potentially violent confrontations. When making an Etiquette or Sincerity roll, you may spend a Void Point to add your Willpower in unkept dice to the roll. If the roll is specifically using Etiquette (Courtesy), you add your Willpower in kept dice instead.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="etiquette" trg="Courtesy" type="skill" min="4">Etiquette (Courtesy) 4</Requirement>
+      <RequirementOption text="Replaces Yoritomo Courtier 4">
+        <Requirement field="mantis_command_the_winds" type="rule" />
+      </RequirementOption>
+    </Requirements>
+  </School>
+</L5RCM>

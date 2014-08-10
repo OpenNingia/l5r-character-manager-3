@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="dragon" name="Kitsuki Debater" id="dragon_kitsuki_debater">
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>dragon_courtier</Tag>
+      <Tag>alternate</Tag>
+      <Tag>dragon_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="The Ebb and Flow of Deception" rank="3" id="dragon_the_ebb_and_flow_of_deception">
+        <Description>
+The Kitsuki Debater represents his clan in enemy courts
+across the Empire, fi ghting for every small advantage he
+can win for the Dragon. You can see the fl ow of a conversation
+and discern what topic may force your opponent
+to tell a lie. Make an Etiquette (Conversation)/Awareness
+roll at a TN 20, plus any Raises you wish to call. (The base
+TN of this roll may be modifi ed at the GM’s discretion,
+based on the opponent, the nature of the conversation,
+and other applicable circumstances.) If you succeed, you
+switch the topic of conversation to something uncomfortable
+for your opponent. He must roll Sincerity/Awareness
+at a TN of 20 plus 5 for every Raise you successfully
+called. ( Again, the GM may apply circumstantial modifi ers
+as needed.) If he fails the roll he is visibly discomfi ted by
+the conversational trap, and suffers a -1k1 penalty to his
+next Social Skill Roll against you.
+            </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="courtier" type="skill" min="3">Courtier: 3</Requirement>
+      <Requirement field="etiquette" type="trait" trg="Conversation" min="5">Etiquette (Conversation): 5</Requirement>
+      <RequirementOption text="Replaces Kitsuki Investigator 3">
+        <Requirement field="dragon_wisdom_the_wind_brings" type="rule"/>
+      </RequirementOption>
+    </Requirements>
+  </School>
+  <School clanid="dragon" name="The Dragon's Flame" id="dragon_the_dragon_flame">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>dragon_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>dragon_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Rain of Death" rank="4" id="dragon_rain_of_death">
+        <Description>
+The Dragon’s Flame knows accuracy comes from finding
+tranquility within. You gain a +1k0 bonus to attack rolls,
+or +2k2 while using a bow.
+            </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="kyujutsu" type="skill" min="5">Kyujutsu: 3</Requirement>
+      <RequirementOption text="Replaces Any Dragon bushi 4">
+        <Requirement field="*dragon_bushi" type="school" min="3" max="3"/>
+      </RequirementOption>
+    </Requirements>
+  </School>
+  <School clanid="dragon" name="Togashi Defender" id="dragon_togashi_defender">
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>dragon_monk</Tag>
+      <Tag>alternate</Tag>
+      <Tag>dragon_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Power Within and Without" rank="3" id="dragon_power_within_and_without">
+        <Description>
+The isezumi knows the kami cannot aid any man if he
+proves himself an unworthy physical vessel. While unarmored
+and with no Kiho or Tattoos active, you gain
+Reduction equal to 3 plus your Void Ring. You gain one
+additional Tattoo.
+            </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <RequirementOption text="Togashi Tattooed Order 3">
+        <Requirement field="dragon_body_of_stone" type="rule"/>
+      </RequirementOption>
+    </Requirements>
+  </School>
+</L5RCM>

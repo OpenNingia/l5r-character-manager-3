@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="spider" name="Goju Ninja" id="spider_goju_ninja_school">
+    <Trait>agility</Trait>
+    <Honor>0.0</Honor>
+    <Tags>
+      <Tag>ninja</Tag>
+      <Tag>scorpion_ninja</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="ninjutsu" rank="1"/>
+      <Skill id="stealth" rank="2"/>
+      <Skill rank="1" id="sincerity" emphases="Deceit"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="The Cloak Of Night" rank="1" id="spider_the_cloak_of_night">
+        <Description>
+The first lesson a Goju masters is the art of wrapping oneself
+in shadow, gaining concealment from enemies in exchange
+for making direct action more diffi cult. You may
+increase your Armor TN up to a maximum amount equal
+to your School Rank x 5. The TN of all your rolls other
+than Athletics, Defense, and Stealth Skill Rolls is increased
+by the same amount. Activating this Technique is a Simple
+Action and it lasts for the duration of the skirmish.
+            </Description>
+      </Tech>
+      <Tech name="Melting Into Shadow" rank="2" id="spider_melting_into_shadow">
+        <Description>
+A Goju is not merely protected by the darkness but part of
+it, and can blend easily within it. You gain bonus rolled
+dice equal to your School Rank on any Stealth Skill Roll.
+Any uncontested roll made by an opponent trying to detect
+you automatically has its TN increased by an amount
+equal to your School Rank x 5. You gain one Free Raise on
+all attack rolls made against opponents who are unaware
+of your presence.
+            </Description>
+      </Tech>
+      <Tech name="The Shadowed Blade" rank="3" id="spider_the_shadowed_blade">
+        <Description>
+The Goju is a swift and merciless foe. You may make an
+attack as a Simple Action rather than a Complex Action
+when attacking with knives or any weapon that uses the
+Ninjutsu Skill. Alternatively, when wielding shuriken, you
+may take a Complex Action to make a number of ranged
+attacks equal to your School Rank.
+            </Description>
+      </Tech>
+      <Tech name="Step Within Shadow" rank="4" id="spider_step_within_shadow">
+        <Description>
+As all darkness is one with the Goju, so too can the Goju
+use the darkness to move between shadows without crossing
+the space in between. You may enter any shadow large
+enough to conceal an individual of your size and emerge
+from any other similarly-sized shadow nearby. This is considered
+a Simple Move Action. The range of this movement
+is equal to your School Rank x 100 feet.
+            </Description>
+      </Tech>
+      <Tech name="Shadow Upon The Moon" rank="5" id="spider_shadow_upon_the_moon">
+        <Description>
+A true Goju no longer even vaguely resembles anything human.
+Your facial features are permanently erased, leaving
+only a tell-tale eggshell mask in their place. In darkness or
+shadows, you may dissolve your physical body into a vague
+cloud of inky vapor. This is a Simple Action; changing back
+into corporeal form is a Free Action. You may move at your
+full speed while in incorporeal form but may not physically
+interact with any object or individual and cannot be harmed
+by anything except crystal. You may pass through solid matter
+in a thickness of up to your School Rank x 5 in inches.
+You gain +5 to your Initiative Score during the fi rst Round
+(only) each time you change back to your corporeal form.
+            </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+  </School>
+  <School clanid="spider" name="Ninube Shugenja" id="spider_ninube_shugenja_school">
+    <Trait>awareness</Trait>
+    <Affinity>air</Affinity>
+    <Deficiency>earth</Deficiency>
+    <Honor>0.0</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>spider_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="calligraphy" rank="1"/>
+      <Skill id="knives" rank="1"/>
+      <Skill rank="1" id="sincerity" emphases="Lying"/>
+      <Skill id="stealth" rank="2"/>
+      <Skill id="spellcraft" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>low</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="3" element="air"/>
+      <PlayerChoose count="2" element="fire"/>
+      <PlayerChoose count="1" element="water"/>
+    </Spells>
+    <Techs>
+      <Tech name="Mask of the Nothing" rank="1" id="spider_mask_of_the_nothing">
+        <Description>
+As a Complex Action you may expend a spell slot to dissolve
+your physical self and become a shadow. As a shadow
+you are invisible in darkness and gain a bonus of +5k0
+to your Stealth Skill Rolls under all other circumstances.
+You are immune to most mundane attacks, but crystal
+and magic can affect you. Magical attacks that involve
+crystal or generate light double their rolled damage dice
+against you. When in shadow form, if you suffer damage
+that would kill you, you instead return to physical form at
+once with either half of your Wounds or with the Wounds
+you possessed when you entered shadow form, whichever
+is lower; you are Stunned when this happens.
+You may not infl ict damage on others in any way while
+in shadow form, but you may cast non-damaging spells
+and can speak in the form of a disembodied whisper.
+You gain a Free Raise on all Nothing spells. You may
+not cast maho spells.
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+  </School>
+</L5RCM>

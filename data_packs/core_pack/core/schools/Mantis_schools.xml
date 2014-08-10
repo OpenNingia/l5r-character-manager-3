@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="mantis" id="mantis_yoritomo_bushi_school" name="Yoritomo Bushi School">
+    <Trait>strength</Trait>
+    <Honor>3.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>mantis_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="commerce" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill emphases="Improvised Weapons" id="jiujutsu" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill emphases="Kama" id="knives" rank="1"/>
+      <Skill id="sailing" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="mantis_the_way_of_the_mantis" name="The Way Of The Mantis" rank="1">
+        <Description>Mantis bushi learn to fight on the pitching decks of ships and to use anything within reach as a weapon. You suffer no penalties to movement or attacks for rough or uneven terrain. You do not lose Glory or Honor when using improvised weapons, or weapons with the Peasant keyword, in combat. You suffer no penalties for fighting with a Small or Medium weapon in your off-hand if that weapon has the Peasant keyword. finally, you gain a bonus of +1k0 to all attack rolls.
+</Description>
+      </Tech>
+      <Tech id="mantis_voice_of_the_storm" name="Voice Of The Storm" rank="2">
+        <Description>Your wild, unfettered attacks disorient your opponent and opens holes in his defenses. Every time you hit an opponent in melee, his Armor TN is reduced by 5. This penalty only applies to your attacks, and lasts for 2 Rounds. This Technique is cumulative (a number of times equal to your School Rank), and the duration resets with each application.
+</Description>
+      </Tech>
+      <Tech id="mantis_strike_of_the_mantis" name="Strike Of The Mantis" rank="3">
+        <Description>A Yoritomo strikes as swiftly as the storm. You may make attacks as a Simple Action instead of a Complex Action while using weapons with the Samurai or Peasant keyword.
+</Description>
+      </Tech>
+      <Tech id="mantis_the_rolling_wave" name="The Rolling Wave" rank="4">
+        <Description>The Yoritomo Bushi reacts with the flow of combat, deftly dodging blows while reaching his target. If you move at least 5 feet, you gain a bonus of +10 to your Armor TN until your next Turn. You may sacrifice this bonus during your Turn before you roll any attack to gain two Free Raises that may only be used to perform the Knockdown Maneuver.
+</Description>
+      </Tech>
+      <Tech id="mantis_hand_of_osanowo" name="Hand Of Osano-Wo" rank="5">
+        <Description>The Yoritomo Bushi strikes with brutal force, digging his weapons deep into his target. You may choose to activate this Technique by spending a Void Point as a Free Action. You keep an additional number of damage dice equal to your Strength. If these attacks hit a Prone target, you gain a bonus of +0k2 to the total of your damage rolls against that target.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="10" zeni="0">
+      <Item>Light Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>any 1 weapon (or pair of Knives)</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="mantis" id="mantis_moshi_shugenja_school" name="Moshi Shugenja School">
+    <Trait>awareness</Trait>
+    <Affinity>air</Affinity>
+    <Deficiency>earth</Deficiency>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>mantis_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill emphases="Cipher" id="calligraphy" rank="1"/>
+      <Skill id="divination" rank="1"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <Skill id="spellcraft" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="3" element="air"/>
+      <PlayerChoose count="3" element="fire"/>
+    </Spells>
+    <Techs>
+      <Tech id="mantis_favor_of_the_sun" name="Favor of the Sun" rank="1">
+        <Description> No family has been more reverent of the various incarnations of the Sun throughout their history, and their piety has granted them great favor with the Heavens. During the day, you gain an additional Affinity for Fire spells. This benefit is lost at night. You also gain a Free Raise on any spell with the Thunder keyword.
+Spells: Sense, Commune, Summon, 3 Air and 3 Fire spells
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="10" zeni="0">
+      <Item>Robes</Item>
+      <Item>Wakizashi</Item>
+      <Item>Knife</Item>
+      <Item>Scroll Satchel</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="mantis" id="mantis_yoritomo_courtier_school" name="Yoritomo Courtier School">
+    <Trait>willpower</Trait>
+    <Honor>2.5</Honor>
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>mantis_courtier</Tag>
+    </Tags>
+    <Skills>
+      <Skill emphases="Appraisal" id="commerce" rank="1"/>
+      <Skill id="courtier" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill emphases="Control" id="intimidation" rank="1"/>
+      <Skill id="sincerity" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>merchant</Wildcard>
+        <Wildcard>lore</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="mantis_duty_before_honor" name="Duty Before Honor" rank="1">
+        <Description>Like the Yasuki, the Mantis Courtiers are merchants as well as diplomats, and they cultivate a personal style built around intimidation rather than friendship. Futhermore, they spend much of their lives outside of the courts dealing with some of the more unsavory characters in Rokugan. You do not lose Glory or Honor for using the Commerce Skill in public, and you do not lose Honor for using the Intimidation (Control) skill. Any time you are making Social Skill Rolls against ronin, bandits, gang members, mercenaries, pirates, and other lawless types, you gain a number of Free Raises equal to your School Rank.
+</Description>
+      </Tech>
+      <Tech id="mantis_storm_heart" name="Storm Heart" rank="2">
+        <Description>When the time comes to act in courts, the Yoritomo eschew the eloquent words of the Doji or the subtle gibes of the Scorpion in favor of straightforward bullying, browbeating friend and foe alike into accepting their position. When you use the Intimidation (Control) Skill, your Willpower is considered to be one Rank higher. When you use the Intimidation (Control) skill against a samurai with lower Status Rank than you, your Willpower is considered two Ranks higher instead.
+</Description>
+      </Tech>
+      <Tech id="mantis_command_the_winds" name="Command The Winds" rank="3">
+        <Description>The Mantis are taugh to put the force of their boorish and aggressive behavior behind their words in court, making it difficult to tell whether they are lying or telling the truth. A number of times per session equal to your School rank, if you have failed a Sincerity Social Skill Roll, you may re-roll it as an Intimidation (Control) Social Skill Roll instead. You must take the result of the Intimidation roll.
+</Description>
+      </Tech>
+      <Tech id="mantis_will_of_the_storm" name="Will Of The Storm" rank="4">
+        <Description>An experienced Mantis has learned to shatter and demoralize his opponents in court with his mere presence. When initiating a conversation with someone, you may make a Contested roll of your Intimidation (Control) / Willpower against his Etiquette (Courtesy) / Willpower. If you win the roll, he cannot spend any Void points against you for the next hour. Also, during that time he suffers a -3k0 penalty to all Social Rolls made against you. (This Technique cannot be used again until its effect expires.)
+</Description>
+      </Tech>
+      <Tech id="mantis_strength_in_all_things" name="Strength In All Things" rank="5">
+        <Description>At this Rank the Mantis courtier's iron willpower and threatening nature have reached perfection, allowing him to overcome all foes and to laugh in th eface of threats that would make even a Hida bushi turn pale. Any time you are attempting to use the Intimidation skill against someone else, or are rolling to resist an Intimidation or Temptation Skill roll or a Fear effect, you gain a bonus of +5k0 to the roll.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="10" zeni="0">
+      <Item>Extravagant Clothing</Item>
+      <Item>Wakizashi</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Calligraphy Set</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="mantis" id="mantis_tsuruchi_archer_school" name="Tsuruchi Archer School">
+    <Trait>reflexes</Trait>
+    <Honor>3.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>mantis_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="hunting" rank="1"/>
+      <Skill id="investigation" rank="1"/>
+      <Skill emphases="Yumi" id="kyujutsu" rank="2"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="mantis_always_be_ready" name="Always Be Ready" rank="1">
+        <Description>The Tsuruchi Archer must be prepared to fight against his foes with little warning. You gain a bonus of +1k0 to the total of all attack rolls using a bow. Additionally, you gain a bonus of +3 to your Initiative Score.
+</Description>
+      </Tech>
+      <Tech id="mantis_the_arrow_knows_the_way" name="The Arrow Knows The Way" rank="2">
+        <Description>A Tsuruchi must not aim, but simply allow the arrow to follow its own path. You gain one Free Raise that can only be used to make the Called Shot Maneuver. Additionally, you gain a bonus of +2k0 to the total of all damage rolls while using a bow.
+</Description>
+      </Tech>
+      <Tech id="mantis_the_wasps_sting" name="The Wasp's Sting" rank="3">
+        <Description>Tsuruchi's technique teaches its students uncanny speed. You may make attacks as a Simple Action instead of a Complex Action when using a bow.
+</Description>
+      </Tech>
+      <Tech id="mantis_flight_of_nomind" name="Flight Of No-Mind" rank="4">
+        <Description>The true archer does not concern himself with the arrow, but exists only to loose it. Once per skirmish, you may spend a Void Point as a Complex Action to shoot an arrow that knows exactly where it must go. This attack ignores all effects of armor, as well as any penalties from Wound Ranks or visibility. You may make Raises but you cannot perform the Extra Attack Maneuver for this attack.
+You may not shoot a target that is further than your bow's normal range with this Technique.
+</Description>
+      </Tech>
+      <Tech id="mantis_tsuruchis_eye" name="Tsuruchi's Eye" rank="5">
+        <Description>The final lesson of Tsuruchi is that there is nothing that cannot be felled by a single arrow. You may make a ranged attack as a Complex Action to gain a bonus of +4k1 to the total of both attack and damage rolls. You may not use this Technique in conjunction with Flight of No-Mind.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="10" zeni="0">
+      <Item>Ashigaru or Light Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Bow and 20 arrows</Item>
+      <Item>Wakizashi</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="mantis" id="mantis_kitsune_shugenja_school" name="Kitsune Shugenja School">
+    <Trait>stamina</Trait>
+    <Affinity>earth</Affinity>
+    <Deficiency>air</Deficiency>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>mantis_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="calligraphy" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="hunting" rank="1"/>
+      <Skill emphases="Herbalism" id="medicine" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <Skill id="spellcraft" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="3" element="earth"/>
+      <PlayerChoose count="1" element="fire"/>
+      <PlayerChoose count="2" element="water"/>
+    </Spells>
+    <Techs>
+      <Tech id="mantis_essence_of_chikushudo" name="Essence Of Chikushudo" rank="1">
+        <Description> None in the Empire are closer to the ways of nature than the simple Kitsune who make the wilderness their home. You may use the Sense, Commune, and summon basic spells to affect the animal spirits of Chikushudo as well as kami (using Summon results in the appearance of a single animal spirit rather than a set amount of the elemental material). Animal spirits tend to be more direct than kami, and perceive things differently, but have just as little sense of why man does what he does. You gain a Free Raise on any nonSpells: Sense, Commune, Summon, 3 Earth, 2 Water, and 1 Fire
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="3" zeni="0">
+      <Item>Robes</Item>
+      <Item>Wakizashi</Item>
+      <Item>Knife</Item>
+      <Item>Scroll Satchel</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="mantis" id="mantis_storm_riders" name="Storm Riders">
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>mantis_shugenja</Tag>
+      <Tag>advanced</Tag>
+      <Tag>mantis_advanced</Tag>
+    </Tags>
+    <Skills/>
+    <Spells/>
+    <Techs>
+      <Tech id="mantis_strength_of_suitengu" name="Strength Of Suitengu" rank="1">
+        <Description>
+The Storm Riders are at home on the seas, navigating with an ease envied by all who see them. Your Shugenja School Rank is considered one higher for purposes of casting Water spells. You may spend a Void Point to release a lightning bolt from your hands as a Complex Action. This bolt strikes one target within a range of 10' x our Water Ring. It rolls and keeps a number of damage dice equal to your Air Ring. You may expend spell slots to increase the damage of this bolt by +1k0 per spell slot expended, up to a maximum of your Storm Rider Rank.
+        </Description>
+      </Tech>
+      <Tech id="mantis_the_raging_ocean" name="The Raging Ocean" rank="2">
+        <Description>
+The Storm Rider's connection to the ocean allows him to extend beyond his limits. Your Shugenja School Rank increases by one. You Water Ring is considered 2 ranks higher for purposes of determining the number of spells you may cast per day.
+        </Description>
+      </Tech>
+      <Tech id="mantis_child_of_osanowo" name="Child Of Osano-Wo" rank="3">
+        <Description>
+The Storm Riders are the descendents of the Fortune of Fire and Thunder, and their blessings protect them from his domain. Your Shugenja School Rank is considered 1 higher for the purpose of casting Water spells. You may spend A Void Point as a Free Action to gain immunity to all spells possessing the Thunder keyword for 3 rounds. This ability only affects spells of Mastery Level 3 and lower.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements>
+      <Requirement field="air" min="3" type="ring">Air Ring: 3</Requirement>
+      <Requirement field="fire" min="3" type="ring">Fire Ring: 3</Requirement>
+      <Requirement field="water" min="5" type="ring">Water Ring: 5</Requirement>
+      <Requirement field="lore_the_sea" min="5" type="skill">Lore (The Sea): 5</Requirement>
+      <Requirement field="sailing" min="3" type="skill">Sailing: 3</Requirement>
+      <Requirement field="spellcraft" min="3" type="skill">Spellcraft: 3</Requirement>
+      <Requirement field="lore_theology" min="3" type="skill">Lore (Theology): 3</Requirement>
+      <Requirement field="mantis" type="tag">Be a member of the Mantis clan</Requirement>
+      <Requirement field="elem_bless_water" type="rule">Advantage: Elemental Blessing (Water)</Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

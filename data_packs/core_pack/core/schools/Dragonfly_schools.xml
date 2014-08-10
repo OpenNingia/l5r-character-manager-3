@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="dragonfly" name="Tonbo Shugenja School" id="dragonfly_tonbo_shugenja_school">
+    <Trait>perception</Trait>
+    <Affinity>water</Affinity>
+    <Deficiency>fire</Deficiency>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>dragonfly_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="calligraphy" rank="1"/>
+      <Skill id="courtier" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill rank="1" id="meditation" emphases="Void Recovery"/>
+      <Skill id="sincerity" rank="1"/>
+      <Skill id="spellcraft" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="2" element="air"/>
+      <PlayerChoose count="1" element="earth"/>
+      <PlayerChoose count="3" element="water"/>
+    </Spells>
+    <Techs>
+      <Tech name="Guided By Fate" rank="1" id="dragonfly_guided_by_fate">
+        <Description>
+The Tonbo are adept at court as well as the ways of the shugenja, serving as they have as the Dragon Clan's intermediaries almost since their creation. The kami's whispers can be powerful tools in court. You may expend one spell slot to gain a bonus of +1k0 on one Social Skill Roll. You may never spend more spell slots than your School Rank to augment a single roll. You gain a Free Raise on any spell with the Divination keyword.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit koku="3" bu="0" zeni="0">
+      <Item>Robes</Item>
+      <Item>Wakizashi</Item>
+      <Item>Knife</Item>
+      <Item>Scroll Satchel</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+</L5RCM>

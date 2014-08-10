@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="bat" name="Komori Shugenja School" id="bat_komori_shugenja_school">
+    <Trait>awareness</Trait>
+    <Affinity>air</Affinity>
+    <Deficiency>earth</Deficiency>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>bat_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill rank="1" id="calligraphy" emphases="Cipher"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <Skill id="spellcraft" rank="1"/>
+      <Skill id="tea_ceremony" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="3" element="air"/>
+      <PlayerChoose count="1" element="fire"/>
+      <PlayerChoose count="2" element="water"/>
+    </Spells>
+    <Techs>
+      <Tech name="The Kami's Whispers" rank="1" id="bat_the_kamis_whispers">
+        <Description>
+The Komori practice the rituals of the koumori spirits from whom their founder is descended, and ferry messages from one to another via the kami. You may expend one spell slot to send a whispered message to another individual known to you. This message must be no longer in length than thirty seconds per School Rank, and may be delivered a maximum distance equal to your School Rank x 100 miles.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit koku="3" bu="0" zeni="0">
+      <Item>Robes</Item>
+      <Item>Wakizashi</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Scroll Satchel</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+</L5RCM>

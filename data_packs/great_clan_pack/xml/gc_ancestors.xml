@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Merit type="spiritual" id="ancestor_crab_hiruma" name="Ancestor, Hiruma">
+    <Rank id="1" value="11"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_crab_kaiu" name="Ancestor, Kaiu">
+    <Rank id="1" value="9"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_crane_doji_hayaku" name="Ancestor, Doji Hayaku">
+    <Rank id="1" value="7"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_crane_asahina" name="Ancestor, Asahina">
+    <Rank id="1" value="9"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_dragon_agasha_gc" name="Ancestor, Agasha">
+    <Rank id="1" value="6"/>
+    <Rank id="2" value="10"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_dragon_togashi_yamatsu" name="Ancestor, Togashi Yamatsu">
+    <Rank id="1" value="7"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_lion_kitsu" name="Ancestor, Kitsu">
+    <Rank id="1" value="6"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_lion_matsu_hitomi" name="Ancestor, Matsu Hitomi">
+    <Rank id="1" value="7"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_mantis_moshi_azami" name="Ancestor, Moshi Azami">
+    <Rank id="1" value="6"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_mantis_osusuki_akomachi" name="Ancestor, Osusuki &amp; Akomachi">
+    <Rank id="1" value="5"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_phoenix_isawa" name="Ancestor, Isawa">
+    <Rank id="1" value="12"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_phoenix_nana_kaeteru" name="Ancestor, Nana Kaeteru">
+    <Rank id="1" value="10"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_scorpion_yogo" name="Ancestor, Yogo">
+    <Rank id="1" value="6"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_scorpion_soshi_saibankan" name="Ancestor, Soshi Saibankan">
+    <Rank id="1" value="5"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_unicorn_otaku" name="Ancestor, Otaku">
+    <Rank id="1" value="7"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_unicorn_iuchi" name="Ancestor, Iuchi">
+    <Rank id="1" value="8"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_spider_chuda_bikimi" name="Ancestor, Chuda Bikimi">
+    <Rank id="1" value="3"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_spider_yogo_junzo" name="Ancestor, Yogo Junzo">
+    <Rank id="1" value="6"/>
+  </Merit>
+</L5RCM>

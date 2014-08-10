@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="fox" name="Kitsune Shugenja School" id="fox_kitsune_shugenja_school">
+    <Trait>stamina</Trait>
+    <Affinity>earth</Affinity>
+    <Deficiency>air</Deficiency>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>fox_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="calligraphy" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="hunting" rank="1"/>
+      <Skill rank="1" id="medicine" emphases="Herbalism"/>
+      <Skill id="meditation" rank="1"/>
+      <Skill id="spellcraft" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="3" element="earth"/>
+      <PlayerChoose count="1" element="fire"/>
+      <PlayerChoose count="2" element="water"/>
+    </Spells>
+    <Techs>
+      <Tech name="Essence Of Chikushudo" rank="1" id="fox_essence_of_chikushudo">
+        <Description> None in the Empire are closer to the ways of nature than the simple Kitsune who make the wilderness their home. You may use the Sense, Commune, and summon basic spells to affect the animal spirits of Chikushudo as well as kami (using Summon results in the appearance of a single animal spirit rather than a set amount of the elemental material). Animal spirits tend to be more direct than kami, and perceive things differently, but have just as little sense of why man does what he does. You gain a Free Raise on any nonSpells: Sense, Commune, Summon, 3 Earth, 2 Water, and 1 Fire
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+  <Outfit bu="0" koku="3" zeni="0"><Item>Robes</Item><Item>Wakizashi</Item><Item>Knife</Item><Item>Scroll Satchel</Item><Item>Traveling Pack</Item></Outfit>
+  </School>
+</L5RCM>

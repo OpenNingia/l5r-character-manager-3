@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="lion" name="The Ikoma Lion's Shadow School" id="lion_ob_the_ikoma_lions_shadow_school">
+    <Trait>awareness</Trait>
+    <Honor>3.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>lion_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="courtier" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill rank="1" id="investigation" emphases="Notice"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="sincerity" rank="1"/>
+      <Skill id="stealth" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>low</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="No Boundaries" rank="1" id="lion_no_boundaries"/>
+      <Tech name="The Lion Cannot Fail" rank="2" id="lion_the_lion_cannot_fail"/>
+      <Tech name="The Spirit Of Ikoma" rank="3" id="lion_the_spirit_of_ikoma"/>
+      <Tech name="The Quiet Lion's Claws" rank="4" id="lion_the_quiet_lions_claws"/>
+      <Tech name="Ferocious Determination" rank="5" id="lion_ferocious_determination"/>
+    </Techs>
+    <Requirements/>
+  </School>
+</L5RCM>

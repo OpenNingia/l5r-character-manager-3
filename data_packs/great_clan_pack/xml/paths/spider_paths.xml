@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="spider" name="Chuda Necromancer" id="spider_chuda_necromancer">
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>spider_shugenja</Tag>
+      <Tag>alternate</Tag>
+      <Tag>spider_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="The Dead Do Not Rest" rank="4" id="spider_the_dead_do_not_rest">
+        <Description>
+The Chuda are unparalleled masters of undeath. As a Simple
+Action you may expend a spell slot of any element
+to immediately create from existing corpses a number of
+zombies equal to your Taint Rank. These undead will obey
+simple commands from you. They last for one week or
+until you choose to dismiss your power over them—either
+way, at that point the corpses disintegrate into rot and
+dust. (Statistics for zombies can be found on page 331 of
+the L5R RPG 4th Edition rulebook.)
+            </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="willpower" type="trait" min="4">Willpower: 3</Requirement>
+      <Requirement field="lore_shadowlands" type="skill" min="3">Lore: Shadowlands: 3</Requirement>
+      <Requirement field="rpg" type="more">Knowledge of the maho spell Summon Undead Champion</Requirement>
+      <Requirement field="spider_chuda_shugenja_school" type="school" min="2" max="2">Replaces Chuda Shugenja 3</Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

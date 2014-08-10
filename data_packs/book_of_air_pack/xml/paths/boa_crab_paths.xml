@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="crab" name="Crab Defender" id="crab_defender">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crab_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>crab_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Warrior of Earth" rank="2" id="crab_warrior_of_earth">
+        <Description>
+                The Defenders are taught there is more than one way to win a duel. Rather than try to strike faster than their opponents, Defenders learn to call on their own Earth to endure the foe's first strike, allowing them to defeat their enemy in a longer fight. During the Strike step of an iaijutsu duel, you are considered to have additional Reduction equal to your Earth x3.
+                </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="awareness" type="trait" min="3">Awareness: 3</Requirement>
+      <Requirement field="agility" type="trait" min="3">Agility: 3</Requirement>
+      <Requirement field="iaijutsu" type="skill" min="4">Iaijutsu: 4</Requirement>
+      <Requirement field="crab" type="tag">Member of Crab Clan</Requirement>
+      <RequirementOption text="Replaces Hida Bushi 2 or Hiruma Bushi 2">
+        <Requirement field="crab_the_way_of_the_crab" type="rule"/>
+        <Requirement field="crab_torchs_flame_flickers" type="rule"/>
+      </RequirementOption>
+    </Requirements>
+  </School>
+  <School clanid="crab" name="Hiruma Snipers" id="crab_hiruma_snipers">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crab_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>crab_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="The Crab's Eye" rank="4" id="the_crabs_eye">
+        <Description>
+                The Hiruma Snipers are trained to strike at specific weak points in their targets, getting their arrows past both mortal armor and monstrous shells and carapaces. You may attack with a yumi as a simple action. When making a ranged attack with a yumi, you may ignore all of the target's natural Reduction (e.g. Reduction from armor or natural protection) and half that much Reduction from magical effects.</Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="reflexes" type="trait" min="4">Reflexes: 4</Requirement>
+      <Requirement field="kyujutsu" type="skill" min="3">Kyujutsu: 5</Requirement>
+      <RequirementOption text="Replaces Hiruma Scout 4 or Hiruma Bushi 4">
+        <Requirement field="crab_hummingbird_wings" type="rule"/>
+        <Requirement field="crab_veil_of_the_spirits" type="rule"/>
+      </RequirementOption>
+    </Requirements>
+  </School>
+  <School clanid="crab" name="The Falcon's Strike" id="crab_falcons_strike">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crab_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>crab_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Spotting the Prey" rank="2" id="the_crabs_eye">
+        <Description>
+                The Falcon's Strike is taught to use the bushi's deep awareness of their surroundings to strike the target regardless of concealment. When making a ranged attack with a bow, you may use your Perception in place of your Reflexes for attack rolls. When using a yumi, you may also use your Perception in place of the bow's Strength for damage rolls.</Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="kyujutsu" trg="Yumi" type="skill" min="3">Kyujutsu (Yumi): 3</Requirement>
+      <RequirementOption text="Replaces Toritaka Bushi 2, Hiruma Scout 2 or Hiruma Bushi 4">
+        <Requirement field="crab_the_falcons_eyes" type="rule"/>
+        <Requirement field="crab_torchs_flame_flickers" type="rule"/>
+        <Requirement field="crab_dance_the_razors_edge" type="rule"/>
+      </RequirementOption>
+    </Requirements>
+  </School>
+</L5RCM>

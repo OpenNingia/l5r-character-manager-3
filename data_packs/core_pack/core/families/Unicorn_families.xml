@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Family clanid="unicorn" name="Horiuchi" id="unicorn_horiuchi">
+    <Trait>willpower</Trait>
+  </Family>
+  <Family clanid="unicorn" name="Ide" id="unicorn_ide">
+    <Trait>perception</Trait>
+  </Family>
+  <Family clanid="unicorn" name="Iuchi" id="unicorn_iuchi">
+    <Trait>intelligence</Trait>
+  </Family>
+  <Family clanid="unicorn" name="Moto" id="unicorn_moto">
+    <Trait>agility</Trait>
+  </Family>
+  <Family clanid="unicorn" name="Shinjo" id="unicorn_shinjo">
+    <Trait>reflexes</Trait>
+  </Family>
+  <Family clanid="unicorn" name="Utaku" id="unicorn_utaku">
+    <Trait>stamina</Trait>
+  </Family>
+</L5RCM>

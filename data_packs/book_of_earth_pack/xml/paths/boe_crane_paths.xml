@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="crane" name="Daidoji Heavy Regulars" id="crane_daidoji_heavy_regulars">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crane_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>crane_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Way of the Iron Crane" rank="4" id="crane_way_of_the_iron_crane"><Description>The Heavy Regulars use their experience serving alongside the Crab on the Kaiu Wall to inform their own training in heavy weapons, enhancing their defensive position against enemy attacks and striking back hard 
+against charging foes. When wielding a heavy weapon in the Attack stance, you may add +1k1 to your attack rolls against any opponent who is in the Attack or Full Attack Stances. When wielding a heavy weapon in the Defense or Full Defense stances, you may add your Heavy Weapons Skill Rank to your Armor TN.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="heavy_weapons" type="skill" min="5">Heavy Weapons 5</Requirement>
+      <RequirementOption text="Replaces Daidoji Iron Warrior 4">
+        <Requirement field="crane_strike_beneath_the_veil" type="rule" />
+      </RequirementOption>
+    </Requirements>
+  </School>
+</L5RCM>

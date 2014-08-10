@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <KihoDef mastery="6" element="earth" type="internal" id="shadowed_mountain" name="Shadowed Mountain">
+    <Description>Many sohei orders are considered reckless and wild by outsiders, and to some extent this is true. The Temple of Osano-Wo and the fierce warrior monks of the Spider Clan are brutal fighters who focus far more on offense than on protecting themselves. Many of them simply rely on their physical endurance to carry them through the fight, while others master the Shadowed Mountain Kiho to surprise and confuse their enemies.
+When this Kiho is activate, you may choose to enter the 
+Full Defense Stance immediately before you are attacked. 
+This does not have to be the first time you are attacked 
+after activating this Kiho, but it may only be done once 
+per activation. After you activate this kiho, you cannot 
+change Stances during your next opportunity to do so (during your normal chance on your Turn or due to another effect). This Kiho lasts for the remainder of the day or until used.</Description>
+    <Tags />
+  </KihoDef>
+  <KihoDef mastery="4" element="earth" type="internal" id="depths_of_the_world" name="Depths of the World">
+    <Description>Earth and Water are similar in that they have seemingly 
+endless depths to their power and influence. However, 
+where Water is relentless in its strength and power, the 
+Earth knows no bounds in its purity and focus. This 
+basic Earth Kiho is taught to monks of all aspects of the Brotherhood, as it helps them re-focus and center their chi in stressful or dangerous situations. 
+When this Kiho is activated, you may immediately roll 
+to recover from a non-permanent Condition or other effect that allows rolls for recovery, such as Dazed. This Kiho can only be activated as a Complex Action, but may be activated (spending the Void point) even when you are not allowed to perform actions, such as when you are Stunned.</Description>
+    <Tags />
+  </KihoDef>
+  <KihoDef mastery="6" element="earth" type="internal" id="harmony_in_earth" name="Harmony in Earth">
+    <Description>More of a meditative art than many Kiho, Harmony in 
+Earth is often used as a lesson in how to understand purity and harmony in the Realm of Mortals and the Celestial Order. This Kiho is a favorite of orders and sects that delve into the mysteries of the supernatural and mystical lore, though it is also known among several orders that face such threats in battle. By aligning his Earth with the natural world, the Monk gains the ability to perceive with an additional sense. 
+When this Kiho is activated, you must remain perfectly 
+still for a number of Turns equal to ten minus your Earth Ring. Once this is accomplished, you are immediately able to detect any spiritual and physical impurities within a range of fifty feet times your Earth for one Round. (“Impurity” in this sense is not confined to things such as the Taint, but encompasses anything that the GM judges to be out of place either physically or spiritually.) You learn the direction of the impurity, its general nature (Shadowlands Taint, poison, disease, things not native to Ningen-do), and its relative strength compared to others in the area. The GM may choose to allow you to make an appropriate Lore Skill roll for the subject in question to learn one more piece of useful information of his choice. You will only sense a total number of impurities equal to your Void, detecting the strongest ones first. 
+This Kiho is not precise in pinpointing the location of 
+the impurity. You will know a general direction but not a specific location. 
+Intelligent beings who could be detected by this Kiho 
+(such as the Lost) can attempt to defeat the Kiho’s power by making a Contested Earth Roll against you. (The GM may substitute a different type of Contested Roll if the specific circumstance seems in his judgment to require it.)</Description>
+    <Tags />
+  </KihoDef>
+  <KihoDef mastery="5" element="earth" type="martial" id="the_rolling_avalanche" name="The Rolling Avalanche">
+    <Tags>
+      <Tag>atemi</Tag>
+    </Tags>
+    <Description>The principles and strengths of Earth usually deal with 
+the Element when it is at rest, but the fury of moving 
+Earth can be a terrible thing. Sohei who focus on a study of Earth find this Kiho extremely useful, as it channels the usually benign Element into devastating power. 
+This Kiho is delivered via an atemi attack that deals 
+normal unarmed damage. However, if the strike is 
+successful, your damage roll is increased by +Xk0, where 
+X is your Earth Ring. </Description>
+  </KihoDef>
+  <KihoDef mastery="6" element="earth" type="martial" id="earth_palm" name="Earth Palm">
+    <Tags>
+      <Tag>atemi</Tag>
+    </Tags>
+    <Description>While the Elements of Fire and Water are highly 
+important for the success of a warrior (or an army) in 
+battle, without a proper harmony with Earth, both of them crumble. This rare Kiho assaults the victim’s very Earth, disrupting its harmony with the other Elements, and it is not widely taught amongst the Brotherhood. Those who master it are greatly feared in combat, as they can reduce the most stalwart combatant to a helpless, stumbling wreck in just a few strikes. 
+This Kiho is activated with an atemi strike. If the strike is successful, you must declare whether you are attacking your target’s Fire or Water. If you attack the target’s Water, he suffers a -4k0 penalty to all damage rolls. If you attack the target’s Fire, he is forced thereafter to make two Raises with no benefit on every attack roll. (However, these Raises do not count against the maximum number of Raises the target can make for the roll.) 
+These effects may be combined through multiple 
+applications of the Kiho, and both last a number of Rounds equal to your Earth Ring, ending on the Reactions stage of the final Round. Each re-application of the Kiho resets the duration for the chosen effect. However, you cannot use this Kiho more than once per Turn.</Description>
+    <Tags />
+  </KihoDef>
+  <KihoDef mastery="7" element="earth" type="kharmic" id="bishamons_grasp" name="Bishamon's Grasp">
+    <Description>Rokugani history is full of tales about quiet and unassuming monks fending off multiple attackers, all the 
+while never striking them down. The monk instead waits for his many opponents to wear themselves out in the futility of their fury. Patient members of the Brotherhood tend to prefer this style of combat, though it often earns them the undying ire of their humiliated foes. This Kiho is common among monks who understand the need to defend oneself but prefer not to beat someone senseless.
+This Kiho can only be activated when you are in the 
+Defense or Full Defense Stance. While the Kiho is active, on your Turn you may make Grappling attack rolls as Free Actions against opponents who have attacked you 
+since your last Turn. (You may make one such Free Action 
+attack against each qualifying opponent, and this ability overturns the normal rulebook constraint on attacking while in these Stances.) Opponents in a Grapple which you control while using this Kiho may be Thrown as a Free Action rather than a Complex Action; however, if the GM allows Throws in Grapples to cause damage, the damage roll suffers a -1k1 penalty. While this Kiho is active, you may remain in the Defense or Full Defense Stances while maintaining a Grapple.</Description>
+  </KihoDef>
+  <KihoDef mastery="6" element="earth" type="kharmic" id="rising_mountain" name="Rising Mountain">
+    <Description>One of the greatest lessons of Earth is not its endurance, but its resilience. As a man chips away at a stone, he finds harder and harder stone beneath. The strength of one who would break a mountain stone by stone will fail long before the strongest layers are even seen. So, too, does a master of this Kiho become more and more difficult to harm as an attacker tries harder and harder to do so. 
+Once activated, this Kiho lasts a number of Rounds 
+equal to your Insight Rank +1. While this Kiho is active, every time an attacker makes a Raise when attacking or otherwise taking an offensive combat action against you (not including spells), you gain Reduction equal to twice the number of Raises made. (This effect does not trigger from Free Raises.) The Reduction is gained the moment the Raises are declared; the enemy attack does not have to be successful. 
+These increases in Reduction are cumulative, 
+but the total Reduction gained cannot exceed 
+your Earth x 5. The Reduction lasts until 
+the Kiho is deactivated or the skirmish ends, 
+whichever comes first.</Description>
+    <Tags />
+  </KihoDef>
+  <KihoDef mastery="6" element="earth" type="kharmic" id="wholeness_in_all" name="Wholeness in All">
+    <Description>An extremely rare Kiho only taught among some of the older Orders, this remarkable ability destroys toxin, disease, and other impurities in the body of the Monk. 
+The focus and calm required to master this Kiho is rare, and the Brotherhood knows it could lead to reckless behavior in the wrong hands. 
+This Kiho can only be activated after two hours of 
+uninterrupted meditation. After the time has passed, you 
+may activate the Kiho as a Complex Action (it can only 
+activate in this manner). You must call a Raise on the 
+activation roll for every mundane poison, disease, or 
+similar non-supernatural effect affecting you. If the roll is successful, your body is purged of a number of such impurities equal to the number of Void Points you have at the time (not counting the Void Point spent to activate the Kiho). All of these remaining Void Points are then spent as part of the Kiho’s effect. 
+This Kiho does not work on most supernatural 
+afflictions, such as the Shadowlands Taint or magical 
+plagues, but the GM has discretion on whether unusual or 
+semi-magical conditions may be cleansed by it. </Description>
+    <Tags />
+  </KihoDef>
+</L5RCM>

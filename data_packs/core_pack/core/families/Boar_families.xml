@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Family clanid="boar" name="Heichi" id="boar_heichi">
+    <Trait>willpower</Trait>
+  </Family>
+</L5RCM>

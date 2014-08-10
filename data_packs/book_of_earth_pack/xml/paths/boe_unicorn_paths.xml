@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="unicorn" name="Unicorn Bariqu Wrestler" id="unicorn_bariqu_wrestler">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>unicorn_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>unicorn_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Way of the Ujik-Hai" rank="2" id="way_of_the_ujikhai"><Description>A bariqu wrestler relies on his use of unconventional 
+locks, holds, and maneuvers to defeat his foes, rather than just on raw strength. If your opponent in a Grapple does not have the Bariqu Emphasis of Jiujutsu, you gain a bonus of +1k1 when rolling to control the Grapple. If you have a higher Agility Rank than your opponent in a Grapple, you gain a +2k0 bonus when rolling to control the Grapple. These bonuses stack with each other.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="jiujutsu" trg="Bariqu" type="skill" min="3">Jiujutsu (Bariqu) 3</Requirement>
+      <RequirementOption text="Replaces any Moto bushi school 2, Shinjo Bushi 2">
+        <Requirement field="unicorn_the_way_of_the_unicorn" type="rule" />
+        <Requirement field="unicorn_the_way_of_the_kirin" type="rule" />
+        <Requirement field="unicorn_purity_of_the_breath" type="rule" />
+      </RequirementOption>
+    </Requirements>
+  </School>
+  <School clanid="unicorn" name="Iuchi Couriers" id="unicorn_iuchi_couriers">
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>unicorn_shugenja</Tag>
+      <Tag>alternate</Tag>
+      <Tag>unicorn_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Beyond the Wind" rank="2" id="beyond_the_wind"><Description>You can shape the Earth as you ride, lending speed and endurance to your steed. With a five minute ritual and a successful Meditation Skill Roll (TN 15), you may bless your horse or the horse of another rider. For a number of hours equal to your Earth Ring, the horse will never suffer movement penalties based on terrain, nor will it suffer the effects of fatigue. The maximum number of horses which may benefit from this Technique at the same time is equal to your Earth Ring.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="horsemanship" type="skill" min="3">Horsemanship 3</Requirement>
+      <Requirement field="way_of_the_land" type="merit">Way of the land Advantage</Requirement>
+      <Requirement field="unicorn_iuchi_shugenja" type="school" min="1" max="1">Replaces Iuchi Shugenja 2</Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

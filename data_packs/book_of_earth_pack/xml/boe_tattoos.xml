@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <KihoDef type="tattoo" id="tattoo_bear" name="Bear">
+    <Description>The bear is a primal being of nature, a force to be reckoned with even at its weakest moments. Those who possess this tattoo can summon that same incredible strength and endurance, although not simultaneously. While this tattoo is active, you may choose to increase your Stamina by an amount equal to your School Rank. Alternatively, you may instead choose to increase your Strength by an amount equal to half your School Rank, rounding up.</Description>
+  </KihoDef>
+</L5RCM>

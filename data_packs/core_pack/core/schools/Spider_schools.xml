@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="spider" name="Daigotsu Bushi School" id="spider_daigotsu_bushi_school">
+    <Trait>strength</Trait>
+    <Honor>1.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>spider_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="hunting" rank="1"/>
+      <Skill id="intimidation" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill rank="1" id="kenjutsu" emphases="Katana"/>
+      <Skill id="kyujutsu" rank="1"/>
+      <Skill id="lore_shadowlands" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+        <Wildcard>low</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="The Way Of The Spider" rank="1" id="spider_the_way_of_the_spider">
+        <Description>
+The Daigotsu Bushi must walk the fi ne line between using the
+Taint to power his body and hiding its effects in public. At the
+beginning of each Round, you may choose to either reduce
+TN penalties from Wound Ranks by your Strength Trait Rank
+plus your Taint Rank until the end of the Round, or increase
+your damage rolls by the same amount. Additionally, the TN
+on any roll made to detect the presence or effects of the Shadowlands
+Taint on you is increased by 10.
+        </Description>
+      </Tech>
+      <Tech name="Aura Of Blood" rank="2" id="spider_aura_of_blood">
+        <Description>
+The presence of the Daigotsu Bushi can be unsettling to those
+who are unprepared to face it. You may spend a Void Point as
+a Simple Action to activate this Technique. While this Technique
+is active, you and all of your allies within 30’ add +2k0
+to the total of all damage rolls. This lasts for a number of
+Rounds equal to your Taint Rank plus your Strength Trait
+Rank. This bonus is not cumulative with other applications
+of Aura of Blood. Using this Technique while under its effects
+refreshes its duration.
+        </Description>
+      </Tech>
+      <Tech name="Ashura's Wing" rank="3" id="spider_ashuras_wing">
+        <Description>
+The Daigotsu Bushi moves and strikes as swiftly as ash borne
+away by the wind. You may make melee attacks as a Simple
+Action instead of a Complex Action.
+        </Description>
+      </Tech>
+      <Tech name="Devouring Wrath" rank="4" id="spider_devouring_wrath">
+        <Description>
+By the power of Fu Leng, the Legionnaire feeds
+on the strength of his enemies. Any time you
+hit an opponent in melee, you immediately
+regain 5 Wounds. This can potentially grant
+additional Wounds beyond your normal
+maximum, but this bonus will not increase
+over 20 Wounds. Excess Wounds are
+lost at the end of the skirmish.
+        </Description>
+      </Tech>
+      <Tech name="Inhuman Assault" rank="5" id="spider_inhuman_assault">
+        <Description>
+The wrath of a Daigotsu bushi is like that of a rampaging
+beast. Once per skirmish, you may launch into a series of
+bone-shattering blows by making a melee attack as a Complex
+Action. This attack ignores the bonuses and effects of
+armor (including Reduction from armor) and any Stance the
+target assumes. If the strike hits, the target cannot gain the
+bonuses of armor or Stance to his Armor TN for a number of
+Rounds equal to your Taint Rank plus your Strength Trait. If
+your opponent is in the Full Attack Posture, he still retains the
+-10 Armor TN penalty.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit koku="3" bu="0" zeni="0">
+      <Item>Light Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>Any 1 Weapon</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="spider" name="Chuda Shugenja School" id="spider_chuda_shugenja_school">
+    <Trait>willpower</Trait>
+    <Affinity>nonvoid</Affinity>
+    <Honor>0.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>spider_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill rank="1" id="calligraphy" emphases="Cipher"/>
+      <Skill id="hunting" rank="1"/>
+      <Skill id="lore_maho" rank="1"/>
+      <Skill id="lore_shadowlands" rank="1"/>
+      <Skill id="spellcraft" rank="1"/>
+      <Skill id="stealth" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="1" element="anynodefic"/>
+      <PlayerChoose count="3" element="maho"/>
+      <PlayerChoose count="2" element="mahonodefic"/>
+    </Spells>
+    <Techs>
+      <Tech name="Blood Like Water" rank="1" id="spider_blood_like_water">
+        <Description>
+The Chuda have existed for centuries, hidden among the people of Rokugan
+and concealing the true nature of their dark arts.
+When casting a maho spell, you may declare one
+Raise to conceal the corrupted nature of the magic.
+The spell functions exactly as normal, but there will
+be no outward sign that it is anything other than traditional
+elemental magic. You may declare a second
+Raise to reduce all Shadowlands Taint normally acquired
+by a maho spell to only one Point, regardless
+of the spell’s Mastery level. Alternatively, you may
+sacrifi ce one point of Honor to reduce all Taint normally
+acquired by the spell to one Point.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit koku="3" bu="0" zeni="0">
+      <Item>Robes</Item>
+      <Item>Wakizashi</Item>
+      <Item>Knife</Item>
+      <Item>Scroll Satchel</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="spider" name="Daigotsu Courtier School" id="spider_daigotsu_courtier_school">
+    <Trait>perception</Trait>
+    <Honor>1</Honor>
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>spider_courtier</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="acting" rank="1"/>
+      <Skill rank="1" id="courtier" emphases="Manipulation"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <Skill rank="1" id="sincerity" emphases="Deceit"/>
+      <Skill id="temptation" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Insidious Whispers" rank="1" id="spider_insidious_whispers">
+        <Description>
+Every student of the Daigotsu Courtiers is accomplished at
+the art of masking his nature, preventing his true intentions
+and capabilities from being discovered by others. You are
+skilled at hiding your intentions and the symptoms of Taint.
+You gain a Free Raise when using Sincerity (Deceit). Any
+rolls made to detect your Taint (such as the techniques of the
+Kuni) have their TN increased by an amount equal to 5 x your
+School Rank. You add your School Rank to your Honor Rank
+whenever another is attempting to discern your Honor Rank.
+        </Description>
+      </Tech>
+      <Tech name="Cracks In The Wall" rank="2" id="spider_cracks_in_the_wall">
+        <Description>
+The Daigotsu courtier is taught to drop subtle, seemingly innocuous
+conversational hints that disrupt the focus and attention
+of those around him. Any time you are engaged in
+conversation, you may spend a Void point and make a Courtier
+(Manipulation) / Awareness roll (as a Simple Action) at TN
+25 to force everyone within 20 feet of you to suffer a penalty
+of –1k1 to all their Etiquette and Perform Skill rolls for the
+next hour. They are not aware of the source for their lack of
+focus. This effect cannot be stacked.
+        </Description>
+      </Tech>
+      <Tech name="Darkness Cannot Be Trapped" rank="3" id="spider_darkness_cannot_be_trapped">
+        <Description>
+At this rank, the Spider courtier is taught to defl ect attention
+and blame from himself, spreading disharmony among his
+foes while avoiding the price of his own actions. Any time
+you are the focus of suspicion or accusation, you may spend
+a Void point as a Simple Action to try to shift the blame to
+someone else who is present at the moment of the accusation.
+You must make a Contested Roll of your Sincerity (Deceit) / Awareness
+versus the victim’s Sincerity (Honesty) / Awareness
+in order to make the shifting of blame stick. (If your attempt
+seems weak or poorly justifi ed, the GM can award bonuses
+to your victim’s attempt to defend himself.) With a success,
+everyone who heard you will believe your target is the real
+culprit, until presented with evidence to the contrary.
+This technique cannot be used to get out of situations in
+which you are clearly and inescapably guilty (e.g. standing
+over the dead magistrate with a bloody knife in your hand),
+nor can it shift blame to someone who is not present.
+        </Description>
+      </Tech>
+      <Tech name="The Touch Of Sin" rank="4" id="spider_the_touch_of_sin">
+        <Description>
+At this level of training, the Spider’s mastery of manipulation
+and misdirection allows his words to twist the thoughts of
+others, temporarily leading them into weakness, aggression,
+and confusion. A number of times per session equal to your
+School Rank, you may speak with someone for a few minutes
+and then make a Contested Roll of your Courtier (Manipulation)
+/ Willpower against their Etiquette (Courtesy) / Willpower.
+If you succeed, they acquire one of the seven Consumed
+by Shourido Disadvantages (your choice) for a number
+of hours equal to your School Rank. By calling two successful
+Raises on this roll, you can infl ict a second Consumed by
+Shourido Disadvantage of your choice on the same person for
+the same period of time. (You cannot use this technique on the
+same person twice in the same day.)
+        </Description>
+      </Tech>
+      <Tech name="The Embrace of Darkness" rank="5" id="spider_the_embrace_of_darkness">
+        <Description>
+The final lesson of the Daigotsu Courtier School teaches
+its students to lead their enemies into paths of aggression
+and violence. By speaking with someone for at
+least fi fteen minutes, you may make a Contested Roll
+of your Sincerity (Deceit) / Awareness against their
+Etiquette (Courtesy) / Perception. If your target currently
+has one of the Consumed by Shourido Disadvantages,
+you gain a +5k0 bonus to this roll. With a success,
+you may convince your target to treat some other person,
+group, institution, or clan as their enemy. This cannot be
+used to turn someone directly against his lord or the Emperor.
+Subject to that limitation, the target will continue
+to believe in this enmity until presented with evidence
+to the contrary.
+This technique cannot be used against the same
+person more than once per month.
+          </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit koku="3" bu="0" zeni="0">
+      <Item>Sensible Clothing</Item>
+      <Item>Wakizashi</Item>
+      <Item>Calligraphy Set</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="spider" name="Order of the Spider Monk" id="spider_order_of_the_spider_monk">
+    <Trait>agility</Trait>
+    <Honor>1.5</Honor>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>spider_monk</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="jiujutsu" rank="2"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <Skill id="polearms" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="The Dark Path" rank="1" id="spider_the_dark_path">
+        <Description>
+The Order of the Spider teaches strength and mastery of oneself,
+even the darkness that hides within the soul. You gain
+a bonus of +1k0 to the total of all attack rolls made using
+unarmed strikes or with polearms. You also add twice your
+School Rank to your Armor TN against all melee attacks.
+        </Description>
+      </Tech>
+      <Tech name="Drawing In The Strike" rank="2" id="spider_drawing_in_the_strike">
+        <Description>
+Mastery of the body is a step to the path of power, and this mastery
+affords tremendous endurance to those who reach it. You may
+select any non-Void Ring. You gain Reduction equal to this Ring,
+plus your Rank in the Shadowlands Taint, if you possess any.
+        </Description>
+      </Tech>
+      <Tech name="Speed Of Darkness" rank="3" id="spider_speed_of_darkness">
+        <Description>
+The alignment of body and mind allow tremendous speed.
+When using a polearm or an unarmed attack, you may make
+melee attacks as Simple Actions rather than Complex Actions.
+        </Description>
+      </Tech>
+      <Tech name="Guarded By Chi" rank="4" id="spider_guarded_by_chi">
+        <Description>
+Following mastery of the body comes mastery of the soul. When
+you learn this Technique, you may select any one non-Void Ring.
+You add twice your Rank in this Ring, plus your Shadowlands
+Taint Rank (if you possess any), to the TN of any spell being cast
+against you. You may choose to suppress this effect if you wish.
+        </Description>
+      </Tech>
+      <Tech name="Darkness Unleashed" rank="5" id="spider_darkness_unleashed">
+        <Description>
+True mastery of the self requires drawing upon the darkness
+within. You gain an additional number of Void Points per day
+equal to your Shadowlands Taint rank or your Earth Ring,
+whichever is higher. These may be spent exactly like normal
+Void Points, except they may also be spent to add a bonus of
++1k1 to the total of your damage rolls.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit koku="3" bu="0" zeni="0">
+      <Item>Light or Heavy Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Any Heavy Weapon or Polearm</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+</L5RCM>

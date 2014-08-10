@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="phoenix" name="Shiba Artisan School" id="phoenix_ob_shiba_artisan_school">
+    <Trait>intelligence</Trait>
+    <Honor>5.5</Honor>
+    <Tags>
+      <Tag>artisan</Tag>
+      <Tag>phoenix_artisan</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="calligraphy" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill id="sincerity" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>artisan</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>lore</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Soul Of Brilliance" rank="1" id="phoenix_soul_of_brilliance"/>
+      <Tech name="The Way Of Sincerity" rank="2" id="phoenix_the_way_of_sincerity"/>
+      <Tech name="The Art Speaks" rank="3" id="phoenix_the_art_speaks"/>
+      <Tech name="Bounty Of The Craft" rank="4" id="phoenix_bounty_of_the_craft"/>
+      <Tech name="The Touch Of Destiny" rank="5" id="phoenix_the_touch_of_destiny"/>
+    </Techs>
+    <Requirements/>
+  </School>
+</L5RCM>

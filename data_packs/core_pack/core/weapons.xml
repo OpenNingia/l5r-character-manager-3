@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Weapon dr_alt="0k1" skill="chain_weapons" cost="5k" dr="0k2" name="Kusarigama">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon skill="chain_weapons" cost="9b" dr="0k1" name="Kyoketsu-shoji">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+    <Effect id="dbl_opp_armor_rule"/>
+  </Weapon>
+  <Weapon skill="chain_weapons" cost="3k" dr="1k1" name="Manrikikusari">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon skill="heavy_weapons" cost="15k" dr="5k2" name="Dai Tsuchi">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon skill="heavy_weapons" cost="8k" dr="2k3" name="Masakari">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon skill="heavy_weapons" cost="20k" dr="0k4" name="Ono">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon skill="heavy_weapons" cost="20k" dr="3k3" name="Tetsubo">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon skill="kenjutsu" dr="3k2" name="Katana">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+      <Tag>samurai</Tag>
+    </Tags>
+    <Effect id="void_rise_dr_rule"/>
+  </Weapon>
+  <Weapon skill="kenjutsu" cost="5k" dr="2k2" name="Ninja-to">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+      <Tag>ninja</Tag>
+    </Tags>
+    <Effect id="ninjato_special_rule"/>
+  </Weapon>
+  <Weapon skill="kenjutsu" cost="30k" dr="3k3" name="No-dachi">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon skill="kenjutsu" cost="10b" dr="2k2" name="Parangu">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+      <Tag>peasant</Tag>
+    </Tags>
+    <Effect id="may_break_30w_rule"/>
+  </Weapon>
+  <Weapon skill="kenjutsu" cost="20k" dr="2k3" name="Scimitar">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon range="20'" skill="kenjutsu" cost="15k" dr="2k2" name="Wakizashi">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+      <Tag>ranged</Tag>
+      <Tag>samurai</Tag>
+    </Tags>
+    <Effect id="throw_20f_rule"/>
+  </Weapon>
+  <Weapon skill="knives" cost="1k" dr="1k1" name="Aiguchi" range="20'">
+    <Tags>
+      <Tag>melee</Tag>
+      <Tag>small</Tag>
+      <Tag>ranged</Tag>
+    </Tags>
+    <Effect id="throw_20f_rule"/>
+  </Weapon>
+  <Weapon skill="knives" cost="1k" dr="1k1" name="Tanto" range="20'">
+    <Tags>
+      <Tag>melee</Tag>
+      <Tag>small</Tag>
+      <Tag>ranged</Tag>
+    </Tags>
+    <Effect id="throw_20f_rule"/>
+  </Weapon>
+  <Weapon skill="knives" cost="5b" dr="1k1" name="Jitte" range="20'">
+    <Tags>
+      <Tag>melee</Tag>
+      <Tag>small</Tag>
+      <Tag>ranged</Tag>
+    </Tags>
+    <Effect id="throw_20f_rule"/>
+  </Weapon>
+  <Weapon skill="knives" cost="5b" dr="1k1" name="Sai" range="20'">
+    <Tags>
+      <Tag>melee</Tag>
+      <Tag>small</Tag>
+      <Tag>ranged</Tag>
+    </Tags>
+    <Effect id="throw_20f_rule"/>
+  </Weapon>
+  <Weapon skill="knives" cost="5b" dr="0k2" name="Kama" range="20'">
+    <Tags>
+      <Tag>melee</Tag>
+      <Tag>peasant</Tag>
+      <Tag>small</Tag>
+      <Tag>ranged</Tag>
+    </Tags>
+    <Effect id="throw_20f_rule"/>
+  </Weapon>
+  <Weapon strength="4" name="Dai-Kyu" range="500'" cost="25k" min_strength="3" skill="kyujutsu">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>ranged</Tag>
+    </Tags>
+    <Effect id="daikyu_rule"/>
+  </Weapon>
+  <Weapon strength="1" name="Han-Kyu" range="100'" cost="6k" min_strength="1" skill="kyujutsu">
+    <Tags>
+      <Tag>ranged</Tag>
+      <Tag>small</Tag>
+    </Tags>
+    <Effect id="no_shoot_horseback_rule"/>
+  </Weapon>
+  <Weapon strength="3" name="Yumi" range="250'" cost="20k" min_strength="1" skill="kyujutsu">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>ranged</Tag>
+    </Tags>
+    <Effect id="no_shoot_horseback_rule"/>
+  </Weapon>
+  <Weapon skill="kyujutsu" cost="2b" dr="1k1" name="Armor Piercing Arrow">
+    <Tags>
+      <Tag>arrow</Tag>
+    </Tags>
+    <Effect id="ignore_armor_rule"/>
+  </Weapon>
+  <Weapon skill="kyujutsu" cost="5b" dr="2k3" name="Flesh Cutter Arrow">
+    <Tags>
+      <Tag>arrow</Tag>
+    </Tags>
+    <Effect id="flesh_cutter_rule"/>
+  </Weapon>
+  <Weapon skill="kyujutsu" cost="5b" dr="0k1" name="Humming Bulb Arrow">
+    <Tags>
+      <Tag>arrow</Tag>
+    </Tags>
+    <Effect id="humming_bulb_rule"/>
+  </Weapon>
+  <Weapon skill="kyujutsu" cost="3b" dr="1k1" name="Rope Cutter Arrow">
+    <Tags>
+      <Tag>arrow</Tag>
+    </Tags>
+    <Effect id="rope_cutter_rule"/>
+  </Weapon>
+  <Weapon skill="kyujutsu" cost="1b" dr="2k2" name="Willow Leaf Arrow">
+    <Tags>
+      <Tag>arrow</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon range="50'" skill="ninjutsu" cost="8z" dr="1w" name="Blowgun">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>ranged</Tag>
+    </Tags>
+    <Effect id="blowgun_special_rule"/>
+  </Weapon>
+  <Weapon range="25'" skill="ninjutsu" cost="1k" dr="1k1" name="Shuriken">
+    <Tags>
+      <Tag>melee</Tag>
+      <Tag>ranged</Tag>
+      <Tag>small</Tag>
+    </Tags>
+    <Effect id="throw_25f_rule"/>
+  </Weapon>
+  <Weapon range="30'" skill="ninjutsu" cost="1b" dr="1k1" name="Tsubute, ranged">
+    <Tags>
+      <Tag>small</Tag>
+    </Tags>
+    <Effect id="tsubute_special_rule"/>
+  </Weapon>
+  <Weapon skill="polearms" cost="12k" dr="3k3" name="Bisento">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon skill="polearms" cost="8k" dr="2k3" name="Nagamaki">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon skill="polearms" cost="10k" dr="3k2" name="Naginata">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>melee</Tag>
+      <Tag>samurai</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon skill="polearms" cost="6k" dr="0k2" name="Sasumata">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+    <Effect id="keep_grapple_rule"/>
+  </Weapon>
+  <Weapon skill="polearms" cost="6k" dr="1k1" name="Sodegarami">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+    <Effect id="keep_grapple_rule"/>
+  </Weapon>
+  <Weapon skill="spears" cost="3b" dr="1k1" name="Kumade">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>melee</Tag>
+      <Tag>peasant</Tag>
+    </Tags>
+    <Effect id="may_break_25w_rule"/>
+  </Weapon>
+  <Weapon range="25'" skill="spears" cost="20k" dr="0k3" name="Mai Chong">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>melee</Tag>
+      <Tag>ranged</Tag>
+    </Tags>
+    <Effect id="throw_25f_rule"/>
+  </Weapon>
+  <Weapon skill="spears" cost="20k" dr="3k4" name="Lance">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+    <Effect id="lance_special_rule"/>
+  </Weapon>
+  <Weapon range="50'" skill="spears" cost="3k" dr="1k2" name="Nage-yari">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+      <Tag>ranged</Tag>
+    </Tags>
+    <Effect id="throw_50f_rule"/>
+  </Weapon>
+  <Weapon skill="spears" cost="5k" dr="2k2" name="Yari" dr_alt="1k2" range="30'">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>melee</Tag>
+      <Tag>ranged</Tag>
+    </Tags>
+    <Effect id="yari_special_rule"/>
+  </Weapon>
+  <Weapon skill="staves" cost="2b" dr="1k2" name="Bo">
+    <Tags>
+      <Tag>large</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon skill="staves" cost="1b" dr="0k2" name="Jo">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon skill="staves" cost="20k" dr="0k2" name="Machi-kanshisha">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon skill="staves" cost="3b" dr="1k2" name="Nunchaku">
+    <Tags>
+      <Tag>melee</Tag>
+      <Tag>peasant</Tag>
+      <Tag>small</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon dr_alt="2k1" skill="staves" cost="10k" dr="1k2" name="Sang Kauw">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon skill="staves" cost="5b" dr="0k3" name="Tonfa">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+      <Tag>peasant</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon skill="war_fan" cost="5k" dr="0k1" name="War Fan">
+    <Tags>
+      <Tag>melee</Tag>
+      <Tag>small</Tag>
+    </Tags>
+  </Weapon>
+  <Weapon skill="jiujutsu" cost="0k" dr="0k1" name="Bare Hands">
+    <Tags>
+      <Tag>melee</Tag>
+    </Tags>
+  </Weapon>
+</L5RCM>

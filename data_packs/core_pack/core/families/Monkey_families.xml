@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Family clanid="monkey" name="Toku" id="monkey_toku">
+    <Trait>stamina</Trait>
+  </Family>
+  <Family clanid="monkey" name="Fuzake" id="monkey_fuzake">
+    <Trait>perception</Trait>
+  </Family>
+</L5RCM>

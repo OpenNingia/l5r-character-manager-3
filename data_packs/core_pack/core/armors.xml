@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Armor tn="3" rd="1" cost="5k" name="Ashigaru Armor"/>
+  <Armor tn="10" rd="5" cost="40k" name="Heavy Armor">
+    <Effect id="heavy_armor_rule"/>
+  </Armor>
+  <Armor tn="5" rd="3" cost="25k" name="Light Armor">
+    <Effect id="light_armor_rule"/>
+  </Armor>
+  <Armor tn="4" rd="4" cost="55k" name="Riding Armor">
+    <Effect id="riding_armor_rule"/>
+  </Armor>
+</L5RCM>

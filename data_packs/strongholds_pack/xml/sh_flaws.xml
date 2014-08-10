@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Flaw type="social" id="bounty" name="Bounty">
+    <Rank id="1" value="2"/>
+    <Rank id="2" value="4"/>
+    <Rank id="3" value="6"/>
+  </Flaw>
+  <Flaw type="social" id="broken_wave_stigma" name="Broken Wave Stigma">
+    <Rank id="1" value="2">
+    </Rank>
+  </Flaw>
+  <Flaw type="social" id="clear_water_stigma" name="Clear Water Stigma">
+    <Rank id="1" value="2">
+    </Rank>
+  </Flaw>
+  <Flaw type="social" id="dark_edge_reputation" name="Dark Edge Reputation">
+    <Rank id="1" value="2">
+    </Rank>
+  </Flaw>
+  <Flaw type="social" id="nikesake_stigma" name="Nikesake Stigma">
+    <Rank id="1" value="4">
+    </Rank>
+  </Flaw>
+  <Flaw type="material" id="ruined_city_survivor" name="Ruined City Survivor">
+    <Rank id="1" value="4">
+    </Rank>
+  </Flaw>
+  <Flaw type="varies" id="wanderer" name="Wanderer">
+    <Rank id="1" value="2">
+    </Rank>
+  </Flaw>
+  <Flaw type="social" id="water_hammer_stigma" name="Water Hammer Stigma">
+    <Rank id="1" value="2">
+    </Rank>
+  </Flaw>
+  <Flaw type="social" id="zayako_toshi_stigma" name="Zakyo Toshi Stigma">
+    <Rank id="1" value="3">
+    </Rank>
+  </Flaw>
+</L5RCM>
