@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <L5RCM>
   <School clanid="monks" name="Order of the Wind" id="order_of_the_wind">
-    <Trait>Reflexes</Trait>
+    <Trait>reflexes</Trait>
     <Honor>4.5</Honor>
     <Tags>
       <Tag>monk</Tag>
