@@ -68,7 +68,16 @@ class Requirement(object):
             return pc.has_tag(self.field)
         if self.type == 'rule':
             return pc.has_rule(self.field)
+        if self.type == 'school':
+            return self.has_school(pc, self.field)
+        if self.type == 'rank':
+            return self.in_range( pc.get_insight_rank() )
         return True
+
+    def has_school(self, pc, school_id):
+        print('check school_id {}, min={}, max={} <= value={}'.format(
+            school_id, self.min, self.max, pc.get_school_rank(school_id)))
+        return self.in_range( pc.get_school_rank(school_id) )
 
     def match_wc_ring(self, pc, dstore):
         import models
@@ -117,6 +126,9 @@ class Requirement(object):
         return r
 
     def match_wc_school(self, pc, dstore):
+
+        print('need a school {} of rank in range {}-{}'.format(self.field, self.min, self.max))
+
         r = False
         if self.field == '*any': # any school
             for k in pc.get_schools():
