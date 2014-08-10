@@ -1,0 +1,762 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <SkillDef trait="strength" type="bugei" id="athletics" name="Athletics">
+    <Tags/>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">No impedements on Moderate Terrains and Difficult Terrain only reduces Water Ring by 1.</MasteryAbility>
+      <MasteryAbility rank="5">No impedements on any terrains.</MasteryAbility>
+      <MasteryAbility rank="7">+5 feet to the total of one Move Action per Round.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="perception" type="bugei" id="battle" name="Battle">
+    <Tags/>
+    <MasteryAbilities>
+      <MasteryAbility rule="ma_battle_5" rank="5">Add Battle Skill Rank to Initiative Score</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="reflexes" type="bugei" id="defense" name="Defense">
+    <Tags/>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">Keep Defense/Reflexes roll for subsequent rounds in Full Defense stance.</MasteryAbility>
+      <MasteryAbility rank="5">+3 Armor TN in Defense and Full Defense stances.</MasteryAbility>
+      <MasteryAbility rank="7">A Simple Action ( no attacks ) can be taken while in the Full Defense stance.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="agility" type="bugei" id="horsemanship" name="Horsemanship">
+    <Tags/>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">May utilize Full attack stance when on horseback.</MasteryAbility>
+      <MasteryAbility rank="5">Mounting a horse is a Simple Action, dismounting a Free Action.</MasteryAbility>
+      <MasteryAbility rank="7">Mounting a horse is a Free Action.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="perception" type="bugei" id="hunting" name="Hunting">
+    <Tags/>
+    <MasteryAbilities>
+      <MasteryAbility rank="5">+1k0 to all Stealth Skill Rolls made in wilderness environments.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="reflexes" type="bugei" id="iaijutsu" name="Iaijutsu">
+    <Tags/>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">Readying a katana is a Free Action.</MasteryAbility>
+      <MasteryAbility rank="5">Gain 1 Free Raise on Focus Stage of a Iaijutsu duel.</MasteryAbility>
+      <MasteryAbility rank="7">+2k2 to the total of all Focus Rolls if Assessment roll exceed opponent one by 10+.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="agility" type="bugei" id="jiujutsu" name="Jiujutsu">
+    <Tags>
+      <Tag>weapon</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">+1k0 to damage of all unarmed attacks.</MasteryAbility>
+      <MasteryAbility rank="5">Free Raise toward initiating a Grapple.</MasteryAbility>
+      <MasteryAbility rank="7">+0k1 to damage of all unarmed attacks.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="agility" type="bugei" id="chain_weapons" name="Chain Weapons">
+    <Tags>
+      <Tag>weapon</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">May use Chain weapons to initiate a Grapple.</MasteryAbility>
+      <MasteryAbility rank="5">+1k0 on Contested Rolls against Grappled opponents.</MasteryAbility>
+      <MasteryAbility rank="7">Free Raise toward use of the Disarm or Knockdown Maneuvers.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="agility" type="bugei" id="heavy_weapons" name="Heavy Weapons">
+    <Tags>
+      <Tag>weapon</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">Reduce opponent reduction rating by 2.</MasteryAbility>
+      <MasteryAbility rank="5">Free Raise toward use of the Knockdown Maneuver.</MasteryAbility>
+      <MasteryAbility rank="7">Damage dice explode on 9 and 10.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="agility" type="bugei" id="kenjutsu" name="Kenjutsu">
+    <Tags>
+      <Tag>weapon</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rule="ma_kenjutsu_3" rank="3">+1k0 to all damage rolls made with a sword.</MasteryAbility>
+      <MasteryAbility rank="5">Readying a sword is a Free Action.</MasteryAbility>
+      <MasteryAbility rank="7">Damage dice explode on 9 and 10.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="agility" type="bugei" id="knives" name="Knives">
+    <Tags>
+      <Tag>weapon</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">No off-hand penalties when using a knife.</MasteryAbility>
+      <MasteryAbility rank="5">Use of a sai or jitte convers one Free Raise toward use of the Disarm Maneuver.</MasteryAbility>
+      <MasteryAbility rank="7">Gain Free Raise toward use of Extra Attack Maneuver.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="reflexes" type="bugei" id="kyujutsu" name="Kyujutsu">
+    <Tags>
+      <Tag>weapon</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">Stringing a bow for use is a Simple Action.</MasteryAbility>
+      <MasteryAbility rule="ma_kyujutsu_5" rank="5">Increase maximum range by 50%.</MasteryAbility>
+      <MasteryAbility rule="ma_kyujutsu_7" rank="7">Increase the Strength of any bow by 1.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="agility" type="bugei" id="polearms" name="Polearms">
+    <Tags>
+      <Tag>weapon</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">+5 Initiative during the first round of a skirmish.</MasteryAbility>
+      <MasteryAbility rank="5">+1k0 to damage with polearms against mounted or larger opponents.</MasteryAbility>
+      <MasteryAbility rank="7">Readying a polearm is a Free Action.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="agility" type="bugei" id="spears" name="Spears">
+    <Tags>
+      <Tag>weapon</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">Ignore 3 points of Reduction during first round of a skirmish.</MasteryAbility>
+      <MasteryAbility rank="5">Increase ranged attacks by 5'.</MasteryAbility>
+      <MasteryAbility rank="7">Readying a spear is a Free Action.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="agility" type="bugei" id="staves" name="Staves">
+    <Tags>
+      <Tag>weapon</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">Don't double opponent armor bonuses against staff attacks.</MasteryAbility>
+      <MasteryAbility rank="5">Free Raise toward use of the Knockdown Maneuvers.</MasteryAbility>
+      <MasteryAbility rank="7">Large staves may be readied as a Free Action, small staves gains +1k0 to damage rolls.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="agility" type="bugei" id="war_fan" name="War Fan">
+    <Tags>
+      <Tag>weapon</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">No off-hand penalties when using a war fan.</MasteryAbility>
+      <MasteryAbility rank="5">Increase Armor TN by 1.</MasteryAbility>
+      <MasteryAbility rank="7">Increase Armor TN by 3.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="acting" name="Acting">
+    <Tags>
+      <Tag>social</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">The TN to create a disguise is reduced by 5.</MasteryAbility>
+      <MasteryAbility rank="5">The TN to create a disguise is reduced by 10 (total).</MasteryAbility>
+      <MasteryAbility rank="7">The TN to create a disguise is reduced by 15 (total).</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="artisan_bonsai" name="Artisan (Bonsai)">
+    <Tags>
+      <Tag>artisan</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="artisan_gardening" name="Artisan (Gardening)">
+    <Tags>
+      <Tag>artisan</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="artisan_ikebana" name="Artisan (Ikebana)">
+    <Tags>
+      <Tag>artisan</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="artisan_origami" name="Artisan (Origami)">
+    <Tags>
+      <Tag>artisan</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="artisan_painting" name="Artisan (Painting)">
+    <Tags>
+      <Tag>artisan</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="artisan_poetry" name="Artisan (Poetry)">
+    <Tags>
+      <Tag>artisan</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="artisan_sculpture" name="Artisan (Sculpture)">
+    <Tags>
+      <Tag>artisan</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="artisan_tattoing" name="Artisan (Tattoing)">
+    <Tags>
+      <Tag>artisan</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="calligraphy" name="Calligraphy">
+    <Tags>
+      <Tag>artisan</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rank="5">The character gains a bonus of +10 when attempting to break a code or cipher.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="courtier" name="Courtier">
+    <Tags>
+      <Tag>social</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rule="ma_insight_plus_3" rank="3">Gain +3 Insight bonus</MasteryAbility>
+      <MasteryAbility rank="5">+1k0 to all Courtier Contested Rolls</MasteryAbility>
+      <MasteryAbility rule="ma_insight_plus_7" rank="7">Gain +7 Insight bonus (cumulable to bonus from Rank 3)</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="divination" name="Divination">
+    <Tags/>
+    <MasteryAbilities>
+      <MasteryAbility rank="5">Attempt a second Skill Roll without spending Void Points.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="etiquette" name="Etiquette">
+    <Tags>
+      <Tag>social</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rule="ma_insight_plus_3" rank="3">Gain +3 Insight bonus</MasteryAbility>
+      <MasteryAbility rank="5">+1k0 to all Etiquette Contested Rolls</MasteryAbility>
+      <MasteryAbility rule="ma_insight_plus_7" rank="7">Gain +7 Insight bonus (cumulable to bonus from Rank 3)</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="games_fortunes_winds" name="Games (Fortunes &amp; Winds)">
+    <Tags>
+      <Tag>games</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="games_go" name="Games (Go)">
+    <Tags>
+      <Tag>games</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="agility" type="high" id="games_kemari" name="Games (Kemari)">
+    <Tags>
+      <Tag>games</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="games_letters" name="Games (Letters)">
+    <Tags>
+      <Tag>games</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="games_sadane" name="Games (Sadane)">
+    <Tags>
+      <Tag>games</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="games_shogi" name="Games (Shogi)">
+    <Tags>
+      <Tag>games</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="perception" type="high" id="investigation" name="Investigation">
+    <Tags/>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">Second attempt to Search emphasis without TN increase.</MasteryAbility>
+      <MasteryAbility rank="5">+5 to the total of any Investigation Contested Rolls.</MasteryAbility>
+      <MasteryAbility rank="7">Second attempt to Search emphasis even if second attempt fails.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_architecture" name="Lore (Architecture)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_bushido" name="Lore (Bushido)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_crab" name="Lore (Crab)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_crane" name="Lore (Crane)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_dragon" name="Lore (Dragon)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_scorpion" name="Lore (Scorpion)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_phoenix" name="Lore (Phoenix)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_unicorn" name="Lore (Unicorn)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_lion" name="Lore (Lion)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_mantis" name="Lore (Mantis)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_elements" name="Lore (Elements)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_gaijin_culture" name="Lore (Gaijin Culture)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_ghosts" name="Lore (Ghosts)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_heraldry" name="Lore (Heraldry)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_history" name="Lore (History)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_nature" name="Lore (Nature)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_nonhuman_culture" name="Lore (Nonhuman Culture)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_omens" name="Lore (Omens)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_shugenja" name="Lore (Shugenja)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_spirit_realms" name="Lore (Spirit Realms)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_theology" name="Lore (Theology)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_war" name="Lore (War)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_the_sea" name="Lore (The Sea)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="lore_law" name="Lore (Law)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="medicine" name="Medicine">
+    <Tags/>
+    <MasteryAbilities>
+      <MasteryAbility rank="5">+1k0 to the amount of healed Wounds.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="void" type="high" id="meditation" name="Meditation">
+    <Tags/>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">Restore up to 2 Void Points</MasteryAbility>
+      <MasteryAbility rank="5">Fasting emphasis TN is reduced by 5.</MasteryAbility>
+      <MasteryAbility rank="7">Restore up to 3 Void Points</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="agility" type="high" id="perform_biwa" name="Perform (Biwa)">
+    <Tags>
+      <Tag>perform</Tag>
+      <Tag>social</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="agility" type="high" id="perform_dance" name="Perform (Dance)">
+    <Tags>
+      <Tag>perform</Tag>
+      <Tag>social</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="agility" type="high" id="perform_drums" name="Perform (Drums)">
+    <Tags>
+      <Tag>perform</Tag>
+      <Tag>social</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="agility" type="high" id="perform_flute" name="Perform (Flute)">
+    <Tags>
+      <Tag>perform</Tag>
+      <Tag>social</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="perform_oratory" name="Perform (Oratory)">
+    <Tags>
+      <Tag>perform</Tag>
+      <Tag>social</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="agility" type="high" id="perform_puppeteer" name="Perform (Puppeteer)">
+    <Tags>
+      <Tag>perform</Tag>
+      <Tag>social</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="agility" type="high" id="perform_samisen" name="Perform (Samisen)">
+    <Tags>
+      <Tag>perform</Tag>
+      <Tag>social</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="perform_song" name="Perform (Song)">
+    <Tags>
+      <Tag>perform</Tag>
+      <Tag>social</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="perform_storytelling" name="Perform (Storytelling)">
+    <Tags>
+      <Tag>perform</Tag>
+      <Tag>social</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="awareness" type="high" id="sincerity" name="Sincerity">
+    <Tags>
+      <Tag>social</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rank="5">+5 to the total of any Sincerity Contested Rolls.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="high" id="spellcraft" name="Spellcraft">
+    <Tags/>
+    <MasteryAbilities>
+      <MasteryAbility rank="5">+1k0 on Spell Casting Rolls.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="void" type="high" id="tea_ceremony" name="Tea Ceremony">
+    <Tags/>
+    <MasteryAbilities>
+      <MasteryAbility rank="5">All partecipants regain 2 Void Points instead of 1.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="varies" type="high" id="craft_armorsmithing" name="Craft (Armorsmithing)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="varies" type="high" id="craft_bowyer" name="Craft (Bowyer)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="varies" type="high" id="craft_weaponsmithing" name="Craft (Weaponsmithing)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="low" id="lore_anatomy" name="Lore (Anatomy)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="low" id="lore_maho" name="Lore (Maho)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="low" id="lore_kolat" name="Lore (Kolat)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="low" id="lore_gozoku" name="Lore (Gozoku)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="low" id="lore_lying_darkness" name="Lore (Lying Darkness)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="low" id="lore_shadowlands" name="Lore (Shadowlands)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="low" id="lore_underworld" name="Lore (Underworld)">
+    <Tags>
+      <Tag>lore</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="agility" type="low" id="ninjutsu" name="Ninjutsu">
+    <Tags>
+      <Tag>reflexes</Tag>
+      <Tag>weapon</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rule="ma_ninjutsu_3" rank="3">+1k0 to the damage of all ninjutsu weapons.</MasteryAbility>
+      <MasteryAbility rank="5">Dices on damage rolls explode normally.</MasteryAbility>
+      <MasteryAbility rule="ma_ninjutsu_7" rank="7">+0k1 to the damage of all ninjutsu weapons.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="varies" type="low" id="craft_poison" name="Craft (Poison)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="varies" type="low" id="craft_explosives" name="Craft (Explosives)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="agility" type="low" id="forgery" name="Forgery">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">+1k0 to Forgery Skill Roll vs Investigation/Perception detection Skill Roll.</MasteryAbility>
+      <MasteryAbility rank="5">+1k0 on any roll to detect a forgery made by someone else.</MasteryAbility>
+      <MasteryAbility rank="7">+0k1 to Forgery Skill Roll vs Investigation/Perception detection Skill Roll.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="awareness" type="low" id="intimidation" name="Intimidation">
+    <Tags>
+      <Tag>social</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rank="5">Gain +5 to the total of any Intimidation Contested Roll.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="agility" type="low" id="sleight_of_hand" name="Sleight of Hand">
+    <Tags/>
+    <MasteryAbilities>
+      <MasteryAbility rank="5">May use Conceal Emphasis to conceal small weapons.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="agility" type="low" id="stealth" name="Stealth">
+    <Tags/>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">Simple Move Actions while using Stealth allow Water x 5 feet distance.</MasteryAbility>
+      <MasteryAbility rank="5">Simple Move Actions while using Stealth allow Water x 10 feet distance.</MasteryAbility>
+      <MasteryAbility rank="7">Free Move Action as normal when using Stealth.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="awareness" type="low" id="temptation" name="Temptation">
+    <Tags>
+      <Tag>social</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rank="5">Gain +5 to the total of any Temptation Contested Roll.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="awareness" type="merchant" id="animal_handling" name="Animal Handling">
+    <Tags/>
+    <MasteryAbilities>
+      <MasteryAbility rank="3">Commonly domesticated animals may be trained for use by others.</MasteryAbility>
+      <MasteryAbility rank="5">May command an animal to attack.</MasteryAbility>
+      <MasteryAbility rank="7">May command an animal not-verbally.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="merchant" id="commerce" name="Commerce">
+    <Tags/>
+    <MasteryAbilities>
+      <MasteryAbility rank="5">May increase or decrease the price of an item by a maximum of 20%.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="varies" type="merchant" id="craft_blacksmithing" name="Craft (Blacksmithing)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="varies" type="merchant" id="craft_brewing" name="Craft (Brewing)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="varies" type="merchant" id="craft_carpentry" name="Craft (Carpentry)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="varies" type="merchant" id="craft_cartography" name="Craft (Cartography)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="varies" type="merchant" id="craft_cobbling" name="Craft (Cobbling)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="varies" type="merchant" id="craft_farming" name="Craft (Farming)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="varies" type="merchant" id="craft_fishing" name="Craft (Fishing)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="varies" type="merchant" id="craft_masonry" name="Craft (Masonry)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="varies" type="merchant" id="craft_mining" name="Craft (Mining)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="varies" type="merchant" id="craft_pottery" name="Craft (Pottery)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="varies" type="merchant" id="craft_shipbuilding" name="Craft (Shipbuilding)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="varies" type="merchant" id="craft_tailoring" name="Craft (Tailoring)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="varies" type="merchant" id="craft_tattooing" name="Craft (Tattooing)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="varies" type="merchant" id="craft_weaving" name="Craft (Weaving)">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities/>
+  </SkillDef>
+  <SkillDef trait="intelligence" type="merchant" id="engineering" name="Engineering">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rank="5">Gain +5 to the total of all Cooperative or Cumulative Engineering Skill Roll.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+  <SkillDef trait="agility" type="merchant" id="sailing" name="Sailing">
+    <Tags>
+      <Tag>craft</Tag>
+      <Tag>intelligence</Tag>
+    </Tags>
+    <MasteryAbilities>
+      <MasteryAbility rank="5">Gain +5 to the total of all Cooperative or Cumulative Sailing Skill Roll.</MasteryAbility>
+    </MasteryAbilities>
+  </SkillDef>
+</L5RCM>

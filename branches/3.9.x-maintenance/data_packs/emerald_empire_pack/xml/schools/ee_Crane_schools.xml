@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="crane" name="Doji Magistrate School" id="crane_ob_doji_magistrate_school">
+    <Trait>reflexes</Trait>
+    <Honor>5.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crane_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="defense" rank="1"/>
+      <Skill id="horsemanship" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill rank="1" id="knives" emphases="Jitte"/>
+      <Skill id="polearms" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Temper Steel With Honor" rank="1" id="crane_temper_steel_with_honor"/>
+      <Tech name="Flowing Like Water" rank="2" id="crane_flowing_like_water"/>
+      <Tech name="Breath Of The Law" rank="3" id="crane_breath_of_the_law"/>
+      <Tech name="Flowing Like Air" rank="4" id="crane_flowing_like_air"/>
+      <Tech name="The Willow In The Storm" rank="5" id="crane_the_willow_in_the_storm"/>
+    </Techs>
+    <Requirements/>
+  </School>
+</L5RCM>

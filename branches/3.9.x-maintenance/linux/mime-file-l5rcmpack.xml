@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="application/x-l5r-pack">
+        <comment>L5R: CM Data Package</comment>
+	<sub-class-of type="application/zip"/>
+	<generic-icon name="x-l5r-pack"/>
+        <glob pattern="*.l5rcmpack"/>        
+    </mime-type>
+</mime-info>

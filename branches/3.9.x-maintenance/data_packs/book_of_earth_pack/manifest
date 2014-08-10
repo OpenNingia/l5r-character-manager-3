@@ -1,0 +1,9 @@
+{
+	"id": "book_of_earth",
+	"display_name": "Book of Earth",
+	"authors": ["D'ziel Djenn", "Daniele Simonetti"],
+	"version": "1.0",
+	"update-uri": "",
+	"download-uri": "",
+	"min-cm-version": "3.9"
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="scorpion" name="Soshi Magistrate" id="scorpion_soshi_magistrate">
+    <Trait>agility</Trait>
+    <Honor>2.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>scorpion_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill rank="1" id="intimidation" emphases="Control"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="lore_underworld" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="The Face of Justice" rank="1" id="scorpion_the_face_of_justice"/>
+      <Tech name="Rise to Meet the Challenge" rank="2" id="scorpion_rise_to_meet_the_challenge"/>
+      <Tech name="The Magistrate's Cut" rank="3" id="scorpion_the_magistrates_cut"/>
+      <Tech name="Certainty of Purpose" rank="4" id="scorpion_certainty_of_purpose"/>
+      <Tech name="Relentless Resolve" rank="5" id="scorpion_relentless_resolve"/>
+    </Techs>
+    <Requirements/>
+  </School>
+</L5RCM>

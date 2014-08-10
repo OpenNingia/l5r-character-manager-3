@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Family clanid="phoenix" name="Agasha" id="phoenix_agasha">
+    <Trait>perception</Trait>
+  </Family>
+  <Family clanid="phoenix" name="Asako" id="phoenix_asako">
+    <Trait>awareness</Trait>
+  </Family>
+  <Family clanid="phoenix" name="Isawa" id="phoenix_isawa">
+    <Trait>willpower</Trait>
+  </Family>
+  <Family clanid="phoenix" name="Shiba" id="phoenix_shiba">
+    <Trait>perception</Trait>
+  </Family>
+</L5RCM>

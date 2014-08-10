@@ -1,0 +1,1846 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <SpellDef name="Blessed Wind" area="10' radius around the caster" mastery="1" element="air" range="Personal" duration="Concentration" id="blessed_wind">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Special (you may target another with this spell with 3 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="By the Light of the Moon" area="20' radius around the caster" mastery="1" element="air" range="Personal" duration="1 minute" id="by_the_light_of_the_moon">
+    <Tags/>
+    <Raises>
+      <Raise>Area (+5' radius)</Raise>
+      <Raise>Duration (+1 minute)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Cloak of Night" area="One object" mastery="1" element="air" range="Touch" duration="1 hour" id="cloak_of_night">
+    <Tags>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 hour)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Legacy of Kaze-no-Kami" area="One known individual within range" mastery="1" element="air" range="School Rank x 10 miles" duration="Special" id="legacy_of_kazenokami">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (+1 individual)</Raise>
+      <Raise>Range (+10 miles)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Nature's Touch" area="One Creature" mastery="1" element="air" range="10'" duration="Special" id="natures_touch">
+    <Tags/>
+    <Raises>
+      <Raise>Range (+10')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Tempest of Air" area="A cone 75' long and 15' wide at its end" mastery="1" element="air" range="Personal" duration="Instantaneous" id="tempest_of_air">
+    <Tags>
+      <Tag>thunder</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (+5' to the width of the cone)</Raise>
+      <Raise>Damage (+1k0)</Raise>
+      <Raise>Range (+5' to the length of the cone)</Raise>
+      <Raise>Special (+5 to Air TN against Knockdown per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="To Seek the Truth" area="One individual touched (may be the caster)" mastery="1" element="air" range="Personal / Touch" duration="5 minutes" id="to_seek_the_truth">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 minute)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Token of Memory" area="One small (1 cubic foot or smaller) illusory object" mastery="1" element="air" range="10'" duration="1 hour" id="token_of_memory">
+    <Tags>
+      <Tag>craft</Tag>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (+1 cubic foot in size of illusory object)</Raise>
+      <Raise>Duration (+1 hour)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Way of Deception" area="One illusory duplicate of the caster" mastery="1" element="air" range="20'" duration="Concentration plus 5 minutes" id="way_of_deception">
+    <Tags>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (+1 duplicate per 2 Raises)</Raise>
+      <Raise>Range (+5 feet)</Raise>
+      <Raise>Special (see spell description)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Yari of Air" area="One created weapon" mastery="1" element="air" range="Personal or 20'" duration="5 minutes" id="yari_of_air">
+    <Tags>
+      <Tag>craft</Tag>
+      <Tag>thunder</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Damage (+1k0)</Raise>
+      <Raise>Duration (+5 minutes)</Raise>
+      <Raise>Range (+5 feet)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Blood And Darkness" area="30 foot radius" mastery="1" element="air" range="Centered on caster" duration="10 rounds" id="maho_blood_and_darkness">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (5 foot additional radius per Raise)</Raise>
+      <Raise>Duration (+2 rounds per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Inspire Fear" area="One Target person" mastery="1" element="air" range="50 feet" duration="1 hour" id="maho_inspire_fear">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+10 minutes per Raise)</Raise>
+      <Raise>Range (+10 foot per Raise)</Raise>
+      <Raise>Targets (+1 target per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Legacy Of The Dark One" area="One target person/creature" mastery="1" element="air" range="100 feet" duration="5 rounds" id="maho_legacy_of_the_dark_one">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 round per Raise)</Raise>
+      <Raise>Targets (+1 target per Raise)</Raise>
+      <Raise>Special (1 addtional Void point per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Sinful Dreams" area="One target intelligent creature" mastery="1" element="air" range="300 feet" duration="1 hour" id="maho_sinful_dreams">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+50 feet per Raise)</Raise>
+      <Raise>Special (1 additional Free Raise awarded per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Ward of Divine Peace" area="50 foot radius" mastery="1" element="air" range="Touch" duration="8 hours" id="maho_ward_of_divine_peace">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area of Effect (+10 foot radius)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Commune" area="Self" mastery="1" element="all" range="20'" duration="Concentration" id="commune">
+    <Tags/>
+    <Raises>
+      <Raise>See Spell Description</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Sense" area="50' radius from the caster" mastery="1" element="all" range="Personal" duration="Instantaneous" id="sense">
+    <Tags/>
+    <Raises>
+      <Raise>Range (+10')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Summon" area="1 cubic foot of summoned material" mastery="1" element="all" range="30'" duration="Permanent" id="summon">
+    <Tags/>
+    <Raises>
+      <Raise>Range (+10')</Raise>
+      <Raise>Quantity (+1 cubic foot)</Raise>
+      <Raise>Composition of material (1-4 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Armor Of Earth" area="Self" mastery="1" element="earth" range="Personal" duration="10 rounds" id="armor_of_earth">
+    <Tags>
+      <Tag>battle</Tag>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+2 rounds)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Courage Of The Seven Thunders" area="Targets up to caster's Shugenja School Rank" mastery="1" element="earth" range="30'" duration="10 minutes" id="courage_of_the_seven_thunders">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 minute)</Raise>
+      <Raise>Targets (+1)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Earth's Stagnation" area="One target" mastery="1" element="earth" range="50'" duration="6 rounds" id="earths_stagnation">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+2 rounds)</Raise>
+      <Raise>Range (+10')</Raise>
+      <Raise>Targets (+1, to a maximum of 4 total targets)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Earth's Touch" area="One target" mastery="1" element="earth" range="Touch" duration="1 hour" id="earths_touch">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1/2 hour)</Raise>
+      <Raise>Targets (+1 per 2 raises, maximum of 3 total targets)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Elemental Ward" area="One target" mastery="1" element="earth" range="Touch" duration="1 hour" id="elemental_ward">
+    <Tags>
+      <Tag>wards</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1/2 hour)</Raise>
+      <Raise>Targets (+1 per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Jade Strike" area="One target" mastery="1" element="earth" range="100'" duration="Instantaneous" id="jade_strike">
+    <Tags>
+      <Tag>jade</Tag>
+      <Tag>thunder</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Damage (+1k0)</Raise>
+      <Raise>Range (+10')</Raise>
+      <Raise>Targets (+1 target, maximum of 5 total targets)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Jurojin's Balm" area="One target" mastery="1" element="earth" range="Touch" duration="1 hour" id="jurojins_balm">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1/2 hour)</Raise>
+      <Raise>Targets (+1 per 2 Raises, maximum of 5 total targets)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Minor Binding" area="One target" mastery="1" element="earth" range="60'" duration="2 hours" id="minor_binding">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 hour)</Raise>
+      <Raise>Range (+20')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Soul Of Stone" area="One target" mastery="1" element="earth" range="Touch" duration="1 hour" id="soul_of_stone">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1/2 hour)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Tetsubo Of Earth" area="One created weapon" mastery="1" element="earth" range="Personal or 20'" duration="5 minutes" id="tetsubo_of_earth">
+    <Tags>
+      <Tag>craft</Tag>
+      <Tag>jade</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Damage (+1k0)</Raise>
+      <Raise>Duration (+5 minutes)</Raise>
+      <Raise>Range (+5 feet)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Blood Rite" area="One Target person/creature" mastery="1" element="earth" range="Touch" duration="10 minutes" id="maho_blood_rite">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+2 minutes per Raise)</Raise>
+      <Raise>Special (heals an extra +1k0 per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Heart Of The Damned" area="Caster" mastery="1" element="earth" range="Touch" duration="Instantaneous" id="maho_heart_of_the_damned">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+  </SpellDef>
+  <SpellDef name="[MAHO] Purge The Weak" area="Food and water for up to 5 people" mastery="1" element="earth" range="50 feet" duration="Permanent" id="maho_purge_the_weak">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+20 feet per Raise)</Raise>
+      <Raise>Area of Effect (supplies for 1 additional person per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Suck The Marrow" area="One target creature" mastery="1" element="earth" range="Touch" duration="1 day" id="maho_suck_the_marrow">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 day per 2 Raises)</Raise>
+      <Raise>Range (change to 50 feet for 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Summon Undead Champion" area="One humanoid corpse" mastery="1" element="earth" range="100 feet" duration="1 hour" id="maho_summon_undead_champion">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 hour per two Raises)</Raise>
+      <Raise>Range (+20 feet per Raise)</Raise>
+      <Raise>Targets (+1 corpse per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Biting Steel" area="1 bladed weapon" mastery="1" element="fire" range="Touch" duration="1 minute" id="biting_steel">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 minute)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Burning Kiss Of Steel" area="One melee weapon in caster's hand" mastery="1" element="fire" range="Touch" duration="5 minutes" id="burning_kiss_of_steel">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+2 minutes)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Envious Flames" area="One target" mastery="1" element="fire" range="30'" duration="Instantaneous" id="envious_flames">
+    <Tags/>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Extinguish" area="100' radius" mastery="1" element="fire" range="Personal" duration="Instantaneous" id="extinguish">
+    <Tags/>
+    <Raises>
+      <Raise>Area (+20 feet)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Fires Of Purity" area="One target" mastery="1" element="fire" range="25'" duration="1 minute" id="fires_of_purity">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Damage (+1k0 per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Fury Of Osano-wo" area="One target" mastery="1" element="fire" range="300'" duration="Instantaneous" id="fury_of_osanowo">
+    <Tags>
+      <Tag>thunder</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Damage (+1k0 per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Katana Of Fire" area="One created weapon" mastery="1" element="fire" range="Personal or 20' (see script description)" duration="5 minutes" id="katana_of_fire">
+    <Tags>
+      <Tag>battle</Tag>
+      <Tag>craft</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Damage (+1k0)</Raise>
+      <Raise>Duration (+5 minutes)</Raise>
+      <Raise>Range (+5 feet)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Never Alone" area="One target" mastery="1" element="fire" range="Touch" duration="5 Rounds (see script description)" id="never_alone">
+    <Tags/>
+    <Raises>
+      <Raise>Targets (+1)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Fires That Cleanse" area="c Area: 30' radius" mastery="1" element="fire" range="Self" duration="Instantaneous" id="the_fires_that_cleanse">
+    <Tags/>
+    <Raises>
+      <Raise>Area of Effect (+5 feet per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Raging Forge" area="One weapon or armor" mastery="1" element="fire" range="Touch" duration="Instantaneous" id="the_raging_forge">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Bleeding" area="One Target person/creature" mastery="1" element="fire" range="50 feet" duration="Indefinite" id="maho_bleeding">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Damage (+1 Wound of bleeding per Raise)</Raise>
+      <Raise>Targets (+1 target per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Written In Blood" area="One message (up to ten words)" mastery="1" element="fire" range="Touch" duration="1 week" id="maho_written_in_blood">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 day per Raise)</Raise>
+      <Raise>Special (+3 words per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Boundless Sight" area="Self" mastery="1" element="void" range="50 miles" duration="4 rounds" id="boundless_sight">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+      <Raise>Range (+5 miles)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Drawing The Void" area="Self" mastery="1" element="void" range="Personal" duration="Instantaneous" id="drawing_the_void">
+    <Tags/>
+    <Raises>
+      <Raise>Special (+1 Void Point gained per three Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Flow Through The Void" area="Up to one cubic foot of pure elemental matter" mastery="1" element="void" range="Touch" duration="Permanent" id="flow_through_the_void">
+    <Tags/>
+    <Raises>
+      <Raise>Area (+1 cubic foot)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="See Through Lies" area="Target individual" mastery="1" element="void" range="25'" duration="Instantaneous" id="see_through_lies">
+    <Tags/>
+    <Raises>
+      <Raise>Range (+5')</Raise>
+      <Raise>Special (one additional Advantage/Disadvantage per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Sense Void" area="25' radius around the caster" mastery="1" element="void" range="Personal" duration="Concentration" id="sense_void">
+    <Tags/>
+    <Raises>
+      <Raise>Area (+5' radius)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Void's Caress" area="One target individual" mastery="1" element="void" range="Touch" duration="1 minute" id="the_voids_caress">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 minute)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Touch The Emptiness" area="One target individual" mastery="1" element="void" range="30'" duration="Instantaneous" id="touch_the_emptiness">
+    <Tags/>
+    <Raises>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Witness The Untold" area="One target individual" mastery="1" element="void" range="15'" duration="3 rounds" id="witness_the_untold">
+    <Tags>
+      <Tag>divination</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Bo Of Water" area="One created weapon" mastery="1" element="water" range="Personal or 20' (see spell description)" duration="5 minutes" id="bo_of_water">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Damage (+1k0)</Raise>
+      <Raise>Duration (+5 minutes)</Raise>
+      <Raise>Range (+5 feet)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Clarity Of Purpose" area="10' radius around caster" mastery="1" element="water" range="Personal" duration="2 rounds" id="clarity_of_purpose">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (+5')</Raise>
+      <Raise>Duration (+1 round per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Ebbing Strength" area="One target creature" mastery="1" element="water" range="20'" duration="3 rounds" id="ebbing_strength">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Path To Inner Peace" area="One target individual" mastery="1" element="water" range="Touch" duration="Instantaneous" id="path_to_inner_peace">
+    <Tags/>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Reflections Of Pan Ku" area="One object" mastery="1" element="water" range="Touch" duration="Instantaneous" id="reflections_of_pan_ku">
+    <Tags>
+      <Tag>divination</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Reversal Of Fortunes" area="One target individual" mastery="1" element="water" range="10'" duration="3 rounds" id="reversal_of_fortunes">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Speed Of The Waterfall" area="One target individual or creature" mastery="1" element="water" range="Touch" duration="1 hour" id="speed_of_the_waterfall">
+    <Tags>
+      <Tag>travel</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+10 minutes)</Raise>
+      <Raise>Range (may increase to 10' for two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Spirit Of The Water" area="One target individual" mastery="1" element="water" range="20'" duration="Instantaneous" id="spirit_of_the_water">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+5')</Raise>
+      <Raise>Special (Increase additional action to Complex for 5 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Sympathetic Energies" area="One target individual" mastery="1" element="water" range="25'" duration="Instantaneous" id="sympathetic_energies">
+    <Tags/>
+    <Raises>
+      <Raise>Range (+5')</Raise>
+      <Raise>Special (see spell description)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Rushing Wave" area="One target individual" mastery="1" element="water" range="10'" duration="1 round" id="the_rushing_wave">
+    <Tags>
+      <Tag>travel</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Disrupt The Limb" area="One Target person's limb" mastery="1" element="water" range="50 feet" duration="10 rounds" id="maho_disrupt_the_limb">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+2 rounds per Raise)</Raise>
+      <Raise>Range (+10 feet per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Symbol Of Blood" area="30 foot radius" mastery="1" element="water" range="Touch" duration="12 hours" id="maho_symbol_of_blood">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area of Effect (+5 feet per Raise)</Raise>
+      <Raise>Duration (+2 hours per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Benten's Touch" area="Target individual (may be the caster)" mastery="2" element="air" range="Personal / Touch" duration="1 hour" id="bentens_touch">
+    <Tags/>
+    <Raises>
+      <Raise>Range (may increase range to 5' with a single Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Call Upon the Wind" area="Target individual (may be the caster)" mastery="2" element="air" range="Personal or 20'" duration="1 minute" id="call_upon_the_wind">
+    <Tags>
+      <Tag>travel</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 minute)</Raise>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Hidden Visage" area="Self" mastery="2" element="air" range="Personal" duration="5 minutes" id="hidden_visage">
+    <Tags>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area of Effect (another person in line of sight can be targeted by this spell by making three Raises)</Raise>
+      <Raise>Duration (+5 minutes)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Mist of Illusion" area="10' radius" mastery="2" element="air" range="20'" duration="1 minute" id="mist_of_illusion">
+    <Tags>
+      <Tag>craft</Tag>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (+5')</Raise>
+      <Raise>Duration (+1 minute)</Raise>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Secrets on the Wind" area="20' radius" mastery="2" element="air" range="10 miles" duration="Concentration" id="secrets_on_the_wind">
+    <Tags/>
+    <Raises>
+      <Raise>Area (+5' radius)</Raise>
+      <Raise>Range (+5 miles)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Kami's Whisper" area="10' radius" mastery="2" element="air" range="50'" duration="1 round" id="the_kamis_whisper">
+    <Tags>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (+5' radius)</Raise>
+      <Raise>Duration (+1 round)</Raise>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Whispering Wind" area="Target individual" mastery="2" element="air" range="20'" duration="Instantaneous" id="whispering_wind">
+    <Tags>
+      <Tag>divination</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Wolf's Proposal" area="Self" mastery="2" element="air" range="Personal" duration="10 minutes" id="wolfs_proposal">
+    <Tags>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (may target another with 2 Raises)</Raise>
+      <Raise>Duration (+5 minutes)</Raise>
+      <Raise>Special (+1 Honor Rank per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Curse Of The Clan" area="One target samurai" mastery="2" element="air" range="50 feet" duration="1 month" id="maho_curse_of_the_clan">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+10 days per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Curse Of The Kansen" area="One target creature" mastery="2" element="air" range="50 feet" duration="8 hours" id="maho_curse_of_the_kansen">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+10 feet per Raise)</Raise>
+      <Raise>Duration (+1 hour per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Curse Of The Unblinking Eye" area="One target creature" mastery="2" element="air" range="100 feet" duration="2 days" id="maho_curse_of_the_unblinking_eye">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 day per 2 Raises, maximum of 7 days duration)</Raise>
+      <Raise>Targets (+1 target per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Be The Mountain" area="One target creature" mastery="2" element="earth" range="30'" duration="4 rounds" id="be_the_mountain">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 Round)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Earth Becomes Sky" area="One target creature" mastery="2" element="earth" range="100'" duration="Instantaneous" id="earth_becomes_sky">
+    <Tags>
+      <Tag>jade</Tag>
+      <Tag>thunder</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Damage (+1k0)</Raise>
+      <Raise>Targets (+1 target)</Raise>
+      <Raise>Special (make boulders Jade with 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Embrace Of Kenro-ji-jin" area="One target creature" mastery="2" element="earth" range="Personal or Touch" duration="1 hour" id="embrace_of_kenrojijin">
+    <Tags>
+      <Tag>travel</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1/2 hour)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Force Of Will" area="One target" mastery="2" element="earth" range="50'" duration="2 rounds" id="force_of_will">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 round, maximum 4 Rounds duration)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Grasp Of Earth" area="One target" mastery="2" element="earth" range="50'" duration="5 rounds" id="grasp_of_earth">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 Round)</Raise>
+      <Raise>Range (5')</Raise>
+      <Raise>Targets (+1 Target per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Hands Of Clay" area="Self" mastery="2" element="earth" range="Personal" duration="10 minutes" id="hands_of_clay">
+    <Tags>
+      <Tag>travel</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+5 minutes)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Mountain's Feet" area="One target" mastery="2" element="earth" range="Personal or 20'" duration="1 hour" id="the_mountains_feet">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1/2 hour)</Raise>
+      <Raise>Targets (+1 per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Wholeness Of The World" area="One target creature" mastery="2" element="earth" range="Personal or 20'" duration="10 minutes" id="wholeness_of_the_world">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 minute)</Raise>
+      <Raise>Range (+5')</Raise>
+      <Raise>Targets (+1 per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Caress Of Fu Leng" area="One target object" mastery="2" element="earth" range="50 feet" duration="Instantaneous" id="maho_caress_of_fu_leng">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+10 feet per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Drain The Soul" area="One target person/creature" mastery="2" element="earth" range="50 feet" duration="10 minutes" id="maho_drain_the_soul">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+2 minutes per Raise)</Raise>
+      <Raise>Range (+10 feet per Raise)</Raise>
+      <Raise>Targets (+1 target per Raise)</Raise>
+      <Raise>Special (+1 stamina rank per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Pain" area="One target creature" mastery="2" element="earth" range="10 feet" duration="1 round" id="maho_pain">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 Round per Raise)</Raise>
+      <Raise>Range (+5 feet per Raise), Targets (+1 target per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Spreading The Darkness" area="Two target persons" mastery="2" element="earth" range="30 feet" duration="Permanent" id="maho_spreading_the_darkness">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+10 feet per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Disrupt The Aura" area="Target person or creature" mastery="2" element="fire" range="50'" duration="24 hours" id="disrupt_the_aura">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+12 hours per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Enticing Dance Of The Flame" area="20' radius" mastery="2" element="fire" range="50'" duration="2 rounds" id="enticing_dance_of_the_flame">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Hurried Steps" area="Self" mastery="2" element="fire" range="Personal" duration="2 rounds (see script description)" id="hurried_steps">
+    <Tags/>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Mental Quickness" area="One item" mastery="2" element="fire" range="Touch" duration="10 minutes" id="mental_quickness">
+    <Tags/>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Relentless Heat" area="One armor" mastery="2" element="fire" range="Touch" duration="10 Rounds" id="relentless_heat">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+2 Rounds)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Tail Of The Fire Dragon" area="Self" mastery="2" element="fire" range="Personal" duration="4 rounds" id="tail_of_the_fire_dragon">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Fires From Within" area="One target" mastery="2" element="fire" range="100'" duration="Instantaneous" id="the_fires_from_within">
+    <Tags/>
+    <Raises>
+      <Raise>Target (+1 target per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Ward Of Purity" area="15' radius from the object touched" mastery="2" element="fire" range="Touch" duration="1 day" id="ward_of_purity">
+    <Tags>
+      <Tag>ward</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Gift Of The Maker" area="One target creature (can be the caster)" mastery="2" element="fire" range="Self;Touch" duration="1 hour" id="maho_gift_of_the_maker">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+30 minutes per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Puppet Master" area="One target undead creature" mastery="2" element="fire" range="100 feet" duration="4 hours" id="maho_puppet_master">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+2 hours per Raise)</Raise>
+      <Raise>Range (+20 feet per Raise)</Raise>
+      <Raise>Targets (+1 undead creature per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Altering The Course" area="Self" mastery="2" element="void" range="Personal" duration="1 minute" id="altering_the_course">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 minute)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Drink Of Your Essence" area="One target individual" mastery="2" element="void" range="30'" duration="Instantaneous" id="drink_of_your_essence">
+    <Tags/>
+    <Raises>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="False Whispers" area="One target individual" mastery="2" element="void" range="30'" duration="1 minute" id="false_whispers">
+    <Tags/>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Reach Through The Void" area="Target object, up to five pounds in weight" mastery="2" element="void" range="50'" duration="Instantaneous" id="reach_through_the_void">
+    <Tags/>
+    <Raises>
+      <Raise>Area (+1 pound per two Raises)</Raise>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Severed From The Stream" area="One target individual" mastery="2" element="void" range="25'" duration="5 rounds" id="severed_from_the_stream">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Empty Voice" area="Self" mastery="2" element="void" range="Personal" duration="5 minutes" id="the_empty_voice">
+    <Tags/>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Cloak Of The Miya" area="Self" mastery="2" element="water" range="Personal" duration="5 rounds" id="cloak_of_the_miya">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Inari's Blessing" area="Created sustenance" mastery="2" element="water" range="Personal" duration="Instantaneous" id="inaris_blessing">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Special (Enough food for one additional person per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Reflective Pool" area="Body of water / target location" mastery="2" element="water" range="10 miles" duration="5 minutes" id="reflective_pool">
+    <Tags>
+      <Tag>divination</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 minute)</Raise>
+      <Raise>Range (+10 miles)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Rejuvenating Vapors" area="One target individual" mastery="2" element="water" range="Touch" duration="Instantaneous" id="rejuvenating_vapors">
+    <Tags/>
+    <Raises>
+      <Raise>Targets (one additional person per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Stand Against The Waves" area="One target individual" mastery="2" element="water" range="10'" duration="Instantaneous" id="stand_against_the_waves">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (10' per 3 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Ties That Bind" area="Self" mastery="2" element="water" range="10 miles" duration="Instantaneous" id="the_ties_that_bind">
+    <Tags>
+      <Tag>divination</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+2 miles)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Wave-borne Speed" area="Self" mastery="2" element="water" range="Personal" duration="2 Rounds" id="waveborne_speed">
+    <Tags>
+      <Tag>travel</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Curse Of Weakness" area="One target person or creature" mastery="2" element="water" range="50 feet" duration="10 rounds" id="maho_curse_of_weakness">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+2 rounds per Raise)</Raise>
+      <Raise>Range (+10 feet per Raise)</Raise>
+      <Raise>Targets (+1 target per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Dark Wings" area="Caster" mastery="2" element="water" range="Self" duration="10 minutes" id="maho_dark_wings">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+2 minutes per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Essence Of Air" area="Self" mastery="3" element="air" range="Personal" duration="5 rounds" id="essence_of_air">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Mask Of Wind" area="Self" mastery="3" element="air" range="Personal" duration="1 hour" id="mask_of_wind">
+    <Tags>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (may target another with two Raises)</Raise>
+      <Raise>Duration (+10 minutes)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Striking The Storm" area="Self" mastery="3" element="air" range="Personal" duration="3 rounds" id="striking_the_storm">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Summon Fog" area="50' radius" mastery="3" element="air" range="100'" duration="1 minute" id="summon_fog">
+    <Tags/>
+    <Raises>
+      <Raise>Area (+5' radius)</Raise>
+      <Raise>Duration (+1 minute)</Raise>
+      <Raise>Range (+10')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Summoning The Gale" area="Target individual (may be the caster)" mastery="3" element="air" range="50'" duration="Concentration" id="summoning_the_gale">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Eye Shall Not See" area="Self or target individual" mastery="3" element="air" range="Personal or Touch" duration="Concentration" id="the_eye_shall_not_see">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Your Heart's Enemy" area="One target individual" mastery="3" element="air" range="25'" duration="5 rounds" id="your_hearts_enemy">
+    <Tags>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Dancing With Demons" area="Self;one target creature" mastery="3" element="air" range="500 feet" duration="24 hours" id="maho_dancing_with_demons">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+6 hours per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Hate's Heart" area="One target creature" mastery="3" element="air" range="50 feet" duration="3 rounds" id="maho_hates_heart">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 round per 2 Raises)</Raise>
+      <Raise>Range (+10 feet per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Mists Of Fear" area="One target creature" mastery="3" element="air" range="50 feet" duration="Instantaneous" id="maho_mists_of_fear">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Special (Increase Fear effect strength by 1 per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Symbol Of The Bloodspeaker" area="50 foot radius" mastery="3" element="air" range="Touch" duration="12 hours" id="maho_symbol_of_the_bloodspeaker">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Bonds Of Ningen-do" area="One target spirit creature" mastery="3" element="earth" range="500'" duration="30 days" id="bonds_of_ningendo">
+    <Tags>
+      <Tag>wards</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 day)</Raise>
+      <Raise>Range (+10')</Raise>
+      <Raise>Targets (+1 per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Earth Kami's Blessing" area="Caster or one target creature" mastery="3" element="earth" range="Personal or 20'" duration="10 minutes" id="earth_kamis_blessing">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 minute)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Earth's Protection" area="10' radius from caster" mastery="3" element="earth" range="Personal" duration="Concentration" id="earths_protection">
+    <Tags>
+      <Tag>defense</Tag>
+      <Tag>wards</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (+5' radius per 2 Raises, to maximum of 30' radius)</Raise>
+      <Raise>Special (damage reduced by an additional +1k1 for 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Purge The Taint" area="50' radius around caster" mastery="3" element="earth" range="Personal" duration="Permanent" id="purge_the_taint">
+    <Tags>
+      <Tag>jade</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (+10' radius)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Sharing The Strength Of Many" area="One to six target persons within range" mastery="3" element="earth" range="30'" duration="5 rounds" id="sharing_the_strength_of_many">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Strength Of The Crow" area="One target" mastery="3" element="earth" range="Touch" duration="Hours equal to caster's Shugenja School Rank" id="strength_of_the_crow">
+    <Tags>
+      <Tag>jade</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 hour)</Raise>
+      <Raise>Targets (+1)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Wolf's Mercy" area="One target creature" mastery="3" element="earth" range="50'" duration="10 rounds" id="the_wolfs_mercy">
+    <Tags/>
+    <Raises>
+      <Raise>Range (+10')</Raise>
+      <Raise>Targets (+1)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Death Beyond Life" area="One target person" mastery="3" element="earth" range="Touch" duration="24 hours" id="maho_death_beyond_life">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+24 hours per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Essence Of Undeath" area="One humanoid corpse" mastery="3" element="earth" range="50 feet" duration="Indefinite" id="maho_essence_of_undeath">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+20 feet per Raise)</Raise>
+      <Raise>Targets (+1 target per 3 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Summon Oni" area="One summoned oni" mastery="3" element="earth" range="50 feet" duration="Indefinite" id="maho_summon_oni">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Special (+1k0 per Raise to the Willpower roll to control the oni)</Raise>
+      <Raise>Special (more powerful oni, GM's discretion)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Breath Of The Fire Dragon" area="15' long, 5' wide blast" mastery="3" element="fire" range="Personal" duration="4 rounds" id="breath_of_the_fire_dragon">
+    <Tags/>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Fiery Wrath" area="One free-standing structure, or 50' x 50' area" mastery="3" element="fire" range="100'" duration="Instantaneous" id="fiery_wrath">
+    <Tags/>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Haze Of Battle" area="One target" mastery="3" element="fire" range="10'" duration="5 Rounds, or 1 hour out of combat" id="haze_of_battle">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 Round)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Hungry Blade" area="One weapon" mastery="3" element="fire" range="50'" duration="5 Rounds" id="hungry_blade">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 Round)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Ravenous Swarms" area="One target person" mastery="3" element="fire" range="30'" duration="5 Rounds" id="ravenous_swarms">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 Round)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Shining Light" area="One target armor" mastery="3" element="fire" range="30'" duration="10 rounds" id="shining_light">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Damage (+1k0 per two Raises)</Raise>
+      <Raise>Duration (+2 Rounds)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Fist Of Osano-wo" area="20' radius" mastery="3" element="fire" range="50'" duration="1 round" id="the_fist_of_osanowo">
+    <Tags>
+      <Tag>thunder</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area of Effect (+10' radius)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Armour Of Obsidian" area="One target person or creature (can be caster)" mastery="3" element="fire" range="Touch" duration="10 minutes or until used" id="maho_armour_of_obsidian">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+5 minutes per Raise)</Raise>
+      <Raise>Special (absorb one additional spell per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Echoes In The Void" area="One target individual" mastery="3" element="void" range="25'" duration="Concentration" id="echoes_in_the_void">
+    <Tags/>
+    <Raises>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Kharmic Intent" area="One target individual" mastery="3" element="void" range="20'" duration="10 minutes" id="kharmic_intent">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 minute)</Raise>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Moment Of Clarity" area="Self" mastery="3" element="void" range="Personal" duration="2 rounds" id="moment_of_clarity">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Read The Essence" area="One target object" mastery="3" element="void" range="Personal" duration="Instantaneous (but see spell description)" id="read_the_essence">
+    <Tags>
+      <Tag>divination</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Void Release" area="One target individual" mastery="3" element="void" range="25'" duration="Instantaneous" id="void_release">
+    <Tags/>
+    <Raises>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Near To Ice" area="One target individual" mastery="3" element="water" range="Touch" duration="5 rounds" id="near_to_ice">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+      <Raise>Range (increased to 10' with 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Regrow The Wound" area="One target individual" mastery="3" element="water" range="Touch" duration="Concentration" id="regrow_the_wound">
+    <Tags/>
+    <Raises>
+      <Raise>Special (your Water is increased by 1 for the purposes of healing, per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Silent Waters" area="Self" mastery="3" element="water" range="Personal" duration="Variable" id="silent_waters">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Strike Of The Tsunami" area="A cone originating from the caster, ten feet wide at the end" mastery="3" element="water" range="25'" duration="Instantaneous" id="strike_of_the_tsunami">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Damage (+1k0)</Raise>
+      <Raise>Range (+5')</Raise>
+      <Raise>Special (+5 to the Earth Roll TN per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Visions Of The Future" area="Self" mastery="3" element="water" range="Personal" duration="1 minute" id="visions_of_the_future">
+    <Tags>
+      <Tag>divination</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Walking Upon The Waves" area="One target individual (may be the caster)" mastery="3" element="water" range="Touch" duration="10 minutes" id="walking_upon_the_waves">
+    <Tags>
+      <Tag>travel</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 minute)</Raise>
+      <Raise>Targets (+1 individual per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Water Kami's Blessing" area="One target individual (may be the caster)" mastery="3" element="water" range="Touch" duration="5 rounds" id="water_kamis_blessing">
+    <Tags/>
+    <Raises>
+      <Raise>Special (your Water Ring is considered one rank higher per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Call The Spirit" area="Target spirit" mastery="4" element="air" range="Special" duration="5 minutes" id="call_the_spirit">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 minute)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="False Realm" area="100' radius" mastery="4" element="air" range="250'" duration="1 hour" id="false_realm">
+    <Tags>
+      <Tag>battle</Tag>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (+10' radius)</Raise>
+      <Raise>Duration (+10 minutes)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Gift Of Wind" area="Self" mastery="4" element="air" range="Personal" duration="5 minutes" id="gift_of_wind">
+    <Tags>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 minute)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Know The Mind" area="Target individual" mastery="4" element="air" range="10'" duration="3 rounds" id="know_the_mind">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Netsuke Of Wind" area="One hand-held object" mastery="4" element="air" range="Touch" duration="1 hour" id="netsuke_of_wind">
+    <Tags>
+      <Tag>craft</Tag>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+10 minutes)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Symbol Of Air" area="Special" mastery="4" element="air" range="Touch" duration="Permanent" id="symbol_of_air">
+    <Tags>
+      <Tag>ward</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] No Pure Breaths" area="One target creature" mastery="4" element="air" range="100 feet" duration="Instantaneous (but see below)" id="maho_no_pure_breaths">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Damage (+1k0 per Raise)</Raise>
+      <Raise>Range (+20 feet per Raise)</Raise>
+      <Raise>Targets (+1 target per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Truth Is A Scourge" area="One target person" mastery="4" element="air" range="50 feet" duration="10 minutes" id="maho_truth_is_a_scourge">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+2 minutes per Raise), Range (+10 feet per Raise)</Raise>
+      <Raise>Targets (+1 per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Armor Of The Emperor" area="Self" mastery="4" element="earth" range="Personal" duration="5 Rounds" id="armor_of_the_emperor">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+2 Rounds)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Essence Of Earth" area="One target creature (self or another)" mastery="4" element="earth" range="Personal or 20'" duration="10 rounds" id="essence_of_earth">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+      <Raise>Range (+5')</Raise>
+      <Raise>Targets (+1 per 2 Raises)</Raise>
+      <Raise>Special (+1 Rank of Earth per 2 Raises, maximum increase 3 Ranks of Earth)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Symbol Of Earth" area="Special" mastery="4" element="earth" range="Touch" duration="Permanent" id="symbol_of_earth">
+    <Tags>
+      <Tag>wards</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Damage (+1k0)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Tomb Of Jade" area="One target creature" mastery="4" element="earth" range="50'" duration="Concentration" id="tomb_of_jade">
+    <Tags>
+      <Tag>jade</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+10')</Raise>
+      <Raise>Special (Contested Roll, +1k1 to caster for each Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Wall Of Earth" area="Wall measuring a maximum of 10' high and 100' wide" mastery="4" element="earth" range="100'" duration="10 minutes" id="wall_of_earth">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (increase height by 1' or width by 10' per Raise), Duration (+1 minute), Range (+10')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Chains Of Jigoku" area="One creature or person" mastery="4" element="earth" range="50 feet" duration="10 minutes" id="maho_chains_of_jigoku">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+5 minutes per Raise)</Raise>
+      <Raise>Range (+10 feet per Raise)</Raise>
+      <Raise>Special (+1k0 per Raise to caster's roll to contain the prisoner)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Stealing The Soul" area="One target person" mastery="4" element="earth" range="1 mile" duration="1 day" id="maho_stealing_the_soul">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Special (+1 additional Rank of Trait drain per 2 raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Tomb Of Earth" area="One target creature" mastery="4" element="earth" range="50 feet" duration="Conditional (see below)" id="maho_tomb_of_earth">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Damage (+1k0 to damage per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Death Of Flame" area="One target" mastery="4" element="fire" range="100'" duration="5 Rounds" id="death_of_flame">
+    <Tags/>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Defense Of The Firestorm" area="One target armor" mastery="4" element="fire" range="Touch" duration="5 Rounds" id="defense_of_the_firestorm">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 Round)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Symbol Of Fire" area="10' radius" mastery="4" element="fire" range="100'" duration="Permanent" id="symbol_of_fire">
+    <Tags>
+      <Tag>ward</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Mending Forge" area="One target item" mastery="4" element="fire" range="Touch" duration="Instantaneous" id="the_mending_forge">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Wall Of Fire" area="Special" mastery="4" element="fire" range="100'" duration="1 hour" id="wall_of_fire">
+    <Tags/>
+    <Raises>
+      <Raise>Area of Effect (+1 increment, see spell description)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Ward Of Thunder" area="15' radius from the armor" mastery="4" element="fire" range="Touch" duration="1 hour" id="ward_of_thunder">
+    <Tags>
+      <Tag>defense</Tag>
+      <Tag>thunder</Tag>
+      <Tag>ward</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Burning Blood" area="One target creature" mastery="4" element="fire" range="50 feet" duration="Instantaneous" id="maho_burning_blood">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Dmage (+1k0 per Raise)</Raise>
+      <Raise>Range (+10 feet per Raise)</Raise>
+      <Raise>Targets (+1 target per 3 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Balance Of Elements" area="One target individual (may be the caster)" mastery="4" element="void" range="Touch" duration="5 rounds / 5 minutes (see spell description)" id="balance_of_elements">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 round / +1 minute, see spell description)</Raise>
+      <Raise>Special (+1k1 Wounds per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Draw Closed The Veil" area="One target spirit" mastery="4" element="void" range="50'" duration="Instantaneous" id="draw_closed_the_veil">
+    <Tags/>
+    <Raises>
+      <Raise>Range (+5')</Raise>
+      <Raise>Targets (+1 spirit per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Fill With Emptiness" area="One target individual" mastery="4" element="void" range="Touch" duration="Instantaneous" id="fill_with_emptiness">
+    <Tags/>
+    <Raises>
+      <Raise>Range (may be increased to 10' with three Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Void Strike" area="One target individual" mastery="4" element="void" range="50'" duration="Instantaneous" id="void_strike">
+    <Tags/>
+    <Raises>
+      <Raise>Range (+5')</Raise>
+      <Raise>Special (+1k0 damage per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Dominion Of Suitengu" area="Two bodies of water" mastery="4" element="water" range="100 miles" duration="Concentration" id="dominion_of_suitengu">
+    <Tags>
+      <Tag>divination</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+10 miles)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Heart Of The Water Dragon" area="Target individuals equal to caster's School Rank (may include the caster)" mastery="4" element="water" range="25'" duration="1 round per School Rank" id="heart_of_the_water_dragon">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+      <Raise>Special (+1k0 healed per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Strike Of The Flowing Waters" area="One target individual (may be the caster)" mastery="4" element="water" range="10'" duration="1 round" id="strike_of_the_flowing_waters">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Symbol Of Water" area="Special" mastery="4" element="water" range="Touch" duration="Permanent" id="symbol_of_water">
+    <Tags>
+      <Tag>ward</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Path Not Taken" area="Self" mastery="4" element="water" range="Personal" duration="1 day" id="the_path_not_taken">
+    <Tags/>
+    <Raises>
+      <Raise>Special (gain one bonus spell slot per five Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Cloud The Mind" area="One target individual" mastery="5" element="air" range="Touch" duration="Permanent" id="cloud_the_mind">
+    <Tags/>
+    <Raises>
+      <Raise>Special (+1 day of effect)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Draw Back The Shadow" area="30' radius" mastery="5" element="air" range="100'" duration="Instantaneous" id="draw_back_the_shadow">
+    <Tags/>
+    <Raises>
+      <Raise>Area (+5' radius)</Raise>
+      <Raise>Range (+10')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Echoes On The Breeze" area="One target individual" mastery="5" element="air" range="Personal" duration="Concentration" id="echoes_on_the_breeze">
+    <Tags/>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Legion Of The Moon" area="10' radius from the caster" mastery="5" element="air" range="Personal" duration="5 minutes" id="legion_of_the_moon">
+    <Tags>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (+5')</Raise>
+      <Raise>Duration (+1 minute)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Slayer's Knives" area="Corridor of air 10' wide" mastery="5" element="air" range="30'" duration="Instantaneous" id="slayers_knives">
+    <Tags>
+      <Tag>thunder</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (+3' wide)</Raise>
+      <Raise>Damage (+1k0 per three Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Possession" area="One target person" mastery="5" element="air" range="100 feet" duration="1 day" id="maho_possession">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 day per 2 Raises)</Raise>
+      <Raise>Range (+25 feet per Raise)</Raise>
+      <Raise>Special (+1k0 on Contested Willpower Roll per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Earthquake" area="1 mile radius" mastery="5" element="earth" range="Personal" duration="1 minute" id="earthquake">
+    <Tags/>
+    <Raises>
+      <Raise>Area (+500 yards)</Raise>
+      <Raise>Duration (+1 minute per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Major Binding" area="One target Shadowlands creature" mastery="5" element="earth" range="100'" duration="12 hours" id="major_binding">
+    <Tags>
+      <Tag>jade</Tag>
+      <Tag>wards</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 hour)</Raise>
+      <Raise>Range (+50')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Strike At The Roots" area="One target creature" mastery="5" element="earth" range="50'" duration="3 rounds" id="strike_at_the_roots">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 Round)</Raise>
+      <Raise>Range (+10')</Raise>
+      <Raise>Targets (+1 target per 2 Raises)</Raise>
+      <Raise>Special (Contested Roll, +1k1 to the caster for each Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Kami's Strength" area="One target creature" mastery="5" element="earth" range="30'" duration="5 rounds" id="the_kamis_strength">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+      <Raise>Range (+10')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Kami's Will" area="One target creature" mastery="5" element="earth" range="30'" duration="10 rounds" id="the_kamis_will">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+      <Raise>Range (+10')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Blood Armor" area="Caster and one target creature" mastery="5" element="earth" range="50 feet" duration="3 Rounds" id="maho_blood_armor">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 Round per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Fierce Blood Of The Earth" area="Caster" mastery="5" element="earth" range="Touch" duration="Instantaneous" id="maho_fierce_blood_of_the_earth">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+6 hours per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Touch Of Death" area="One target creature" mastery="5" element="earth" range="50 feet" duration="Instantaneous" id="maho_touch_of_death">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+10 feet per Raise)</Raise>
+      <Raise>Targets (+1 target per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Destructive Wave" area="25' radius" mastery="5" element="fire" range="Personal" duration="Instantaneous" id="destructive_wave">
+    <Tags/>
+    <Raises>
+      <Raise>Damage (+1k1 per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Everburning Rage" area="One target" mastery="5" element="fire" range="25'" duration="1 Round" id="everburning_rage">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 Round)</Raise>
+      <Raise>Targets (+1)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Follow The Flame" area="See below" mastery="5" element="fire" range="Personal" duration="5 Rounds" id="follow_the_flame">
+    <Tags/>
+    <Raises>
+      <Raise>Damage (+1k0 per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Light Of The Sun" area="30' radius" mastery="5" element="fire" range="100'" duration="10 rounds" id="light_of_the_sun">
+    <Tags>
+      <Tag>jade</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Wings Of The Phoenix" area="Self" mastery="5" element="fire" range="Personal" duration="10 Rounds" id="wings_of_the_phoenix">
+    <Tags>
+      <Tag>travel</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Strength Of Darkness" area="One target person" mastery="5" element="fire" range="Personal / Touch" duration="10 rounds" id="maho_strength_of_darkness">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 Round per Raise)</Raise>
+      <Raise>Special (+1 Rank to one physical Trait for every 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Divide The Soul" area="Self" mastery="5" element="void" range="Personal" duration="1 minute" id="divide_the_soul">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 minute)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Reforge" area="One object" mastery="5" element="void" range="Touch" duration="Permanent" id="reforge">
+    <Tags/>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Unbound Essence" area="One target individual" mastery="5" element="void" range="25'" duration="1 hour" id="unbound_essence">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 hour)</Raise>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Ever-changing Waves" area="Self" mastery="5" element="water" range="Personal" duration="1 hour" id="everchanging_waves">
+    <Tags>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 hour)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Hands Of The Tides" area="Targets up to caster's Water Ring" mastery="5" element="water" range="100' radius centered on the caster" duration="Instantaneous" id="hands_of_the_tides">
+    <Tags>
+      <Tag>battle</Tag>
+      <Tag>travel</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (+10')</Raise>
+      <Raise>Targets (+1 per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Power Of The Ocean" area="One target individual" mastery="5" element="water" range="Touch" duration="A number of days equal to your School Rank" id="power_of_the_ocean">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 day per three Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Suitengu's Embrace" area="One target individual" mastery="5" element="water" range="25'" duration="Instantaneous" id="suitengus_embrace">
+    <Tags>
+      <Tag>thunder</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+5')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Final Bond" area="One target object or individual" mastery="5" element="water" range="Special" duration="Instantaneous" id="the_final_bond">
+    <Tags>
+      <Tag>divination</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Rise, Air" area="One summoned spirit" mastery="6" element="air" range="30'" duration="Concentration" id="rise_air">
+    <Tags/>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The False Legion" area="Within 100' of the caster" mastery="6" element="air" range="Personal" duration="Concentration" id="the_false_legion">
+    <Tags>
+      <Tag>battle</Tag>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area (+10')</Raise>
+      <Raise>Special (+5 illusory figures per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Wrath Of Kaze-no-kami (hurricane)" area="1 mile radius, centered on the caster" mastery="6" element="air" range="Personal" duration="Concentration (special)" id="wrath_of_kazenokami_hurricane">
+    <Tags>
+      <Tag>thunder</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="[MAHO] Take The Body" area="Caster and one target person" mastery="6" element="air" range="500 feet" duration="Permanent" id="maho_take_the_body">
+    <Tags>
+      <Tag>maho</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+500 feet per Raise)</Raise>
+      <Raise>Special (cast as a single Simple Action with 4 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Essence Of Jade" area="One target creature" mastery="6" element="earth" range="30'" duration="10 rounds" id="essence_of_jade">
+    <Tags>
+      <Tag>defense</Tag>
+      <Tag>jade</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 round)</Raise>
+      <Raise>Range (+5')</Raise>
+      <Raise>Targets (+1 target for 2 Raises, maximum of 3 total targets)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Power Of The Earth Dragon" area="One target creature" mastery="6" element="earth" range="50'" duration="10 minutes" id="power_of_the_earth_dragon">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 minute)</Raise>
+      <Raise>Range (+10')</Raise>
+      <Raise>Targets (+1)</Raise>
+      <Raise>Special (Damage absorption +10 Wounds per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Prison Of Earth" area="One target creature" mastery="6" element="earth" range="30'" duration="Permanent" id="prison_of_earth">
+    <Tags>
+      <Tag>wards</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+5')</Raise>
+      <Raise>Special (Contested Roll, +1k1 to the caster for each Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Rise, Earth" area="One summoned spirit" mastery="6" element="earth" range="30'" duration="Concentration" id="rise_earth">
+    <Tags/>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Beam Of The Inferno" area="One Target" mastery="6" element="fire" range="200'" duration="Instantaneous" id="beam_of_the_inferno">
+    <Tags/>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Globe Of The Everlasting Sun" area="1 mile" mastery="6" element="fire" range="500'" duration="1 day" id="globe_of_the_everlasting_sun">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Soul's Blade" area="One target weapon" mastery="6" element="fire" range="Touch" duration="5 Rounds" id="the_souls_blade">
+    <Tags>
+      <Tag>craft</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 Round per 3 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Ring Of The Void" area="Self" mastery="6" element="void" range="Personal" duration="Concentration (requires one hour to cast)" id="ring_of_the_void">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (-5 minutes to casting time)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Rise From The Ashes" area="One target individual" mastery="6" element="void" range="Touch" duration="Instantaneous (requires one hour to cast)" id="rise_from_the_ashes">
+    <Tags/>
+    <Raises>
+      <Raise>Special (+1 hour of regression per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Unmake The World" area="One target creature, individual, or object" mastery="6" element="void" range="50'" duration="Instantaneous" id="unmake_the_world">
+    <Tags/>
+    <Raises>
+      <Raise>Range (+10')</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Peace Of The Kami" area="One target individual" mastery="6" element="water" range="Touch" duration="Instantaneous" id="peace_of_the_kami">
+    <Tags/>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Rise, Water" area="One summoned spirit" mastery="6" element="water" range="30'" duration="Concentration" id="rise_water">
+    <Tags/>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Water's Sweet Clarity" area="Target body of water" mastery="6" element="water" range="Personal" duration="3 rounds" id="waters_sweet_clarity">
+    <Tags>
+      <Tag>divination</Tag>
+    </Tags>
+    <Raises>
+      <Raise>None</Raise>
+    </Raises>
+  </SpellDef>
+</L5RCM>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <EffectDef id="blowgun_special_rule">Triple an opponent's Armor TN bonus from armor. The damage increase from the Ninjutsu Skill increases the blowgun's damage to 1k1 at Rank 3 and 2k1 at Rank 7. Reloading a blowgun is a Free Action.</EffectDef>
+  <EffectDef id="daikyu_rule">Increase the TN of all attack rolls by +10 if used on foot.</EffectDef>
+  <EffectDef id="dbl_opp_armor_rule">Double an opponent's bonus to Armor TN from armor.</EffectDef>
+  <EffectDef id="may_break_25w_rule">If inflicts more than 25 Wounds in a single attack, it breaks.</EffectDef>
+  <EffectDef id="may_break_30w_rule">If inflicts more than 30 Wounds in a single attack, it breaks.</EffectDef>
+  <EffectDef id="throw_20f_rule">Can be thrown accurately up to 20'.</EffectDef>
+  <EffectDef id="throw_25f_rule">Can be thrown accurately up to 25'.</EffectDef>
+  <EffectDef id="throw_50f_rule">Can be thrown accurately up to 50'.</EffectDef>
+  <EffectDef id="lance_special_rule">The listed DR only applies if the lance is used from horseback and used to make an attack directly following a Move Action. Under any other circumstances, it possesses DR 1k2. Using the lance in melee combat without a Move Action increases the TN of all attack rolls by +5 on horseback and +10 on foot. A lance shatters if it inflicts more than 30 Wounds in one attack.</EffectDef>
+  <EffectDef id="yari_special_rule">The yari can be thrown a maximum range of 30', and has DR 1k2 when thrown.</EffectDef>
+  <EffectDef id="tsubute_special_rule">Tsubute may be thrown up to thirty feet. Because of their small size, tsubute do not add the wielder's Strength to their DR when used as ranged weapons, and their damage dice do not explode.</EffectDef>
+  <EffectDef id="void_rise_dr_rule">A character may spend one Void Point to increase a damage roll made using a katana by 1k1 (Void Points cannot normally be spent to enhance damage rolls). Only one Void Point may be spent in this manner, even if the character has an ability that would allow him to spend more than one Void Point per round.</EffectDef>
+  <EffectDef id="ninjato_special_rule">The ninja-to is a medium weapon, but is considered a small weapon for the purposes of concealment. If a ninja-to inflicts more than 40 Wounds in a single attack, its blade breaks.</EffectDef>
+  <EffectDef id="keep_grapple_rule">May be used to initiate and maintain a grapple.</EffectDef>
+  <EffectDef id="no_shoot_horseback_rule">Increase the TN of all attack rolls by +10 if used from horseback.</EffectDef>
+  <EffectDef id="light_armor_rule">Wearing light armor increases the TN of all Athletics and Stealth rolls by 5.</EffectDef>
+  <EffectDef id="heavy_armor_rule">Wearing heavy armor increases the TN of all Skill Rolls using Agility or Reflexes by 5</EffectDef>
+  <EffectDef id="riding_armor_rule">+12 TN while on horseback. Riding armor is considered heavy armor for the purposes of mechanical effects that specify armor type. Wearing riding armor increases the TN of all Agility and Reflexes rolls by +5 unless the wearer is on horseback.</EffectDef>
+  <EffectDef id="ignore_armor_rule">Ignores the Armor TN bonus provided by armor</EffectDef>
+  <EffectDef id="flesh_cutter_rule">Double the Armor TN bonus provided by armor; 1/2 range</EffectDef>
+  <EffectDef id="humming_bulb_rule">Makes a loud whistling sound</EffectDef>
+  <EffectDef id="rope_cutter_rule">2 Free Raises for Called Shots against inanimate objects; 1/2 range</EffectDef>
+</L5RCM>

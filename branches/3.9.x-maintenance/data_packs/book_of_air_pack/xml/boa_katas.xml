@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <KataDef mastery="4" element="air" id="north_wind_style" name="North Wind Style">
+    <Description>You may add your Air Ring to the total of any attack roll made while attempting the Increased Damage Maneuver.</Description>
+    <Requirements/>
+  </KataDef>
+  <KataDef mastery="4" element="air" id="south_wind_style" name="South Wind Style">
+    <Description>You may add your Air Ring to the total of any attack roll made while attempting the Called Shot or Knockdown Maneuvers.</Description>
+    <Requirements/>
+  </KataDef>
+</L5RCM>

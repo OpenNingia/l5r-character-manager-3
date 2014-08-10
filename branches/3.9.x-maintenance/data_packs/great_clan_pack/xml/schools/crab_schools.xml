@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="crab" name="Kaiu Engineer School" id="crab_ob_kaiu_engineer_school">
+    <Trait>intelligence</Trait>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>artisan</Tag>
+      <Tag>crab_artisan</Tag>
+      <Tag>bushi</Tag>
+      <Tag>crab_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="battle" rank="1"/>
+      <Skill id="craft_armorsmithing" rank="1"/>
+      <Skill id="craft_weaponsmithing" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill rank="1" id="engineering" emphases="*any"/>
+      <Skill id="lore_architecture" rank="1"/>
+      <Skill id="war_fan" rank="1"/>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="The Kaiu Method" rank="1" id="crab_the_kaiu_method">
+        <Description>
+A student of the Kaiu Method is taught
+the many basic essential disciplines
+the family uses to serve the Crab. You
+gain a bonus of +1k0 when making any
+School Skill Roll. When spending a Void
+Point to augment a School Skill Roll, you
+gain a bonus of +2k2 instead of +1k1.
+These effects are not cumulative.
+      </Description>
+      </Tech>
+      <Tech name="The Path Of Stone" rank="2" id="crab_the_path_of_stone">
+        <Description>
+The Kaiu are feared on the battlefi eld for
+good reason—they are the masters of both
+construction and destruction. When constructing
+any large structure (temple-sized
+or larger), you may make an Engineering Skill
+Roll at TN 25 to add an additional number of
+Wounds to the structure equal to your School
+Rank x 100. Also, when commanding a siege engine,
+you may re-roll once any of the siege engine's damage
+dice that roll below your School Rank.
+      </Description>
+      </Tech>
+      <Tech name="The Path Of The Shell" rank="3" id="crab_the_path_of_the_shell">
+        <Description>
+The security and protection of Crab samurai is a somber
+duty all Kaiu take very seriously indeed. When crafting
+any set of armor, you may double the crafting time and
+cost in order to add your School Rank
+to the armor's Reduction value.
+You may also add half your
+School Rank (rounding
+up) to the armor's Armor
+TN bonus.
+      </Description>
+      </Tech>
+      <Tech name="The Path Of War" rank="4" id="crab_the_path_of_war">
+        <Description>
+Every Kaiu is a student of battle, as are all Crab. When you
+roll on the Mass Battle Chart, you may modify your result
+(up or down) by an additional amount equal to half your
+School Rank. Additionally, when fi ghting with a katana,
+dai tsuchi, or war fan, you may make melee attacks as a
+Simple Action rather than a Complex Action.
+      </Description>
+      </Tech>
+      <Tech name="The Path Of Steel" rank="5" id="crab_the_path_of_steel">
+        <Description>
+The greatest and most sacred duty of the Kaiu is crafting
+the sacred weapons of the Crab Clan. When crafting any
+weapon, you may choose to confer either a +1k0 bonus
+to all attack rolls made with that weapon, or a +0k1 bonus
+to all damage rolls made with that weapon. If the
+weapon is a katana, you may expend all your Void Points
+(a minimum of one point must be spent) to make the
+blade unbreakable (as per the Sacred Weapon: Kaiu Blade
+Advantage). Doing so renders you unable to recover Void
+Points for one week.
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+  </School>
+  <School clanid="crab" name="Kuni Witch Hunter School" id="crab_ob_kuni_witch_hunter_school">
+    <Trait>willpower</Trait>
+    <Honor>5.5</Honor>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>crab_monk</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="investigation" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="lore_maho" rank="1"/>
+      <Skill id="lore_shadowlands" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="To See The Darkness" rank="1" id="crab_to_see_the_darkness">
+        <Description>
+Witch-Hunters are taught both to sense the power of
+Jigoku and to crush those who carry its dreadful mark.
+You may attempt to detect the Taint in another person by
+holding your jade pendant (or another piece of jade) and
+staring intently at them. This is a Complex Action and requires
+you to make a Contested Roll of your Investigation
+(Interrogation) / Awareness against the target's Sincerity
+(Deceit) / Willpower. You gain a +1k0 bonus to this roll
+for every full Rank of Taint the target possesses. If you
+succeed in the roll and the target is Tainted (has at least 1
+Rank of Taint), you are able to sense the presence of the
+Taint and its approximate strength. If you fail the roll or
+the target is not Tainted, you gain no information.
+In addition, you gain +1k1 to your rolls to
+resist the Shadowlands Taint and to your
+attack rolls when attacking a foe who is a
+Shadowlands creature or who you know
+to be Tainted.
+      </Description>
+      </Tech>
+      <Tech name="To Ride The Darkness" rank="2" id="crab_to_ride_the_darkness">
+        <Description>
+Witch-Hunters do not confi ne themselves
+to rooting out Tainted men and
+women—they also learn how to fi ght the
+creatures of the Shadowlands, and spend considerable
+time studying their strengths and weaknesses.
+Any time you are confronted by a Shadowlands creature,
+you may take a Free Action to roll Lore: Shadowlands
+/ Intelligence at TN 20 to recall either one specifi c strength
+(such as Invulnerability) or one specifi c weakness (such
+as jade) for that creature. You choose whether you recall
+a strength or a weakness, but the GM chooses the exact
+information. You may Raise on this roll to learn additional
+pieces of information—one strength or weakness per Raise.
+      </Description>
+      </Tech>
+      <Tech name="To Strike The Darkness" rank="3" id="crab_to_strike_the_darkness">
+        <Description>
+At this rank the Witch-Hunter learns to call on the power
+of purity to guide and strengthen his blows. You may
+make melee attacks as a Simple Action when your opponent
+is a Shadowlands creature or when you know your
+opponent to be Tainted.
+      </Description>
+      </Tech>
+      <Tech name="To Repel The Darkness" rank="4" id="crab_to_repel_the_darkness">
+        <Description>
+The Witch-Hunter's intense study and spiritual training
+now gives him access to esoteric powers and makes it
+almost impossible for the forces of darkness to deceive
+him. You gain a +3k0 bonus to the roll for your Rank One
+ability to detect the Taint and to the roll for your Rank
+Two ability. In addition, you may learn one Kiho. (If the
+optional rule allowing Kiho for non-Brotherhood monks is
+in effect, this Kiho does not count against the maximum
+number of Kiho you can learn, although it is subject to
+their other mechanical limitations such as Mastery Level.)
+      </Description>
+      </Tech>
+      <Tech name="To Shatter The Darkness" rank="5" id="crab_to_shatter_the_darkness">
+        <Description>
+The Witch-Hunter is now the true nemesis of Jigoku's
+forces, able to strike down his enemies with unmatched
+power. You gain a +4k1 bonus to your attack and damage
+rolls against Shadowlands creatures and against foes you
+know to be Tainted. This stacks with the attack bonus from
+your Rank One technique.
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+  </School>
+</L5RCM>

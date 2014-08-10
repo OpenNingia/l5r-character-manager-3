@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="monks" name="Order of the Wind" id="order_of_the_wind">
+    <Trait>Reflexes</Trait>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>monks_monk</Tag>
+      <Tag>brotherhood</Tag>
+      <Tag>monks_brotherhood</Tag>
+    </Tags>
+    <Devotion>Fortunism</Devotion>
+    <Kihos count="3"/>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <Skill id="staves" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Essence of the Wind" rank="1" id="essence_of_the_wind">
+        <Description>
+        A true Brother of the Wind allows the world to move around him like a breeze, remaining centered and assured throughout the chaos of existence. Any effect that targets you and attempts to influence your behavior, whether it be a spell, a courtier Technique, a social Skill or Advantage, or any other mechanic, requires an additional Void Point to take effect. (However, this can bypass the normal limit on spending one Void Point per Round for enhancement effects.)
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="0" zeni="2">
+      <Item>Bo (or pair of jo)</Item>
+      <Item>Coarse and plain Traveling Clothing</Item>
+      <Item>Scroll Satchel with passages from the Tao</Item>
+    </Outfit>
+  </School>
+  <School clanid="monks" name="Wind's Grace Order" id="winds_grace_order">
+    <Trait>Reflexes</Trait>
+    <Honor>6.5</Honor>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>monks_monk</Tag>
+      <Tag>brotherhood</Tag>
+      <Tag>monks_brotherhood</Tag>
+    </Tags>
+    <Devotion>Shintao</Devotion>
+    <Kihos count="3"/>
+    <Skills>
+      <Skill id="calligraphy" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill id="kyujutsu" rank="1"/>
+      <Skill id="lore_theology" rank="1" emphases="Shintao"/>
+      <Skill id="meditation" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Pillars of the Mind's Eye" rank="1" id="pillars_of_the_minds_eye">
+        <Description>
+        By clearing the mind and embracing absolute serenity and focus, a brother of the Wind's Grace can grasp the simple truth: the arrow and the target are already one. You make an archery attack as a Complex Action; for every Kiho you have that is presently active, you gain a bonus of +1k0 to the total of that roll. Active Kiho may not have any other effects during a Round in which you employ this Technique, and only one Martial Kiho can confer this benefit. However, any time you use this Technique to make an attack that directly results in the death of an intelligent being, you lose 3 points of Honor.
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="0" zeni="2">
+      <Item>Bo (or pair of jo)</Item>
+      <Item>Coarse and plain Traveling Clothing</Item>
+      <Item>Scroll Satchel with passages from the Tao</Item>
+    </Outfit>
+  </School>
+  <School clanid="monks" name="Fukurokujin's Eyes" id="fukurokujins_eyes">
+    <Trait>Perception</Trait>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>monks_monk</Tag>
+      <Tag>brotherhood</Tag>
+      <Tag>monks_brotherhood</Tag>
+    </Tags>
+    <Devotion>Fortunism</Devotion>
+    <Kihos count="3"/>
+    <Skills>
+      <Skill id="calligraphy" rank="1"/>
+      <Skill id="divination" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill id="investigation" rank="1"/>
+      <Skill id="lore_history" rank="1"/>
+      <Skill id="lore_theology" rank="1" emphases="Shintao"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+        <Wildcard modifier="not">bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Way of the Closed Eye" rank="1" id="way_of_the_closed_eye">
+        <Description>
+        By observing and anticipating, monks of Fukurokujin's Eyes can accurately predict the actions of others and take advantage of this foreknowledge in a variety of ways. You may not be surprised by ambushes. Further, at the start of a skirmish prior to rolling Initiative, you may spend a Void Point and make a Perception Trait Roll at TN 20. If the roll succeeds, you may increase your subsequent Initiative Score by 20. However, this bonus is lost instantly if you make an attack of any kind.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="0" zeni="2">
+      <Item>Bo (or pair of jo)</Item>
+      <Item>Coarse and plain Traveling Clothing</Item>
+      <Item>Scroll Satchel with passages from the Tao</Item>
+    </Outfit>
+  </School>
+</L5RCM>

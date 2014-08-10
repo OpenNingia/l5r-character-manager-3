@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Family clanid="crab" name="Hida" id="crab_hida">
+    <Trait>strength</Trait>
+  </Family>
+  <Family clanid="crab" name="Hiruma" id="crab_hiruma">
+    <Trait>agility</Trait>
+  </Family>
+  <Family clanid="crab" name="Kaiu" id="crab_kaiu">
+    <Trait>intelligence</Trait>
+  </Family>
+  <Family clanid="crab" name="Kuni" id="crab_kuni">
+    <Trait>intelligence</Trait>
+  </Family>
+  <Family clanid="crab" name="Toritaka" id="crab_toritaka">
+    <Trait>perception</Trait>
+  </Family>
+  <Family clanid="crab" name="Yasuki" id="crab_yasuki">
+    <Trait>awareness</Trait>
+  </Family>
+</L5RCM>

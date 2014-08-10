@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="dragon" id="dragon_mirumoto_bushi_school" name="Mirumoto Bushi School">
+    <Trait>stamina</Trait>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>dragon_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="defense" rank="1"/>
+      <Skill id="iaijutsu" rank="1"/>
+      <Skill emphases="Katana" id="kenjutsu" rank="1"/>
+      <Skill id="lore_shugenja" rank="1"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+        <Wildcard>high</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="dragon_way_of_the_dragon" name="Way Of The Dragon" rank="1">
+        <Description>Initiates of the Mirumoto Bushi School must master the basic principles of Niten, the two-sword technique founded by Mirumoto himself. When wielding a katana in your main hand and a wakizashi in your off hand, you suffer no penalties of any kind for dual wielding, and you gain a bonus of your School Rank to your Armor TN (This is cumulative with the normal bonus for wielding two weapons). Additionally, when you are targeted with a spell, you may raise or lower the TN of that spell's Spellcasting Roll by 5.
+</Description>
+      </Tech>
+      <Tech id="dragon_the_calm_in_midst_of_thunder" name="The Calm In Midst Of Thunder" rank="2">
+        <Description>In addition to their focus on the art of kenjutsu, the Mirumoto study the art of the duel as well in order to properly face their traditional opponents among the Kakita. While you assume the Center Stance, you gain a bonus to the total of your Iaijutsu rolls equal to your Kenjutsu Skill Rank.
+</Description>
+      </Tech>
+      <Tech id="dragon_strong_and_swift" name="Strong And Swift" rank="3">
+        <Description>As the exploration of Niten continues, the student learns to overwhelm opponents with a flurry of blows while maintaining a superior defense. Attacking is a Simple Action for you while you use weapons with the Samurai keyword.
+</Description>
+      </Tech>
+      <Tech id="dragon_furious_retaliation" name="Furious Retaliation" rank="4">
+        <Description>Once an opponent presents himself as a threat, the Mirumoto will stop at nothing to defeat him to defend the honor of the family's teachings. During the Reactions Stage of Combat, you may choose one opponent who made or attempted an attack against you this Round. During your next Turn, you gain a bonus of +3k0 to all attack rolls against that target.
+</Description>
+      </Tech>
+      <Tech id="dragon_heart_of_the_dragon" name="Heart Of The Dragon" rank="5">
+        <Description>Masters of the Mirumoto Bushi School seem to strike from everywhere at once. If you attack twice in the same Turn while you are wielding a katana in your main hand and a wakizashi in your off hand, you may make one additional attack with your off hand as a Free Action.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="5" zeni="0">
+      <Item>Light Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="dragon" id="dragon_tamori_shugenja_school" name="Tamori Shugenja School">
+    <Trait>stamina</Trait>
+    <Affinity>earth</Affinity>
+    <Deficiency>air</Deficiency>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>dragon_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill emphases="Cipher" id="calligraphy" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="divination" rank="1"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="medicine" rank="1"/>
+      <Skill id="spellcraft" rank="1"/>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="3" element="earth"/>
+      <PlayerChoose count="2" element="fire"/>
+      <PlayerChoose count="1" element="water"/>
+    </Spells>
+    <Techs>
+      <Tech id="dragon_flesh_of_the_elements" name="Flesh of the Elements" rank="1">
+        <Description> The Tamori have learned to distill the essence of magic and contain it within concoctions or objects for later use. You may expend one spell slot to store a spell you know that has an Area of effect "one target person" or "one target creature" in a potion, to be activated later. This stored spell may be activated instantly by anyone holding the potion by expending a Simple Action to drink it or a Complex Action to throw it (depending upon the spell's target), using Athletics (Throwing) / Agility. Spells stored in this manner may be stored indefinitely, but count against your spell slots per day for each day that they continue to await activation. Creating a potion in this manner requires a number of hours equal to the stored spell's Mastery Level. You also gain a Free Raise on any spell with the Craft keyword.
+Spells: Sense, Commune, Summon, 3 Earth, 2 Fire, and 1 Water
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="5" zeni="0">
+      <Item>Robes</Item>
+      <Item>Wakizashi</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Scroll Satchel</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="dragon" id="dragon_kitsuki_investigator_school" name="Kitsuki Investigator School">
+    <Trait>perception</Trait>
+    <Honor>5.5</Honor>
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>dragon_courtier</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="courtier" rank="1"/>
+      <Skill emphases="Courtesy" id="etiquette" rank="1"/>
+      <Skill emphases="Interrogation" id="investigation" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <Skill id="sincerity" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>lore</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="dragon_kitsukis_method" name="Kitsuki's Method" rank="1">
+        <Description>The Kitsuki are masters of investigation and perception, noticing the most minute and telling details with merely a glance. You gain a Free Raise on all your Investigation Skill Rolls. However, while the Kitsuki are trained for investigation and diplomacy, unlike other courtiers they do not wholly neglect the ways of the warrior. In a skirmish, you add your Perception Trait Rank to your Armor TN.
+</Description>
+      </Tech>
+      <Tech id="dragon_wisdom_the_wind_brings" name="Wisdom The Wind Brings" rank="2">
+        <Description>The Kitsuki skill at noticing small details makes it very difficult to deceive them. Anyone making a Social Skill Roll for the purpose of lying to you or otherwise deceiving you, or making a Feint or Disarm Maneuver against you in a skirmish, must add +5 to their TN for each of your Kitsuki Investigator School Ranks.
+</Description>
+      </Tech>
+      <Tech id="dragon_know_the_rhythm_of_the_heart" name="Know The Rhythm Of The Heart" rank="3">
+        <Description>The Kitsuki study a secret methodology known as Ichi Miru, or "first look," which allows them to size up another person in almost a single glance. After speaking with someone for a few moments, you can roll Investigation (Notice) / Perception against a TN of their Intelligence x 5. A success grants you a true and accurate, if simple, picture of their personality and motivations. For example, you might perceive that a boisterous ronin is actually a calculating man who is trying to put on the picture of being a rude, simple fellow.
+</Description>
+      </Tech>
+      <Tech id="dragon_finding_the_path" name="Finding The Path" rank="4">
+        <Description>The Kitsuki has learned the art of uncovering and tracking others' social connections and networks of alliances. By conversing with someone for a few minutes, you can make a Contested Roll of your Investigation (Interrogation) / Intelligence against their Etiquette (Courtesy) / Intelligence to identify one of their allies or enemies. Each successful Raise you make on this roll will identify another of their allies or enemies (you choose whether you learn an ally or an enemy - the GM chooses which specific person is revealed).
+This technique can be used against each specific person once per day.
+</Description>
+      </Tech>
+      <Tech id="dragon_the_eyes_betray_the_heart" name="The Eyes Betray The Heart" rank="5">
+        <Description>Kitsuki's method allows its master practitioners to see through even the most practiced falsehoods and tricks. At this rank, any knowing attempt to lie to you (as opposed to unwittingly passing on false information) will almost certainly fail. You automatically make a Contested Roll of your Investigation (Interrogation) / Perception against the liar's Sincerity (Deceit) / Willpower, whether or not you suspect them of lying. Further, if you already known someone is lying to you, you gain a bonus of +5k0 on this Contested Roll, and my call Raises on the roll in an attempt to make them inadvertently give away more information than they intended (GM's choice what information they reveal).
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="5" zeni="0">
+      <Item>Traditional Clothing</Item>
+      <Item>Wakizashi</Item>
+      <Item>Knife</Item>
+      <Item>Calligraphy Set</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="dragon" id="dragon_togashi_tattooed_order" name="Togashi Tattooed Order">
+    <Trait>void</Trait>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>dragon_monk</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="craft_tattooing" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+        <Wildcard>high</Wildcard>
+        <Wildcard>merchant</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>lore</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="dragon_blood_of_the_kami" name="Blood Of The Kami" rank="1">
+        <Description>The blood of the Kami is barely diluted in the ruling line of the Togashi order, and the brothers chosen to serve the Dragon as Togashi vassals receive the mystical blood of a god in the form of unique tattoos. You gain two Tattoos at this rank.
+</Description>
+      </Tech>
+      <Tech id="dragon_body_of_stone" name="Body Of Stone" rank="2">
+        <Description>Master of the body is the first essential step of a monk's journey toward enlightenment, and martial arts are the perfect tool to bring the body and spirit into harmony. You gain a bonus of +1k1 to the total of all unarmed attack and damage rolls.
+</Description>
+      </Tech>
+      <Tech id="dragon_blessing_of_the_kami" name="Blessing Of The Kami" rank="3">
+        <Description>As an ise zumi continues his journey of self-discovery, accumulating new experiences along the way, he will eventually be judged worth of additional insight in the form of new tattoos. You gain two additional Tattoos.
+</Description>
+      </Tech>
+      <Tech id="dragon_will_of_stone" name="Will Of Stone" rank="4">
+        <Description>Perfect mastery of the flesh is an indication that a soul's journey is nearing its end. You may make unarmed attacks as a Simple Action rather than a Complex Action.
+</Description>
+      </Tech>
+      <Tech id="dragon_touch_of_the_kami" name="Touch Of The Kami" rank="5">
+        <Description>Insight into the true nature of the universe is the reward for a soul that seeks true mastery of the spirit. You gain two additional Tattoos.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="5" zeni="0">
+      <Item>Robes</Item>
+      <Item>Bo</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="dragon" id="dragon_ob_hoshi_tsurui_zumi" name="Hoshi Tsurui Zumi">
+    <Trait>void</Trait>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>dragon_monk</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill emphases="Void" id="meditation" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs/>
+    <Requirements/>
+    <Outfit bu="0" koku="2" zeni="0">
+      <Item>Robes</Item>
+      <Item>Bo</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="dragon" id="dragon_ob_hitomi_kikage_zumi" name="Hitomi Kikage Zumi">
+    <Trait>reflexes</Trait>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>dragon_monk</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+        <Wildcard>high</Wildcard>
+        <Wildcard>merchant</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+        <Wildcard>high</Wildcard>
+        <Wildcard>merchant</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>lore</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs/>
+    <Requirements/>
+    <Outfit bu="0" koku="4" zeni="0">
+      <Item>Sturdy Clothing</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="dragon" id="dragon_swordsmasters" name="Swordsmasters">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>dragon_bushi</Tag>
+      <Tag>advanced</Tag>
+      <Tag>dragon_advanced</Tag>
+    </Tags>
+    <Skills/>
+    <Spells/>
+    <Techs>
+      <Tech id="dragon_the_silence_of_two_strikes" name="The Silence Of Two Strikes" rank="1">
+        <Description>
+The Swordmaster's connection to his blades is nearly supernatural, allowing him to tune out the rest of the world. While wielding a katana in your main hand and a wakizashi in your offhand, you may spend Void Points twice per Turn.
+        </Description>
+      </Tech>
+      <Tech id="dragon_mirumotos_strength" name="Mirumoto's Strength" rank="2">
+        <Description>
+The Swordmaster feels the calm of the world when he stands before his opponent. In an iaijutsu duel, you always gain a +1k1 bonus to your Focus roll as though you had beaten your opponent with the Assessment roll, regardless of the roll's actual result. (Your opponent can still gain the +1k1 bonus for having a higher Assessment roll, but this does not impact your bonus.)
+        </Description>
+      </Tech>
+      <Tech id="dragon_harmony_and_precision" name="Harmony And Precision" rank="3">
+        <Description>
+The Swordmaster fells an opponent with each swing of the blade, striking exactly where he needs to devastate his enemies. While wielding a katana in your main hand and a wakizashi in your off hand, you may ignore your opponents Reduction (if any).
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements>
+      <Requirement field="fire" min="4" type="ring">Fire Ring: 4</Requirement>
+      <Requirement field="void" min="4" type="ring">Void Ring: 4</Requirement>
+      <Requirement field="iaijutsu" min="5" type="skill">Iaijutsu: 5</Requirement>
+      <Requirement field="kenjutsu" min="5" type="skill">Kenjutsu: 5</Requirement>
+      <Requirement field="lore_theology" min="4" type="skill">Lore (Theology): 4</Requirement>
+      <Requirement field="dragon" type="tag">Be a member of Dragon clan</Requirement>
+    </Requirements>
+  </School>
+  <School clanid="dragon" id="dragon_tamori_master_of_the_mountains" name="Tamori Master Of The Mountains">
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>dragon_shugenja</Tag>
+      <Tag>advanced</Tag>
+      <Tag>dragon_advanced</Tag>
+    </Tags>
+    <Skills/>
+    <Spells/>
+    <Techs>
+      <Tech id="dragon_integration_of_the_gods" name="Integration Of The Gods" rank="1">
+        <Description>
+The Master of the Mountain knows flexibility is the only way to survive in the harsh wilderness of the mountains. When casting a spell, you may choose to spend 2 spell slots of another Ring rather than a single spell slot of the appropriate Ring. (This cannot be the Ring of the opposing Element from the spell's Element, e.g. Air/Earth, Fire/Water.) For example, this means that you may spend 2 Earth spell slots to cast a Fire spell instead of a single Fire spell slot.
+        </Description>
+      </Tech>
+      <Tech id="dragon_inner_fortitude" name="Inner Fortitude" rank="2">
+        <Description>
+The Master of the Mountain draws power from within his own body as well as teh Elements outside. Your Shugenja School Rank increases by one. Additionally, you may spend a spell slot as a Free Action to gain Reduction 2 and +10 to your Armor TN. This effect lasts for a number of Rounds equal to your Earth Ring, ending during the Reactions Stage of the final Round. You may choose to end the effect early as a Free Action. For the purposes of casting spells, your School Rank is increased by 1.
+While this effect is active, you find it more difficult to tap into the Elements around you. You must call one Raise to no effect every time you cast a spell.
+        </Description>
+      </Tech>
+      <Tech id="dragon_power_in_need" name="Power In Need" rank="3">
+        <Description>
+The Master of the Mountain can coax power out of the most contrary kami by confronting them with his own strength and willpower. As a Simple Action you may spend a Void Point and a spell slot from any Ring. Choose a spell keyword. You gain a bonus of +4k1 to the total of all Spell Casting Rolls while casting spells with that keyword. This effect lasts until the end of the encounter (in combat) or for an hour (outside of combat).
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements>
+      <Requirement field="*any" min="4" type="ring">Any Ring: 4</Requirement>
+      <Requirement field="*any" min="3" type="ring">Any Ring: 3</Requirement>
+      <Requirement field="*any" min="3" type="ring">Any Ring: 3</Requirement>
+      <Requirement field="spellcraft" min="5" type="skill">Spellcraft: 5</Requirement>
+      <Requirement field="dragon" type="tag">Be a member of Dragon clan</Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

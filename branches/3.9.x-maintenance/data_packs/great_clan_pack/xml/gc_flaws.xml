@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Flaw type="spiritual" id="enlightened_madness" name="Enlightened Madness">
+    <Rank id="1" value="4"/>
+    <Rank id="2" value="6"/>
+  </Flaw>
+</L5RCM>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="mantis" name="Yoritomo Shugenja School" id="mantis_ob_yoritomo_shugenja_school">
+    <Trait>perception</Trait>
+    <Affinity>water</Affinity>
+    <Deficiency>earth</Deficiency>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>mantis_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="calligraphy" rank="1"/>
+      <Skill id="knives" rank="1"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <Skill rank="1" id="sailing" emphases="Navigation"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="1" element="air"/>
+      <PlayerChoose count="2" element="fire"/>
+      <PlayerChoose count="3" element="water"/>
+    </Spells>
+    <Techs>
+      <Tech name="Child Of The Sea" rank="1" id="mantis_child_of_the_sea">
+        <Description>
+The family line of the Yoritomo who possess the talent for
+magic have a strong bond with the sea and with weather
+as a whole. You may expend one spell slot to alter the wind
+conditions in your current location by one degree. If you
+also spend a Void Point, you may instead shift the entire
+weather status one degree. You may expend a maximum
+combined total of spell slots and/or Void Points equal to
+your School Rank each Round to enact these shifts. These
+shifts affect an area a number of miles equal to your
+School Rank in all directions from your current location.
+You gain a Free Raise on all Thunder spells.
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+  </School>
+  <School clanid="mantis" name="Mantis Brawler School" id="mantis_ob_mantis_brawler_school">
+    <Trait>agility</Trait>
+    <Honor>3.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>mantis_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="commerce" rank="1"/>
+      <Skill id="intimidation" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill id="knives" rank="1"/>
+      <Skill id="sailing" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>weapon</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Way Of The Drunken Fist" rank="1" id="mantis_way_of_the_drunken_fist">
+        <Description>
+The basic techniques of the Mantis Brawlers are based on
+the need to prevail in chaotic fi ghts on tilting ship decks…
+or when reeling drunk through a sake house. Brawlers are
+tough and slippery fi ghters who evade the grip of their enemies
+while striking them at every opportunity. If you are
+Prone, you do not suffer any penalties to your Armor TN
+or to your attacks with Small weapons (or when unarmed).
+You still gain the Prone Armor TN bonus against ranged
+attacks. Also, you gain a bonus of +1k0 to rolls made to
+take control of Grapples and to your damage rolls with
+unarmed strikes, improvised weapons, and Small weapons.
+      </Description>
+      </Tech>
+      <Tech name="Drunk Loses His Sandal" rank="2" id="mantis_drunk_loses_his_sandal">
+        <Description>
+Mantis Brawlers learn to be swift and fl exible fi ghters who
+attack their foes from unexpected directions, often deliberately
+offering the appearance of weakness in order to
+create openings. If you successfully perform the Feint maneuver,
+you may choose to reduce the extra damage from
+the Feint by 5 in order to add +5 to your Armor TN until
+the start of your next Turn; if you were Prone when you
+performed the Feint, you add +10 instead.
+Also, immediately after an enemy attack resolves against
+you (whether or not the attack hit or infl icted damage on
+you), you may take a Free Action to become Prone.
+      </Description>
+      </Tech>
+      <Tech name="Drunk Never Falls" rank="3" id="mantis_drunk_never_falls">
+        <Description>
+The third lesson of the Mantis Brawler is to win even when
+exhausted, dead drunk, or clubbed on the head. During a
+skirmish, you do not suffer any penalties for being Fatigued
+or Dazed, nor do you suffer any penalties for intoxication.
+If you become Stunned, you may still take one
+Simple Action per Round.
+      </Description>
+      </Tech>
+      <Tech name="Two Drunks Dance" rank="4" id="mantis_two_drunks_dance">
+        <Description>
+The erratic bobbing, squirming, and weaving of the Mantis
+Brawler creates additional opportunities for him to attack
+his foe. You may attack as a Simple Action when fi ghting
+unarmed, with an improvised weapon, or with a Small
+weapon.
+      </Description>
+      </Tech>
+      <Tech name="Drunk Pounds A Door" rank="5" id="mantis_drunk_pounds_a_door">
+        <Description>
+The final lesson of the Mantis Brawler is to strike so hard
+his foe never gets the chance to strike back. When making
+a melee attack you may spend a Void Point to deliver a
+fi erce shattering blow; this attack gains a bonus of +4k1 to
+both the attack roll and the damage roll. If you are Prone,
+the bonus is +4k2 instead.
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+  </School>
+  <School clanid="mantis" name="Tsuruchi Bounty Hunter School" id="mantis_ob_tsuruchi_bounty_hunter_school">
+    <Trait>agility</Trait>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>mantis_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill rank="1" id="hunting" emphases="Tracking"/>
+      <Skill id="intimidation" rank="1"/>
+      <Skill id="investigation" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="kyujutsu" rank="1"/>
+      <Skill id="lore_underworld" rank="1"/>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="A Hunter's Sense" rank="1" id="mantis_a_hunters_sense">
+        <Description>
+A Tsuruchi bounty hunter is well known as a fi erce and
+terrible opponent of all who seek to evade justice, and
+even those who are without guilt fi nd them intimidating.
+You gain a bonus of +1k1 to any Intimidation Skill Roll
+used against someone of lower caste who you believe can
+help you fi nd your prey. When interacting with samurai,
+this bonus is reduced to +1k0 but applies to all Social Skill
+Rolls, not just Intimidation. Also, when you are hunting
+a particular target, you may roll additional unkept dice
+equal to your School Rank on any Hunting or Investigation
+Skill Rolls used to track the quarry down.
+      </Description>
+      </Tech>
+      <Tech name="No Prey Escapes" rank="2" id="mantis_no_prey_escapes">
+        <Description>
+A true master of the Tsuruchi method has an encyclopedic
+knowledge of criminals throughout the Empire and can
+use them as tools to capture his prey. You may spend a
+Void Point to automatically
+succeed at a
+Lore: Underworld Skill Roll to identify any criminals in
+an area who you might be able to press for information
+regarding your prey. You lose Honor as normal for associating
+with such individuals, however.
+      </Description>
+      </Tech>
+      <Tech name="Justice Of The Wasp" rank="3" id="mantis_justice_of_the_wasp">
+        <Description>
+The Tsuruchi hunters are merciless, but have a reputation
+for bringing their prey back alive to suffer a proper sentence
+for their criminal acts. When facing an opponent
+who has been declared guilty of a crime by an Imperial or
+a higher Mantis authority, you may make the Disarm or
+Knockdown Maneuvers for one Raise less than normal. If
+you successfully execute one of these Maneuvers against
+an opponent, that opponent is automatically Dazed.
+      </Description>
+      </Tech>
+      <Tech name="Twin Sting Strikes" rank="4" id="mantis_twin_sting_strikes">
+        <Description>
+The justice of a Tsuruchi is swift and without mercy. You
+may make ranged attacks as a Simple Action when wielding
+a yumi. Additionally, if facing any target decreed
+guilty of a crime by an Imperial or a higher Mantis authority,
+you may also make melee attacks as a Simple Action
+when wielding a katana or any knife.
+      </Description>
+      </Tech>
+      <Tech name="Eyes Of The Wasp" rank="5" id="mantis_eyes_of_the_wasp">
+        <Description>
+The worst truth a bounty hunter learns is that anyone can
+be a fugitive; thus a bounty hunter makes careful assessments
+of everyone he meets. When you identify a samurai
+using a Lore: Heraldry Skill Roll, you not only learn his
+Glory but also his Honor Rank and all Social and Mental
+Disadvantages. Also, any opponent who may be targeted
+by your Rank 3 Technique is now automatically Dazed
+if you successfully hit them with an attack, regardless of
+whether or not you use a Disarm or Knockdown Maneuver
+on them.
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+  </School>
+</L5RCM>

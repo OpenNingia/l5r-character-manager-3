@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="lion" name="Akodo Siege Strategist" id="lion_akodo_siege_strategist">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>lion_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>lion_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Broken by Tactics" rank="4" id="broken_by_tactics"><Description>The Akodo family’s mastery of warfare does extend to sieges, and while their expertise in that domain is not 
+so great as the Kaiu, they have attacked enough castles 
+over the centuries to make it a specific topic of study at the Akodo War College. When you are on the attacking side in a siege, your expertise makes it easier for your side to overcome the castle’s defenses. When rolling on the Mass Battle Table under those circumstances, you always receive a Heroic Opportunity, regardless of the normal result. Any structures on the opposing side suffer a 50% penalty to their Reduction, due to your superior understanding of their weaknesses (this penalty is applied after any defending bonuses to their Reduction).</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="battle" trg="mass_battle" type="skill" min="6">Battle (Mass Battle) 6</Requirement>
+      <Requirement field="engineering" trg="siege" type="skill" min="4">Engineering (Siege) 4</Requirement>
+      <RequirementOption text="Replaces Akodo Bushi 4 or Tactical Master 2">
+        <Requirement field="lion_the_eyes_of_the_general" type="rule" />
+        <Requirement field="lion_strength_of_my_ancestors" type="rule" />
+      </RequirementOption>
+    </Requirements>
+  </School>
+</L5RCM>

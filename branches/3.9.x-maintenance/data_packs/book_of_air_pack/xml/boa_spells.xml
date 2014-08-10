@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <SpellDef name="Air Kami's Blessing" area="Caster" mastery="3" element="air" range="Personal" duration="8 Hours" id="air_kamis_blessing">
+    <Tags/>
+    <Raises>
+      <Raise>Special (double the bonus for four Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Arrow's Flight" area="one arrow" mastery="1" element="air" range="Touch" duration="3 Rounds" id="arrows_flight">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 Round per Raise)</Raise>
+      <Raise>Special (one additional arrow per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Castle of Air" area="20' radius around the caster" mastery="4" element="air" range="Self" duration="10 Rounds" id="castle_of_air">
+    <Tags>
+      <Tag>illusion</Tag>
+      <Tag>defence</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+2 Rounds per Raise)</Raise>
+      <Raise>Special</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Defender from Beyond" area="One summoned spirit" mastery="5" element="air" range="30'" duration="5 minutes" id="defender_from_beyond">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 minute per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Elemental Cipher" area="One written page" mastery="2" element="air" range="Touch" duration="One Month" id="elemental_cipher">
+    <Tags>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (1 additional week per Raise)</Raise>
+      <Raise>Area of Effect (1 additional page per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Flight of Doves" area="Story told by one target person" mastery="2" element="air" range="25'" duration="10 minutes" id="flight_of_doves">
+    <Tags>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+5 feet per Raise)</Raise>
+      <Raise>Duration (5 minutes per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Freedom of the Air" area="One house or other residential building" mastery="2" element="air" range="50'" duration="Hours equal to caster's Air" id="freedom_of_the_air">
+    <Tags>
+      <Tag>wards</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area of Effect (3 Raises to affect a building as large as an inn, 6 Raises to affect a castle)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Funeral Rites" area="N/A" mastery="4" element="air" range="N/A" duration="5 minutes" id="funeral_rites">
+    <Tags/>
+    <Raises/>
+  </SpellDef>
+  <SpellDef name="Facing Your Devils" area="One target person or creature" mastery="5" element="air" range="30'" duration="10 rounds" id="facing_your_devils">
+    <Tags/>
+    <Raises>
+      <Raise>Range (+10' per Raise)</Raise>
+      <Raise>Duration (+2 Rounds per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Gathering Swirl" area="20' radius from caster" mastery="1" element="air" range="Centered on caster'" duration="1 round" id="gathering_swirl">
+    <Tags/>
+    <Raises>
+      <Raise>Area of Effect (+5' radius per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Garbled Tongue" area="Two conversing persons (one may be the caster)" mastery="3" element="air" range="30'" duration="5 minutes" id="garbled_tongue">
+    <Tags>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area of Effect (+1 person per two Raises)</Raise>
+      <Raise>Duration (+1 minute per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Howl of Isora" area="40' diameter" mastery="4" element="air" range="100'" duration="Instantaneous" id="howl_iof_isora">
+    <Tags>
+      <Tag>thunder</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+20' per Raise)</Raise>
+      <Raise>Area of Effect (add 5' to diameter for 2 Raises)</Raise>
+      <Raise>Special (+1k0 damage per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Look into the Soul" area="One target person or creature" mastery="4" element="air" range="50'" duration="1 Round" id="look_into_the_soul">
+    <Tags>
+      <Tag>divination</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area of Effect (one additional target per two Raises)</Raise>
+      <Raise>Special (learn additional Ring per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Piercing the Heavens" area="N/A" mastery="6" element="air" range="N/A" duration="5 Rounds" id="piercing_the_heavens">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 Round per 3 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Quiescence of Air" area="30 foot diameter sphere" mastery="2" element="air" range="Caster" duration="10 Rounds" id="quiescence_of_air">
+    <Tags>
+      <Tag>wards</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (change to 50' for 2 Raises)</Raise>
+      <Raise>Duration (+3 Rounds per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Request to Hato-no-Kami" area="one bird" mastery="2" element="air" range="150'" duration="1 hour" id="request_to_hatonokami">
+    <Tags>
+      <Tag>travel</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+50' per Raise)</Raise>
+      <Raise>Duration (+1 hour per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Seeking the Way" area="Caster's trail for one-half mile" mastery="4" element="air" range="touch" duration="3 hours" id="seeking_the_way">
+    <Tags>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 hour per Raise)</Raise>
+      <Raise>Area of Effect (one additional person's trail per Raise)</Raise>
+      <Raise>Special (additional one-quarter mile of trail per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Soul of Kaze-no-Kami" area="One target person (may be the caster)" mastery="3" element="air" range="20'" duration="10 minutes" id="soul_of_kazenokami">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+2 minutes per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Tenjin's Ear" area="30' radius around caster" mastery="4" element="air" range="caster" duration="5 minutes" id="tenjins_ear">
+    <Tags>
+      <Tag>travel</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (change to Touch for 3 Raises)</Raise>
+      <Raise>Area of Effect (+5' radius per Raise)</Raise>
+      <Raise>Duration (+1 minute per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Touch of Air's Grace" area="One target person (may be the caster)" mastery="3" element="air" range="touch" duration="1 hour" id="touch_of_airs_grace">
+    <Tags>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+10 minutes per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Voice of the Wind" area="One target person (may be the caster)" mastery="1" element="air" range="touch" duration="10 minutes" id="voice_of_the_wind">
+    <Tags/>
+    <Raises>
+      <Raise>Range (change to 20' for 2 Raises)</Raise>
+      <Raise>Duration (+2 minutes per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Whispers of the Forgotten" area="One target person (may be the caster)" mastery="4" element="air" range="50'" duration="5 minutes" id="whispers_of_the_forgotten">
+    <Tags/>
+    <Raises>
+      <Raise>Range (+25' per Raise)</Raise>
+      <Raise>Duration (+1 minute per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Wind of the Moon" area="One target person" mastery="6" element="air" range="50'" duration="1 minute" id="wind_of_the_moon">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 minute per 2 Raises)</Raise>
+      <Raise>Special (+1k1 on the Contested Air roll for 3 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Wind-Born Slumbers" area="One target person" mastery="2" element="air" range="50'" duration="5 minutes" id="windborn_slumbers">
+    <Tags/>
+    <Raises>
+      <Raise>Range (+10' per Raise)</Raise>
+      <Raise>Area of Effect (+1 person per 2 Raises)</Raise>
+      <Raise>Duration (+1 minute per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Wisdom of the Kami" area="Caster" mastery="4" element="air" range="touch" duration="1 minute" id="wisdom_of_the_kami">
+    <Tags/>
+    <Raises>
+      <Raise>Duration (+1 minute per Raise)</Raise>
+      <Raise>Special (+1 additional Skill Rank, once, for 3 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+</L5RCM>

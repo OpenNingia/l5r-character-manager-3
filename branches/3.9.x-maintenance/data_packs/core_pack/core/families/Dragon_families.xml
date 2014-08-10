@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Family clanid="dragon" name="Kitsuki" id="dragon_kitsuki">
+    <Trait>awareness</Trait>
+  </Family>
+  <Family clanid="dragon" name="Mirumoto" id="dragon_mirumoto">
+    <Trait>agility</Trait>
+  </Family>
+  <Family clanid="dragon" name="Tamori" id="dragon_tamori">
+    <Trait>willpower</Trait>
+  </Family>
+  <Family clanid="dragon" name="Togashi" id="dragon_togashi">
+    <Trait>reflexes</Trait>
+  </Family>
+  <Family clanid="dragon" name="Hitomi" id="dragon_hitomi">
+    <Trait>strength</Trait>
+  </Family>
+  <Family clanid="dragon" name="Hoshi" id="dragon_hoshi">
+    <Trait>void</Trait>
+  </Family>
+</L5RCM>

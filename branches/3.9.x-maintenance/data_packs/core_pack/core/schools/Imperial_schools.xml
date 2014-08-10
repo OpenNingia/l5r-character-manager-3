@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="imperial" id="imperial_seppun_guardsman_school" name="Seppun Guardsman School">
+    <Trait>perception</Trait>
+    <Honor>6.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>imperial_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="battle" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill id="iaijutsu" rank="1"/>
+      <Skill emphases="Katana" id="kenjutsu" rank="1"/>
+      <Skill id="kyujutsu" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="imperial_never_in_darkness" name="Never In Darkness" rank="1">
+        <Description>The Seppun are taught to be unswerving in their Honor, and nothing can draw them away from their duty. Any time you are rolling to resist a Social Skill roll which could tempt or lead you away from your duty - such as Temptation, Intimidation, or even Courtier - you roll additional unkept dice equal to your School Rank. You gain a +1k1 bonus any time you are making an Investigation roll to detect an ambush or surprise attack.
+</Description>
+      </Tech>
+      <Tech id="imperial_the_clouds_part" name="The Clouds Part" rank="2">
+        <Description>The Seppun's blows are infused with his dedication to the Emperor's cause. At the start of your Turn, you may spend a Void Point to add your Honor Rank to the total of your attack and damage rolls until your Next Turn.
+</Description>
+      </Tech>
+      <Tech id="imperial_suns_light_reveals" name="Sun'S Light Reveals" rank="3">
+        <Description>The Seppun's dedication now allows him to see through all manner of deceptions, even magical ones. At any time you may choose to spend a Void point as a Free Action to roll Investigation (Notice) / Perception at TN 25. With a success, you immediately see through all disguises and illusions around you, whether normal or magical in nature. If you are in the presence of the Emperor, his immediate family, or a major Imperial Official (Chancellor, Shogun, etc) you do not need to spend a Void Point to activate this Technique. Once you have pierced a specific disguise/illusion, it no longer has any effect on you (although a new disguise or illusion you encounter later will function normally).
+</Description>
+      </Tech>
+      <Tech id="imperial_speed_of_heaven" name="Speed Of Heaven" rank="4">
+        <Description>The power of Heaven infuses the Seppun's arm, allowing him to strike with greater speed. You may now attack as a Simple Action when using weapons with the Samurai keyword.
+</Description>
+      </Tech>
+      <Tech id="imperial_heaven_never_falls" name="Heaven Never Falls" rank="5">
+        <Description>The true Seppun bodyguard is never caught off-guard, and can protect his charge even when surprised or disabled. Any time you are within 20' of a person you are guarding, you may spend a Void Point to leap in front of a blow or spell which is targeting your charge. The damage is automatically applied to you instead of your charge. If you are still standing (not Down or Out) after this damage, you may immediately take an extra Simple Action, which may be used for any purpose including an attack. This Technique can be used even if your character is Blinded, Prone, Stunned, Dazed, Entangled, or at the Down Wound Rank (but not Grappled or at the Out Wound Rank).
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="10" zeni="0">
+      <Item>Light Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>any 1 Weapon</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="imperial" id="imperial_seppun_shugenja_school" name="Seppun Shugenja School">
+    <Trait>intelligence</Trait>
+    <Affinity>fire</Affinity>
+    <Deficiency>water</Deficiency>
+    <Honor>6.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>imperial_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="calligraphy" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill emphases="Notice" id="investigation" rank="1"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="1" element="air"/>
+      <PlayerChoose count="2" element="earth"/>
+      <PlayerChoose count="3" element="fire"/>
+    </Spells>
+    <Techs>
+      <Tech id="imperial_in_defense_of_the_throne" name="In Defense of the Throne" rank="1">
+        <Description> The Hidden Guard exist only to defend their Emperor, and are terrible opponents for any who might pose a danger to the sanctity of the Son of Heaven. You gain a Free Raise on any spell cast to protect the life, personal belongings, family, or reputation of the Emperor, as long as the action taken would not cause you to lose Honor. This includes members of the Imperial families (though not yourself). You also gain a Free Raise on any spells known only to the Imperial families.
+Spells: Sense, Commune, Summon, 3 Fire, 2 Water, and 1 Air
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="10" zeni="0">
+      <Item>Robes</Item>
+      <Item>Wakizashi</Item>
+      <Item>Bo</Item>
+      <Item>Scroll Satchel</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="imperial" id="imperial_otomo_courtier_school" name="Otomo Courtier School">
+    <Trait>awareness</Trait>
+    <Honor>5.5</Honor>
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>imperial_courtier</Tag>
+    </Tags>
+    <Skills>
+      <Skill emphases="Manipulation" id="courtier" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill emphases="Control" id="intimidation" rank="1"/>
+      <Skill id="investigation" rank="1"/>
+      <Skill id="sincerity" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="imperial_the_voice_of_heaven" name="The Voice Of Heaven" rank="1">
+        <Description>The Otomo believe that nothing done in the name of the Emperor and Imperial authority can ever be truly dishonorable. Their appointed role within the Empire is to spread conflict between the clans so they cannot unite against Imperial power, and the Otomo do this without hesitation. You do not lose Honor for using the Intimidation (Control) Skill. Any time you are in conversation with someone from one of the clans (Great or Minor), you may make a Contested Roll of your Courtier (Manipulation) / Awareness against their Etiquette (Courtesy) / Awareness to provoke a disagreement or argument between them and someone from another clan or faction of your choice.
+</Description>
+      </Tech>
+      <Tech id="imperial_destiny_has_no_secrets" name="Destiny Has No Secrets" rank="2">
+        <Description>The Otmo have information networks that rival those of the Scorpion, and can call on them in almost any part of the Empire. If you have the opportunity to seek out your contacts, you may spend a Void Point to roll Courtier / Awareness at TN 25 to learn one piece of critically useful information (chosen by the GM).
+</Description>
+      </Tech>
+      <Tech id="imperial_my_masters_voice" name="My Master'S Voice" rank="3">
+        <Description>The Otomo speak with the direct authority of the Emperor, and the more experienced among them have mastered the art of "obiesaseru", using the authority of the Son of Heaven to stun their foes. You may only use this Technique against honorable samurai (Honor Rank 1.0 or better) who revere the Emperor - criminals, bandits, the Lost, and nonhumans are immune to its effects. To use obiesaseru, you must take a Complex Action to pause, gather your willpoewr, and shout an appropriate command (typically something like, "Stop in the name of the Emperor!"). You make a Contested Social Skill roll of Intimidation (Control) / Willpower against the target's Etiquette (Courtesy) / Willpower. (If the target sincerely believes he is acting honorably, he gains a Free Raise to his roll.) If you win the roll, on his next Turn the target may not move, attack, cast spells, or perform any other action that would directly obstruct or threaten you or your immediate friends/allies (GM's discretion as to who is considered your ally). He may, however, attack others who are not your allies, and regardless he can always use the Defense and full Defense Postures.
+</Description>
+      </Tech>
+      <Tech id="imperial_the_emperors_protection" name="The Emperor'S Protection" rank="4">
+        <Description>As a favored servant of Imperial power, the Otomo is under special protection , and can easily crush those foolish enough to disagree with him in public. Any time you are in an argument or debate with another person, you may spend a Void Point to make a Contested Roll of your Courtier (Manipulation) / Awareness against their Etiquette (Courtesy) / Awareness. If you win the roll, they must either agree with your position or immediately lose 5 points of Honor.
+</Description>
+      </Tech>
+      <Tech id="imperial_the_virtues_of_command" name="The Virtues Of Command" rank="5">
+        <Description>The Otomo is now able to bring the full power of Imperial authority to bear on those who displease him. When making an Contested Social Roll against someone who reveres Imperial authority, you may gain a +5k0 bonus on your roll.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="10" zeni="0">
+      <Item>Traditional Clothing</Item>
+      <Item>Wakizashi</Item>
+      <Item>Knife</Item>
+      <Item>Calligraphy Set</Item>
+    </Outfit>
+  </School>
+  <School clanid="imperial" id="imperial_miya_herald_school" name="Miya Herald School">
+    <Trait>awareness</Trait>
+    <Honor>6.5</Honor>
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>imperial_courtier</Tag>
+    </Tags>
+    <Skills>
+      <Skill emphases="Rhetoric" id="courtier" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill emphases="Courtesy" id="etiquette" rank="1"/>
+      <Skill id="horsemanship" rank="1"/>
+      <Skill id="lore_heraldry" rank="1"/>
+      <Skill id="sincerity" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="imperial_voice_of_the_emperor" name="Voice Of The Emperor" rank="1">
+        <Description>The Miya learn the ways of the Empire, so they can spread the word of the Emperor far and wide, and the art of non-aggression, so their words will be heard by all who respect the Emperor. While inside the borders of the Empire, you may spend a Void Point to gain the Way of the Land Advantage for the province you currently occupy - this effect lasts until you next sleep. Also, any Rokugani who reveres the Emperor and who knowingly and deliberately attacks you will automatically lose a number of points of Honor equal to twice your School Rank.
+</Description>
+      </Tech>
+      <Tech id="imperial_eyes_of_the_emperor" name="Eyes Of The Emperor" rank="2">
+        <Description>The Miya serve as peacekeepers as well as messengers, brokering treaties between warring factions in the Empire, and learn to remain impartial under the most intense pressure. You may add your Honor Rank to all Etiquette (Courtesy) skill rolls made to resist others' attempts to influence you.
+</Description>
+      </Tech>
+      <Tech id="imperial_hand_of_the_emperor" name="Hand Of The Emperor" rank="3">
+        <Description>The Miya's aura of peacefulness and non-aggression has now reached the point where it becomes difficult for honorable foes to attack him at all. At the start of a skirmish, or during the Reactions Step of any later round in a skirmish, you may spend a Void Point as a Free Action to prevent any Rokugani who reveres the Emperor from being able to harm you before the next Reactions step. (They can still attempt to capture or restrain you in a non-damaging way.) This Technique only takes effect as long as the Miya is not participating in the skirmish or in a duel.
+</Description>
+      </Tech>
+      <Tech id="imperial_blessings_of_the_emperor" name="Blessings Of The Emperor" rank="4">
+        <Description>
+At this rank, the Miya have developed a personality strong enough to impose their demand for peace on the more violent individuals around them, in what is essentially a specialized form of the Otomo technique of obiesaseru. This may be done a number of times per session equal to your School Rank, but you may only use this Technique against honorable samurai (Honor Rank 1.0 or better) who revere the Emperor - criminals, bandits, the Lost, and nonhumans are immune to its effects. To use this Technique, you take a Complex Action to step forward and forcefully demand an end to violence. ("This brawling will cease, in the name of the Emperor!") You make a Contested Roll of your Courtier (Rhetoric) / Awareness against the Etiquette (Courtesy) / Willpower of all affected person within hearing. All individuals who lose the roll must immediately cease all aggressive action, and cannot attack or cast offensive spells until they take damage or you give them permission to fight. (They can still use defensive abilities and the Defense and Full Defense stances.) The effect lasts for one minute, and the Technique can be used on the same targets again if it is resisted or expires. This Techniques affects both enemies and allies.
+        </Description>
+      </Tech>
+      <Tech id="imperial_glory_of_the_emperor" name="Glory Of The Emperor" rank="5">
+        <Description>The Herald is now a true master of non-aggression and diplomacy. When rolling with the Courtier or Etiquette skills against a target with at least Honor 1.0, you may add a +5k0 bonus to the roll.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="10" zeni="0">
+      <Item>Sensible Clothing</Item>
+      <Item>Wakizashi</Item>
+      <Item>Calligraphy Set</Item>
+      <Item>Horse (Rokugani pony)</Item>
+    </Outfit>
+  </School>
+</L5RCM>

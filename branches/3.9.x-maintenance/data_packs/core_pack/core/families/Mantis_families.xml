@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Family clanid="mantis" name="Kitsune" id="mantis_kitsune">
+    <Trait>awareness</Trait>
+  </Family>
+  <Family clanid="mantis" name="Moshi" id="mantis_moshi">
+    <Trait>intelligence</Trait>
+  </Family>
+  <Family clanid="mantis" name="Tsuruchi" id="mantis_tsuruchi">
+    <Trait>perception</Trait>
+  </Family>
+  <Family clanid="mantis" name="Yoritomo" id="mantis_yoritomo">
+    <Trait>stamina</Trait>
+  </Family>
+</L5RCM>

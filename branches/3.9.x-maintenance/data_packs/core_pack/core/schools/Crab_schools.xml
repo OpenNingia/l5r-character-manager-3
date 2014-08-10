@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="crab" id="crab_hida_bushi_school" name="Hida Bushi School">
+    <Trait>stamina</Trait>
+    <Honor>3.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crab_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill emphases="Tetsubo" id="heavy_weapons" rank="1"/>
+      <Skill id="intimidation" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="lore_shadowlands" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="crab_the_way_of_the_crab" name="The Way Of The Crab" rank="1">
+        <Description>
+The Hida bushi is the epitome of 'heavy infantry,' able to endure harsh blows and deliver crushing attacks in return. You may ignore TN penalties for wearing heavy armor for all skills except Stealth. When using a Heavy Weapon, you gain a bonus of +1k0 to the total of all damage rolls.
+        </Description>
+      </Tech>
+      <Tech id="crab_the_mountain_does_not_move" name="The Mountain Does Not Move" rank="2">
+        <Description>
+The Hida bushi is famous for extraordinary tenacity, weathering wounds that would kill normal men. You gain Reduction equal to your Earth Ring.
+        </Description>
+      </Tech>
+      <Tech id="crab_two_pincers_one_mind" name="Two Pincers, One Mind" rank="3">
+        <Description>
+A Hida bushi is relentless. You may make attacks as a Simple Action instead of a Complex Action while using Heavy Weapons or weapons with the Samurai keyword.
+        </Description>
+      </Tech>
+      <Tech id="crab_devastating_blow" name="Devastating Blow" rank="4">
+        <Description>
+A Hida stops at nothing to destroy his enemies once his anger is roused. Once per encounter, when wielding a Heavy Weapon you may make a calculated strike against the enemy. Lower the enemy's Reduction by 4 for this attack. If this attack succeeds, you Daze the target. The target may recover from this Conditional Effect by making a successful Earth Ring Roll versus a TN equal to your damage roll during the Reaction Stage of each Round. The TN decreases by 5 each time the target fails the roll.
+        </Description>
+      </Tech>
+      <Tech id="crab_the_mountain_does_not_fall" name="The Mountain Does Not Fall" rank="5">
+        <Description>
+Nothing can stop a Hida warrior from fulfilling his duty, not even the threat of death. You may spend a Void Point during the Reaction Stage. During your next Turn, you may take actions as if you were in the Healthy Wound Rank. You ignore the Dazed, Fatigued, and Stunned Conditional Effects. The benefits of this Technique last until the next Reactions Stage.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="3" zeni="0">
+      <Item>Light or Heavy Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>any Heavy Weapon or Polearm</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="crab" id="crab_kuni_shugenja_school" name="Kuni Shugenja School">
+    <Trait>willpower</Trait>
+    <Affinity>earth</Affinity>
+    <Deficiency>air</Deficiency>
+    <Honor>2.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>crab_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill emphases="Cipher" id="calligraphy" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="lore_shadowlands" rank="2"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="spellcraft" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>weapon</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="3" element="earth"/>
+      <PlayerChoose count="2" element="fire"/>
+      <PlayerChoose count="1" element="water"/>
+    </Spells>
+    <Techs>
+      <Tech id="crab_gaze_into_shadow" name="Gaze Into Shadow" rank="1">
+        <Description>
+The Kuni have carefully studied many of the most sinister opponents imaginable, and have learned how to combat them. You gain a bonus of +1k0 to the total of all Spell Casting Rolls when the target is any non-human creature, and any spell that inflicts damage inflicts an additional +1k1 damage when used against a target who possesses the Shadowlands Taint. You also gain a Free Raise on any spell with the Jade keyword.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="3" zeni="0">
+      <Item>Robes</Item>
+      <Item>Wakizashi</Item>
+      <Item>Knife</Item>
+      <Item>Scroll Satchel</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="crab" id="crab_yasuki_courtier_school" name="Yasuki Courtier School">
+    <Trait>perception</Trait>
+    <Honor>2.5</Honor>
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>crab_courtier</Tag>
+    </Tags>
+    <Skills>
+      <Skill emphases="Appraisal" id="commerce" rank="1"/>
+      <Skill id="courtier" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill id="intimidation" rank="1"/>
+      <Skill emphases="Deceit" id="sincerity" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>merchant</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="crab_the_way_of_the_carp" name="The Way Of The Carp" rank="1">
+        <Description>The Yasuki are masters of commerce and practice it far more openly than other samurai families; they do not consider it to be a breach of etiquette to engage in open commerce. You gain a Free Raise when using the Commerce skill, and you do not lose Honor or Glory for using the Commerce skill even in public. Also, Yasuki are taught from youth to be adept at sizing up their potential customers. When speaking with someone you may make a Contested Roll of your Commerce/Perception against their Etiquette/Awareness to discern some material object or service they want or desire.
+</Description>
+      </Tech>
+      <Tech id="crab_do_as_we_say" name="Do As We Say" rank="2">
+        <Description>The flip side of Yasuki commerce is Yasuki pushiness. The Yasuki are renowned for both their glib tongues and their high-pressure sales tactics, pressuring and deceiving their customers and allies into doing what they want. A number of times per session equal to your School Rank, you may re-roll a failed Sincerity or Intimidation Skill roll. You must keep the results of the second roll.
+</Description>
+      </Tech>
+      <Tech id="crab_treasures_of_the_carp" name="Treasures Of The Carp" rank="3">
+        <Description>Your contracts in the merchant and commercial circles of Rokugan make it possible for you to acquire almost anything you might need to satisfy a customer. You may roll Commerce/Awareness at TN 20 to locate a rare or useful item, subject to GM discretion, for someone else. You may track down higher-quality or rarer items by calling Raises.
+</Description>
+      </Tech>
+      <Tech id="crab_wiles_of_the_carp" name="Wiles Of The Carp" rank="4">
+        <Description>As ruthless merchants, the Yasuki are also skilled at seeing through the deceptions and blandishments of others. Anyone making a Social Skill Roll for the purpose of lying to you or deceiving you has their TN increased by an amount equal to 5 times your School Rank.
+</Description>
+      </Tech>
+      <Tech id="crab_what_is_yours_is_mine" name="What Is Yours Is Mine" rank="5">
+        <Description>The ultimate skill of the Yasuki is to influence others by offering them what they want the most. If you known of a material item someone needs, and arrange for them to get it, you gain a bonus of +5k0 to any Contested Social Rolls you make against that person for the next 24 hours.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="5" zeni="0">
+      <Item>Traditional Clothing</Item>
+      <Item>Wakizashi</Item>
+      <Item>Knife</Item>
+      <Item>Calligraphy Set</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="crab" id="crab_hiruma_bushi_school" name="Hiruma Bushi School">
+    <Trait>willpower</Trait>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crab_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="hunting" rank="1"/>
+      <Skill emphases="Katana" id="kenjutsu" rank="1"/>
+      <Skill id="kyujutsu" rank="1"/>
+      <Skill id="lore_shadowlands" rank="1"/>
+      <Skill id="stealth" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="crab_torchs_flame_flickers" name="Torch's Flame Flickers" rank="1">
+        <Description>The Hiruma learns to focus his trikes even while protecting himself, perfecting the penetrating quality of his blow without sacrificing his defense. While you assume the Attack Stance, you gain a bonus of +1k0 to the total of all attack rolls. You are skilled at survival and can make all food, water, and jade rations last twice as long for a number of people equal to your Hunting Skill Rank.
+</Description>
+      </Tech>
+      <Tech id="crab_wolfs_little_lesson" name="Wolf's Little Lesson" rank="2">
+        <Description>Hiruma learn to dash in and out in a single motion. While you assume the Attack Stance, you add 5 to your Armor TN every time you hit with a melee weapon. This bonus may stack a number of times equal to your School Rank and lasts unti the end of the skirmish.
+</Description>
+      </Tech>
+      <Tech id="crab_hummingbird_wings" name="Hummingbird Wings" rank="3">
+        <Description>The Hiruma know how the hummingbird can move in any direction and apply this truism to battle. Once per Round you may activate this Technique when an opponent targets you with an attack. You gain a bonus of double your School Rank to your Armor TN for that attack. This stacks with any other Armor TN bonuses you gain from other means (Such as spending a Void Point).
+</Description>
+      </Tech>
+      <Tech id="crab_shark_smells_blood" name="Shark Smells Blood" rank="4">
+        <Description>Against a weakened opponent, a Hiruma is a terrible foe indeed. You may make attacks as a Simple Action instead of a Complex Action when using a weapon with the Samurai keyword.
+</Description>
+      </Tech>
+      <Tech id="crab_daylight_wastes_no_movement" name="Daylight Wastes No Movement" rank="5">
+        <Description>The Hiruma learns to use no more energy than is precisely needed to kill his opponent. If you deliver more Wounds than necessary to kill your target, you may apply the exess Woudns to the next target you hit. This Technique does not activate two attacks in a row. The carry-over effect does not last beyond the end of the current skirmish.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="3" zeni="0">
+      <Item>Ashigaru or Light Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>Bow with 20 Arrows or Knife</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="crab" id="crab_toritaka_bushi_school" name="Toritaka Bushi School">
+    <Trait>strength</Trait>
+    <Honor>5.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crab_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill emphases="Falcons" id="animal_handling" rank="1"/>
+      <Skill id="hunting" rank="2"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="lore_spirit_realms" rank="1"/>
+      <Skill id="spears" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="crab_the_falcons_eyes" name="The Falcon's Eyes" rank="1">
+        <Description>A Toritaka must be aware of his surroundings at all times, for his enemies can appear anywhere. You add +1k0 to all Skill and raw Trait rolls involving the Perception Trait. Additionally, when striking a creature from another Spirit Realm (including oni from Jigoku and hungry dead from Gaki-do), you add +1k0 to all damage rolls.
+</Description>
+      </Tech>
+      <Tech id="crab_the_falcon_takes_flight" name="The Falcon Takes Flight" rank="2">
+        <Description>Through his training, the Toritaka can sense the emanations of nearby spirits as they cross over into the mortal realm. You may attempt to detect the presence of any creatures from other Spirit Realms by making a Perception Trait Roll against a TN equal to the creature's Air Ring x 5.
+</Description>
+      </Tech>
+      <Tech id="crab_the_falcons_wings" name="The Falcon's Wings" rank="3">
+        <Description>The Toritaka strikes with precision, constantly keeping his enemies at bay. You may make attacks as a Simple Action instead of a Complex Action while wielding a spear or a weapon with the Samurai keyword.
+</Description>
+      </Tech>
+      <Tech id="crab_vigilant_and_strong" name="Vigilant And Strong" rank="4">
+        <Description>Monsters may have tricks to confuse their enemies, but the Toritaka learns to see the truth through the fog. You may spend a Void Point to negate any darkness or blinding penalties. This effect lasts until the Reactions Phase two Rounds later.
+</Description>
+      </Tech>
+      <Tech id="crab_claws_of_the_falcon" name="Claws Of The Falcon" rank="5">
+        <Description>Nothing will stop the Toritaka's attack from hitting its target. Your attacks ignore up to 5 points of your opponent's Reduction (if he has any). Against creatures from other Spirit Realms, you may spend a Void Point as a Free Action to reduce the creature's Reduction by 10 for one Round.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="3" zeni="0">
+      <Item>Light Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="crab" id="crab_ob_hiruma_scout_school" name="Hiruma Scout School">
+    <Trait>reflexes</Trait>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crab_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="hunting" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="kyujutsu" rank="1"/>
+      <Skill id="lore_shadowlands" rank="1"/>
+      <Skill emphases="Sneaking" id="stealth" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="crab_dance_the_razors_edge" name="Dance the Razor's Edge" rank="1">
+        <Description>The Hiruma scouts learn the ways of the Shadowlands intimately, and are taught to rely on speed and stealth to survive, function, and escape in that most inhospitable of environments. You may add your Stealth Skill rank to the total of your Initiative rolls (unless caught by surprise or otherwise unaware). You can make all food, water, and jade rations last twice as long as normal for a number of people equal to your Hunting Skill Rank. While in the Shadowlands, you gain +1k0 to Stealth rolls and always know the direction of the Empire and roughly how far away it is.
+</Description>
+      </Tech>
+      <Tech id="crab_run_like_the_wind" name="Run Like the Wind" rank="2">
+        <Description>The Hiruma practice speed, evasion, and endurance in order to evade their enemies and deliver their scouting reports. You may make Free and Simple Move actions while in the Full Defense stance. You can run at high speed for a number of hours equal to your Stamina + School Rank, after which you are Exhausted until you have one hour's rest.
+</Description>
+      </Tech>
+      <Tech id="crab_veil_of_the_spirits" name="Veil of the Spirits" rank="3">
+        <Description>At this Rank, the Hiruma has perfected his skills with stealth to the point where they become almost supernatural. As long as you do not move and have some form of cover, concealment, or camouflage available (GM's discretion), you may spend a Void Point to make yourself all but invisible - in mechanical terms, this adds a number of kept dice to your Stealth roll equal to your School Rank. This effect lasts until you move or make a noise.
+</Description>
+      </Tech>
+      <Tech id="crab_harness_the_wind" name="Harness the Wind" rank="4">
+        <Description>The Hiruma has now learned to strike as swiftly as he runs. You may make attacks as a Simple Action instead of a Complex Action when using any samurai weapons, knife, or bow. You may also attack as a Simple Action regardless of weapon when fighting any Shadowlands creature or other known Tainted nonhuman (such as zombies or gaki).
+</Description>
+      </Tech>
+      <Tech id="crab_strike_of_the_stalker" name="Strike of the Stalker" rank="5">
+        <Description>The Hiruma Scouts strike their opponents from hiding, delivering vicious blows that get past all defenses. If you are striking a surprised or unaware foe, your Raises are not limited by your Void,a nd you can ignore 10 points of Reduction (from any source).
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="3" zeni="0">
+      <Item>Ashigaru or Light Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>Bow with 20 Arrows or Knife</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="crab" id="crab_defender_of_the_wall" name="Defender of the Wall">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crab_bushi</Tag>
+      <Tag>advanced</Tag>
+      <Tag>crab_advanced</Tag>
+    </Tags>
+    <Skills/>
+    <Spells/>
+    <Techs>
+      <Tech id="crab_the_flames_of_purity" name="The Flames Of Purity" rank="1">
+        <Description>The Defender of the Wall is ready to repel any unnatural assaults with the conviction of a pure soul. Creatures with the Shadowlands Taint may not reroll 10's on attack or damage rolls against you.
+</Description>
+      </Tech>
+      <Tech id="crab_hidas_strength" name="Hida's Strength" rank="2">
+        <Description>The Defender of the Wall is an impregnable fortress, even without wearing his armor. You gain Reduction 8. This stacks with any other Techiques or armor which grant you Reduction.
+</Description>
+      </Tech>
+      <Tech id="crab_the_crab_are_the_wall" name="The Crab Are The Wall" rank="3">
+        <Description>The Defender of the Wall will let nothing stop him short of death. Once per round, you may immediately negate one Condition on yourself (other than Mounted or Grappled).
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements>
+      <Requirement field="earth" min="4" type="ring">Earth Ring: 4</Requirement>
+      <Requirement field="strength" min="5" type="trait">Strength: 5</Requirement>
+      <Requirement field="defense" min="4" type="skill">Defense: 4</Requirement>
+      <Requirement field="heavy_weapons" min="4" type="skill">Heavy Weapons: 4</Requirement>
+      <Requirement field="lore_shadowlands" min="5" type="skill">Lore (Shadowlands): 5</Requirement>
+      <Requirement field="crab" type="tag">Be a member of Crab clan</Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

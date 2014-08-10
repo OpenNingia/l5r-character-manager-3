@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <KihoDef type="tattoo" id="tattoo_balance" name="Balance">
+    <Description>This tattoo of the spiritual yin-yang symbol
+calms the mind and spirit. While this tattoo is active,
+the TN of all Spell Casting Rolls made with you as
+the target are increased or decreased by an amount
+equal to twice your School Rank plus 5. You determine
+whether this is an increase or a decrease when
+you activate the tattoo.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_bamboo" name="Bamboo">
+    <Description>The bamboo plant is ubiquitous throughout
+the Empire, and is well known not only for the speed
+with which it grows, but also its durability. While this
+tattoo is active, your Armor TN is increased by an
+amount equal to twice your School Rank + 5.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_blaze" name="Blaze">
+    <Description>The power and fury of fire is unleashed in
+the Blaze tattoo. When activated, this tattoo causes
+your unarmed strikes to be bolstered with pure fire.
+Your unarmed attacks are accompanied by flickering
+fl ames that inflict an additional amount of fire damage
+equal to your Fire Ring plus your School Rank.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_centipede" name="Centipede">
+    <Description>The tiny centipede has hundreds of legs
+working in unison, and that power can be commanded
+by the monks who bear its image. When this
+tattoo is activated, you may make a special Complex
+Move Action that allows you to move a distance
+equal to your Water Ring x 100'. This effect lasts for
+an entire day, essentially allowing you to cross the
+face of the Empire in a day. If you stop for more than
+one minute, the effect ends. When the effect ends,
+you collapse into an exhausted state and can take no
+physical actions for a period of twelve hours.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_crab" name="Crab">
+    <Description>The tiny crab is resilient beyond all measure
+for its size. While this tattoo is active, you gain a
+Reduction rating equal to your Earth Ring.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_crane" name="Crane">
+    <Description>The crane is a symbol of luck and beauty.
+When you activate this tattoo, you gain a number of
+bonus dice equal to your School Rank plus your Air
+Ring. These dice may be spent on any Social Skill
+Rolls. Each die contributes a bonus of +1k0. If these
+bonus dice are not used within an hour, they are lost.
+You may not add more bonus dice to a single roll
+than your Void Ring. This tattoo is considered active
+the entire hour, and if another tattoo is activated,
+any unspent dice from this tattoo are lost.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_dragon" name="Dragon">
+    <Description>The dragon is a fearsome tattoo, and contains
+frightening power waiting to be unleashed. As
+a Complex Action, you may breathe fire in a cone,
+equal to ten feet plus your School Rank in length,
+and fi ve feet wide at the end. This fire deals damage
+to all in its area of effect, with a DR equal your Fire
+Ring. You take damage equal to your Fire Ring upon
+each use.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_hawk" name="Hawk">
+    <Description>You may borrow the essence of the hawk,
+and cover great distances with ease. As a Complex
+Action, you may leap a distance equal to your Water
+Ring x 25'.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_kirin" name="Ki-Rin">
+    <Description>There are few omens of good fortune more
+signifi cant than that of the sacred ki-rin. Upon activating
+this tattoo, you may immediately re-roll any
+one roll per round, keeping the higher of the two
+results.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_lion" name="Lion">
+    <Description>The lion is a proud and noble warrior. Upon
+activating this tattoo, you gain ranks equal to your
+School Rank in any Bugei Skill of your choice.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_mantis" name="Mantis">
+    <Description>The mantis is a fierce and fearless warrior
+out of all proportion to its tiny size. Upon receiving
+this tattoo, you are completely immune to all Fear
+effects. This tattoo is active at all times, and does not
+prevent the use of other tattoos.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_mountain" name="Mountain">
+    <Description>The mountain is eternal and unmoving.
+When you activate this tattoo, all your Wound
+Penalties are reduced by an amount equal to your
+School Rank plus 2.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_ocean" name="Ocean">
+    <Description>The ocean's boundless depths hold the secrets
+of life and rejuvenation. When granted this tattoo,
+you no longer have need of food or drink, although
+you may still partake of them if you wish. When this
+tattoo is activated, you are instantly refreshed as if
+you had spent eight hours of sleep, and you regain
+all spent Void Points. This tattoo may only be used
+once every three days.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_phoenix" name="Phoenix">
+    <Description>The Phoenix can never truly be defeated,
+rising as it does from the ashes to be born anew. You
+must have at least one unspent Void Point for this
+tattoo to be triggered. When you are reduced to the
+Down Wound Level or below, this tattoo automatically
+activates. All unspent Void Points are lost, and
+you immediately heal a number of Wounds equal to
+your School Rank x 10. This tattoo cannot be activated
+more than once per week.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_scorpion" name="Scorpion">
+    <Description>The scorpion is silent and deadly. While
+this tattoo is active, you roll additional dice on any
+Stealth Skill Roll equal to your School Rank. Also,
+during this time your unarmed attacks automatically
+Daze your opponent if any dice explode on your damage
+roll.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_spider" name="Spider">
+    <Description>The spider is quick and dexterous, escaping
+predators with its speed and agility. While this tattoo
+is active, you may move across vertical and inverted
+surfaces (such as sheer walls or ceilings) while making
+Move Actions. You move at half your normal rate
+when doing so.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_storm" name="Storm">
+    <Description>The storm is nature's fury, and few can stand
+against its raw power. While this tattoo is active,
+your unarmed attacks require only one Raise to use
+the Knockdown Maneuver.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_void" name="Void">
+    <Description>This ink black kanji represents oneness with
+all. When this tattoo is activated, you gain awareness
+of all life around you. You know the location
+and rough details of all living things within a radius
+of your School Rank x 10', even if you cannot see
+them. You know only rough details, such as “two
+warriors” or “a pair of rabbits,” not specifi c identities.
+You can recognize individuals well-known to
+you, however.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_wind" name="Wind">
+    <Description>The wind is swift and moves without hindrance.
+While this tattoo is active, you gain an additional
+Simple Action per round, which may not be
+used to make an attack. Your maximum total movement
+is not limited to your Water Ring x 20.</Description>
+  </KihoDef>
+  <KihoDef type="tattoo" id="tattoo_wolf" name="Wolf">
+    <Description>The wolf is the great tracker of the wilds.
+When you activate this tattoo, your senses become
+superhumanly sharp, allowing you to perceive small
+details and even individual scents. You gain a number
+of Free Raises on Hunting (Tracking) Skill Rolls
+equal to your School Rank. This tattoo's effect lasts a
+number of hours equal to your School Rank.</Description>
+  </KihoDef>
+</L5RCM>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="lion" name="Akodo Kensai" id="lion_akodo_kensai">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>lion_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>lion_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="The Heart of the Sword" rank="4" id="lion_the_heart_of_the_sword">
+        <Description>
+The Akodo Kensai navigates the battlefield with his katana
+in his hands. He remains untouched by the enemies
+around him, for he can direct the flow of combat with
+his own attacks. While using a sword and in the Attack
+Stance, you may increase your Armor TN by your Honor
+Rank against the first melee attack each Combat Round.
+Additionally, once per skirmish you may activate a Kata
+as a Free Action.
+            </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="iaijutsu" type="skill" min="4">Iaijutsu: 4</Requirement>
+      <Requirement field="kenjutsu" type="skill" min="5">Kenjutsu: 5</Requirement>
+      <RequirementOption text="You may ignore the Prodigy Advantage requirement, but add a Kenjutsu: 6 requirement">
+        <Requirement field="prodigy" type="rule">Prodigy Advantage</Requirement>
+        <Requirement field="kenjutsu" type="skill" min="6">Kenjutsu: 6</Requirement>
+      </RequirementOption>
+      <RequirementOption text="You may ignore the Prodigy Advantage requirement, but add a Iaijutsu: 5 requirement">
+        <Requirement field="prodigy" type="rule">Prodigy Advantage</Requirement>
+        <Requirement field="iaijutsu" type="skill" min="5">Iaijutsu: 5</Requirement>
+      </RequirementOption>
+      <Requirement field="*lion_bushi" type="school" min="3" max="3">Replaces any Lion Bushi 4</Requirement>
+    </Requirements>
+  </School>
+  <School clanid="lion" name="Lion Scout" id="lion_lion_scout">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>lion_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>lion_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Shadow Unseen" rank="2" id="lion_shadow_unseen">
+        <Description>
+The Lion Scout cultivates all the skills required to fulfi ll
+his tasks, setting aside his own honor for his clan. You
+may move at a normal rate while using the Stealth Skill,
+and you gain a +1k0 bonus to Stealth Skill Rolls and all
+Agility-based Bugei Skills.
+            </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="battle" type="skill" min="2">Battle: 2</Requirement>
+      <Requirement field="hunting" type="skill" min="3">Hunting: 3</Requirement>
+      <Requirement field="*lion_bushi" type="school" min="1" max="1">Replaces any Lion Bushi 2</Requirement>
+    </Requirements>
+  </School>
+  <School clanid="lion" name="Lion Paragon" id="lion_lion_paragon">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>lion_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>lion_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Pure and Dedicated" rank="3" id="lion_pure_and_dedicated">
+        <Description>
+The Lion Paragon lives by the tenets of Bushido, and the
+strength of his devotion allows him to push himself beyond
+his physical limits. You may make melee attacks as
+a Simple Action instead of a Complex Action. However, if
+you choose to do so, you may only make one attack that
+Turn. (This prohibits you from making any additional attacks,
+even with the Extra Attack Maneuver.)
+Once per skirmish, you may spend a Void Point as a
+Free Action to activate this Technique. Your Honor Rank
+is considered to be double for the purpose of your other
+School Techniques. (For example, if you are a Matsu
+Bushi, you add double your Honor Rank to all damage
+rolls from your Rank 1 Technique.) This effect may increase
+your Honor Rank above 10, but does not stack with
+any other effects that modify Technique bonuses; in such a
+case, choose the highest modifi er. The effects of this Technique
+end when the encounter ends.
+            </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="kenjutsu" type="skill" min="5">Kenjutsu: 5</Requirement>
+      <Requirement field="void" type="ring" min="4">Void Ring: 4</Requirement>
+      <Requirement field="honor" type="trait" min="7">Honor Rank: 7</Requirement>
+      <Requirement field="*lion_bushi" type="school" min="2" max="2">Replaces any Lion Bushi 3</Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

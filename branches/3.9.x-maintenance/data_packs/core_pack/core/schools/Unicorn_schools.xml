@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="unicorn" id="unicorn_moto_bushi_school" name="Moto Bushi School">
+    <Trait>strength</Trait>
+    <Honor>3.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>unicorn_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="horsemanship" rank="1"/>
+      <Skill id="hunting" rank="1"/>
+      <Skill emphases="Scimitar" id="kenjutsu" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="unicorn_the_way_of_the_unicorn" name="The Way Of The Unicorn" rank="1">
+        <Description>The Moto combat style is a wild, unfettered fury that intimidates witnesses. You may wield any two-handed weapon with one hand (except for bows). You gain a bonus of +1k0 to damage rolls while mounted, using a scimitar, or while using a two-handed melee weapon (these bonuses do not stack). Scimitars have the Samurai keyword for you.
+</Description>
+      </Tech>
+      <Tech id="unicorn_shinseis_smile" name="Shinsei's Smile" rank="2">
+        <Description>The Moto are famed for slicing their enemies' throats from ear to ear, a gruesome display they proudly call Shinsei's Smile. You take advantage of your opponent's weakened state, gaining a bonus to your attack rolls equal to half of his Wound Rank TN penalties, rounded down. For example, if your opponent is unhurt and in the Healthy Wound Rank, you do not gain a bonus. If your opponent is in the Crippled Wound Rank, you gain a bonus of +10 to the total of attack rolls.
+</Description>
+      </Tech>
+      <Tech id="unicorn_desert_wind_strike" name="Desert Wind Strike" rank="3">
+        <Description>Power and precision are equally valuable to the Moto. You may make attacks as a Simple Action instead of a Complex Action when using a melee weapon.
+</Description>
+      </Tech>
+      <Tech id="unicorn_the_charge_of_madness" name="The Charge Of Madness" rank="4">
+        <Description>The Moto fighting style is utterly relentless, allowing him to move from one foe to another without ceasing. Once per skirmish, if you successfully bring a target down to the Out Wound Level, you may immediately make an additional attack as a Free Action. This attack may not target the same target as the attack that activated Technique. You may not make Raises on this attack.
+</Description>
+      </Tech>
+      <Tech id="unicorn_moto_cannot_yield" name="Moto Cannot Yield" rank="5">
+        <Description>A Moto never surrenders. While mounted or while assuming the Full Attack Stance you keep an additional number of damage dice equal to half your strength, rounded down. You only gain this bonus while wielding a two-handed weapon or a weapon with the Samurai keyword.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="10" zeni="0">
+      <Item>Riding or Heavy Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>Heavy Weapon or Polearm</Item>
+      <Item>Traveling Pack</Item>
+      <Item>Horse (Unicorn riding horse)</Item>
+      <Item>any 1 weapon</Item>
+    </Outfit>
+  </School>
+  <School clanid="unicorn" id="unicorn_iuchi_shugenja_school" name="Iuchi Shugenja School">
+    <Trait>perception</Trait>
+    <Affinity>water</Affinity>
+    <Deficiency>fire</Deficiency>
+    <Honor>5.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>unicorn_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="battle" rank="1"/>
+      <Skill emphases="Cipher" id="calligraphy" rank="1"/>
+      <Skill id="horsemanship" rank="1"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <Skill id="spellcraft" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="1" element="air"/>
+      <PlayerChoose count="2" element="earth"/>
+      <PlayerChoose count="3" element="water"/>
+    </Spells>
+    <Techs>
+      <Tech id="unicorn_spirit_of_the_wind" name="Spirit of the Wind" rank="1">
+        <Description> The Iuchi harness the power of the elements to grant the waves' speed to others. As a Complex Action, you may sacrifice one spell slot of any element to grant one target individual an additional Simple Move Action. This Simple Action is in addition to the target's normal Actions per Round. The Additional Action must be used on the target's next Turn or it is lost. You also gain a Free Raise on any spell with the Travel keyword.
+Spells: Sense, Commune, Summon, 3 Water, 2 Earth, and 1 Air
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="10" zeni="0">
+      <Item>Extravagant clothing</Item>
+      <Item>wakizashi</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Calligraphy Set</Item>
+      <Item>Traveling Pack</Item>
+      <Item>Horse (Unicorn Riding Horse)</Item>
+    </Outfit>
+  </School>
+  <School clanid="unicorn" id="unicorn_ide_emissary_school" name="Ide Emissary School">
+    <Trait>awareness</Trait>
+    <Honor>5.5</Honor>
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>unicorn_courtier</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="calligraphy" rank="1"/>
+      <Skill id="commerce" rank="1"/>
+      <Skill id="courtier" rank="1"/>
+      <Skill emphases="Conversation" id="etiquette" rank="1"/>
+      <Skill id="horsemanship" rank="1"/>
+      <Skill emphases="Honesty" id="sincerity" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>perform</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="unicorn_the_heart_speaks" name="The Heart Speaks" rank="1">
+        <Description>The Ide are taught to adapt instantly to new customs and social nuances, allowing them to avoid giving offense in even the most dangerous and hostile of courts. Also, since they must often deal with foreigners who might react poorly to lies or manipulation, they are taught to employ honesty and direct speech whenever possible. In any situation in which you might inadvertently give offense, whether through accident or ignorance (such as being unware of a daimyo's hostility to a particular subject of conversation), you may roll Etiquette (Courtesy) / Awareness at TN 20 to avoid doing so. You gain a Free Raise when rolling Sincerity (Honest), but any time you roll Sincerity (Deceit), your TN is increased by +5.
+</Description>
+      </Tech>
+      <Tech id="unicorn_piercing_the_veils" name="Piercing The Veils" rank="2">
+        <Description>After centuries of dealing with unpredictable and sometimes violent folk in the Burning Sands, the Ide have learned an almost preternatural ability to read the emotions of others, recognizing their true feelings and, hopefully, steering away from trouble. You may attempt to read someone else's true emotions in a social situation by making a Contested Social Roll of Etiquette / Awareness against the target's Etiquette / Willpower. With a success, you gain a simple, general idea of their true feelings - which can be very useful when those feelings are not the same as their outward actions. You may Raise for better information, subject to GM's adjudication. (For example, two Raises might tell you, "The Doji is actually hoping for your success against the Dragon.")
+</Description>
+      </Tech>
+      <Tech id="unicorn_the_heart_listens" name="The Heart Listens" rank="3">
+        <Description>The Ide family's training emphasizes friendship and good personal relations as the key to successful diplomacy. You may attempt to sway someone's attitude toward you in a positive direction. This requires spending at least 10 minutes in conversation, after which you may make a Contested Roll of your Sincerity (Honesty) / Awareness against their Etiquette (Courtesy) / Willpower. With a success, you shift their attitude toward you in a positive direction. (A hostile individual will become more neutral, an undecided individual will become friendly, etc.) If you make at least two successful Raises on this roll, the target will regard you as an Ally for the remainder of this day (subject to GM approval).
+This technique cannot be used on Sworn Enemies, and the GM is the final arbiter on whether it functions against unusual targets such as nonhuman creatures.
+</Description>
+      </Tech>
+      <Tech id="unicorn_answering_the_heart" name="Answering The Heart" rank="4">
+        <Description>At this level of training, the Ide have become true masters of mediation, able to see past all the deceptions and false fronts of diplomacy and discern the true solution to any problem. When using your Rank Two and Rank Three techniques, you may roll additional unkept dice equal to your School Rank.
+</Description>
+      </Tech>
+      <Tech id="unicorn_the_immovable_hand_of_peace" name="The Immovable Hand Of Peace" rank="5">
+        <Description>The final lesson the Ide school teaches its students is to be such perfect mediators that no honorable person can raise a hand against them in violence. You may spend a Void Point to make a Contested Roll of your Sincerity (Honesty) / Awareness against a target individual's Etiquette (Courtesy) / Awareness. If you win the roll, the target cannot take any hostile action against you (physical, social, or magical) for a number of hours equal to twice your School Rank, as long as your likewise refrain from hostility against that person. This Technique does not work agaisnt those with an Honor Rank less than 2.0 or who possess no Honor Rank (animals, oni, etc).
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="10" zeni="0">
+      <Item>Extravagant Clothing</Item>
+      <Item>Wakizashi</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Calligraphy Set</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="unicorn" id="unicorn_utaku_battle_maiden" name="Utaku Battle Maiden">
+    <Trait>reflexes</Trait>
+    <Honor>6.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>unicorn_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="battle" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="horsemanship" rank="2"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="sincerity" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="unicorn_riding_in_harmony" name="Riding In Harmony" rank="1">
+        <Description>The Utaku Battle Maidens value honor above all. You gain a bonus equal to your Honor Rank to one attack per Round. While mounted, you may instead choose to apply to bonus to one damage roll if you choose. You gain a bonus equal to your Honor Rank to the total of all Horsemanship rolls.
+</Description>
+      </Tech>
+      <Tech id="unicorn_the_void_of_war" name="The Void Of War" rank="2">
+        <Description>An Utaku can sacrifice defense for speed if the flow of the battle calls for it. During Stage 1 of any Combat Round, you may add 5 to either your Initiative Score or your Armor TN. This bonus lasts until you use this Technique again or the skirmish ends.
+</Description>
+      </Tech>
+      <Tech id="unicorn_sensing_the_breeze" name="Sensing The Breeze" rank="3">
+        <Description>The natural feel of the saddle lends an Utaku unnatural freedom of movement. While mounted, you may make attacks as a Simple Action instead of a Complex Action.
+</Description>
+      </Tech>
+      <Tech id="unicorn_wind_never_stops" name="Wind Never Stops" rank="4">
+        <Description>Like the wind across the battlefield, the charge of an Utaku is unstoppable. While mounted, you may overrun the enemy spending a Void Point. You may take a Simple Action to charge the enemy and attack him at the end of your movement. (Both the movement and the attack take the same Simple Action. If you are mounted, this Action uses the movement rate of your steed.) If this attack succeeds, you gain a bonus of +2k1 to the total of all damage rolls this Turn.
+</Description>
+      </Tech>
+      <Tech id="unicorn_otakus_blessing" name="Otaku's Blessing" rank="5">
+        <Description>The Utaku carry the honor of their founder as their shield. At the beginning of your Turn, you may spend a Void Point as a Free Action to activate this Technique. You add your Honor Rank to all damage rolls and Bugei Skill Rolls this Turn. This bonus stacks with those from Riding in Harmony.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="10" zeni="0">
+      <Item>Light or Riding Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Traveling Pack</Item>
+      <Item>Horse (Utaku Warhorse)</Item>
+    </Outfit>
+  </School>
+</L5RCM>

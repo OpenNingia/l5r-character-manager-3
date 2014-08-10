@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <KataDef mastery="3" element="air" id="breath_of_wind_style" name="Breath of Wind Style">
+    <Description>Your initiative Score increases by 2 during the Reactions Stage of each Combat Round. This effect stacks but disappears immediately if the kata is no longer in effect</Description>
+    <Requirements>
+      <Requirement field="crane_kakita_bushi_school" type="tag">Kakita Bushi School</Requirement>
+      <Requirement field="scorpion_bayushi_bushi_school" type="tag">Bayushi Bushi School</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="air" id="striking_as_air" name="Striking as Air">
+    <Description>When in the Defense Stance your Armor TN is increased by your Air Ring</Description>
+    <Requirements/>
+  </KataDef>
+  <KataDef mastery="4" element="air" id="hidden_blade_style" name="Hidden Blade Style">
+    <Description>Your Disarm attacks deal normal damage rather than 2k1. You may not increase your damage on these attacks via Raises (including from use of the Feint Maneuver)</Description>
+    <Requirements>
+      <Requirement field="scorpion_bayushi_bushi_school" type="tag">Bayushi Bushi School</Requirement>
+      <Requirement field="mantis_yoritomo_bushi_school" type="tag">Yoritomo Bushi School</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="4" element="air" id="iron_forest_style" name="Iron Forest Style">
+    <Description>While using a spear or polearm, you may use your Air Ring instead of Agility for attack rolls</Description>
+    <Requirements>
+      <Requirement field="daidoji_iron_warrior" type="tag">Daidoji Iron Warrior</Requirement>
+      <Requirement field="boar_heichi_bushi_school" type="tag">Heichi Bushi School</Requirement>
+      <Requirement field="phoenix_shiba_bushi_school" type="tag">Shiba Bushi School</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="4" element="air" id="veiled_menace_style" name="Veiled Menace Style">
+    <Description>Once per turn, you may add your Stealth Skill Rank to your Armor TN for a single attack</Description>
+    <Requirements>
+      <Requirement field="scorpion_bayushi_bushi_school" type="tag">Bayushi Bushi School</Requirement>
+      <Requirement field="crab_hiruma_bushi_school" type="tag">Hiruma Bushi School</Requirement>
+      <Requirement field="mantis_tsuruchi_archer_school" type="tag">Tsuruchi Archer School</Requirement>
+      <Requirement field="mantis_yoritomo_bushi_school" type="tag">Yoritomo Bushi School</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="earth" id="iron_in_the_mountains_style" name="Iron in the Mountains Style">
+    <Description>You may use your Earth Ring in place of your Air Ring for the Defense Stance</Description>
+    <Requirements>
+      <Requirement field="daidoji_iron_warrior" type="tag">Daidoji Iron Warrior</Requirement>
+      <Requirement field="crab_hida_bushi_school" type="tag">Hida Bushi School</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="earth" id="striking_as_earth" name="Striking as Earth">
+    <Description>When in the Full Defense Stance you gain Reduction equal to your Earth Ring.  This is cumulative with other forms of Reduction</Description>
+    <Requirements/>
+  </KataDef>
+  <KataDef mastery="4" element="earth" id="indomitable_warrior_style" name="Indomitable Warrior Style">
+    <Description>Reduce your TN penalties from Wound Ranks by your Earth Ring</Description>
+    <Requirements>
+      <Requirement field="spider_daigotsu_bushi_school" type="tag">Daigotsu Bushi School</Requirement>
+      <Requirement field="crab_hida_bushi_school" type="tag">Hida Bushi School</Requirement>
+      <Requirement field="badger_ichiro_bushi_school" type="tag">Ichiro Bushi School</Requirement>
+      <Requirement field="unicorn_moto_bushi_school" type="tag">Moto Bushi School</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="fire" id="striking_as_fire" name="Striking as Fire">
+    <Description>When in the Full Attack Stance you may add your Fire Ring to the total of one attack roll made per round</Description>
+    <Requirements/>
+  </KataDef>
+  <KataDef mastery="4" element="fire" id="disappearing_world_style" name="Disappearing World Style">
+    <Description>Choose one opponent. Once per turn against that opponent, you may use your Agility trait instead of your Strength Trait for damage rolls.</Description>
+    <Requirements>
+      <Requirement field="lion_akodo_bushi_school" type="tag">Akodo Bushi School</Requirement>
+      <Requirement field="crane_kakita_bushi_school" type="tag">Kakita Bushi School</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="4" element="fire" id="reckless_abandon_style" name="Reckless Abandon Style">
+    <Description>You may add your Fire Ring to your Armor TN while in the Full Attack Stance</Description>
+    <Requirements>
+      <Requirement field="spider_daigotsu_bushi_school" type="tag">Daigotsu Bushi School</Requirement>
+      <Requirement field="lion_matsu_berserker_school" type="tag">Matsu Berserker School</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="5" element="fire" id="spinning_blades_style" name="Spinning Blades Style">
+    <Description>Once per turn while wielding a weapon in each hand, you may make the Extra Attack Maneuver for 3 Raises instead of 5.  The second attack comes from your off-hand weapon, dealing weapon damage as appropriate.  You may not increase your damage on either attack via Raises</Description>
+    <Requirements>
+      <Requirement field="dragon_mirumoto_bushi_school" type="tag">Mirumoto Bushi School</Requirement>
+      <Requirement field="mantis_yoritomo_bushi_school" type="tag">Yoritomo Bushi School</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="void" id="balance_the_elements_style" name="Balance The Elements Style">
+    <Description>You may use your Void Ring in place of your Reflexes for your Initiative roll</Description>
+    <Requirements>
+      <Requirement field="dragon_mirumoto_bushi_school" type="tag">Mirumoto Bushi School</Requirement>
+      <Requirement field="phoenix_shiba_bushi_school" type="tag">Shiba Bushi School</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="void" id="striking_as_void" name="Striking as Void">
+    <Description>When in the Center Stance your Armor TN is increased by your Void Ring</Description>
+    <Requirements/>
+  </KataDef>
+  <KataDef mastery="4" element="void" id="strength_of_purity_style" name="Strength Of Purity Style">
+    <Description>Once per turn while rolling damage, you may roll your Honor Rank instead of the normal Strength + DF of the weapon.  You keep dice equal to the DR of the weapon as usual.</Description>
+    <Requirements>
+      <Requirement field="lion_akodo_bushi_school" type="tag">Akodo Bushi School</Requirement>
+      <Requirement field="crane_kakita_bushi_school" type="tag">Kakita Bushi School</Requirement>
+      <Requirement field="lion_matsu_berserker_school" type="tag">Matsu Berserker School</Requirement>
+      <Requirement field="unicorn_utaku_battle_maiden" type="tag">Utaku Battle Maiden School</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="4" element="water" id="strength_in_arms_style" name="Strength In Arms Style">
+    <Description>Once per Turn while wielding a Heavy Weapon, you may use your Strength Trait instead of your Agility for an attack roll</Description>
+    <Requirements>
+      <Requirement field="crab_hida_bushi_school" type="tag">Hida Bushi School</Requirement>
+      <Requirement field="badger_ichiro_bushi_school" type="tag">Ichiro Bushi School</Requirement>
+      <Requirement field="unicorn_moto_bushi_school" type="tag">Moto Bushi School</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="4" element="water" id="striking_as_water" name="Striking as Water">
+    <Description>When in the Attack Stance you may move 5 additional feet as a Free Action</Description>
+    <Requirements/>
+  </KataDef>
+</L5RCM>

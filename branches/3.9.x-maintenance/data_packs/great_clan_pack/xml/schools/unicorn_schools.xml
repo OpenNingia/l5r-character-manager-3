@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="unicorn" name="Meishodo/Horiuchi Shugenja School" id="unicorn_meishodo_horiuchi_shugenja_school">
+    <Trait>stamina</Trait>
+    <Affinity>earth</Affinity>
+    <Deficiency>air</Deficiency>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>unicorn_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="calligraphy" rank="1"/>
+      <Skill id="craft_meishodo" rank="1"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <Skill id="spellcraft" emphases="Spell Research" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="3" element="earth"/>
+      <PlayerChoose count="2" element="water"/>
+      <PlayerChoose count="1" element="fire"/>
+    </Spells>
+    <Techs>
+      <Tech name="Mysteries of Meishodo" rank="1" id="unicorn_mysteries_of_meishodo">
+        <Description>
+Meishodo is a mixture of gaijin and Rokugani magic, resulting
+in a fast and powerful method of calling the kami.
+Shugenja studying these methods learn to create meishodo
+amulets, keyed to invoke the elements in specifi c ways.
+You may create a magical amulet by making a successful
+roll of Craft: Meishodo/Ring, using the Ring for the desired
+spell. The TN of this roll is equal to 15 plus 5x the spell's
+Mastery Level. Creating a meishodo requires a number of
+hours equal to the spell's Mastery Level. If the roll is successful,
+you create a small charm imbued with the prayer
+to the kami that will cast the chosen spell. Each meishodo
+stores only one spell, and is used in place of the scroll
+normally required to cast the spell.
+Casting a spell through a meishodo requires only one
+Complex Action, regardless of the Mastery Level of the
+spell. You do not have to make a Spell Casting Roll to
+cast the spell, but the spell cannot gain any benefi ts from
+Raises (not even Free Raises). You expend a spell slot as
+normal.
+You may only create meishodo from spells of a Mastery
+Level equal or less than your Shugenja School Rank, and
+can never create meishodo from spells of Mastery Level 4,
+5 or 6. Other shugenja may use your meishodo if they are
+proficient in meishodo magic (e.g. trained in this school).
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+  </School>
+  <School clanid="unicorn" name="Moto Vindicator School" id="unicorn_moto_vindicator_school">
+    <Trait>willpower</Trait>
+    <Honor>3.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>unicorn_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="horsemanship" rank="1"/>
+      <Skill id="hunting" rank="1"/>
+      <Skill id="investigation" emphases="Notice" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="kyujutsu" rank="1"/>
+      <Skill id="lore_shadowlands" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Purity of the Breath" rank="1" id="unicorn_purity_of_the_breath">
+        <Description>
+The Vindicator knows the only way to combat
+the Shadowlands is to maintain integrity in the
+face of the foulest corruption. At the beginning
+of each Round, you may choose one of two effects
+to apply until the end of the Round. You may
+reduce your TN penalties from Wound Ranks by
+an amount equal to your School Rank plus your
+Willpower. Or, you may instead choose to add a
+bonus to your Armor TN equal to your School Rank plus
+your Willpower.
+If you are in a skirmish against creatures of the
+Shadowlands, the chosen bonus is doubled.
+      </Description>
+      </Tech>
+      <Tech name="Facing the Dark Within" rank="2" id="unicorn_facing_the_dark_within">
+        <Description>
+The Vindicator learns to hone his senses so that he is never
+surprised by those who serve the darkness. You gain a
++2k0 bonus to all Investigation rolls. This bonus is increased
+to +2k1 if you are specifi cally attempting to notice
+effects of the Shadowlands Taint.
+      </Description>
+      </Tech>
+      <Tech name="Justice of our Ancestors" rank="3" id="unicorn_justice_of_our_ancestors">
+        <Description>
+The Vindicator's rage at his foes knows no bounds. You
+may make melee attacks as a Simple Action instead of a
+Complex Action.
+      </Description>
+      </Tech>
+      <Tech name="Avenging our Own" rank="4" id="unicorn_avenging_our_own">
+        <Description>
+The Vindicator's fury is provoked the most when it is directed
+at those creatures he once called his brothers. You
+gain a bonus of +2k0 to your attack and damage rolls
+against any enemy who has attacked you in this skirmish
+and against any creature with the Shadowlands Taint
+whether it has attacked you or not.
+      </Description>
+      </Tech>
+      <Tech name="Bloodied but Unbowed" rank="5" id="unicorn_bloodied_but_unbowed">
+        <Description>
+The Vindicator can push on past physical limits once his
+goal is in sight. Once per skirmish, you may choose to keep
+fi ghting despite your injuries. Activating this Technique is
+a Free Action. Once it is active, while making melee attacks
+you gain a bonus to the total of your damage rolls equal
+to the TN penalties you are suffering from Wound Ranks.
+(This uses the default Wound penalties, ignoring modifi cations
+from Advantages, spells, or other such effects.) The
+effects of this Technique last for two full Rounds. You may
+choose to extend the effects of this Technique for an additional
+Round by taking ten Wounds.
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+  </School>
+</L5RCM>

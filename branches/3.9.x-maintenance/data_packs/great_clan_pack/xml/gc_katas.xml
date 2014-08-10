@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <KataDef mastery="3" element="earth" id="strength_of_the_crab" name="Strength Of The Crab">
+    <Description>While wearing Armor and in the Attack Stance, your armor provides an additional +2 Reduction</Description>
+    <Requirements>
+      <Requirement field="crab_bushi" type="tag">Crab Bushi</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="air" id="strength_of_the_crane" name="Strength Of The Crane">
+    <Description>When fighting with a sword or spear you add an amount equal to your Honor Rank - 3 (minimum 1) to your Armor TN</Description>
+    <Requirements>
+      <Requirement field="crane_bushi" type="tag">Crane Bushi</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="fire" id="strength_of_the_dragon" name="Strength Of The Dragon">
+    <Description>While wielding a katana in your main hand and a wakizashi in your off hand, you gain a +3 bonus to your Armor TN</Description>
+    <Requirements>
+      <Requirement field="dragon_bushi" type="tag">Dragon Bushi</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="water" id="strength_of_the_lion" name="Strength Of The Lion">
+    <Description>One per Round during the Reactions stage, you may add +3 to the Initiative Score of one ally in a skirmish.  This effect can stack, but the kata's benefit disappears immediately if the kata is no longer active</Description>
+    <Requirements>
+      <Requirement field="lion_bushi" type="tag">Lion Bushi</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="water" id="son_of_storms" name="Son Of Storms">
+    <Description>When attacking with a Small melee weapon, any Reduction an opponent possesses is decreased by 1</Description>
+    <Requirements>
+      <Requirement field="lion_akodo_bushi_school" type="tag">Akodo Bushi School</Requirement>
+      <Requirement field="scorpion_shosuro_infiltrator_school" type="tag">Shosuro Infiltrator School</Requirement>
+      <Requirement field="mantis_yoritomo_bushi_school" type="tag">Yoritomo Bushi School</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="air" id="strength_of_the_mantis" name="Strength of The Mantis">
+    <Description>The attack penalty for ranged attacks fired against opponents currently in melee range is reduced by 3</Description>
+    <Requirements>
+      <Requirement field="mantis_bushi" type="tag">Mantis Bushi</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="air" id="dance_of_the_winds" name="Dance Of The Winds">
+    <Description>When wielding a polearm, or a spear, your Initiative Score is increased by 3</Description>
+    <Requirements>
+      <Requirement field="crane_daidoji_iron_warriors" type="tag">Daidoji Iron Warriors</Requirement>
+      <Requirement field="phoenix_shiba_bushi_school" type="tag">Shiba Bushi School</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="void" id="strength_of_the_phoenix" name="Strength Of The Phoenix">
+    <Description>Once per Turn when you declare a Guard Action, you may increase the Armor TN of the person you are guarding by an additional +3</Description>
+    <Requirements>
+      <Requirement field="phoenix_bushi" type="tag">Phoenix Bushi</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="fire" id="strength_of_the_scorpion" name="Strength Of The Scorpion">
+    <Description>Once per Turn after successfully making the Feint Maneuver, your damage total is increased by +3 Wounds</Description>
+    <Requirements>
+      <Requirement field="scorpion_bushi" type="tag">Scorpion Bushi</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="water" id="strength_of_the_unicorn" name="Strength Of The Unicorn">
+    <Description>While you are mounted, your steed gains a bonus of +3 to its Armor TN and an additional 3 Reduction</Description>
+    <Requirements>
+      <Requirement field="unicorn_bushi" type="tag">Unicorn Bushi</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="5" element="water" id="art_of_ninjutsu" name="Art of Ninjutsu">
+    <Description>Once per Round you may calculate the distance of a Move Action as if your Water is equal to your Stealth Skill Rank. This does not change the maximum distance you can move in a Round</Description>
+    <Requirements>
+      <Requirement field="spider_daigotsu_bushi_school" type="tag">Daigotsu Bushi School</Requirement>
+      <Requirement field="scorpion_bayushi_bushi_school" type="tag">Bayushi Bushi School</Requirement>
+      <Requirement field="crane_ob_daidoji_scout_school" type="tag">Daidoji Scout School</Requirement>
+      <Requirement field="shosuro_actor" type="tag">Shosuro Actor School</Requirement>
+      <Requirement field="scorpion_shosuro_infiltrator_school" type="tag">Shosuro Infiltrator School</Requirement>
+      <Requirement field="goju_ninja" type="tag">Goju Ninja School</Requirement>
+    </Requirements>
+  </KataDef>
+  <KataDef mastery="3" element="earth" id="strength_of_the_spider" name="Strength Of The Spider">
+    <Description>Once per Round if you successfully cause at least 15 Wounds to your opponent, he suffers a -3 penalty to the total of all rolls on his next Turn</Description>
+    <Requirements>
+      <Requirement field="spider_bushi" type="tag">Spider Bushi</Requirement>
+    </Requirements>
+  </KataDef>
+</L5RCM>

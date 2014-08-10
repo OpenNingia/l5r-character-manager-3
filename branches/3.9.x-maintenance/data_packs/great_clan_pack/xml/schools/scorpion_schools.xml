@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="scorpion" name="Yogo Wardmaster" id="scorpion_yogo_wardmaster_school">
+    <Trait>intelligence</Trait>
+    <Affinity>special</Affinity>
+    <Deficiency>special</Deficiency>
+    <Honor>1.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>scorpion_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill rank="1" id="calligraphy" emphases="Cipher"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill id="investigation" rank="1"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="spellcraft" rank="1"/>
+      <Skill id="stealth" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>low</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="3" element="*any" tag="wards"/>
+      <PlayerChoose count="3" element="!void"/>
+    </Spells>
+    <Techs>
+      <Tech name="Way of the Wardmaster" rank="1" id="scorpion_way_of_the_wardmaster">
+        <Description>
+The Yogo are masters at creating wards for later use. When
+you cast any spell with the Wards keyword, you may Raise
+a number of times equal to the spell's Mastery Level to instead
+place the spell into a paper ward. Once this is done, the
+paper ward will hold the spell “latent” until you activate it
+(as a Simple Action) by placing it on a target. Only you may
+activate your wards. The ward sticks to the target and immediately
+discharge the spell, whose duration is measured normally
+from that moment. If an area-effect spell is discharged
+onto a living target, it will only affect that target.
+Placing a paper ward on an unwilling target requires an
+unarmed melee attack using a roll of Spellcraft / Agility.
+An active ward may be physically torn/destroyed, which
+instantly ends any ongoing spell effects; this requires a
+Simple Action.
+You cannot recover the spell slot of a spell which has
+been cast into a paper ward until after the ward is discharged.
+If a ward is damaged or destroyed before it is
+discharged, it loses all power and you may regain the
+spell slot normally.
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+  </School>
+  <School clanid="scorpion" name="Shosuro Actors" id="scorpion_shosuro_actors_school">
+    <Trait>reflexes</Trait>
+    <Honor>1.5</Honor>
+    <Tags>
+      <Tag>ninja</Tag>
+      <Tag>scorpion_ninja</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="acting" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill id="knives" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <Skill rank="1" id="sincerity" emphases="Deceit"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>low</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="The First Face" rank="1" id="scorpion_the_first_face"/>
+      <Tech name="The Subtle Sting" rank="2" id="scorpion_the_subtle_sting"/>
+      <Tech name="The Second Face" rank="3" id="scorpion_the_second_face"/>
+      <Tech name="The Vipers Kiss" rank="4" id="scorpion_the_vipers_kiss"/>
+      <Tech name="The Third Face" rank="5" id="scorpion_the_third_face"/>
+    </Techs>
+    <Requirements/>
+  </School>
+</L5RCM>

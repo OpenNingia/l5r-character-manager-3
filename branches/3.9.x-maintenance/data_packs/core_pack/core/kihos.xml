@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <KihoDef mastery="3" element="air" type="internal" id="air_fist" name="Air Fist">
+    <Description>Perhaps the most basic of all Kiho, Air Fist allows a monk to channel the energy of the wind an lend its speed to his stries. While this Kiho is active, as long as the only attacks you make are unarmed attacks, your Initiative Score is increased by +5. If you make any other type of attack, the effect is immediately canceled. The damage of all unarmed strikes made while this Kiho is active is reduced by an amount equal to your Air Ring. This effect ends after a maximum of one day.</Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="6" element="air" type="kharmic" id="flee_the_darkness" name="Flee the Darkness">
+    <Description>A member of the Brotherhood is taught the fundamental lesson of keeping his spirit free from the darkness that can envelop all men. When this Kiho is activated, you become immune to the influence of the Shadowlands Taint (or other supernatural ailments, such as the influence of the Lying Darkness) for a number of rounds equal to your Air Ring. This immunity both prevents you from acquiring the Taint while the Kiho is active, and allows you to ignore all penalties (and benefits) associated with any Taint you already possess while the Kiho is active. If you take any deliberate action that would normally result in the acquisition of the Taint, such as casting a maho spell, the effect ends immediately and you gain the Taint as normal.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="4" element="air" type="mystical" id="the_great_silence" name="The Great Silence">
+    <Description>This peculiar technique allows a monk to use a precise attack to disrupt the flow of an individual's chi in such a way that they are unable to speak. This Kiho must be delivered by an atemi attack. If successful, the target of this attack is unable to speak for a number of rounds equal to your Air Ring.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="5" element="air" type="mystical" id="harmony_of_the_mind" name="Harmony of the Mind">
+    <Description>A gift often possessed by members of the Brotherhood is the ability to quickly and accurately gauge the strength of others. a useful ability both in assessing new applicants to the order and in determining how best to overcome obstacles. By making a Contested Air Roll against a target within your line of sight, you may learn one of the following pieces of information: their highest or lowest Ring, their highest Skill Rank. or their highest cost Spiritual Advantage or Disadvantage. For every successful Raise made on this roll, you can gain one additional piece of information.
+	You may use this Kiho a number of times per day equal to your Air Ring.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="3" element="air" type="mystical" id="riding_the_clouds" name="Riding the Clouds">
+    <Description>By aligning his chi with that of the wind, a monk can make his body light and buoyant, dramatically increasing the distance he can leap. While this Kiho is active, you may make a Simple Move Action to leap a maximum distance equal to your Air Ring x10. This effect lasts until you have made such a leap once, and then is expended.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="4" element="air" type="internal" id="soul_of_the_four_winds" name="Soul of the Four Winds">
+    <Description>By bringing their chi in alignment with that of the wind. monks may dramatically increase their reaction time and ability to evade the blows of others. While this Kiho is active, your Armor TN is increased by an amount equal to your Insight Rank plus your Air Ring.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="3" element="air" type="martial" id="stain_upon_the_soul" name="Stain Upon the Soul">
+    <Description>
+      This is a basic martial technique known to many sects of the Brotherhood, but one that is decried by several orders as impure and wicked. Its ease of use and its terrible effect on others are the reasons most often cited for this. You must make a successful atemi attack against a target. This disrupts the flow of the target's chi and causes crippling pain throughout the body, distracting them from everything else. The target suffers a penalty to all TNs as if he suffered from a number of Wound Ranks equal to your Air Ring. This lasts for a number of rounds equal to your Insight Rank plus your Air Ring. This effect cannot afflict a target multiple times, and is superceded by actual Wounds, not cumulative with them.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="7" element="air" type="kharmic" id="steal_the_air_dragon" name="Steal the Air Dragon">
+    <Description>This Kiho borders upon the Mystical, but is not quite as overt as those slivers of enlightenment. By drawing his chi inward, a monk can make himself less noticeable and more prone to being easily overlooked. While this Kiho is active, you gain additional rolled and kept dice equal to your Air Ring on all Stealth Skill Rolls. This effect lasts a number of minutes equal to your Insight Rank.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="5" element="air" type="internal" id="way_of_the_willow" name="Way of the Willow">
+    <Description>The wind is all around us, and by focusing his chi, a monk may see as the wind does, dramatically increasing his ability to perceive threats and preemptively counteract them. While this Kiho is active, if you have not yet taken your Turn during the current combat Round, you may spend a Void Point to immediately interrupt any opponent who declares a melee attack against you. As part of this interruption, you may either make a Move Action away from the opponent, or you may instead make an unarmed attack against them. Once you have done so, the effect of this Kiho ends. This Kiho is rendered inactive if not used within one day of its activation.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="4" element="earth" type="internal" id="cleansing_spirit" name="Cleansing Spirit">
+    <Description>Rain and time wash the mountain, leaving it free from impurities. While this Kiho is active, you roll a number of additional dice equal to half your Earth Ring (rounded down) on any roll made to resist the effects of poison or disease.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="3" element="earth" type="internal" id="earthen_fist" name="Earthen Fist">
+    <Description>Although part of the elemental fist set of Kiho, this particular technique is more defensive than offensive. While Earthen Fist is active, you may only adopt the Defense or Full Defense Stances. If an opponent makes a melee attack against you and misses, on your next Turn you may attempt the Disarm Maneuver against that opponent (assuming they are within range) for no Raises and regardless of the normal restrictions of your stance, ending the Kiho's effect. This Kiho is rendered inactive if not used within one day of its activation.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="3" element="earth" type="internal" id="earth_needs_no_eyes" name="Earth Needs No Eyes">
+    <Description>You can attune yourself to minute vibrations in the earth and use them to detect the movement of others. While this Kiho is active you can detect the approach of any creature or individual that moves across the ground within a distance equal to your Insight Rank x50 in feet. You only know the location of moving things in contact with the ground. If this Kiho is active when a skirmish begins, you cannot be ambushed or surprised by any land-bound opponent. This effect lasts a number of minutes equal to your Earth Ring.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="5" element="earth" type="mystical" id="embrace_the_stone" name="Embrace the Stone">
+    <Description>By focusing their chi like that of the mountain, monks may become like stone themselves, turning aside blows and ignoring damage. When you activate this Kiho, you gain a Reduction Rating equal to twice your Earth Ring. This stacks with any other Reduction you have from other sources (such as spells or armor). This effect lasts for a number of rounds equal to your Earth Ring.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="5" element="earth" type="internal" id="grasp_of_the_earth_dragon" name="Grasp of the Earth Dragon">
+    <Description>Embracing the essence of stone grants a monk incredible powers of resilience. When this Kiho is active, your TN penalties at all Wound Ranks are reduced by an amount equal to your Earth Ring. You may also continue to take Simple Actions when at the Down Wound Rank. This effect lasts a number of rounds equal to your Earth Ring.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="5" element="earth" type="martial" id="rest_my_brother" name="Rest, My Brother">
+    <Description>Easily among the most difficult and most sacred of all Kiho, this technique is restricted to a handful of orders within the Brotherhood. It functions by reversing the chi flow of a Tainted individual, causing them excruciating pain and temporarily restoring clarity of thought. This Kiho requires an atemi attack to be activated. The attack deals normal unarmed damage (despite being an atemi attack), plus an additional number of unkept damage dice equal to the opponent's Shadowlands Taint Rank. If the target is a human or other formerly uncorrupted creature (as opposed to an oni or other inherently Tainted creature), he loses all benefits of the Shadowlands Taint for a number of Rounds equal to your Earth Ring. During this time, he is free from the madness and mental instability normally brought on by the Taint.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="5" element="earth" type="internal" id="root_the_mountain" name="Root the Mountain">
+    <Description>As the Crab say, the mountain does not move, and neither does one who shares its strength. While this Kiho is active, attempts to use the Knockdown Maneuver against you require two extra Raises to he successful. Any attempt to force you to move against your will, including Knockdown Maneuvers, requires a Contested Earth Roll in addition to any other costs or Contested Rolls. You may not make Move Actions without dispelling this effect.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="4" element="earth" type="kharmic" id="speed_of_the_mountains" name="Speed of the Mountains">
+    <Description>Earth is many things, but fleet is not among them. By delivering an atemi attack against an opponent and activating this Kiho, you cause their earthen chi to become ascendant. The opponent's Water Ring is considered to be two ranks lower for the purposes of determining how far they can move as part of a Move Action. This effect lasts for a number of rounds equal to twice your Earth Ring.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="4" element="earth" type="martial" id="way_of_the_earth" name="Way of the Earth">
+    <Description>The grip of a monk can be like stone, crushing those who find themselves trapped in his grasp. Opponents engaged in a Grapple with you while this Kiho is active suffer a number of additional Wounds per Round equal to your Earth Ring, regardless of who is winning the Grapple. This damage is inflicted during the Reactions Stage. This effect lasts a number of minutes equal to your Earth Ring.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="4" element="fire" type="mystical" id="the_body_is_an_anvil" name="The Body is an Anvil">
+    <Description>A master of the ways of Fire can channel his chi outward, granting him a measure of protection and repelling attackers. While this Kiho is active, your skin becomes extremely hot to the touch, and anyone who touches you, including those who target you with unarmed attacks or those you strike with an unarmed attack, suffer Wounds equal to your Fire Ring. This effect lasts a number of rounds equal to twice your Fire Ring.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="3" element="fire" type="martial" id="breaking_flow" name="Breaking Flow">
+    <Description>Fire destroys all it touches, and a monk harnessing his Fire chi can achieve similar effects. While this Kiho is active, your unarmed strikes inflict full damage to all non-metal substances, including wood and stone, without inflicting any ill effects on you as a result of punching such objects. This effect lasts a number of minutes equal to your Fire Ring. The GM is the ultimate judge of how much damage a particular inanimate object can withstand before being destroyed.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="6" element="fire" type="internal" id="channel_the_fire_dragon" name="Channel the Fire Dragon">
+    <Description>Fire cannot be extinguished by more fire, nor can it be quelled with cold. While this Kiho is active, any damage you suffer as a result of heat or cold is reduced by -2k2. This includes effects that generate fire, such as spells and other Kiho. This effect lasts for one day.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="6" element="fire" type="martial" id="dance_of_the_flames" name="Dance of the Flames">
+    <Description>Filling one's chi with the power of Fire has considerable effects on one's speed as well as ones temperament. While this Kiho is in effect, you may make unarmed attacks as a Simple Action rather than a Complex Action. You must make an unarmed attack against an opponent (rather than an ally or inanimate object) every Round while this Kiho is active, or its effects end immediately.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="4" element="fire" type="martial" id="destinys_strike" name="Destiny's Strike">
+    <Description>The force of destiny is powerful, and can be harnessed by those who truly understand their place in the universe. While this Kiho is active, whenever you are struck by a melee attack from an opponent, you may immediately make a counterattack in the form of a single unarmed attack. If you have not taken your Turn yet this round, this counts as your Turn. If you have taken your Turn, this is a Free Action instead. This counterattack ignores any Wound Penalties suffered as a resuIt of the attack to which it is responding. This Kiho lasts until the end of the skirmish.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="7" element="fire" type="martial" id="falling_star_strike" name="Falling Star Strike">
+    <Description>One of the most blatant and powerful of all Kiho, the Falling Star Strike is a devastating martial attack that can cripple opponents permanently if not used with restraint. When employed, the fists of the monk using it arc wreathed in flame, and his eyes burn like fiery embers. This Kiho may only be activated by spending a Void Point, and may not he activated by making a Void / Meditation Skill Roll. It also requires two Raises on an unarmed attack to activate. The unarmed attack inflicts normal damage, plus an additional amount of damage with a DR equal to your Fire Ring in rolled and kept dice. Additionally, you and the target must make a Contested Fire Roll. If you are successful, the target is struck Blind for a number of hours equal to your Fire Ring.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="4" element="fire" type="kharmic" id="fires_fleeting_speed" name="Fire's Fleeting Speed">
+    <Description>Fire darts and surges, as do those who carry it in their souls. While this Kiho is active, increase the distance you may move when using any Move Action by +5'. This effect lasts a number of Rounds equal to your Fire Ring.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="3" element="fire" type="martial" id="flame_fist" name="Flame Fist">
+    <Description>By mingling your chi with another's while Fire is ascendant within your body, you can disonent and confuse an opponent, inhibiting their actions. An opponent struck by this Kiho's activating atemi strike suffers a TN penalty to all actions equal to three times your Fire Ring. This effect lasts a number of rounds equal to your Fire Ring.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="5" element="fire" type="mystical" id="unbalance_the_mind" name="Unbalance the Mind">
+    <Description>A momentary disruption of the Fire chi within a target can leave them addled and confused. The target of this Kiho's activating afen;i strike is Dazed.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="5" element="water" type="kharmic" id="as_the_breakers" name="As the Breakers">
+    <Description>By disrupting the flow of chi through others, you can inhibit them without harm. With a successful atemi strike, the target of your strike loses one Simple Action this Round. You may only target opponents who have not yet acted in the present Round, and an opponent may not be affected by this Kiho more than once per skirmish.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="3" element="water" type="mystical" id="buoyed_by_the_kami" name="Buoyed by the Kami">
+    <Description>A monk whose Water chi is ascendant can resist the siren call of the depths. While this Kiho is active, you may move across the surface of water as if it were basic terrain. This effect only continues as long as you are taking Simple Move Actions each round, and lasts for a maximum of fIve minutes. at which time you may reactivate this Kiho if necessary.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="4" element="water" type="martial" id="chi_protection" name="Chi Protection">
+    <Description>Perhaps the strangest application of the atemi technique, this Kiho permits a monk to restore or enhance the flow of chi through another's body, hastening the healing of wounds or other ailments. You must spend a Void Point to activate this Kiho (as opposed to the normal allowance to activate by a Void / Meditation Skill Roll), which is done immediately after successfully striking a target (either an opponent or a willing ally) with an alemi strike. The individual targeted by the strike regains a number of Wounds equal to your Water Ring, immediately and then at the start of your Turn every subsequent Round for a number of Rounds equal to your Insight Rank, You may not use this Kiho on yourself.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="7" element="water" type="martial" id="freezing_the_lifeblood" name="Freezing the Lifeblood">
+    <Description>This attack disrupts the flow of chi through an opponent's body, paralyzing them for a short time. The individual struck by the atemi attack is paralyzed, effectively Stunned and unable to take Move Actions, and may not move tinder his own power for a number of Rounds equal to your lnsigh Rank.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="6" element="water" type="internal" id="partaking_the_waves" name="Partaking the Waves">
+    <Description>Certain monks may channel the power of the ocean into their bodies, moving and Ilowing away from attacks like the sea itself. While this Kiho is active, you gain Reduction equal to your Water Ring. This stacks with Reduction from other sources such as spells and armor. This effect lasts a number of Rounds equal to twice your Water Ring.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="3" element="water" type="kharmic" id="ride_the_water_dragon" name="Ride the Water Dragon">
+    <Description>To walk with the Water Dragon's power is to harness the incredible restorative abilities of the ocean. While this Kiho is active, for a number of Rounds equal to your Insight Rank, you recover Wounds equal to your Water Ring during the Reactions Stage of the Round.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="7" element="water" type="mystical" id="slap_the_wave" name="Slap the Wave">
+    <Description>A powerful expression of inner strength, this Kiho channels the monk's chi outward in an explosive wave that carries the power of a tsunami. You must spend a Void point to activate this Kiho (Void / Meditation Skill Rolls are not possible). You must strike your hands together and release a powerful kiai shout. Everyone in your forward facing arc and within a (Itstance of your Water Ring x5 feet must succeed at a Contested Water Roll against you, or become Dazed.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="4" element="water" type="mystical" id="waves_in_all_things" name="Waves in All Things">
+    <Description>Water flows through all things. including the earth. You may make an unarmed attack by striking a body of standing water or the earth. The effects of this strike are felt by one opponent who is in contact with either the water or earth (whichever one was struck) and who is within a number of feet equal to your Water Ring x10. The effect of the strike is quite obvious, and may not be performed discreetly. If you are concealed at the time this Kiho is activated, your position is immediately revealed to the target and those in his immediate vicinity.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="4" element="void" type="kharmich" id="banish_all_shadows" name="Banish All Shadows">
+    <Description>One of the most powerful effects of ones chi upon another is the clarity it brings, which can allow one to overcome shortcomings for a short time. The target of this Kiho's activating strike may, for a number of Rounds equal to your Void Ring, ignore the effects of his highest-point Disadvantage. This effect does not target Spiritual or Social Disadvantages.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="7" element="void" type="mystical" id="death_touch" name="Death Touch">
+    <Description>The death touch, also known as dim mak, is perhaps the rarest and most reviled use of a monk's understanding of the flow of chi. It involves a series of aremi strikes that disrupt and corrupt the flow of chi through an opponent's body, leading to debilitating pain and possibly death. You must successfully strike an opponent with three atemi strikes on three consecutive Rounds immediately after activating this Kiho, and you must spend an additional Void Point after the third and final strike (in addition to any Void Points spent to activate the Kiho). Your opponent suffers increasing weakness broken up by bouts of agonizing pain. All of the target's Rings are reduced by 1 each hour. The maximum penalty is an amount equal to your insight Rank. If any Ring reaches 0 due to these penalties, the target falls into a catatonic state and must make three Contested Void Rolls against you (these rolls use the target's full Void, without penalties). If the target loses all three rolls by at least 5 or more, he dies. (This Kiho does not automatically kill the victim if his Earth is reduced to 0.) Use of this technique can be grounds for excommunication from the Brotherhood of Shinsei.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="5" element="void" type="mystical" id="eight_directions_awareness" name="Eight Directions Awareness">
+    <Description>Some monks are at a state of harmony with the world to such extent that they are aware of everything around them. While this Kiho is active, you become aware of all living things within a distance equal to your Void Ring x 10 feet. You are also aware of any object or individual within that range that has been deliberately concealed, including secret doors, hidden compartments, buried objects, etc.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="5" element="void" type="kharmic" id="silent_solace" name="Silent Solace">
+    <Description>Proper use of nerve strikes can impede not only the physical. but the spiritual as well. An opponent struck by this Kiho's activating strike must expend two spell slots to cast a single spell. This effect lasts a number of Rounds equal to your Void Ring.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="3" element="void" type="kharmic" id="song_of_the_world" name="Song of the World">
+    <Description>By listening to the song of the elements around him, a monk may perceive the universe slightly ahead of all others. You must target an opponent within fifty feet when activating this Kiho, and succeed at a Contested Void Roll against him. If successful, his Initiative Score is reduced by 5 and yours is increased by the same amount.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="8" element="void" type="kharmic" id="spin_the_kharmic_wheel" name="Spin the Kharmic Wheel">
+    <Description>Theoretically one of the most powerful Kiho known to exist, Spin the Kharmic Wheel is known only to a handful of reclusive masters within the Brotherhood, and discovered by a new soul perhaps once in a generation. You must deliver this Kiho via an unarmed attack in order to properly harness the forces of destiny that it unleashes. You expend all remaining Void Points when this Kiho is activated. The target of your attack loses one randomly determined Social, Spiritual, or Mental Disadvantage and gains a new randomly determined Social, Spiritual, or Mental Disadvantage of equal value. The GM may opt to choose the Disadvantages instead of selecting randomly, if that seems to produce a more interesting (or believeable) result.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="4" element="void" type="internal" id="touch_the_void_dragon" name="Touch the Void Dragon">
+    <Description>Certain orders of the Brotherhood are adept at aligning their chi with the dominant Element in the environment around them, drawing strength from the world. While this Kiho is active, one of your Rings and its associated Traits are considered one Rank higher. Which Ring is affected depends upon the environment. Mountains increase Earth, the seashore increases Water, the plains increase Air, the desert or volcanic areas increase Fire, etc.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="3" element="void" type="kharmic" id="to_the_last_breath" name="To the Last Breath">
+    <Description>With a simple exhalation, a monk can expend his energy into the universe around him, allowing others to partake of it as they wish. Any one selected individual within twenty feet when this Kiho is activated gains a Void Point on their next Turn. No target may benefit from this Kiho more than twice per day.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="4" element="void" type="martial" id="void_fist" name="Void Fist">
+    <Description>Unlike other atemi attacks, the Void Fist is a normal unarmed strike that would appear, if observed, to be damaging to its target. This is an illusion, however, as its true purpose is to use the target as a conduit with the great Void. You must make a successful Raise to strike an opponent with Void Fist. A successful strike inflicts no damage. but you immediately regain two Void Points. This Kiho can only be used on enemies, and has no effect on allies. It has no effect on targets who do not have Void Points.
+    </Description>
+    <Tags/>
+  </KihoDef>
+</L5RCM>

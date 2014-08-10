@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="scorpion" name="Kuroiban" id="scorpion_kuroiban">
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>scorpion_shugenja</Tag>
+      <Tag>alternate</Tag>
+      <Tag>scorpion_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="The Black Watch" rank="4" id="scorpion_the_black_watch">
+        <Description>
+You have been taught to sense the presence of the Taint
+through your connection to the kami. Any time you target
+someone with a spell (including a benign or helpful spell)
+you may expend an additional spell slot (in any Element)
+and take a Free Action to make a Contested Willpower roll
+with the target. If you succeed in the roll, you can sense
+whether or not the target is Tainted (e.g. has at least one
+full Rank of Taint).
+Normally this technique can only be triggered with targeted
+spells that have an instantaneous effect. However, if
+you are trained in the Yogo Shugenja School you may also
+use this technique with your wards, activating it when the
+ward is placed. If the spell has a duration, you may only
+use the technique at the moment you place the ward.
+            </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="willpower" type="trait" min="4">Willpower: 3</Requirement>
+      <Requirement field="lore_maho" type="skill" min="3">Lore: Maho: 3</Requirement>
+      <Requirement field="lore_shadowlands" type="skill" min="3">Lore: Shadowlands: 3</Requirement>
+      <Requirement field="rpg" type="more">Must have been chosen to serve in
+the secret order of the Kuroiban.</Requirement>
+      <Requirement field="*scorpion_shugenja" type="school" min="3" max="3">Replaces any Scorpion shugenja 4</Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

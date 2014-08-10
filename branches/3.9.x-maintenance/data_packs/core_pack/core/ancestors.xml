@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Merit type="spiritual" id="ancestor_crab_hida" name="Ancestor, Hida">
+    <Rank id="1" value="14"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_crab_kuni" name="Ancestor, Kuni">
+    <Rank id="1" value="8"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_crane_doji" name="Ancestor, Doji">
+    <Rank id="1" value="8"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_crane_kakita" name="Ancestor, Kakita">
+    <Rank id="1" value="12"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_dragon_agasha_kitsuki" name="Ancestor, Agasha Kitsuki">
+    <Rank id="1" value="11"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_dragon_mirumoto" name="Ancestor, Mirumoto">
+    <Rank id="1" value="9"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_lion_akodo" name="Ancestor, Akodo">
+    <Rank id="1" value="12"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_lion_ikoma" name="Ancestor, Ikoma">
+    <Rank id="1" value="9"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_mantis_kaimetsu_uo" name="Ancestor, Kaimetsu-Uo">
+    <Rank id="1" value="9"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_mantis_gusai" name="Ancestor, Gusai">
+    <Rank id="1" value="5"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_phoenix_asako" name="Ancestor, Asako">
+    <Rank id="1" value="5"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_phoenix_shiba" name="Ancestor, Shiba">
+    <Rank id="1" value="9"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_scorpion_bayushi" name="Ancestor, Bayushi">
+    <Rank id="1" value="12"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_scorpion_shoshuro" name="Ancestor, Shoshuro">
+    <Rank id="1" value="8"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_spider_hida_atarasi" name="Ancestor, Hida Atarasi">
+    <Rank id="1" value="7"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_spider_kuni_yori" name="Ancestor, Kuni Yori">
+    <Rank id="1" value="5"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_unicorn_moto" name="Ancestor, Moto">
+    <Rank id="1" value="10"/>
+  </Merit>
+  <Merit type="spiritual" id="ancestor_unicorn_shinjo" name="Ancestor, Shinjo">
+    <Rank id="1" value="8"/>
+  </Merit>
+</L5RCM>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="dragon" name="Mirumoto Master Sensei" id="dragon_mirumoto_master_sensei">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>dragon_bushi</Tag>
+      <Tag>advanced</Tag>
+      <Tag>dragon_advanced</Tag>
+    </Tags>
+    <Skills/>
+    <Spells/>
+    <Techs>
+      <Tech name="The Sword And The Soul" rank="1" id="dragon_the_sword_and_the_soul">
+        <Description>
+The Master Sensei has learned that the sword can bring
+moments of perfect harmony, just like art or meditation.
+When fi ghting with a sword, any time you reduce an opponent
+to Down, Out, or Dead, you regain 1 Void Point.
+This can temporarily increase your total Void Points above
+your Void Ring, although any such “extra” points disappear
+at the end of the current skirmish.
+      </Description>
+      </Tech>
+      <Tech name="The Body Is Illusion" rank="2" id="dragon_the_body_is_illusion">
+        <Description>
+The Master Sensei has studied meditation and enlightenment
+to such an extent that he can transcend the limitations
+of the flesh. You may take a Simple Action to spend
+a Void Point to ignore Wound Penalties (including Down,
+but not Out) for the remainder of this skirmish, or for ten
+minutes when outside of a skirmish.
+      </Description>
+      </Tech>
+      <Tech name="Sword Of The Sensei" rank="3" id="dragon_sword_of_the_sensei">
+        <Description>
+The Master Sensei knows that a true teacher can share his
+greatest power with his students. Once per day, you may
+take a Simple Action to roll Awareness/Meditation at a TN
+of 25 plus 5 for each ally fi ghting alongside you. If you
+succeed, your allies gain the benefi ts of your Rank One
+technique for the remainder of this skirmish.
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements>
+      <Requirement field="air" type="ring" min="5">Air Ring: 5</Requirement>
+      <Requirement field="earth" type="ring" min="4">Earth Ring: 4</Requirement>
+      <Requirement field="void" type="ring" min="5">Void Ring: 5</Requirement>
+      <Requirement field="kenjutsu" type="skill" min="5">Kenjutsu: 5</Requirement>
+      <Requirement field="meditation" type="skill" min="6">Meditation: 6</Requirement>
+      <Requirement field="dragon" type="tag">Be a member of Dragon clan</Requirement>
+      <Requirement field="rpg" type="more">
+	  You must be chosen or taught by another Master Sensei and cannot be Brash or Proud.
+	  </Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

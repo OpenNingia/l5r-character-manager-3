@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="fox" name="Child of Chukushudo" id="fox_child of chikushudo">
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>fox_shugenja</Tag>
+      <Tag>alternate</Tag>
+      <Tag>fox_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Born of the Earth" rank="3" id="born_of_the_earth"><Description>A master of earth’s intricacies can project his mind into the soil and be born again in the form of an animal. If you are sitting upon the bare earth, you may sacrifice two Earth spell slots and make a Meditation Skill Roll (TN 
+15). After ten minutes of meditation, you fall into a deep trance and a natural animal erupts forth from the ground before your body. Your mind inhabits and control this animal form until you choose to end the effect, your real body is harmed or disturbed, or the animal form is killed – in any of those circumstances, the animal form crumbles into dirt and your consciousness returns to your real body. You must choose any one natural animal, either from the Book of the Void in the L5R RPG core rulebook or Chapter One of the sourcebook Enemies of the Empire, as the form you adopt. If the animal form has higher physical or mental Trait Ranks than you, you use the animal form’s Traits – otherwise, you use your own. You gain any and 
+all abilities of the creature, but cannot speak (and thus 
+cannot cast spells) while in the animal’s body.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="hunting" type="skill" min="3">Hunting 3</Requirement>
+      <Requirement field="lore_spirit_realms" trg="chikushudo" type="skill" min="2">Lore:Spirit Realms (Chikushudo) 2</Requirement>
+      <Requirement field="fox_kitsune_shugenja" type="school" min="2" max="2">Replaces Kitsune Shugenja 3</Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

@@ -1,0 +1,18 @@
+Source: l5rcm
+Section: misc
+Priority: optional
+Maintainer: Daniele Simonetti <oppifjellet@gmail.com>
+Build-Depends: debhelper (>= 8.0.0), python (>= 2.7~)
+Standards-Version: 3.9.2
+Homepage: http://code.google.com/p/l5rcm/
+#Vcs-Svn: http://l5rcm.googlecode.com/svn/trunk/
+#Vcs-Browser: http://code.google.com/p/l5rcm/source/browse/#svn%2Ftrunk
+Package: l5rcm
+Architecture: all
+Installed-Size: 4000
+Version: 3.9.2-3
+Depends: python, python-pyside.qtcore, python-pyside.qtnetwork, python-pyside.qtgui, pdftk
+Description: L5R 4th Edition Character Manager
+ L5R: CM is a Character manager for
+ "Legend of the Five Rings RPG" 4th Edition
+ More information on L5R RPG can be found on http://www.l5r.com/rpg/

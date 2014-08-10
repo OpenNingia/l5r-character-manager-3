@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="lion" id="lion_akodo_bushi_school" name="Akodo Bushi School">
+    <Trait>perception</Trait>
+    <Honor>6.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>lion_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill emphases="Mass Combat" id="battle" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="kyujutsu" rank="1"/>
+      <Skill id="lore_history" rank="1"/>
+      <Skill id="sincerity" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+        <Wildcard>high</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="lion_the_way_of_the_lion" name="The Way Of The Lion" rank="1">
+        <Description>Bushi of the Akodo School hone their fury until it is as precise as a blade. You may either ignore the portion of an opponent's Armor TN derived from Armor, or gain a Free Raise when attacking. (You do not ignore Reduction from the Armor when choosing the first option.) Also, you gain a bonus of +1k0 to the total of all attack rolls on your first melee attack against an opponent in a skirmish, or against any opponent who has declared a Raise on an attack against you since your last turn. You add only a total of 1k0 for an enemy who Raises against you, no matter how many times they actually Raised.
+</Description>
+      </Tech>
+      <Tech id="lion_strength_of_purity" name="Strength Of Purity" rank="2">
+        <Description>Akodo-trained warriors are known for their dedication to bushido, and take a fierce satisfaction in defeating dishonorable foes. During a skirmish you may add your Honor Rank to the total of any single roll during your Turn. You may not increase damage rolls in this fashion, nor can you do this while assuming the Center Stance.
+</Description>
+      </Tech>
+      <Tech id="lion_strength_of_my_ancestors" name="Strength Of My Ancestors" rank="3">
+        <Description>The Akodo bushi attacks twice, once for himself and once for his ancestor. You may make attacks as a Simple Action instead of a Complex Action while using weapons with the Samurai keyword.
+</Description>
+      </Tech>
+      <Tech id="lion_triumph_before_battle" name="Triumph Before Battle" rank="4">
+        <Description>No foe is beyond the reach of the devoted Lion warrior. Once per skirmish, you may designate an opponent durin the Reactions Stage. You may ignore any Armor TN bonuses your target receives from his Stance during the next Round.
+</Description>
+      </Tech>
+      <Tech id="lion_akodos_final_lesson" name="Akodo's Final Lesson" rank="5">
+        <Description>Mastery of the Akodo Bushi School imparts an unshakable faith in victory. When you make Raises on any Bugei Skill Roll, if you meet or exceed the original TN (before Raises) but fail to meet the Raised TN, you still succeed without the benefits of Raises.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="5" zeni="0">
+      <Item>Light Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="lion" id="lion_kitsu_shugenja_school" name="Kitsu Shugenja School">
+    <Trait>perception</Trait>
+    <Affinity>water</Affinity>
+    <Deficiency>fire</Deficiency>
+    <Honor>6.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>lion_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="battle" rank="1"/>
+      <Skill emphases="Cipher" id="calligraphy" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill id="lore_history" rank="1"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="spellcraft" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="2" element="air"/>
+      <PlayerChoose count="1" element="earth"/>
+      <PlayerChoose count="3" element="water"/>
+    </Spells>
+    <Techs>
+      <Tech id="lion_eyes_of_the_ancestors" name="Eyes of the Ancestors" rank="1">
+        <Description> The Kitsu are descended from mystical creatures, and as such are able to reach across the veil between worlds and speak with their ancestors. You may make a Spell Casting Roll (as though casting a Water Spell) against a target's Willpower x 5. If successful, you learn all Spiritual Advantages or Disadvantages that individual possesses. By spending a Void Point, you may negate any one Spiritual Advantage an opponent possesses for a number of minutes equal to your School Rank. You also gain a Free Raise on any spell with the Battle keyword.
+Spells: Sense, Commune, Summon, 3 Water, 2 Air, and 1 Earth
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="5" zeni="0">
+      <Item>Robes</Item>
+      <Item>Wakizashi</Item>
+      <Item>Knife</Item>
+      <Item>Scroll Satchel</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="lion" id="lion_ikoma_bard_school" name="Ikoma Bard School">
+    <Trait>intelligence</Trait>
+    <Honor>6.5</Honor>
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>lion_courtier</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="courtier" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill emphases="Lion Clan" id="lore_history" rank="1"/>
+      <Skill id="perform_storytelling" rank="1"/>
+      <Skill emphases="Honesty" id="sincerity" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="lion_the_herald_of_glory" name="The Herald Of Glory" rank="1">
+        <Description>The Ikoma are historians and storytellers, tasked with recording the glorious deeds of others for posterity, ensuring that courageous and honorable accomplishments are never forgotten. You gain the Precise Memory Advantage for no cost in Experience Points (if you already have Percise Memory, you are refunded that many Experience Points). You may use the Perform: Storytelling skill to engage in public bragging on behalf of another person. If you can cite heroic or noble actions by that person and successfully roll Perform: Storytelling / Awareness at TN 20, that person whill gain a number of points of Glory equal to your School Rank. This may be done a number of times per person per month equal to your School Rank.
+</Description>
+      </Tech>
+      <Tech id="lion_the_heart_of_the_lion" name="The Heart Of The Lion" rank="2">
+        <Description>The Ikoma are tasked with conveying the emotions which the rest of the Clan keeps bottled away in stoic rectitude. You do not lose Honor or Glory for displaying emotion in public, so long as you do so on behalf of another Lion or for an honorable cause greater than yourself (such as your clan, the Empire, or the Code of Bushido). At the same time, your understanding of both honor and emotion strengthens your own soul against temptation. Anyone attempting to sway your emotions through the use of the Intimidation or Temptation skills must add +5 to their TN for each of your School Ranks.
+</Description>
+      </Tech>
+      <Tech id="lion_the_voice_of_the_ancestors" name="The Voice Of The Ancestors" rank="3">
+        <Description>The Ikoma act as Battle-Criers for the Lion, inspiring their soldiers on the battlefield with tales of the heroic deeds of their ancestors. Prior to a battle or skirmish, you may inspire your allies by speaking for a few minutes and rolling Perform: Oratory / Awareness at a TN equal to 15 + 5 per person you are inspiring. Targets who are not members of the Lion Clan increase the TN by 5 for each such person. With a successful roll, each person you inspired may add their Honor Rank to the total of any one Skill Roll during that battle or skirmish. (If this benefit is not used by the end of the battle, it is lost.)
+</Description>
+      </Tech>
+      <Tech id="lion_the_strength_of_tradition" name="The Strength Of Tradition" rank="4">
+        <Description>The Ikoma's steadfast encouragement call on the examples of noble ancestors to infuse their allies with a strength they did not know they had. A number of times per session equal to your School Rank, as a Simple Action, you may verbally encourage an ally with a tale of great deeds from the past, rolling Perform: Storytelling / Awareness at TN 25. With a success, the next time during the same day that the chosen ally fails a roll, he may re-roll it, adding your Honor Rank in unkept dice to his roll. However, if he fails this second roll, you lose 2 points of Honor.
+</Description>
+      </Tech>
+      <Tech id="lion_every_lion_is_your_brother" name="Every Lion Is Your Brother" rank="5">
+        <Description>The Ikoma's understanding of Bushido, history, emotion, and human nature empowers them in court, filling their arguments with the ringing power of generations of noble Lion, and calling on the precedents of a thousand years and more to support their cause. Five times per session, when you are making a Contested Social Roll against an opponent, you may cite historical precedent to support your views and roll additional unkept dice equal to your Rank in Perform: Storytelling. (In situations where citing history seems inappropriate or strange, the GM has the final say on whether this Technique may be used.)
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="5" zeni="0">
+      <Item>Traditional Clothing</Item>
+      <Item>Wakizashi</Item>
+      <Item>Knife</Item>
+      <Item>Calligraphy Set</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="lion" id="lion_matsu_berserker_school" name="Matsu Berserker School">
+    <Trait>strength</Trait>
+    <Honor>6.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>lion_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="battle" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill emphases="Katana" id="kenjutsu" rank="1"/>
+      <Skill id="kyujutsu" rank="1"/>
+      <Skill id="lore_history" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="lion_the_lions_roar" name="The Lion's Roar" rank="1">
+        <Description>Warriors of the Matsu School respect their Akodo cousins' leadership skills, but they know that a furious attack often simply overwhelms an enemy. You add your Honor Rank to all damage rolls. Whenever you assume the Full Attack Stance, you may move an additional 5 feet per Turn in addition to the bonus your receive from the Stance. (This does not allow you to move farther than your maximum move per Turn.)
+</Description>
+      </Tech>
+      <Tech id="lion_matsus_fury" name="Matsu's Fury" rank="2">
+        <Description>The target of a Matsu's fury has little hope of victory. When you assume the Full Attack Stance, choose an opponent within 30'. If you successfully hit him this Turn, the target is frozen with fear and cannot take Move Actions to move from his current position. During the Reactions Stage, an affected opponent may attempt a Willpower roll against a TN equal to the amount of damage dealt from your latest attack to negate the effects of this Technique (the opponent does not suffer penalties from his Wound Rank for this roll). If he fails, the effects of this Technique end during the next Reactions Stage (the second after he was struck).
+Enemies who are immune to Fear cannot be affected by this Technique.
+</Description>
+      </Tech>
+      <Tech id="lion_the_lions_charge" name="The Lion's Charge" rank="3">
+        <Description>When a Lion strikes, he grants the gift of final rest to all who stand against him. You may make melee attacks as a Simple Action instead of a Complex Action.
+</Description>
+      </Tech>
+      <Tech id="lion_matsus_courage" name="Matsu's Courage" rank="4">
+        <Description>Death means nothing in the face of the loss of honor, and no Matsu will yield while he yet draws breath. You ignore TN penalties from Wounded Levels equal to your Honor Rank, or twice your Honor Rank while in the Full Attack Stance.
+</Description>
+      </Tech>
+      <Tech id="lion_the_lions_victory" name="The Lion's Victory" rank="5">
+        <Description>The death of an opponent is the only measure of victory for a Matsu. Once per encounter after you roll damage for an attack, you may spend a Void Point as a Free Action to activate this Technique. You rend the opponent, ripping open his wounds and dealing grievous injury to him. All of the dice you choose to keep explode, re-rolling and adding the result to your damage total.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="5" zeni="0">
+      <Item>Light or Heavy Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>Heavy Weapon or Polearm</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="lion" id="lion_the_lions_pride" name="The Lion's Pride">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>lion_bushi</Tag>
+      <Tag>advanced</Tag>
+      <Tag>lion_advanced</Tag>
+    </Tags>
+    <Skills/>
+    <Spells/>
+    <Techs>
+      <Tech id="lion_the_fury_of_matsu" name="The Fury Of Matsu" rank="1">
+        <Description>
+The Lion's Pride bushi's attacks leave no room for counterattack, serving as the perfect defense. You may add +10 to your Armor TN while in the Full Attack Stance.
+        </Description>
+      </Tech>
+      <Tech id="lion_paragon_of_honor" name="Paragon Of Honor" rank="2">
+        <Description>
+The Lion's Pride warrior knows that her devotion to her personal honor is its own reward. Opponents with lower Honor Rank within 30' may not reroll 10's. Opponents may ignore this effect for the encounter by spending 2 Void Points during the Reactions Stage of any Combat Round.
+        </Description>
+      </Tech>
+      <Tech id="lion_matsus_technique" name="Matsu's Technique" rank="3">
+        <Description>
+Even in the middle of her attacks, the Lion's Pride bushi is ready to counter any feeble attempts to strike her. When an opponent declares a melee attack against you, if you have not taken your Turn this Round, you may immediately spend a Void Point to take a Simple Action to make an attack against that Opponent. This attack resolves before your opponent's attack. If you use this Technique, you may only perform one Simple Action during your Turn this Round. (You may take Free Actions as normal.) You may use this Technique while in the Full Attack Stance.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements>
+      <Requirement field="agility" min="5" type="trait">Agility: 5</Requirement>
+      <Requirement field="strength" min="5" type="trait">Strength: 5</Requirement>
+      <Requirement field="honor" min="6" type="trait">Honor: 6</Requirement>
+      <Requirement field="battle" min="5" type="skill">Battle: 5</Requirement>
+      <Requirement field="*weapon" min="3" type="skill">Any Weapon Skill: 3</Requirement>
+      <Requirement field="*weapon" min="3" type="skill">Any Weapon Skill: 3</Requirement>
+      <Requirement field="*weapon" min="3" type="skill">Any Weapon Skill: 3</Requirement>
+      <Requirement field="*weapon" min="3" type="skill">Any Weapon Skill: 3</Requirement>
+      <Requirement field="lion" type="tag">Be a member of the Lion clan</Requirement>
+      <Requirement field="lion_matsu" type="tag">Be a member of the Matsu family</Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

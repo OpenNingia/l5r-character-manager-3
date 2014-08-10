@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="crane" name="Kakita Master Artisan" id="crane_kakita_master_artisan">
+    <Tags>
+      <Tag>artisan</Tag>
+      <Tag>crane_artisan</Tag>
+      <Tag>advanced</Tag>
+      <Tag>crane_advanced</Tag>
+    </Tags>
+    <Skills/>
+    <Spells/>
+    <Techs>
+      <Tech name="The Master's Touch" rank="1" id="crane_the_masters_touch">
+        <Description>
+The Master Artisan transcends the social demands of art
+to focus on creating works of lasting magnifi cence which
+transform those who witness them. You may attempt to
+create such a work or performance with a chosen art Skill
+roll at TN 40. A success results in a creation or performance
+that awes everyone who witnesses its fi rst public appearance.
+You gain 5 points of Glory, +1 additional point of
+Glory for each Raise called on the roll. Everyone in the
+audience at the art’s unveiling/performance gains one bonus
+Void Point (which can exceed their normal maximum)
+for the next 24 hours; if you successfully called at least
+4 Raises on the roll, they gain two bonus Void Points instead.
+(The effects of this technique cannot stack.)
+      </Description>
+      </Tech>
+      <Tech name="Mastery Unbounded" rank="2" id="crane_mastery_unbounded">
+        <Description>
+At this level of skill, the Master Artisan’s skills become
+truly legendary. You gain a bonus of +2k0 with your chosen
+art Skill rolls. If you are trained as a Kakita Artisan,
+you may select a third chosen art from your School Skills.
+      </Description>
+      </Tech>
+      <Tech name="The Perfect Art" rank="3" id="crane_the_perfect_art">
+        <Description>
+The final secret of the Master Artisans is a level of excellence
+that transcends the normal bounds of mortal capability, producing
+art that literally comes to life. Once per month when
+creating a work or performance with one of your chosen arts,
+you may spend two Void Points and then roll [chosen art] /
+Awareness at TN 50. With a success, the art comes to life—
+birds fly off a painting, the characters of a play manifest on
+the stage, the statue of a Fortune comes to life, and so forth.
+The specific nature of the manifestation, and what action
+it takes after appearing, is chosen by the GM—but it
+will always be helpful to you, and will usually be something
+awe-inspiring and extraordinary. The manifestation
+normally lasts only a few minutes, but if you successfully
+call four Raises on the skill roll it will last for one hour.
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements>
+      <Requirement field="void" type="ring" min="5">Void Ring: 5</Requirement>
+      <Requirement field="awareness" type="trait" min="5">Awareness: 5</Requirement>
+      <Requirement field="*artisan" type="skill" min="8">At least one Kakita Artisan chosen art Skill must be Rank 8 or higher</Requirement>
+      <Requirement field="crane" type="tag">Be a member of Crane clan</Requirement>
+      <Requirement field="rpg" type="more">
+		If you are trained as a Kakita Artisan, you must have the Great Potential in the Skill of one of your chosen arts.  If you are not trained as a Kakita Artisan, you must be a Crane with both the Prodigy advantage and Great Potential advantage in either Acting, an Artisan skill, or a Perform skill.  This single skill becomes your chosen art for the purposes of this school's techniques.
+	  </Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

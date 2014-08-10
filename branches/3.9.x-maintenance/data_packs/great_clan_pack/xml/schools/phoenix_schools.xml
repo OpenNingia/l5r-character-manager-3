@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="phoenix" name="Asako Henshin School" id="phoenix_ob_asako_henshin_school">
+    <Trait>willpower</Trait>
+    <Honor>5.5</Honor>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>phoenix_monk</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="calligraphy" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill rank="1" id="lore_elements" emphases="*any"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="meditation" rank="2"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+        <Wildcard modifier="not">low</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="The Four Mysteries" rank="1" id="phoenix_the_four_mysteries">
+        <Description>
+The first lesson of the mysterious Henshin is the relationship
+between the individual and the Elements that comprise
+all things. You may, as a Simple Action, increase or decrease
+both Traits associated with one of your Rings by an amount
+equal to your School Rank. This lasts for a number of minutes
+equal to your Insight Rank and may be done a total
+number of times per day equal to fi ve times your Insight
+Rank. You may instead increase or decrease the Traits of
+another in a similar manner, but only by an amount equal
+to half your School Rank, rounding down (to a minimum
+of 1). Altering the Traits of an unknowing or unwilling target
+requires a Contested Willpower Roll. Traits reduced in
+this manner do not affect a target's Rings (and thus do not
+change Wound Ranks when the Earth Ring is targeted, etc.).
+      </Description>
+      </Tech>
+      <Tech name="The Riddle Of Earth" rank="2" id="phoenix_the_riddle_of_earth">
+        <Description>
+The stoic and straightforward kami of Earth are the simplest
+to entertain with one's riddles, and their blessings are
+potent indeed. As a Simple Action, you may invoke this
+Technique and gain Earth's blessing; you are immune to
+all Conditional Effects (excluding Grappled and Mounted)
+for a number of hours equal to your Earth Ring.
+      </Description>
+      </Tech>
+      <Tech name="The Riddle Of Air" rank="3" id="phoenix_the_riddle_of_air">
+        <Description>
+The capricious spirits of Air can be delighted into conferring
+their blessings upon you. As a Simple Action, you
+may invoke the blessing of Air. The blessing lasts a number
+of hours equal to your School Rank. For the duration
+of this effect, you cannot be deceived by any illusion or
+other false images, and can perceive them as transparent
+falsehoods. If an illusion is created by a spell of higher
+Mastery Level than your Insight Rank, you and the spell's
+caster must engage in a Contested Air Roll. If you are defeated,
+you do not perceive the falsehood of the illusion.
+      </Description>
+      </Tech>
+      <Tech name="The Riddle Of Fire" rank="4" id="phoenix_the_riddle_of_fire">
+        <Description>
+The wrathful spirits of Fire can be entertained by your
+riddles, if only briefl y. As a Complex Action you may invoke
+Fire's blessings to increase the number of kept dice
+on an unarmed damage roll (which is normally 0k1) to
+your Fire Ring. This effect lasts a number of Rounds equal
+to your School Rank.
+Alternatively, when an opponent strikes you with a melee
+attack, you may spend a Void Point to force a Contested Fire
+Ring Roll. If you are successful, the number of damage dice
+your opponent rolls is reduced by your Fire Ring.
+      </Description>
+      </Tech>
+      <Tech name="The Riddle Of Water" rank="5" id="phoenix_the_riddle_of_water">
+        <Description>
+The mercurial spirits of Water can confer their speed and
+fl uidity in exchange for your riddles. You must succeed at
+a Lore: Elements (Water) / Water Skill Roll against TN 20.
+If successful, you may take one Complex and one Simple
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+  </School>
+</L5RCM>

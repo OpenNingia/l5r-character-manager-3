@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="crane" id="crane_kakita_bushi_school" name="Kakita Bushi School">
+    <Trait>reflexes</Trait>
+    <Honor>6.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crane_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="etiquette" rank="1"/>
+      <Skill emphases="Focus" id="iaijutsu" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="kyujutsu" rank="1"/>
+      <Skill id="sincerity" rank="1"/>
+      <Skill id="tea_ceremony" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+        <Wildcard>high</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="crane_the_way_of_the_crane" name="The Way Of The Crane" rank="1">
+        <Description>The study of the sword demonstrates the many ways in which the art of Kakita's technique can be applied. You add twice your Iaijutsu Skill to all Initiative rolls. You gain a bonus of +1k1 plus your School Rank to the total of all attack and Focus rolls while assuming the Center Stance. This bonus also applies during the Combat Round following one in which you assume the Center Stance.
+</Description>
+      </Tech>
+      <Tech id="crane_speed_of_lightning" name="Speed Of Lightning" rank="2">
+        <Description>Enemies who are slow or weak of spirit are doomed to failure. You gain a bonus of +2k0 to the total of all attack rolls against those with lower Initiative than your own.
+</Description>
+      </Tech>
+      <Tech id="crane_first_and_last_strike" name="First And Last Strike" rank="3">
+        <Description>A Kakita Bushi is feared throughout the Empire as a follower of the oldesta nd most venerated dueling tradition in the Empire. You may Strike first in a duel if you win the Iaijutsu/Void roll by a difference of 3 or higher. You gain a Free Raise on your Strike for each additional margin of 3 instead of 5.
+</Description>
+      </Tech>
+      <Tech id="crane_one_strike_two_cuts" name="One Strike, Two Cuts" rank="4">
+        <Description>With one pure strike, the advanced student of Kakita's technique cuts his opponent twice. You may make attacks as a Simple Action instead of a Complex Action while using weapons with the Samurai keyword.
+</Description>
+      </Tech>
+      <Tech id="crane_strike_with_no_thought" name="Strike With No Thought" rank="5">
+        <Description>A true student of Kakita requires no thought before the perfect strike, depending entirely on instinct. You may take one Simple Action per Turn while assuming the Center Stance. You gain the benefits of Center Stance while you assume the stance instead of the following Turn, and you may remain in the Center Stance as many consecutive Turns as desired. The Simple Action you take can be a Move Action (bypassing the normal restriction of the Center Stance).
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="10" zeni="0">
+      <Item>Light Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="crane" id="crane_asahina_shugenja_school" name="Asahina Shugenja School">
+    <Trait>awareness</Trait>
+    <Affinity>air</Affinity>
+    <Deficiency>fire</Deficiency>
+    <Honor>6.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>crane_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill emphases="Cipher" id="calligraphy" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <Skill id="spellcraft" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>artisan</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="3" element="air"/>
+      <PlayerChoose count="1" element="earth"/>
+      <PlayerChoose count="2" element="water"/>
+    </Spells>
+    <Techs>
+      <Tech id="crane_the_souls_grace" name="The Soul's Grace" rank="1">
+        <Description> The Asahina have harnessed the power of the kami for art, not war. You may spend a Void Point to reduce the total of all opponents' damage rolls inflicted within 20' of you by 0k1 for a number of rounds equal to your School Rank. (Using this technique again before its duration expires "resets" the duration but does not increase the damage penalty.) You also gain a Free Raise on any spell with the Defense keyword.
+Spells: Sense, Commune, Summon, 3 Air, 2 Water, and 1 Earth
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="10" zeni="0">
+      <Item>Robes</Item>
+      <Item>Bo</Item>
+      <Item>Wakizashi</Item>
+      <Item>Scroll Satchel</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="crane" id="crane_doji_courtier_school" name="Doji Courtier School">
+    <Trait>awareness</Trait>
+    <Honor>6.5</Honor>
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>crane_courtier</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="calligraphy" rank="1"/>
+      <Skill emphases="Manipulation" id="courtier" rank="1"/>
+      <Skill emphases="Courtesy" id="etiquette" rank="1"/>
+      <Skill id="perform_storytelling" rank="1"/>
+      <Skill id="sincerity" rank="1"/>
+      <Skill id="tea_ceremony" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>artisan</Wildcard>
+        <Wildcard>perform</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="crane_the_soul_of_honor" name="The Soul Of Honor" rank="1">
+        <Description>Apprentice Doji courtiers are taught to rely on their Honor when dealing with others, infusing their every word and gesture with the power of their purity, and to build networks of allies by discerning what others need and fulfilling those needs. So long as you maintain your Honor Rank at 6.0 or better, you gain a Free Raise on all Courtier, Sincerity, and Etiquette rolls. Also, by conversing with another person for a few minutes, you can make a Contested Roll of Courtier (Manipulation) / Awareness against the target's Etiquette (Courtesy) / Awareness to learn whether they are in need of any favors or assistance (such as needing travel papers to reach another province, for example).
+</Description>
+      </Tech>
+      <Tech id="crane_speaking_in_silence" name="Speaking In Silence" rank="2">
+        <Description>At this Rank the Doji learns Cadence, the art of communicating through subtle gestures and body language. This gives them a huge advantage in the courts by allowing them to share information while their rivals are none the wiser. You can roll Courtier / Intelligence at TN 15 to communicate simple ideas and instructions (things like "distract them," "this favors us," or "Intercept that person") with any other Crane who is trained in the Doji Courtier School or who has at least 5 Ranks in the Courtier Skill. More complex ideas can be conveyed with Raises, although there is an upper limit (set by the GM) on how complicated Cadence can become.
+</Description>
+      </Tech>
+      <Tech id="crane_the_perfect_gift" name="The Perfect Gift" rank="3">
+        <Description>The Doji build their networks of alliances through selflessness, offering others what they need so that in the future the Doji may rely on their assistance. Any time you are in court or in an urban area, you can roll Courtier / Awareness at TN 20 to come up with a suitable gift or a helpful political favor for someone else. By calling Raises on this roll, you can acquire a rarer or more potent gift or favor. If such a gift or favor is accepted, you may immediately take that person as an Ally with 1-point Devotion, without XP cost (subject to the GM's permission).
+</Description>
+      </Tech>
+      <Tech id="crane_voice_of_honor" name="Voice Of Honor" rank="4">
+        <Description>At this Rank the Doji has learned the art of political maneuvering, making his positions and arguments appear synonymous with Honor, forcing anyone who disagrees with him to take a dishonorable position. In any debate or arguement, you may make a Contested Roll of Courtier (Manipulation) / Awareness against the target's Etiquette (Courtesy) / Awareness. If you win the roll, the opponent is forced to concede that his position conflicts with the demands of Honor and Bushido, and if he persists in that position he will commit a breach of etiquette. (It is the GM's discretion, based on the circumstances, as to whether it is a minor or major breach.)
+</Description>
+      </Tech>
+      <Tech id="crane_the_gift_of_the_lady" name="The Gift Of The Lady" rank="5">
+        <Description>The final training of the Doji teaches them the art of influencing the emotions of others, making friends and allies out of almost anyone - even bitter enemies. By conversing with someone for a few minutes, you may make a Contested Roll of Courtier (Manipulation) / Awareness against the target's Etiquette (Courtesy) / Willpower. If the target is an Ally, you gain a bonus of +5k0 to the total of this roll. With a success, you shift the target's emotions in a favorable direction, persuading them to listen to your advice and counsel. The GM is the final arbiter but in general, the target will go along with anything you suggest which does not conflict with his basic loyalties.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="10" zeni="0">
+      <Item>Extravagant Clothing</Item>
+      <Item>Wakizashi</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Calligraphy Set</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="crane" id="crane_daidoji_iron_warriors" name="Daidoji Iron Warriors">
+    <Trait>agility</Trait>
+    <Honor>6.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crane_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="battle" rank="1"/>
+      <Skill id="defense" rank="2"/>
+      <Skill id="iaijutsu" rank="1"/>
+      <Skill emphases="Katana" id="kenjutsu" rank="1"/>
+      <Skill id="kyujutsu" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="crane_the_force_of_honor" name="The Force Of Honor" rank="1">
+        <Description>The Iron Warrior serves as the shield of his clan, defending the honor and homes of the Crane. You gain a bonus of your Honor Rank (rounded down) minus 4 to your Wounds at each Wound Rank, to a minimum bonus of one. (Thus at Honor Rank 6.5, you gain a bonus of 2 Wounds to each Wound Rank.) Additionally, you gain a bonus of +1k0 to the total of all attack rolls while in the Attack Stance.
+</Description>
+      </Tech>
+      <Tech id="crane_the_shield_of_faith" name="The Shield Of Faith" rank="2">
+        <Description>The Iron Warrior truly believes that his work serves a higher purpose. When you perform the Guard Maneuver, the benefits last for an additional Round. Additionally, the Armor TN bonus of the Guard Maneuver is increased by 5. (This bonus applies to both your Armor TN and your target's Armor TN - thus, you suffer not TN penalty when Guarding, and your target gains a bonus of +15 to his Armor TN instead of +10.)
+</Description>
+      </Tech>
+      <Tech id="crane_strike_beneath_the_veil" name="Strike Beneath The Veil" rank="3">
+        <Description>The Daidoji is an intractable foe, devastating to face under any circumstances. You may make melee attacks as a Simple Action instead of a Complex Action while in the Attack Stance.
+</Description>
+      </Tech>
+      <Tech id="crane_vigilance_of_mind" name="Vigilance Of Mind" rank="4">
+        <Description>The Iron Warrior is always on the lookout for dangers. You may spend a Void Point during the Reactions Stage to target an opponent who has attempted to strike at either you or the target of your Guard Maneuver during the Round. You gain a bonus of +2k1 to the total of all attack and damge rolls against that opponent during the next Round.
+</Description>
+      </Tech>
+      <Tech id="crane_to_tread_on_the_sword" name="To Tread On The Sword" rank="5">
+        <Description>When the Iron Warrior fights to protect his charge, he will continue on long after others would perish. You may spend two Void Points as a Free Action when someone declares an action against the target of your Guard Maneuver. You become the target of the action instead (if it would be a legal action - GM's discretion in questionable instances). You also gain one Free Action that you may use immediately for the sole purpose of moving toward the target of your Guard Maneuver. If you cannot reach your target, this Technique has no effect.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="10" zeni="0">
+      <Item>Light or Heavy Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>Heavy Weapon or Polearm</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="crane" id="crane_kenshinzen" name="Kenshinzen">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crane_bushi</Tag>
+      <Tag>advanced</Tag>
+      <Tag>crane_advanced</Tag>
+    </Tags>
+    <Skills/>
+    <Spells/>
+    <Techs>
+      <Tech id="crane_drawing_the_void" name="Drawing The Void" rank="1">
+        <Description>
+The Kenshinzen remains still on the battlefield while the chaos of battle rages around him. If you are in the Center Stance, you add an additional +10 to your Armor TN.
+        </Description>
+      </Tech>
+      <Tech id="crane_kakitas_strength" name="Kakita's Strength" rank="2">
+        <Description>
+The Kenshinzen can sense the moments between heartbeats, allowing him to strike at the exact moment needed. When making an Assessment or Focus roll as part of an Iajutsu duel, your dice explode on a 9 as well as a 10.
+        </Description>
+      </Tech>
+      <Tech id="crane_a_single_moment" name="A Single Moment" rank="3">
+        <Description>
+The Kenshinzen's will to defeat his enemy exudes out of him, paralyzing his enemies. If you make only one attack this Turn, an opponent you hit is Stunned until the beginning of your next Turn.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements>
+      <Requirement field="fire" min="4" type="ring">Fire Ring: 4</Requirement>
+      <Requirement field="void" min="4" type="ring">Void Ring: 4</Requirement>
+      <Requirement field="iaijutsu" min="5" type="skill">Iaijutsu: 5</Requirement>
+      <Requirement field="lore_bushido" min="4" type="skill">Lore (Bushido): 4</Requirement>
+      <Requirement field="meditation" min="5" type="skill">Meditation: 5</Requirement>
+      <Requirement field="crane" type="tag">Be a member of Crane clan</Requirement>
+      <Requirement field="rpg" type="more">
+	  You must defeat a current member of the Kenshinzen in a legal Iaijutsu duel
+	  </Requirement>
+    </Requirements>
+  </School>
+</L5RCM>
