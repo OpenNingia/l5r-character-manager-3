@@ -231,14 +231,19 @@ class L5RCMCore(QtGui.QMainWindow):
             temp_files.append(fpath)
 
         temp_files.append(fpath)
+        
+        # SAMURAI MONKS ALSO FITS IN THE BUSHI CHARACTER SHEET
+        is_monk, is_brotherhood = self.pc_is_monk    ()
+        is_samurai_monk = is_monk and not is_brotherhood        
+        
         # SHUGENJA/BUSHI/MONK SHEET
         if self.pc.has_tag('shugenja'):
             _export( 'sheet_shugenja.pdf', exporters.FDFExporterShugenja() )
-        elif self.pc.has_tag('bushi'):
+        elif self.pc.has_tag('bushi') or is_samurai_monk:
             _export( 'sheet_bushi.pdf', exporters.FDFExporterBushi() )
-        elif self.pc.has_tag('monk'):
+        elif is_monk:
             _export( 'sheet_monk.pdf', exporters.FDFExporterMonk() )
-        elif self.pc.has_tag('courtier'):
+        if self.pc.has_tag('courtier'):
             _export( 'sheet_courtier.pdf', exporters.FDFExporterCourtier() )
 
         # WEAPONS
