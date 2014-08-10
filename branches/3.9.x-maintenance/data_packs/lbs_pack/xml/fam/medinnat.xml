@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<L5RCM>
+  <Family clanid="medinnat" name="House Asmari" id="House_Asmari">
+    <Trait>strength</Trait>
+  </Family>
+    <Family clanid="medinnat" name="House Basiri" id="House_Basiri">
+        <Trait>intelligence</Trait>
+    </Family>
+    <Family clanid="medinnat" name="House Enour" id="House_Enour">
+        <Trait>willpower</Trait>
+    </Family>
+    <Family clanid="medinnat" name="House Haffit" id="House_Haffit">
+        <Trait>agility</Trait>
+    </Family>
+    <Family clanid="medinnat" name="House Hazaad" id="House_Hazaad">
+        <Trait>awareness</Trait>
+    </Family>
+    <Family clanid="medinnat" name="House Mendadi" id="House_Mendadi">
+        <Trait>reflexes</Trait>
+    </Family>
+    <Family clanid="medinnat" name="House Menjari" id="House_Menjari">
+        <Trait>perception</Trait>
+    </Family>
+    <Family clanid="medinnat" name="House Rashid" id="House_Rashid">
+        <Trait>stamina</Trait>
+    </Family>
+</L5RCM>

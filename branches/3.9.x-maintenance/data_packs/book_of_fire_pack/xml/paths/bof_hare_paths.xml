@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="hare" name="Ujina Skirmishers" id="hare_ujina_skirmishers">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>hare_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>hare_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Master of the Quick Blade" rank="3" id="hare_master_of_the_quick_blade"><Description>The Ujina are trained to fight with a tanto in each hand, cutting their foes to death with swift and deadly strikes. When fighting with a knife in each hand, you gain a +1k0 bonus to your Initiative rolls and a +1k1 bonus to damage rolls with knives.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="knives" trg="Tanto" type="skill" min="3">Knives (Tanto) 3</Requirement>
+      <Requirement field="hare_speed_of_the_hare" type="rule">Replaces Hare Bushi 2</Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

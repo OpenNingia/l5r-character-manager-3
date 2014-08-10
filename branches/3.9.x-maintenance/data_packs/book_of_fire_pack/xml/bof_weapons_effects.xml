@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <EffectDef id="no_dr_explosion">Damage dice cannot explode</EffectDef>
+  <EffectDef id="blade_of_secrets">Raises do not increase the TN but still grant effect. Each time the wielder does this, the sword drains a Void Point. If the wielder has no Void Points left, the sword instead drains a Rank of Earth instead, eventually resulting in death if the wielder continues. The wielder will not realize the drain until he begins to feel a physical effect.
+May harm Invulnerable creatures.
+The wielder must roll a Willpower Roll at TN 30 in order to voluntarily give up the sword.</EffectDef>
+  <EffectDef id="blade_of_truths">Damage dice explode on 9's and 10's but anytime the wielder rolls two or more explosions on the same damage roll, the blade's curse is activated. Thereafter, any opponent of the sword's wielder will get a +1k1 bonus to any damage roll against the wielder until the wielder dies or until he abandons the sword for at least a year.
+May harm Invulnerable creatures.
+The wielder must roll a Willpower Roll at TN 30 in order to voluntarily give up the sword.</EffectDef>
+  <EffectDef id="bloodsword_ambition">Each kill "banks" a Free Raise for use at some later time.
+Continual +2k2 bonus to Sincerity (Deceit) and Stealth Skill Rolls.
+Must succeed a Willpower Roll against TN 25 or attack, when in the presence of someone who lower Glory but higher Status than the wielder.
+May harm any foe, regardless of imunities (including Oracles and Dark Oracles).</EffectDef>
+  <EffectDef id="bloodsword_judgement">Each kill "banks" a Free Raise for use at some later time.
+Continual +2k0 bonus to all Attack Rolls with Handan
+Wielder may roll Perception Roll at TN 20 to discern others' Honor Rank. Sometimes, Handan will lie and tell the wielder the target's Honor Rank is 1.0, regardless of their true Rank.
+Any time the wielder believes someone has wronged him or failed to live up to the COde of Bushido, the wielder must make a Willpower Roll at TN 25 or attack.
+May harm any foe, regardless of imunities (including Oracles and Dark Oracles).</EffectDef>
+  <EffectDef id="bloodsword_passion">Each kill "banks" a Free Raise for use at some later time.
+Continual +1k0 bonus to all Kenjutsu Rolls
+Wielder must make a Willpower Roll at TN 25 or attack any individual that comes between the wielder and something he desires.
+May harm any foe, regardless of imunities (including Oracles and Dark Oracles).</EffectDef>
+  <EffectDef id="bloodsword_revenge">Each kill "banks" a Free Raise for use at some later time.
+Wielder gains Combat Reflexes and Quick Advantages.
+Continual +3k0 bonus to all Kenjutsu Rolls with Fukushu.
+Wielder must make a Willpower Roll at TN 25 or attack any individual that slights or obstructs the wielder.
+May harm any foe, regardless of imunities (including Oracles and Dark Oracles).</EffectDef>
+</L5RCM>

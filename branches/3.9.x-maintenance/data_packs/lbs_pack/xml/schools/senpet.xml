@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<L5RCM>
+  <School clanid="senpet" name="Legionnaire" id="legionnaire">
+    <Trait>reflexes</Trait>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>senpet_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="battle" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="hunting" rank="1" emphases="Survival"/>
+      <Skill id="swordmanship" rank="1"/>
+      <Skill id="lore_theology" rank="2"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>merchant</Wildcard>
+        <Wildcard>low</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Divine Insight" rank="1" id="senpet_devine_insight"></Tech>
+      <Tech name="Divine Strength" rank="2" id="senpet_devine_strength"></Tech>
+      <Tech name="Divine Retribution" rank="3" id="senpet_devine_retibution"></Tech>
+      <Tech name="The Gods Protect Me" rank="4" id="senpet_gods_protect_me"></Tech>
+      <Tech name="The Gods Guide my Hand" rank="5" id="senpet_gods_guide_my_hand"></Tech>
+    </Techs>
+    <Requirements/>
+  </School>
+</L5RCM>

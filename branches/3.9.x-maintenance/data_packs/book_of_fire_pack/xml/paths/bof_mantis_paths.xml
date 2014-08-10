@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="mantis" name="Mantis Whirlwind Fighters" id="mantis_whirlwind_fighters">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>mantis_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>mantis_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Waves Rush to Shore" rank="4" id="mantis_waves_rush_to_shore"><Description>Whirlwind Fighters are a constant blur of motion, using their swift and relentless strikes both to deflect their opponents' attack and to break through their defenses. When fighting with a kama in each hand, you may add your Knives Skill Rank to your Armor TN, and gain a bonus of 3k0 to your damage rolls with kama.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="knives" type="skill" min="5" trg="kama">Knives (Kama) 5</Requirement>
+      <Requirement field="mantis_strike_of_the_mantis" type="rule">Replaces Yoritomo Bushi 4</Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

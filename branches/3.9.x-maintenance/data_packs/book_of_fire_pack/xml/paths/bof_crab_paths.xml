@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="crab" name="Crab Knife-Fighters (Hiruma)" id="crab_knife_fighters">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crab_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>crab_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="One Blade, Both Hands" rank="3" id="crab_one_blade_both_hands"><Description>The Crab knife-fighting technique emphasizes using the empty hand to grasp, control, and distract the opponent, setting him up for the knife hand to deliver the lethal blow. When fighting with one hand open and a tanto, you add 3k1 to your damage with tanto and may ignore all effects of your opponent's armor. (If your opponent is a creature with inherent Reduction, you may ignore 5 points of that Reduction.)</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="knives" type="skill" min="3">Knives 3</Requirement>
+      <RequirementOption text="Replaces Hiruma Bushi 3 or Hiruma Scout 3">
+        <Requirement field="crab_wolfs_little_lesson" type="rule" />
+        <Requirement field="crab_run_like_the_wind" type="rule" />
+      </RequirementOption>
+    </Requirements>
+  </School>
+  <School clanid="crab" name="Crab Knife-Fighters (Hida)" id="crab_knife_fighters">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crab_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>crab_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="One Blade, Both Hands" rank="4" id="crab_one_blade_both_hands">The Crab knife-fighting technique emphasizes using the empty hand to grasp, control, and distract the opponent, setting him up for the knife hand to deliver the lethal blow. When fighting with one hand open and a tanto, you add 3k1 to your damage with tanto and may ignore all effects of your opponent's armor. (If your opponent is a creature with inherent Reduction, you may ignore 5 points of that Reduction.)</Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="knives" type="skill" min="3">Knives 3</Requirement>
+      <RequirementOption text="Replaces Hida Bushi 4 or Hida Pragmatist 4">
+        <Requirement field="crab_two_pincers_one_mind" type="rule" />
+        <Requirement field="crab_fury_of_the_avalanche" type="rule" />
+      </RequirementOption>
+    </Requirements>
+  </School>
+  <School clanid="crab" name="Student of Hitsu-Do" id="crab_student_of_hitsudo">
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>crab_monk</Tag>
+      <Tag>alternate</Tag>
+      <Tag>crab_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="The Way of Fire" rank="2" id="dragon_the_way_of_fire">The practitioner of Hitsu-do learns to harness his inner Fire chi, using it to empower his strikes - but this has a price, since such use of one's own Fire is also harmful. When making an unarmed attack, you may opt to call on your inner fire, but you suffer Wounds equal to your Fire x2. (Any Wound Penalties from this damage are applied after your attack roll is completed.) In return, your unarmed damage for that attack has a base DR of 0k[Fire] instead of 0k1. (This does not stack with the unarmed damage bonus from the Advantage Hands of Stone.) For mechanical purposes, using the Hitsu-do technique as using a Mystical Kiho.
+
+Special: The Hitsu-do makes it easier for its students to master the ways of Fire. Your Fire Ring is considered to be 1 Rank higher for the purpose of learning Fire Kiho.</Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="jiujutsu" type="skill" trg="Hitsu-do" min="4">Jiujutsu (Hitsu-do) 4</Requirement>
+      <Requirement field="fire" type="ring" min="3">Fire 3</Requirement>
+      <Requirement field="crab_to_see_the_darkness" type="rule">Replaces Kuni Witch Hunter Rank 2</Requirement>
+      <Requirement field="rpg" type="more">Must have access to a Hitsu-do dojo</Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

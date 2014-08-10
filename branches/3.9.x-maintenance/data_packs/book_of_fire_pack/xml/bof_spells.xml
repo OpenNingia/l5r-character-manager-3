@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <SpellDef name="Fire Kami's Blessing" area="One target creature (may be caster)" mastery="1" element="fire" range="Touch" duration="1 hour" id="fire_kamis_blessing">
+    <Tags />
+    <Raises>
+      <Raise>Duration (+1/2 hour per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Gift of Amaterasu" area="50' radius sphere" mastery="1" element="fire" range="50'" duration="10 minutes" id="gift_of_amaterasu">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+25' per Raise)</Raise>
+      <Raise>Duration (+5 minutes per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Osano-Wo's Blessing" area="40' radius" mastery="1" element="fire" range="100'" duration="30 minutes" id="osanowos_blessing">
+    <Tags></Tags>
+    <Raises>
+      <Raise>Range (+25' per Raise)</Raise>
+      <Raise>Area of Effect (+10' radius per raise)</Raise>
+      <Raise>Duration (+10 minutes per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Warning Flame" area="One target person (may be caster)" mastery="1" element="fire" range="Touch" duration="10 Rounds" id="warning_flame">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+2 rounds per Raise)</Raise>
+      <Raise>Area of Effect (+1 person per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Purity of Shinsei " area="One target person/effect" mastery="2" element="fire" range="50'" duration="Instantaneous" id="purity_of_shinsei">
+    <Tags>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+10' per Raise)</Raise>
+      <Raise>Area of Effect (+1 target per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Wings of Fire" area="Self" mastery="2" element="fire" range="Touch" duration="10 minutes" id="wings_of_fire">
+    <Tags>
+      <Tag>travel</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+5 minutes per Raise)</Raise>
+      <Raise>Special (move at +1 Water Rank for 3 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Agasha's Shield (Tamori's Curse)" area="30' radius around the caster" mastery="3" element="fire" range="Touch/Self" duration="6 rounds" id="agashas_shield">
+    <Tags>
+      <Tag>defense</Tag>
+      <Tag>wards</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area of Effect (+5' radius per Raise)</Raise>
+      <Raise>Duration (+1 Round per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Oath of the Heavens" area="Two target persons (see description)" mastery="3" element="fire" range="Touch" duration="5 rounds" id="oath_of_the_heavens">
+    <Tags />
+    <Raises>
+      <Raise>Duration (+1 Round per Raise)</Raise>
+      <Raise>Special (+1k0 to the bonus per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Breath of Battle" area="One target person" mastery="3" element="fire" range="30'" duration="5 rounds" id="the_breath_of_battle">
+    <Tags>
+      <Tag>battle</Tag>
+      <Tag>imperial</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area of Effect (+1 target per 2 Raises)</Raise>
+      <Raise>Duration (+1 Round per Raise)</Raise>
+      <Raise>Range (+10' per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Whispering Flames" area="All persons within 10' radius" mastery="3" element="fire" range="50'" duration="3 rounds" id="whispering_flames">
+    <Tags>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+10' per Raise)</Raise>
+      <Raise>Area of Effect (+5' radius per 2 Raises)</Raise>
+      <Raise>Duration (+1 Round per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Blessing of the Sun" area="One willing target person (may be the caster)" mastery="4" element="fire" range="Touch" duration="3 Rounds" id="blessing_of_the_sun">
+    <Tags></Tags>
+    <Raises>
+      <Raise>Range (may change to 10' with 2 Raises)</Raise>
+      <Raise>Duration (+1 Round per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Essence of Fire" area="Two target duelists" mastery="4" element="fire" range="10'" duration="One iaijutsu duel" id="essence_of_fire">
+    <Tags>
+      <Tag>wards</Tag>
+      <Tag>imperial</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Special (4 Raises to cancel School Techniques that effect duels)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Eyes of the Phoenix" area="One target creature" mastery="4" element="fire" range="25'" duration="1 hour" id="eyes_of_the_phoenix">
+    <Tags>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+5' per Raise)</Raise>
+      <Raise>Area of Effect (+1 creature per 2 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Castle of Fire" area="Circle with a radius of 30' from caster" mastery="5" element="fire" range="Centered on caster" duration="10 Rounds" id="castle_of_fire">
+    <Tags>
+      <Tag>battle</Tag>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area of Effect (+5' to radius for 2 Raises)</Raise>
+      <Raise>Duration (+2 Round per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Consumed by Five Fires" area="One target creature (and caster)" mastery="5" element="fire" range="100'" duration="Instantaneous" id="consumed_by_five_fires">
+    <Tags></Tags>
+    <Raises>
+      <Raise>Range (+50' for Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Dragon's Talon (Kuro's Fire)" area="Up to 10 target creatures within range" mastery="5" element="fire" range="100'" duration="Instantaneous" id="the_dragons_talon">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+25' per Raise)</Raise>
+      <Raise>Area of Effect (+2 targets per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Curse of the Burning Hand" area="One target creature" mastery="6" element="fire" range="10'" duration="Infinite" id="curse_of_the_burning_hand">
+    <Tags></Tags>
+    <Raises>
+      <Raise>Range (+5' per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Rise, Fire" area="One summoned spirit" mastery="6" element="fire" range="30'" duration="Concentration" id="rise_fire">
+    <Tags />
+    <Raises></Raises>
+  </SpellDef>
+  <SpellDef name="The Elements' Fury" area="Caster" mastery="6" element="fire" range="Self" duration="Instantaneous" id="the_elements_fury">
+    <Tags></Tags>
+    <Raises>
+      <Raise>Special (+1 additional spell per 3 Raises)</Raise>
+    </Raises>
+  </SpellDef>
+</L5RCM>

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Weapon skill="kenjutsu" cost="" dr="3k2" name="Blade of Secrets (Katana)">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+      <Tag>samurai</Tag>
+      <Tag>nemuranai</Tag>
+    </Tags>
+    <Effect id="blade_of_secrets" />
+  </Weapon>
+  <Weapon skill="kenjutsu" cost="" dr="3k2" name="Blade of Truths (Katana)">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+      <Tag>samurai</Tag>
+      <Tag>nemuranai</Tag>
+    </Tags>
+    <Effect id="blade_of_truths" />
+  </Weapon>
+  <Weapon range="20'" skill="kenjutsu" cost="" dr="3k3" name="Yashin- Bloodsword Ambition (Wakizashi)">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+      <Tag>samurai</Tag>
+      <Tag>ranged</Tag>
+      <Tag>nemuranai</Tag>
+    </Tags>
+    <Effect id="bloodsword_ambition" />
+  </Weapon>
+  <Weapon skill="kenjutsu" cost="" dr="4k4" name="Handan- Bloodsword Judgement (Katana)">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+      <Tag>samurai</Tag>
+      <Tag>nemuranai</Tag>
+    </Tags>
+    <Effect id="bloodsword_judgement" />
+  </Weapon>
+  <Weapon skill="kenjutsu" cost="" dr="4k4" name="Jonetsu- Bloodsword Passion (Katana)">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+      <Tag>samurai</Tag>
+      <Tag>nemuranai</Tag>
+    </Tags>
+    <Effect id="bloodsword_passion" />
+  </Weapon>
+  <Weapon skill="kenjutsu" cost="" dr="4k4" name="Fukushu- Bloodsword Revenge (Katana)">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+      <Tag>samurai</Tag>
+      <Tag>nemuranai</Tag>
+    </Tags>
+    <Effect id="bloodsword_revenge" />
+  </Weapon>
+</L5RCM>
