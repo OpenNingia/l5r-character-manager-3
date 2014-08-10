@@ -170,7 +170,7 @@ class FDFExporterAll(FDFExporter):
             fields['SKILL_IS_SCHOOL.%d' % i] = sk.is_school
             fields['SKILL_NAME.%d'    % i  ] = sk.name
             fields['SKILL_RANK.%d'    % i  ] = sk.rank
-            fields['SKILL_TRAIT.%d'   % i  ] = dal.query.get_trait(f.dstore, sk.trait)
+            fields['SKILL_TRAIT.%d'   % i  ] = dal.query.get_trait(f.dstore, sk.trait) or dal.query.get_ring(f.dstore, sk.trait)
             fields['SKILL_EMPH_MA.%d' % i  ] = ', '.join(sk.emph)
 
         # MERITS AND FLAWS
