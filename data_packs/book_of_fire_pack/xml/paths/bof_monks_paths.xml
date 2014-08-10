@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="monks" name="Student of Hitsu-Do" id="monks_student_of_hitsudo">
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>monks_monk</Tag>
+      <Tag>alternate</Tag>
+      <Tag>monks_alternate</Tag>
+      <Tag>brotherhood</Tag>
+      <Tag>monks_brotherhood</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="The Way of Fire" rank="2" id="monks_the_way_of_fire"><Description>The practitioner of Hitsu-do learns to harness his inner Fire chi, using it to empower his strikes - but this has a price, since such use of one's own Fire is also harmful. When making an unarmed attack, you may opt to call on your inner fire, but you suffer Wounds equal to your Fire x2. (Any Wound Penalties from this damage are applied after your attack roll is completed.) In return, your unarmed damage for that attack has a base DR of 0k[Fire] instead of 0k1. (This does not stack with the unarmed damage bonus from the Advantage Hands of Stone.) For mechanical purposes, using the Hitsu-do technique as using a Mystical Kiho.
+
+Special: The Hitsu-do makes it easier for its students to master the ways of Fire. Your Fire Ring is considered to be 1 Rank higher for the purpose of learning Fire Kiho.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="jiujutsu" type="skill" trg="Hitsu-do" min="4">Jiujutsu (Hitsu-do) 4</Requirement>
+      <Requirement field="fire" type="ring" min="3">Fire 3</Requirement>
+      <Requirement field="monks" type="rule">Must be a Brotherhood Monk</Requirement>
+      <Requirement field="rpg" type="more">Must be at Rank 2</Requirement>
+      <Requirement field="rpg" type="more">Must have access to a Hitsu-do dojo</Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

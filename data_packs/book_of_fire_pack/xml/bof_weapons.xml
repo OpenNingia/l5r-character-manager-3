@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Weapon skill="kenjutsu" dr="0k1" name="Shinai">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+      <Tag>samurai</Tag>
+    </Tags>
+    <Effect id="no_dr_explosion" />
+  </Weapon>
+  <Weapon skill="kenjutsu" cost="5k" dr="0k2" name="Bokken">
+    <Tags>
+      <Tag>medium</Tag>
+      <Tag>melee</Tag>
+      <Tag>samurai</Tag>
+    </Tags>
+    <Effect id="dbl_opp_armor_rule" />
+  </Weapon>
+</L5RCM>

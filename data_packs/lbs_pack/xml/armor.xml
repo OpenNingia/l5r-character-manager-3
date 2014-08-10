@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<L5RCM>
+    <Armor tn="5" rd="0" cost="15c" name="Large Wooden Shield">
+        <Effect id="large_shield_rule"/>
+    </Armor>
+    <Armor tn="5" rd="0" cost="20c" name="Senpet Chain Shirt">
+        <Effect id="senpet_chain_shirt"/>
+    </Armor>
+</L5RCM>

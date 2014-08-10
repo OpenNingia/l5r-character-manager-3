@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="monks" name="Order of Rebirth" id="monks_order_of_rebirth">
+    <Trait>intelligence</Trait>
+    <Honor>6.5</Honor>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>monks_monk</Tag>
+      <Tag>brotherhood</Tag>
+      <Tag>monks_brotherhood</Tag>
+    </Tags>
+    <Devotion>Fortunist</Devotion>
+    <Kihos count="3" />
+    <Skills>
+      <Skill id="athletics" rank="1" />
+      <Skill id="lore_history" rank="1" />
+      <Skill id="jiujutsu" rank="1" />
+      <Skill id="lore_theology" rank="1" />
+      <Skill id="meditation" rank="1" />
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells />
+    <Techs>
+      <Tech name="Changing the Way" rank="1" id="monks_changing_the_way"><Description>The Brothers of Rebirth celebrate different approaches in all the myriad of forms. Each time in a given encounter that you attempt to utilize a Kiho of a different Element that any Kiho previously used in the same encounter, you gain a bonus of +5 on the activation roll.</Description></Tech>
+    </Techs>
+    <Requirements />
+  </School>
+  <School clanid="monks" name="Tengoku's Fist" id="monks_tengokus_fist">
+    <Trait>agility</Trait>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>monks_monk</Tag>
+      <Tag>brotherhood</Tag>
+      <Tag>monks_brotherhood</Tag>
+    </Tags>
+    <Devotion>Shintao</Devotion>
+    <Kihos count="3" />
+    <Skills>
+      <Skill id="athletics" rank="1" />
+      <Skill id="jiujutsu" rank="2" />
+      <Skill id="battle" rank="1" />
+      <Skill id="lore_theology" rank="1" />
+      <Skill id="meditation" rank="1" />
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells />
+    <Techs>
+      <Tech name="The Hand of the Heavens" rank="1" id="monks_the_hand_of_the_heavens"><Description>The monks of Tengoku's Fist strike with surety and purpose, and their strength is magnified by the influence of the divine. When making an unarmed attack against an opponent, or an attack using a bisento, a bo staff, or a weapon with the Monk property, you may gain a Free Raise on the attack roll if your Fire Ring is higher than your opponent's Fire Ring.</Description></Tech>
+    </Techs>
+    <Requirements />
+  </School>
+  <School clanid="monks" name="The Temple of Heavenly Wisdom" id="monks_the_temple_of_heavenly_wisdom">
+    <Trait>intelligence</Trait>
+    <Honor>6.5</Honor>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>monks_monk</Tag>
+      <Tag>brotherhood</Tag>
+      <Tag>monks_brotherhood</Tag>
+    </Tags>
+    <Devotion>Fortunism</Devotion>
+    <Kihos count="3" />
+    <Skills>
+      <Skill id="courtier" rank="1" />
+      <Skill id="etiquette" rank="1" />
+      <Skill id="meditation" rank="1" />
+      <Skill id="sincerity" rank="1" />
+      <Skill id="lore_history" rank="1" />
+      <Skill id="lore_theology" rank="1" emphases="Shintao" />
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells />
+    <Techs>
+      <Tech name="The Largesse of Fukurokujin" rank="1" id="monks_the_largesse_of_fukurokujin"><Description>The Fortune of Wisdom showers his blessings upon those monks who revere him, granting them insight into the way of politics and diplomacy where others might make grievous errors. When making any Social Skill Roll, you may select any one Kiho you possess. You may not use that Kiho for the remainder of the day, but you gain a bonus of +1k1 to the Social Skill Roll. You may only select each Kiho you know once per day for this purpose.</Description></Tech>
+    </Techs>
+    <Requirements />
+  </School>
+</L5RCM>

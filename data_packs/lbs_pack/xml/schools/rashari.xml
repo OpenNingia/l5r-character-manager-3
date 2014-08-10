@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<L5RCM>
+  <School clanid="rashari" name="Ra’Shari Knife-Fighter" id="rashari_knife_fighter">
+    <Trait>agility</Trait>
+    <Honor>3.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>rashari_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="deceit" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="divination" rank="1"/>
+      <Skill id="knives" rank="1"/>
+      <Skill id="perform_dance" rank="1"/>
+      <Skill id="tahaddi" rank="1"/>
+      <Skill id="knives" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>merchant</Wildcard>
+        <Wildcard>low</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="The Endless Dance" rank="1" id="reshari_endless_dance"></Tech>
+      <Tech name="Flashing Talons" rank="2" id="reshari_flashing_talons"></Tech>
+      <Tech name="Through the Cracks" rank="3" id="rashari_cracks"></Tech>
+      <Tech name="Two Knives, Two Wounds" rank="4" id="rashari_two_knives"></Tech>
+      <Tech name="Strike to Slay" rank="5" id="rashari_strike_to_slay"></Tech>
+    </Techs>
+    <Requirements/>
+  </School>
+</L5RCM>

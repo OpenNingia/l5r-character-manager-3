@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<L5RCM>
+  <Family clanid="rashari" name="The Great Caravan of Commerce" id="commerce">
+    <Trait>willpower</Trait>
+  </Family>
+    <Family clanid="rashari" name="The Great Caravan of Entertainment" id="entertainment">
+        <Trait>awareness</Trait>
+    </Family>
+    <Family clanid="rashari" name="The Great Caravan of Memory" id="memory">
+        <Trait>intelligence</Trait>
+    </Family>
+    <Family clanid="rashari" name="The Great Caravan of Mysticism" id="mysticism">
+        <Trait>perception</Trait>
+    </Family>
+</L5RCM>

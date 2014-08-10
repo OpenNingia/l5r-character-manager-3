@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<L5RCM>
+    <SkillDef trait="intelligence" type="merchant" id="locksmith" name="Locksmith">
+        <Tags/>
+        <MasteryAbilities>
+            <MasteryAbility rank="5">You may now pick a lock in thirty
+                seconds.</MasteryAbility>
+            <MasteryAbility rank="7">You may ignore up to one Raise that a lock
+                requires to be opened.</MasteryAbility>
+            <MasteryAbility rank="10">You may now pick a lock in one round.</MasteryAbility>
+        </MasteryAbilities>
+    </SkillDef>
+    <SkillDef trait="reflexes" type="bugei" id="tahaddi" name="Tahaddi">
+        <Tags/>
+        <MasteryAbilities>
+            <MasteryAbility rank="3">Readying a knife is a Free Action.</MasteryAbility>
+            <MasteryAbility rank="5">Gain 1 Free Raise on Focus Stage of a Tahaddi duel.</MasteryAbility>
+            <MasteryAbility rank="7">+2k2 to the total of all Focus Rolls if Assessment roll exceed opponent one by 10+.</MasteryAbility>
+        </MasteryAbilities>
+    </SkillDef>
+    <SkillDef trait="awareness" type="low" id="deceit" name="Deceit">
+        <Tags/>
+    </SkillDef>
+    <SkillDef trait="awareness" type="high" id="storytelling" name="Storytelling">
+        <Tags/>
+        <MasteryAbilities>
+            <MasteryAbility rank="5">You gain +2 Insight</MasteryAbility>
+            <MasteryAbility rank="10">You gain +2 Insight.</MasteryAbility>
+        </MasteryAbilities>
+    </SkillDef>
+<SkillDef trait="intelligence" type="low" id="traps" name="Traps">
+        <Tags/>
+        <MasteryAbilities>
+            <MasteryAbility rank="5">The TN to disarm traps you create is
+increased by 5.</MasteryAbility>
+            <MasteryAbility rank="7">The TN to disarm traps you create is
+increased by another 5 (to +10).</MasteryAbility>
+            <MasteryAbility rank="10">The TN to disarm traps you create is
+increased by another 5 (to +15).</MasteryAbility>
+        </MasteryAbilities>
+    </SkillDef>
+    <SkillDef trait="agility" type="bugei" id="swordmanship" name="Swordmanship">
+        <Tags>
+            <Tag>weapon</Tag>
+        </Tags>
+        <MasteryAbilities>
+            <MasteryAbility rule="ma_kenjutsu_3" rank="3">+1k0 to all damage rolls made with a sword.</MasteryAbility>
+            <MasteryAbility rank="5">Readying a sword is a Free Action.</MasteryAbility>
+            <MasteryAbility rank="7">Damage dice explode on 9 and 10.</MasteryAbility>
+        </MasteryAbilities>
+    </SkillDef>
+</L5RCM>

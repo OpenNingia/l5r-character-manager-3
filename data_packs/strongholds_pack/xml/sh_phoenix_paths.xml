@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="phoenix" name="Asako Philosopher" id="phoenix_asako_philosopher">
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>phoenix_courtier</Tag>
+      <Tag>alternate</Tag>
+      <Tag>phoenix_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="The Winds of Rhetoric" rank="2" id="the_winds_of_rhetoric"><Description>Those who study with the Nikesake sophists have learned to defuse almost any situation, as they have a superior understanding of how those with whom they enter debate think and seek solutions to various problems. You gain a bonus of +1k1 to the total of all Contested Social Skill Rolls using Etiquette.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="courtier" trg="Rhetoric" type="skill" min="2">Courtier (Rhetoric) 2</Requirement>
+      <Requirement field="etiquette" type="skill" min="3">Etiquette 3</Requirement>
+      <RequirementOption text="Replaces Asako Loremaster 2">
+        <Requirement field="phoenix_temple_of_the_soul" type="rule" />
+      </RequirementOption>
+    </Requirements>
+  </School>
+</L5RCM>
