@@ -2400,13 +2400,13 @@ class L5RMain(L5RCMCore):
         if do_not_prompt_again.checkState() == QtCore.Qt.Checked:
             settings.setValue('advise_conversion', 'false')
 
-    def advise_successfull_import(self):
+    def advise_successfull_import(self, count):
         settings = QtCore.QSettings()
         if settings.value('advise_successfull_import', 'true') == 'false':
             return
         msgBox = QtGui.QMessageBox(self)
         msgBox.setWindowTitle('L5R: CM')
-        msgBox.setText(self.tr("Data pack imported succesfully."))
+        msgBox.setText(self.tr("{0} data pack(s) imported succesfully.").format(count))
         do_not_prompt_again = QtGui.QCheckBox(self.tr("Do not prompt again"), msgBox)
         do_not_prompt_again.blockSignals(True) # PREVENT MSGBOX TO CLOSE ON CLICK
         msgBox.addButton(QtGui.QMessageBox.Ok)
@@ -2574,20 +2574,25 @@ class L5RMain(L5RCMCore):
 
         settings = QtCore.QSettings()
         last_data_dir = settings.value('last_open_data_dir', QtCore.QDir.homePath())
-        fileName = QtGui.QFileDialog.getOpenFileName(
+        ret = QtGui.QFileDialog.getOpenFileNames(
                                 self,
                                 self.tr("Load data pack"),
                                 last_data_dir,
                                 ";;".join(supported_filters))
-
-        if len(fileName) != 2:
+        
+        if len(ret) < 2:
+            return None
+           
+        files = ret[0]
+        
+        if not len(files):
             return None
 
-        last_data_dir = os.path.dirname(fileName[0])
+        last_data_dir = os.path.dirname(files[0])
         if last_data_dir != '':
             #print 'save last_dir: %s' % last_dir
             settings.setValue('last_open_data_dir', last_data_dir)
-        return fileName[0]
+        return files
 
     def check_updates(self):
         update_info = autoupdate.get_last_version()
