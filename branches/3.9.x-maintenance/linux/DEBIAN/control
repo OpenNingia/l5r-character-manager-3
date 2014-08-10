@@ -10,7 +10,7 @@ Homepage: http://code.google.com/p/l5rcm/
 Package: l5rcm
 Architecture: all
 Installed-Size: 4000
-Version: 3.9.2-3
+Version: 3.9.4-2
 Depends: python, python-pyside.qtcore, python-pyside.qtnetwork, python-pyside.qtgui, pdftk
 Description: L5R 4th Edition Character Manager
  L5R: CM is a Character manager for
