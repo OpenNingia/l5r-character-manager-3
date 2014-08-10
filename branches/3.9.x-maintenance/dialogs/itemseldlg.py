@@ -165,6 +165,7 @@ class ChooseItemDialog(QtGui.QDialog):
         self.item = models.weapon_outfit_from_db(self.dstore, weap_nm, sk_uuid)
         lines = []
                     
+        # pylint: disable-msg=E1103
         if self.item.dr is not None:
             lines.append( '<pre>%-24s %s</pre>' % (self.tr("Primary DR"  ), self.item.dr      ))
         if self.item.dr_alt is not None:

@@ -32,22 +32,24 @@ class SimpleDescriptionView(QtGui.QWidget):
 
         self.lb_title    = QtGui.QLabel(self)
         self.lb_subtitle = QtGui.QLabel(self)
-        self.lb_content  = QtGui.QLabel(self)
+        #self.lb_content  = QtGui.QLabel(self)
+        self.tx_content  = QtGui.QTextEdit(self)
 
         text_align = QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter;
 
         self.lb_title   .setAlignment(text_align)
         self.lb_subtitle.setAlignment(text_align)
-        self.lb_content .setAlignment(QtCore.Qt.AlignJustify | QtCore.Qt.AlignVCenter)
-        self.lb_content .setWordWrap (True)
+        self.tx_content .setReadOnly (True)
+        #self.lb_content .setAlignment(QtCore.Qt.AlignJustify | QtCore.Qt.AlignVCenter)
+        #self.lb_content .setWordWrap (True)
 
-        self.lb_content.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        self.tx_content.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
 
         vbox = QtGui.QVBoxLayout(self)
         vbox.addWidget(self.lb_title   )
         vbox.addWidget(self.lb_subtitle)
         vbox.addWidget(new_horiz_line(self))
-        vbox.addWidget(self.lb_content )
+        vbox.addWidget(self.tx_content )
 
     def set_title(self, text):
         self.lb_title.setText(u"""<h1>{}</h1>""".format(text))
@@ -56,7 +58,7 @@ class SimpleDescriptionView(QtGui.QWidget):
         self.lb_subtitle.setText(u"""<em><h3 style="color:#666;">{}</h3></em>""".format(text))
 
     def set_content(self, text):
-        self.lb_content.setText(u"""<p>{}</p>""".format(text))
+        self.tx_content.setText(u"""<p>{}</p>""".format(text))
 
     def sizeHint(self):
         return QtCore.QSize(400, 300)
