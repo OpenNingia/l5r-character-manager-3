@@ -18,28 +18,32 @@ from chmodel import ring_name_from_id, attrib_name_from_id
 from copy import copy
 
 class CharacterSnapshot(object):
-    
+
     skills   = {} # id ==> value
     traits   = {} # id ==> value
     rings    = {} # id ==> value
-    
+
     tags     = [] # tag list
     rules    = [] # rules list
-    
+
     schools  = {} # id ==> rank
-    
+
+    insight_rank = 0
+
     model  = None
-    
+
+    honor  = 0.0
+
     def __init__(self, pc):
         self.model = pc
-        
+
         for k, v in [ (x, pc.get_skill_rank(x)) for x in pc.get_skills() ]:
             self.skills[k] = v
-            
+
         for k, v in [ (attrib_name_from_id(i), pc.get_attrib_rank(i)) for i in xrange(0, 8) ]:
             self.traits[k] = v
-            
-        for k, v in [ (ring_name_from_id(i), pc.get_ring_rank(i)) for i in xrange(0, 5) ]:            
+
+        for k, v in [ (ring_name_from_id(i), pc.get_ring_rank(i)) for i in xrange(0, 5) ]:
             self.rings[k] = v
             
         for k, v in [ (x.school_id, pc.get_school_rank(x)) for x in pc.schools ]:
@@ -53,51 +57,59 @@ class CharacterSnapshot(object):
         for s in pc.schools:
             self.rules += s.tech_rules
         self.rules += [ x.rule for x in pc.advans if hasattr(x,'rule') ]
-        
+
+        self.insight_rank = pc.get_insight_rank()
+        self.honor        = pc.get_honor()
+
     def get_skills(self):
         return self.model.get_skills()
-        
-    def get_skill_rank(self, id):
-        if id in self.skills:
-            return self.skills[id]
+
+    def get_skill_rank(self, id_):
+        if id_ in self.skills:
+            return self.skills[id_]
         return 0
-        
-    def set_skill_rank(self, id, val):
-        self.skills[id] = val
-        
-    def get_ring_rank(self, id):
-        if id in self.rings:
-            return self.rings[id]
+
+    def set_skill_rank(self, id_, val):
+        self.skills[id_] = val
+
+    def get_ring_rank(self, id_):
+        if id_ in self.rings:
+            return self.rings[id_]
         return 0
-        
-    def set_ring_rank(self, id, val):
-        self.rings[id] = val        
-    
-    def get_trait_rank(self, id):
-        if id in self.traits:
-            return self.traits[id]
+
+    def set_ring_rank(self, id_, val):
+        self.rings[id_] = val
+
+    def get_trait_rank(self, id_):
+        if id_ in self.traits:
+            return self.traits[id_]
         return 0
-        
-    def set_trait_rank(self, id, val):
-        self.traits[id] = val 
-        
+
+    def set_trait_rank(self, id_, val):
+        self.traits[id_] = val
+
     def has_tag(self, tag):
         return tag in self.tags
-     
+
     def has_rule(self, rule):
         return rule in self.rules
-        
+
     def get_schools(self):
         return self.schools.keys()
 
-    def get_school_rank(self, id):
-        if id in self.schools:
-            return self.schools[id]
+    def get_school_rank(self, id_):
+        if id_ in self.schools:
+            return self.schools[id_]
         return 0
-        
-    def set_school_rank(self, id, val):
-        self.schools[id] = val
-        
+
+    def set_school_rank(self, id_, val):
+        self.schools[id_] = val
+
     def get_skill_emphases(self, skid):
         return self.model.get_skill_emphases(skid)
-            
+
+    def get_insight_rank(self):
+        return self.insight_rank
+
+    def get_honor(self):
+        return self.honor
