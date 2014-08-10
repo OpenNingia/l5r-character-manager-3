@@ -1871,6 +1871,9 @@ class L5RMain(L5RCMCore):
             # get 3 spells each rank
             if self.pc.has_tag('shugenja'):
                 self.pc.set_pending_spells_count( self.pc.get_spells_per_rank() )
+            elif self.pc.has_tag('brotherhood'):
+                # hey free kihos!
+                self.pc.set_free_kiho_count(2)
 
             lb = QtGui.QLabel(self.tr("You reached the next rank, you have an opportunity"
                                       " to decide your destiny."), self)
@@ -2046,6 +2049,9 @@ class L5RMain(L5RCMCore):
             print('successfully save character. saving file path', self.save_path)
 
             try:
+                if self.pc.last_rank > self.pc.get_insight_rank():
+                    print("ERROR. last_rank should never be > insight rank. I'll try to fix this.")
+                    self.pc.last_rank = self.pc.get_insight_rank()            
                 self.last_rank = self.pc.last_rank
             except:
                 self.last_rank = self.pc.get_insight_rank()
