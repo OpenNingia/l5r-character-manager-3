@@ -42,8 +42,8 @@ class SpellItemSelection(QtGui.QWidget):
     # spell blacklist
     blacklist  = None
 
-    # label for spell description
-    lb_descr   = None
+    # text browser for spell description
+    tx_descr   = None
 
     def __init__(self, pc, dstore, parent = None):
         super(SpellItemSelection, self).__init__(parent)
@@ -61,20 +61,23 @@ class SpellItemSelection(QtGui.QWidget):
         self.lb_ring    = QtGui.QLabel(self.tr('Ring'), self)
         self.lb_mastery = QtGui.QLabel(self.tr('Mastery'), self)
         self.lb_spell   = QtGui.QLabel(self.tr('Spell'), self)
-        self.lb_descr   = QtGui.QLabel(self)
-        self.lb_descr.setWordWrap(True)
+        self.tx_descr   = QtGui.QTextEdit(self)
 
         self.cb_element.setEditable(False)
         self.cb_mastery.setEditable(False)
 
-        form_lo         = QtGui.QFormLayout()
+        self.tx_descr.setReadOnly(True)
+
+        form_lo = QtGui.QFormLayout()
+        form_lo.setVerticalSpacing(9)
+        form_lo.setHorizontalSpacing(9)
         form_lo.addRow(self.lb_ring, self.cb_element)
         form_lo.addRow(self.lb_mastery, self.cb_mastery)
         form_lo.addRow(self.lb_spell, self.cb_spell)
 
         vbox            = QtGui.QVBoxLayout(self)
         vbox.addItem  (form_lo)
-        vbox.addWidget(self.lb_descr)
+        vbox.addWidget(self.tx_descr)
 
         self.cb_element.currentIndexChanged.connect( self.on_ring_change     )
         self.cb_mastery.currentIndexChanged.connect( self.on_mastery_change  )
@@ -185,7 +188,7 @@ class SpellItemSelection(QtGui.QWidget):
 
     def on_spell_change(self, index):
         spell  = self.cb_spell.itemData( self.cb_spell.currentIndex() )
-        if spell: self.lb_descr.setText(
+        if spell: self.tx_descr.setText(
             "<em>{}</em>".format(spell.desc))
 
     def update_spell_list(self):

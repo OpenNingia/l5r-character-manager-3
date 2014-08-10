@@ -70,9 +70,8 @@ class KihoDialog(QtGui.QDialog):
         self.tx_cost        = QtGui.QLabel(self)
         self.tx_pc_status   = QtGui.QLabel(self)
         self.tx_eligibility = QtGui.QLabel(self)
-        self.tx_detail      = QtGui.QLabel(self)
-        self.tx_detail.setWordWrap(True)
-
+        self.tx_detail      = QtGui.QTextEdit(self)
+        self.tx_detail.setReadOnly(True)
 
         cfr_fbox.addRow(self.tr("Kiho"          ), self.cb_kiho        )
         cfr_fbox.addRow(self.tr("Element"       ), self.tx_element     )
@@ -83,12 +82,13 @@ class KihoDialog(QtGui.QDialog):
         cfr_fbox.addRow(self.tr("Details"       ), self.tx_detail      )
 
         cfr_fbox.setContentsMargins(120, 20, 120, 20)
+        cfr_fbox.setVerticalSpacing(9)
 
         self.vbox_lo.addWidget(self.header)
         self.vbox_lo.addWidget(center_fr  )
         self.vbox_lo.addWidget(bottom_bar )
 
-        self.resize( 600, 300 )
+        self.resize( 600, 400 )
 
     def connect_signals(self):
         self.bt_ok.clicked.connect( self.accept )
