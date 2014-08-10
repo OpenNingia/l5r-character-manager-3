@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="mantis" name="Tsuruchi Master Bowman" id="mantis_tsuruchi_master_bowman">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>mantis_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>mantis_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="The Way of the Archer" rank="6" id="the_way_of_the_archer">
+        <Description>
+                Tsuruchi was perhaps the greatest archer in the history of Rokugan, and his final technique pushes the limits of what can be achieved with the bow. When using a bow, your range is increased by 150' (this is applied before applying the 50% range bonus for Kyujutsu Rank 5). Your Raises with a bow are no longer limited by your Void Ring (or Skill Rank if you have Great Potential), and you may perform Called Shots for half the normal number of Raises (rounded up).
+                </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="kyujutsu" type="skill" min="7">Kyujutsu: 7</Requirement>
+      <RequirementOption text="Must have School Rank 5 in either the Tsuruchi Archer or Tsuruchi Bounty Hunter School">
+        <Requirement field="mantis_tsuruchis_eye" type="rule"/>
+        <Requirement field="mantis_eyes_of_the_wasp" type="rule"/>
+      </RequirementOption>
+      <Requirement field="rpg" type="more">Must be selected by the Tsuruchi sensei to learn this Technique</Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Family clanid="hare" name="Ujina" id="hare_ujina">
+    <Trait>agility</Trait>
+  </Family>
+  <Family clanid="hare" name="Usagi" id="hare_usagi">
+    <Trait>awareness</Trait>
+  </Family>
+</L5RCM>

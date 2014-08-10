@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <SpellDef name="Drawing on the Mountain" area="One target structure (up to a small castle)" mastery="5" element="earth" range="300'" duration="1 day" id="drawing_on_the_mountain">
+    <Tags>
+      <Tag>battle</Tag>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise> Range (+150’ per Raise)</Raise>
+      <Raise> Area of Effect (one additional structure for 3 Raises)</Raise>
+      <Raise>Duration (+1 day per 3 Raises) </Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Earth Dragon's Ward" area="20' radius" mastery="4" element="earth" range="Touch" duration="10 minutes" id="earth_dragons_ward">
+    <Tags>
+      <Tag>wards</Tag>
+      <Tag>jade</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+5 minutes per Raise)</Raise>
+      <Raise>Special (+1k1 to the caster’s Willpower roll per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Grounding Energy" area="Caster and all alies within 20' radius" mastery="5" element="earth" range="Centered on caster" duration="3 Rounds" id="grounding_energy">
+    <Tags>
+      <Tag>wards</Tag>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 Rounds per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Groves of Stone" area="circular barrier 15' in radius" mastery="3" element="earth" range="centered on caster" duration="10 rounds" id="groves_of_stone">
+    <Tags>
+      <Tag>craft</Tag>
+      <Tag>defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+2 rounds per Raise)</Raise>
+      <Raise>Area of Effect (+5' radius per two raises)</Raise>
+      <Raise>Special (+5 TN to climb rocks per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Jurojin's Curse" area="One target creature" mastery="2" element="earth" range="30'" duration="1 day" id="jurojins_curse">
+    <Tags></Tags>
+    <Raises>
+      <Raise>Range (+10' per Raise)</Raise>
+      <Raise>Area of Effect (+1 creature per two Raises)</Raise>
+      <Raise>Duration (1 day per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Maw of the Earth" area="Approximately 10’ in radius" mastery="4" element="earth" range="40'" duration="Permanent" id="maw_of_the_earth">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+20 feet per Raise)</Raise>
+      <Raise>Special/Damage (extra ten feet of depth and 1k1 of damage per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Murmur of Earth" area="100' radius around caster" mastery="3" element="earth" range="Touch" duration="1 round" id="murmur_of_earth">
+    <Tags></Tags>
+    <Raises>
+      <Raise>Area of Effect (+50’ radius per Raise)</Raise>
+      <Raise>Special (+5 to TN per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Rites of Preservation" area="One human corpse" mastery="2" element="earth" range="10'" duration="1 day" id="rites_of_preservation">
+    <Tags>
+      <Tag>Imperial</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 day per three raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Sapphire Strike" area="One target creature" mastery="4" element="earth" range="50'" duration="Instantaneous" id="sapphire_strike">
+    <Tags>
+      <Tag>Jade</Tag>
+      <Tag>Crystal</Tag>
+      <Tag>Thunder</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Range (+20' per Raise)</Raise>
+      <Raise>Targets (+1 target per Raise)</Raise>
+      <Raise>Damage (+1k1 per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Shelter of Earth" area="One target creature (may be the caster)" mastery="3" element="earth" range="Touch" duration="30 minutes" id="shelter_of_earth">
+    <Tags>
+      <Tag>craft</Tag>
+      <Tag>illusion</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+10 minutes per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Soldiers of Clay" area="N/A" mastery="6" element="earth" range="100'" duration="1 hour" id="soldiers_of_clay">
+    <Tags>
+      <Tag>craft</Tag>
+      <Tag>battle</Tag>
+      <Tag>jade</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1/2 hour per Raise)</Raise>
+      <Raise>Special (+2 soldiers per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Stone's Endurance" area="One target creature (may be the caster)" mastery="1" element="earth" range="Self or Touch" duration="6 hours" id="stones_endurance">
+    <Tags>
+      <Tag>travel</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 hour per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Strike as Stone" area="One target person (may be the caster)" mastery="3" element="earth" range="Self or Touch" duration="5 minutes" id="strike_as_stone">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1 minute per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Taming the Beast" area="One target natural creature" mastery="2" element="earth" range="50'" duration="1 hour" id="taming_the_beast">
+    <Tags />
+    <Raises>
+      <Raise>Area of Effect (one additional creature per 2 Raises)</Raise>
+      <Raise>Duration (1/2 hour per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="The Earth Flows" area="1 square mile" mastery="4" element="earth" range="Centered on Caster" duration="1 hour (or two Mass Battle Rounds)" id="the_earth_flows">
+    <Tags>
+      <Tag>battle</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Duration (+1/2 hour or one Mass Battle Round per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Time's Deadly Hand" area="One physical object" mastery="3" element="earth" range="Touch" duration="Permanent" id="times_deadly_hand">
+    <Tags></Tags>
+    <Raises>
+      <Raise>Range (change from Touch to 50’ with three Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Whispers of the Land" area="50' radius" mastery="2" element="earth" range="Centered on Caster" duration="10 minutes" id="whispers_of_the_land">
+    <Tags></Tags>
+    <Raises>
+      <Raise>Area of Effect (+50’ radius per Raise)</Raise>
+      <Raise>Duration (+5 minutes per Raise)</Raise>
+      <Raise>Special (+1 day of tracks per two Raises)</Raise>
+    </Raises>
+  </SpellDef>
+  <SpellDef name="Wooden Prison" area="One target creature" mastery="3" element="earth" range="50'" duration="5 rounds" id="wooden_prison">
+    <Tags>
+      <Tag>Defense</Tag>
+    </Tags>
+    <Raises>
+      <Raise> Range (+10’ per Raise)</Raise>
+      <Raise>Duration (+1 Round per Raise)</Raise>
+      <Raise>Special (+1k0 to the plants’ Strength per Raise)</Raise>
+    </Raises>
+  </SpellDef>
+</L5RCM>

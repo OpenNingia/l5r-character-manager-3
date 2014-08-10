@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="badger" name="Ichiro Bushi School" id="badger_ichiro_bushi_school">
+    <Trait>strength</Trait>
+    <Honor>3.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>badger_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="commerce" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="heavy_weapons" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill rank="1" id="kenjutsu" emphases="Katana"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Transcend The Mountain" rank="1" id="badger_transcend_the_mountain">
+        <Description>
+The bushi of the Badger Clan live and train in the rugged territory of the Great Wall of the North, and revere strength as the ultimate measure of any warrior's capabilities - the power of a warrior's fists can still be relied on when all else fails. You may re-roll any Skill roll or Trait roll which uses Strength, but you must keep the result of the second roll. You suffer no movement or combat penalties for Moderate terrain, and only half the normal penalty for Difficult terrain.
+        </Description>
+      </Tech>
+      <Tech name="Strength Of The Badger" rank="2" id="badger_strength_of_the_badger">
+        <Description>
+With practice, the Badger learn to call upon their strength to crush their opponents. A number of times per session equal to your Strength Rank, you may re-roll a damage roll, keeping the better of the two results.
+        </Description>
+      </Tech>
+      <Tech name="Crushing Blow" rank="3" id="badger_crushing_blow">
+        <Description>
+Experienced Badger learn to deliver blows of truly fearsome power, with weapons or even their bare hands, which can pulverize flesh even through the protection of armor. You may ignore the effects of armor on an opponent's Armor TN. Your unarmed attacks may ignore 1 Rank of your target's Reduction.
+        </Description>
+      </Tech>
+      <Tech name="Crashing Stones" rank="4" id="badger_crashing_stones">
+        <Description>
+Ichiro samurai are taught to strike with the speed of the deadly avalanche. Your attacks with Samurai weapons or unarmed strikes are considered Simple Actions.
+        </Description>
+      </Tech>
+      <Tech name="Return The Strike" rank="5" id="badger_return_the_strike">
+        <Description>
+The final lesson taught in Badger Clan dojo is that the most effective blows in combat are not the swiftest, but the hardest struck. At the start of a skirmish, before Initiative is rolled, you may choose to lower your Initiative total by 20 for the duration of the skirmish. In exchange, you add your Strength Rank in unkept dice to both your attack and your damage rolls for the first two rounds of that combat.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit koku="3" bu="0" zeni="0">
+      <Item>Light or Heavy Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>any Heavy or Polearm</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+</L5RCM>

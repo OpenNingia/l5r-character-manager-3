@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Family clanid="imperial" name="Miya" id="imperial_miya">
+    <Trait>reflexes</Trait>
+  </Family>
+  <Family clanid="imperial" name="Otomo" id="imperial_otomo">
+    <Trait>intelligence</Trait>
+  </Family>
+  <Family clanid="imperial" name="Seppun" id="imperial_seppun">
+    <Trait>agility</Trait>
+  </Family>
+  <Family clanid="imperial" name="Hantei" id="imperial_hantei">
+    <Trait>void</Trait>
+  </Family>
+  <Family clanid="imperial" name="Toturi" id="imperial_toturi">
+    <Trait>willpower</Trait>
+  </Family>
+  <Family clanid="imperial" name="Nasu" id="imperial_nasu">
+    <Trait>awareness</Trait>
+  </Family>
+</L5RCM>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="lion" name="Matsu Beastmaster School" id="lion_ob_matsu_beastmaster_school">
+    <Trait>agility</Trait>
+    <Honor>5.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>lion_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="animal_handling" rank="2"/>
+      <Skill id="battle" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="iaijutsu" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="One With The Pride" rank="1" id="lion_one_with_the_pride">
+        <Description>
+You have trained in the highly secretive dojo of the Matsu
+Beastmasters and have forged a bond with one of the
+legendary Lion warcats. The lion will accompany you
+wherever you go and follows basic commands
+without question. No lion
+will ever attack you without being
+compelled to do so in some
+way. You may direct one of
+your warcats to Attack as
+a Complex Action. Any
+one warcat who is not
+attacking will use the
+Guard Action to protect
+you.
+      </Description>
+      </Tech>
+      <Tech name="Heart Of The Beast" rank="2" id="lion_heart_of_the_beast">
+        <Description>
+Your training with the warcats has
+increased your physical abilities as
+well as your mental bond with your lions.
+An additional lion joins your pride.
+You and your companion lions gain the creature
+trait of Swift 2 (as described in the L5R 4th
+Edition core rules, page 320), and all of your lions
+gain an additional Wound Rank that changes the end
+of their progression from a normal lion's to: 36: +15, 60:
+Dead.
+      </Description>
+      </Tech>
+      <Tech name="The Ferocity Within" rank="3" id="lion_the_ferocity_within">
+        <Description>
+You strike as fi ercely as the lions with whom you have
+trained. When wielding a katana, wakizashi, magari-yari,
+nage-yari, or any knife, or when fi ghting unarmed, you
+may make melee attacks as a Simple Action. Additionally,
+you may direct one of your warcats to Attack as a Simple
+Action.
+      </Description>
+      </Tech>
+      <Tech name="All As One" rank="4" id="lion_all_as_one">
+        <Description>
+The fury of the beastmaster and his pride is a whispered legend
+among your clan's enemies, and for good reason. Members
+of your pride may make two claw attacks per Round
+instead of the normal one. You and all members of your pride
+gain a bonus of +2k1 on all damage rolls made when fi ghting
+alongside one another. Finally, when you direct a warcat
+to Attack (a Complex Action for lions), the warcat may also
+make a Simple Move Action during the same Round.
+      </Description>
+      </Tech>
+      <Tech name="With The Soul Of A Lion" rank="5" id="lion_with_the_soul_of_a_lion">
+        <Description>
+United by your leadership and companionship, your pride
+has become fearsome indeed. An additional lion joins your
+pride. All of your warcats gain +10 Armor TN, +2 Reduction,
+and +2 Fear.
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+  </School>
+</L5RCM>

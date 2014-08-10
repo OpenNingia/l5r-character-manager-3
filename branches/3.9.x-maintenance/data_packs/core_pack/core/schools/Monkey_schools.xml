@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="monkey" name="Toku Bushi School" id="monkey_toku_bushi_school">
+    <Trait>willpower</Trait>
+    <Honor>5.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>monkey_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="hunting" rank="1"/>
+      <Skill rank="1" id="investigation" emphases="Search"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="lore_history" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+        <Wildcard>high</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Toku's Lesson" rank="1" id="monkey_tokus_lesson">
+        <Description>
+A Monkey Bushi will prevail, even in the face of the most difficult odds. You add +1k0 to all Skill Rolls with a TN of 25 or higher. (This includes attack rolls.) Additionally, all your Wound Penalties are reduced by an amount equal to your Willpower plus double your School Rank.
+        </Description>
+      </Tech>
+      <Tech name="The Strength Of One Man" rank="2" id="monkey_the_strength_of_one_man">
+        <Description>
+As a member of a very small Minor Clan, the Toku bushi is accustomed to fighting against the odds. While facing multiple opponents or an enemy with a higher Insight Rank, you add +1k1 to your attack and damage rolls.
+        </Description>
+      </Tech>
+      <Tech name="Courage Above All" rank="3" id="monkey_courage_above_all">
+        <Description>
+The Toku bushi calls on the courage of his Clan's founder to speed his own attacks. You may make melee attacks as a Simple Action instead of a Complex Action.
+        </Description>
+      </Tech>
+      <Tech name="Forge Your Own Fate" rank="4" id="monkey_forge_your_own_fate">
+        <Description>
+The Toku Bushi learns to dodge the worst of any attack. You may spend a Void Point when suffering Wounds to force your opponent to drop his two highest dice from his damage roll, even if this would reduce the total amount of kept dice. This cannot reduce the damage roll to less than 1k1.
+        </Description>
+      </Tech>
+      <Tech name="Fortune Favors The Mortal Man" rank="5" id="monkey_fortune_favors_the_mortal_man">
+        <Description>
+The Toku bushi earns his good blessings with his own sheer tenacity. Once per Round, you may spend a Void Point to reroll any roll. You add +2k1 to the new roll. You may choose to keep the new roll or your original roll.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit koku="3" bu="0" zeni="0">
+      <Item>Light Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>any 1 Weapon</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+</L5RCM>

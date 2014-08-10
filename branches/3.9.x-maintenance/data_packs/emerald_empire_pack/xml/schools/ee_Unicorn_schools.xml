@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="unicorn" name="Shinjo Bushi" id="unicorn_shinjo_bushi">
+    <Trait>agility</Trait>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>unicorn_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="horsemanship" rank="2"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="kyujutsu" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="The Way of the Ki-Rin" rank="1" id="unicorn_the_way_of_the_kirin"/>
+      <Tech name="Dance of the Blade" rank="2" id="unicorn_dance_of_the_blade"/>
+      <Tech name="The Four Winds Strike" rank="3" id="unicorn_the_four_winds_strike"/>
+      <Tech name="Spirit of the Blade Unleashed" rank="4" id="unicorn_spirit_of_the_blade_unleashed"/>
+      <Tech name="Dancing with the Fortunes" rank="5" id="unicorn_dancing_with_the_fortunes"/>
+    </Techs>
+    <Requirements/>
+  </School>
+</L5RCM>

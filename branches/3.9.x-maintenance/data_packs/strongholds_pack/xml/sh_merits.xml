@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Merit name="Broken Wave Citizen" id="broken_wave_citizen" type="social">
+    <Rank id="1" value="3">
+    </Rank>
+  </Merit>
+  <Merit name="Clear Water Native" id="clear_water_native" type="social">
+    <Rank id="1" value="3">
+    </Rank>
+  </Merit>
+  <Merit name="Dark Edge Native" id="dark_edge_native" type="social">
+    <Rank id="1" value="2">
+    </Rank>
+  </Merit>
+  <Merit name="Imperial City Citizen" id="imperial_city_citizen" type="social">
+    <Rank id="1" value="2">
+    </Rank>
+  </Merit>
+  <Merit name="Imperial City Veteran" id="imperial_city_veteran" type="social">
+    <Rank id="1" value="2">
+    </Rank>
+  </Merit>
+  <Merit name="Inheritance: Asahina Blade" id="inheritance_asahina_blade" type="material">
+    <Rank id="1" value="9">
+    </Rank>
+  </Merit>
+  <Merit name="Inheritance: Kobune" id="inheritance_kobune" type="material">
+    <Rank id="1" value="10">
+    </Rank>
+  </Merit>
+  <Merit name="Nikesake Citizen" id="nikesake_citizen" type="social">
+    <Rank id="1" value="3">
+    </Rank>
+  </Merit>
+  <Merit name="Ruined City Shadow" id="ruined_city_shadow" type="physical">
+    <Rank id="1" value="3">
+    </Rank>
+  </Merit>
+  <Merit name="Stolen Identity" id="stolen_identity" type="social">
+    <Rank id="1" value="6">
+      <Exception tag="spider" value="5"/>
+    </Rank>
+  </Merit>
+  <Merit name="Water Hammer Armor" id="water_hammer_armor" type="material">
+    <Rank id="1" value="2"/>
+    <Rank id="2" value="7"/>
+    <Rank id="3" value="12"/>
+    <Rank id="4" value="15"/>
+  </Merit>
+  <Merit name="Water Hammer Citizen" id="water_hammer_citizen" type="social">
+    <Rank id="1" value="3">
+    </Rank>
+  </Merit>
+  <Merit name="Zakyo Toshi Citizen" id="zakyo_toshi_citizen" type="social">
+    <Rank id="1" value="3">
+    </Rank>
+  </Merit>
+</L5RCM>

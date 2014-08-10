@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Family clanid="tortoise" name="Kasuga" id="tortoise_kasuga">
+    <Trait>perception</Trait>
+  </Family>
+</L5RCM>

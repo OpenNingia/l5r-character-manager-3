@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+    <title>Datapack Summary</title>
+    <link rel="stylesheet" href="ecss/styles/style.css">
+</head>
+<body>
+    <article>
+    <center>    
+    <h3 class="h-section" id="top">Summary</h3>
+    <hr/>
+    <section id='content'>
+        {% for item in packs %}
+            <p style="margin:5px;">
+                <a href="{{ '#' + item.id }}" class="btn btn-large btn-blue" style="width:240px">
+                    {{ item.display_name }}
+                </a>
+            </p>
+        {% endfor %}
+    </div>
+   </section>
+   </center>
+   </article>
+   
+   <hr/>
+   
+
+<!--
+        self.clans     = []
+        self.families  = []
+        self.schools   = []
+        
+        self.spells    = []
+        self.skills    = []
+        self.merits    = []
+        self.flaws     = []
+        self.katas     = []
+        self.kihos     = []
+        self.tattoos   = []
+        
+        self.weapons   = []
+        self.armors    = []
+        
+        self.skcategs       = []        
+        self.perktypes      = []
+        self.weapon_effects = []
+        
+        self.rings  = []
+        self.traits = []
+-->        
+   
+   <center>
+   <h3 class="h-section" id="content">Content</h3>
+   </center>
+   
+   {% for item in packs %}
+    {% set pd = pack_data[ item.id ] %}
+    
+    <article>
+    <section>
+    <h4 id="{{ item.id }}">{{ item.display_name }}</h4>
+    </section>
+
+    <!-- CLANS -->
+    {% if pd.clans|count > 0 %}
+    <section>    
+    <h6 class="icon-docright">Clans</h6>    
+    <ul>
+    {% for item in pd.clans %}
+        <li><span class="icon-bullet">{{ item.name }}</span></li>
+    {% endfor %}
+    </ul>
+    </section>
+    {% endif %}
+    
+    <!-- FAMILIES -->
+    {% if pd.families|count > 0 %}
+    <section>    
+    <h6 class="icon-docright">Families</h6>
+    <ul>
+    {% for item in pd.families %}
+        <li><span class="icon-bullet">{{ item.clanid }}, {{ item.name }}</span></li>
+    {% endfor %}
+    </ul>
+    </section>
+    {% endif %}
+    
+    {% if pd.schools|count > 0 %}
+    <h6 class="icon-docright">Schools</h6>
+    {% endif %}
+    
+    {% if pd.spells|count > 0 %}
+    <h6 class="icon-docright">Spells</h6>
+    {% endif %}
+    
+    {% if pd.skills|count > 0 %}
+    <h6 class="icon-docright">Skills</h6>
+    {% endif %}
+    
+    {% if pd.merits|count > 0 %}
+    <h6 class="icon-docright">Merits</h6>
+    {% endif %}
+    
+    {% if pd.flaws|count > 0 %}
+    <h6 class="icon-docright">Flaws</h6>
+    {% endif %}
+    
+    {% if pd.katas|count > 0 %}
+    <h6 class="icon-docright">Kata</h6>
+    {% endif %}
+    
+    {% if pd.kihos|count > 0 %}
+    <h6 class="icon-docright">Kiho</h6>
+    {% endif %}
+    
+    {% if pd.weapons|count > 0 %}
+    <h6 class="icon-docright">Weapons</h6>
+    {% endif %}
+    
+    {% if pd.armors|count > 0 %}
+    <h6 class="icon-docright">Armors</h6>
+    {% endif %}
+    
+    {% if pd.skcategs|count > 0 %}
+    <h6 class="icon-docright">Skill Categories</h6>
+    {% endif %}
+    
+    {% if pd.perktypes|count > 0 %}
+    <h6 class="icon-docright">Perk Types</h6>
+    {% endif %}
+    
+    {% if pd.weapon_effects|count > 0 %}
+    <h6 class="icon-docright">Weapon Effects</h6>
+    {% endif %}
+    
+    {% if pd.rings|count > 0 %}
+    <h6 class="icon-docright">Rings</h6>
+    {% endif %}
+    
+    {% if pd.traits|count > 0 %}
+    <h6 class="icon-docright">Traits</h6>
+    {% endif %}
+    
+    </section>
+    
+    </article>
+    
+   {% endfor %}
+   
+</body>
+</html>

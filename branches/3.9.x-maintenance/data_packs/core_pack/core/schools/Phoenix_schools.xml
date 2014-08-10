@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="phoenix" id="phoenix_shiba_bushi_school" name="Shiba Bushi School">
+    <Trait>agility</Trait>
+    <Honor>5.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>phoenix_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="defense" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="kyujutsu" rank="1"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill emphases="Void Recovery" id="meditation" rank="1"/>
+      <Skill id="spears" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+        <Wildcard>high</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="phoenix_the_way_of_the_phoenix" name="The Way Of The Phoenix" rank="1">
+        <Description>Shiba bushi move through battle as the Void moves through all the elements. When spending a Void Point to gain +1k1 on a roll, you may choose to spend 2 Void Points (to gain +2k2) on the roll instead. You may Guard as a Free Action; however, if you do so, your target only adds +5 to his Armor TN instead of +10.
+</Description>
+      </Tech>
+      <Tech id="phoenix_dancing_with_the_elements" name="Dancing With The Elements" rank="2">
+        <Description>Shiba bushi become attuned to the shugenja they protect, aiding their spells and deterring those of their enemies. When you assume your Stance for the Round, you may choose a target within 30'. Whenever your target casts or is the target of a spell, you may choose to increase or decrease the TN of the spell by 5. Additionally, whenever you are the target of a spell, you may immediately choose to increase or decrease the TN of the spell by 5.
+</Description>
+      </Tech>
+      <Tech id="phoenix_one_with_the_void" name="One With The Void" rank="3">
+        <Description>In battle, the Shiba can find his place in the world. This Technique automatically activates during the Reaction Stafe of Combat if another character spent a Void Point during this Combat Round. You regain a Void Point. This Void Point may exceed your maximum, but all excess Void Points are lost after combat resolves. You do not learn anything regarding the source of the Void Point or how it was originally spent. this Technique only activates twice per skirmish.
+</Description>
+      </Tech>
+      <Tech id="phoenix_move_with_the_world" name="Move With The World" rank="4">
+        <Description>Serenity brings certainty, and certainty brings speed. You may make attacks as a Simple Action instead of a Complex Action with using Polearms, Spears, or weapons with the Samurai keyword.
+</Description>
+      </Tech>
+      <Tech id="phoenix_touch_of_the_void" name="Touch Of The Void" rank="5">
+        <Description>Masters of the Shiba style can draw back the veil and allow the universe to act through them. For every Void Point you spend, you gain the effects of spending two, when applicable. Additionally, you may now spend Void Pionts on enhancements twice in one Turn.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="5" zeni="0">
+      <Item>Light Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="phoenix" id="phoenix_isawa_shugenja_school" name="Isawa Shugenja School">
+    <Trait>intelligence</Trait>
+    <Affinity>any</Affinity>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>phoenix_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill emphases="Cipher" id="calligraphy" rank="1"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="medicine" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <Skill id="spellcraft" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>lore</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="7" element="any"/>
+    </Spells>
+    <Techs>
+      <Tech id="phoenix_isawas_gift" name="Isawa's Gift" rank="1">
+        <Description> There are no greater masters of the shugenja tradition than those among the Isawa. You gain a Free Raise on all Spell Casting Rolls for spells of the element which you chose as your Affinity.
+Spells: Sense, Commune, Summon, 3 spells of any one element, 2 spells of any other element, 1 spell of a third element, and 1 spell of a fourth element.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="5" zeni="0">
+      <Item>Robes</Item>
+      <Item>Wakizashi</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Scroll Satchel</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="phoenix" id="phoenix_asako_loremaster_school" name="Asako Loremaster School">
+    <Trait>intelligence</Trait>
+    <Honor>6.5</Honor>
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>phoenix_courtier</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="courtier" rank="1"/>
+      <Skill emphases="Courtesy" id="etiquette" rank="1"/>
+      <Skill id="lore_history" rank="1"/>
+      <Skill emphases="Fortunes" id="lore_theology" rank="1"/>
+      <Skill id="meditation" rank="1"/>
+      <Skill id="sincerity" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>lore</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech id="phoenix_temple_of_the_soul" name="Temple Of The Soul" rank="1">
+        <Description>The Asako are historians and scholars, and their studies are broader than those of any others in the Empire. They pride themselves on the depth of their knowledge in all fields of intellectual endeavor. They also share the Phoenix devotion to peace and civility, relying on genteel discourse to resolve problems. You gain a Free Raise on any Skill Roll with a Lore Skill. Any time you spend a Void Point on an Etiquette Skill Roll, you gain a bonus of +3k1 to the total of the roll instead of the normal +1k1.
+</Description>
+      </Tech>
+      <Tech id="phoenix_from_the_ashes" name="From The Ashes" rank="2">
+        <Description>The Asako Loremasters' in-depty study of historical events allows them to detect subtle patterns in behavior in every court, patterns invisible to their more worldly rivals from the other Clans. After spending at least one day observing the events in a particular court, you can roll Lore: History / Perception at TN 20 to gain a bonus +2k0 to the total of all your Social Skill Rolls for the next two days, so long as your remain in that court. (This Technique's effect can be re-activated with another skill roll when it expires - it is not necessary to spend additional days observing so long as you remain in the same court.)
+</Description>
+      </Tech>
+      <Tech id="phoenix_voice_of_the_universe" name="Voice Of The Universe" rank="3">
+        <Description>As the Asako's training progresses, his recall of obscure historical facts allows him to provide useful contemporary advice to his allies. You may spend an hour conversing with a friend or ally and then roll Lore: History / Intelligence at TN 25. With a success, that ally may add your Lore: History Skill Rank to the total of any Social Skill Rolls he makes within the next twenty-four hours. You may Raise twice to affect one (and only one) additional ally, provided that ally also participates in the conversation. (This Technique cannot be used on the same person again until its effect expires.)
+</Description>
+      </Tech>
+      <Tech id="phoenix_invincible_mind" name="Invincible Mind" rank="4">
+        <Description>The enlightened and educated Asako can see through the games, tricks, and deceits of the material world. Any time you fail a Contested Social Skill Roll to resist someoen trying to influence your emotions, opinions, or behavior (such as with the Courtier, Temptation, or Intimidation skills), you may re-roll using Intelligence as the Trait for the second roll in place of whichever Trait was originally required. You must keep the result of the second roll. This Technique cannot be used to resist Fear.
+</Description>
+      </Tech>
+      <Tech id="phoenix_wisdom_of_the_ages" name="Wisdom Of The Ages" rank="5">
+        <Description>At this rank, the Asako truly demonstrate that the wisdom of the Phoenix is eternal. Any time you are rolling a Lore Skill, including for your other School Techniques, you gain a +5k0 bonus to the total of the roll.
+</Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="5" zeni="0">
+      <Item>Sensible Clothing</Item>
+      <Item>Wakizashi</Item>
+      <Item>Calligraphy Set</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="phoenix" id="phoenix_agasha_shugenja_school" name="Agasha Shugenja School">
+    <Trait>intelligence</Trait>
+    <Affinity>fire</Affinity>
+    <Deficiency>water</Deficiency>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>phoenix_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill emphases="Cipher" id="calligraphy" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="spellcraft" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>craft</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="1" element="air"/>
+      <PlayerChoose count="2" element="earth"/>
+      <PlayerChoose count="3" element="fire"/>
+    </Spells>
+    <Techs>
+      <Tech id="phoenix_elements_of_all_thing" name="Elements of All Thing" rank="1">
+        <Description>
+The Agasha understand the interactions of the elements more so than perhaps any other family. When casting a spell, you may spend a Void Point to use a different Ring of your choosing rather than the appropriate Ring for that spell. this spell uses a spell slot for the Ring used to actuall cast the spell. You also gain a Free Raise on any spell with the Craft keyword.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="5" zeni="0">
+      <Item>Robes</Item>
+      <Item>Wakizashi</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Scroll Satchel</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+</L5RCM>

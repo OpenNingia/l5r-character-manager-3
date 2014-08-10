@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="tortoise" name="Kasuga Smuggler School" id="tortoise_kasuga_smuggler_school">
+    <Trait>awareness</Trait>
+    <Honor>2</Honor>
+    <Tags>
+      <Tag>smuggler</Tag>
+      <Tag>tortoise_smuggler</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="commerce" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill rank="1" id="investigation" emphases="Notice"/>
+      <Skill id="lore_underworld" rank="1"/>
+      <Skill rank="1" id="sincerity" emphases="Deceit"/>
+      <Skill id="stealth" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>merchant</Wildcard>
+        <Wildcard>low</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Way Of The Tortoise" rank="1" id="tortoise_way_of_the_tortoise">
+        <Description>
+The Tortoise routinely consort with the lowest elements of Rokugani society, often spend time in foreign ports, dealing with gaijin, and other villains, and otherwise do things most samurai would find repugnant. They are also skilled merchants, an unavoidable side effect of being smugglers. At character creation, you may learn an additional gaijin language for free with every purchase of the Languages Advantage. You do not lose Honor for using Low Skills, or Glory for using the Commerce skill in public, so long as you are doing so as part of your duty to your clan. When dealing with heimin or hinin, such as peasants, merchants, and eta, you gain a +2k0 bonus to all Social Skill rolls.
+        </Description>
+      </Tech>
+      <Tech name="The Shell Of The Tortoise" rank="2" id="tortoise_the_shell_of_the_tortoise">
+        <Description>
+Most samurai in Rokugan revile the Tortoise for their unusual behavior and their association with commoners and gaijin, but all samurai know the Tortoise Clan has the special permission and sponsorship of the Emperor. Any clan or Imperial samurai who physically attacks or openly slanders you without provocation on your part (GM's discretion) will immediately lose a number of points of Honor equal to twice your School Rank.
+        </Description>
+      </Tech>
+      <Tech name="The Eyes Of The Emperor" rank="3" id="tortoise_the_eyes_of_the_emperor">
+        <Description>
+The Tortoise function as spies and agents of the Emperor, and are adept at the lowest of tactics and methods. When acting on behalf of your clan, you may roll additional unkept dice equal to your School Rank on all Low Skills in which you have at least one Skill Rank. This includes any School Skills which only function as Low Skills when used in certain ways (such as Sincerity with the Deceit Emphasis). This does not work with Advantages and Techniques which simulate Skill Ranks (such as the Crafty Advantage.)
+        </Description>
+      </Tech>
+      <Tech name="Hand In Hand" rank="4" id="tortoise_hand_in_hand">
+        <Description>
+The Tortoise work in close cooperation with the common folk of Rokugan, people who other samurai ignore as much as possible. This gives them access to information networks no other samurai can reach. Once per session, if you have access to the local heimin or hinin, you can roll Lore: Underworld / Awareness at TN 25 to learn one useful piece of information (chosen by the GM) that cannot be learned any other way.
+        </Description>
+      </Tech>
+      <Tech name="The Tortoise Smiles" rank="5" id="tortoise_the_tortoise_smiles">
+        <Description>
+With his training completed, the Tortoise smuggler can transcend his own limits in the pursuit of his Clan's devious goals, serving the Emperor without constraint. When making a Skill Roll with any of your six specified School Skills, your maximum Raises are not limited by your Void. A number of times per session equal to your Void Ring, you may gain a +5k0 bonus when making a roll with any of your School Skills. This bonus can stack with the bonus from your Rank Three technique.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit koku="5" bu="0" zeni="0">
+      <Item>Extravagant Clothing</Item>
+      <Item>Wakizashi</Item>
+      <Item>any 1 weapon</Item>
+      <Item>Calligraphy Set</Item>
+    </Outfit>
+  </School>
+</L5RCM>

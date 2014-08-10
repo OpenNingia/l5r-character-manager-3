@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="crab" name="Hiruma Slayers" id="hiruma_slayers">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crab_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>crab_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Deny the Horde" rank="4" id="crab_deny_the_horde"><Description>The Slayer technique utilizes the masakari to deliver a 
+terrifying barrage of precise and lethal blows on the foe, 
+using it equally well in either hand. You suffer no penalties 
+for using a masakari in your off-hand (although you still 
+suffer normal penalties for wielding two weapons). You 
+may attack as a Simple Action with a masakari. When 
+using a masakari in the Full Attack Stance against any foe, 
+or in the Attack Stance against a Shadowlands creature or 
+a foe you know to be Tainted, you gain an additional +3k0 
+bonus to your damage rolls.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="heavy_weapons" trg="Masakari" type="skill" min="5">Heavy Weapons (Masakari)5</Requirement>
+      <RequirementOption text="Replaces Hiruma Bushi 4 or Hiruma Scout 4">
+        <Requirement field="crab_hummingbird_wings" type="rule"></Requirement>
+        <Requirement field="crab_veil_of_the_spirits" type="rule" />
+      </RequirementOption>
+    </Requirements>
+  </School>
+  <School clanid="crab" name="Crab Sumai Wrestler" id="crab_sumai_wrestler">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crab_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>crab_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Way of Sumai" rank="2" id="way_of_sumai"><Description>While most Rokugani treat Sumai wrestling as a sport, the Crab have never forgotten that it originated as a combat art. When rolling to control a Grapple, you gain a +1k0 bonus (+2k0 if you are Large). If you choose to inflict damage in a Grapple (e.g. the “hit” option), you gain a +1k1 bonus to the Damage Roll. 
+Special: Enrolling in this Path automatically 
+allows your character to get rid of the Small 
+Disadvantage at no point cost. If you are not 
+Small, you automatically gain Large at no point 
+cost. If you are already Large, you are refunded the 
+point cost of the 
+Advantage.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="jiujutsu" trg="Sumai" type="skill" min="4">Jiujtsu (Sumai) 4</Requirement>
+      <RequirementOption text="Replaces Hida Bushi 2 or Yasuki Courtier 2">
+        <Requirement field="crab_the_way_of_the_crab" type="rule" />
+        <Requirement field="crab_the_way_of_the_carp" type="rule" />
+      </RequirementOption>
+    </Requirements>
+  </School>
+  <School clanid="crab" name="Kaiu Siegemaster" id="crab_kaiu_siegemaster">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crab_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>crab_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="The Hammer of Kaiu" rank="5" id="the_hammer_of_kaiu"><Description>During a siege, you may add or subtract your entire School Rank to the total of your rolls on the Mass Battle Table (this replaces the Kaiu Engineering Rank 4 ability to add or subtract half your School Rank). If you are on the defending side in a siege, you gain a +2k0 bonus to any Engineering (Siege) rolls you make to operate siege weaponry, and the Reduction of any structures on your side of the siege is increased by 50%.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="battle" trg="Mass_Battle" type="skill" min="5">Battle (Mass Battle) 5</Requirement>
+      <Requirement field="engineering" trg="Siege" type="skill" min="5">Engineering (Siege) 5</Requirement>
+      <RequirementOption text="Replaces Kaiu Engineer 5">
+        <Requirement field="crab_the_path_of_war" type="rule" />
+      </RequirementOption>
+    </Requirements>
+  </School>
+  <School clanid="crab" name="Kuni Crystal Masters" id="crab_crystal_masters">
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>crab_shugenja</Tag>
+      <Tag>alternate</Tag>
+      <Tag>crab_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Strike of Purity" rank="2" id="strike_of_purity"><Description>The Crystal Masters learn how to awaken the spiritual power of crystal and use it to strengthen their spells. When you learn this technique, one piece of crystal which you 
+possess becomes awakened and is then used to empower your spells with the essence of crystal. (If this piece of crystal is lost or destroyed, you cannot use this Technique 
+until you acquire another one – it is the GM’s discretion how much time and effort this will require.)When casting a Fire or Earth spell that inflicts damage (e.g. Jade Strike, Fury of Osano-Wo, etc) you may spend a Void Point to channel the spell through your awakened crystal and infuse the spell with the essence of crystal. This adds one additional Complex Action to the casting time of the spell. The spell does an additional +1k1 damage and is now considered to be Crystal for the purpose of what foes can be damaged by it, whether it can penetrate Invulnerability or Creature Reduction, and so forth.
+Special: Must possess a piece of pure crystal. Player must have approval from GM to become a Crystal Master.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="earth" type="ring" min="5">Earth 5</Requirement>
+      <Requirement field="spellcraft" type="skill" min="5">Spellcraft 5</Requirement>
+      <Requirement field="lore_elements" trg="Crystal" type="skill" min="5">Lore:Elements (Crystal) 5</Requirement>
+      <Requirement field="crab_kuni_shugenja" type="school" min="3" max="3">Replaces Kuni Shugenja 4</Requirement>
+    </Requirements>
+  </School>
+  <School clanid="crab" name="Yasuki Extortionist" id="crab_yasuki_extortionist">
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>crab_courtier</Tag>
+      <Tag>alternate</Tag>
+      <Tag>crab_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Do Me A Favor" rank="4" id="do_me_a_favor"><Description>The Extortionists specialize in rooting out the financial weaknesses of potential customers and then pressuring them into calling on Yasuki assistance. If you have supplied 
+something your target needs, whether money or material goods (this could be achieved through role-play and/or by using the Yasuki Rank 1 and Rank 3 Techniques), you may make a Contested Social Roll of your Intimidation (Control) / Willpower against their Etiquette (Courtesy) / Willpower. With a success, they find the arrangement has left them deeply in debt to you. You may either inflict an Obligation on that person (if the GM judges they have the ability to pay you back) or a Blackmail on them (if the GM judges they cannot pay you back). The default point value of the Disadvantage in either case is 3, but the GM may 
+modify this if circumstances make it appropriate</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="willpower" type="trait" min="4">Willpower 4</Requirement>
+      <Requirement field="commerce" type="skill" min="4">Commerce 4</Requirement>
+      <Requirement field="intimidation" type="skill" min="5">Intimidation 5</Requirement>
+      <RequirementOption text="Replaces Yasuki Courtier 4">
+        <Requirement field="crab_wiles_of_the_carp" type="rule" />
+      </RequirementOption>
+    </Requirements>
+  </School>
+  <School clanid="crab" name="The Severed Hand" id="crab_the_severed_hand">
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>crab_courtier</Tag>
+      <Tag>alternate</Tag>
+      <Tag>crab_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Strength of Bamboo" rank="4" id="strength_of_bamboo"><Description>The former warriors of the Severed Hand have learned to rely on the indomitable strength of Earth to resist the tricks, temptations, and blandishments of enemy courtiers. 
+When rolling to resist an opponent’s Social Skill or Courtier Technique, you may use Willpower as your Trait instead of the Trait normally used. In cases where this Technique clashes with another (such as the Bayushi Rank 4 Technique), the GM has discretion as to which Technique trumps the other.
+Special: Your character must be reassigned to 
+the courts due to a physical inability to continue 
+serving the clan in war, e.g. a debilitating injury 
+(GM’s discretion, but obvious examples include 
+Missing Limb and Lame).</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <RequirementOption text="Replaces Any Crab Bushi 4">
+        <Requirement field="crab_two_pincers_one_mind" type="rule" />
+        <Requirement field="crab_hummingbird_wings" type="rule" />
+        <Requirement field="crab_fury_of_the_avalanche" type="rule" />
+        <Requirement field="crab_veil_of_the_spirits" type="rule" />
+        <Requirement field="crab_the_path_of_stone" type="rule" />
+      </RequirementOption>
+    </Requirements>
+  </School>
+</L5RCM>

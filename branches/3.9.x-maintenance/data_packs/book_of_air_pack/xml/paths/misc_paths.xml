@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Clan name="Various" id="various"/>
+  <School clanid="various" name="Taoist Archer" id="taoist_archer">
+    <Tags>
+      <Tag>alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Flight of Innocence" rank="5" id="flight_of_innocence">
+        <Description>
+                The Taoist Archers practice their art blindfolded. When making archery attacks, you ignore all TN and dice penalties for being Blind, for having a Missing Eye, or for the target being concealed by darkness, magical illusion, camouflage, and similar visual obstructions. Penalties for physical obstacles and obstructive conditions (such as the target being Prone, a normal or magical wind, etc.) are applied normally. In addition, when wielding a bow you may spend a Void Point for a +1k1 bonus on damage.
+                </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="void" type="ring" min="4">Void Ring: 4</Requirement>
+      <Requirement field="meditation" type="skill" min="4">Meditation: 4</Requirement>
+      <Requirement field="lore_theology" type="skill" min="4">Lore: Theology: 3</Requirement>
+      <Requirement field="kyujutsu" type="skill" trg="Yumi" min="5">Kyujutsu (Yumi): 5</Requirement>
+      <RequirementOption text="Be a Ronin or part of the Monk Brotherhood">
+        <Requirement field="ronin" type="tag"/>
+        <Requirement field="monks_brotherhood" type="tag"/>
+      </RequirementOption>
+      <RequirementOption text="Replaces any Brotherhood Monk or Ronin 5">
+        <Requirement field="*monks_brotherhood" type="school" min="4" max="4"/>
+        <Requirement field="*ronin" type="school" min="4" max="4"/>
+      </RequirementOption>
+    </Requirements>
+  </School>
+</L5RCM>

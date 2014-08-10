@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <SpellDef name="[MAHO] Eternal Unrest" area="Target corpse" mastery="2" element="earth" range="Touch" duration="1 month" id="maho_eternal_unrest">
+    <Tags>
+      <Tag>maho</Tag>
+      <Tag>nothing</Tag>
+    </Tags>
+    <Raises>
+      <Raise>Area of Effect (+1 corpse per Raise)</Raise>
+      <Raise>Special(-10 minutes casting time per Raise)</Raise>
+    </Raises>
+    <Text>
+As masters of necromancy, the Chuda often find themselves
+in need of corpses for their spells and techniques.
+This ritual is designed to ensure such corpses are always
+available, regardless of circumstances. It normally requires
+one hour to complete, although it can be shortened (with
+Raises) to a minimum of ten minutes. You may target a
+maximum number of corpses equal to your Taint Rank. At
+the spell’s conclusion the targeted corpses are prepared for
+use. At any later time within the spell’s duration you may
+take a Complex Action and expend an Earth spell slot to
+instantly summon the prepared corpses to your location.
+Chuda Necromancers are particularly fond of using this
+spell to summon forth corpses for use with their insidious
+Technique.    
+    </Text>
+  </SpellDef>
+</L5RCM>

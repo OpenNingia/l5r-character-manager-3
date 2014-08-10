@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="crane" name="Asahina Archer" id="crane_asahina_archer">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crane_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>crane_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="No Regrets" rank="4" id="crane_no_regrets">
+        <Description>
+                Asahina Archers are taught to minimize the influence of their family's traditional pacifism and focus on defeating their enemies swiftly so that wars may be ended equally swiftly. Their technique allows them to call on their own inherent Air, delivering precisely accurate shots. When making an archery attack, you may make Called Shots for one less Raise (to a minimum of 1) and add half your Air (rounded down) in unkept dice to your attack rolls.
+                </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="air" type="ring" min="3">Air Ring: 3</Requirement>
+      <Requirement field="kyujutsu" type="skill" min="5">Kyujutsu: 5</Requirement>
+      <Requirement field="crane" type="tag">Member of Crane Clan</Requirement>
+      <RequirementOption text="You must be a member of the Asahina or Daidoji family">
+        <Requirement field="crane_asahina" type="tag"/>
+        <Requirement field="crane_daidoji" type="tag"/>
+      </RequirementOption>
+      <RequirementOption text="Replaces Daidoji Iron Warrior 4 or Doji Magistrate 4">
+        <Requirement field="crane_strike_beneath_the_veil" type="rule"/>
+        <Requirement field="crane_breath_of_the_law" type="rule"/>
+      </RequirementOption>
+    </Requirements>
+  </School>
+</L5RCM>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="scorpion" name="Saigo's Blades" id="scorpion_saigos_blades">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>scorpion_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>scorpion_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Saigo's Technique" rank="3" id="saigos_technique">
+        <Description>
+                A true Scorpion duelist knows that intimidation and deception are the keys to victory. When dueling any opponent that you have previously used the Intimidation Skill upon successfully, you gain a bonus of +5 to the total of your roll during the Assessment Phase of the duel. Additionally, by spending a Void Point, you may report one statistic of your choice as being one rank higher during the Assessment Phase.
+                </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="iaijutsu" type="skill" min="3">Iaijutsu: 3</Requirement>
+      <RequirementOption text="Replaces Bayushi Bushi 3">
+        <Requirement field="scorpion_pincers_and_tail" type="rule"/>
+      </RequirementOption>
+    </Requirements>
+  </School>
+</L5RCM>

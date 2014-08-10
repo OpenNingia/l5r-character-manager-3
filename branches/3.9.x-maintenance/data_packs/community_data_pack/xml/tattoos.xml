@@ -1,0 +1,106 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<L5RCM>
+    <KihoDef type="tattoo" id="tattoo_arrowroot" name="Arrowroot">
+        <Description>by invoking the power of this potent healing herb, the tatooed man can heal himself or another character you touch a number of wounds equal to your school rank X 10.When used upon another person, the tattoo however caused the monk himself to bleed, essentially transferring the damage from that person to the monk. This damage could only be healed by resting over time.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_bellflower" name="Bellflower">
+        <Description>this flower is said to be the last thing Shinsei spoke to before disappearing from the Empire, and it has five petals, for each ring. You can activate this tattoo just before making a roll, you use your void ring instead of the normal trait. You can spend an additional void point on this roll.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_bat" name="Bat">
+        <Description>the bat is the symbol of supernatural reactions. You can activate it during the initiative stage of the round to add 1 dice + your school rank to your initiative.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_butterfly" name="Butterfly">
+        <Description>this tattoo is always active and doesn't prevent the use of others tattoos. When you get this tattoo, you must select and pay for one kiho. Your Void ring is considered one rank higher for meeting the mastery requirement of the kiho, if he is of the void element. You can add your school rank to your unarmed attacks rolls when you are making an atemi attack with the kiho you learned with this tattoo.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_cat" name="Cat">
+        <Description>Cat tattoo was an Ise Zumi tattoo, symbolizing wealth, comfort and good fortune, the cat enhances your ability to appeal to others with your warm personality. This tattoo is active at all times and do not prevent the use of other tattoos. You gain the Benten's blessing advantage.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_crescentmoon" name="Crescent Moon">
+        <Description>this tattoo is only given to Kikage-zumi and a few Tsurai-zumi. For a void point, the Ize Zumi can become a shadow for school rank X 10 minutes. He/she is non-physical and can go anywhere a shadow can go, but cannot go through objects. Magic affect him as if he/she was normal. He/she suffers a full rank of wounds at the start of each hour in this form, and cannot use any skills or techniques, and he/she cannot talk. This tattoo can be stopped at any time.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_cherryblossom" name="Cherry Blossom - Sakira">
+        <Description>a symbol of renewall. When this tattoo is activated, you can spend void points to have one target ally within school rank X 10 feet gain a void point. You can select a second target when you reach the 3rd rank of the Togashi Tatooed order school, and a third at the rank 5.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_cricket" name="Cricket">
+        <Description>this tattoo is always active and doesn't prevent the use of others tattoos. When you get this tattoo, you must select and pay for one kiho. Your water ring is considered one rank higher for meeting the mastery requirement of the kiho, if he is of the water element. You can add your school rank to your unarmed attacks rolls when you are making an atemi attack with the kiho you learned with this tattoo.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_crow" name="Crow">
+        <Description>is a symbol of protection against the Shadowland taint. This tattoo is active at all times and do not prevent the use of other tattoos. When rolling to resist gaining shadowland taint points (as long as you don't willingly do something to gain them, like casting maho), you roll a number of additional dice equal to twice your school rank.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_carp" name="Carp">
+        <Description>is a symbol of prosperity and good fortune, and those tattooed men who bear its tattoo embody those traits. It can be activated before making a roll, and for this roll the 9' explode as 10' (remember that a second 9' doesn't explode).</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_dragonfly" name="Dragonfly">
+        <Description>you can activate this tattoo when you are the target of a friendly spell. The spell doesn't cost a spell slot to the caster. This tattoo effect end immediately after. You can only target a spell of a mastery level equal or lower to your school rank.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_fullmoon" name="Full Moon">
+        <Description>once a mark of the Kikage Zumi, and rarely of the Tsurai Zumi, this tattoo is activated after an unarmed attack is successful. Your target looses a void point in addition to any damage or effect of the attack. If your target doesn't have any void points left, you gain a void point instead, that last until the next dawn if not used before.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_hare" name="Hare">
+        <Description>the ise-zumi can add twice his school rank to his water ring for determining movement rates.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_hummingbird" name="Hummingbird">
+        <Description>when this tattoo is activated, all the TNs of disarm, knockdown, called shots, extra attack and feint are increased by your school rank X 5. Notice that this effect will not prevent the attack to hit : if the attack beat the original TN (with the raises), it stills hits. But the manoeuvre will only succeed if the attack roll beat the increased TN.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_hurricane" name="Hurricane-Tsunami">
+        <Description>this tattoo is always active and doesn't prevent the use of others tattoos. When you get this tattoo, you must select and pay for one kiho. Your air ring is considered one rank higher for meeting the mastery requirement of the kiho, if he is of the air element. You can add your school rank to your unarmed attacks rolls when you are making an atemi attack with the kiho you learned with this tattoo.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_nightingale" name="Nightingale">
+        <Description>this tattoo lower the TN of the assessment roll during a duel by 10.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_nightsky" name="Night sky">
+        <Description>this picture of a sky with stars is sometimes seen as a sign of fate. When this tattoo is active, opponents' uses of re-rolls and void points on actions against you are negated. They are aware of the effect after the first time it has negated something.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_orichi" name="Orichi">
+        <Description>a symbol of strength and violence, this tattoo increase your TN to be hit by twice your school rank while you are under the grappled conditional effect, and you have one unkept dice for your grappling rolls.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_panther" name="Panther">
+        <Description>this tattoo is only given to Ize-zumi and a few Tsurai-zumi. The Ize Zumi rolls school rank additional dice for stealth and hunting when the tattoo is active.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_pine" name="Pine">
+        <Description>once activated, you can remove one condition effect from yourself for the duration of the tatoo. If the condition effect last longer than the duration of the tattoo, it resumes after, but the duration of the tattoo is deduced from the duration of the effect.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_snake" name="Snake">
+        <Description>is among the most dangerous and sinister of all Ise Zumi tattoos, and usually only manifests on those who have the strength of will to keep such power in check. After making a successful unarmed attack, if any of your damage dice explode, your target is now stunned.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_snowcrane" name="Snow Crane">
+        <Description>a character with a snow crane tatoo cannot have a crane tattoo and vice-versa. You gain a void point that can only be used during a duel, and your skills rolls regarding the duel are increased by your school rank.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_sun" name="Sun">
+        <Description>the glory of the day star gives the power to gain a void point when activated.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_tiger" name="Tiger">
+        <Description>when activated, you gain a number of free raises equal to your school rank per turn that can only be used for the extra attack manoeuvre. All your attacks when this tattoo is active must be unarmed.While drawing upon this power the monk became unable to speak, and was unable to hold anything in their hands as they had taken on the appearance of claws.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_viper" name="Viper">
+        <Description>after making a successful unarmed attack, the victim is now fatigued if any of your damage dice exploded. This status effect can be removed by the same rules as the stunned condition.</Description>
+    </KihoDef>
+
+    <KihoDef type="tattoo" id="tattoo_vine" name="Vine">
+        <Description>this tattoo is only given to Ize-zumi and a few Tsurai-zumi. When this tattoo is activated, you recover school rank wounds per round during the reaction stage of the round. When this tattoo is active, he doesn't prevent the use of another tattoo.</Description>
+    </KihoDef> 
+</L5RCM>  

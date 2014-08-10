@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="phoenix" name="Asako Inquisitors" id="phoenix_asako_inquisitors">
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>phoenix_monk</Tag>
+      <Tag>advanced</Tag>
+      <Tag>phoenix_advanced</Tag>
+    </Tags>
+    <Skills/>
+    <Spells/>
+    <Techs>
+      <Tech name="Eye of the Inquisitor" rank="1" id="phoenix_eye_of_the_inquisitor">
+        <Description>
+The Asako Inquisitors are taught to focus their will to
+disrupt the unnatural magic of blasphemers and criminals.
+You are considered one Rank higher in your original
+Shugenja School for the purposes of casting spells. Nonshugenja
+Inquisitors instead gain one Kiho, for which you
+must meet all prerequisites.
+During a skirmish you may use a Complex Action to
+prepare a disruption of enemy magic. At any point later
+in the same skirmish when an opponent is casting a spell,
+you may as a Free Action force him to make two additional
+Raises on his spell-casting roll. These additional Raises
+have no effect other than to raise the TN of the roll. Once
+this is done, you must take another Complex Action if you
+wish to ready another disruption.
+     </Description>
+      </Tech>
+      <Tech name="The Trials of Jade" rank="2" id="phoenix_the_trials_of_jade">
+        <Description>
+An Inquisitor finds the weakness in his enemies and exploits
+it, bringing them the Emperor’s justice. When casting
+any spell, you may spend a Void Point for the spell to
+count as jade or crystal for the purposes of reducing or
+defeating your target’s Reduction or Invulnerability traits.
+If you cannot cast spells, you may instead make a melee
+attack as a Simple Action instead of a Complex Action
+when facing an opponent you know has violated the Empire’s
+laws regarding the legal forms of magic.
+      </Description>
+      </Tech>
+      <Tech name="Conviction of Purity" rank="3" id="phoenix_conviction_of_purity">
+        <Description>
+Those who commit the unpardonable sin of breaking the
+Emperor’s laws concerning magic are unable to stand
+against you. You are considered one Rank higher in
+your original Shugenja School for the purposes of casting
+spells. Non-shugenja Inquisitors instead gain one additional
+Kiho, for which you must meet all prerequisites.
+You may now prepare a disruption (as per your Rank One
+technique) as a Simple Action instead of a Complex Action,
+and opponents whose spells are disrupted require
+three additional Raises rather than two.
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements>
+      <Requirement field="void" type="ring" min="4">Void Ring: 4</Requirement>
+      <Requirement field="*any" type="ring" min="3">Any Ring: 3</Requirement>
+      <Requirement field="*any" type="ring" min="3">Any Ring: 3</Requirement>
+      <Requirement field="lore_law" type="skill" min="4">Lore: Law: 4</Requirement>
+      <Requirement field="lore_shugenja" type="skill" min="3">Lore: Shugenja: 3</Requirement>
+      <Requirement field="rpg" type="more">
+Must be able to cast spells of Mastery Level
+4 in one element OR have the ability to make melee
+attacks as a Simple Action and possess the Phoenix
+Sacred Weapon (the Inquisitor’s Strike). May not
+be Tainted
+      </Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="mantis" name="Moshi Guardian of the Sun (Path)" id="mantis_moshi_guardian_of_the_sun">
+    <Trait>stamina</Trait>
+    <Honor>3.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>mantis_bushi</Tag>
+      <!-- <Tag>alternate</Tag> -->
+      <Tag>mantis_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Defender as the Sun" rank="1" id="mantis_defender_as_the_sun">
+        <Description>
+The Guardians of the Sun take an oath to repel all attacks
+against their sacred charges. When defending a Moshi personage
+or holding in a skirmish, you may choose to either
+gain a bonus of +1k0 to your attack roll or to add an additional
++1k1 to the Armor TN of a person or object you are defending
+with the Guard Action. You make this determination
+at the start of your Turn during each Round of the skirmish.
+            </Description>
+      </Tech>
+    </Techs>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="lore_theology" rank="1"/>
+      <Skill id="spears" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>high</Wildcard>
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Requirements/>
+  </School>
+  <School clanid="crab" name="Kitsune Ranger" id="mantis_kitsune_ranger">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>mantis_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>mantis_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="One With the Wild" rank="2" id="mantis_one_with_the_wild">
+        <Description>
+Although they do not possess an ability to speak to the
+kami, the Kitsune rangers are at home in the wilderness
+like few others in the Empire. You gain a Free Raise on all
+Hunting Skill Rolls and on any Stealth Skill Rolls made
+while in a rural environment. Additionally, you gain a bonus
+of +2k0 on any Contested Roll involving detection,
+whether you are avoiding detection or attempting to detect
+a hidden opponent.
+            </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="hunting" type="skill" min="3">Hunting: 3</Requirement>
+      <Requirement field="*mantis_bushi" type="school" max="1" min="1">Replaces any Mantis Bushi 2</Requirement>
+      <Requirement field="rpg" type="more">
+Prior to the Kitsune joining the Mantis
+Clan, this Technique may be taken as a Rank 2
+Path by any bushi-trained Kitsune, regardless of
+school—including those who do not have a school.
+This Technique can also be taken as a Rank 2 Ronin
+Technique for any ronin characters who possess a
+Ally Advantage associated with the Kitsune family.
+            </Requirement>
+    </Requirements>
+  </School>
+</L5RCM>

@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="monks" name="Order of the Nameless Gift" id="order_of_the_nameless_gift">
+    <Trait>Stamina</Trait>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>monks_monk</Tag>
+      <Tag>brotherhood</Tag>
+      <Tag>monks_brotherhood</Tag>
+    </Tags>
+    <Devotion>Shintao</Devotion>
+    <Kihos count="3" />
+    <Skills>
+      <Skill id="athletics" rank="1" />
+      <Skill id="defense" rank="1" />
+      <Skill id="jiujutsu" rank="1" />
+      <Skill id="meditation" rank="1" />
+      <PlayerChoose rank="1">
+        <Wildcard>lore</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells />
+    <Techs>
+      <Tech name="Shinsei's Gift" rank="1" id="shinseis_gift">
+	  <Description>
+	  A monk taught by the Order of the Nameless Gift can be an endless well of endurance, patience, and insight. Because they are much more worldly than many other monks in the Brotherhood, their training and experience add to a typical monk’s canny mind and strength in combat. You gain a number of Void Points per day equal to your Earth Ring, but these Void Points may only be spent to reduce damage or to raise your Armor TN. These Void Points may not be spent simultaneously with other Void Points or in any other fashion.
+	  </Description>
+	  </Tech>
+    </Techs>
+    <Requirements />
+    <Outfit bu="0" koku="0" zeni="2">
+      <Item>Bo (or pair of jo)</Item>
+      <Item>Coarse and plain Traveling Clothing</Item>
+      <Item>Scroll Satchel with passages from the Tao</Item>
+    </Outfit>
+  </School>
+  <School clanid="monks" name="Temple of Persistence" id="temple_of_persistence">
+    <Trait>Stamina</Trait>
+    <Honor>3.5</Honor>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>monks_monk</Tag>
+      <Tag>brotherhood</Tag>
+      <Tag>monks_brotherhood</Tag>
+    </Tags>
+    <Devotion>Fortunist</Devotion>
+    <Kihos count="3" />
+    <Skills>
+      <Skill id="athletics" rank="1" />
+      <Skill id="jiujutsu" rank="1" emphases="martial_arts" />
+      <Skill id="defense" rank="1" />
+      <Skill id="lore_theology" rank="1" />
+      <Skill id="meditation" rank="1" />
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells />
+    <Techs>
+      <Tech name="Unyielding Spirit" rank="1" id="unyielding_spirit"><Description>Members of the Order of Persistence are known to be stubborn in both body and soul. They do not simply endure the wrathful assaults of others, but learn to push forward actively toward their goal. You may spend a
+Void Point as a Free Action to ignore all penalties to an immediately subsequent die roll. If you use this Technique when making either a Contested Roll you did not initiate or an Attack Roll, you may also add +Xk0 to the roll, where X is your Earth Ring.</Description></Tech>
+    </Techs>
+    <Requirements />
+    <Outfit bu="0" koku="0" zeni="2">
+      <Item>Bo (or pair of jo)</Item>
+      <Item>Coarse and plain Traveling Clothing</Item>
+      <Item>Scroll Satchel with passages from the Tao</Item>
+    </Outfit>
+  </School>
+</L5RCM>

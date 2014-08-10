@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Family clanid="spider" name="Chuda" id="spider_chuda">
+    <Trait>intelligence</Trait>
+  </Family>
+  <Family clanid="spider" name="Daigotsu" id="spider_daigotsu">
+    <Trait>stamina</Trait>
+  </Family>
+  <Family clanid="spider" name="Goju" id="spider_goju">
+    <Trait>agility</Trait>
+  </Family>
+  <Family clanid="spider" name="Spider Monks" id="spider_spider_monks">
+    <Trait>reflexes</Trait>
+  </Family>
+</L5RCM>

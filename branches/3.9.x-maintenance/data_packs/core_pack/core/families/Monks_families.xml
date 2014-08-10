@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Family clanid="monks" name="Four Temples" id="monks_four_temples">
+    <Trait>void</Trait>
+  </Family>
+  <Family clanid="monks" name="Order of Heroes" id="monks_order_of_heroes">
+    <Trait>void</Trait>
+  </Family>
+  <Family clanid="monks" name="The Temple of Osano-Wo" id="monks_the_temple_of_osanowo">
+    <Trait>void</Trait>
+  </Family>
+  <Family clanid="monks" name="The Shrine Of The Seven Thunders" id="monks_the_shrine_of_the_seven_thunders">
+    <Trait>void</Trait>
+  </Family>
+  <Family clanid="monks" name="The Temple Of Kaimetsu-Uo" id="monks_the_temple_of_kaimetsu_uo">
+    <Trait>void</Trait>
+  </Family>
+  <Family clanid="monks" name="The Temples of the Thousand Fortunes" id="monks_the_temples_of_the_thousand_fortunes">
+    <Trait>void</Trait>
+  </Family>
+</L5RCM>

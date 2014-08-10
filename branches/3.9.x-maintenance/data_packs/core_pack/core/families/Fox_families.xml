@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Family clanid="fox" name="Kitsune" id="fox_kitsune">
+    <Trait>willpower</Trait>
+  </Family>
+</L5RCM>

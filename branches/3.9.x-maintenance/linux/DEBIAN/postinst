@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+# install mimetypes
+if type xdg-mime > /dev/null; then
+	xdg-mime install /opt/l5rcm/mime/mime-file-l5r.xml
+	xdg-mime install /opt/l5rcm/mime/mime-file-l5rcmpack.xml
+fi
+
+# install icon resources
+if type xdg-icon-resource > /dev/null; then
+    ICON_SIZES="16 22 24 32 48 64 128 256"
+    for size in ${ICON_SIZES}
+    do
+        echo "register icon: ${size}x${size}"
+        TRG=/usr/share/icons/hicolor/${size}/apps/l5rcm.png
+        xdg-icon-resource install --novendor --context mimetypes --size ${size} ${TRG} x-l5r-character
+    done
+	#xdg-icon-resource install --novendor --context mimetypes --size 64 /usr/share/pixmaps/l5rcm.png x-l5r-character
+	xdg-icon-resource install --novendor --context mimetypes --size 128 /usr/share/pixmaps/l5rcmpack.png x-l5r-pack
+fi
+
+# install .desktop file
+if type xdg-desktop-menu > /dev/null; then
+	xdg-desktop-menu install --novendor /usr/share/applications/l5rcm.desktop || true
+fi
+
+# compile python files
+python -m compileall -f /opt/l5rcm/

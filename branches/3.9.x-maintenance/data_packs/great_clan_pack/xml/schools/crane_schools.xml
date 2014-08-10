@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="crane" name="Daidoji Scout School" id="crane_ob_daidoji_scout_school">
+    <Trait>reflexes</Trait>
+    <Honor>3.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crane_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill rank="1" id="hunting" emphases="Traps"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="knives" rank="1"/>
+      <Skill rank="1" id="kyujutsu" emphases="Yumi"/>
+      <Skill rank="1" id="stealth" emphases="Sneaking"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+        <Wildcard>low</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Surveying The Land" rank="1" id="crane_surveying_the_land">
+        <Description>
+The Daidoji scouts are masters of observation and pursuit,
+tracking their opponents, harassing them, and delaying
+them with traps and ambushes. You gain +1k0 with Stealth
+and Hunting skill rolls. Any rural/improvised traps you create
+are exceptionally deadly, infl icting +1k1 extra damage.
+      </Description>
+      </Tech>
+      <Tech name="Scouring The Shadows" rank="2" id="crane_scouring_the_shadows">
+        <Description>
+Daidoji scouts strike from concealment, hitting their opponents
+with swift and devastating attacks. When attacking
+an unaware opponent you gain a bonus of +2k0 to your
+attack roll.
+      </Description>
+      </Tech>
+      <Tech name="Weaken The Resistance" rank="3" id="crane_weaken_the_resistance">
+        <Description>
+The Daidoji learn to strike with precision, hitting their opponents
+in weak spots and evading their armor. You may
+ignore any Reduction your opponent gains from wearing
+armor or from school techniques. (You cannot ignore the
+natural Reduction of creatures, or Reduction bestowed by
+magical or supernatural effects.) If you attack an opponent
+who has no Reduction from armor or techniques, you gain
++1k0 to your damage rolls.
+      </Description>
+      </Tech>
+      <Tech name="Strike And Move" rank="4" id="crane_strike_and_move">
+        <Description>
+The Daidoji scout strikes with the swiftness of the wind
+itself. You may make attacks as a Simple Action instead
+of a Complex Action when wielding a katana, wakizashi,
+knife, or bow. Your traps now infl ict +2k1 extra damage.
+      </Description>
+      </Tech>
+      <Tech name="Cunning Of Daidoji" rank="5" id="crane_cunning_of_daidoji">
+        <Description>
+The true master of the Daidoji scout school needs only a
+single strike, for his opponent never survives to see the
+second one. During a skirmish, you may spend a Void
+Point as a Free Action to attempt a deadly precision strike
+on your next attack (this may be done with a melee or a
+ranged attack, but cannot be done more than once in the
+same Turn). Any Maneuvers called on this attack require 1
+less Raise (to a minimum of 1 Raise), and if you successfully
+hit you gain a bonus of +1k1 to your Damage roll.
+Furthermore, if your opponent is unaware of you, your
+Raises on this attack are not limited by your Void.
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+  </School>
+  <School clanid="crane" name="Kakita Artisan School" id="crane_ob_kakita_artisan_school">
+    <Trait>awareness</Trait>
+    <Honor>5.5</Honor>
+    <Tags>
+      <Tag>artisan</Tag>
+      <Tag>crane_artisan</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="courtier" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill id="games_sadane" rank="1"/>
+      <Skill id="sincerity" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>artisan</Wildcard>
+        <Wildcard>perform</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>artisan</Wildcard>
+        <Wildcard>perform</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>artisan</Wildcard>
+        <Wildcard>perform</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Soul Of The Artisan" rank="1" id="crane_soul_of_the_artisan">
+        <Description>
+The Kakita Artisan is taught from earliest youth to focus on
+one specifi c form of art above all others, devoting himself
+to it heart and soul and pursuing the goal of absolute perfection
+within its forms. Of course, in keeping with Crane
+tradition the Artisan is also taught to be a ruthless critic to
+any artistic rivals. Select one of your three chosen School
+Skills (Acting, an Artisan skill, or a Perform skill) as the
+focus of your artistic training. This becomes your chosen
+art. When making skill rolls with your chosen art, you gain
+a +2k0 bonus and your Raises are not limited by your Void.
+Any time you are using Games: Sadane to criticize
+someone else's art or performance, you gain a Free Raise
+on your skill roll.
+      </Description>
+      </Tech>
+      <Tech name="The Soul's Dream" rank="2" id="crane_the_souls_dream">
+        <Description>
+The Kakita Artisan is taught to use his art to affect those
+around them, inspiring emotions and shifting the views
+of the audience. When presenting a public performance
+or display of you chosen art, you may make a Contested
+Social Roll of [chosen art]/Awareness against the Etiquette
+(Courtesy)/Willpower of the audience members. Those audience
+members who fail their rolls are profoundly swayed
+and their emotions shift in a direction you desire—becoming
+friendlier, more hostile, calmer, or whatever other emotional
+shift your art is designed to evoke. This emotional shift normally
+lasts a number of hours equal to your Insight Rank.
+Note that not all persons are equally susceptible to the
+impact of art—the GM may rule that a particular individual
+is affected for a shorter period of time, or award a bonus to
+the resistance roll for persons whose emotions are diffi cult
+to manipulate. The GM should normally have each individual
+audience member roll separately to resist this technique
+(this should always be done for PCs or important NPCs), but
+with large groups of ordinary NPCs the GM can opt to save
+time by making a single roll for most or all of them.
+      </Description>
+      </Tech>
+      <Tech name="Free The Spirit" rank="3" id="crane_free_the_spirit">
+        <Description>
+You may select a second of your three chosen School Skills
+as a chosen art, and all Technique bonuses and effects which
+applied to your fi rst chosen art now apply to it as well. The
+bonus to your chosen art skill rolls increases to +2k1.
+      </Description>
+      </Tech>
+      <Tech name="Undying Name" rank="4" id="crane_undying_name">
+        <Description>
+Your art is now so magnifi cent that you can make and break
+the reputations of others by depicting or referencing them in
+your work. You may create a piece of art referring to another
+person by rolling [chosen art]/Awareness at a TN equal to
+20 plus 5x their Glory Rank. With a success, you may either
+increase (if your art is complimentary) or decrease (if it is
+critical) their Glory by up to 5 points, plus an additional 5
+points for every Raise you make on the roll. You may call
+two additional Raises to infl ict a gain of Infamy on the
+target instead of a Glory change.
+You may not target the same person with this technique
+more than once every six months. Furthermore, persons
+of high station cannot have their reputations damaged by
+artists lacking in prestige—the target's Status Rank cannot
+exceed your Glory or Status Rank (whichever is higher).
+      </Description>
+      </Tech>
+      <Tech name="Gift Beyond Price" rank="5" id="crane_gift_beyond_price">
+        <Description>
+You art is now so perfect that a gift of it can profoundly
+change another person's attitude toward you and your
+clan. Once per month, you may give a gift of your chosen
+art to someone from another clan or faction. Make a Contested
+Social Roll of your [chosen art]/Awareness against
+their Etiquette (Courtesy)/Willpower. (The GM may award
+Free Raises to you or the target of this technique based on
+the type and subject of the art and the attitudes and beliefs
+of the target—some people are easier to sway than others.)
+With a success, you permanently alter their attitude
+toward your clan/faction in a favorable direction. With a
+failure, the target becomes aware of your attempt to manipulate
+his emotions, and his attitude toward your clan/
+faction permanently shifts in a hostile direction.
+      </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+  </School>
+</L5RCM>

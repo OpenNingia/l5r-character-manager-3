@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<L5RCM>
+  <Merit name="Inheritance: Trained Falcon" id="inheritance_trained_falcon" type="material">
+    <Rank id="1" value="2">
+      <Exception tag="crab_toritaka" value="1"/>
+      <Exception tag="falcon_toritaka" value="1"/>
+    </Rank>
+  </Merit>
+</L5RCM>  

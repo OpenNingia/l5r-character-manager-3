@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<L5RCM>
+  <Flaw type="mental" id="sleeper_agent" name="Sleeper Agent">
+    <Rank id="1" value="5">
+    </Rank>
+  </Flaw>
+</L5RCM>

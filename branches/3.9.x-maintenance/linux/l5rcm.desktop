@@ -1,0 +1,17 @@
+[Desktop Entry]
+Name=L5R Character Manager
+Comment=Manager L5R RPG Characters
+Exec=l5rcm %U
+Icon=l5rcm
+Type=Application
+X-GNOME-Bugzilla-Version=1.0.1
+Categories=Game;Utility;
+StartupNotify=true
+X-Ayatana-Desktop-Shortcuts=New
+X-Ubuntu-Gettext-Domain=l5rcm
+MimeType=application/x-l5r-character;application/x-l5r-pack;
+
+[New Shortcut Group]
+Name=New Window
+Exec=l5rcm
+TargetEnvironment=Unity

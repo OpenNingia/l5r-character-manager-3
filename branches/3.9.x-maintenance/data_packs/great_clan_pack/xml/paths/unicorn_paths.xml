@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="unicorn" name="Ide Trader" id="unicorn_ide_trader">
+    <Tags>
+      <Tag>courtier</Tag>
+      <Tag>unicorn_courtier</Tag>
+      <Tag>alternate</Tag>
+      <Tag>unicorn_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Brisk Economy" rank="2" id="unicorn_brisk_economy">
+        <Description>
+The Ide Trader is a master of the merchant class, extending
+his control across the land. You cannot lose Honor or
+Glory for using the Commerce skill in public. You may
+attempt to persuade someone to become a new mercantile
+partner for your clan by rolling Courtier (Manipulation) /
+Awareness with a bonus to the roll equal to double your
+Commerce Skill Rank. For persuading a commoner the
+suggested TN is 25, increased by the GM as appropriate if
+the target is hostile. Persuading a samurai requires a Contested
+Roll against the target’s Etiquette (Courtesy) / Willpower,
+with the target gaining a bonus equal to double
+his Commerce Skill Rank. (Some samurai targets may gain
+additional bonuses or even be immune to this Technique
+due to unshakable loyalties—the GM has fi nal say in such
+matters.)
+If you succeed in the roll, the target agrees to become a
+part of your network of connections and commercial assets.
+You may immediately gain the target as a free Ally
+with 1 point of Devotion.
+If you are using the optional Way of the Daimyo rules
+found in the L5R RPG 4th Edition supplement Emerald
+Empire, taking this Path earns you a Duty Point.
+            </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="commerce" type="skill" min="3">Commerce: 3</Requirement>
+      <Requirement field="rpg" type="more">must pursue a career as a merchant patron</Requirement>
+      <Requirement field="unicorn_the_heart_speaks" type="rule">Replaces Ide Emissary 2</Requirement>
+    </Requirements>
+  </School>
+  <School clanid="unicorn" name="Moto Fanatic" id="unicorn_moto_fanatic">
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>unicorn_bushi</Tag>
+      <Tag>alternate</Tag>
+      <Tag>unicorn_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Reckless Abandon" rank="4" id="unicorn_recless_abandon">
+        <Description>
+The Moto Fanatic charges into the thick of battle with no
+thought to his own safety. If you are in the Full Attack
+Stance, you may spend a Void Point as a Simple Action
+to activate this Technique. You gain Reduction equal to
+your School Rank so long as you remain in the Full Attack
+Stance.
+            </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="unicorn_desert_wind_strike" type="rule">Moto Bushi School 4</Requirement>
+    </Requirements>
+  </School>
+  <School clanid="unicorn" name="Utaku Horse Master" id="unicorn_utaku_horse_master">
+    <Tags>
+      <Tag>alternate</Tag>
+      <Tag>unicorn_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Master of the Open Plains" rank="2" id="unicorn_master_of_the_open_plains">
+        <Description>
+The Utaku men devote themselves to raising and training
+horses, and are without question the greatest in Rokugan
+at this task. Indeed, the Unicorn claim that in all their
+travels across the world they have never encountered better.
+You gain a +2k0 bonus to all Animal Handling, Horsemanship,
+and Hunting rolls.
+            </Description>
+      </Tech>
+    </Techs>
+    <Skills/>
+    <Spells/>
+    <Requirements>
+      <Requirement field="unicorn_utaku" type="tag">Must be a male of the Utaku family</Requirement>
+      <RequirementOption text="Replaces any Unicorn school 2">
+        <Requirement field="*unicorn_bushi" type="school" min="1" max="1"/>
+        <Requirement field="*unicorn_shugenja" type="school" min="1" max="1"/>
+        <Requirement field="*unicorn_monk" type="school" min="1" max="1"/>
+        <Requirement field="*unicorn_courtier" type="school" min="1" max="1"/>
+        <Requirement field="*unicorn_ninja" type="school" min="1" max="1"/>
+      </RequirementOption>
+    </Requirements>
+  </School>
+</L5RCM>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Family clanid="crane" name="Asahina" id="crane_asahina">
+    <Trait>intelligence</Trait>
+  </Family>
+  <Family clanid="crane" name="Daidoji" id="crane_daidoji">
+    <Trait>stamina</Trait>
+  </Family>
+  <Family clanid="crane" name="Doji" id="crane_doji">
+    <Trait>awareness</Trait>
+  </Family>
+  <Family clanid="crane" name="Kakita" id="crane_kakita">
+    <Trait>agility</Trait>
+  </Family>
+</L5RCM>

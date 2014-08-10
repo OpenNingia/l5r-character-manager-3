@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="crab" name="Hida Pragmatist School" id="crab_ob_hida_pragmatist_school">
+    <Trait>agility</Trait>
+    <Honor>2.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>crab_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill rank="2" id="jiujutsu" emphases="Improvised Weapons"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="lore_shadowlands" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="The Eternal Stone Unleashed" rank="1" id="crab_the_eternal_stone_unleashed"/>
+      <Tech name="Wearing Down The Mountain" rank="2" id="crab_wearing_down_the_mountain"/>
+      <Tech name="Fury Of The Avalanche" rank="3" id="crab_fury_of_the_avalanche"/>
+      <Tech name="Stone Turns Steel Aside" rank="4" id="crab_stone_turns_steel_aside"/>
+      <Tech name="Fight To The End" rank="5" id="crab_fight_to_the_end"/>
+    </Techs>
+    <Requirements/>
+  </School>
+</L5RCM>

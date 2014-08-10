@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="monks" name="Four Temples Monk School" id="monks_four_temples_monk_school">
+    <Trait>awareness</Trait>
+    <Honor>6.5</Honor>
+    <Devotion>Shintao</Devotion>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>monks_monk</Tag>
+      <Tag>brotherhood</Tag>
+      <Tag>monks_brotherhood</Tag>
+    </Tags>
+    <Kihos count="3"/>
+    <Skills>
+      <Skill id="courtier" rank="1"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill rank="1" id="lore_theology" emphases="Shintao"/>
+      <Skill id="meditation" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Soul of Civility" rank="1" id="monks_soul_of_civility">
+        <Description>
+Brothers of the Four
+Temples are accustomed to interacting with extremely
+important visitors and receiving invitations to influential
+courts. When you spend a Void Point to augment
+a High Skill Roll or a Social Skill Roll, you gain
++2k2 instead of the normal +1k1.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="0" zeni="2">
+      <Item>Bo (or pair of jo)</Item>
+      <Item>Coarse and plain Traveling Clothing</Item>
+      <Item>Scroll Satchel with passages from the Tao</Item>
+    </Outfit>
+  </School>
+  <School clanid="monks" name="Order of Heroes Monk School" id="monks_order_of_heroes_monk_school">
+    <Trait>perception</Trait>
+    <Honor>4.5</Honor>
+    <Devotion>Shintao</Devotion>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>monks_monk</Tag>
+      <Tag>brotherhood</Tag>
+      <Tag>monks_brotherhood</Tag>
+    </Tags>
+    <Kihos count="3"/>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill rank="1" id="lore_theology" emphases="*any"/>
+      <Skill id="meditation" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Destiny's Hand" rank="1" id="monks_destinys_hand">
+        <Description>
+The Order’s esoteric
+methods allow for the passage of chi from a monk
+to another without diffi culty. You may spend a Void
+Point as a Free Action to confer a bonus of +1k1 to
+any one roll this round by an ally who has not yet
+taken his Turn. You may not enhance a roll that cannot
+normally benefi t from Void Points (such as a damage
+roll, for instance).
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="0" zeni="2">
+      <Item>Bo (or pair of jo)</Item>
+      <Item>Coarse and plain Traveling Clothing</Item>
+      <Item>Scroll Satchel with passages from the Tao</Item>
+    </Outfit>
+  </School>
+  <School clanid="monks" name="The Shrine Of The Seven Thunders Monk" id="shine_of_the_seven_thunders_monk_school">
+    <Trait>stamina</Trait>
+    <Honor>4.5</Honor>
+    <Devotion>Shintao</Devotion>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>monks_monk</Tag>
+      <Tag>brotherhood</Tag>
+      <Tag>monks_brotherhood</Tag>
+    </Tags>
+    <Kihos count="3"/>
+    <Skills>
+      <Skill id="athletics" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill rank="1" id="lore_theology" emphases="Shintao"/>
+      <Skill id="meditation" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>lore</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Walk with the Prophet" rank="1" id="monks_walk_with_the_prophet">
+        <Description>
+Brothers of this
+shrine emphasize training in one element over all others.
+All three of your initial Kiho must be selected
+from the same element. Your Insight Rank is considered
+one higher for the purposes of meeting the Mastery
+Level of Kiho from this element.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="0" zeni="2">
+      <Item>Bo (or pair of jo)</Item>
+      <Item>Coarse and plain Traveling Clothing</Item>
+      <Item>Scroll Satchel with passages from the Tao</Item>
+    </Outfit>
+  </School>
+  <School clanid="monks" name="The Temple Of Kaimetsu-Uo" id="temple_of_the_kaimetsu_uo_monk_school">
+    <Trait>willpower</Trait>
+    <Honor>4.5</Honor>
+    <Devotion>Fortunist</Devotion>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>monks_monk</Tag>
+      <Tag>brotherhood</Tag>
+      <Tag>monks_brotherhood</Tag>
+    </Tags>
+    <Kihos count="3"/>
+    <Skills>
+      <Skill id="defense" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill rank="1" id="lore_theology" emphases="Fortunes"/>
+      <Skill id="meditation" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="The Path of Purity" rank="1" id="monks_the_path_of_purity">
+        <Description>
+Your soul dwells in a
+place of wisdom and serenity, and your ire is diffi cult
+to arouse under any circumstances. When making a
+Contested Social Skill Roll initiated by your opponent,
+you may use any Ring in place of the normal Trait
+used (typically Awareness) for the purposes of that
+roll.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="0" zeni="2">
+      <Item>Bo (or pair of jo)</Item>
+      <Item>Coarse and plain Traveling Clothing</Item>
+      <Item>Scroll Satchel with passages from the Tao</Item>
+    </Outfit>
+  </School>
+  <School clanid="monks" name="The Temple of Osano-Wo Monk School" id="monks_the_temple_of_osanowo_monk_school">
+    <Trait>strength</Trait>
+    <Honor>4.5</Honor>
+    <Devotion>Fortunist</Devotion>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>monks_monk</Tag>
+      <Tag>brotherhood</Tag>
+      <Tag>monks_brotherhood</Tag>
+    </Tags>
+    <Kihos count="3"/>
+    <Skills>
+      <Skill id="battle" rank="1"/>
+      <Skill id="jiujutsu" rank="2"/>
+      <Skill rank="1" id="lore_theology" emphases="Fortunes"/>
+      <Skill id="meditation" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="The Hand of Thunder" rank="1" id="monks_the_hand_of_thunder">
+        <Description>
+The emphasis
+of the Thunderer’s monks on the purity of unarmed
+combat is obvious to all who encounter them. You
+gain a +0k1 bonus to all damage rolls stemming from
+unarmed attacks. This effect is cumulative with any
+other effects that allow you to roll or keep additional
+dice on unarmed damage.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="0" zeni="2">
+      <Item>Bo (or pair of jo)</Item>
+      <Item>Coarse and plain Traveling Clothing</Item>
+      <Item>Scroll Satchel with passages from the Tao</Item>
+    </Outfit>
+  </School>
+  <School clanid="monks" name="The Temples of the Thousand Fortunes Monk School" id="monks_the_temples_of_the_thousand_fortunes_monk_school">
+    <Trait>agility</Trait>
+    <Honor>4.5</Honor>
+    <Devotion>Fortunist</Devotion>
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>monks_monk</Tag>
+      <Tag>brotherhood</Tag>
+      <Tag>monks_brotherhood</Tag>
+    </Tags>
+    <Kihos count="4"/>
+    <Skills>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill id="lore_history" rank="1"/>
+      <Skill rank="1" id="lore_theology" emphases="Fortunes"/>
+      <Skill id="meditation" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>lore</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="The Thousand Forms" rank="1" id="monks_the_thousand_forms">
+        <Description>
+There is no limit
+to the variety of blessings bestowed upon the loyal
+members of the Brotherhood by their divine patrons.
+You begin the game knowing four Kiho, rather than
+the normal three possessed by all Brotherhood monk
+characters. These do not count against the additional
+Kiho you can purchase with Experience Points (which
+you may do as normal).
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit bu="0" koku="0" zeni="2">
+      <Item>Bo (or pair of jo)</Item>
+      <Item>Coarse and plain Traveling Clothing</Item>
+      <Item>Scroll Satchel with passages from the Tao</Item>
+    </Outfit>
+  </School>
+</L5RCM>

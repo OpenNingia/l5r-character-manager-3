@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <KihoDef mastery="5" element="air" type="internal" id="eye_of_the_eagle" name="Eye of the Eagle">
+    <Description>The power of the wind can carry messages and information well beyond the boundaries of human weakness. Some natural creatures with an affinity for Air already possess remarkable abilities that go unnoticed and unappreciated, and certain monks can mimic these abilities. While this Kiho is active, you may as a Complex Action focus your chi by remaining utterly still and unmoving. Once this is done, so long as you maintain concentration and do not move from your current position, you can see a number of miles equal to your School Rank. The level of detail is sufficient to notice things like the physical characteristics of individuals, but not so acute as to allow for extremely fine detail, such as reading.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="4" element="air" type="internal" id="the_winds_vision" name="The Wind's Vision">
+    <Description>This Kiho was developed early on by the more martial sects of the Brotherhood, but was rarely learned or used until the Wind's Grace Order adopted it for use in its training. By focusing on the omnipresence of Air and letting go of mundane perception, you are able to fire an arrow at a target that is out of sight but may be in range. The arrow must still be able to travel in a straight line to the target—it will not suddenly pierce stone or turn corners, for example, but firing through a paper screen, amid total darkness, or through heavy smoke are all possible. You must know the target exists and its approximate location within 30 feet of its actual location.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="5" element="air" type="martial" id="calling_the_east_wind" name="Calling the East Wind">
+    <Description>The East Wind is generally considered exotic and fraught with mystery, most likely because it blows from the sea and the strange lands that exist somewhere far across its waters. This Kiho calls on that same wind to buoy the monk into the air and carry him to his opponent, delivering not an exotic or mysterious magical effect but rather simply a violent attack.
+When this Kiho is activated, you make a single unarmed kick attack. As part of this attack, you may leap through the air a significant distance, up to a maximum equal to your Air Ring x 10 feet. The power of this sudden movement adds an additional +1k0 damage to any successful attack landed as a result of this Kiho, and you gain one Free Raise toward use of the Knockdown Maneuver on this attack.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="7" element="air" type="martial" id="censure_of_thunder" name="Censure of Thunder">
+    <Tags>
+      <Tag>atemi</Tag>
+    </Tags>
+    <Description>The power of Thunder is not something that can be dismissed by any adherent of the Brotherhood, even those who favor the teachings of the Tao over the precepts of Fortunism. The Thunder Dragon, regardless of its dispensation, favors the bold and the heroic in all things, and those brothers who choose to face armed opponents with an empty hand are well within their rights to call upon its favor with this powerful Kiho. If you deliver a successful unarmed atemi strike while using this Kiho, your target immediately suffers 1k1 Wounds from the minor electrical shock that accompanies your touch. He also automatically drops his weapon as if suffering from a successful Disarm Maneuver, as your strike interrupts the flow of chi through his body. The target may spend two Void Points to negate the Disarm, but if he does so he suffers an additional 2k2 Wounds from the more severe electrical shock.
+The damage caused by this Kiho bypasses Reduction conferred by armor.
+    </Description>
+  </KihoDef>
+  <KihoDef mastery="7" element="air" type="martial" id="hurricane_palm" name="Hurricane Palm">
+    <Description>The raging force of a hurricane is nothing compared to the strength of a properly prepared spirit, or so the Tao of Shinsei says. Certainly there are many among the Brotherhood who seem able to prove such a point true. By externalizing their chi, certain monks are able to hurl away their foes, even those prepared for such an impact.
+After making a successful unarmed strike, you spend one Void Point. Your strike inflicts only half normal damage (rounded down), but it knocks your opponent back a number of feet equal to twice your Air Ring, after which he falls Prone. Any opponent successfully struck by this attack is moved by the Kiho's effect, even if they do not suffer any Wounds from the blow.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="6" element="air" type="martial" id="touch_of_the_storm" name="Touch of the Storm">
+    <Tags>
+      <Tag>atemi</Tag>
+    </Tags>
+    <Description>By drawing on the essence of the Elements themselves, a Brotherhood monk is capable of pulling the fury of the air from his surroundings and unleashing it upon an opponent. This Kiho requires a successful atemi strike. When such an attack is landed successfully, you make a Contested Air Roll against your opponent. If you are successful, your opponent suffers damage (with a DR equal to your Air Ring) in the form of a violent electrical discharge from the air around him. The damage from this Kiho ignores all forms of Reduction unless it specifically mentions electrical damage.
+    </Description>
+  </KihoDef>
+  <KihoDef mastery="8" element="air" type="mystical" id="inaris_wrath" name="Inari's Wrath">
+    <Description>It is in the Air that the essence of the seasons is contained. The warm humid air is what most people remember about summer, and the biting frigid wind is the most severe memory of winter. A true master of the paths of Air can draw it into his own body and use his chi to cool it, then exhale it and strike with all the wrath of Inari, the Fortune of Rice, whose wrathful aspect is the Frost Dragon.
+You must spend a Void Point as a Free Action to activate this Kiho, then as a Complex Action you take a deep breath and hold it. You unleash the breath on the following Round as a Complex Action. It creates a cone of freezing air extending a number of feet equal to your School Rank x 5, as broad at the end as your School Rank x 2 in feet. Any living creature caught within the area of effect suffers cold damage with a DR equal to your Air Ring. At the GM's discretion, certain physical materials may suffer damage as well.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="5" element="air" type="mystical" id="strike_through_the_wind" name="Strike through the Wind">
+    <Description>Most mortal souls never give a moment's consideration to the air they breathe and move through almost every second of their physical existence. The notion that Air can contain force or become as hard as steel is something they never even consider. Some monks, however, are able to transmit force through the Air as if it were an extension of their body.
+You channel the force of your blows through the air, striking targets at range as if they were at arm's length. You must spend a Void Point as a Free Action to activate this Kiho. While this Kiho is active, you make unarmed melee attacks as a Complex Action, and your melee attacks may target opponents as far away as your School Rank x 25 feet.
+    </Description>
+    <Tags/>
+  </KihoDef>
+  <KihoDef mastery="6" element="air" type="mystical" id="thunders_word" name="Thunder's Word">
+    <Description>This strange Kiho was allegedly developed by the monks who adhere to teachings inspired by the founder of the Mantis Clan, Kaimetsu-Uo. The sect's name causes an obvious association with the Mantis Clan, which in turn leads many samurai to misinterpret its philosophies; in truth, the monks of Kaimetsu-Uo are generally rather introspective and are devoted primarily to the Fortunes. Which, truthfully, makes their development of this Kiho even stranger than its effect.
+This Kiho invokes the power of the Thunder Dragon, a patron of the Mantis Clan, and fills the lungs with the power of Thunder. As a Complex Action you draw a deep breath and shout a single word of power, a command filled with the essence of the Thunder Dragon itself. All living beings capable of hearing your shout must make a Contested Air Roll against you (each of them rolls separately and compares to a single roll by you). Those who fail the roll are Dazed for a number of rounds equal to your Air Ring.
+    </Description>
+    <Tags/>
+  </KihoDef>
+</L5RCM>

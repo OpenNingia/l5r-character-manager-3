@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <SkillCateg id="bugei">Bugei</SkillCateg>
+  <SkillCateg id="high">High</SkillCateg>
+  <SkillCateg id="low">Low</SkillCateg>
+  <SkillCateg id="merchant">Merchant</SkillCateg>
+</L5RCM>

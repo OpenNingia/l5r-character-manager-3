@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="snake" name="Chuda Shugenja School" id="snake_chuda_shugenja_school">
+    <Trait>willpower</Trait>
+    <Affinity>earth</Affinity>
+    <Deficiency>air</Deficiency>
+    <Honor>4.5</Honor>
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>snake_shugenja</Tag>
+    </Tags>
+    <Skills>
+      <Skill rank="1" id="calligraphy" emphases="Cipher"/>
+      <Skill id="etiquette" rank="1"/>
+      <Skill id="lore_maho" rank="1"/>
+      <Skill id="lore_shadowlands" rank="1"/>
+      <Skill id="spellcraft" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells>
+      <Spell id="commune"/>
+      <Spell id="sense"/>
+      <Spell id="summon"/>
+      <PlayerChoose count="3" element="earth"/>
+      <PlayerChoose count="2" element="fire"/>
+      <PlayerChoose count="1" element="water"/>
+    </Spells>
+    <Techs>
+      <Tech name="To Punish The Wicked" rank="1" id="snake_to_punish_the_wicked">
+        <Description>
+Isawa Chuda was a ruthless persecutor of the Shadowlands, and
+his techniques live on in those who bear his name.
+You may spend a Void Point as a Free Action to negate
+an amount of Reduction equal to your School
+Rank from one targeted opponent. You also add your
+School Rank to the total of any damage roll made by
+a spell you cast against a target who possesses the
+Shadowlands Taint.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit koku="3" bu="0" zeni="0">
+      <Item>Robes</Item>
+      <Item>Wakizashi</Item>
+      <Item>Knife</Item>
+      <Item>Scroll Satchel</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+</L5RCM>

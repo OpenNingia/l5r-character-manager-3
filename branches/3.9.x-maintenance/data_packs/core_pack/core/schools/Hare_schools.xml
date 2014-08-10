@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="hare" name="Usagi Bushi School" id="hare_usagi_bushi_school">
+    <Trait>reflexes</Trait>
+    <Honor>4</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>hare_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill rank="1" id="athletics" emphases="Running"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="hunting" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="lore_maho" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+        <Wildcard>high</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Speed Of The Hare" rank="1" id="hare_speed_of_the_hare">
+        <Description>
+The Hare are known for fighting with a speed and agility reminiscent of the animal for which their clan is named. In any situation where you have room to dodge, jump, and otherwise maneuver (GM's discretion), you may add your Athletics Skill Rank to your Armor TN except when in the Full Attack or Center stance. Your Water Ring is considered 1 higher for purposes of how far you can move with Move actions.
+        </Description>
+      </Tech>
+      <Tech name="Leap Of The Hare" rank="2" id="hare_leap_of_the_hare">
+        <Description>
+The Hare bushi has learned to strike with a devastating springing attack that catches many opponents off guard. If you are in the Full Attack stance, you can leap forward and attack an opponent up to 15' away without taking a Move Action. All of your attacks on this turn must target that opponent.
+        </Description>
+      </Tech>
+      <Tech name="Swift As Lightning" rank="3" id="hare_swift_as_lightning">
+        <Description>
+The speed and flexibility of the Hare allows him to strike with fearsome rapidity. Your attacks with unarmed strikes, knives, or Samurai-keyword weapons are considered Simple Actions.
+        </Description>
+      </Tech>
+      <Tech name="Kick Of The Hare" rank="4" id="hare_kick_of_the_hare">
+        <Description>
+The Hare has learned not only how to strike with speed, but also how to dodge and avoid his foes at the same time. You may now perform your Rank Two Techniques while in the Attack stance instead of the Full Attack stance. If you perform the technique in the Full Attack stance, you may make your second attack of the Round against another opponent within 15' of the first opponent.
+        </Description>
+      </Tech>
+      <Tech name="Reichin's Style" rank="5" id="hare_reichins_style">
+        <Description>
+The final lesson of the Hare school is a whirling flurry of leaps, feints, and attacks that come at the opponent from all directions, confusing and disorienting him. You may perform the Feint Maneuver for only 1 Raise, and your damage bonus from a successful Feint is not limited to your Insight Rank x 5.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit koku="3" bu="0" zeni="0">
+      <Item>Ashigaru or Light Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>Bow (with 20 arrows) or Knife</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+  <School clanid="hare" name="Usagi Bushi School (After Clan War)" id="hare_usagi_bushi_school_after_clan_war">
+    <Trait>reflexes</Trait>
+    <Honor>4</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>hare_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill rank="1" id="athletics" emphases="Running"/>
+      <Skill id="defense" rank="1"/>
+      <Skill id="hunting" rank="1"/>
+      <Skill id="jiujutsu" rank="1"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="lore_kolat" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>bugei</Wildcard>
+        <Wildcard>high</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Speed Of The Hare" rank="1" id="hare_speed_of_the_hare">
+        <Description>
+The Hare are known for fighting with a speed and agility reminiscent of the animal for which their clan is named. In any situation where you have room to dodge, jump, and otherwise maneuver (GM's discretion), you may add your Athletics Skill Rank to your Armor TN except when in the Full Attack or Center stance. Your Water Ring is considered 1 higher for purposes of how far you can move with Move actions.
+        </Description>
+      </Tech>
+      <Tech name="Leap Of The Hare" rank="2" id="hare_leap_of_the_hare">
+        <Description>
+The Hare bushi has learned to strike with a devastating springing attack that catches many opponents off guard. If you are in the Full Attack stance, you can leap forward and attack an opponent up to 15' away without taking a Move Action. All of your attacks on this turn must target that opponent.
+        </Description>
+      </Tech>
+      <Tech name="Swift As Lightning" rank="3" id="hare_swift_as_lightning">
+        <Description>
+The speed and flexibility of the Hare allows him to strike with fearsome rapidity. Your attacks with unarmed strikes, knives, or Samurai-keyword weapons are considered Simple Actions.
+        </Description>
+      </Tech>
+      <Tech name="Kick Of The Hare" rank="4" id="hare_kick_of_the_hare">
+        <Description>
+The Hare has learned not only how to strike with speed, but also how to dodge and avoid his foes at the same time. You may now perform your Rank Two Techniques while in the Attack stance instead of the Full Attack stance. If you perform the technique in the Full Attack stance, you may make your second attack of the Round against another opponent within 15' of the first opponent.
+        </Description>
+      </Tech>
+      <Tech name="Reichin's Style" rank="5" id="hare_reichins_style">
+        <Description>
+The final lesson of the Hare school is a whirling flurry of leaps, feints, and attacks that come at the opponent from all directions, confusing and disorienting him. You may perform the Feint Maneuver for only 1 Raise, and your damage bonus from a successful Feint is not limited to your Insight Rank x 5.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit koku="3" bu="0" zeni="0">
+      <Item>Ashigaru or Light Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>Bow (with 20 arrows) or Knife</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+</L5RCM>

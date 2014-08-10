@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Family clanid="scorpion" name="Bayushi" id="scorpion_bayushi">
+    <Trait>agility</Trait>
+  </Family>
+  <Family clanid="scorpion" name="Shosuro" id="scorpion_shosuro">
+    <Trait>awareness</Trait>
+  </Family>
+  <Family clanid="scorpion" name="Soshi" id="scorpion_soshi">
+    <Trait>intelligence</Trait>
+  </Family>
+  <Family clanid="scorpion" name="Yogo" id="scorpion_yogo">
+    <Trait>willpower</Trait>
+  </Family>
+</L5RCM>

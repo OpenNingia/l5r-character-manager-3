@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="ox" name="Morito Bushi School" id="ox_morito_bushi_school">
+    <Trait>agility</Trait>
+    <Honor>3.5</Honor>
+    <Tags>
+      <Tag>bushi</Tag>
+      <Tag>ox_bushi</Tag>
+    </Tags>
+    <Skills>
+      <Skill id="defense" rank="1"/>
+      <Skill id="horsemanship" rank="1"/>
+      <Skill rank="1" id="hunting" emphases="Tracking"/>
+      <Skill id="kenjutsu" rank="1"/>
+      <Skill id="lore_kolat" rank="1"/>
+      <Skill id="lore_underworld" rank="1"/>
+      <PlayerChoose rank="1">
+        <Wildcard>any</Wildcard>
+      </PlayerChoose>
+    </Skills>
+    <Spells/>
+    <Techs>
+      <Tech name="Legacy Of The Four Winds" rank="1" id="ox_legacy_of_the_four_winds">
+        <Description>
+The Ox warrior fights as one with his horse. At the beginning of combat, you may add +1k0 to your Initiative if you are Mounted. Additionally, you may add +1k0 to attack rolls while mounted.
+        </Description>
+      </Tech>
+      <Tech name="The Wind Blows Many Ways" rank="2" id="ox_the_wind_blows_many_ways">
+        <Description>
+A Morito bushi becomes adept in all facets of war. At the beginning of combat, you may declare a number of Bugei Skills equal to your School Rank. You add +1k0 to all rolls involving the chosen Skills.
+        </Description>
+      </Tech>
+      <Tech name="Thunder And Fury" rank="3" id="ox_thunder_and_fury">
+        <Description>
+The Morito bushi strikes with the speed of his charging horse. You may make attacks as a Simple Action instead of a Complex Action while Mounted.
+        </Description>
+      </Tech>
+      <Tech name="The Blade Upon The Wind" rank="4" id="ox_the_blade_upon_the_wind">
+        <Description>
+The Morito bushi can rush forward, moving faster than any of his foes can anticipate. Once per skirmish, you may spend a Void Point as a Free Action to set your Initative Score equal to that of another participant in the battle. This may be either an ally or opponent. However, after you use this Technique, your Initiative Score is reduced by 5 during the Reactions Stage of each Round until the end of the encounter.
+You may only have one Turn per Round, even if your Initiative Score drops below your current Initiative Score.
+        </Description>
+      </Tech>
+      <Tech name="Fast And Furious" rank="5" id="ox_fast_and_furious">
+        <Description>
+The Morito bushi rides into battle, trampling those who cannot escape his path. while you are attacking an opponent with lower Initiative, you add +2k2 to all attacks and damage rolls.
+        </Description>
+      </Tech>
+    </Techs>
+    <Requirements/>
+    <Outfit koku="3" bu="0" zeni="0">
+      <Item>Light or Heavy Armor</Item>
+      <Item>Sturdy Clothing</Item>
+      <Item>Daisho</Item>
+      <Item>any Heavy Weapon or Polearm</Item>
+      <Item>Horse (Rokugani Pony)</Item>
+      <Item>Traveling Pack</Item>
+    </Outfit>
+  </School>
+</L5RCM>

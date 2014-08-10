@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <Family clanid="ox" name="Morito" id="ox_morito">
+    <Trait>stamina</Trait>
+  </Family>
+</L5RCM>
