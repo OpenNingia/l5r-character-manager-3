@@ -324,9 +324,23 @@ class L5RMain(L5RCMCore):
             self.bt_school_lock          = bt_lock
 
             # 3rd column
+            fr_exp = QtGui.QFrame(self)
+            hb_exp = QtGui.QHBoxLayout(fr_exp)
+            hb_exp.setContentsMargins(0,0,0,0)
+            lb_exp = QtGui.QLabel(self.tr("Exp. Points"), self)
+            bt_exp = QtGui.QToolButton( self )
+            bt_exp.setToolTip(self.tr("Edit experience points"))
+            bt_exp.setAutoRaise(True)
+            bt_exp.setIcon( QtGui.QIcon(get_icon_path('edit',(16,16))) )
+            hb_exp.addWidget(lb_exp)
+            hb_exp.addWidget(bt_exp)
+            
             grid.addWidget( QtGui.QLabel(self.tr("Rank")       , self), 0, 3 )
-            grid.addWidget( QtGui.QLabel(self.tr("Exp. Points"), self), 1, 3 )
+            #grid.addWidget( QtGui.QLabel(self.tr("Exp. Points"), self), 1, 3 )
+            grid.addWidget( fr_exp, 1, 3 )
             grid.addWidget( QtGui.QLabel(self.tr("Insight")    , self), 2, 3 )
+            
+            self.bt_set_exp_points       = bt_exp
 
             # 2nd column
             grid.addWidget( self.tx_pc_name, 0, 1, 1, 2  )
@@ -1327,7 +1341,7 @@ class L5RMain(L5RCMCore):
         add_cust_weap_act .triggered.connect( self.sink3.show_add_cust_weapon )
 
         # Rules menu
-        set_exp_limit_act  = QtGui.QAction(self.tr("Set Experience Limit..." ), self)
+        #set_exp_limit_act  = QtGui.QAction(self.tr("Set Experience Limit..." ), self)
         set_wound_mult_act = QtGui.QAction(self.tr("Set Health Multiplier..."), self)
         damage_act         = QtGui.QAction(self.tr("Cure/Inflict Damage...")  , self)
 
@@ -1365,7 +1379,7 @@ class L5RMain(L5RCMCore):
             if act.property('method') == hm_mode:
                 act.setChecked(True)
 
-        set_exp_limit_act .triggered.connect(self.sink1.on_set_exp_limit      )
+        #set_exp_limit_act .triggered.connect(self.sink1.on_set_exp_limit      )
         set_wound_mult_act.triggered.connect(self.sink1.on_set_wnd_mult       )
         damage_act        .triggered.connect(self.sink1.on_damage_act         )
 
@@ -1435,7 +1449,7 @@ class L5RMain(L5RCMCore):
         self.app_menu.addAction(add_cust_weap_act)
         self.app_menu.addSeparator()
         # RULES
-        self.app_menu.addAction(set_exp_limit_act)
+        #self.app_menu.addAction(set_exp_limit_act)
         self.app_menu.addAction(set_wound_mult_act)
         self.app_menu.addSeparator()
         # INSIGHT
@@ -1508,7 +1522,8 @@ class L5RMain(L5RCMCore):
         self.hm_act_grp.triggered.connect(self.on_change_health_visualization)
 
         self.bt_school_lock.clicked.connect( self.sink1.on_unlock_school_act )
-
+        self.bt_set_exp_points.clicked.connect( self.sink1.on_set_exp_limit )
+        
     def show_nicebar(self, wdgs):
         self.nicebar = QtGui.QFrame(self)
         self.nicebar.setStyleSheet('''
