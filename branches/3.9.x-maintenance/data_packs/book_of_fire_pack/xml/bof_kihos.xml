@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <KihoDef mastery="4" element="fire" type="internal" id="the_minds_fire" name="The Mind's Fire">
+    <Description>The truly enlightened mind can easily grasp that Fire is the source of creation and inspiration as well as simple destruction. By focusing his Fire-aligned chi into ascendance, a monk can gain incredible clarity. When active, this Kiho grants you a bonus of +2k2 to all Intelligence-based Skill Rolls. When the Kiho ends you are immediately Fatigued. </Description>
+    <Tags />
+  </KihoDef>
+  <KihoDef mastery="5" element="fire" type="mystical " id="sever_the_dark_lords_touch" name="Sever the Dark Lord's Touch">
+    <Description>A mind at one with the universe can perceive and affect the bonds that tie the physical world to the world of the spirit, even when the world in question is as insidious and despicable as the Realm of Evil. While this Kiho is active, a successful atemi strike against an unintelligent undead creature results in a Contested Roll, pitting your Fire against the undead 's Shadowlands Taint. If you are successful, the undead is instantly destroyed, its connection to Jigoku severed.</Description>
+    <Tags>
+      <Tag>atemi</Tag>
+    </Tags>
+  </KihoDef>
+  <KihoDef mastery="4" element="fire" type="mystical " id="sever_the_dark_lords_touch" name="Sever the Dark Lord's Touch">
+    <Description>A mind at one with the universe can perceive and affect the bonds that tie the physical world to the world of the spirit, even when the world in question is as insidious and despicable as the Realm of Evil. While this Kiho is active, a successful atemi strike against an unintelligent undead creature results in a Contested Roll, pitting your Fire against the undead 's Shadowlands Taint. If you are successful, the undead is instantly destroyed, its connection to Jigoku severed.</Description>
+    <Tags>
+      <Tag>atemi</Tag>
+    </Tags>
+    <Requirements>
+      <RequirementOption>
+        <Requirement field="crab_kuni_shugenja_school" type="school" />
+        <Requirement field="crab_ob_kuni_witch_hunter_school" type="school" />
+      </RequirementOption>
+    </Requirements>
+  </KihoDef>
+  <KihoDef mastery="6" element="fire" type="martial" id="seven_storms_fist" name="Seven Storm's Fist">
+    <Description>The chi of Fire flows through the body as all forms of chi do, but when its flow is disrupted, it can be particularly painful and disorienting for those not accustomed to the sensation. When this Kiho is active, a successful atemi strike against an opponent forces a COntested Fire Roll between you and that opponent. If you are successful, your opponent is Stunned for one Round.</Description>
+    <Tags>
+      <Tag>atemi</Tag>
+    </Tags>
+  </KihoDef>
+</L5RCM>

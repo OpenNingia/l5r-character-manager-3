@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <KihoDef type="tattoo" id="tattoo_volcano" name="Volcano">
+    <Description>While this tattoo is active, the skin of the monk's torso and upper limbs takes on the appearance of lava, a surface of searing-hot blackness riven with brightly glowing fiery cracks. Any flammable object with strikes the monk's body - including wooden weapons and arrows - will sear to ash within moments, and consequently the monk is considered to have Reduction 5 against such attacks (due to their burning up before they can deliver the full impact of their blows). Metal weapons inflict normal damage, but the wielders of such weapons must succeed in Contested Fire rolls against the monk or be forced to drop their weapons due to the intense heat (Sacred Weapons and nemuranai are immune to this effect). Unarmed attacks (including the Strike option while grappling) inflict normal damage and suffer no ill efects, since their impact does not crack the fiery surface of the lava.
+
+The Volcano Tattoo only affects the monk's torso and upper limbs, so its effects may be evaded by the use of the Called Shot Maneuver to strike the lower limbs, head, etc.
+The GM may rule that unarmed strikes that strike with great force (beyond 2 kept dice) do crack the surface of the lava, causing the attacker to suffer Wounds equal to the monk's Fire Ring.</Description>
+  </KihoDef>
+</L5RCM>

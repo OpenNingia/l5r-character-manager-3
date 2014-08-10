@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<L5RCM>
+  <Family clanid="senpet" name="Senpet" id="senpet">
+    <Trait>void</Trait>
+  </Family>
+</L5RCM>

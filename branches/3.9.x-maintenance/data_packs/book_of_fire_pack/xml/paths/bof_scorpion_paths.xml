@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="scorpion" name="Shosuro Assassins" id="scorpion_shosuro_assassins">
+    <Tags>
+      <Tag>ninja</Tag>
+      <Tag>scorpion_ninja</Tag>
+      <Tag>alternate</Tag>
+      <Tag>scorpion_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="The Hidden Blade" rank="6" id="scorpion_the_hidden_blade"><Description>The Assassins are the elite killers of the Shosuro shinobi orders, trained to kill their targets with a single precise stab or slice. When attacking a surprised or unaware opponent with a knife, you may activate this Technique by spending a Void Point (as a Free Action). Your attack will target a vital spot, and any Raises for damage you make on that target are kept dice (+1k1 per Raise) insted of unkept (+1k0).</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="stealth " type="skill" min="5">Stealth 5</Requirement>
+      <Requirement field="knives" type="skill" min="5">Knives 5</Requirement>
+      <RequirementOption text="Must be Rank 5 in Shosuro Infiltrator or Shosuro Actor school">
+        <Requirement field="scorpion_the_final_silence" type="rule" />
+        <Requirement field="scorpion_the_third_face" type="rule" />
+      </RequirementOption>
+    </Requirements>
+  </School>
+</L5RCM>

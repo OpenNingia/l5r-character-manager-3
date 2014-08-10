@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="lion" name="The Ikoma Historians" id="lion_the_ikoma_historians">
+    <Tags>
+      <Tag>courtiers</Tag>
+      <Tag>lion_courtiers</Tag>
+      <Tag>alternate</Tag>
+      <Tag>lion_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="The Past and the Present" rank="3" id="lion_the_past_and_the_present">
+        <Description>
+        The Ikoma Historians are tasked with comprehensively recording the official histories of the Empire - and also with concealing inconvenient aspects of that history. You are expected to always be ready to record the events around you, and as such you are trained to memorize and perfectly recall anything worty of inclusion in the historical records. When you take this Path, you acquire the Advantage Forbidden Knowledge (Empire's True History). You gain a Free Raise on all Calligraphy rolls and you may roll Lore: History / Intelligence at TN 25 to accurately recount any incident you have witnessed and any story you have heard, down to the smallest detail - including details you may have missed at the time.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="lore_history" type="skill" min="5">LOre: History 5</Requirement>
+      <RequirementOption text="Replaces Ikoma Bard 3 or Ikoma Lion's Shadow 3">
+        <Requirement field="lion_the_heart_of_the_lion" type="rule" />
+        <Requirement field="lion_the_lion_cannot_fail" type="rule" />
+      </RequirementOption>
+    </Requirements>
+  </School>
+</L5RCM>

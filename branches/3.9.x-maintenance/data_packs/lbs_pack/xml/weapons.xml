@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<L5RCM>
+    <Weapon range="30'" skill="knives" cost="2c" dr="1k1" name="Knife">
+        <Tags>
+            <Tag>small</Tag>
+            <Tag>melee</Tag>
+            <Tag>ranged</Tag>
+            <Tag>samurai</Tag>
+        </Tags>
+        <Effect id="throw_30f_rule"/>
+        <Effect id="hide_knife"/>
+        <Effect id="free_draw"/>
+    </Weapon>
+    <Weapon skill="kenjutsu" cost="15c" dr="2k2" name="Khopesh">
+        <Tags>
+            <Tag>medium</Tag>
+            <Tag>melee</Tag>
+            <Tag>senpet</Tag>
+        </Tags>
+        <Effect id="heavy_weapon_khopesh"/>
+    </Weapon>
+    <Weapon skill="kenjutsu" cost="10c" dr="2k2" name="Shamshir">
+        <Tags>
+            <Tag>medium</Tag>
+            <Tag>melee</Tag>
+        </Tags>
+    </Weapon>
+    <Weapon strength="3" name="Composite Longbow" range="400'" cost="30c" min_strength="3" skill="kyujutsu">
+        <Tags>
+            <Tag>large</Tag>
+            <Tag>ranged</Tag>
+        </Tags>
+    </Weapon>
+</L5RCM>

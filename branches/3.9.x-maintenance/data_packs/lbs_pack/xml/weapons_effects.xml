@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<L5RCM>
+    <EffectDef id="hide_knife">You gain a Free Raise when using Sleight of Hand to conceal any knife.</EffectDef>
+    <EffectDef id="free_draw">Can be drawn without having to spend any kind of
+        Action</EffectDef>
+    <EffectDef id="throw_30f_rule">Can be thrown accurately up to 30'.</EffectDef>
+    <EffectDef id="heavy_weapon_khopesh">The khopesh gains the same Strength
+        bonus to DR as an axe or heavy weapon.</EffectDef>
+    <EffectDef id="large_shield_rule">+15 versus ranged attacks. +5 versus melee attacks. You suffer a +8 TN penalty to all Skill Rolls involving Agility or Reflexes. If you do not have at least 3 Strength Ranks, this penalty increases to +12.
+    </EffectDef>
+    <EffectDef id="senpet_chain_shirt">+You suffer a +3 TN penalty to all Skill Rolls involving Agility or Reflexes. You do not gain the TN to Be Hit bonus from this armor against weapons that pierce, such as arrows or spears.
+    </EffectDef>
+</L5RCM>

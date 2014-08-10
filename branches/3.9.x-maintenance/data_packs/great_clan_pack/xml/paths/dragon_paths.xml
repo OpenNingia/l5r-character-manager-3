@@ -33,7 +33,7 @@ next Social Skill Roll against you.
     <Spells/>
     <Requirements>
       <Requirement field="courtier" type="skill" min="3">Courtier: 3</Requirement>
-      <Requirement field="etiquette" type="trait" trg="Conversation" min="5">Etiquette (Conversation): 5</Requirement>
+      <Requirement field="etiquette" type="skill" trg="Conversation" min="5">Etiquette (Conversation): 5</Requirement>
       <RequirementOption text="Replaces Kitsuki Investigator 3">
         <Requirement field="dragon_wisdom_the_wind_brings" type="rule"/>
       </RequirementOption>

@@ -1,0 +1,9 @@
+{
+	"id": "book_of_fire",
+	"display_name": "Book of Fire",
+	"authors": ["D'ziel Djenn"],
+	"version": "1.0",
+	"update-uri": "",
+	"download-uri": "",
+	"min-cm-version": "3.9.3"
+}

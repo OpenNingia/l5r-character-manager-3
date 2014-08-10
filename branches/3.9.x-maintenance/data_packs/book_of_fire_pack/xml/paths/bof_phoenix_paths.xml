@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<L5RCM>
+  <School clanid="phoenix" name="Student of Hitsu-Do" id="phoenix_student_of_hitsudo">
+    <Tags>
+      <Tag>monk</Tag>
+      <Tag>phoenix_monk</Tag>
+      <Tag>alternate</Tag>
+      <Tag>phoenix_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="The Way of Fire" rank="2" id="phoenix_the_way_of_fire"><Description>The practitioner of Hitsu-do learns to harness his inner Fire chi, using it to empower his strikes - but this has a price, since such use of one's own Fire is also harmful. When making an unarmed attack, you may opt to call on your inner fire, but you suffer Wounds equal to your Fire x2. (Any Wound Penalties from this damage are applied after your attack roll is completed.) In return, your unarmed damage for that attack has a base DR of 0k[Fire] instead of 0k1. (This does not stack with the unarmed damage bonus from the Advantage Hands of Stone.) For mechanical purposes, using the Hitsu-do technique as using a Mystical Kiho.
+
+Special: The Hitsu-do makes it easier for its students to master the ways of Fire. Your Fire Ring is considered to be 1 Rank higher for the purpose of learning Fire Kiho.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="jiujutsu" type="skill" trg="Hitsu-do" min="4">Jiujutsu (Hitsu-do) 4</Requirement>
+      <Requirement field="fire" type="ring" min="3">Fire 3</Requirement>
+      <Requirement field="phoenix_the_four_mysteries" type="rule">Replaces Asako Henshin Rank 2</Requirement>
+      <Requirement field="rpg" type="more">Must have access to a Hitsu-do dojo</Requirement>
+    </Requirements>
+  </School>
+  <School clanid="phoenix" name="Agasha Alchemists" id="phoenix_agasha_alchemists">
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>phoenix_shugenja</Tag>
+      <Tag>alternate</Tag>
+      <Tag>phoenix_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Fury of the Elements" rank="3" id="phoenix_fury_of_the_elements"><Description>You may store a Fire spell with the Area of Effect "one target person" or "one target creature" in an alchemical preparation for later use. The stored spell may be activated instantly by anyone as either a Simple Action (to drink a potion) or a Complex Action (to throw it, using Athletics (Throwing) / Agility). By spending a Spell Slot for another Element (except Void), you may also give a spell stored in this manner an additional Elemental keyword. For example, by spending an Earth slot, you could cause the stored spell to be both Fire and Earth, or just Earth, for all purposes related to the type of Elemental keyword associated with the spell. A spell may only be given one additional Elemental keyword this way.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="spellcraft" type="skill" min="3">Spellcraft 3</Requirement>
+      <Requirement field="fire" type="ring" min="3">Fire 3</Requirement>
+      <Requirement field="phoenix_elements_of_all_things" type="rule">Must be Agasha Shugenja</Requirement>
+      <Requirement field="rpg" type="more">Must be Rank 3</Requirement>
+    </Requirements>
+  </School>
+  <School clanid="phoenix" name="The Inferno Guard" id="phoenix_the_inferno_guard">
+    <Tags>
+      <Tag>shugenja</Tag>
+      <Tag>phoenix_shugenja</Tag>
+      <Tag>alternate</Tag>
+      <Tag>phoenix_alternate</Tag>
+    </Tags>
+    <Techs>
+      <Tech name="Menacing Flames" rank="3" id="phoenix_menacing_flames"><Description>Members of the Inferno Guard learn how to employ certain Fire spells to maximize the apparent threat they represent to opponents. When casting any Fire spell that does not list "one target creature" or "one target individual" as its Area of Effect, you may spend a Void Point or expend an additional Spell Slot to give the spell an additional effect of Fear X, where X is the Mastery Level of the spell.</Description></Tech>
+    </Techs>
+    <Skills />
+    <Spells />
+    <Requirements>
+      <Requirement field="battle" type="skill" trg="Mass Battle" min="3">Battle (Mass Battle) 3</Requirement>
+      <Requirement field="fire" type="ring" min="3">Fire 3</Requirement>
+      <Requirement field="phoenix_isawas_gift" type="rule">Must be Isawa Shugenja </Requirement>
+      <Requirement field="rpg" type="more">Must be at Rank 2 with a Fire Affinity</Requirement>
+    </Requirements>
+  </School>
+</L5RCM>
