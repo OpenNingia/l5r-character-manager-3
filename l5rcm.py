@@ -219,7 +219,7 @@ class L5RMain(L5RCMCore):
             lIsBannerEnabled = 1
         settings.setValue('isbannerenabled', lIsBannerEnabled)
         logo.setScaledContents(True)
-        logo.setPixmap( QtGui.QPixmap( get_app_file('banner.png') ) )
+        logo.setPixmap( QtGui.QPixmap( get_app_file('banner_s.png') ) )
         logo.setObjectName('BANNER')
         if(lIsBannerEnabled == 0):
             logo.hide()
