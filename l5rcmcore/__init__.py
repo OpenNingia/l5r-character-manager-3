@@ -234,17 +234,35 @@ class L5RCMCore(QtGui.QMainWindow):
         
         # SAMURAI MONKS ALSO FITS IN THE BUSHI CHARACTER SHEET
         is_monk, is_brotherhood = self.pc_is_monk    ()
-        is_samurai_monk = is_monk and not is_brotherhood        
+        is_samurai_monk = is_monk and not is_brotherhood
+        is_shugenja = self.pc.has_tag('shugenja')
+        is_bushi = self.pc.has_tag('bushi')
+        is_courtier = self.pc.has_tag('courtier')
+        spell_offset = 0
+        spell_count  = len( self.pc.get_spells() )
         
         # SHUGENJA/BUSHI/MONK SHEET
-        if self.pc.has_tag('shugenja'):
+        if is_shugenja:
             _export( 'sheet_shugenja.pdf', exporters.FDFExporterShugenja() )
-        elif self.pc.has_tag('bushi') or is_samurai_monk:
+        elif is_bushi or is_samurai_monk:
             _export( 'sheet_bushi.pdf', exporters.FDFExporterBushi() )
         elif is_monk:
             _export( 'sheet_monk.pdf', exporters.FDFExporterMonk() )
-        if self.pc.has_tag('courtier'):
+        if is_courtier:
             _export( 'sheet_courtier.pdf', exporters.FDFExporterCourtier() )
+            
+        # EXTRA SPELLS
+        # if one shugenja has more than 8 spells ( that fits on the shugenja sheet )
+        # we use as many extra spells sheet as needed
+        
+        if is_shugenja:
+            spell_count -= 8
+            spell_offset = 8
+            
+            while spell_count > 0:
+                _export( 'sheet_spells.pdf', exporters.FDFExporterSpells( spell_offset ) )
+                spell_offset += 14
+                spell_count  -= 14
 
         # WEAPONS
         if len(self.pc.weapons) > 2:
