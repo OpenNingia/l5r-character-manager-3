@@ -264,19 +264,23 @@ class FDFExporterAll(FDFExporter):
 
 class FDFExporterShugenja(FDFExporter):
     def __init__(self):
-        super(FDFExporterShugenja, self).__init__()
+        super(FDFExporterShugenja, self).__init__()        
+        self.spell_per_page = 8
 
-    def export_body(self, io):
+    def export_spells(self, fields, pg = 1, ctrl = 1, off = 0):
+    
         m = self.model
         f = self.form
-
-        fields = {}
-
+        
+        spells = f.sp_view_model.items
+        if off > 0:
+            spells = spells[ off: ]
+        
         # spells
         print('Starting Spells Export')
-        lPageNumber, lControlNumber = 1, 1
+        lPageNumber, lControlNumber = pg, ctrl
         lShortDescription = ''
-        for spell in f.sp_view_model.items:
+        for spell in spells:
             fields['SPELL_NM.%d.%d'  % (lPageNumber, lControlNumber)       ] = spell.name
             fields['SPELL_MASTERY.%d.%d'  % (lPageNumber, lControlNumber)  ] = spell.mastery
             fields['SPELL_RANGE.%d.%d'  % (lPageNumber, lControlNumber)    ] = spell.range
@@ -288,9 +292,16 @@ class FDFExporterShugenja(FDFExporter):
             fields['SPELL_EFFECT.%d.%d'  % (lPageNumber, lControlNumber)   ] = self.shorten_string(spell.desc) or ''
 
             lControlNumber += 1
-            if lControlNumber == 9 and lPageNumber == 1:
-                lControlNumber = 1
-                lPageNumber += 1
+            #if lControlNumber > self.spell_per_page and lPageNumber == 1:
+            #    lControlNumber = 1
+            #    lPageNumber += 1
+                
+    def export_body(self, io):
+        m = self.model
+        f = self.form
+
+        fields = {}
+        self.export_spells( fields )
 
         # schools
         print('Starting Schools Export')
@@ -384,6 +395,22 @@ class FDFExporterShugenja(FDFExporter):
             print( repr(e) )
             return None            
 
+class FDFExporterSpells(FDFExporterShugenja):
+    def __init__(self, offset):
+        super(FDFExporterSpells, self).__init__()            
+        
+        self.spell_offset   = offset
+        self.spell_per_page = 14
+        
+    def export_body(self, io):
+    
+        fields = {}
+        self.export_spells( fields = fields, pg = 2, off = self.spell_offset )        
+
+        # EXPORT FIELDS5
+        for k in fields.iterkeys():
+            self.export_field(k, fields[k], io)        
+            
 class FDFExporterBushi(FDFExporter):
     def __init__(self):
         super(FDFExporterBushi, self).__init__()
