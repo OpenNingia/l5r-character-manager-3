@@ -600,3 +600,34 @@ class FDFExporterCourtier(FDFExporter):
         # EXPORT FIELDS
         for k in fields.iterkeys():
             self.export_field(k, fields[k], io)
+
+class FDFExporterSkills(FDFExporter):
+    def __init__(self, offset = 0):
+        super(FDFExporterSkills, self).__init__()
+        
+        self.skill_offset = offset
+
+    def export_body(self, io):
+        m = self.model
+        f = self.form
+        
+        fields = {}
+
+        # SKILLS
+        skills = f.sk_view_model.items
+        if self.skill_offset > 0:
+            skills = skills[ self.skill_offset: ]
+        
+        for j, sk in enumerate( skills ):
+            i = j + 1
+            fields['SKILL_IS_SCHOOL.%d' % i] = sk.is_school
+            fields['SKILL_NAME.%d'    % i  ] = sk.name
+            fields['SKILL_RANK.%d'    % i  ] = sk.rank
+            fields['SKILL_TRAIT.%d'   % i  ] = (dal.query.get_trait(f.dstore, sk.trait) or
+                                                dal.query.get_ring (f.dstore, sk.trait))
+            fields['SKILL_EMPH_MA.%d' % i  ] = ', '.join(sk.emph)
+            
+        # EXPORT FIELDS
+        for k in fields.iterkeys():
+            self.export_field(k, fields[k], io)            
+        
