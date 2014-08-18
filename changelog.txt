@@ -1,0 +1,142 @@
+=== CORE PACK 4.3 ===
+* [NEW] Crab Alternate Paths
+* [NEW] Crane Alternate Paths
+* [NEW] Dragon Alternate Paths
+* [NEW] Lion Alternate Paths
+
+=== GREAT CLAN PACK 1.3 ===
+* [FIX] Issue #220, Kitsuki Debater alt-path not available ( due to bad requirements )
+
+=== CORE PACK 4.2 ===
+* [FIX] Fix Seppun family trait ( was intelligence now is agility )
+
+=== L5RCM v3.9.3 ===
+* [FIX] Glory is badly calculated with monks characters
+* [NEW] Courier pdf sheet exported
+* [FIX] PDF export now works with non-ascii characters
+
+=== GREAT CLAN PACK 1.2 ===
+* [NEW] Added great clans ancestors
+
+=== CORE PACK 4.1 ===
+* [NEW] Add school tech descriptions
+* [NEW] Added school starting outfits
+
+=== L5RCM v3.9.2 ===
+* [NEW] Export character notes on PDF sheet
+* [NEW] Implemented school starting outfit
+* [NEW] Add tech descriptions
+* [FIX] Issue #205, when coming back from an alternate path old school was not correcly restored
+* [FIX] Spell element not exported on PDF sheet
+* [FIX] On Linux characters are correcly loaded by opening character files from file manager
+* [NEW] Added some Rokugani names
+
+=== CORE PACK 4.0 ===
+* [FIX] added missing monks schools: The Temple Of Kaimetsu-Uo and The Shrine Of The Seven Thunders
+* [FIX] The Temples of the Thousand Fortunes now starts with 4 Kihos
+
+=== L5RCM v3.9.1 ===
+* [NEW] Affinity and Deficiency now stacks and can neutralized each other
+* [FIX] Issue #196, Selected Health method now influence how Health is printed on character sheet
+* [FIX] A rare crash
+* [FIX] Issue #199, 'Friend of the Brotherhood' advandage doesn't reduce Kiho cost
+* [FIX] Included missing fonts in the windows installer
+* [FIX] Fixed a bug in the algorithm that export the weapons in the first page
+
+=== L5RCM v3.9.0 ===
+* [NEW] Add weapon dedicated page to character sheet
+* [NEW] Add timestamp to advancements
+* [NEW] Appmenu instead of menu bar
+* [NEW] Customizable background, removed banner to save vertical space
+* [NEW] Generate random name buttons
+* [NEW] 2 new health display methods
+* [NEW] Support for spell <Description> tag
+
+=== COMMUNITY PACK 1.2 ===
+* [ADD] a bunch of new tattoos
+
+=== CORE PACK 3.9 ===
+* [FIX] add missing "Perform: Storytelling" skill to Suzume Bushi School of the Sparrow clan. Issue #185
+* [FIX] add missing Lore: Mantis skill. Issue #189
+
+=== CORE PACK 3.8 ===
+* [FIX] removed "Spears" skill from Usagi Bushi School
+* [NEW] added Usagi Bushi School ( After Clan War ) with Lore: Kolat instead of Lore: Maho
+* [NEW] added Ancestors as spiritual Advantages
+
+=== L5RCM v3.8.2 ===
+* [FIX] More robust debian package
+* [FIX] Editing Advantages and Disadvantages works now ( you can edit notes and cost )
+* [NEW] New icon
+
+=== L5RCM v3.8.0 ===
+* [NEW] New Kata dialog
+* [NEW] New Kiho dialog
+* [NEW] New Tattoo dialog
+* [NEW] Add "Buy Tattoo" button
+* [NEW] Minimum version check on datapacks
+* [FIX] Icons mess on KDE
+
+
+=== CORE PACK 3.7 ===
+* [FIX] Ronin Tawagotos Army - skills are wrong - see issue #178
+
+=== GREAT CLAN PACK 1.1 ===
+* [FIX] Added missing family: Ninube of Spider Clan ( +1 Reflexes ) - see issue #177
+* [FIX] Fix Ninube Shugenja School ( +1 Awareness instead of +1 Reflexes ) - see issue #177
+
+=== L5RCM v3.7.1 ===
+* [FIX] Regression #171 Unable to add weapons to characters
+* [FIX] [DATAPACK] #164 Knives and yari not throwable
+* [NEW] New school selection dialog redesign
+* [NEW] Added portoguese (Brasil) and French translations
+
+=== L5RCM v3.7 ===
+* [NEW] Money (zoku, bu, zeni) on PDF sheet
+* [NEW] [DATAPACK] Removed non corebook stuff from core datapack
+* [NEW] [DATAPACK] Removed duplicate stuff from community datapack
+* [NEW] [DATAPACK] Released Great Clans datapack
+* [NEW] [DATAPACK] Released Book of Air datapack
+* [NEW] [DATAPACK] Released Emerald Empire datapack
+* [NEW] [DATAPACK] Released Imperial Histories datapack
+* [NEW] [DATAPACK] Released Strongholds datapack
+* [!!!] [DATAPACK] Most datapack still aren't complete
+* [FIX] Fix segmentation fault with PySide 1.1.2
+* [NEW] Kihos and Tattoos element supported in schools definition
+* [NEW] Hacked spell selection to work against yogo wardmaster
+* [!!!] Yogo Wardmaster might still be buggy
+* [NEW] Small changes in item list rendering
+
+=== L5RCM v3.6 ===
+* [NEW] Added Donate button
+* [NEW] Changed resize effect
+* [NEW] Implemented UI zoom, use CTRL+MouseWheel or CTRL+'+', CTRL+'-' and CTRL+0
+* [NEW] Updated some translations
+* [NEW] Export Equipment list on PDF sheet
+* [NEW] Added GooglePlus buttons in the About page
+* [NEW] Add/Edit modifiers dialog
+* [FIX] Fixed bug #155, Cancelling Open forces Save As
+
+=== L5RCM CORE PACK v3.4 ===
+* [FIX] [DATAPACK] Removed "Tea Cerimony" skill from Mirumoto Bushi School
+* [FIX] [DATAPACK] Added "Kyujutsu" skill to Tsuruchi Bounty Hunter School
+* [NEW] [DATAPACK] Added "Lore: Law" skill to skill list
+* [NEW] [DATAPACK] Removed [OB] tag from some schools
+
+=== L5RCM v3.5 ===
+* [NEW] Added money and equipment ( not in PDF sheet yet )
+* [FIX] Fixed defect #143 School Name vanishing
+* [FIX] Fixed defect #140 Cost 0 advantages/disadvantaged double display
+
+=== L5RCM v3.4 ===
+* [NEW] Added Infamy counter
+* [FIX] Fixed "Remove Perk" (minus) button
+* [NEW] Added PDF sheet for monk characters with Monk schools and Kihos
+* [FIX] Fixed "Fame" advantage ( +1 starting glory )
+* [NEW] [DATAPACK] Added Rings/Traits data, usefull for translations
+* [NEW] [DATAPACK] Normalized whitespace in kiho descriptions
+* [FIX] Fix for Shugenja rank advancement
+* [NEW] [DATAPACK] Changed the way requirements for schools are specified in the XML
+* [NEW] Support for Alternate Paths / Techniques replacements
+* [NEW] The system will forbid to downgrade a datapack
+* [NEW] Added modifiers for Armor TN, Armor RD and Attack Roll ( specific to a weapon )
