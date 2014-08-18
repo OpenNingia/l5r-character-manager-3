@@ -1,0 +1,3 @@
+[submodule "src/dal"]
+	path = src/dal
+	url = https://github.com/OpenNingia/l5rcm-data-access.git
