@@ -1,0 +1,50 @@
+* Created by L5R: Character Manager
+* Author: Daniele Simonetti
+* All right on L5R RPG belongs to AEG
+
+# CHARACTER
+Seppun Kazumi                       RANK   :            4
+CLAN  :                 Imperial    FAMILY :       Seppun
+SCHOOL:       Akodo Bushi School    INSIGHT:          203
+EXP   :                250 / 300
+
+EARTH:  3    Stamina :  3    Willpower   :  3    HONOR : 6.5
+AIR  :  4    Reflexes:  4    Awareness   :  4    GLORY : 3.3
+WATER:  3    Strength:  3    Perception  :  4    STATUS: 4.4
+FIRE :  3    Agility :  4    Intelligence:  3    TAINT : 0.0
+VOID :  4    Void Points:    oooooooooo
+
+# INITIATIVE       # ARMOR TN                # HEALTH / WOUNDS (X3)
+BASE    : 8k4      NAME     : Light Armor    HEALTY: 15/      INJURED :  9/  
+MODIFIER:          BASE     : 25             NICKED:  9/      GRIPPLED:  9/  
+CURRENT : 8k4      ARMOR    : 5              GRAZED:  9/      DOWN    :  9/  
+                   REDUCTION: 3              HURT  :  9/      OUT     :  9/  
+                   CURRENT  : 30             
+
+# SKILL            # RANK       # TRAIT      # EMPHASES
+Sincerity*              5       Awareness                                    
+Kyujutsu*               4       Reflexes                                     
+Battle*                 2       Perception   Mass Combat                     
+Defense*                4       Reflexes                                     
+Lore (History)*         3       Intelligence                                 
+Courtier*               3       Awareness                                    
+Kenjutsu*               5       Agility      Katana                          
+Lore (Heraldry)         3       Intelligence                                 
+Etiquette               4       Awareness                                    
+
+# SKILL            # RANK       # EFFECT
+Sincerity               5       +5 to the total of any Sincerity Contested Rolls.
+Kyujutsu                3       Stringing a bow for use is a Simple Action.
+Defense                 3       Keep Defense/Reflexes roll for subsequent rounds in Full Defense stance.
+Courtier                3       Gain +3 Insight bonus       
+Kenjutsu                3       +1k0 to all damage rolls made with a sword.
+Kenjutsu                5       Readying a sword is a Free Action.
+Etiquette               3       Gain +3 Insight bonus       
+
+# SCHOOL                        # RANK       # TECH
+Akodo Bushi School                   1       The Way Of The Lion                
+Akodo Bushi School                   2       Strength Of Purity                 
+Akodo Bushi School                   3       Strength Of My Ancestors           
+Akodo Bushi School                   4       Triumph Before Battle              
+
+# SPELL                 # RING  # MASTERY  # RANGE  # AOE  # DURATION
