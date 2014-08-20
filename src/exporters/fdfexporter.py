@@ -1,4 +1,4 @@
-# Copyright (C) 2011 Daniele Simonetti
+# Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -163,15 +163,17 @@ class FDFExporterAll(FDFExporter):
         fields['WOUND_HEAL_CUR' ] = fields['WOUND_HEAL_BASE']
 
         # SKILLS
-        count = min(23, len(f.sk_view_model.items))
-        for i in xrange(1, count+1):
-            sk = f.sk_view_model.items[i-1]
-            fields['SKILL_IS_SCHOOL.%d' % i] = sk.is_school
-            fields['SKILL_NAME.%d'    % i  ] = sk.name
-            fields['SKILL_RANK.%d'    % i  ] = sk.rank
-            fields['SKILL_TRAIT.%d'   % i  ] = (dal.query.get_trait(f.dstore, sk.trait) or
+        sorted_skills = sorted( f.sk_view_model.items, key = lambda x: (not x.is_school, -x.rank, x.name) ) 
+        for i, sk in enumerate(sorted_skills):
+            j = i+1
+            if i >= 23: break
+
+            fields['SKILL_IS_SCHOOL.%d' % j] = sk.is_school
+            fields['SKILL_NAME.%d'    % j  ] = sk.name
+            fields['SKILL_RANK.%d'    % j  ] = sk.rank
+            fields['SKILL_TRAIT.%d'   % j  ] = (dal.query.get_trait(f.dstore, sk.trait) or
                                                 dal.query.get_ring (f.dstore, sk.trait))
-            fields['SKILL_EMPH_MA.%d' % i  ] = ', '.join(sk.emph)
+            fields['SKILL_EMPH_MA.%d' % j  ] = ', '.join(sk.emph)
 
         # MERITS AND FLAWS
         merits = f.merits_view_model.items
@@ -264,18 +266,18 @@ class FDFExporterAll(FDFExporter):
 
 class FDFExporterShugenja(FDFExporter):
     def __init__(self):
-        super(FDFExporterShugenja, self).__init__()        
+        super(FDFExporterShugenja, self).__init__()
         self.spell_per_page = 8
 
     def export_spells(self, fields, pg = 1, ctrl = 1, off = 0):
-    
+
         m = self.model
         f = self.form
-        
+
         spells = f.sp_view_model.items
         if off > 0:
             spells = spells[ off: ]
-        
+
         # spells
         print('Starting Spells Export')
         lPageNumber, lControlNumber = pg, ctrl
@@ -295,7 +297,7 @@ class FDFExporterShugenja(FDFExporter):
             #if lControlNumber > self.spell_per_page and lPageNumber == 1:
             #    lControlNumber = 1
             #    lPageNumber += 1
-                
+
     def export_body(self, io):
         m = self.model
         f = self.form
@@ -361,7 +363,7 @@ class FDFExporterShugenja(FDFExporter):
 
         except Exception as e:
             print( repr(e) )
-            return None   
+            return None
 
     def split_in_parts(self, text, max_lines = 6):
         try:
@@ -393,24 +395,24 @@ class FDFExporterShugenja(FDFExporter):
 
         except Exception as e:
             print( repr(e) )
-            return None            
+            return None
 
 class FDFExporterSpells(FDFExporterShugenja):
     def __init__(self, offset):
-        super(FDFExporterSpells, self).__init__()            
-        
+        super(FDFExporterSpells, self).__init__()
+
         self.spell_offset   = offset
         self.spell_per_page = 14
-        
+
     def export_body(self, io):
-    
+
         fields = {}
-        self.export_spells( fields = fields, pg = 2, off = self.spell_offset )        
+        self.export_spells( fields = fields, pg = 2, off = self.spell_offset )
 
         # EXPORT FIELDS5
         for k in fields.iterkeys():
-            self.export_field(k, fields[k], io)        
-            
+            self.export_field(k, fields[k], io)
+
 class FDFExporterBushi(FDFExporter):
     def __init__(self):
         super(FDFExporterBushi, self).__init__()
@@ -596,6 +598,40 @@ class FDFExporterCourtier(FDFExporter):
                 rank = tech.rank-1 if tech.rank > 0 else 0
                 fields['COURTIER_SCHOOL_RANK.%d.%d' % (i, rank)] = tech.name
                 print('COURTIER_SCHOOL_RANK.%d.%d' % (i, rank), tech.name)
+
+        # EXPORT FIELDS
+        for k in fields.iterkeys():
+            self.export_field(k, fields[k], io)
+
+class FDFExporterSkills(FDFExporter):
+    def __init__(self, offset = 0):
+        super(FDFExporterSkills, self).__init__()
+
+        self.skill_offset = offset
+
+    def export_body(self, io):
+        m = self.model
+        f = self.form
+
+        fields = {}
+
+        # SKILLS
+        skills = f.sk_view_model.items
+        if self.skill_offset > 0:
+            skills = skills[ self.skill_offset: ]
+
+        sorted_skills = sorted( skills, key = lambda x: (not x.is_school, -x.rank, x.name) )
+        for i, sk in enumerate(sorted_skills):
+            j = i+1
+            if i >= 37: break
+
+            fields['SKILL_IS_SCHOOL.%d' % j] = sk.is_school
+            fields['SKILL_NAME.%d'    % j  ] = sk.name
+            fields['SKILL_RANK.%d'    % j  ] = sk.rank
+            fields['SKILL_TRAIT.%d'   % j  ] = (dal.query.get_trait(f.dstore, sk.trait) or
+                                                dal.query.get_ring (f.dstore, sk.trait))
+            fields['SKILL_EMPH_MA.%d' % j  ] = ', '.join(sk.emph)
+
 
         # EXPORT FIELDS
         for k in fields.iterkeys():

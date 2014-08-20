@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2011 Daniele Simonetti
+# Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ HEADER_CHECK_STRING = """# -*- coding: iso-8859-1 -*-"""
 HEADER_TO_REMOVE    = """#!/usr/bin/python"""
 
 GPL_HEADER = """# -*- coding: iso-8859-1 -*-
-# Copyright (C) 2011 Daniele Simonetti
+# Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
