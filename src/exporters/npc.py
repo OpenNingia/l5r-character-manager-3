@@ -65,12 +65,19 @@ class FDFExporterTwoNPC(FDFExporter):
         def _af( name, value, idx = index ):
             fields['{}{}'.format(name, idx)] = str(value)
 
-        family_name = ""
-        if pc.family:
-            family_name = dal.query.get_family( self.dstore, pc.family ).name + " "
 
-        _af( "Name", "{}{}".format(family_name, pc.name) )
-        _af( "Clan", dal.query.get_clan( self.dstore, pc.clan ).name )
+        clan_obj = dal.query.get_clan( self.dstore, pc.clan )
+        if clan_obj:
+            _af( "Clan", clan_obj.name )
+
+        name = ""
+        family_obj  = dal.query.get_family( self.dstore, pc.family )
+        if family_obj:
+            name = "{} {}".format( family_obj.name, pc.name )
+        else:
+            name = pc.name
+        _af( "Name", name )
+
         sobj = dal.query.get_school( self.dstore, pc.get_school_id() )
         if sobj:
             _af("School", sobj.name)
@@ -125,7 +132,6 @@ class FDFExporterTwoNPC(FDFExporter):
             _af( "Attack", atk_roll, j )
             dmg_roll = rules.format_rtk_t(rules.calculate_mod_damage_roll (pc, weapon))
             _af( "Damage", atk_roll, j )
-            print('desc', weapon.desc)
             _af( "Notes", weapon.desc, j )
 
         # OTHER TRAITS
@@ -137,21 +143,25 @@ class FDFExporterTwoNPC(FDFExporter):
         # SKILLS
         skills = self.get_skills_sorted( pc, lambda x: x['rank'] )
         # divide in 6 lists
-        skill_per_line = min( 1, len(skills) / 5 )
+        skill_per_line = max( 5, len(skills) / 5 )
         # offset
         off = 0
 
         for i in range(0, 5):
-            sks = skills[ off:off+skill_per_line ]
+            sks = []
+            if i == 4:
+                sks = skills[ off: ]
+            else:
+                sks = skills[ off:off+skill_per_line ]
 
-            print( sks)
+            if len( sks ) == 0: break
 
             skill_line = ', '.join( [ self.fmt_skill_line(x) for x in sks ] )
 
             fn = "Skill  Rank Emphases {}".format(i+1)
             if index > 1:
                 fn += "_2"
-            print(fn, skill_line)
+
             fields[fn] = skill_line
 
             off += skill_per_line
