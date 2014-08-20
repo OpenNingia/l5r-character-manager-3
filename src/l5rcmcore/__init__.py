@@ -231,7 +231,7 @@ class L5RCMCore(QtGui.QMainWindow):
             temp_files.append(fpath)
 
         temp_files.append(fpath)
-        
+
         # SAMURAI MONKS ALSO FITS IN THE BUSHI CHARACTER SHEET
         is_monk, is_brotherhood = self.pc_is_monk    ()
         is_samurai_monk = is_monk and not is_brotherhood
@@ -240,7 +240,7 @@ class L5RCMCore(QtGui.QMainWindow):
         is_courtier = self.pc.has_tag('courtier')
         spell_offset = 0
         spell_count  = len( self.pc.get_spells() )
-        
+
         # SHUGENJA/BUSHI/MONK SHEET
         if is_shugenja:
             _export( 'sheet_shugenja.pdf', exporters.FDFExporterShugenja() )
@@ -250,15 +250,15 @@ class L5RCMCore(QtGui.QMainWindow):
             _export( 'sheet_monk.pdf', exporters.FDFExporterMonk() )
         if is_courtier:
             _export( 'sheet_courtier.pdf', exporters.FDFExporterCourtier() )
-            
+
         # EXTRA SPELLS
         # if one shugenja has more than 8 spells ( that fits on the shugenja sheet )
         # we use as many extra spells sheet as needed
-        
+
         if is_shugenja:
             spell_count -= 8
             spell_offset = 8
-            
+
             while spell_count > 0:
                 _export( 'sheet_spells.pdf', exporters.FDFExporterSpells( spell_offset ) )
                 spell_offset += 14
@@ -435,19 +435,19 @@ class L5RCMCore(QtGui.QMainWindow):
         self.update_from_model()
 
     def import_data_packs(self, data_pack_file):
-        
+
         imported = 0
-    
+
         for dp in data_pack_file:
             if self.import_data_pack(dp):
                 imported += 1
-                
+
         if imported > 0:
             self.reload_data()
             self.advise_successfull_import( imported )
         else:
-            self.advise_error(self.tr("Cannot import data pack."))        
-            
+            self.advise_error(self.tr("Cannot import data pack."))
+
     def import_data_pack(self, data_pack_file):
         try:
             dal.dataimport.CM_VERSION = APP_VERSION
@@ -615,3 +615,17 @@ class L5RCMCore(QtGui.QMainWindow):
             if not mt or tech.rank > mt.rank:
                 ms, mt = school, tech
         return ms, mt
+
+    def get_character_full_name(self):
+
+        # if the character has a family name
+        # prepend the character name with it
+        # e.g. Hida Hiroshi
+        # otherwise just 'Hiroshi' will do
+
+        family_name = ""
+        family_obj = dal.query.get_family( self.dstore, self.pc.family )
+        if family_obj:
+            family_name = family_obj.name
+            return "{} {}".format( family_name, self.pc.name )
+        return self.pc.name
