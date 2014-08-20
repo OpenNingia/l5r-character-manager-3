@@ -18,7 +18,7 @@ import dal
 import dal.query
 import models
 import rules
-from fdfexporter import FDFExporter
+from fdfexporter import FDFExporter, zigzag
 
 class FDFExporterTwoNPC(FDFExporter):
     def __init__(self, dstore, pcs):
@@ -39,10 +39,31 @@ class FDFExporterTwoNPC(FDFExporter):
         for k in fields.iterkeys():
             self.export_field(k, fields[k], io)
 
+    def get_skills_sorted( self, pc, key ):
+
+        skill_list = []
+        for s in pc.get_skills():
+            sk_obj = dal.query.get_skill( self.dstore, s )
+            if not sk_obj: continue
+            o = {
+            'id': s,
+            'rank': pc.get_skill_rank(s),
+            'name': sk_obj.name,
+            'emph': ', '.join( pc.get_skill_emphases(s) ) }
+
+            skill_list.append( o )
+
+        return sorted( skill_list, key=key )
+
+    def fmt_skill_line( self, sk ):
+        if len( sk['emph'] ) > 0:
+            return "{nm} {r} ({e})".format( nm=sk['name'], r=sk['rank'], e=sk['emph'] )
+        return "{nm} {r}".format( nm=sk['name'], r=sk['rank'] )
+
     def export_npc(self, index, pc, fields ):
 
-        def _af( name, value ):
-            fields['{}{}'.format(name, index)] = str(value)
+        def _af( name, value, idx = index ):
+            fields['{}{}'.format(name, idx)] = str(value)
 
         family_name = ""
         if pc.family:
@@ -79,7 +100,7 @@ class FDFExporterTwoNPC(FDFExporter):
         _af("Armor"     , pc.get_cur_tn () )
         _af("Reduction" , pc.get_full_rd() )
 
-        # WOUNDS
+        # HEALTH
         w_labels = ['Healthy', 'Nicked', 'Grazed',
                     'Hurt', 'Injured', 'Crippled',
                     'Down', 'Out']
@@ -89,3 +110,48 @@ class FDFExporterTwoNPC(FDFExporter):
             if i == 0: hl[i] = pc.get_health_rank(i)
             else: hl[i] = pc.get_health_rank(i) + hl[i-1]
             _af( w_labels[i], hl[i] )
+
+        # WEAPONS
+        melee_weapons = [ x for x in pc.get_weapons() if 'melee' in x.tags     ]
+        range_weapons = [ x for x in pc.get_weapons() if 'ranged' in x.tags and 'melee' not in x.tags ]
+
+        wl  = zigzag(melee_weapons, range_weapons)
+
+        for i, weapon in enumerate( wl ):
+            if i >= 2: break
+            j = (index-1)*2 + i + 1
+            _af( "Type"  , weapon.name, j )
+            atk_roll = rules.format_rtk_t(rules.calculate_mod_attack_roll (pc, weapon))
+            _af( "Attack", atk_roll, j )
+            dmg_roll = rules.format_rtk_t(rules.calculate_mod_damage_roll (pc, weapon))
+            _af( "Damage", atk_roll, j )
+            print('desc', weapon.desc)
+            _af( "Notes", weapon.desc, j )
+
+        # OTHER TRAITS
+        _af("Status" , pc.get_status() )
+        _af("Honor"  , pc.get_honor () )
+        _af("Glory"  , pc.get_glory () )
+        _af("GloryTN", int(50 - pc.get_glory() * 5) )
+
+        # SKILLS
+        skills = self.get_skills_sorted( pc, lambda x: x['rank'] )
+        # divide in 6 lists
+        skill_per_line = min( 1, len(skills) / 5 )
+        # offset
+        off = 0
+
+        for i in range(0, 5):
+            sks = skills[ off:off+skill_per_line ]
+
+            print( sks)
+
+            skill_line = ', '.join( [ self.fmt_skill_line(x) for x in sks ] )
+
+            fn = "Skill  Rank Emphases {}".format(i+1)
+            if index > 1:
+                fn += "_2"
+            print(fn, skill_line)
+            fields[fn] = skill_line
+
+            off += skill_per_line

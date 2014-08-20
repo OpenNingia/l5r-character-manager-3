@@ -28,14 +28,14 @@ class ArmorOutfit(object):
         self.rule = ''
         self.cost = ''
 
-class WeaponOutfit(object):        
+class WeaponOutfit(object):
     def __init__(self):
         self.dr       = ''
         self.dr_alt   = ''
         self.name     = ''
         self.desc     = ''
         self.rule     = ''
-        self.cost     = '' 
+        self.cost     = ''
         self.range    = ''
         self.strength = 0
         self.min_str  = 0
@@ -46,43 +46,44 @@ class WeaponOutfit(object):
         self.max_atk  = ''
         self.base_dmg = ''
         self.max_dmg  = ''
-        self.tags     = []        
-        
+        self.tags     = []
+
 def weapon_outfit_from_db(dstore, weap_nm, sk_uuid = None):
     itm       = WeaponOutfit()
     weapon    = dal.query.get_weapon(dstore, weap_nm)
     effect_tx = dal.query.get_weapon_effect(dstore, weapon.effectid).text if ( weapon.effectid is not None ) else ''
-    
+
     itm.name     = weapon.name
     itm.dr       = weapon.dr           or 'N/A'
     itm.dr_alt   = weapon.dr2          or 'N/A'
-    itm.rule     = effect_tx      
+    itm.rule     = weapon.effectid
+    itm.desc     = effect_tx
     itm.cost     = weapon.cost         or 'N/A'
-    itm.range    = weapon.range        or 'N/A' 
+    itm.range    = weapon.range        or 'N/A'
     itm.strength = weapon.strength     or 'N/A'
-    itm.min_str  = weapon.min_strength or 'N/A'    
+    itm.min_str  = weapon.min_strength or 'N/A'
     itm.tags     = weapon.tags
     itm.skill_id = weapon.skill
-    
+
     try:
         itm.skill_nm = dal.query.get_skill(dstore, weapon.skill).name
     except Exception as ex:
         print(ex)
         pass
     return itm
-            
+
 def armor_outfit_from_db(dstore, armor_nm):
     itm = ArmorOutfit()
-    
+
     armor     = dal.query.get_armor(dstore, armor_nm)
     effect_tx = dal.query.get_weapon_effect(dstore, armor.effectid).text if ( armor.effectid is not None ) else ''
-               
+
     itm.name = armor.name
     itm.tn   = armor.tn
     itm.rd   = armor.rd
     itm.rule = effect_tx
     itm.cost = armor.cost
-    
+
     return itm
 
 class WeaponTableViewModel(QtCore.QAbstractTableModel):
@@ -96,10 +97,10 @@ class WeaponTableViewModel(QtCore.QAbstractTableModel):
             self.headers = ['Name', 'Range', 'Strength', 'Min. Str.', 'ATK Roll', 'Mod. ATK Roll']
         elif type_ == 'arrow':
             self.headers = ['Name', 'DR', 'Quantity']
-            
+
         self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
         self.bg_color   = [ QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
-                            QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82)) ]        
+                            QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82)) ]
         self.item_size = QtCore.QSize(28, 28)
 
     def rowCount(self, parent = QtCore.QModelIndex()):
@@ -129,13 +130,13 @@ class WeaponTableViewModel(QtCore.QAbstractTableModel):
         elif role == QtCore.Qt.ForegroundRole:
             return self.text_color
         elif role == QtCore.Qt.BackgroundRole:
-            return self.bg_color[ index.row() % 2 ]            
+            return self.bg_color[ index.row() % 2 ]
         elif role == QtCore.Qt.SizeHintRole:
             return self.item_size
         elif role == QtCore.Qt.UserRole:
-            return item    
+            return item
         return None
-        
+
     def melee_display_role(self, item, column):
         if column == 0:
             return item.name
@@ -150,9 +151,9 @@ class WeaponTableViewModel(QtCore.QAbstractTableModel):
         if column == 5:
             return item.base_dmg
         if column == 6:
-            return item.max_dmg           
+            return item.max_dmg
         return None
-        
+
     def ranged_display_role(self, item, column):
         if column == 0:
             return item.name
@@ -166,7 +167,7 @@ class WeaponTableViewModel(QtCore.QAbstractTableModel):
             return item.base_atk
         if column == 5:
             return item.max_atk
-        return None        
+        return None
 
     def arrow_display_role(self, item, column):
         if column == 0:
@@ -176,7 +177,7 @@ class WeaponTableViewModel(QtCore.QAbstractTableModel):
         if column == 2:
             return item.qty
         return None
-        
+
     def flags(self, index):
         if not index.isValid():
             return QtCore.Qt.ItemIsDropEnabled
@@ -185,7 +186,7 @@ class WeaponTableViewModel(QtCore.QAbstractTableModel):
 
     def add_item(self, item):
         row = self.rowCount()
-        self.beginInsertRows(QtCore.QModelIndex(), row, row)               
+        self.beginInsertRows(QtCore.QModelIndex(), row, row)
         self.items.append(item)
         self.endInsertRows()
 
@@ -202,21 +203,21 @@ class WeaponTableViewModel(QtCore.QAbstractTableModel):
                 w.base_atk = rules.format_rtk_t(rules.calculate_base_attack_roll(model, w))
                 w.max_atk  = rules.format_rtk_t(rules.calculate_mod_attack_roll (model, w))
                 w.base_dmg = rules.format_rtk_t(rules.calculate_base_damage_roll(model, w))
-                w.max_dmg  = rules.format_rtk_t(rules.calculate_mod_damage_roll (model, w))                
+                w.max_dmg  = rules.format_rtk_t(rules.calculate_mod_damage_roll (model, w))
                 self.add_item(w)
-                
+
 class EquipmentListModel(QtCore.QAbstractListModel):
     def __init__(self, parent = None):
         super(EquipmentListModel, self).__init__(parent)
 
         self.school_outfit = []
-        self.items         = []        
-            
+        self.items         = []
+
         self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
         self.bg_color   = [ QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
-                            QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82)) ]        
-        self.item_size  = QtCore.QSize(28, 28)    
-        
+                            QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82)) ]
+        self.item_size  = QtCore.QSize(28, 28)
+
         self.bold_font = None
         if self.parent:
             self.bold_font = parent.font()
@@ -230,21 +231,21 @@ class EquipmentListModel(QtCore.QAbstractListModel):
     def flags(self, index):
         if not index.isValid():
             return QtCore.Qt.ItemIsDropEnabled
-        flags = QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable         
+        flags = QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable
         return flags
 
     def add_item(self, item):
         row = self.rowCount()
-        self.beginInsertRows(QtCore.QModelIndex(), row, row)               
+        self.beginInsertRows(QtCore.QModelIndex(), row, row)
         #self.items.append(item)
         self.endInsertRows()
 
     def clean(self):
         self.beginResetModel()
         self.school_outfit = []
-        self.items         = []  
+        self.items         = []
         self.endResetModel()
-        
+
     def is_school_item(self, index):
         if not index.isValid(): return False
         return index.row() < len( self.school_outfit )
@@ -256,33 +257,33 @@ class EquipmentListModel(QtCore.QAbstractListModel):
             self.add_item(e)
         self.items          = equip_list
         self.school_outfit  = model.get_school_outfit()
-            
+
     def data(self, index, role = QtCore.Qt.UserRole):
         #if not self.items or not index.isValid() or index.row() >= len(self.items):
         #    return None
         if not index.isValid(): return None
-        
+
         item = None
         if self.is_school_item(index): item = self.school_outfit[index.row()]
-        else: item = self.items[index.row() - len(self.school_outfit)]       
-        
+        else: item = self.items[index.row() - len(self.school_outfit)]
+
         if role == QtCore.Qt.DisplayRole:
             return item
         if role == QtCore.Qt.EditRole:
-            return item            
+            return item
         elif role == QtCore.Qt.ForegroundRole:
             return self.text_color
         elif role == QtCore.Qt.BackgroundRole:
-            return self.bg_color[ index.row() % 2 ]            
+            return self.bg_color[ index.row() % 2 ]
         elif role == QtCore.Qt.SizeHintRole:
             return self.item_size
         elif role == QtCore.Qt.FontRole:
             if self.is_school_item(index):
                 return self.bold_font
         elif role == QtCore.Qt.UserRole:
-            return item    
+            return item
         return None
-        
+
     def setData(self, index, value, role = QtCore.Qt.EditRole):
         if role != QtCore.Qt.EditRole:
             return super(EquipmentListModel, self).setData(index, value, role)
@@ -292,4 +293,3 @@ class EquipmentListModel(QtCore.QAbstractListModel):
             else:
                 self.items[index.row() - len(self.school_outfit)] = str(value)
         return True
-        
