@@ -249,6 +249,7 @@ class L5RCMCore(QtGui.QMainWindow):
         source_fdf = self.create_fdf(exporters.FDFExporterAll())
         fd, fpath = mkstemp(suffix='.pdf');
         os.fdopen(fd, 'wb').close()
+
         self.flatten_pdf(source_fdf, source_pdf, fpath)
         self.temp_files.append(fpath)
 
@@ -628,3 +629,17 @@ class L5RCMCore(QtGui.QMainWindow):
             if not mt or tech.rank > mt.rank:
                 ms, mt = school, tech
         return ms, mt
+
+    def get_character_full_name(self):
+
+        # if the character has a family name
+        # prepend the character name with it
+        # e.g. Hida Hiroshi
+        # otherwise just 'Hiroshi' will do
+
+        family_name = ""
+        family_obj = dal.query.get_family( self.dstore, self.pc.family )
+        if family_obj:
+            family_name = family_obj.name
+            return "{} {}".format( family_name, self.pc.name )
+        return self.pc.name

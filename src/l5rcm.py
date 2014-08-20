@@ -2532,14 +2532,18 @@ class L5RMain(L5RCMCore):
             super(L5RMain, self).closeEvent(ev)
 
     def select_save_path(self):
-        settings = QtCore.QSettings()
-        last_dir = settings.value('last_open_dir', QtCore.QDir.homePath())
+        settings  = QtCore.QSettings()
+        last_dir  = settings.value('last_open_dir', QtCore.QDir.homePath())
+        char_name = self.get_character_full_name()
+        proposed  = os.path.join( last_dir, char_name )
+
         fileName = QtGui.QFileDialog.getSaveFileName(
                                 self,
                                 self.tr("Save Character"),
-                                last_dir,
+                                proposed,
                                 self.tr("L5R Character files (*.l5r)"))
 
+        # user pressed cancel or didn't enter a name
         if len(fileName) != 2 or fileName[0] == u'':
             return ''
 
@@ -2569,19 +2573,23 @@ class L5RMain(L5RCMCore):
         return fileName[0]
 
     def select_export_file(self, file_ext = '.txt'):
-        char_name = self.pc.name
         supported_ext     = ['.pdf']
         supported_filters = [self.tr("PDF Files(*.pdf)")]
 
         settings = QtCore.QSettings()
         last_dir = settings.value('last_open_dir', QtCore.QDir.homePath())
+        char_name = self.get_character_full_name()
+        proposed  = os.path.join( last_dir, char_name )
+
         fileName = QtGui.QFileDialog.getSaveFileName(
                                 self,
                                 self.tr("Export Character"),
-                                os.path.join(last_dir,char_name),
+                                proposed,
                                 ";;".join(supported_filters))
-        if len(fileName) != 2:
-            return ''
+
+        # user pressed cancel or didn't enter a name
+        if len(fileName) != 2 or fileName[0] == u'':
+            return None
 
         last_dir = os.path.dirname(fileName[0])
         if last_dir != '':
