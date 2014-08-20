@@ -190,7 +190,7 @@ class L5RMain(L5RCMCore):
         self.view = ZoomableView(self)
         settings = QtCore.QSettings()
 
-        #Set Background Color        
+        #Set Background Color
         lBackgroundColor = settings.value('backgroundcolor')
         color = QtGui.QColor()
         if(lBackgroundColor is not None):
@@ -334,12 +334,12 @@ class L5RMain(L5RCMCore):
             bt_exp.setIcon( QtGui.QIcon(get_icon_path('edit',(16,16))) )
             hb_exp.addWidget(lb_exp)
             hb_exp.addWidget(bt_exp)
-            
+
             grid.addWidget( QtGui.QLabel(self.tr("Rank")       , self), 0, 3 )
             #grid.addWidget( QtGui.QLabel(self.tr("Exp. Points"), self), 1, 3 )
             grid.addWidget( fr_exp, 1, 3 )
             grid.addWidget( QtGui.QLabel(self.tr("Insight")    , self), 2, 3 )
-            
+
             self.bt_set_exp_points       = bt_exp
 
             # 2nd column
@@ -1304,6 +1304,7 @@ class L5RMain(L5RCMCore):
         open_act        = QtGui.QAction(self.tr("&Open Character..."), self)
         save_act        = QtGui.QAction(self.tr("&Save Character..."), self)
         export_pdf_act  = QtGui.QAction(self.tr("Ex&port as PDF..."), self)
+        export_npc_act  = QtGui.QAction(self.tr("Export NPC sheet..."), self)
         exit_act        = QtGui.QAction(self.tr("E&xit"), self)
 
         new_act .setShortcut( QtGui.QKeySequence.New  )
@@ -1317,6 +1318,7 @@ class L5RMain(L5RCMCore):
         exit_act.triggered.connect( self.close )
 
         export_pdf_act .triggered.connect( self.sink1.export_character_as_pdf  )
+        export_npc_act .triggered.connect( self.sink4.show_npc_export_dialog   )
 
         # Advancement menu
         # actions buy advancement, view advancements
@@ -1434,6 +1436,7 @@ class L5RMain(L5RCMCore):
         self.app_menu.addAction(open_act)
         self.app_menu.addAction(save_act)
         self.app_menu.addAction(export_pdf_act)
+        self.app_menu.addAction(export_npc_act)
         self.app_menu.addSeparator()
         # OPTIONS
         self.app_menu.addMenu(m_options)
@@ -1523,7 +1526,7 @@ class L5RMain(L5RCMCore):
 
         self.bt_school_lock.clicked.connect( self.sink1.on_unlock_school_act )
         self.bt_set_exp_points.clicked.connect( self.sink1.on_set_exp_limit )
-        
+
     def show_nicebar(self, wdgs):
         self.nicebar = QtGui.QFrame(self)
         self.nicebar.setStyleSheet('''
@@ -2066,7 +2069,7 @@ class L5RMain(L5RCMCore):
             try:
                 if self.pc.last_rank > self.pc.get_insight_rank():
                     print("ERROR. last_rank should never be > insight rank. I'll try to fix this.")
-                    self.pc.last_rank = self.pc.get_insight_rank()            
+                    self.pc.last_rank = self.pc.get_insight_rank()
                 self.last_rank = self.pc.last_rank
             except:
                 self.last_rank = self.pc.get_insight_rank()
@@ -2529,14 +2532,18 @@ class L5RMain(L5RCMCore):
             super(L5RMain, self).closeEvent(ev)
 
     def select_save_path(self):
-        settings = QtCore.QSettings()
-        last_dir = settings.value('last_open_dir', QtCore.QDir.homePath())
+        settings  = QtCore.QSettings()
+        last_dir  = settings.value('last_open_dir', QtCore.QDir.homePath())
+        char_name = self.get_character_full_name()
+        proposed  = os.path.join( last_dir, char_name )
+
         fileName = QtGui.QFileDialog.getSaveFileName(
                                 self,
                                 self.tr("Save Character"),
-                                last_dir,
+                                proposed,
                                 self.tr("L5R Character files (*.l5r)"))
 
+        # user pressed cancel or didn't enter a name
         if len(fileName) != 2 or fileName[0] == u'':
             return ''
 
@@ -2566,19 +2573,23 @@ class L5RMain(L5RCMCore):
         return fileName[0]
 
     def select_export_file(self, file_ext = '.txt'):
-        char_name = self.pc.name
         supported_ext     = ['.pdf']
         supported_filters = [self.tr("PDF Files(*.pdf)")]
 
         settings = QtCore.QSettings()
         last_dir = settings.value('last_open_dir', QtCore.QDir.homePath())
+        char_name = self.get_character_full_name()
+        proposed  = os.path.join( last_dir, char_name )
+
         fileName = QtGui.QFileDialog.getSaveFileName(
                                 self,
                                 self.tr("Export Character"),
-                                os.path.join(last_dir,char_name),
+                                proposed,
                                 ";;".join(supported_filters))
-        if len(fileName) != 2:
-            return ''
+
+        # user pressed cancel or didn't enter a name
+        if len(fileName) != 2 or fileName[0] == u'':
+            return None
 
         last_dir = os.path.dirname(fileName[0])
         if last_dir != '':
@@ -2600,12 +2611,12 @@ class L5RMain(L5RCMCore):
                                 self.tr("Load data pack"),
                                 last_data_dir,
                                 ";;".join(supported_filters))
-        
+
         if len(ret) < 2:
             return None
-           
+
         files = ret[0]
-        
+
         if not len(files):
             return None
 
@@ -2732,7 +2743,7 @@ def main():
         l5rcm.init()
 
         # initialize new character
-        l5rcm.create_new_character()        
+        l5rcm.create_new_character()
 
         if len(sys.argv) > 1:
             if OPEN_CMD_SWITCH in sys.argv:

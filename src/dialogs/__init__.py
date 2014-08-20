@@ -24,3 +24,4 @@ from dialogs.spelldlg       import *
 from dialogs.modifiersdlg   import *
 from dialogs.katadlg        import *
 from dialogs.kihodlg        import *
+from dialogs.npcexport      import *

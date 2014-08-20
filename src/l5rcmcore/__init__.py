@@ -25,6 +25,8 @@ import dal.query
 import dal.dataimport
 import osutil
 from math import ceil
+from tempfile import mkstemp
+import subprocess
 
 from PySide import QtCore, QtGui
 
@@ -158,80 +160,99 @@ class L5RCMCore(QtGui.QMainWindow):
             exporter.export(f)
         f.close()
 
-    def export_as_pdf(self, export_file):
-        from tempfile import mkstemp
-        import subprocess
+    def create_fdf(self, exporter):
 
-        def _create_fdf(exporter):
-            #exporter = exporters.FDFExporterAll()
-            exporter.set_form (self)
-            exporter.set_model(self.pc     )
-            #fpath = os.path.join(gettempdir(), 'l5rcm.fdf')
-            fd, fpath = mkstemp(suffix='.fdf', text=False)
-            with os.fdopen(fd, 'wb') as fobj:
-                exporter.export(fobj)
+        exporter.set_form (self)
+        exporter.set_model(self.pc)
 
-            return fpath
+        fd, fpath = mkstemp(suffix='.fdf', text=False)
+        with os.fdopen(fd, 'wb') as fobj:
+            exporter.export(fobj)
 
-        def _flatten_pdf(fdf_file, source_pdf, target_pdf, target_suffix = None):
-            basen = os.path.splitext(os.path.basename(target_pdf))[0]
-            based = os.path.dirname (target_pdf)
+        return fpath
 
-            if target_suffix:
-                target_pdf = os.path.join(based, basen) + '_%s.pdf' % target_suffix
-            else:
-                target_pdf = os.path.join(based, basen) + '.pdf'
+    def flatten_pdf(self, fdf_file, source_pdf, target_pdf, target_suffix = None):
+        basen = os.path.splitext(os.path.basename(target_pdf))[0]
+        based = os.path.dirname (target_pdf)
 
-            # call pdftk
-            args_ = [_get_pdftk(), source_pdf, 'fill_form', fdf_file, 'output', target_pdf, 'flatten']
-            subprocess.call(args_)
-            _try_remove(fdf_file)
-            print('created pdf {0}'.format(target_pdf))
+        if target_suffix:
+            target_pdf = os.path.join(based, basen) + '_%s.pdf' % target_suffix
+        else:
+            target_pdf = os.path.join(based, basen) + '.pdf'
 
-        def _merge_pdf(input_files, output_file):
-            # call pdftk
-            args_ = [_get_pdftk()] + input_files + ['output', output_file]
-            subprocess.call(args_)
-            for f in input_files:
-                _try_remove(f)
+        # call pdftk
+        args_ = [self.get_pdftk(), source_pdf, 'fill_form', fdf_file, 'output', target_pdf, 'flatten']
+        subprocess.call(args_)
+        self.try_remove(fdf_file)
+        print('created pdf {0}'.format(target_pdf))
 
-        def _get_pdftk():
-            if sys.platform == 'win32':
-                return os.path.join(MY_CWD, 'tools', 'pdftk.exe')
-            elif sys.platform == 'linux2':
-		sys_path = '/usr/bin/pdftk'
-		loc_path = os.path.join(MY_CWD, 'tools', 'pdftk')
-		if os.path.exists(sys_path): return sys_path
-		else: return loc_path
-            elif sys.platform == 'darwin':
-                return os.path.join(MY_CWD, 'tools', 'pdftk')
-            return None
+    def merge_pdf(self, input_files, output_file):
+        # call pdftk
+        args_ = [self.get_pdftk()] + input_files + ['output', output_file]
+        subprocess.call(args_)
+        for f in input_files:
+            self.try_remove(f)
 
-        def _try_remove(fpath):
-            try:
-                os.remove(fpath)
-                print('deleted temp file: {0}'.format(fpath))
-            except:
-                print('cannot delete temp file: {0}'.format(fpath))
+    def get_pdftk(self):
+        if sys.platform == 'win32':
+            return os.path.join(MY_CWD, 'tools', 'pdftk.exe')
+        elif sys.platform == 'linux2':
+    		sys_path = '/usr/bin/pdftk'
+    		loc_path = os.path.join(MY_CWD, 'tools', 'pdftk')
+    		if os.path.exists(sys_path): return sys_path
+    		else: return loc_path
+        elif sys.platform == 'darwin':
+            return os.path.join(MY_CWD, 'tools', 'pdftk')
+        return None
 
-        temp_files = []
-        # GENERIC SHEET
-        source_pdf = get_app_file('sheet_all.pdf')
-        source_fdf = _create_fdf(exporters.FDFExporterAll())
+    def try_remove(self, fpath):
+        try:
+            os.remove(fpath)
+            print('deleted temp file: {0}'.format(fpath))
+        except:
+            print('cannot delete temp file: {0}'.format(fpath))
+
+    def write_pdf(self, source, exporter):
+        source_pdf = get_app_file(source)
+        source_fdf = self.create_fdf(exporter)
         fd, fpath = mkstemp(suffix='.pdf');
         os.fdopen(fd, 'wb').close()
-        _flatten_pdf(source_fdf, source_pdf, fpath)
+        self.flatten_pdf(source_fdf, source_pdf, fpath)
+        self.temp_files.append( fpath )
 
-        def _export(source, exporter):
-            source_pdf = get_app_file(source)
-            source_fdf = _create_fdf(exporter)
-            fd, fpath = mkstemp(suffix='.pdf');
-            os.fdopen(fd, 'wb').close()
-            _flatten_pdf(source_fdf, source_pdf, fpath)
-            temp_files.append(fpath)
+    def commit_pdf_export(self, export_file):
+        if os.path.exists(export_file):
+            os.remove(export_file)
 
-        temp_files.append(fpath)
-        
+        if len(self.temp_files) > 1:
+            self.merge_pdf(self.temp_files, export_file)
+        elif len(self.temp_files) == 1:
+            shutil.move(self.temp_files[0], export_file)
+
+    def export_npc_characters(self, npc_files, export_file):
+        self.temp_files = []
+
+        pcs = []
+        for f in npc_files:
+            c = models.AdvancedPcModel()
+            if c.load_from(f):
+                pcs.append(c)
+
+        self.write_pdf( 'sheet_npc.pdf', exporters.FDFExporterTwoNPC( self.dstore, pcs ) )
+        self.commit_pdf_export( export_file )
+
+    def export_as_pdf(self, export_file):
+        self.temp_files = []
+
+        # GENERIC SHEET
+        source_pdf = get_app_file('sheet_all.pdf')
+        source_fdf = self.create_fdf(exporters.FDFExporterAll())
+        fd, fpath = mkstemp(suffix='.pdf');
+        os.fdopen(fd, 'wb').close()
+
+        self.flatten_pdf(source_fdf, source_pdf, fpath)
+        self.temp_files.append(fpath)
+
         # SAMURAI MONKS ALSO FITS IN THE BUSHI CHARACTER SHEET
         is_monk, is_brotherhood = self.pc_is_monk    ()
         is_samurai_monk = is_monk and not is_brotherhood
@@ -240,27 +261,27 @@ class L5RCMCore(QtGui.QMainWindow):
         is_courtier = self.pc.has_tag('courtier')
         spell_offset = 0
         spell_count  = len( self.pc.get_spells() )
-        
+
         # SHUGENJA/BUSHI/MONK SHEET
         if is_shugenja:
-            _export( 'sheet_shugenja.pdf', exporters.FDFExporterShugenja() )
+            self.write_pdf( 'sheet_shugenja.pdf', exporters.FDFExporterShugenja() )
         elif is_bushi or is_samurai_monk:
-            _export( 'sheet_bushi.pdf', exporters.FDFExporterBushi() )
+            self.write_pdf( 'sheet_bushi.pdf', exporters.FDFExporterBushi() )
         elif is_monk:
-            _export( 'sheet_monk.pdf', exporters.FDFExporterMonk() )
+            self.write_pdf( 'sheet_monk.pdf', exporters.FDFExporterMonk() )
         if is_courtier:
-            _export( 'sheet_courtier.pdf', exporters.FDFExporterCourtier() )
-            
+            self.write_pdf( 'sheet_courtier.pdf', exporters.FDFExporterCourtier() )
+
         # EXTRA SPELLS
         # if one shugenja has more than 8 spells ( that fits on the shugenja sheet )
         # we use as many extra spells sheet as needed
-        
+
         if is_shugenja:
             spell_count -= 8
             spell_offset = 8
-            
+
             while spell_count > 0:
-                _export( 'sheet_spells.pdf', exporters.FDFExporterSpells( spell_offset ) )
+                self.write_pdf( 'sheet_spells.pdf', exporters.FDFExporterSpells( spell_offset ) )
                 spell_offset += 14
                 spell_count  -= 14
                 
@@ -275,16 +296,9 @@ class L5RCMCore(QtGui.QMainWindow):
 
         # WEAPONS
         if len(self.pc.weapons) > 2:
-            _export( 'sheet_weapons.pdf', exporters.FDFExporterWeapons() )
+            self.write_pdf( 'sheet_weapons.pdf', exporters.FDFExporterWeapons() )
 
-        if os.path.exists(export_file):
-            os.remove(export_file)
-
-        if len(temp_files) > 1:
-            _merge_pdf(temp_files, export_file)
-        elif len(temp_files) == 1:
-            #os.rename(temp_files[0], export_file)
-            shutil.move(temp_files[0], export_file)
+        self.commit_pdf_export( export_file )
 
     def remove_advancement_item(self, adv_itm):
         if adv_itm in self.pc.advans:
@@ -444,19 +458,19 @@ class L5RCMCore(QtGui.QMainWindow):
         self.update_from_model()
 
     def import_data_packs(self, data_pack_file):
-        
+
         imported = 0
-    
+
         for dp in data_pack_file:
             if self.import_data_pack(dp):
                 imported += 1
-                
+
         if imported > 0:
             self.reload_data()
             self.advise_successfull_import( imported )
         else:
-            self.advise_error(self.tr("Cannot import data pack."))        
-            
+            self.advise_error(self.tr("Cannot import data pack."))
+
     def import_data_pack(self, data_pack_file):
         try:
             dal.dataimport.CM_VERSION = APP_VERSION
@@ -624,3 +638,17 @@ class L5RCMCore(QtGui.QMainWindow):
             if not mt or tech.rank > mt.rank:
                 ms, mt = school, tech
         return ms, mt
+
+    def get_character_full_name(self):
+
+        # if the character has a family name
+        # prepend the character name with it
+        # e.g. Hida Hiroshi
+        # otherwise just 'Hiroshi' will do
+
+        family_name = ""
+        family_obj = dal.query.get_family( self.dstore, self.pc.family )
+        if family_obj:
+            family_name = family_obj.name
+            return "{} {}".format( family_name, self.pc.name )
+        return self.pc.name

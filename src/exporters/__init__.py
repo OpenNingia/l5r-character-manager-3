@@ -16,3 +16,4 @@
 
 from exporters.textexporter import *
 from exporters.fdfexporter  import *
+from exporters.npc          import *
