@@ -284,13 +284,13 @@ class L5RCMCore(QtGui.QMainWindow):
                 self.write_pdf( 'sheet_spells.pdf', exporters.FDFExporterSpells( spell_offset ) )
                 spell_offset += 14
                 spell_count  -= 14
-                
+
         # DEDICATED SKILL SHEET
         skill_count  = len( self.pc.get_skills() )
         skill_offset = 0
-        
+
         while skill_count > 0:
-            _export( 'sheet_skill.pdf', exporters.FDFExporterSkills( skill_offset ) )
+            self.write_pdf( 'sheet_skill.pdf', exporters.FDFExporterSkills( skill_offset ) )
             skill_offset += 37
             skill_count  -= 37
 

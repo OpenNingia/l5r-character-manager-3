@@ -36,8 +36,9 @@ class BuyAdvDialog(QtGui.QDialog):
         self.dstore = dstore
         self.quit_on_accept = True
         self.build_ui()
-        self.connect_signals()
         self.load_data()
+
+        self.connect_signals()
 
     def build_ui(self):
         grid = QtGui.QGridLayout(self)
@@ -84,6 +85,7 @@ class BuyAdvDialog(QtGui.QDialog):
         self.widgets = {}
 
     def load_data(self):
+        print('load data')
         if self.tag == 'skill':
             cb = self.widgets[self.tag][0]
             for t in self.dstore.skcategs:
@@ -106,11 +108,15 @@ class BuyAdvDialog(QtGui.QDialog):
             cb.setEnabled(False)
 
     def connect_signals(self):
+        print('connect_signals')
         if self.tag == 'skill':
             cb1 = self.widgets[self.tag][0]
             cb2 = self.widgets[self.tag][1]
+
+            cb1.setCurrentIndex( -1 )
             cb1.currentIndexChanged.connect( self.on_skill_type_select )
             cb2.currentIndexChanged.connect( self.on_skill_select )
+            cb1.setCurrentIndex(  0 )
 
         self.bt_buy.clicked.connect  ( self.buy_advancement )
         self.bt_close.clicked.connect( self.close           )
@@ -124,8 +130,18 @@ class BuyAdvDialog(QtGui.QDialog):
         avail_skills = dal.query.get_skills(self.dstore, type_)
         cb2.clear()
 
-        for sk in avail_skills:
-            if sk.id not in self.pc.get_skills():
+        can_buy_skill = [ x for x in avail_skills if x.id not in self.pc.get_skills() ]
+
+        # no more skills available for this category
+        # player bought them all?
+        if len( can_buy_skill ) == 0:
+            self.bt_buy.setEnabled(False)
+            # try the next category
+            if (idx+1) < cb1.count():
+                cb1.setCurrentIndex( idx + 1 )
+        else:
+            self.bt_buy.setEnabled(True)
+            for sk in can_buy_skill:
                 cb2.addItem( sk.name, sk.id )
 
     def on_skill_select(self, text = ''):
