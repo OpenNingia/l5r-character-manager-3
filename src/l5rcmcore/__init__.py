@@ -631,7 +631,7 @@ class L5RCMCore(QtGui.QMainWindow):
     def get_higher_tech_in_current_school(self):
         mt = None
         ms = None
-        print( self.pc.get_techs() )
+
         for t in self.pc.get_techs():
             school, tech = dal.query.get_tech(self.dstore, t)
             if school.id != self.pc.get_school_id(): continue
@@ -652,3 +652,38 @@ class L5RCMCore(QtGui.QMainWindow):
             family_name = family_obj.name
             return "{} {}".format( family_name, self.pc.name )
         return self.pc.name
+
+    def get_prev_and_next_school(self):
+
+        all_schools = [ dal.query.get_school( self.dstore, x.school_id ) for x in self.pc.schools ]
+        print('character schools: ', [ x.id for x in all_schools ])
+
+        #if len(all_schools) == 0:
+        #    return None, None
+        #if len(all_schools) == 1:
+        #    return None, all_schools[0]
+        #return all_schools[-2], all_schools[-1]
+
+        if len(all_schools) == 0:
+            return None, None
+        #if len(all_schools) == 1:
+        #    return None, all_schools[0]
+
+        last_learned_tech = None
+        prev_school       = None
+        if len( self.pc.get_techs() ) > 0:
+            last_learned_tech = self.pc.get_techs() [ -1 ]
+            prev_school, tech = dal.query.get_tech( self.dstore, last_learned_tech )
+
+        return prev_school, all_schools[-1]
+
+    def get_next_rank_in_school(self, school):
+
+        out_tech = dal.query.get_school_tech( school, 1 )
+
+        for t in sorted( school.techs, key = lambda x: x.rank ):
+            if t.id not in self.pc.get_techs():
+                return t
+        return None
+
+

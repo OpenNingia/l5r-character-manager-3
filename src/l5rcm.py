@@ -1852,29 +1852,85 @@ class L5RMain(L5RCMCore):
                 path.techs.append(tech.id)
                 print('learn next tech from alternate path {0}. tech: {1}'.format(school.id, tech.id))
         else:
-            school, htech = self.get_higher_tech_in_current_school()
-            next_rank = htech.rank+1
 
-            last_school = self.pc.schools[-1]
-            print('last school', last_school.school_id)
-            print('current school', school.id, 'last tech', htech.id)
+            prev_school, next_school = self.get_prev_and_next_school()
+            same_school              = next_school is None or prev_school == next_school
+            is_prev_school_path      = False
+
+            if prev_school:
+                print('prev school', prev_school.id)
+                is_prev_school_path  = 'alternate' in prev_school.tags
+
+            next_tech = None
+            next_rank = 1
+
+            if is_prev_school_path and same_school:
+
+                next_school  = dal.query.get_school(self.dstore, self.pc.schools[-2].school_id)
+
+                # this is the tech he skipped
+                skipped_tech  = self.get_next_rank_in_school  ( next_school )
+                next_tech     = dal.query.get_school_tech( next_school, skipped_tech.rank + 1)
+
+                print('go back to old school', next_school.id)
+
+            elif same_school:
+                # seek the next rank in the same school
+                next_tech = self.get_next_rank_in_school  ( prev_school )
+                print('character advancing in same school which is', prev_school.id)
+            else:
+                # new school, start from rank 1
+                print('character advancing in new school which is', next_school.id)
+                next_tech = dal.query.get_school_tech( next_school, 1 )
+
+            if next_tech:
+                print('character is going to learn', next_tech.id, 'rank', next_tech.rank)
+
+                self.pc.add_tech(next_tech.id, next_tech.id)
+
+            #htech_school, htech = self.get_higher_tech_in_current_school()
+            #next_rank           = 1
+            #last_school         = self.pc.schools[-1]
+            #print('currently in school', last_school.school_id)
+
+            # if htech is none it means that this is a new joined school
+            #if htech:
+            #    print('last tech', htech.id)
+            #    next_rank = htech.rank+1
+
+            #prev_schoolprev_tech   = self.get_higher_tech()
+            #prev_school = None
+
+            #print('previous tech', prev_tech)
+
+            #if prev_tech:
+            #    prev_school, tmp = dal.query.get_tech( self.dstore, prev_tech )
+
+            #same_school = prev_school == last_school
+            #print('advancing in same school')
 
             #going back from a path?
-            if last_school.is_path:
-                school = dal.query.get_school(self.dstore, self.pc.schools[-2].school_id)
-                hs, ht = self.get_higher_tech()
-                next_rank = ht.rank+1
-                print('go back to old school', school.id)
+            #if last_school.is_path:
+            #    school = dal.query.get_school(self.dstore, self.pc.schools[-2].school_id)
+            #    hs, ht = self.get_higher_tech()
+            #    next_rank = ht.rank+1
+            #    print('go back to old school', school.id)
 
             # changed school?
-            if self.pc.get_school_id() != school.id:
-                school = dal.query.get_school(self.dstore, self.pc.get_school_id())
-                next_rank = 1
+            #if self.pc.get_school_id() != school.id:
+            #    school = dal.query.get_school(self.dstore, self.pc.get_school_id())
+            #    next_rank = 1
 
-            for tech in [ x for x in school.techs if x.rank == next_rank ]:
-                self.pc.add_tech(tech.id, tech.id)
-                print('learn next tech from school {0}. tech: {1}'.format(school.id, tech.id))
-                break
+            #school = None
+            #if same_school:
+            #    school = prev_school
+            #else:
+            #    school = last_school
+
+            #for tech in [ x for x in school.techs if x.rank == next_rank ]:
+            #    self.pc.add_tech(tech.id, tech.id)
+            #    print('learn next tech from school {0}. tech: {1}'.format(school.id, tech.id))
+            #    break
 
         self.pc.recalc_ranks()
         self.pc.set_can_get_other_tech(False)
@@ -1960,6 +2016,8 @@ class L5RMain(L5RCMCore):
 
     def check_affinity_wc(self):
         if self.nicebar: return
+
+        if len(self.pc.get_affinity()) == 0: return
 
         print('check affinity wc: {0}'.format(self.pc.get_affinity()))
         if ( 'any' in self.pc.get_affinity() or

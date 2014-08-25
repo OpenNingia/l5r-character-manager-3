@@ -42,11 +42,11 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
     def __init__(self, dstore, parent = None):
         super(SpellTableViewModel, self).__init__(parent)
         self.items = []
-        self.headers = ['Name', 'Ring', 'Mastery', 'Range', 'Area of Effect', 
+        self.headers = ['Name', 'Ring', 'Mastery', 'Range', 'Area of Effect',
                         'Duration', 'Raises']
         self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
         self.bg_color   = [ QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
-                            QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82)) ]        
+                            QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82)) ]
         self.item_size = QtCore.QSize(28, 28)
         if parent:
             self.bold_font = parent.font()
@@ -95,7 +95,7 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
         elif role == QtCore.Qt.ForegroundRole:
             return self.text_color
         elif role == QtCore.Qt.BackgroundRole:
-            return self.bg_color[ index.row() % 2 ]            
+            return self.bg_color[ index.row() % 2 ]
         elif role == QtCore.Qt.SizeHintRole:
             return self.item_size
         elif role == QtCore.Qt.ToolTipRole:
@@ -134,9 +134,9 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
 
 
     def build_item_model(self, sp_id):
-        itm = SpellItemModel()        
+        itm = SpellItemModel()
         spell = dal.query.get_spell(self.dstore, sp_id)
-           
+
         itm.name     = spell.name
         #itm.ring     = spell.element
         try:
@@ -157,20 +157,19 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
     def update_from_model(self, model):
         spells = model.get_spells()
         self.clean()
-        
-        print 'update spells from model'
+
         memo_spells = [x for x in model.get_memorized_spells()]
-               
+
         for s in spells:
-            itm = self.build_item_model(s)            
+            itm = self.build_item_model(s)
             itm.memo = s in memo_spells
             if itm.memo:
-                adv_ = filter( 
+                adv_ = filter(
                 lambda x: x.type == 'memo_spell' and x.spell == s,
                 model.advans)
-                
+
                 if len(adv_):
                     itm.adv = adv_[0]
-                
+
             self.add_item(itm)
-        
+
