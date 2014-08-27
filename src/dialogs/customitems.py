@@ -163,7 +163,7 @@ class CustomWeaponDialog(QtGui.QDialog):
         self.tx_dr      .setText( item.dr     )
         self.tx_dr_alt  .setText( item.dr_alt )
         self.tx_rng     .setText( item.range  )
-        self.tx_notes   .setText( item.rule   )
+        self.tx_notes   .setText( item.desc   )
         self.tx_str     .setText( str(item.strength) )
         self.tx_min_str .setText( str(item.min_str)  )
         self.item = item
@@ -184,9 +184,7 @@ class CustomWeaponDialog(QtGui.QDialog):
         self.tx_dr_alt .setText( itm.dr_alt )
         self.tx_rng    .setText( itm.range  )
         self.tx_name   .setText( itm.name   )
-        self.tx_notes  .setText( itm.rule   )
-
-        print(self.item.__dict__)
+        self.tx_notes  .setText( itm.desc   )
 
     def on_accept(self):
         if not self.item:
@@ -210,13 +208,12 @@ class CustomWeaponDialog(QtGui.QDialog):
         self.item.dr_alt = _try_get_dr(self.tx_dr_alt) or self.tr("N/A")
         self.item.range  = self.tx_rng  .text()
         self.item.name   = self.tx_name .text()
-        self.item.rule   = self.tx_notes.toPlainText()
+        self.item.desc   = self.tx_notes.toPlainText()
 
         if self.item.name == '':
             QtGui.QMessageBox.warning(self, self.tr("Custom Weapon"),
                                       self.tr("Please enter a name."))
             return
         if not self.edit_mode:
-            #print('add {0}, tags: {1}'.format(self.item.name, self.item.tags))
             self.pc.add_weapon( self.item )
         self.accept()

@@ -142,8 +142,9 @@ class FDFExporterTwoNPC(FDFExporter):
 
         # SKILLS
         skills = self.get_skills_sorted( pc, lambda x: x['rank'] )
-        # divide in 6 lists
-        skill_per_line = max( 3, len(skills) / 5 )
+        # divide in 5 lists
+        skill_per_line = max( 5, len(skills) / 5 )
+
         # offset
         off = 0
 
@@ -154,16 +155,14 @@ class FDFExporterTwoNPC(FDFExporter):
             else:
                 sks = skills[ off:off+skill_per_line ]
 
-            if len( sks ) == 0: breakl
-
-            print(off, skill_per_line, sks)
+            if len( sks ) == 0: break
 
             skill_line = ', '.join( [ self.fmt_skill_line(x) for x in sks ] )
 
             fn = "Skill  Rank Emphases {}".format(i+1)
             if index > 1:
                 fn += "_2"
-            #print(fn, skill_line)
+
             fields[fn] = skill_line
 
             off += skill_per_line
