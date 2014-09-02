@@ -2,12 +2,10 @@
 
 set root=%~dp0
 
+del /S /F /Q .\dist\*.*
+
 REM GO TO SOURCE DIR
 cd ..\..\..\src
-
-REM DELETE PREVIOUS BUILD
-del /S /F /Q .\build\*.*
-del /S /F /Q .\dist\*.*
 
 REM BUILD EXECUTABLE
 python setup.py py2exe
@@ -21,7 +19,8 @@ xcopy /Y /E /C /I /R ..\tools\pdftk\* dist\tools\
 copy ..\LICENSE.GPL3 dist\
 
 REM MOVE DIST DIRECTORY IN THE DEPLOY DIR
-move /Y dist %root%
+echo move /Y .\dist "%root%"
+move /Y .\dist "%root%"
 
 REM DELETE BUILD DIRECTORY
 del /S /F /Q .\build\*.*
