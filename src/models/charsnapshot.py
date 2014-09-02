@@ -1,4 +1,4 @@
-# Copyright (C) 2011 Daniele Simonetti
+# Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -45,15 +45,15 @@ class CharacterSnapshot(object):
 
         for k, v in [ (ring_name_from_id(i), pc.get_ring_rank(i)) for i in xrange(0, 5) ]:
             self.rings[k] = v
-            
-        for k, v in [ (x.school_id, pc.get_school_rank(x)) for x in pc.schools ]:
-            self.schools[k] = v            
-            
+
+        for k, v in [ (x.school_id, x.school_rank) for x in pc.schools ]:
+            self.schools[k] = v
+
         self.tags += pc.tags
         self.tags += pc.step_1.tags
         for s in pc.schools:
             self.tags += s.tags
-                        
+
         for s in pc.schools:
             self.rules += s.tech_rules
         self.rules += [ x.rule for x in pc.advans if hasattr(x,'rule') ]

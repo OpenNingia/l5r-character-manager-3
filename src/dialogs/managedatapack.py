@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2011 Daniele Simonetti
+# Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,11 +22,11 @@ class DataPackModel(QtCore.QAbstractTableModel):
     def __init__(self, parent = None):
         super(DataPackModel, self).__init__(parent)
         self.items = []
-        self.headers = [self.tr('Name'    ), 
-                        self.tr('Language'), 
+        self.headers = [self.tr('Name'    ),
+                        self.tr('Language'),
                         self.tr('Version'),
                         self.tr('Authors' ) ]
-                        
+
         self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
         self.bg_color   = [ QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
                             QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82)) ]
@@ -61,19 +61,19 @@ class DataPackModel(QtCore.QAbstractTableModel):
         elif role == QtCore.Qt.ForegroundRole:
             return self.text_color
         elif role == QtCore.Qt.BackgroundRole:
-            return self.bg_color[ index.row() % 2 ]            
+            return self.bg_color[ index.row() % 2 ]
         elif role == QtCore.Qt.SizeHintRole:
             return self.item_size
         elif role == QtCore.Qt.UserRole:
             return item
         elif role == QtCore.Qt.CheckStateRole:
-            return self.__checkstate_role(item, index.column())            
+            return self.__checkstate_role(item, index.column())
         return None
-        
+
     def setData(self, index, value, role):
         if not index.isValid():
             return False
-        
+
         ret  = False
         item = self.items[index.row()]
         self.dirty = True
@@ -83,8 +83,8 @@ class DataPackModel(QtCore.QAbstractTableModel):
             ret = True
         else:
             ret = super(DataPackModel, self).setData(index, value, role)
-        
-        return ret        
+
+        return ret
 
     def flags(self, index):
         if not index.isValid():
@@ -93,16 +93,16 @@ class DataPackModel(QtCore.QAbstractTableModel):
         if index.column() == 0:
 	        flags |= QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEditable
         return flags
-        
+
     def __checkstate_role(self, item, column):
         if column == 0:
             return QtCore.Qt.Checked if item.active else QtCore.Qt.Unchecked
-        return None        
+        return None
 
     def add_item(self, item):
         row = self.rowCount()
-        self.beginInsertRows(QtCore.QModelIndex(), row, row)       
-        self.items.append(item)        
+        self.beginInsertRows(QtCore.QModelIndex(), row, row)
+        self.items.append(item)
         self.endInsertRows()
 
     def clean(self):
@@ -113,35 +113,35 @@ class DataPackModel(QtCore.QAbstractTableModel):
 class ManageDataPackDlg(QtGui.QDialog):
     def __init__(self, dstore, parent = None):
         super(ManageDataPackDlg, self).__init__(parent)
-        
+
         self.dstore = dstore
-        
+
         self.build_ui ()
         self.load_data()
-        
+
     def build_ui(self):
         self.setWindowTitle(self.tr("Data Pack Manager"))
-        
+
         vbox  = QtGui.QVBoxLayout(self)
-        
+
         grp        = QtGui.QGroupBox  (self.tr("Available data packs"))
         self.view  = QtGui.QTableView (self)
         vbox2      = QtGui.QVBoxLayout(grp)
         vbox2.addWidget(self.view)
-        
+
         bts        = QtGui.QDialogButtonBox()
 
-        bts.addButton(self.tr("Discard"), QtGui.QDialogButtonBox.RejectRole) 
-        bts.addButton(self.tr("Save"),    QtGui.QDialogButtonBox.AcceptRole) 
-                                                            
+        bts.addButton(self.tr("Discard"), QtGui.QDialogButtonBox.RejectRole)
+        bts.addButton(self.tr("Save"),    QtGui.QDialogButtonBox.AcceptRole)
+
         vbox.addWidget(grp)
         vbox.addWidget(bts)
-        
+
         bts.accepted.connect( self.on_accept )
         bts.rejected.connect( self.reject )
-        
+
         self.setMinimumSize( QtCore.QSize(440, 330) )
-                               
+
     def load_data(self):
         from copy import deepcopy
         self.packs = deepcopy(self.dstore.packs)
@@ -149,9 +149,7 @@ class ManageDataPackDlg(QtGui.QDialog):
         for pack in self.packs:
             model.add_item(pack)
         self.view.setModel(model)
-        
+
     def on_accept(self):
-        self.dstore.packs = self.packs    
+        self.dstore.packs = self.packs
         self.accept()
-    
-        

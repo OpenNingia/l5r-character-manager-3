@@ -1,4 +1,4 @@
-# Copyright (C) 2011 Daniele Simonetti
+# Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,5 +23,5 @@ setup(
             "icon_resources": [(0, "../tools/deploy/windows/l5rcm.ico"), (1, "../tools/deploy/windows/l5rcmpack.ico")]
         }
     ],
-    options={"py2exe": {"includes": ["PySide.QtGui"]}},
+    options={"py2exe": {"includes": ["PySide.QtGui", 'lxml.etree', 'lxml._elementpath'] }},
     )

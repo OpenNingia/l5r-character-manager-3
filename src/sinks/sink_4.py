@@ -1,4 +1,4 @@
-# Copyright (C) 2011 Daniele Simonetti
+# Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -120,3 +120,12 @@ class Sink4(QtCore.QObject):
             dlg.exec_()
         except Exception as e:
             print("cannot retrieve information from spell model.", e)
+
+    # NPC EXPORT
+    def show_npc_export_dialog(self):
+        form = self.form
+        dlg   = dialogs.NpcExportDialog(form)
+        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+            file_ = form.select_export_file(".pdf")
+            if len(file_) > 0:
+                form.export_npc_characters( dlg.paths, file_ )
