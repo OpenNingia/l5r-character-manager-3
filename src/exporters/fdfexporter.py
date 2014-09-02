@@ -53,11 +53,15 @@ class FDFExporter(object):
         io.write(u" \n>> \nendobj\ntrailer\n")
         io.write(u"<<\n/Root 1 0 R \n\n>>\n%%EOF\n")
 
+    def fdf_escape( self, value ):
+        return str(value).replace('\\', '\\\\').replace('(', '\\(').replace(')', '\\)')
+
     def export_field(self, key, value, io):
+
         if type(value) == type(True):
             io.write(unicode.format(u"<< /V /{1} /T({0})>>", key, u'Yes' if value else u'No'))
         else:
-            to_write = unicode.format(u"<< /V({1}) /T({0})>>", key, value).encode("iso-8859-15", "xmlcharrefreplace")
+            to_write = unicode.format(u"<< /V({1}) /T({0})>>", key, self.fdf_escape( value ) ).encode("iso-8859-15", "xmlcharrefreplace")
             io.write(to_write)
 
     # HELPERS
@@ -163,7 +167,7 @@ class FDFExporterAll(FDFExporter):
         fields['WOUND_HEAL_CUR' ] = fields['WOUND_HEAL_BASE']
 
         # SKILLS
-        sorted_skills = sorted( f.sk_view_model.items, key = lambda x: (not x.is_school, -x.rank, x.name) ) 
+        sorted_skills = sorted( f.sk_view_model.items, key = lambda x: (not x.is_school, -x.rank, x.name) )
         for i, sk in enumerate(sorted_skills):
             j = i+1
             if i >= 23: break
@@ -267,7 +271,7 @@ class FDFExporterAll(FDFExporter):
 class FDFExporterShugenja(FDFExporter):
     def __init__(self):
         super(FDFExporterShugenja, self).__init__()
-        self.spell_per_page = 8
+        self.spell_per_page = 0
 
     def export_spells(self, fields, pg = 1, ctrl = 1, off = 0):
 
@@ -276,7 +280,7 @@ class FDFExporterShugenja(FDFExporter):
 
         spells = f.sp_view_model.items
         if off > 0:
-            spells = spells[ off: ]
+            spells = spells[ off: off + self.spell_per_page ]
 
         # spells
         print('Starting Spells Export')
@@ -291,7 +295,8 @@ class FDFExporterShugenja(FDFExporter):
             fields['SPELL_ELEM.%d.%d'  % (lPageNumber, lControlNumber)     ] = spell.ring
             fields['SPELL_RAISE.%d.%d'  % (lPageNumber, lControlNumber)    ] = spell.raises
             fields['SPELL_TAGS.%d.%d'  % (lPageNumber, lControlNumber)     ] = spell.tags
-            fields['SPELL_EFFECT.%d.%d'  % (lPageNumber, lControlNumber)   ] = self.shorten_string(spell.desc) or ''
+            if spell.desc:
+                fields['SPELL_EFFECT.%d.%d'  % (lPageNumber, lControlNumber)   ] = spell.desc
 
             lControlNumber += 1
             #if lControlNumber > self.spell_per_page and lPageNumber == 1:
@@ -303,7 +308,7 @@ class FDFExporterShugenja(FDFExporter):
         f = self.form
 
         fields = {}
-        self.export_spells( fields )
+        # self.export_spells( fields )
 
         # schools
         print('Starting Schools Export')
@@ -333,76 +338,12 @@ class FDFExporterShugenja(FDFExporter):
         for k in fields.iterkeys():
             self.export_field(k, fields[k], io)
 
-    def shorten_string(self, text, max_characters = 615):
-        try:
-            #TODO: REGEX
-            #TODO: Pixel Length of string
-            lShortDescription = (text[:max_characters] + "...") if len(text) > max_characters else text
-
-            lOpenParenCount = lShortDescription.count("(")
-            lClosedParenCount = lShortDescription.count(")")
-
-            for i in xrange(0, lOpenParenCount-lClosedParenCount):
-                lShortDescription+=")"
-
-            return lShortDescription
-
-
-            #max_pixel_length = 1926
-            #metrics = QtGui.QFontMetrics(self.form.font())
-            #actualWidth = metrics.boundingRect(text).width()
-            #lShortDescription = ''
-            #if actualWidth > max_pixel_length:
-            #    lWords = text.split()
-            #    for word in lWords:
-            #        lShortDescription+= " " + word
-            #        if metrics.boundingRect(lShortDescription).width() >= max_pixel_length:
-            #            break
-            #else:
-            #    lShortDescription = text
-
-        except Exception as e:
-            print( repr(e) )
-            return None
-
-    def split_in_parts(self, text, max_lines = 6):
-        try:
-            words = text.split(' ')
-            tl    = len(text)
-            avg_chars_per_line = int(tl / max_lines)
-
-            lines = []
-
-            cl = 0
-            i  = 0
-            line = ''
-            while True:
-                if len(lines) >= max_lines or i >= len(words):
-                    break
-                if cl < (avg_chars_per_line-3):
-                    line += words[i]+ ' '
-                    cl = len(line)
-                    i += 1
-                else:
-                    cl = 0
-                    lines.append(line)
-                    line = ''
-
-            if len(line):
-                lines.append(line)
-
-            return lines
-
-        except Exception as e:
-            print( repr(e) )
-            return None
-
 class FDFExporterSpells(FDFExporterShugenja):
     def __init__(self, offset):
         super(FDFExporterSpells, self).__init__()
 
         self.spell_offset   = offset
-        self.spell_per_page = 14
+        self.spell_per_page = 6
 
     def export_body(self, io):
 
@@ -607,7 +548,8 @@ class FDFExporterSkills(FDFExporter):
     def __init__(self, offset = 0):
         super(FDFExporterSkills, self).__init__()
 
-        self.skill_offset = offset
+        self.skill_offset    = offset
+        self.skills_per_page = 37
 
     def export_body(self, io):
         m = self.model
@@ -623,7 +565,7 @@ class FDFExporterSkills(FDFExporter):
         sorted_skills = sorted( skills, key = lambda x: (not x.is_school, -x.rank, x.name) )
         for i, sk in enumerate(sorted_skills):
             j = i+1
-            if i >= 37: break
+            if i >= self.skills_per_page: break
 
             fields['SKILL_IS_SCHOOL.%d' % j] = sk.is_school
             fields['SKILL_NAME.%d'    % j  ] = sk.name

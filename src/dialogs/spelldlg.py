@@ -143,7 +143,7 @@ class SpellAdvDialog(QtGui.QDialog):
             self.bt_next.setText(self.tr('Next'))
 
         props = self.properties[self.current_page]
-        print(self.current_page, props)
+
         if props:
             if 'maho' in props:
                 if props['maho'] == 'only_maho':
@@ -221,7 +221,7 @@ class SpellAdvDialog(QtGui.QDialog):
         for s in self.selected:
             if not s: return False # do not exit the form!!!
 
-        self.pc.add_spell(s.id)
+            self.pc.add_spell(s.id)
 
         super(SpellAdvDialog, self).accept()
 

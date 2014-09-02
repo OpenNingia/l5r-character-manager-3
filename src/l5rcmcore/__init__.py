@@ -168,7 +168,6 @@ class L5RCMCore(QtGui.QMainWindow):
         fd, fpath = mkstemp(suffix='.fdf', text=False)
         with os.fdopen(fd, 'wb') as fobj:
             exporter.export(fobj)
-
         return fpath
 
     def flatten_pdf(self, fdf_file, source_pdf, target_pdf, target_suffix = None):
@@ -259,8 +258,6 @@ class L5RCMCore(QtGui.QMainWindow):
         is_shugenja = self.pc.has_tag('shugenja')
         is_bushi = self.pc.has_tag('bushi')
         is_courtier = self.pc.has_tag('courtier')
-        spell_offset = 0
-        spell_count  = len( self.pc.get_spells() )
 
         # SHUGENJA/BUSHI/MONK SHEET
         if is_shugenja:
@@ -272,27 +269,29 @@ class L5RCMCore(QtGui.QMainWindow):
         if is_courtier:
             self.write_pdf( 'sheet_courtier.pdf', exporters.FDFExporterCourtier() )
 
-        # EXTRA SPELLS
-        # if one shugenja has more than 8 spells ( that fits on the shugenja sheet )
+        # SPELLS
         # we use as many extra spells sheet as needed
 
         if is_shugenja:
-            spell_count -= 8
-            spell_offset = 8
+            spell_count  = len( self.pc.get_spells() )
+            spell_offset = 0
 
             while spell_count > 0:
-                self.write_pdf( 'sheet_spells.pdf', exporters.FDFExporterSpells( spell_offset ) )
-                spell_offset += 14
-                spell_count  -= 14
+                _exporter = exporters.FDFExporterSpells( spell_offset )
+                self.write_pdf( 'sheet_spells.pdf', _exporter )
+                spell_offset += _exporter.spell_per_page
+                spell_count  -= _exporter.spell_per_page
 
-        # DEDICATED SKILL SHEET
-        skill_count  = len( self.pc.get_skills() )
-        skill_offset = 0
+        if False: # DISABLED FOR NOW
+            # DEDICATED SKILL SHEET
+            skill_count  = len( self.pc.get_skills() )
+            skill_offset = 0
 
-        while skill_count > 0:
-            self.write_pdf( 'sheet_skill.pdf', exporters.FDFExporterSkills( skill_offset ) )
-            skill_offset += 37
-            skill_count  -= 37
+            while skill_count > 0:
+                _exporter = exporters.FDFExporterSkills( skill_offset )
+                self.write_pdf( 'sheet_skill.pdf', _exporter )
+                skill_offset += _exporter.skills_per_page
+                skill_count  -= _exporter.skills_per_page
 
         # WEAPONS
         if len(self.pc.weapons) > 2:
