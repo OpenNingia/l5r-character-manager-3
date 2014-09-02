@@ -13,6 +13,8 @@
 
 ; MUI 1.67 compatible ------
 !include "MUI.nsh"
+!include "x64.nsh"
+!include "LogicLib.nsh"
 
 ; FONT INSTALLER
 !include FontReg.nsh
@@ -49,6 +51,7 @@ InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
 ShowUnInstDetails show
 
+
 ;--------------------------------
 ;Version Information
 
@@ -62,6 +65,18 @@ ShowUnInstDetails show
   VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${PRODUCT_VERSION}"
 
 ;--------------------------------
+
+Function .onInit
+  ${If} ${RunningX64}
+     DetailPrint "Installer running on 64-bit host"
+
+     ; disable registry redirection (enable access to 64-bit portion of registry)
+     SetRegView 64
+     ; change install dir
+     StrCpy $INSTDIR "$PROGRAMFILES64\OpenNingia\L5RCM"
+
+  ${EndIf}
+FunctionEnd
 
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
