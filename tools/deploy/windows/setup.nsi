@@ -4,7 +4,7 @@
 
 !define PRODUCT_DESC "The greatest tool for GM and Players of L5R RPG :)"
 !define PRODUCT_NAME "Legend of the Five Rings: Character Manager"
-!define PRODUCT_VERSION "3.9.4"
+!define PRODUCT_VERSION "3.9.5"
 !define PRODUCT_PUBLISHER "openningia"
 !define PRODUCT_WEB_SITE "http://code.google.com/p/l5rcm/"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${EXE_NAME}"
