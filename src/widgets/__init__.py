@@ -1,4 +1,4 @@
-# Copyright (C) 2011 Daniele Simonetti
+# Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,3 +22,4 @@ from widgets.cost_selection       import *
 from widgets.moneywidget          import *
 from widgets.requirementwidget    import *
 from widgets.simpledescr          import *
+from widgets.fileedit             import *

@@ -1,4 +1,4 @@
-# Copyright (C) 2011 Daniele Simonetti
+# Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,3 +24,4 @@ from dialogs.spelldlg       import *
 from dialogs.modifiersdlg   import *
 from dialogs.katadlg        import *
 from dialogs.kihodlg        import *
+from dialogs.npcexport      import *

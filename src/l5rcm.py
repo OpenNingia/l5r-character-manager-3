@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2011 Daniele Simonetti
+# Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -190,7 +190,7 @@ class L5RMain(L5RCMCore):
         self.view = ZoomableView(self)
         settings = QtCore.QSettings()
 
-        #Set Background Color        
+        #Set Background Color
         lBackgroundColor = settings.value('backgroundcolor')
         color = QtGui.QColor()
         if(lBackgroundColor is not None):
@@ -334,12 +334,12 @@ class L5RMain(L5RCMCore):
             bt_exp.setIcon( QtGui.QIcon(get_icon_path('edit',(16,16))) )
             hb_exp.addWidget(lb_exp)
             hb_exp.addWidget(bt_exp)
-            
+
             grid.addWidget( QtGui.QLabel(self.tr("Rank")       , self), 0, 3 )
             #grid.addWidget( QtGui.QLabel(self.tr("Exp. Points"), self), 1, 3 )
             grid.addWidget( fr_exp, 1, 3 )
             grid.addWidget( QtGui.QLabel(self.tr("Insight")    , self), 2, 3 )
-            
+
             self.bt_set_exp_points       = bt_exp
 
             # 2nd column
@@ -1304,6 +1304,7 @@ class L5RMain(L5RCMCore):
         open_act        = QtGui.QAction(self.tr("&Open Character..."), self)
         save_act        = QtGui.QAction(self.tr("&Save Character..."), self)
         export_pdf_act  = QtGui.QAction(self.tr("Ex&port as PDF..."), self)
+        export_npc_act  = QtGui.QAction(self.tr("Export NPC sheet..."), self)
         exit_act        = QtGui.QAction(self.tr("E&xit"), self)
 
         new_act .setShortcut( QtGui.QKeySequence.New  )
@@ -1317,6 +1318,7 @@ class L5RMain(L5RCMCore):
         exit_act.triggered.connect( self.close )
 
         export_pdf_act .triggered.connect( self.sink1.export_character_as_pdf  )
+        export_npc_act .triggered.connect( self.sink4.show_npc_export_dialog   )
 
         # Advancement menu
         # actions buy advancement, view advancements
@@ -1434,6 +1436,7 @@ class L5RMain(L5RCMCore):
         self.app_menu.addAction(open_act)
         self.app_menu.addAction(save_act)
         self.app_menu.addAction(export_pdf_act)
+        self.app_menu.addAction(export_npc_act)
         self.app_menu.addSeparator()
         # OPTIONS
         self.app_menu.addMenu(m_options)
@@ -1523,7 +1526,7 @@ class L5RMain(L5RCMCore):
 
         self.bt_school_lock.clicked.connect( self.sink1.on_unlock_school_act )
         self.bt_set_exp_points.clicked.connect( self.sink1.on_set_exp_limit )
-        
+
     def show_nicebar(self, wdgs):
         self.nicebar = QtGui.QFrame(self)
         self.nicebar.setStyleSheet('''
@@ -1849,29 +1852,85 @@ class L5RMain(L5RCMCore):
                 path.techs.append(tech.id)
                 print('learn next tech from alternate path {0}. tech: {1}'.format(school.id, tech.id))
         else:
-            school, htech = self.get_higher_tech_in_current_school()
-            next_rank = htech.rank+1
 
-            last_school = self.pc.schools[-1]
-            print('last school', last_school.school_id)
-            print('current school', school.id, 'last tech', htech.id)
+            prev_school, next_school = self.get_prev_and_next_school()
+            same_school              = next_school is None or prev_school == next_school
+            is_prev_school_path      = False
+
+            if prev_school:
+                print('prev school', prev_school.id)
+                is_prev_school_path  = 'alternate' in prev_school.tags
+
+            next_tech = None
+            next_rank = 1
+
+            if is_prev_school_path and same_school:
+
+                next_school  = dal.query.get_school(self.dstore, self.pc.schools[-2].school_id)
+
+                # this is the tech he skipped
+                skipped_tech  = self.get_next_rank_in_school  ( next_school )
+                next_tech     = dal.query.get_school_tech( next_school, skipped_tech.rank + 1)
+
+                print('go back to old school', next_school.id)
+
+            elif same_school:
+                # seek the next rank in the same school
+                next_tech = self.get_next_rank_in_school  ( prev_school )
+                print('character advancing in same school which is', prev_school.id)
+            else:
+                # new school, start from rank 1
+                print('character advancing in new school which is', next_school.id)
+                next_tech = dal.query.get_school_tech( next_school, 1 )
+
+            if next_tech:
+                print('character is going to learn', next_tech.id, 'rank', next_tech.rank)
+
+                self.pc.add_tech(next_tech.id, next_tech.id)
+
+            #htech_school, htech = self.get_higher_tech_in_current_school()
+            #next_rank           = 1
+            #last_school         = self.pc.schools[-1]
+            #print('currently in school', last_school.school_id)
+
+            # if htech is none it means that this is a new joined school
+            #if htech:
+            #    print('last tech', htech.id)
+            #    next_rank = htech.rank+1
+
+            #prev_schoolprev_tech   = self.get_higher_tech()
+            #prev_school = None
+
+            #print('previous tech', prev_tech)
+
+            #if prev_tech:
+            #    prev_school, tmp = dal.query.get_tech( self.dstore, prev_tech )
+
+            #same_school = prev_school == last_school
+            #print('advancing in same school')
 
             #going back from a path?
-            if last_school.is_path:
-                school = dal.query.get_school(self.dstore, self.pc.schools[-2].school_id)
-                hs, ht = self.get_higher_tech()
-                next_rank = ht.rank+1
-                print('go back to old school', school.id)
+            #if last_school.is_path:
+            #    school = dal.query.get_school(self.dstore, self.pc.schools[-2].school_id)
+            #    hs, ht = self.get_higher_tech()
+            #    next_rank = ht.rank+1
+            #    print('go back to old school', school.id)
 
             # changed school?
-            if self.pc.get_school_id() != school.id:
-                school = dal.query.get_school(self.dstore, self.pc.get_school_id())
-                next_rank = 1
+            #if self.pc.get_school_id() != school.id:
+            #    school = dal.query.get_school(self.dstore, self.pc.get_school_id())
+            #    next_rank = 1
 
-            for tech in [ x for x in school.techs if x.rank == next_rank ]:
-                self.pc.add_tech(tech.id, tech.id)
-                print('learn next tech from school {0}. tech: {1}'.format(school.id, tech.id))
-                break
+            #school = None
+            #if same_school:
+            #    school = prev_school
+            #else:
+            #    school = last_school
+
+            #for tech in [ x for x in school.techs if x.rank == next_rank ]:
+            #    self.pc.add_tech(tech.id, tech.id)
+            #    print('learn next tech from school {0}. tech: {1}'.format(school.id, tech.id))
+            #    break
 
         self.pc.recalc_ranks()
         self.pc.set_can_get_other_tech(False)
@@ -1957,6 +2016,8 @@ class L5RMain(L5RCMCore):
 
     def check_affinity_wc(self):
         if self.nicebar: return
+
+        if len(self.pc.get_affinity()) == 0: return
 
         print('check affinity wc: {0}'.format(self.pc.get_affinity()))
         if ( 'any' in self.pc.get_affinity() or
@@ -2066,7 +2127,7 @@ class L5RMain(L5RCMCore):
             try:
                 if self.pc.last_rank > self.pc.get_insight_rank():
                     print("ERROR. last_rank should never be > insight rank. I'll try to fix this.")
-                    self.pc.last_rank = self.pc.get_insight_rank()            
+                    self.pc.last_rank = self.pc.get_insight_rank()
                 self.last_rank = self.pc.last_rank
             except:
                 self.last_rank = self.pc.get_insight_rank()
@@ -2529,14 +2590,18 @@ class L5RMain(L5RCMCore):
             super(L5RMain, self).closeEvent(ev)
 
     def select_save_path(self):
-        settings = QtCore.QSettings()
-        last_dir = settings.value('last_open_dir', QtCore.QDir.homePath())
+        settings  = QtCore.QSettings()
+        last_dir  = settings.value('last_open_dir', QtCore.QDir.homePath())
+        char_name = self.get_character_full_name()
+        proposed  = os.path.join( last_dir, char_name )
+
         fileName = QtGui.QFileDialog.getSaveFileName(
                                 self,
                                 self.tr("Save Character"),
-                                last_dir,
+                                proposed,
                                 self.tr("L5R Character files (*.l5r)"))
 
+        # user pressed cancel or didn't enter a name
         if len(fileName) != 2 or fileName[0] == u'':
             return ''
 
@@ -2566,19 +2631,23 @@ class L5RMain(L5RCMCore):
         return fileName[0]
 
     def select_export_file(self, file_ext = '.txt'):
-        char_name = self.pc.name
         supported_ext     = ['.pdf']
         supported_filters = [self.tr("PDF Files(*.pdf)")]
 
         settings = QtCore.QSettings()
         last_dir = settings.value('last_open_dir', QtCore.QDir.homePath())
+        char_name = self.get_character_full_name()
+        proposed  = os.path.join( last_dir, char_name )
+
         fileName = QtGui.QFileDialog.getSaveFileName(
                                 self,
                                 self.tr("Export Character"),
-                                os.path.join(last_dir,char_name),
+                                proposed,
                                 ";;".join(supported_filters))
-        if len(fileName) != 2:
-            return ''
+
+        # user pressed cancel or didn't enter a name
+        if len(fileName) != 2 or fileName[0] == u'':
+            return None
 
         last_dir = os.path.dirname(fileName[0])
         if last_dir != '':
@@ -2600,12 +2669,12 @@ class L5RMain(L5RCMCore):
                                 self.tr("Load data pack"),
                                 last_data_dir,
                                 ";;".join(supported_filters))
-        
+
         if len(ret) < 2:
             return None
-           
+
         files = ret[0]
-        
+
         if not len(files):
             return None
 
@@ -2732,7 +2801,7 @@ def main():
         l5rcm.init()
 
         # initialize new character
-        l5rcm.create_new_character()        
+        l5rcm.create_new_character()
 
         if len(sys.argv) > 1:
             if OPEN_CMD_SWITCH in sys.argv:

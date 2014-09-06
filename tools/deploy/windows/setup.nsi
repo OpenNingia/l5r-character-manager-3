@@ -4,7 +4,7 @@
 
 !define PRODUCT_DESC "The greatest tool for GM and Players of L5R RPG :)"
 !define PRODUCT_NAME "Legend of the Five Rings: Character Manager"
-!define PRODUCT_VERSION "3.9.4"
+!define PRODUCT_VERSION "3.9.5"
 !define PRODUCT_PUBLISHER "openningia"
 !define PRODUCT_WEB_SITE "http://code.google.com/p/l5rcm/"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${EXE_NAME}"
@@ -13,6 +13,8 @@
 
 ; MUI 1.67 compatible ------
 !include "MUI.nsh"
+!include "x64.nsh"
+!include "LogicLib.nsh"
 
 ; FONT INSTALLER
 !include FontReg.nsh
@@ -49,6 +51,7 @@ InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
 ShowUnInstDetails show
 
+
 ;--------------------------------
 ;Version Information
 
@@ -62,6 +65,18 @@ ShowUnInstDetails show
   VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${PRODUCT_VERSION}"
 
 ;--------------------------------
+
+Function .onInit
+  ${If} ${RunningX64}
+     DetailPrint "Installer running on 64-bit host"
+
+     ; disable registry redirection (enable access to 64-bit portion of registry)
+     SetRegView 64
+     ; change install dir
+     StrCpy $INSTDIR "$PROGRAMFILES64\OpenNingia\L5RCM"
+
+  ${EndIf}
+FunctionEnd
 
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
