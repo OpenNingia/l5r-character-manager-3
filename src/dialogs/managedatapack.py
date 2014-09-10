@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -18,34 +18,36 @@
 from PySide import QtCore, QtGui
 import dal
 
+
 class DataPackModel(QtCore.QAbstractTableModel):
-    def __init__(self, parent = None):
+
+    def __init__(self, parent=None):
         super(DataPackModel, self).__init__(parent)
         self.items = []
-        self.headers = [self.tr('Name'    ),
+        self.headers = [self.tr('Name'),
                         self.tr('Language'),
                         self.tr('Version'),
-                        self.tr('Authors' ) ]
+                        self.tr('Authors')]
 
         self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
-        self.bg_color   = [ QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
-                            QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82)) ]
-        self.item_size  = QtCore.QSize(28, 28)
+        self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
+                         QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
+        self.item_size = QtCore.QSize(28, 28)
 
-    def rowCount(self, parent = QtCore.QModelIndex()):
+    def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
 
-    def columnCount(self, parent = QtCore.QModelIndex()):
+    def columnCount(self, parent=QtCore.QModelIndex()):
         return len(self.headers)
 
-    def headerData(self, section, orientation, role = QtCore.Qt.ItemDataRole.DisplayRole):
+    def headerData(self, section, orientation, role=QtCore.Qt.ItemDataRole.DisplayRole):
         if orientation != QtCore.Qt.Orientation.Horizontal:
             return None
         if role == QtCore.Qt.DisplayRole:
             return self.headers[section]
         return None
 
-    def data(self, index, role = QtCore.Qt.UserRole):
+    def data(self, index, role=QtCore.Qt.UserRole):
         if not index.isValid() or index.row() >= len(self.items):
             return None
         item = self.items[index.row()]
@@ -57,11 +59,11 @@ class DataPackModel(QtCore.QAbstractTableModel):
             if index.column() == 2:
                 return item.version or self.tr("N/A")
             if index.column() == 3:
-                return ", ".join(item.authors) if ( item.authors is not None ) else ""
+                return ", ".join(item.authors) if (item.authors is not None) else ""
         elif role == QtCore.Qt.ForegroundRole:
             return self.text_color
         elif role == QtCore.Qt.BackgroundRole:
-            return self.bg_color[ index.row() % 2 ]
+            return self.bg_color[index.row() % 2]
         elif role == QtCore.Qt.SizeHintRole:
             return self.item_size
         elif role == QtCore.Qt.UserRole:
@@ -74,7 +76,7 @@ class DataPackModel(QtCore.QAbstractTableModel):
         if not index.isValid():
             return False
 
-        ret  = False
+        ret = False
         item = self.items[index.row()]
         self.dirty = True
 
@@ -91,7 +93,7 @@ class DataPackModel(QtCore.QAbstractTableModel):
             return QtCore.Qt.ItemIsDropEnabled
         flags = QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled
         if index.column() == 0:
-	        flags |= QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEditable
+            flags |= QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEditable
         return flags
 
     def __checkstate_role(self, item, column):
@@ -110,37 +112,39 @@ class DataPackModel(QtCore.QAbstractTableModel):
         self.items = []
         self.endResetModel()
 
+
 class ManageDataPackDlg(QtGui.QDialog):
-    def __init__(self, dstore, parent = None):
+
+    def __init__(self, dstore, parent=None):
         super(ManageDataPackDlg, self).__init__(parent)
 
         self.dstore = dstore
 
-        self.build_ui ()
+        self.build_ui()
         self.load_data()
 
     def build_ui(self):
         self.setWindowTitle(self.tr("Data Pack Manager"))
 
-        vbox  = QtGui.QVBoxLayout(self)
+        vbox = QtGui.QVBoxLayout(self)
 
-        grp        = QtGui.QGroupBox  (self.tr("Available data packs"))
-        self.view  = QtGui.QTableView (self)
-        vbox2      = QtGui.QVBoxLayout(grp)
+        grp = QtGui.QGroupBox(self.tr("Available data packs"))
+        self.view = QtGui.QTableView(self)
+        vbox2 = QtGui.QVBoxLayout(grp)
         vbox2.addWidget(self.view)
 
-        bts        = QtGui.QDialogButtonBox()
+        bts = QtGui.QDialogButtonBox()
 
         bts.addButton(self.tr("Discard"), QtGui.QDialogButtonBox.RejectRole)
-        bts.addButton(self.tr("Save"),    QtGui.QDialogButtonBox.AcceptRole)
+        bts.addButton(self.tr("Save"), QtGui.QDialogButtonBox.AcceptRole)
 
         vbox.addWidget(grp)
         vbox.addWidget(bts)
 
-        bts.accepted.connect( self.on_accept )
-        bts.rejected.connect( self.reject )
+        bts.accepted.connect(self.on_accept)
+        bts.rejected.connect(self.reject)
 
-        self.setMinimumSize( QtCore.QSize(440, 330) )
+        self.setMinimumSize(QtCore.QSize(440, 330))
 
     def load_data(self):
         from copy import deepcopy

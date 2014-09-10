@@ -24,7 +24,7 @@ class DataCheck(object):
     d = None
     
     def __init__(self):
-        self.d = dal.Data( ['./data_packs'] )
+        self.d = dal.Data( ['./data_packs'])
         
         self.tags =  [ x.id for x in self.d.clans    ]
         self.tags += [ x.id for x in self.d.families ]
@@ -32,11 +32,11 @@ class DataCheck(object):
             self.tags += s.tags        
     
     def check(self):
-        self.check_many( self.d.skills, self.check_skill, 'skill'     )
-        self.check_many( self.d.merits, self.check_perk , 'merit'     )
-        self.check_many( self.d.flaws , self.check_perk , 'flaw'      )
-        self.check_many( self.d.families, self.check_family, 'family' )
-        self.check_many( self.d.schools,  self.check_school, 'school' )
+        self.check_many(self.d.skills, self.check_skill, 'skill'    )
+        self.check_many(self.d.merits, self.check_perk , 'merit'    )
+        self.check_many(self.d.flaws , self.check_perk , 'flaw'     )
+        self.check_many(self.d.families, self.check_family, 'family')
+        self.check_many(self.d.schools,  self.check_school, 'school')
         #self.check_schools ()
         
     def check_many(self, items, func, name):
@@ -47,11 +47,11 @@ class DataCheck(object):
     def check_skill(self, i):
         ret = True
         # check skill category
-        if len( [x for x in self.d.skcategs if x.id == i.type] ) == 0:
+        if len( [x for x in self.d.skcategs if x.id == i.type]) == 0:
             print("skill category {0} not found".format(i.type))
             ret = False
         # check skill trait
-        #if len( [x for x in self.d.traits if x.id == i.trait] + [x for x in self.d.rings if x.id == i.trait] ) == 0:
+        #if len( [x for x in self.d.traits if x.id == i.trait] + [x for x in self.d.rings if x.id == i.trait]) == 0:
         #    print("skill trait {0} not found".format(i.trait))
         #    ret = False            
         return ret
@@ -59,7 +59,7 @@ class DataCheck(object):
     def check_perk(self, i):
         ret = True
         # check perk category
-        if len( [x for x in self.d.perktypes if x.id == i.type] ) == 0:
+        if len( [x for x in self.d.perktypes if x.id == i.type]) == 0:
             print("perk category {0} not found".format(i.type))
             ret = False     
 
@@ -74,7 +74,7 @@ class DataCheck(object):
     def check_family(self, i):
         ret = True
         #check clanid
-        if len( [x for x in self.d.clans if x.id == i.clanid] ) == 0:
+        if len( [x for x in self.d.clans if x.id == i.clanid]) == 0:
             print("clan {0} not found".format(i.clanid))
             ret = False            
         return ret
@@ -82,19 +82,19 @@ class DataCheck(object):
     def check_school(self, i):
         ret = True
         #check clanid
-        if len( [x for x in self.d.clans if x.id == i.clanid] ) == 0:
+        if len( [x for x in self.d.clans if x.id == i.clanid]) == 0:
             print("clan {0} not found".format(i.clanid))
             ret = False
         # check  trait
-        if len( [x for x in self.d.traits if x.id == i.trait] + ['void'] ) == 0:
+        if len( [x for x in self.d.traits if x.id == i.trait] + ['void']) == 0:
             print("school trait {0} not found".format(i.trait))
             ret = False
 
         # check affinity and deficiency
-        if len( [x for x in self.d.rings if x.id == i.affinity] + ['void'] ) == 0:
+        if len( [x for x in self.d.rings if x.id == i.affinity] + ['void']) == 0:
             print("element {0} not found (affinity)".format(i.trait))
             ret = False        
-        if len( [x for x in self.d.rings if x.id == i.deficiency] + ['void'] ) == 0:
+        if len( [x for x in self.d.rings if x.id == i.deficiency] + ['void']) == 0:
             print("element {0} not found (deficiency)".format(i.trait))
             ret = False
           
@@ -106,7 +106,7 @@ class DataCheck(object):
             
         # check skills
         for s in i.skills:
-            if len( [x for x in self.d.skills if x.id == s.id] ) == 0:
+            if len( [x for x in self.d.skills if x.id == s.id]) == 0:
                 print("skill {0} not found".format(s.id))
                 ret = False   
         return ret

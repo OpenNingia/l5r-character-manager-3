@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -15,5 +16,5 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from exporters.textexporter import *
-from exporters.fdfexporter  import *
-from exporters.npc          import *
+from exporters.fdfexporter import *
+from exporters.npc import *

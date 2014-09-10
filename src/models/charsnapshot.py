@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -17,36 +18,37 @@
 from chmodel import ring_name_from_id, attrib_name_from_id
 from copy import copy
 
+
 class CharacterSnapshot(object):
 
-    skills   = {} # id ==> value
-    traits   = {} # id ==> value
-    rings    = {} # id ==> value
+    skills = {}  # id ==> value
+    traits = {}  # id ==> value
+    rings = {}  # id ==> value
 
-    tags     = [] # tag list
-    rules    = [] # rules list
+    tags = []  # tag list
+    rules = []  # rules list
 
-    schools  = {} # id ==> rank
+    schools = {}  # id ==> rank
 
     insight_rank = 0
 
-    model  = None
+    model = None
 
-    honor  = 0.0
+    honor = 0.0
 
     def __init__(self, pc):
         self.model = pc
 
-        for k, v in [ (x, pc.get_skill_rank(x)) for x in pc.get_skills() ]:
+        for k, v in [(x, pc.get_skill_rank(x)) for x in pc.get_skills()]:
             self.skills[k] = v
 
-        for k, v in [ (attrib_name_from_id(i), pc.get_attrib_rank(i)) for i in xrange(0, 8) ]:
+        for k, v in [(attrib_name_from_id(i), pc.get_attrib_rank(i)) for i in xrange(0, 8)]:
             self.traits[k] = v
 
-        for k, v in [ (ring_name_from_id(i), pc.get_ring_rank(i)) for i in xrange(0, 5) ]:
+        for k, v in [(ring_name_from_id(i), pc.get_ring_rank(i)) for i in xrange(0, 5)]:
             self.rings[k] = v
 
-        for k, v in [ (x.school_id, x.school_rank) for x in pc.schools ]:
+        for k, v in [(x.school_id, x.school_rank) for x in pc.schools]:
             self.schools[k] = v
 
         self.tags += pc.tags
@@ -56,10 +58,10 @@ class CharacterSnapshot(object):
 
         for s in pc.schools:
             self.rules += s.tech_rules
-        self.rules += [ x.rule for x in pc.advans if hasattr(x,'rule') ]
+        self.rules += [x.rule for x in pc.advans if hasattr(x, 'rule')]
 
         self.insight_rank = pc.get_insight_rank()
-        self.honor        = pc.get_honor()
+        self.honor = pc.get_honor()
 
     def get_skills(self):
         return self.model.get_skills()

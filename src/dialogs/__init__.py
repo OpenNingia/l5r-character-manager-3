@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -14,14 +15,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from dialogs.advdlg         import *
-from dialogs.itemseldlg     import *
-from dialogs.perkseldlg     import *
-from dialogs.customitems    import *
-from dialogs.newrankdlg     import *
+from dialogs.advdlg import *
+from dialogs.itemseldlg import *
+from dialogs.perkseldlg import *
+from dialogs.customitems import *
+from dialogs.newrankdlg import *
 from dialogs.managedatapack import *
-from dialogs.spelldlg       import *
-from dialogs.modifiersdlg   import *
-from dialogs.katadlg        import *
-from dialogs.kihodlg        import *
-from dialogs.npcexport      import *
+from dialogs.spelldlg import *
+from dialogs.modifiersdlg import *
+from dialogs.katadlg import *
+from dialogs.kihodlg import *
+from dialogs.npcexport import *

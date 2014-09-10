@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -18,16 +19,18 @@ from PySide import QtCore, QtGui
 
 import dialogs
 
+
 class Sink3(QtCore.QObject):
-    def __init__(self, parent = None):
+
+    def __init__(self, parent=None):
         super(Sink3, self).__init__(parent)
         self.form = parent
-        
-    def show_add_weapon(self):   
+
+    def show_add_weapon(self):
         form = self.form
-        
+
         dlg = dialogs.ChooseItemDialog(form.pc, 'weapon', form.dstore, form)
-        filter = self.sender().parent().property('filter')        
+        filter = self.sender().parent().property('filter')
         if filter is not None:
             dlg.set_filter(filter)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
@@ -35,16 +38,16 @@ class Sink3(QtCore.QObject):
 
     def show_add_cust_weapon(self):
         form = self.form
-        
+
         dlg = dialogs.CustomWeaponDialog(form.pc, form.dstore, form)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
             form.update_from_model()
 
     def edit_selected_weapon(self):
         form = self.form
-        
+
         view_ = None
-        try:            
+        try:
             view_ = self.sender().parent().property('source')
         except Exception as e:
             print repr(e)
@@ -60,12 +63,12 @@ class Sink3(QtCore.QObject):
         dlg.load_item(sel_itm)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
             form.update_from_model()
-            
+
     def remove_selected_weapon(self):
         form = self.form
-        
+
         view_ = None
-        try:            
+        try:
             view_ = self.sender().parent().property('source')
         except Exception as e:
             print repr(e)
@@ -80,9 +83,9 @@ class Sink3(QtCore.QObject):
 
     def on_increase_item_qty(self):
         form = self.form
-        
+
         view_ = None
-        try:            
+        try:
             view_ = self.sender().parent().property('source')
         except Exception as e:
             print repr(e)
@@ -94,16 +97,16 @@ class Sink3(QtCore.QObject):
         sel_itm = view_.model().data(sel_idx, QtCore.Qt.UserRole)
         if sel_itm.qty < 9999:
             sel_itm.qty += 1
-            form.update_from_model()            
+            form.update_from_model()
             sel_idx = view_.model().index(sel_idx.row(), 0)
-            view_.selectionModel().setCurrentIndex(sel_idx, 
-                QtGui.QItemSelectionModel.Select | QtGui.QItemSelectionModel.Rows)
+            view_.selectionModel().setCurrentIndex(sel_idx,
+                                                   QtGui.QItemSelectionModel.Select | QtGui.QItemSelectionModel.Rows)
 
-    def on_decrease_item_qty(self):        
+    def on_decrease_item_qty(self):
         form = self.form
-        
+
         view_ = None
-        try:            
+        try:
             view_ = self.sender().parent().property('source')
         except Exception as e:
             print repr(e)
@@ -118,4 +121,4 @@ class Sink3(QtCore.QObject):
             form.update_from_model()
             sel_idx = view_.model().index(sel_idx.row(), 0)
             view_.selectionModel().setCurrentIndex(sel_idx,
-                QtGui.QItemSelectionModel.Select | QtGui.QItemSelectionModel.Rows)            
+                                                   QtGui.QItemSelectionModel.Select | QtGui.QItemSelectionModel.Rows)

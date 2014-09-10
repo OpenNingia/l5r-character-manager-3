@@ -17,11 +17,12 @@ from distutils.core import setup
 import py2exe
 
 setup(
-    windows = [
+    windows=[
         {
             "script": "l5rcm.py",
             "icon_resources": [(0, "../tools/deploy/windows/l5rcm.ico"), (1, "../tools/deploy/windows/l5rcmpack.ico")]
         }
     ],
-    options={"py2exe": {"includes": ["PySide.QtGui", 'lxml.etree', 'lxml._elementpath'] }},
-    )
+    options={
+        "py2exe": {"includes": ["PySide.QtGui", 'lxml.etree', 'lxml._elementpath']}},
+)

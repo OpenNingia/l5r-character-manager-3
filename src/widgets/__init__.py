@@ -14,12 +14,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from widgets.cknumwidget          import *
-from widgets.verticaltoolbar      import *
-from widgets.simplericheditor     import *
+from widgets.cknumwidget import *
+from widgets.verticaltoolbar import *
+from widgets.simplericheditor import *
 from widgets.spell_item_selection import *
-from widgets.cost_selection       import *
-from widgets.moneywidget          import *
-from widgets.requirementwidget    import *
-from widgets.simpledescr          import *
-from widgets.fileedit             import *
+from widgets.cost_selection import *
+from widgets.moneywidget import *
+from widgets.requirementwidget import *
+from widgets.simpledescr import *
+from widgets.fileedit import *

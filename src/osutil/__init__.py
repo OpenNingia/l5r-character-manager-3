@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -20,6 +21,7 @@ import sys
 
 from PySide import QtCore, QtGui
 
+
 def detect_desktop_environment():
     desktop_environment = 'generic'
     if os.environ.get('KDE_FULL_SESSION') == 'true':
@@ -28,17 +30,18 @@ def detect_desktop_environment():
         desktop_environment = 'gnome'
     else:
         pass
-        #try:
+        # try:
         #    info = getoutput('xprop -root _DT_SAVE_MODE')
         #    if ' = "xfce4"' in info:
         #        desktop_environment = 'xfce'
-        #except (OSError, RuntimeError):
+        # except (OSError, RuntimeError):
         #    pass
     return desktop_environment
 
+
 def portable_open(what):
     if sys.platform == 'win32':
-        #TODO ShellExec
+        # TODO ShellExec
         Popen(['explorer', what])
     elif sys.platform == 'linux2':
         de = detect_desktop_environment()
@@ -54,28 +57,30 @@ def portable_open(what):
         Popen(['open', what])
     else:
         raise Exception('Platform not supported')
-            
-def download_image(url, path, name):    
+
+
+def download_image(url, path, name):
     import urllib2
     filename = name + url[-4:]
     filepath = os.path.join(path, filename)
-    #print 'download image %s -> %s' % ( url, filepath )
+    # print 'download image %s -> %s' % (url, filepath)
     if os.path.exists(filepath):
         return filepath
-        
+
     try:
         opener = urllib2.build_opener()
         page = opener.open(url)
         pic = page.read()
         fout = open(filepath, "wb")
         fout.write(pic)
-        fout.close()        
+        fout.close()
     except:
         print 'image download failed %s' % (url)
         return None
-        
+
     return filepath
-    
+
+
 def get_system_font():
     if sys.platform == 'linux2':
         de = detect_desktop_environment()
@@ -83,24 +88,26 @@ def get_system_font():
             try:
                 import gconf
                 client = gconf.client_get_default()
-                font_name = client.get_string('/desktop/gnome/interface/font_name')
+                font_name = client.get_string(
+                    '/desktop/gnome/interface/font_name')
                 t = font_name.rpartition()
                 font_name = t[0]
                 font_size = t[1]
                 return QtGui.QFont(font_name, int(font_size))
             except:
-                return QtGui.QApplication.font()            
+                return QtGui.QApplication.font()
     return QtGui.QApplication.font()
-  
-def get_user_data_path(rel_path = ''):
+
+
+def get_user_data_path(rel_path=''):
     user_data = '.'
-    if os.name == 'posix': # Linux is ok but Macosx ???
+    if os.name == 'posix':  # Linux is ok but Macosx ???
         user_data = '%s/.config' % (os.environ['HOME'])
     elif os.name == 'nt':
         user_data = os.environ['APPDATA'].decode('latin-1')
 
-    user_data = os.path.join(user_data,\
-        QtCore.QCoreApplication.organizationName(),\
-        QtCore.QCoreApplication.applicationName())
-        
+    user_data = os.path.join(user_data,
+                             QtCore.QCoreApplication.organizationName(),
+                             QtCore.QCoreApplication.applicationName())
+
     return os.path.join(user_data, rel_path)

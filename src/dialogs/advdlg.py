@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -22,17 +23,18 @@ import dal.query
 
 from math import ceil
 
-#from models.chmodel import models.ATTRIBS, models.RINGS
 from PySide import QtCore, QtGui
 
 import rules
 
+
 class BuyAdvDialog(QtGui.QDialog):
-    def __init__(self, pc, tag, dstore, parent = None):
+
+    def __init__(self, pc, tag, dstore, parent=None):
         super(BuyAdvDialog, self).__init__(parent)
         self.tag = tag
         self.adv = None
-        self.pc  = pc
+        self.pc = pc
         self.dstore = dstore
         self.quit_on_accept = True
         self.build_ui()
@@ -44,22 +46,27 @@ class BuyAdvDialog(QtGui.QDialog):
         grid = QtGui.QGridLayout(self)
 
         titles = dict(
-                      skill= self.tr('Buy Skill rank'    ),
-                      emph=  self.tr('Buy Skill emphasys'))
+            skill=self.tr('Buy Skill rank'),
+            emph=self.tr('Buy Skill emphasys'))
 
         labels = dict(
-                      skill= (self.tr('Choose Skill Type'), self.tr('Choose Skill'   )),
-                      emph=  (self.tr('Choose Skill'     ), self.tr('Choose Emphasis')))
+            skill=(
+                self.tr(
+                    'Choose Skill Type'), self.tr('Choose Skill')),
+            emph= (self.tr('Choose Skill'), self.tr('Choose Emphasis')))
 
-        self.setWindowTitle( titles[self.tag] )
+        self.setWindowTitle(titles[self.tag])
 
         self.widgets = dict(
-                            skill =(QtGui.QComboBox(self), QtGui.QComboBox(self)),
-                            emph  =(QtGui.QComboBox(self), QtGui.QLineEdit(self)))
+            skill=(
+                QtGui.QComboBox(self), QtGui.QComboBox(self)),
+            emph =(QtGui.QComboBox(self), QtGui.QLineEdit(self)))
 
         for t in self.widgets.itervalues():
-            if t[0]: t[0].setVisible(False)
-            if t[1]: t[1].setVisible(False)
+            if t[0]:
+                t[0].setVisible(False)
+            if t[1]:
+                t[1].setVisible(False)
 
         if self.tag in self.widgets:
             for i in xrange(0, 2):
@@ -71,15 +78,15 @@ class BuyAdvDialog(QtGui.QDialog):
                     grid.addWidget(wd, i, 1, 1, 3)
 
         self.lb_from = QtGui.QLabel(self.tr('Make your choice'), self)
-        self.lb_cost = QtGui.QLabel(self.tr('Cost: 0'         ), self)
+        self.lb_cost = QtGui.QLabel(self.tr('Cost: 0'), self)
 
-        self.bt_buy   = QtGui.QPushButton(self.tr('Buy'  ), self)
+        self.bt_buy = QtGui.QPushButton(self.tr('Buy'), self)
         self.bt_close = QtGui.QPushButton(self.tr('Close'), self)
 
         grid.addWidget(self.lb_from, 3, 0, 1, 3)
         grid.addWidget(self.lb_cost, 4, 0, 1, 3)
-        grid.addWidget(self.bt_buy,  5, 2, 1, 1)
-        grid.addWidget(self.bt_close,  5, 3, 1, 1)
+        grid.addWidget(self.bt_buy, 5, 2, 1, 1)
+        grid.addWidget(self.bt_close, 5, 3, 1, 1)
 
     def cleanup(self):
         self.widgets = {}
@@ -89,7 +96,7 @@ class BuyAdvDialog(QtGui.QDialog):
         if self.tag == 'skill':
             cb = self.widgets[self.tag][0]
             for t in self.dstore.skcategs:
-                cb.addItem( t.name, t.id )
+                cb.addItem(t.name, t.id)
         elif self.tag == 'emph':
             cb = self.widgets[self.tag][0]
             for id in self.pc.get_skills():
@@ -104,7 +111,7 @@ class BuyAdvDialog(QtGui.QDialog):
             cb = self.widgets[self.tag][0]
             sk = dal.query.get_skill(self.dstore, uuid)
             cb.addItem(sk.name, sk.id)
-            cb.setCurrentIndex(cb.count()-1)
+            cb.setCurrentIndex(cb.count() - 1)
             cb.setEnabled(False)
 
     def connect_signals(self):
@@ -113,48 +120,49 @@ class BuyAdvDialog(QtGui.QDialog):
             cb1 = self.widgets[self.tag][0]
             cb2 = self.widgets[self.tag][1]
 
-            cb1.setCurrentIndex( -1 )
-            cb1.currentIndexChanged.connect( self.on_skill_type_select )
-            cb2.currentIndexChanged.connect( self.on_skill_select )
-            cb1.setCurrentIndex(  0 )
+            cb1.setCurrentIndex(-1)
+            cb1.currentIndexChanged.connect(self.on_skill_type_select)
+            cb2.currentIndexChanged.connect(self.on_skill_select)
+            cb1.setCurrentIndex(0)
 
-        self.bt_buy.clicked.connect  ( self.buy_advancement )
-        self.bt_close.clicked.connect( self.close           )
+        self.bt_buy.clicked.connect(self.buy_advancement)
+        self.bt_close.clicked.connect(self.close)
 
-    def on_skill_type_select(self, text = ''):
-        cb1   = self.widgets['skill'][0]
-        cb2   = self.widgets['skill'][1]
-        idx   = cb1.currentIndex()
+    def on_skill_type_select(self, text=''):
+        cb1 = self.widgets['skill'][0]
+        cb2 = self.widgets['skill'][1]
+        idx = cb1.currentIndex()
         type_ = cb1.itemData(idx)
 
         avail_skills = dal.query.get_skills(self.dstore, type_)
         cb2.clear()
 
-        can_buy_skill = [ x for x in avail_skills if x.id not in self.pc.get_skills() ]
+        can_buy_skill = [
+            x for x in avail_skills if x.id not in self.pc.get_skills()]
 
         # no more skills available for this category
         # player bought them all?
-        if len( can_buy_skill ) == 0:
+        if len(can_buy_skill) == 0:
             self.bt_buy.setEnabled(False)
             # try the next category
-            if (idx+1) < cb1.count():
-                cb1.setCurrentIndex( idx + 1 )
+            if (idx + 1) < cb1.count():
+                cb1.setCurrentIndex(idx + 1)
         else:
             self.bt_buy.setEnabled(True)
             for sk in can_buy_skill:
-                cb2.addItem( sk.name, sk.id )
+                cb2.addItem(sk.name, sk.id)
 
-    def on_skill_select(self, text = ''):
-        cb2  = self.widgets['skill'][1]
-        idx  = cb2.currentIndex()
+    def on_skill_select(self, text=''):
+        cb2 = self.widgets['skill'][1]
+        idx = cb2.currentIndex()
 
         uuid = cb2.itemData(idx)
         text = cb2.itemText(idx)
 
-        cb1  = self.widgets['skill'][0]
-        type_= cb1.itemData(cb1.currentIndex())
+        cb1 = self.widgets['skill'][0]
+        type_ = cb1.itemData(cb1.currentIndex())
 
-        cur_value = self.pc.get_skill_rank( uuid )
+        cur_value = self.pc.get_skill_rank(uuid)
         new_value = cur_value + 1
 
         cost = new_value
@@ -164,43 +172,45 @@ class BuyAdvDialog(QtGui.QDialog):
         print('skill uuid: {0}'.format(uuid))
 
         if (self.pc.has_rule('obtuse') and
-            type_ == 'high' and
-            uuid != 'investigation' and # investigation
-            uuid != 'medicine'):        # medicine
+                type_ == 'high' and
+                uuid != 'investigation' and  # investigation
+                uuid != 'medicine'):        # medicine
 
             # double the cost for high skill
             # other than medicine and investigation
             cost *= 2
 
-        self.lb_from.setText(self.tr('From {0} to {1}').format(cur_value, new_value))
+        self.lb_from.setText(
+            self.tr('From {0} to {1}').format(cur_value, new_value))
         self.lb_cost.setText(self.tr('Cost: {0} exp').format(cost))
 
         self.adv = advances.SkillAdv(uuid, cost)
-        self.adv.rule = dal.query.get_mastery_ability_rule(self.dstore, uuid, new_value)
+        self.adv.rule = dal.query.get_mastery_ability_rule(
+            self.dstore, uuid, new_value)
         self.adv.desc = (self.tr('{0}, Rank {1} to {2}. Cost: {3} xp')
-                         .format( text, cur_value, new_value, self.adv.cost ))
+                         .format(text, cur_value, new_value, self.adv.cost))
 
     def buy_advancement(self):
 
         if self.adv and ((self.adv.cost + self.pc.get_px()) >
                          self.pc.exp_limit):
             QtGui.QMessageBox.warning(self, self.tr("Not enough XP"),
-            self.tr("Cannot purchase.\nYou've reached the XP Limit."))
+                                      self.tr("Cannot purchase.\nYou've reached the XP Limit."))
             self.close()
             return
 
         if self.tag == 'skill':
-            self.pc.add_advancement( self.adv )
+            self.pc.add_advancement(self.adv)
             self.on_skill_select()
         elif self.tag == 'emph':
             cb = self.widgets[self.tag][0]
             tx = self.widgets[self.tag][1]
-            sk_name = cb.itemText( cb.currentIndex() )
-            sk_uuid = cb.itemData( cb.currentIndex() )
+            sk_name = cb.itemText(cb.currentIndex())
+            sk_uuid = cb.itemData(cb.currentIndex())
             self.adv = advances.SkillEmph(sk_uuid, tx.text(), 2)
             self.adv.desc = (self.tr('{0}, Skill {1}. Cost: {2} xp')
-                            .format( tx.text(), sk_name, self.adv.cost ))
-            self.pc.add_advancement( self.adv )
+                             .format(tx.text(), sk_name, self.adv.cost))
+            self.pc.add_advancement(self.adv)
             tx.setText('')
 
         if self.quit_on_accept:
@@ -209,6 +219,7 @@ class BuyAdvDialog(QtGui.QDialog):
     def closeEvent(self, event):
         self.cleanup()
 
+
 def check_all_done(cb_list):
     # check that all the choice have been made
     for cb in cb_list:
@@ -216,24 +227,27 @@ def check_all_done(cb_list):
             return False
     return True
 
+
 def check_all_done_2(le_list):
     for le in le_list:
         if len(le.text()) == 0:
             return False
     return True
 
+
 def check_all_different(cb_list):
     # check that all the choices are different
-    for i in xrange(0, len(cb_list)-1):
+    for i in xrange(0, len(cb_list) - 1):
         cb = cb_list[i]
         id = cb.itemData(cb.currentIndex())
-        for j in xrange(i+1, len(cb_list)):
+        for j in xrange(i + 1, len(cb_list)):
             cb2 = cb_list[j]
             id2 = cb2.itemData(cb2.currentIndex())
 
             if id2 == id:
                 return False
     return True
+
 
 def check_already_got(list1, list2):
     # check if you already got this item
@@ -242,13 +256,15 @@ def check_already_got(list1, list2):
             return True
     return False
 
+
 class SelWcSkills(QtGui.QDialog):
-    def __init__(self, pc, dstore, parent = None):
+
+    def __init__(self, pc, dstore, parent=None):
         super(SelWcSkills, self).__init__(parent)
-        self.pc  = pc
+        self.pc = pc
         self.dstore = dstore
-        self.cbs    = []
-        self.les    = []
+        self.cbs = []
+        self.les = []
         self.error_bar = None
         self.build_ui()
         self.connect_signals()
@@ -258,13 +274,13 @@ class SelWcSkills(QtGui.QDialog):
         self.setWindowTitle(self.tr('Choose School Skills'))
 
         grid = QtGui.QGridLayout(self)
-        grid.addWidget( QtGui.QLabel(self.tr("<i>Your school has granted you \
+        grid.addWidget(QtGui.QLabel(self.tr("<i>Your school has granted you \
                                              the right to choose some skills.</i> \
                                              <br/><b>Choose with care.</b>"), self),
-                                      0, 0, 1, 3)
-        grid.setRowStretch(0,2)
+                       0, 0, 1, 3)
+        grid.setRowStretch(0, 2)
 
-        self.bt_ok     = QtGui.QPushButton(self.tr('Ok'    ), self)
+        self.bt_ok = QtGui.QPushButton(self.tr('Ok'), self)
         self.bt_cancel = QtGui.QPushButton(self.tr('Cancel'), self)
 
         # TODO: translate skill category
@@ -274,21 +290,25 @@ class SelWcSkills(QtGui.QDialog):
             lb = ''
             wl = ws.wildcards
             if len(ws.wildcards):
-                or_wc  = [x.value for x in wl if not x.modifier or x.modifier == 'or']
-                not_wc = [x.value for x in wl if x.modifier and x.modifier == 'not'  ]
+                or_wc = [
+                    x.value for x in wl if not x.modifier or x.modifier == 'or']
+                not_wc = [
+                    x.value for x in wl if x.modifier and x.modifier == 'not']
 
-                sw1 = self.tr(' or ' ).join (or_wc)
+                sw1 = self.tr(' or ').join(or_wc)
                 sw2 = ', '.join(not_wc)
 
-                if ( wl[0].value == 'any' ):
+                if (wl[0].value == 'any'):
                     sw1 = 'one'
 
                 if len(not_wc):
-                    lb = self.tr('Any {0}, not {1} skill (rank {2}):').format(sw1, sw2, ws.rank)
+                    lb = self.tr('Any {0}, not {1} skill (rank {2}):').format(
+                        sw1, sw2, ws.rank)
                 else:
-                    lb = self.tr('Any {0} skill (rank {1}):').format(sw1, ws.rank)
+                    lb = self.tr(
+                        'Any {0} skill (rank {1}):').format(sw1, ws.rank)
 
-            grid.addWidget( QtGui.QLabel(lb, self), row_, 0 )
+            grid.addWidget(QtGui.QLabel(lb, self), row_, 0)
 
             cb = QtGui.QComboBox(self)
             self.cbs.append(cb)
@@ -297,13 +317,14 @@ class SelWcSkills(QtGui.QDialog):
             row_ += 1
 
         for s in self.pc.get_pending_wc_emphs():
-            lb = self.tr("{0}'s Emphases: ").format(dal.query.get_skill(self.dstore, s).name)
+            lb = self.tr("{0}'s Emphases: ").format(
+                dal.query.get_skill(self.dstore, s).name)
 
-            grid.addWidget( QtGui.QLabel(lb, self), row_, 0 )
+            grid.addWidget(QtGui.QLabel(lb, self), row_, 0)
 
             le = QtGui.QLineEdit(self)
             self.les.append(le)
-            grid.addWidget( le, row_, 1, 1, 2)
+            grid.addWidget(le, row_, 1, 1, 2)
 
             row_ += 1
 
@@ -311,12 +332,12 @@ class SelWcSkills(QtGui.QDialog):
         self.error_bar.setVisible(False)
         grid.addWidget(self.error_bar, row_, 0, 1, 3)
 
-        grid.addWidget( self.bt_ok,     row_+1, 1)
-        grid.addWidget( self.bt_cancel, row_+1, 2)
+        grid.addWidget(self.bt_ok, row_ + 1, 1)
+        grid.addWidget(self.bt_cancel, row_ + 1, 2)
 
     def cleanup(self):
-        self.cbs    = []
-        self.les    = []
+        self.cbs = []
+        self.les = []
         self.error_bar = None
 
     def load_data(self):
@@ -330,21 +351,23 @@ class SelWcSkills(QtGui.QDialog):
                     outcome += self.dstore.skills
                 else:
                     print('search skills with tag {0}'.format(w_.value))
-                    skills_by_tag = [x for x in self.dstore.skills if w_.value in x.tags]
+                    skills_by_tag = [
+                        x for x in self.dstore.skills if w_.value in x.tags]
                     if not w_.modifier or w_.modifier == 'or':
                         outcome += skills_by_tag
                     elif w_.modifier == 'not':
-                        outcome = [x for x in outcome if x not in skills_by_tag]
+                        outcome = [
+                            x for x in outcome if x not in skills_by_tag]
 
             for sk in outcome:
                 if sk.id not in self.pc.get_skills():
-                    self.cbs[i].addItem( sk.name, (sk.id, ws.rank) )
+                    self.cbs[i].addItem(sk.name, (sk.id, ws.rank))
 
             i += 1
 
     def connect_signals(self):
-        self.bt_cancel.clicked.connect( self.close     )
-        self.bt_ok    .clicked.connect( self.on_accept )
+        self.bt_cancel.clicked.connect(self.close)
+        self.bt_ok    .clicked.connect(self.on_accept)
 
     def on_accept(self):
 
@@ -376,7 +399,8 @@ class SelWcSkills(QtGui.QDialog):
             return
 
         # check if already got
-        already_got = check_already_got([x.itemData(x.currentIndex())[0] for x in self.cbs], self.pc.get_skills())
+        already_got = check_already_got(
+            [x.itemData(x.currentIndex())[0] for x in self.cbs], self.pc.get_skills())
 
         if already_got:
             self.error_bar.setText('''<p style='color:#FF0000'>

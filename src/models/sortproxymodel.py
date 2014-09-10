@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -17,13 +18,13 @@
 from PySide import QtGui, QtCore
 
 
-
 class ColorFriendlySortProxyModel(QtGui.QSortFilterProxyModel):
-    def __init__(self, parent = None):
+
+    def __init__(self, parent=None):
         super(ColorFriendlySortProxyModel, self).__init__(parent)
 
     def data(self, index, role):
         # respect alternate row color
         if role == QtCore.Qt.BackgroundRole:
-            return self.sourceModel().bg_color[ index.row() % 2 ]            
+            return self.sourceModel().bg_color[index.row() % 2]
         return super(ColorFriendlySortProxyModel, self).data(index, role)
