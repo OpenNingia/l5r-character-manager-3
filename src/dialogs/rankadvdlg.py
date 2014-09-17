@@ -141,7 +141,7 @@ class WizardDialog(QtGui.QDialog):
         # buttons
         self.bt_back.setEnabled(not page.first)
         self.bt_skip.setEnabled(page.skippable)
-        self.bt_next.setText(self.tr("Finish") if self.last else self.tr("Next>"))           
+        self.bt_next.setText(self.tr("Finish") if page.last else self.tr("Next>"))           
 
 
 class ClanAndFamilyPage(WizardPage):
