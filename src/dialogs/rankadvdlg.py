@@ -20,14 +20,15 @@ import models
 import widgets
 from PySide import QtCore, QtGui
 
-class WizardPage ( QtGui.QWidget ):
 
-    def __init__(self, parent = None):
-        super( WizardPage, self ).__init__(parent)
+class WizardPage (QtGui.QWidget):
+
+    def __init__(self, parent=None):
+        super(WizardPage, self).__init__(parent)
 
         self._skippable = False
-        self._first     = False
-        self._final     = False
+        self._first = False
+        self._final = False
 
     @property
     def skippable(self):
@@ -57,87 +58,104 @@ class WizardPage ( QtGui.QWidget ):
         return QtGui.QWidget(self)
 
 
-class WizardDialog( QtGui.QDialog ):
-    def __init__(self, parent = None):
-        super( WizardDialog, self ).__init__(parent)
+class WizardDialog(QtGui.QDialog):
 
-        self.pages = {} # tag => widget
+    def __init__(self, parent=None):
+        super(WizardDialog, self).__init__(parent)
 
-    def add_page( self, tag, page, skippable = False, first = False, last = False ):
+        self.pages = {}  # tag => widget
+
+    def add_page(self, tag, page, skippable=False, first=False, last=False):
 
         page.skippable = skippable
-        page.first     = first
-        page.last      = last
+        page.first = first
+        page.last = last
 
         if tag not in self.pages:
             self.pages[tag] = page
 
-    def build_ui( self ):
+    def build_ui(self):
 
         self.stack = QtGui.QStackedWidgets(self)
         for k, p in self.pages:
-            self.stack.addWidget( p )
+            self.stack.addWidget(p)
 
-class ClanAndFamilyPage( WizardPage ):
-    def __init__(self, parent = None):
-        super ( ClanAndFamilyPage, self ).__init__(self)
 
-class FirstSchoolPage( WizardPage ):
-    def __init__(self, parent = None):
-        super ( SchoolPage, self ).__init__(self)
+class ClanAndFamilyPage(WizardPage):
 
-class NewSchoolPage( WizardPage ):
-    def __init__(self, parent = None):
-        super ( SchoolPage, self ).__init__(self)
+    def __init__(self, parent=None):
+        super(ClanAndFamilyPage, self).__init__(self)
 
-class AlternatePathPage( WizardPage ):
-    def __init__(self, parent = None):
-        super ( AlternatePathPage, self ).__init__(self)
 
-class SkillsPage( WizardPage ):
-    def __init__(self, parent = None):
-        super ( SkillsPage, self ).__init__(self)
+class FirstSchoolPage(WizardPage):
 
-class SpellsPage( WizardPage ):
-    def __init__(self, parent = None):
-        super ( SpellsPage, self ).__init__(self)
+    def __init__(self, parent=None):
+        super(SchoolPage, self).__init__(self)
 
-class KihoPage( WizardPage ):
-    def __init__(self, parent = None):
-        super ( KihoPage, self ).__init__(self)
 
-class SummaryPage( WizardPage ):
-    def __init__(self, pages, parent = None):
-        super ( SummaryPage, self ).__init__(self)
+class NewSchoolPage(WizardPage):
+
+    def __init__(self, parent=None):
+        super(SchoolPage, self).__init__(self)
+
+
+class AlternatePathPage(WizardPage):
+
+    def __init__(self, parent=None):
+        super(AlternatePathPage, self).__init__(self)
+
+
+class SkillsPage(WizardPage):
+    def __init__(self, parent=None):
+        super(SkillsPage, self).__init__(self)
+
+        
+class SummaryPage(WizardPage):
+    def __init__(self, pages, parent=None):
+        super (SummaryPage, self).__init__(self)
         self.pages = pages
 
-class RankAdvDialog( WizardDialog ):
+        
+class SpellsPage(WizardPage):
 
-    def __init__(self, pc, dstore, rank, parent = None):
-        super( RankAdvDialog, self ).__init__(self)
+    def __init__(self, parent=None):
+        super(SpellsPage, self).__init__(self)
 
-        self.pc     = pc
+
+class KihoPage(WizardPage):
+
+    def __init__(self, parent=None):
+        super(KihoPage, self).__init__(self)
+
+
+class RankAdvDialog(WizardDialog):
+
+    def __init__(self, pc, dstore, rank, parent=None):
+        super(RankAdvDialog, self).__init__(self)
+
+        self.pc = pc
         self.dstore = dstore
-        self.rank   = rank
+        self.rank = rank
 
         self.build_ui()
-
 
     def build_ui(self):
 
         # on first rank the Player should choose the Clan and the Family
         if self.rank == 1:
-            self.add_page( ClanAndFamilyPage(self), first = True )
-            self.add_page( FirstSchoolPage  (self) )
-            self.add_page( AlternatePathPage(self) ) # to choose a Rank 1 alternate path
-            self.add_page( SkillsPage       (self) ) # get those starting skills
+            self.add_page(ClanAndFamilyPage(self), first=True)
+            self.add_page(FirstSchoolPage(self))
+            # to choose a Rank 1 alternate path
+            self.add_page(AlternatePathPage(self))
+            self.add_page(SkillsPage(self))  # get those starting skills
         else:
-            self.add_page( SchoolPage(self), skippable = True ) # to choose a different school
+            # to choose a different school
+            self.add_page(SchoolPage(self), skippable=True)
 
         if self.can_get_new_spells():
-            self.add_page( SpellsPage(self) )
+            self.add_page(SpellsPage(self))
 
         if self.can_get_new_kiho():
-            self.add_page( KihoPage(self) )
+            self.add_page(KihoPage(self))
 
-        self.add_page( SummaryPage(self.pages, self), final = True )
+        self.add_page(SummaryPage(self.pages, self), final = True)
