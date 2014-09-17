@@ -53,6 +53,9 @@ class WizardPage ( QtGui.QWidget ):
     def final(self, value):
         self._final = value
 
+    def get_summary_widget(self):
+        return QtGui.QWidget(self)
+
 
 class WizardDialog( QtGui.QDialog ):
     def __init__(self, parent = None):
@@ -103,6 +106,11 @@ class KihoPage( WizardPage ):
     def __init__(self, parent = None):
         super ( KihoPage, self ).__init__(self)
 
+class SummaryPage( WizardPage ):
+    def __init__(self, pages, parent = None):
+        super ( SummaryPage, self ).__init__(self)
+        self.pages = pages
+
 class RankAdvDialog( WizardDialog ):
 
     def __init__(self, pc, dstore, rank, parent = None):
@@ -131,3 +139,5 @@ class RankAdvDialog( WizardDialog ):
 
         if self.can_get_new_kiho():
             self.add_page( KihoPage(self) )
+
+        self.add_page( SummaryPage(self.pages, self), final = True )
