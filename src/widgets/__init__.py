@@ -24,3 +24,4 @@ from widgets.requirementwidget    import *
 from widgets.simpledescr          import *
 from widgets.fileedit             import *
 from widgets.familychooser        import *
+from widgets.schoolchooser        import *

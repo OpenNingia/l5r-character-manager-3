@@ -30,7 +30,7 @@ def new_horiz_line(parent = None):
     line.setFrameShadow(QtGui.QFrame.Sunken)
     line.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
     return line
-    
+
 class WizardPage (QtGui.QWidget):
 
     def __init__(self, widget=None, parent=None):
@@ -38,8 +38,8 @@ class WizardPage (QtGui.QWidget):
 
         self._skippable = False
         self._first = False
-        self._final = False      
-        
+        self._final = False
+
         self.widget = None
 
     @property
@@ -68,98 +68,153 @@ class WizardPage (QtGui.QWidget):
 
     def get_summary_widget(self):
         return QtGui.QWidget(self)
-        
+
     def get_h1_text(self):
         return "placeholder"
-        
+
     def _set_ui(self, w):
-        self.widget = w        
+        self.widget = w
         hbox = QtGui.QHBoxLayout(self)
         hbox.addStretch()
         hbox.addWidget(w)
         hbox.addStretch()
-        
+
 class WizardDialog(QtGui.QDialog):
 
     def __init__(self, parent=None):
         super(WizardDialog, self).__init__(parent)
 
-        self.pages = {}  # tag => widget
+        self.pages = []
         self.h1 = QtGui.QLabel(self)
-        
+
         self.stack = QtGui.QStackedWidget(self)
         self.stack.currentChanged.connect(self.on_page_change)
-               
+
         vbox = QtGui.QVBoxLayout(self)
         vbox.addWidget(self.h1)
         vbox.addWidget(new_horiz_line(self))
-        vbox.addWidget(self.stack)       
+        vbox.addWidget(self.stack)
         vbox.addSpacing(32)
-        
+
         self.make_bottom_bar()
-    
+
     def resizeEvent(self, ev):
-        self.bottom_bar.resize( 
+        self.bottom_bar.resize(
             QtCore.QSize(self.width(), 32))
         self.bottom_bar.move(
             0, self.height() - 32)
-        
+
     def make_bottom_bar(self):
         fr = QtGui.QFrame(self)
-        
+
         self.bt_back = QtGui.QPushButton(self.tr("<Back"), self)
         self.bt_skip = QtGui.QPushButton(self.tr("Skip"), self)
         self.bt_next = QtGui.QPushButton(self.tr("Next>"), self)
-        
-        hbox = QtGui.QHBoxLayout(fr)        
+
+        self.bt_cancel = QtGui.QPushButton(self.tr("Cancel"), self)
+
+        hbox = QtGui.QHBoxLayout(fr)
+        hbox.addWidget(self.bt_cancel)
         hbox.addStretch()
         hbox.addWidget(self.bt_back)
         hbox.addWidget(self.bt_skip)
         hbox.addWidget(self.bt_next)
-        
-        hbox.setContentsMargins(0,0,3,0)
-        fr.setStyleSheet("QFrame {background: #CCC; border-top: 1px solid #333;}")        
-        
+
+        hbox.setContentsMargins(3,0,3,0)
+        fr.setStyleSheet("QFrame {background: #CCC; border-top: 1px solid #333;}")
+
+        self.bt_cancel.clicked.connect(self.on_cancel)
+
+        self.bt_back.clicked.connect(self.on_back)
+        self.bt_skip.clicked.connect(self.on_skip)
+        self.bt_next.clicked.connect(self.on_next)
+
         self.bottom_bar = fr
 
-    def add_page(self, tag, page, skippable=False, first=False, last=False):        
+    def add_page(self, page, skippable=False, first=False, last=False):
         page.skippable = skippable
         page.first = first
         page.last = last
 
-        if tag not in self.pages:
-            self.pages[tag] = page
+        if page not in self.pages:
+            self.pages.append(page)
             self.stack.addWidget(page)
-            
-    def begin(self):
-        self.stack.setCurrentIndex(0)
-        
+
+    def begin_add_pages(self):
+        self.stack.blockSignals(True)
+
+    def end_add_pages(self):
+        self.stack.blockSignals(False)
+        self.on_page_change(0)
+
     def on_page_change(self, index):
-        page = self.pages.values()[index]
+        page = self.pages[index]
         self.h1.setText(page.get_h1_text())
-        
+
         # buttons
         self.bt_back.setEnabled(not page.first)
         self.bt_skip.setEnabled(page.skippable)
-        self.bt_next.setText(self.tr("Finish") if page.last else self.tr("Next>"))           
+        self.bt_next.setText(self.tr("Finish") if page.last else self.tr("Next>"))
 
+    def on_cancel(self):
+        self.reject()
+
+    def on_back(self):
+        index = max(0, self.stack.currentIndex())
+        page = self.pages[index]
+        if page.first:
+            return
+        self.stack.setCurrentIndex(index - 1)
+
+    def on_next(self):
+        index = max(0, self.stack.currentIndex())
+        page = self.pages[index]
+        self.stack.setCurrentIndex(index + 1)
+        if page.last:
+            self.on_finish()
+
+    def on_skip(self):
+        index = max(0, self.stack.currentIndex())
+        page = self.pages[index]
+        page.clear()
+        self.on_next()
 
 class ClanAndFamilyPage(WizardPage):
     def __init__(self, parent=None):
-        super(ClanAndFamilyPage, self).__init__(parent)        
+        super(ClanAndFamilyPage, self).__init__(parent)
         self._set_ui(widgets.FamilyChooserWidget(parent.dstore, self))
-                        
+
     def get_h1_text(self):
-        return '''
-        <center>
-        <h1>Select Clan and Family</h1>
-        <p style="color: #666">a Samurai should serve its clan first and foremost</p>
-        </center>
-        '''        
+        return self.tr('''
+<center>
+<h1>Select Clan and Family</h1>
+<p style="color: #666">a Samurai should serve its clan first and foremost</p>
+</center>
+        ''')
 
 class FirstSchoolPage(WizardPage):
     def __init__(self, parent=None):
         super(FirstSchoolPage, self).__init__(parent)
+
+        w = widgets.SchoolChooserWidget(parent.dstore, self)
+        w.allow_advanced_schools = False
+        w.allow_alternate_paths = False
+        w.allow_base_schools = True
+        w.show_filter_selection = False
+        w.show_bonus_trait = True
+        w.show_school_requirements = False
+
+        self._set_ui(w)
+
+    def get_h1_text(self):
+        return self.tr('''
+<center>
+<h1>Join your First School</h1>
+<p style="color: #666">In this phase you're limited to base schools,
+        however you can replace this rank with an alternative path
+        on the next step</p>
+</center>
+        ''')
 
 
 class NewSchoolPage(WizardPage):
@@ -177,13 +232,13 @@ class SkillsPage(WizardPage):
     def __init__(self, parent=None):
         super(SkillsPage, self).__init__(parent)
 
-        
+
 class SummaryPage(WizardPage):
     def __init__(self, pages, parent=None):
         super (SummaryPage, self).__init__(parent)
         self.pages = pages
 
-        
+
 class SpellsPage(WizardPage):
     def __init__(self, parent=None):
         super(SpellsPage, self).__init__(parent)
@@ -207,34 +262,40 @@ class RankAdvDialog(WizardDialog):
 
     def build_ui(self):
 
+        self.begin_add_pages()
+
         # on first rank the Player should choose the Clan and the Family
         if self.rank == 1:
-            self.add_page('family', ClanAndFamilyPage(self), first=True)
-            self.add_page('school', FirstSchoolPage(self))
+            self.add_page(ClanAndFamilyPage(self), first=True)
+            self.add_page(FirstSchoolPage(self))
             # to choose a Rank 1 alternate path
-            self.add_page('path', AlternatePathPage(self))
-            self.add_page('skills', SkillsPage(self))  # get those starting skills
+            self.add_page(AlternatePathPage(self))
+            self.add_page(SkillsPage(self))  # get those starting skills
         else:
             # to choose a different school
-            self.add_page('school', NewSchoolPage(self), skippable=True)
+            self.add_page(NewSchoolPage(self), skippable=True)
 
         if self.can_get_new_spells():
-            self.add_page('spells', SpellsPage(self))
+            self.add_page(SpellsPage(self))
 
         if self.can_get_new_kiho():
-            self.add_page('kiho', KihoPage(self))
+            self.add_page(KihoPage(self))
 
-        self.add_page('summary', SummaryPage(self.pages, self), last=True)
-        
-        self.resize( 600, 400 )
-        self.begin()
-        
+        self.add_page(SummaryPage(self.pages, self), last=True)
+
+        self.resize(600, 400)
+
+        self.end_add_pages()
+
     def can_get_new_spells(self):
         return True
 
     def can_get_new_kiho(self):
         return True
-        
+
+    def on_finish(self):
+        pass
+
 # ## MAIN ## #
 
 
@@ -248,10 +309,9 @@ def main():
         [os.path.join(pack_data_dir, 'core.data'),
          os.path.join(pack_data_dir, 'data')],
         [])
-    
+
     dlg = RankAdvDialog(None, dstore, 1)
     dlg.exec_()
-    
+
 if __name__ == '__main__':
     main()
-        

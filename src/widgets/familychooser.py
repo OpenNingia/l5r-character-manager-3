@@ -92,21 +92,20 @@ class FamilyChooserWidget(QtGui.QWidget):
 
         # get family_dal
         family_dal = dal.query.get_family(self.dstore, family_id)
-        if not family_dal:
-            return
+        if family_dal:
 
-        self.current_family_id = family_id
-        self.current_clan_id = family_dal.clanid
+            self.current_family_id = family_id
+            self.current_clan_id = family_dal.clanid
 
-        self.load_families(family_dal.clanid)
+            self.load_families(family_dal.clanid)
 
-        clan_index = self.cb_clan.findData(family_dal.clanid)
-        self.cb_clan.setCurrentIndex(clan_index)
+            clan_index = self.cb_clan.findData(family_dal.clanid)
+            self.cb_clan.setCurrentIndex(clan_index)
 
-        family_index = self.cb_family.findData(family_dal.id)
-        self.cb_family.setCurrentIndex(family_index)
+            family_index = self.cb_family.findData(family_dal.id)
+            self.cb_family.setCurrentIndex(family_index)
 
-        self.update_bonus_trait()
+            self.update_bonus_trait()
 
         self.cb_clan.blockSignals(False)
         self.cb_family.blockSignals(False)
