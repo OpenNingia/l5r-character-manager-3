@@ -856,7 +856,7 @@ class AdvancedPcModel(BasePcModel):
         self.honor = value - self.step_2.honor
         self.unsaved = True
 
-    def set_glory(self, value):        
+    def set_glory(self, value):
         if self.has_tag('monk'):
             self.glory = value
         else:

@@ -15,26 +15,26 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtGui, QtCore
-try:
-    import dal
-    import dal.query
-except:
-    from ..dal import query
+import dal
+import dal.query
+import widgets
 
 import os
 import sys
 
 
 class SchoolChooserWidget(QtGui.QWidget):
-    def __init__(self, dstore, parent=None):
+    def __init__(self, pc, dstore, parent=None):
         super(SchoolChooserWidget, self).__init__(parent)
 
+        self.pc = pc
         self.dstore = dstore
 
         self.cb_clan = QtGui.QComboBox(self)
         self.cb_school = QtGui.QComboBox(self)
         self.lb_trait = QtGui.QLabel(self)
 
+        self.req_list = None
         self.current_clan_id = None
         self.current_school_id = None
 
@@ -48,8 +48,11 @@ class SchoolChooserWidget(QtGui.QWidget):
         self.build_ui()
         self.load_clans()
 
-    def build_ui(self):
+    def sizeHint(self):
+        return QtCore.QSize(480, 480)
 
+    def build_ui(self):
+        self.setStyleSheet('''QWidget { border: 1px solid red; }''')
         #
         # [ clan  : ____ ]
         # [ school: ____ ]
@@ -60,16 +63,16 @@ class SchoolChooserWidget(QtGui.QWidget):
         form.addRow(self.tr("Clan:"), self.cb_clan)
         form.addRow(self.tr("School:"), self.cb_school)
 
-        form.addRow("<hr/>", QtGui.QWidget(self))  # empty row
+        # form.addRow("a", QtGui.QWidget(self))  # empty row
         form.addRow(self.tr("Bonus:"), self.lb_trait)
 
         self.pl_filter = self.build_filter_panel()
 
-        form.addRow("<hr/>", QtGui.QWidget(self))  # empty row
+        # form.addRow(None, None)  # empty row
         form.addRow(self.tr("Filters"), self.pl_filter)
 
-        self.pl_requirements = QtGui.QFrame(self)
-        form.addRow("<hr/>", QtGui.QWidget(self))  # empty row
+        self.pl_requirements = self.build_requirements_panel()
+        # form.addRow("c", QtGui.QWidget(self))  # empty row
         form.addRow(self.tr("Requirements"), self.pl_requirements)
 
         self.cb_clan.currentIndexChanged.connect(self.on_clan_changed)
@@ -96,6 +99,11 @@ class SchoolChooserWidget(QtGui.QWidget):
         self.cx_path_schools.setChecked(self.allow_alternate_paths)
 
         return fr
+
+    def build_requirements_panel(self):
+        self.req_list = widgets.RequirementsWidget(self)
+        # self.req_list = QtGui.QFrame(self)
+        return self.req_list
 
     @property
     def selected_school(self):
@@ -212,7 +220,6 @@ class SchoolChooserWidget(QtGui.QWidget):
             self.cb_school.addItem(f.name, f.id)
 
     def hide_row(self, fld):
-        print('hide row', fld)
         fld.hide()
         self.form_layout.labelForField(fld).hide()
 
@@ -240,7 +247,7 @@ class SchoolChooserWidget(QtGui.QWidget):
             school_index = self.cb_school.findData(school_dal.id)
             self.cb_school.setCurrentIndex(school_index)
 
-            self.update_bonus_trait()
+            self.update_school_properties(school_dal)
 
         self.cb_clan.blockSignals(False)
         self.cb_school.blockSignals(False)
@@ -262,7 +269,7 @@ class SchoolChooserWidget(QtGui.QWidget):
             clan_index = self.cb_clan.findData(clan_id)
             self.cb_clan.setCurrentIndex(clan_index)
 
-            self.update_bonus_trait()
+            self.update_school_properties()
 
         self.cb_clan.blockSignals(False)
         self.cb_school.blockSignals(False)
@@ -273,12 +280,14 @@ class SchoolChooserWidget(QtGui.QWidget):
 
     def on_school_changed(self, index_or_text):
         self.current_school_id = self.cb_school.itemData(self.cb_school.currentIndex())
-        self.update_bonus_trait()
+        self.update_school_properties()
 
     def on_base_filter_change(self, state):
         self.allow_basic_schools = self.sender().isChecked()
+
     def on_advc_filter_change(self, state):
         self.allow_advanced_schools = self.sender().isChecked()
+
     def on_path_filter_change(self, state):
         self.allow_alternate_paths = self.sender().isChecked()
 
@@ -292,10 +301,26 @@ class SchoolChooserWidget(QtGui.QWidget):
         return (dal.query.get_trait(self.dstore, traitid) or
                 dal.query.get_ring(self.dstore, traitid))
 
-    def update_bonus_trait(self):
+    def update_school_properties(self, school_dal=None):
+        if not school_dal:
+            school_dal = dal.query.get_school(self.dstore, self.current_school_id)
+        if not school_dal:
+            return
+        self.update_bonus_trait(school_dal)
+        self.update_school_requirements(school_dal)
+
+        print(self.height(), self.req_list.sizeHint())
+
+
+    def update_school_requirements(self, school_dal):
+        self.req_list.set_requirements(self.pc,
+                                       self.dstore,
+                                       school_dal.require)
+
+    def update_bonus_trait(self, school_dal):
         bonus_trait = None
         try:
-            bonus_trait = dal.query.get_school(self.dstore, self.current_school_id).trait
+            bonus_trait = school_dal.trait
         except:
             print('cannot find bonus trait of {}'.format(self.current_school_id))
 

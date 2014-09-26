@@ -22,7 +22,8 @@ import models
 import widgets
 from PySide import QtCore, QtGui
 
-def new_horiz_line(parent = None):
+
+def new_horiz_line(parent=None):
     line = QtGui.QFrame(parent)
     line.setObjectName("hline")
     line.setGeometry(QtCore.QRect(3, 3, 3, 3))
@@ -30,6 +31,7 @@ def new_horiz_line(parent = None):
     line.setFrameShadow(QtGui.QFrame.Sunken)
     line.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
     return line
+
 
 class WizardPage (QtGui.QWidget):
 
@@ -79,6 +81,7 @@ class WizardPage (QtGui.QWidget):
         hbox.addWidget(w)
         hbox.addStretch()
 
+
 class WizardDialog(QtGui.QDialog):
 
     def __init__(self, parent=None):
@@ -120,7 +123,7 @@ class WizardDialog(QtGui.QDialog):
         hbox.addWidget(self.bt_skip)
         hbox.addWidget(self.bt_next)
 
-        hbox.setContentsMargins(3,0,3,0)
+        hbox.setContentsMargins(3, 0, 3, 0)
         fr.setStyleSheet("QFrame {background: #CCC; border-top: 1px solid #333;}")
 
         self.bt_cancel.clicked.connect(self.on_cancel)
@@ -179,6 +182,7 @@ class WizardDialog(QtGui.QDialog):
         page.clear()
         self.on_next()
 
+
 class ClanAndFamilyPage(WizardPage):
     def __init__(self, parent=None):
         super(ClanAndFamilyPage, self).__init__(parent)
@@ -192,14 +196,15 @@ class ClanAndFamilyPage(WizardPage):
 </center>
         ''')
 
+
 class FirstSchoolPage(WizardPage):
     def __init__(self, parent=None):
         super(FirstSchoolPage, self).__init__(parent)
 
-        w = widgets.SchoolChooserWidget(parent.dstore, self)
+        w = widgets.SchoolChooserWidget(parent.pc, parent.dstore, self)
         w.allow_advanced_schools = False
         w.allow_alternate_paths = False
-        w.allow_base_schools = True
+        w.allow_basic_schools = True
         w.show_filter_selection = False
         w.show_bonus_trait = True
         w.show_school_requirements = False
@@ -221,22 +226,58 @@ class NewSchoolPage(WizardPage):
     def __init__(self, parent=None):
         super(NewSchoolPage, self).__init__(parent)
 
+        w = widgets.SchoolChooserWidget(parent.pc, parent.dstore, self)
+        w.allow_advanced_schools = True
+        w.allow_alternate_paths = False
+        w.allow_basic_schools = True
+        w.show_filter_selection = True
+        w.show_bonus_trait = False
+        w.show_school_requirements = True
+
+        # disable alternate path filter
+        w.cx_path_schools.setEnabled(False)
+
+        self._set_ui(w)
+
+    def get_h1_text(self):
+        return self.tr('''
+<center>
+<h1>Join a new School</h1>
+<p style="color: #666">In this phase you can join either Base school
+and Advanced ones</p>
+<p style="color: #066">To follow an alternate path, skip this step</p>
+</center>
+        ''')
+
 
 class AlternatePathPage(WizardPage):
 
     def __init__(self, parent=None):
         super(AlternatePathPage, self).__init__(parent)
 
+        w = widgets.SchoolChooserWidget(parent.pc, parent.dstore, self)
+        w.allow_advanced_schools = False
+        w.allow_alternate_paths = True
+        w.allow_basic_schools = False
+        w.show_filter_selection = False
+        w.show_bonus_trait = False
+        w.show_school_requirements = True
+
+        self._set_ui(w)
+
+    def get_h1_text(self):
+        return self.tr('''
+<center>
+<h1>Follow an Alternate Path</h1>
+<p style="color: #666">If you don't like a certain school rank you can
+replace it with another one</p>
+</center>
+        ''')
+
 
 class SkillsPage(WizardPage):
     def __init__(self, parent=None):
         super(SkillsPage, self).__init__(parent)
-
-
-class SummaryPage(WizardPage):
-    def __init__(self, pages, parent=None):
-        super (SummaryPage, self).__init__(parent)
-        self.pages = pages
 
 
 class SpellsPage(WizardPage):
@@ -247,6 +288,12 @@ class SpellsPage(WizardPage):
 class KihoPage(WizardPage):
     def __init__(self, parent=None):
         super(KihoPage, self).__init__(parent)
+
+
+class SummaryPage(WizardPage):
+    def __init__(self, pages, parent=None):
+        super(SummaryPage, self).__init__(parent)
+        self.pages = pages
 
 
 class RankAdvDialog(WizardDialog):
@@ -273,7 +320,8 @@ class RankAdvDialog(WizardDialog):
             self.add_page(SkillsPage(self))  # get those starting skills
         else:
             # to choose a different school
-            self.add_page(NewSchoolPage(self), skippable=True)
+            self.add_page(NewSchoolPage(self), first=True, skippable=True)
+            self.add_page(AlternatePathPage(self), skippable=True)
 
         if self.can_get_new_spells():
             self.add_page(SpellsPage(self))
@@ -310,7 +358,8 @@ def main():
          os.path.join(pack_data_dir, 'data')],
         [])
 
-    dlg = RankAdvDialog(None, dstore, 1)
+    pc = models.AdvancedPcModel()
+    dlg = RankAdvDialog(pc, dstore, 2)
     dlg.exec_()
 
 if __name__ == '__main__':

@@ -20,30 +20,42 @@ import dal
 
 from PySide import QtCore, QtGui
 
+
 class RequirementsWidget(QtGui.QWidget):
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(RequirementsWidget, self).__init__(parent)
 
-        self.vbox     = QtGui.QVBoxLayout(self)
-        self.vbox.setContentsMargins(0, 0, 0, 0)
-        self.fr       = None # disposable inner frame
-        self.checks   = []   # checkbox list
+        self.vbox = QtGui.QVBoxLayout(self)
+        # self.vbox.setContentsMargins(0, 0, 0, 0)
+        self.lbs = []  # disposable labels
+        self.checks = []   # checkbox list
 
-        self.setSizePolicy( QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding )
+    def sizeHint(self):
+        return QtCore.QSize(200, len(self.checks) * 20 + len(self.lbs) * 40)
 
     def set_requirements(self, pc, dstore, requirements):
 
         self.setUpdatesEnabled(False)
         snap = models.CharacterSnapshot(pc)
-        if self.fr: self.fr.deleteLater()
+        # if self.fr: self.fr.deleteLater()
 
+        for c in self.checks:
+            c.deleteLater()
         self.checks = []
-        self.fr = QtGui.QFrame()
-        ly = QtGui.QVBoxLayout(self.fr)
+
+        for l in self.lbs:
+            l.deleteLater()
+        self.lbs = []
+
+        # self.fr = QtGui.QFrame()
+        # ly = QtGui.QVBoxLayout(self.fr)
 
         for r in requirements:
-            ck = QtGui.QCheckBox(self)
+
+            ck = QtGui.QCheckBox()
+            self.checks.append(ck)
+
             lb = None
             if type(r) is dal.requirements.RequirementOption:
                 ck.setEnabled(False)
@@ -53,32 +65,37 @@ class RequirementsWidget(QtGui.QWidget):
             if r.type == 'more':
                 # if type is more then it's likely the description is verbose
                 # better place it on a separated label
-                lb = QtGui.QLabel( unicode.format( u"<em>{0}</em>", r.text), self )
-                lb.setWordWrap (True)
+                # lb = QtGui.QTextEdit(unicode.format(u"<em>{0}</em>", r.text))
+                lb = QtGui.QTextEdit()
+                lb.setText(unicode.format(u"<em>{0}</em>", r.text))
+                # lb.setWordWrap (True)
                 lb.setAlignment(QtCore.Qt.AlignJustify)
-                lb.setBuddy(ck)
-                ck.setText( self.tr("Role play") )
+                # lb.setBuddy(ck)
+                self.lbs.append(lb)
+
+                ck.setText(self.tr("Role play"))
             else:
                 ck.setText(r.text)
                 # check if requirement match
-                ck.setChecked( r.match(snap, dstore) )
+                ck.setChecked(r.match(snap, dstore))
 
-            self.checks.append(ck)
-            ly.addWidget(ck)
-            if lb: ly.addWidget(lb)
+            self.vbox.addWidget(ck)
+            if lb:
+                self.vbox.addWidget(lb)
 
-        self.vbox.addWidget(self.fr)
+        # self.vbox.addItem(ly)
         self.setUpdatesEnabled(True)
 
     def match(self):
         for c in self.checks:
-            if not c.isChecked(): return False
+            if not c.isChecked():
+                return False
         return True
 
     def match_at_least_one(self):
         if len(self.checks) == 0:
             return True
         for c in self.checks:
-            if c.isChecked(): return True
+            if c.isChecked():
+                return True
         return False
-
