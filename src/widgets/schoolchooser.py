@@ -22,6 +22,8 @@ import widgets
 import os
 import sys
 
+from collections import OrderedDict
+
 
 class SchoolChooserWidget(QtGui.QWidget):
     def __init__(self, pc, dstore, parent=None):
@@ -52,7 +54,7 @@ class SchoolChooserWidget(QtGui.QWidget):
         return QtCore.QSize(480, 480)
 
     def build_ui(self):
-        self.setStyleSheet('''QWidget { border: 1px solid red; }''')
+        # self.setStyleSheet('''QWidget { border: 1px solid red; }''')
         #
         # [ clan  : ____ ]
         # [ school: ____ ]
@@ -102,7 +104,6 @@ class SchoolChooserWidget(QtGui.QWidget):
 
     def build_requirements_panel(self):
         self.req_list = widgets.RequirementsWidget(self)
-        # self.req_list = QtGui.QFrame(self)
         return self.req_list
 
     @property
@@ -171,6 +172,7 @@ class SchoolChooserWidget(QtGui.QWidget):
         '''setting this property will also update the ui'''
         self._allow_basic_schools = value
         self.cx_base_schools.setChecked(value)
+        self.load_clans()
         self.load_schools(self.current_clan_id)
 
     @property
@@ -182,6 +184,7 @@ class SchoolChooserWidget(QtGui.QWidget):
         '''setting this property will also update the ui'''
         self._allow_advanced_schools = value
         self.cx_advc_schools.setChecked(value)
+        self.load_clans()
         self.load_schools(self.current_clan_id)
 
     @property
@@ -193,17 +196,10 @@ class SchoolChooserWidget(QtGui.QWidget):
         '''setting this property will also update the ui'''
         self._allow_alternate_paths = value
         self.cx_path_schools.setChecked(value)
+        self.load_clans()
         self.load_schools(self.current_clan_id)
 
-    def load_clans(self):
-        self.cb_clan.clear()
-        self.cb_clan.addItem(self.tr("No Clan"), None)
-        for c in sorted(self.dstore.clans, key=lambda x: x.name):
-            self.cb_clan.addItem(c.name, c.id)
-
-    def load_schools(self, clanid=None):
-        self.cb_school.clear()
-
+    def get_filtered_school_list(self):
         school_list = []
 
         if self.allow_basic_schools:
@@ -212,6 +208,26 @@ class SchoolChooserWidget(QtGui.QWidget):
             school_list += [x for x in self.dstore.schools if 'advanced' in x.tags]
         if self.allow_alternate_paths:
             school_list += [x for x in self.dstore.schools if 'alternate' in x.tags]
+
+        return school_list
+
+    def get_filtered_clan_list(self):
+        schools = self.get_filtered_school_list()
+        return [dal.query.get_clan(self.dstore, x) for x in OrderedDict.fromkeys([x.clanid for x in schools]).keys()]
+
+    def load_clans(self):
+        self.cb_clan.clear()
+        self.cb_clan.addItem(self.tr("No Clan"), None)
+
+        clan_list = self.get_filtered_clan_list()
+
+        for c in sorted(clan_list, key=lambda x: x.name):
+            self.cb_clan.addItem(c.name, c.id)
+
+    def load_schools(self, clanid=None):
+        self.cb_school.clear()
+
+        school_list = self.get_filtered_school_list()
 
         if clanid:
             school_list = [x for x in school_list if x.clanid == clanid]
@@ -309,13 +325,11 @@ class SchoolChooserWidget(QtGui.QWidget):
         self.update_bonus_trait(school_dal)
         self.update_school_requirements(school_dal)
 
-        print(self.height(), self.req_list.sizeHint())
-
-
     def update_school_requirements(self, school_dal):
         self.req_list.set_requirements(self.pc,
                                        self.dstore,
                                        school_dal.require)
+        self.update()
 
     def update_bonus_trait(self, school_dal):
         bonus_trait = None

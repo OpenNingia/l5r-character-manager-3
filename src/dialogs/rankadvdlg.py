@@ -331,7 +331,7 @@ class RankAdvDialog(WizardDialog):
 
         self.add_page(SummaryPage(self.pages, self), last=True)
 
-        self.resize(600, 400)
+        self.resize(700, 600)
 
         self.end_add_pages()
 
