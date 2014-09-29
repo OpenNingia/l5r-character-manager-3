@@ -26,6 +26,9 @@ from collections import OrderedDict
 
 
 class SchoolChooserWidget(QtGui.QWidget):
+
+    statusChanged = QtCore.Signal(bool)
+
     def __init__(self, pc, dstore, parent=None):
         super(SchoolChooserWidget, self).__init__(parent)
 
@@ -320,10 +323,11 @@ class SchoolChooserWidget(QtGui.QWidget):
     def update_school_properties(self, school_dal=None):
         if not school_dal:
             school_dal = dal.query.get_school(self.dstore, self.current_school_id)
-        if not school_dal:
-            return
-        self.update_bonus_trait(school_dal)
-        self.update_school_requirements(school_dal)
+        if school_dal:
+            self.update_bonus_trait(school_dal)
+            self.update_school_requirements(school_dal)
+
+            self.statusChanged.emit(self.req_list.match())
 
     def update_school_requirements(self, school_dal):
         self.req_list.set_requirements(self.pc,
@@ -342,6 +346,9 @@ class SchoolChooserWidget(QtGui.QWidget):
             self.lb_trait.setText(self.red(self.tr("None")))
         else:
             self.lb_trait.setText(self.green("+1 {}").format(self.get_trait_or_ring(bonus_trait)))
+
+    def refresh_status(self):
+        self.statusChanged.emit(self.req_list.match())
 
 
 # ## MAIN ## #

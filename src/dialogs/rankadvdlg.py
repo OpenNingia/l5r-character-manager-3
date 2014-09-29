@@ -35,6 +35,8 @@ def new_horiz_line(parent=None):
 
 class WizardPage (QtGui.QWidget):
 
+    nextAllowed = QtCore.Signal(bool)
+
     def __init__(self, widget=None, parent=None):
         super(WizardPage, self).__init__(parent)
 
@@ -81,6 +83,13 @@ class WizardPage (QtGui.QWidget):
         hbox.addWidget(w)
         hbox.addStretch()
 
+    def clear(self):
+        pass
+
+    def refresh_status(self):
+        if hasattr(self.widget, 'refresh_status'):
+            self.widget.refresh_status()
+
 
 class WizardDialog(QtGui.QDialog):
 
@@ -98,6 +107,8 @@ class WizardDialog(QtGui.QDialog):
         vbox.addWidget(new_horiz_line(self))
         vbox.addWidget(self.stack)
         vbox.addSpacing(32)
+
+        self.current_page = None
 
         self.make_bottom_bar()
 
@@ -148,6 +159,10 @@ class WizardDialog(QtGui.QDialog):
 
     def end_add_pages(self):
         self.stack.blockSignals(False)
+
+        for p in self.pages:
+            p.nextAllowed.connect(self.on_next_allowed)
+
         self.on_page_change(0)
 
     def on_page_change(self, index):
@@ -158,6 +173,12 @@ class WizardDialog(QtGui.QDialog):
         self.bt_back.setEnabled(not page.first)
         self.bt_skip.setEnabled(page.skippable)
         self.bt_next.setText(self.tr("Finish") if page.last else self.tr("Next>"))
+        self.current_page = page
+        self.current_page.refresh_status()
+
+    def on_next_allowed(self, allowed):
+        if self.sender() == self.current_page:
+            self.bt_next.setEnabled(allowed)
 
     def on_cancel(self):
         self.reject()
@@ -209,6 +230,8 @@ class FirstSchoolPage(WizardPage):
         w.show_bonus_trait = True
         w.show_school_requirements = False
 
+        w.statusChanged.connect(self.nextAllowed)
+
         self._set_ui(w)
 
     def get_h1_text(self):
@@ -237,6 +260,8 @@ class NewSchoolPage(WizardPage):
         # disable alternate path filter
         w.cx_path_schools.setEnabled(False)
 
+        w.statusChanged.connect(self.nextAllowed)
+
         self._set_ui(w)
 
     def get_h1_text(self):
@@ -262,6 +287,8 @@ class AlternatePathPage(WizardPage):
         w.show_filter_selection = False
         w.show_bonus_trait = False
         w.show_school_requirements = True
+
+        w.statusChanged.connect(self.nextAllowed)
 
         self._set_ui(w)
 
