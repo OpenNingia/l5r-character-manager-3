@@ -290,7 +290,10 @@ class EquipmentListModel(QtCore.QAbstractListModel):
         else:
             item = self.items[index.row() - len(self.school_outfit)]
 
-        item = item.decode('utf-8')
+        try:
+            item = item.decode('utf-8')
+        except:
+            pass
 
         if role == QtCore.Qt.DisplayRole:
             return item

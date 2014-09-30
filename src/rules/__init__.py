@@ -223,6 +223,7 @@ def calculate_mod_damage_roll(pc, weap):
     dmg_r, dmg_k = calculate_base_damage_roll(pc, weap)
     r_mod = 0
     k_mod = 0
+    flat_bonus = 0
 
     # any roll bonuses
     anyr = pc.get_modifiers('anyr')
@@ -237,5 +238,6 @@ def calculate_mod_damage_roll(pc, weap):
         if x.active and x.dtl == weap.name:
             r_mod += x.value[0]
             k_mod += x.value[1]
+            flat_bonus += x.value[2]
 
-    return dmg_r + r_mod, dmg_k + k_mod
+    return dmg_r + r_mod, dmg_k + k_mod, flat_bonus
