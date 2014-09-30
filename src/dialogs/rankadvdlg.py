@@ -83,12 +83,13 @@ class WizardPage (QtGui.QWidget):
         hbox.addWidget(w)
         hbox.addStretch()
 
-    def clear(self):
-        pass
+    def load(self):
+        if hasattr(self.widget, 'load'):
+            self.widget.load()
 
-    def refresh_status(self):
-        if hasattr(self.widget, 'refresh_status'):
-            self.widget.refresh_status()
+    def clear(self):
+        if hasattr(self.widget, 'clear'):
+            self.widget.clear()
 
 
 class WizardDialog(QtGui.QDialog):
@@ -174,7 +175,7 @@ class WizardDialog(QtGui.QDialog):
         self.bt_skip.setEnabled(page.skippable)
         self.bt_next.setText(self.tr("Finish") if page.last else self.tr("Next>"))
         self.current_page = page
-        self.current_page.refresh_status()
+        self.current_page.load()
 
     def on_next_allowed(self, allowed):
         if self.sender() == self.current_page:
@@ -229,6 +230,7 @@ class FirstSchoolPage(WizardPage):
         w.show_filter_selection = False
         w.show_bonus_trait = True
         w.show_school_requirements = False
+        w.show_multiple_schools_option = False
 
         w.statusChanged.connect(self.nextAllowed)
 
@@ -239,7 +241,7 @@ class FirstSchoolPage(WizardPage):
 <center>
 <h1>Join your First School</h1>
 <p style="color: #666">In this phase you're limited to base schools,
-        however you can replace this rank with an alternative path
+        however you can replace this rank with an alternate path
         on the next step</p>
 </center>
         ''')
@@ -250,15 +252,17 @@ class NewSchoolPage(WizardPage):
         super(NewSchoolPage, self).__init__(parent)
 
         w = widgets.SchoolChooserWidget(parent.pc, parent.dstore, self)
+
+        # disable alternate path filter
+        w.cx_path_schools.setEnabled(False)
+
         w.allow_advanced_schools = True
         w.allow_alternate_paths = False
         w.allow_basic_schools = True
         w.show_filter_selection = True
         w.show_bonus_trait = False
         w.show_school_requirements = True
-
-        # disable alternate path filter
-        w.cx_path_schools.setEnabled(False)
+        w.show_different_school_option = False
 
         w.statusChanged.connect(self.nextAllowed)
 
@@ -287,6 +291,8 @@ class AlternatePathPage(WizardPage):
         w.show_filter_selection = False
         w.show_bonus_trait = False
         w.show_school_requirements = True
+        w.show_multiple_schools_option = False
+        w.show_different_school_option = False
 
         w.statusChanged.connect(self.nextAllowed)
 
@@ -298,6 +304,9 @@ class AlternatePathPage(WizardPage):
 <h1>Follow an Alternate Path</h1>
 <p style="color: #666">If you don't like a certain school rank you can
 replace it with another one</p>
+<p style="color: #066">
+If you're happy with your school technique, skip this step
+</p>
 </center>
         ''')
 
