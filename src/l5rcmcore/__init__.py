@@ -294,16 +294,15 @@ class L5RCMCore(QtGui.QMainWindow):
                 spell_offset += _exporter.spell_per_page
                 spell_count -= _exporter.spell_per_page
 
-        if False:  # DISABLED FOR NOW
-            # DEDICATED SKILL SHEET
-            skill_count = len(self.pc.get_skills())
-            skill_offset = 0
+        # DEDICATED SKILL SHEET
+        skill_count = len(self.pc.get_skills())
+        skill_offset = 0
 
-            while skill_count > 0:
-                _exporter = exporters.FDFExporterSkills(skill_offset)
-                self.write_pdf('sheet_skill.pdf', _exporter)
-                skill_offset += _exporter.skills_per_page
-                skill_count -= _exporter.skills_per_page
+        while skill_count > 0:
+            _exporter = exporters.FDFExporterSkills(skill_offset)
+            self.write_pdf('sheet_skill.pdf', _exporter)
+            skill_offset += _exporter.skills_per_page
+            skill_count -= _exporter.skills_per_page
 
         # WEAPONS
         if len(self.pc.weapons) > 2:
