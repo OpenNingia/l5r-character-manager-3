@@ -68,8 +68,6 @@ class SchoolChooserWidget(QtGui.QWidget):
         self.on_clan_changed(0)
         self.on_school_changed(0)
 
-        self.refresh_status()
-
     def connect_signals(self):
         self.cb_clan.currentIndexChanged.connect(self.on_clan_changed)
         self.cb_school.currentIndexChanged.connect(self.on_school_changed)
@@ -429,10 +427,6 @@ class SchoolChooserWidget(QtGui.QWidget):
         self.set_row_visible(self.pl_options, self._show_options_panel)
         self.ck_different_school.setVisible(self._show_different_school_check)
         self.ck_multiple_schools.setVisible(self._show_multiple_school_check)
-
-    def refresh_status(self):
-        self.statusChanged.emit(self.req_list.match())
-
 
 # ## MAIN ## #
 
