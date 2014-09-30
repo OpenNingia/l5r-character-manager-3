@@ -27,6 +27,8 @@ MOD_TYPES = {
     "anyr": "Any Roll",
     "skir": "Skill Roll",
     "atkr": "Attack Roll",
+    "trat": "Trait Roll",
+    "ring": "Ring Roll",
     "hrnk": "Health Rank",
     "artn": "Armor TN",
     "arrd": "Armor RD",
@@ -38,6 +40,8 @@ MOD_DTLS = {
     "anyr": ("none", "N/A"),
     "hrnk": ("none", "N/A"),
     "skir": ("skill", "Select Skill"),
+    "trat": ("trait", "Select Trait"),
+    "ring": ("ring", "Select Ring"),
     "wdmg": ("aweap", "Select Weapon"),
     'atkr': ("aweap", "Select Weapon"),
     "artn": ("none", "N/A"),
@@ -128,7 +132,6 @@ class ModifiersTableViewModel(QtCore.QAbstractTableModel):
                 index, value, role)
 
         if ret:
-            print('user change' + str(item.active))
             self.user_change.emit()
         return ret
 
@@ -173,6 +176,5 @@ class ModifiersTableViewModel(QtCore.QAbstractTableModel):
             self.add_item(m)
 
         if self.dirty:
-            print('set model unsaved')
             model.unsaved = True
             self.dirty = False

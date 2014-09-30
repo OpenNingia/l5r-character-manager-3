@@ -241,3 +241,84 @@ def calculate_mod_damage_roll(pc, weap):
             flat_bonus += x.value[2]
 
     return dmg_r + r_mod, dmg_k + k_mod, flat_bonus
+
+
+def calculate_base_skill_roll(pc, skill):
+    # base skill roll is calculated
+    # as xky where x is skill value + trait value
+    # and y is trait
+
+    trait = skill.trait
+    trait_value = pc.get_mod_attrib_rank(trait)
+    skill_value = pc.get_skill_rank(skill.id)
+
+    return DicePool().from_values(roll=skill_value + trait_value,
+                                  keep=trait_value)
+
+
+def calculate_mod_skill_roll(pc, skill):
+
+    base_roll = calculate_base_skill_roll(pc, skill)
+
+    smod = pc.get_modifiers('skir')
+    for x in smod:
+        if x.active and x.dtl == skill.name:
+            m = DicePool().from_tuple(x.value)
+            base_roll += m
+    return base_roll
+
+
+class DicePool(object):
+    def __init__(self):
+        self.roll = 0
+        self.keep = 0
+        self.flat = 0
+
+    def from_string(self, string):
+        r, k, f = parse_rtk_with_bonus(string)
+        self.from_values(r, k, f)
+        return self
+
+    def from_values(self, roll=0, keep=0, flat=0):
+        self.roll = roll
+        self.keep = abs(keep)
+        self.flat = flat
+        return self
+
+    def from_tuple(self, rkf):
+        if len(rkf) > 2:
+            return self.from_values(rkf[0], rkf[1], rkf[2])
+        return self.from_values(rkf[0], rkf[1])
+
+    def normalize(self):
+        pass
+
+    def __str__(self):
+        return format_rtk(self.roll, self.keep, self.flat)
+
+    def __sub__(self, b):
+        # a - b
+
+        c = DicePool().from_values(self.roll, self.keep, self.flat)
+        if isinstance(b, DicePool):
+            c.roll -= b.roll
+            c.keep -= b.keep
+            c.flat -= b.flat
+        else:
+            c.flat -= b
+        c.normalize()
+        return c
+
+    def __add__(self, b):
+        # self + b
+
+        c = DicePool().from_values(self.roll, self.keep, self.flat)
+        if isinstance(b, DicePool):
+            c.roll += b.roll
+            c.keep += b.keep
+            c.flat += b.flat
+        else:
+            c.flat += b
+
+        c.normalize()
+        return c

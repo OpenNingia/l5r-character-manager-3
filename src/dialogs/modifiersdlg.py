@@ -141,6 +141,18 @@ class ModifierDialog(QtGui.QDialog):
             # cmp.setCompletionMode(QtGui.QCompleter.InlineCompletion)
             return cmp
 
+        def __trait_completer():
+            traits = [x.text for x in self.dstore.traits]
+            cmp = QtGui.QCompleter(traits)
+            # cmp.setCompletionMode(QtGui.QCompleter.InlineCompletion)
+            return cmp
+
+        def __ring_completer():
+            rings = [x.text for x in self.dstore.rings]
+            cmp = QtGui.QCompleter(rings)
+            # cmp.setCompletionMode(QtGui.QCompleter.InlineCompletion)
+            return cmp
+
         dtl = models.MOD_DTLS[mod] if mod else 'none'
 
         # set detail completer
@@ -152,6 +164,14 @@ class ModifierDialog(QtGui.QDialog):
         elif dtl[0] == 'aweap':
             self.tx_detail.setPlaceholderText(self.tr("Type weapon name"))
             self.tx_detail.setCompleter(__weap_completer())
+            self.tx_detail.setEnabled(True)
+        elif dtl[0] == 'trait':
+            self.tx_detail.setPlaceholderText(self.tr("Type trait name"))
+            self.tx_detail.setCompleter(__trait_completer())
+            self.tx_detail.setEnabled(True)
+        elif dtl[0] == 'ring':
+            self.tx_detail.setPlaceholderText(self.tr("Type ring name"))
+            self.tx_detail.setCompleter(__ring_completer())
             self.tx_detail.setEnabled(True)
         else:
             self.tx_detail.setPlaceholderText("")

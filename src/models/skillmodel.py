@@ -17,7 +17,7 @@
 
 from PySide import QtGui, QtCore
 import dal.query
-
+import rules
 
 class SkillItemModel(object):
 
@@ -25,6 +25,8 @@ class SkillItemModel(object):
         self.name = ''
         self.rank = ''
         self.trait = ''
+        self.base_roll = ''
+        self.mod_roll = ''
         self.is_school = False
         self.emph = []
         self.skill_id = 0
@@ -38,7 +40,7 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
     def __init__(self, dstore, parent=None):
         super(SkillTableViewModel, self).__init__(parent)
         self.items = []
-        self.headers = ['Name', 'Rank', 'Trait', 'Emphases']
+        self.headers = ['Name', 'Rank', 'Trait', 'Base Roll', 'Mod Roll', 'Emphases']
         self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
         self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
                          QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
@@ -74,6 +76,10 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
             if index.column() == 2:
                 return item.trait
             if index.column() == 3:
+                return str(item.base_roll)
+            if index.column() == 4:
+                return str(item.mod_roll)
+            if index.column() == 5:
                 return ', '.join(item.emph)
         elif role == QtCore.Qt.FontRole:
             if item.is_school and self.bold_font:
@@ -105,17 +111,13 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
         self.items = []
         self.endResetModel()
 
-    def build_item_model(self, sk_id):
+    def build_item_model(self, sk):
         itm = SkillItemModel()
-        sk = dal.query.get_skill(self.dstore, sk_id)
-        if sk:
-            itm.skill_id = sk.id
-            itm.name = sk.name
-            itm.trait = sk.trait
-        else:
-            print('cannot find skill: {0}'.format(sk_id))
-
-        # TODO: translate trait
+        itm.skill_id = sk.id
+        itm.name = sk.name
+        trait = (dal.query.get_trait(self.dstore, sk.trait) or
+                 dal.query.get_ring(self.dstore, sk.trait))
+        itm.trait = trait.text
         return itm
 
     def update_from_model(self, model):
@@ -124,8 +126,14 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
 
         self.clean()
         for s in skills_id_a:
-            itm = self.build_item_model(s)
+            sk = dal.query.get_skill(self.dstore, s)
+            if not sk:
+                print('cannot find skill: {0}'.format(s))
+                continue
+            itm = self.build_item_model(sk)
             itm.rank = model.get_skill_rank(s)
             itm.emph = model.get_skill_emphases(s)
+            itm.base_roll = rules.calculate_base_skill_roll(model, sk)
+            itm.mod_roll = rules.calculate_mod_skill_roll(model, sk)
             itm.is_school = (s in skills_id_s)
             self.add_item(itm)

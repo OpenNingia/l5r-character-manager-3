@@ -238,6 +238,10 @@ class AdvancedPcModel(BasePcModel):
         return self.unsaved
 
     def get_ring_rank(self, idx):
+
+        if isinstance(idx, str):
+            idx = ring_from_name(idx)
+
         if idx == RINGS.VOID:
             return self.get_void_rank()
 
@@ -256,6 +260,10 @@ class AdvancedPcModel(BasePcModel):
         self.free_kiho_count = value
 
     def get_attrib_rank(self, attrib):
+
+        if isinstance(attrib, str):
+            attrib = attrib_from_name(attrib)
+
         a = self.step_0.attribs[attrib]
         b = self.step_1.attribs[attrib]
         c = self.step_2.attribs[attrib]
@@ -271,6 +279,10 @@ class AdvancedPcModel(BasePcModel):
         return d
 
     def get_mod_attrib_rank(self, attrib):
+
+        if isinstance(attrib, str):
+            attrib = attrib_from_name(attrib)
+
         a = self.step_0.attribs[attrib]
         b = self.step_1.attribs[attrib]
         c = self.step_2.attribs[attrib]
