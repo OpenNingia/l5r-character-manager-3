@@ -1955,6 +1955,9 @@ class L5RMain(L5RCMCore):
         if self.nicebar:
             return
 
+        print('check rank advancement. potential rank: {}, actual rank: {}',
+              self.pc.get_insight_rank(), self.last_rank)
+
         if self.pc.get_insight_rank() > self.last_rank:
             # HEY, NEW RANK DUDE!
 

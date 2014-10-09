@@ -117,7 +117,10 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
         itm.name = sk.name
         trait = (dal.query.get_trait(self.dstore, sk.trait) or
                  dal.query.get_ring(self.dstore, sk.trait))
-        itm.trait = trait.text
+        if trait:
+            itm.trait = trait.text
+        else:
+            itm.trait = sk.trait
         return itm
 
     def update_from_model(self, model):

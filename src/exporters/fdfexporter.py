@@ -29,6 +29,7 @@ class FDFExporter(object):
     def __init__(self):
         self.model = None
         self.form = None
+        self.pdf_encoding = 'iso-8859-15'
 
     def set_model(self, model):
         self.model = model
@@ -56,17 +57,32 @@ class FDFExporter(object):
         io.write(u"<<\n/Root 1 0 R \n\n>>\n%%EOF\n")
 
     def fdf_escape(self, value):
-        return str(value).replace('\\', '\\\\').replace('(', '\\(').replace(')', '\\)')
+        return value.replace('\\', '\\\\').replace('(', '\\(').replace(')', '\\)')
 
     def export_field(self, key, value, io):
 
+        string_value = None
         if isinstance(value, bool):
-            io.write(
-                unicode.format(u"<< /V /{1} /T({0})>>", key, u'Yes' if value else u'No'))
+            string_value = u"Yes" if value else u"No"
         else:
-            to_write = unicode.format(u"<< /V({1}) /T({0})>>", key, self.fdf_escape(value)).encode(
-                "iso-8859-15", "xmlcharrefreplace")
-            io.write(to_write)
+            string_value = unicode(value)
+
+        # from unicode to UTF-8
+        string_value = string_value.encode(self.pdf_encoding,
+                                           'xmlcharrefreplace')
+
+        # escape
+        string_value = self.fdf_escape(string_value)
+
+        to_write = str.format("<< /V({1}) /T({0})>>", key, string_value)
+
+        # if isinstance(value, bool):
+        #    io.write(
+        #        unicode.format(u"<< /V /{1} /T({0})>>", key, u'Yes' if value else u'No'))
+        # else:
+        #    to_write = unicode.format(u"<< /V({1}) /T({0})>>", key, self.fdf_escape(value)).encode(
+        #        "iso-8859-15", "xmlcharrefreplace")
+        io.write(to_write)
 
     # HELPERS
 
