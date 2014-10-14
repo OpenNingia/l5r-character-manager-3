@@ -2,7 +2,8 @@
 
 set root=%~dp0
 
-del /S /F /Q .\dist\*.*
+REM del /S /F /Q .\dist\*.*
+rmdir /S /Q dist
 
 REM GO TO SOURCE DIR
 cd ..\..\..\src
@@ -23,6 +24,6 @@ echo move /Y .\dist "%root%"
 move /Y .\dist "%root%"
 
 REM DELETE BUILD DIRECTORY
-del /S /F /Q .\build\*.*
+del /S /F /Q .\build\*.* ?> nul
 
 cd %root%
