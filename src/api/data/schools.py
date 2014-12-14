@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -18,25 +19,50 @@ import dal.query
 from asq.initiators import query
 from api import __api
 
+
 def get(c):
-    '''return a school by its id'''
+    """return a school by its id"""
     return query(__api.ds.schools).where(lambda x: x.id == c).first_or_default(None)
 
+
 def get_base():
-    '''returns basic schools list'''
+    """returns basic schools list"""
     return query(__api.ds.schools) \
-           .where(lambda x: 'advanced' not in x.tags) \
-           .where(lambda x: 'alternate' not in x.tags) \
-           .to_list()
+        .where(lambda x: 'advanced' not in x.tags) \
+        .where(lambda x: 'alternate' not in x.tags) \
+        .to_list()
+
 
 def get_advanced():
-    '''returns advanced schools list'''
+    """returns advanced schools list"""
     return query(__api.ds.schools) \
-           .where(lambda x: 'advanced' in x.tags) \
-           .to_list()
+        .where(lambda x: 'advanced' in x.tags) \
+        .to_list()
+
 
 def get_paths():
-    '''returns advanced schools list'''
+    """returns advanced schools list"""
     return query(__api.ds.schools) \
-           .where(lambda x: 'alternate' in x.tags) \
-           .to_list()
+        .where(lambda x: 'alternate' in x.tags) \
+        .to_list()
+
+
+def is_path(sid):
+    """returns true if the given school is an alternate path"""
+
+    school = get(sid)
+    if not school: return False
+    return 'alternate' in school.tags
+
+
+def get_skills(sid):
+    """return fixed school skills"""
+    school = get(sid)
+    if not school: return []
+    return school.skills
+
+def get_skills_to_choose(sid):
+    """return variable school skills"""
+    school = get(sid)
+    if not school: return []
+    return school.skills_pc

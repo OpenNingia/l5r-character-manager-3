@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -18,15 +19,28 @@
 import dal.query
 from api import __api
 
+
 def set_locale(loc):
+    """set data locale"""
     __api.locale = loc
 
+
 def set_blacklist(blk):
+    """set data blacklist"""
     __api.blacklist = blk
 
+
 def reload():
+    """reloads data from storage"""
     __api.reload()
 
+
 def get_trait_or_ring(traitid):
+    """returns the trait or the ring from the given id"""
     return (dal.query.get_trait(__api.ds, traitid) or
             dal.query.get_ring(__api.ds, traitid))
+
+
+def model():
+    """returns data access model"""
+    return __api.ds

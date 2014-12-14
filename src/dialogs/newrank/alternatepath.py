@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -24,12 +25,13 @@ import widgets
 from wizardpage import WizardPage
 from PySide import QtCore, QtGui
 
+
 class AlternatePathPage(WizardPage):
 
     def __init__(self, parent=None):
         super(AlternatePathPage, self).__init__(parent)
 
-        w = widgets.SchoolChooserWidget(parent.pc, parent.dstore, self)
+        w = widgets.SchoolChooserWidget(self)
         w.allow_advanced_schools = False
         w.allow_alternate_paths = True
         w.allow_basic_schools = False

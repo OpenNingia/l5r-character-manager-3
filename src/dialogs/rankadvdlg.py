@@ -14,11 +14,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import os
-import sys
-import dal
-import dal.query
-import models
+import api.character.rankadv
+import api.character
 
 from newrank.wizardpage import WizardPage
 from newrank.alternatepath import AlternatePathPage
@@ -120,9 +117,6 @@ class WizardDialog(QtGui.QDialog):
         page = self.pages[index]
         self.h1.setText(page.get_h1_text())
 
-        # partial progress
-        self.on_partial_progress()
-
         # buttons
         self.bt_back.setEnabled(not page.first)
         self.bt_skip.setEnabled(page.skippable)
@@ -147,7 +141,13 @@ class WizardDialog(QtGui.QDialog):
     def on_next(self):
         index = max(0, self.stack.currentIndex())
         page = self.pages[index]
+
+        # apply partial progress
+        self.on_partial_progress(page)
+
+        # activate next page
         self.stack.setCurrentIndex(index + 1)
+
         if page.last:
             self.on_finish()
 
@@ -155,9 +155,14 @@ class WizardDialog(QtGui.QDialog):
         index = max(0, self.stack.currentIndex())
         page = self.pages[index]
         page.clear()
-        self.on_next()
 
-    def on_partial_progress(self):
+        # activate next page
+        self.stack.setCurrentIndex(index + 1)
+
+        if page.last:
+            self.on_finish()
+
+    def on_partial_progress(self, page):
         pass
 
 class SummaryPage(WizardPage):
@@ -167,12 +172,13 @@ class SummaryPage(WizardPage):
 
 
 class RankAdvDialog(WizardDialog):
-    def __init__(self, pc, dstore, rank, parent=None):
+    def __init__(self, rank, parent=None):
         super(RankAdvDialog, self).__init__(parent)
 
-        self.pc = pc
-        self.dstore = dstore
         self.rank = rank
+
+        # start rank advancement
+        api.character.rankadv.start(rank)
 
         self.build_ui()
 
@@ -213,26 +219,19 @@ class RankAdvDialog(WizardDialog):
     def on_finish(self):
         pass
 
-    def on_partial_progress(self):
-        for p in self.pages:
-            p.apply_rank_advancement()
+    def on_partial_progress(self, page):
+        page.apply_rank_advancement()
 
 # ## MAIN ## #
 
 
 def main():
+    import sys
     app = QtGui.QApplication(sys.argv)
 
-    user_data_dir = os.environ['APPDATA'].decode('latin-1')
-    pack_data_dir = os.path.join(user_data_dir, 'openningia', 'l5rcm')
-
-    dstore = dal.Data(
-        [os.path.join(pack_data_dir, 'core.data'),
-         os.path.join(pack_data_dir, 'data')],
-        [])
-
-    pc = models.AdvancedPcModel()
-    dlg = RankAdvDialog(pc, dstore, 1)
+    # pc = models.AdvancedPcModel()
+    api.character.new()
+    dlg = RankAdvDialog(1)
     dlg.exec_()
 
 

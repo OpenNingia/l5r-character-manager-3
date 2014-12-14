@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -14,4 +15,27 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from .. import __api
+from api import __api
+import models
+
+
+def model():
+    """return character model"""
+    return __api.pc
+
+
+def new():
+    """creates new player character model"""
+    __api.pc = models.AdvancedPcModel()
+
+
+def has_tag(tag):
+    return tag in __api.pc.tags
+
+
+def has_rule(tag):
+    return tag in __api.pc.rules
+
+
+def has_tag_or_rule(tag):
+    return has_tag(tag) or has_rule(tag)

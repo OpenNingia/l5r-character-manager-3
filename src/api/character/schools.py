@@ -14,3 +14,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+__author__ = 'Daniele'
+
+from api import __api
+import api.character.rankadv
+
+from asq.initiators import query
+from asq.selectors import a_
+
+
+def get_current():
+    """returns the id of the character current school"""
+    if not __api.pc: return None
+    return __api.pc.current_school_id
+
+
+def get_rank(sid):
+    """returns the character rank in the given school"""
+
+    return query(api.character.rankadv.all()) \
+        .where(lambda x: x.school == sid) \
+        .order_by_descending(a_('school_rank')) \
+        .select(a_('school_rank')).first_or_default(0)
+

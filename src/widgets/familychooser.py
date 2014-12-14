@@ -14,15 +14,21 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtGui, QtCore
-try:
-    import dal
-    import dal.query
-except:
-    from ..dal import query
+from PySide import QtGui
 
-import os
-import sys
+# ASQ ( data query )
+from asq.initiators import query
+from asq.selectors import a_
+
+# L5RCM DATA
+import api.data
+import api.data.families
+import api.data.clans
+import api.character.rankadv
+
+
+def green(text):
+    return '<span style="color: #0A0">' + text + '</span>'
 
 
 class FamilyChooserWidget(QtGui.QWidget):
@@ -37,7 +43,6 @@ class FamilyChooserWidget(QtGui.QWidget):
         self.current_family_id = None
 
         self.build_ui()
-        #self.load_clans()
 
     def build_ui(self):
 
@@ -81,7 +86,8 @@ class FamilyChooserWidget(QtGui.QWidget):
         self.cb_clan.blockSignals(True)
         self.cb_clan.clear()
         self.cb_clan.addItem(self.tr("No Clan"), None)
-        for c in sorted(self.dstore.clans, key=lambda x: x.name):
+
+        for c in query(api.data.clans.all()).order_by(a_('name')):
             self.cb_clan.addItem(c.name, c.id)
         self.cb_clan.blockSignals(False)
 
@@ -92,13 +98,12 @@ class FamilyChooserWidget(QtGui.QWidget):
         self.cb_family.blockSignals(True)
         self.cb_family.clear()
 
-        family_list = []
         if clanid:
-            family_list = [x for x in self.dstore.families if x.clanid == clanid]
+            family_list = query(api.data.families.all()).where(lambda x: x.clanid == clanid).order_by(a_('name'))
         else:
-            family_list = self.dstore.families
+            family_list = query(api.data.families.all()).order_by(a_('name'))
 
-        for f in sorted(family_list, key=lambda x: x.name):
+        for f in family_list:
             self.cb_family.addItem(f.name, f.id)
         self.cb_family.blockSignals(False)
 
@@ -111,8 +116,7 @@ class FamilyChooserWidget(QtGui.QWidget):
         self.cb_family.blockSignals(True)
 
         # get family_dal
-        #family_dal = dal.query.get_family(self.dstore, family_id)
-        family_dal = api.data.family.get(family_id)
+        family_dal = api.data.families.get(family_id)
         if family_dal:
 
             self.current_family_id = family_id
@@ -139,19 +143,14 @@ class FamilyChooserWidget(QtGui.QWidget):
         self.current_family_id = self.cb_family.itemData(self.cb_family.currentIndex())
         self.update_bonus_trait()
 
-    def green(self, text):
-        return '<span style="color: #0A0">' + text + '</span>'
-
     def update_bonus_trait(self):
-        bonus_trait = None
         try:
-            # bonus_trait = dal.query.get_family(self.dstore, self.current_family_id).trait
-            bonus_trait = api.data.family.get(self.current_family_id).trait
+            bonus_trait = api.data.families.get(self.current_family_id).trait
 
             if not bonus_trait:
                 self.lb_trait.setText("")
             else:
-                self.lb_trait.setText(self.green("+1 {}").format(api.get_trait_or_ring(bonus_trait)))
+                self.lb_trait.setText(green("+1 {}").format(api.data.get_trait_or_ring(bonus_trait)))
         except:
             print('cannot find bonus trait of {}'.format(self.current_family_id))
 
@@ -159,15 +158,8 @@ class FamilyChooserWidget(QtGui.QWidget):
 
 
 def main():
+    import sys
     app = QtGui.QApplication(sys.argv)
-
-    user_data_dir = os.environ['APPDATA'].decode('latin-1')
-    pack_data_dir = os.path.join(user_data_dir, 'openningia', 'l5rcm')
-
-    #dstore = dal.Data(
-    #    [os.path.join(pack_data_dir, 'core.data'),
-    #     os.path.join(pack_data_dir, 'data')],
-    #    [])
 
     dlg = QtGui.QDialog()
     fam = FamilyChooserWidget(dlg)

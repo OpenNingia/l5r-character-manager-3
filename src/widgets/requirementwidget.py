@@ -21,6 +21,18 @@ import dal
 from PySide import QtCore, QtGui
 
 
+def green(text):
+    return u'<p style="color: #0A0"><b>\u221A</b>{}</p>'.format(text)
+
+
+def red(text):
+    return u'<p style="color: #A00"><b>x</b> {}</p>'.format(text)
+
+
+def blue(text):
+    return u'<p style="color: #00A"><em>{}</em></p>'.format(text)
+
+
 class RequirementsWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
@@ -35,15 +47,6 @@ class RequirementsWidget(QtGui.QWidget):
         # vbox.setSizeConstraint(QtGui.QLayout.SetMinimumSize)
 
         self.reset()
-
-    def green(self, text):
-        return u'<p style="color: #0A0"><b>\u221A</b>{}</p>'.format(text)
-
-    def red(self, text):
-        return u'<p style="color: #A00"><b>x</b> {}</p>'.format(text)
-
-    def blue(self, text):
-        return u'<p style="color: #00A"><em>{}</em></p>'.format(text)
 
     def sizeHint(self):
         return QtCore.QSize(400, len(self.paragraphs) * 30 + 100 + self.bonus_height)
@@ -68,13 +71,13 @@ class RequirementsWidget(QtGui.QWidget):
             if r.type == 'more':
                 self.matches_at_least_one = True
                 self.bonus_height = 400
-                self.paragraphs.append(self.blue(r.text))
+                self.paragraphs.append(blue(r.text))
             elif r.match(snap, dstore):
                 self.matches_at_least_one = True
-                self.paragraphs.append(self.green(r.text))
+                self.paragraphs.append(green(r.text))
             else:
                 self.matches_all = False
-                self.paragraphs.append(self.red(r.text))
+                self.paragraphs.append(red(r.text))
 
         # self.setUpdatesEnabled(True)
 

@@ -28,7 +28,7 @@ class NewSchoolPage(WizardPage):
     def __init__(self, parent=None):
         super(NewSchoolPage, self).__init__(parent)
 
-        w = widgets.SchoolChooserWidget(parent.pc, parent.dstore, self)
+        w = widgets.SchoolChooserWidget(self)
 
         # disable alternate path filter
         w.cx_path_schools.setEnabled(False)

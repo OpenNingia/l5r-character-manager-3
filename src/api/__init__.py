@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -41,6 +42,9 @@ class L5RCMAPI(object):
 
     # data pack blacklist
     blacklist = []
+
+    # current rank advancement
+    current_rank_adv = None
 
     def __init__(self):
         '''initialize api'''

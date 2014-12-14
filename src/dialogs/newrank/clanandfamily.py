@@ -27,7 +27,7 @@ from PySide import QtCore, QtGui
 class ClanAndFamilyPage(WizardPage):
     def __init__(self, parent=None):
         super(ClanAndFamilyPage, self).__init__(parent)
-        self._set_ui(widgets.FamilyChooserWidget(parent.dstore, self))
+        self._set_ui(widgets.FamilyChooserWidget(self))
 
     def get_h1_text(self):
         return self.tr('''

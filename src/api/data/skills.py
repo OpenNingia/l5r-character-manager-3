@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -14,13 +15,27 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import dal.query as q
 from api import __api
+from asq.initiators import query
 
-def get_categories():
-    '''returns a list of skill categories with 'id' and 'name' properties'''
+
+def categories():
+    """returns a list of skill categories with 'id' and 'name' properties"""
+    if not __api.ds:
+        return []
     return __api.ds.skcategs
 
-def get_skills():
-    '''returns a list of skills'''
+
+def all():
+    """returns a list of skills"""
+    if not __api.ds:
+        return []
     return __api.ds.skills
+
+
+def get(sid):
+    """return a skill by its id"""
+    if not __api.ds:
+        return None
+    return query(all()).where(lambda x: x.id == sid).first_or_default(None)
+

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -18,10 +19,12 @@ from asq.initiators import query
 from asq.selectors import a_
 from api import __api
 
+
 def get(c):
-    '''returns a family by its family id'''
-    return query(__api.ds.families).where(a_('id') == c).first_or_default(None)
+    """returns a family by its family id"""
+    return query(all()).where(lambda x: x.id == c).first_or_default(None)
+
 
 def all():
-    '''returns all families'''
+    """returns all families"""
     return __api.ds.families

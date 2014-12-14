@@ -28,7 +28,7 @@ class FirstSchoolPage(WizardPage):
     def __init__(self, parent=None):
         super(FirstSchoolPage, self).__init__(parent)
 
-        w = widgets.SchoolChooserWidget(parent.pc, parent.dstore, self)
+        w = widgets.SchoolChooserWidget(self)
         w.allow_advanced_schools = False
         w.allow_alternate_paths = False
         w.allow_basic_schools = True

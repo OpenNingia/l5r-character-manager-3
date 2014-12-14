@@ -28,6 +28,10 @@ class ChooseOneSkill(QtGui.QWidget):
     cb_skill = None
     sb_search = None
 
+    @property
+    def skill(self):
+        return self.get_selected_skill()
+
     def __init__(self, parent = None):
         super(ChooseOneSkill, self).__init__(parent)
 
@@ -76,7 +80,7 @@ class ChooseOneSkill(QtGui.QWidget):
 
         # filter the skills by the selecter
         # category and order them by name
-        skills_to_show = query(api.data.skills.get_skills()) \
+        skills_to_show = query(api.data.skills.all()) \
                          .where(lambda x: x.type == c) \
                          .order_by(lambda x: x.name)
         for c in skills_to_show:
@@ -84,12 +88,15 @@ class ChooseOneSkill(QtGui.QWidget):
 
     def load_categories(self):
         self.cb_categories.clear()
-        for c in api.data.skills.get_categories():
+        for c in api.data.skills.categories():
             print('add categ', c.name, c.id)
             self.cb_categories.addItem(c.name, c.id)
 
     def get_selected_category(self):
-        return self.cb_categories.itemData( self.cb_categories.currentIndex() )
+        return self.cb_categories.itemData(self.cb_categories.currentIndex())
+
+    def get_selected_skill(self):
+        return self.cb_skills.itemData(self.cb_skills.currentIndex())
 
     def on_category_changed(self, idx):
         self.load_skills()
@@ -117,13 +124,13 @@ class ChooseOneSkill(QtGui.QWidget):
 
     def search_skill_by_text(self, tx):
 
-        return query(api.data.skills.get_skills()) \
+        return query(api.data.skills.all()) \
                .where( lambda x: tx in x.name.lower() ) \
                .to_list()
 
     def search_categ_by_text(self, tx):
 
-        return query(api.data.skills.get_categories()) \
+        return query(api.data.skills.categories()) \
                .where( lambda x: tx in x.name.lower() ) \
                .to_list()
 

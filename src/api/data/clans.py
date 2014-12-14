@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -18,10 +19,11 @@ import dal.query
 from asq.initiators import query
 from api import __api
 
+
 def get(c):
-    '''returns a clan by its clan id'''
+    """returns a clan by its clan id"""
     return query(__api.ds.clans).where(lambda x: x.id == c).first_or_default(None)
 
 def all():
-    '''returns all clans'''
+    """returns all clans"""
     return __api.ds.clans

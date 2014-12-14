@@ -19,25 +19,26 @@ from asq.initiators import query
 from asq.selectors import a_
 
 import api.data
+import api.character
+import api.character.rankadv
 import api.data.schools
 import api.data.clans
 import widgets
 
-import os
-import sys
 
-from collections import OrderedDict
+def green(text):
+    return '<span style="color: #0A0">' + text + '</span>'
+
+
+def red(text):
+    return '<span style="color: #A00">' + text + '</span>'
 
 
 class SchoolChooserWidget(QtGui.QWidget):
-
     statusChanged = QtCore.Signal(bool)
 
-    def __init__(self, pc, dstore, parent=None):
+    def __init__(self, parent=None):
         super(SchoolChooserWidget, self).__init__(parent)
-
-        self.pc = pc
-        self.dstore = dstore
 
         self.cb_clan = QtGui.QComboBox(self)
         self.cb_school = QtGui.QComboBox(self)
@@ -73,9 +74,22 @@ class SchoolChooserWidget(QtGui.QWidget):
         if not self.current_clan_id:
             self.load_clans()
 
+            try:
+                char_clan_id = api.character.rankadv.get_current().clan
+                self.update_ui_with_clan(char_clan_id)
+            except:
+                pass
+
         if self.current_clan_id and self.current_school_id:
             # choices were made, allow to proceed
             self.statusChanged.emit(True)
+
+    def apply_rank_advancement(self):
+        api.character.rankadv.set_school(self.current_school_id)
+        if self.ck_multiple_schools.isChecked():
+            api.character.rankadv.add_merit('multiple_schools', rank=1)
+        if self.ck_different_school.isChecked():
+            api.character.rankadv.add_merit('different_school', rank=1)
 
     def connect_signals(self):
         self.cb_clan.currentIndexChanged.connect(self.on_clan_changed)
@@ -94,7 +108,7 @@ class SchoolChooserWidget(QtGui.QWidget):
         # Bonus: ______
         #
         # Filters:
-        #        [x] Base Schools
+        # [x] Base Schools
         #        [x] Advanced Schools
         #        [ ] Alternate Paths
         #
@@ -245,7 +259,6 @@ class SchoolChooserWidget(QtGui.QWidget):
         self._allow_basic_schools = value
         self.cx_base_schools.setChecked(value)
         self.load_clans()
-        #self.load_schools(self.current_clan_id)
 
     @property
     def allow_advanced_schools(self):
@@ -257,7 +270,6 @@ class SchoolChooserWidget(QtGui.QWidget):
         self._allow_advanced_schools = value
         self.cx_advc_schools.setChecked(value)
         self.load_clans()
-        #self.load_schools(self.current_clan_id)
 
     @property
     def allow_alternate_paths(self):
@@ -269,7 +281,6 @@ class SchoolChooserWidget(QtGui.QWidget):
         self._allow_alternate_paths = value
         self.cx_path_schools.setChecked(value)
         self.load_clans()
-        #self.load_schools(self.current_clan_id)
 
     def get_filtered_school_list(self):
         school_list = []
@@ -285,11 +296,11 @@ class SchoolChooserWidget(QtGui.QWidget):
     def get_filtered_clan_list(self):
         schools = self.get_filtered_school_list()
         clanids = query(schools) \
-                    .distinct(a_('clanid')) \
-                    .select(a_('clanid')) \
-                    .to_list()
+            .distinct(a_('clanid')) \
+            .select(a_('clanid')) \
+            .to_list()
 
-        return[ api.data.clans.get(x) for x in clanids]
+        return [api.data.clans.get(x) for x in clanids]
 
     def load_clans(self):
         self.cb_clan.blockSignals(True)
@@ -343,7 +354,6 @@ class SchoolChooserWidget(QtGui.QWidget):
         # get school_dal
         school_dal = api.data.schools.get(school_id)
         if school_dal:
-
             self.current_school_id = school_id
             self.current_clan_id = school_dal.clanid
 
@@ -368,7 +378,6 @@ class SchoolChooserWidget(QtGui.QWidget):
         # get clan_dal
         clan_dal = api.data.clans.get(clan_id)
         if clan_dal:
-
             self.current_school_id = None
             self.current_clan_id = clan_id
 
@@ -399,12 +408,6 @@ class SchoolChooserWidget(QtGui.QWidget):
     def on_path_filter_change(self, state):
         self.allow_alternate_paths = self.sender().isChecked()
 
-    def green(self, text):
-        return '<span style="color: #0A0">' + text + '</span>'
-
-    def red(self, text):
-        return '<span style="color: #A00">' + text + '</span>'
-
     def update_school_properties(self, school_dal=None):
         if not school_dal:
             school_dal = api.data.schools.get(self.current_school_id)
@@ -415,8 +418,8 @@ class SchoolChooserWidget(QtGui.QWidget):
             self.statusChanged.emit(self.req_list.match())
 
     def update_school_requirements(self, school_dal):
-        self.req_list.set_requirements(self.pc,
-                                       self.dstore,
+        self.req_list.set_requirements(api.character.model(),
+                                       api.data.model(),
                                        school_dal.require)
         if self._show_school_requirements:
             self.set_row_visible(self.pl_requirements,
@@ -431,9 +434,9 @@ class SchoolChooserWidget(QtGui.QWidget):
             print('cannot find bonus trait of {}'.format(self.current_school_id))
 
         if not bonus_trait:
-            self.lb_trait.setText(self.red(self.tr("None")))
+            self.lb_trait.setText(red(self.tr("None")))
         else:
-            self.lb_trait.setText(self.green("+1 {}").format(api.data.get_trait_or_ring(bonus_trait)))
+            self.lb_trait.setText(green("+1 {}").format(api.data.get_trait_or_ring(bonus_trait)))
 
     def show_or_hide_option_panel(self):
         self._show_options_panel = (self._show_multiple_school_check or
@@ -442,22 +445,16 @@ class SchoolChooserWidget(QtGui.QWidget):
         self.ck_different_school.setVisible(self._show_different_school_check)
         self.ck_multiple_schools.setVisible(self._show_multiple_school_check)
 
+
 # ## MAIN ## #
 
 
 def main():
+    import sys
     app = QtGui.QApplication(sys.argv)
 
-    user_data_dir = os.environ['APPDATA'].decode('latin-1')
-    pack_data_dir = os.path.join(user_data_dir, 'openningia', 'l5rcm')
-
-    #dstore = dal.Data(
-    #    [os.path.join(pack_data_dir, 'core.data'),
-    #     os.path.join(pack_data_dir, 'data')],
-    #    [])
-
     dlg = QtGui.QDialog()
-    fam = SchoolChooserWidget(dstore, dlg)
+    fam = SchoolChooserWidget(dlg)
 
     # fam.selected_school = 'hida_bushi_school'
     fam.selected_clan = 'mantis'
@@ -466,6 +463,7 @@ def main():
     dlg.exec_()
 
     print('selected school', fam.selected_school)
+
 
 if __name__ == '__main__':
     main()
