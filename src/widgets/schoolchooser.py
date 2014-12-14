@@ -15,8 +15,12 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtGui, QtCore
-import dal
-import dal.query
+from asq.initiators import query
+from asq.selectors import a_
+
+import api.data
+import api.data.schools
+import api.data.clans
 import widgets
 
 import os
@@ -61,12 +65,17 @@ class SchoolChooserWidget(QtGui.QWidget):
     def sizeHint(self):
         return QtCore.QSize(480, 480)
 
-    def load(self):
-        self.load_clans()
-        self.load_schools(self.current_clan_id)
+    def clear(self):
+        self.current_clan_id = None
+        self.current_school_id = None
 
-        self.on_clan_changed(0)
-        self.on_school_changed(0)
+    def load(self):
+        if not self.current_clan_id:
+            self.load_clans()
+
+        if self.current_clan_id and self.current_school_id:
+            # choices were made, allow to proceed
+            self.statusChanged.emit(True)
 
     def connect_signals(self):
         self.cb_clan.currentIndexChanged.connect(self.on_clan_changed)
@@ -236,7 +245,7 @@ class SchoolChooserWidget(QtGui.QWidget):
         self._allow_basic_schools = value
         self.cx_base_schools.setChecked(value)
         self.load_clans()
-        self.load_schools(self.current_clan_id)
+        #self.load_schools(self.current_clan_id)
 
     @property
     def allow_advanced_schools(self):
@@ -248,7 +257,7 @@ class SchoolChooserWidget(QtGui.QWidget):
         self._allow_advanced_schools = value
         self.cx_advc_schools.setChecked(value)
         self.load_clans()
-        self.load_schools(self.current_clan_id)
+        #self.load_schools(self.current_clan_id)
 
     @property
     def allow_alternate_paths(self):
@@ -260,22 +269,27 @@ class SchoolChooserWidget(QtGui.QWidget):
         self._allow_alternate_paths = value
         self.cx_path_schools.setChecked(value)
         self.load_clans()
-        self.load_schools(self.current_clan_id)
+        #self.load_schools(self.current_clan_id)
 
     def get_filtered_school_list(self):
         school_list = []
         if self.allow_basic_schools:
-            school_list += dal.query.get_base_schools(self.dstore)
+            school_list += api.data.schools.get_base()
         if self.allow_advanced_schools:
-            school_list += [x for x in self.dstore.schools if 'advanced' in x.tags]
+            school_list += api.data.schools.get_advanced()
         if self.allow_alternate_paths:
-            school_list += [x for x in self.dstore.schools if 'alternate' in x.tags]
+            school_list += api.data.schools.get_paths()
 
         return school_list
 
     def get_filtered_clan_list(self):
         schools = self.get_filtered_school_list()
-        return [dal.query.get_clan(self.dstore, x) for x in OrderedDict.fromkeys([x.clanid for x in schools]).keys()]
+        clanids = query(schools) \
+                    .distinct(a_('clanid')) \
+                    .select(a_('clanid')) \
+                    .to_list()
+
+        return[ api.data.clans.get(x) for x in clanids]
 
     def load_clans(self):
         self.cb_clan.blockSignals(True)
@@ -287,6 +301,8 @@ class SchoolChooserWidget(QtGui.QWidget):
         for c in sorted(clan_list, key=lambda x: x.name):
             self.cb_clan.addItem(c.name, c.id)
         self.cb_clan.blockSignals(False)
+
+        self.on_clan_changed(0)
 
     def load_schools(self, clanid=None):
 
@@ -301,6 +317,9 @@ class SchoolChooserWidget(QtGui.QWidget):
         for f in sorted(school_list, key=lambda x: x.name):
             self.cb_school.addItem(f.name, f.id)
         self.cb_school.blockSignals(False)
+
+        # load first school
+        self.on_school_changed(0)
 
     def hide_row(self, fld):
         fld.hide()
@@ -322,7 +341,7 @@ class SchoolChooserWidget(QtGui.QWidget):
         self.cb_school.blockSignals(True)
 
         # get school_dal
-        school_dal = dal.query.get_school(self.dstore, school_id)
+        school_dal = api.data.schools.get(school_id)
         if school_dal:
 
             self.current_school_id = school_id
@@ -347,7 +366,7 @@ class SchoolChooserWidget(QtGui.QWidget):
         self.cb_school.blockSignals(True)
 
         # get clan_dal
-        clan_dal = dal.query.get_clan(self.dstore, clan_id)
+        clan_dal = api.data.clans.get(clan_id)
         if clan_dal:
 
             self.current_school_id = None
@@ -386,14 +405,9 @@ class SchoolChooserWidget(QtGui.QWidget):
     def red(self, text):
         return '<span style="color: #A00">' + text + '</span>'
 
-    def get_trait_or_ring(self, traitid):
-        return (dal.query.get_trait(self.dstore, traitid) or
-                dal.query.get_ring(self.dstore, traitid))
-
     def update_school_properties(self, school_dal=None):
         if not school_dal:
-            school_dal = dal.query.get_school(self.dstore,
-                                              self.current_school_id)
+            school_dal = api.data.schools.get(self.current_school_id)
         if school_dal:
             self.update_bonus_trait(school_dal)
             self.update_school_requirements(school_dal)
@@ -419,7 +433,7 @@ class SchoolChooserWidget(QtGui.QWidget):
         if not bonus_trait:
             self.lb_trait.setText(self.red(self.tr("None")))
         else:
-            self.lb_trait.setText(self.green("+1 {}").format(self.get_trait_or_ring(bonus_trait)))
+            self.lb_trait.setText(self.green("+1 {}").format(api.data.get_trait_or_ring(bonus_trait)))
 
     def show_or_hide_option_panel(self):
         self._show_options_panel = (self._show_multiple_school_check or
@@ -437,10 +451,10 @@ def main():
     user_data_dir = os.environ['APPDATA'].decode('latin-1')
     pack_data_dir = os.path.join(user_data_dir, 'openningia', 'l5rcm')
 
-    dstore = dal.Data(
-        [os.path.join(pack_data_dir, 'core.data'),
-         os.path.join(pack_data_dir, 'data')],
-        [])
+    #dstore = dal.Data(
+    #    [os.path.join(pack_data_dir, 'core.data'),
+    #     os.path.join(pack_data_dir, 'data')],
+    #    [])
 
     dlg = QtGui.QDialog()
     fam = SchoolChooserWidget(dstore, dlg)

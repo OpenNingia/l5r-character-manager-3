@@ -19,7 +19,16 @@ import sys
 import dal
 import dal.query
 import models
-import widgets
+
+from newrank.wizardpage import WizardPage
+from newrank.alternatepath import AlternatePathPage
+from newrank.clanandfamily import ClanAndFamilyPage
+from newrank.firstschool import FirstSchoolPage
+from newrank.kiho import KihoPage
+from newrank.newschool import NewSchoolPage
+from newrank.skills import SkillsPage
+from newrank.spells import SpellsPage
+
 from PySide import QtCore, QtGui
 
 
@@ -31,65 +40,6 @@ def new_horiz_line(parent=None):
     line.setFrameShadow(QtGui.QFrame.Sunken)
     line.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
     return line
-
-
-class WizardPage (QtGui.QWidget):
-
-    nextAllowed = QtCore.Signal(bool)
-
-    def __init__(self, widget=None, parent=None):
-        super(WizardPage, self).__init__(parent)
-
-        self._skippable = False
-        self._first = False
-        self._final = False
-
-        self.widget = None
-
-    @property
-    def skippable(self):
-        return self._skippable
-
-    @skippable.setter
-    def skippable(self, value):
-        self._skippable = value
-
-    @property
-    def first(self):
-        return self._first
-
-    @first.setter
-    def first(self, value):
-        self._first = value
-
-    @property
-    def final(self):
-        return self._final
-
-    @final.setter
-    def final(self, value):
-        self._final = value
-
-    def get_summary_widget(self):
-        return QtGui.QWidget(self)
-
-    def get_h1_text(self):
-        return "placeholder"
-
-    def _set_ui(self, w):
-        self.widget = w
-        hbox = QtGui.QHBoxLayout(self)
-        hbox.addStretch()
-        hbox.addWidget(w)
-        hbox.addStretch()
-
-    def load(self):
-        if hasattr(self.widget, 'load'):
-            self.widget.load()
-
-    def clear(self):
-        if hasattr(self.widget, 'clear'):
-            self.widget.clear()
 
 
 class WizardDialog(QtGui.QDialog):
@@ -170,6 +120,9 @@ class WizardDialog(QtGui.QDialog):
         page = self.pages[index]
         self.h1.setText(page.get_h1_text())
 
+        # partial progress
+        self.on_partial_progress()
+
         # buttons
         self.bt_back.setEnabled(not page.first)
         self.bt_skip.setEnabled(page.skippable)
@@ -204,127 +157,8 @@ class WizardDialog(QtGui.QDialog):
         page.clear()
         self.on_next()
 
-
-class ClanAndFamilyPage(WizardPage):
-    def __init__(self, parent=None):
-        super(ClanAndFamilyPage, self).__init__(parent)
-        self._set_ui(widgets.FamilyChooserWidget(parent.dstore, self))
-
-    def get_h1_text(self):
-        return self.tr('''
-<center>
-<h1>Select Clan and Family</h1>
-<p style="color: #666">a Samurai should serve its clan first and foremost</p>
-</center>
-        ''')
-
-
-class FirstSchoolPage(WizardPage):
-    def __init__(self, parent=None):
-        super(FirstSchoolPage, self).__init__(parent)
-
-        w = widgets.SchoolChooserWidget(parent.pc, parent.dstore, self)
-        w.allow_advanced_schools = False
-        w.allow_alternate_paths = False
-        w.allow_basic_schools = True
-        w.show_filter_selection = False
-        w.show_bonus_trait = True
-        w.show_school_requirements = False
-        w.show_multiple_schools_option = False
-
-        w.statusChanged.connect(self.nextAllowed)
-
-        self._set_ui(w)
-
-    def get_h1_text(self):
-        return self.tr('''
-<center>
-<h1>Join your First School</h1>
-<p style="color: #666">In this phase you're limited to base schools,
-        however you can replace this rank with an alternate path
-        on the next step</p>
-</center>
-        ''')
-
-
-class NewSchoolPage(WizardPage):
-    def __init__(self, parent=None):
-        super(NewSchoolPage, self).__init__(parent)
-
-        w = widgets.SchoolChooserWidget(parent.pc, parent.dstore, self)
-
-        # disable alternate path filter
-        w.cx_path_schools.setEnabled(False)
-
-        w.allow_advanced_schools = True
-        w.allow_alternate_paths = False
-        w.allow_basic_schools = True
-        w.show_filter_selection = True
-        w.show_bonus_trait = False
-        w.show_school_requirements = True
-        w.show_different_school_option = False
-
-        w.statusChanged.connect(self.nextAllowed)
-
-        self._set_ui(w)
-
-    def get_h1_text(self):
-        return self.tr('''
-<center>
-<h1>Join a new School</h1>
-<p style="color: #666">In this phase you can join either Base school
-and Advanced ones</p>
-<p style="color: #066">To follow an alternate path, skip this step</p>
-</center>
-        ''')
-
-
-class AlternatePathPage(WizardPage):
-
-    def __init__(self, parent=None):
-        super(AlternatePathPage, self).__init__(parent)
-
-        w = widgets.SchoolChooserWidget(parent.pc, parent.dstore, self)
-        w.allow_advanced_schools = False
-        w.allow_alternate_paths = True
-        w.allow_basic_schools = False
-        w.show_filter_selection = False
-        w.show_bonus_trait = False
-        w.show_school_requirements = True
-        w.show_multiple_schools_option = False
-        w.show_different_school_option = False
-
-        w.statusChanged.connect(self.nextAllowed)
-
-        self._set_ui(w)
-
-    def get_h1_text(self):
-        return self.tr('''
-<center>
-<h1>Follow an Alternate Path</h1>
-<p style="color: #666">If you don't like a certain school rank you can
-replace it with another one</p>
-<p style="color: #066">
-If you're happy with your school technique, skip this step
-</p>
-</center>
-        ''')
-
-
-class SkillsPage(WizardPage):
-    def __init__(self, parent=None):
-        super(SkillsPage, self).__init__(parent)
-
-
-class SpellsPage(WizardPage):
-    def __init__(self, parent=None):
-        super(SpellsPage, self).__init__(parent)
-
-
-class KihoPage(WizardPage):
-    def __init__(self, parent=None):
-        super(KihoPage, self).__init__(parent)
-
+    def on_partial_progress(self):
+        pass
 
 class SummaryPage(WizardPage):
     def __init__(self, pages, parent=None):
@@ -333,7 +167,6 @@ class SummaryPage(WizardPage):
 
 
 class RankAdvDialog(WizardDialog):
-
     def __init__(self, pc, dstore, rank, parent=None):
         super(RankAdvDialog, self).__init__(parent)
 
@@ -352,7 +185,7 @@ class RankAdvDialog(WizardDialog):
             self.add_page(ClanAndFamilyPage(self), first=True)
             self.add_page(FirstSchoolPage(self))
             # to choose a Rank 1 alternate path
-            self.add_page(AlternatePathPage(self))
+            self.add_page(AlternatePathPage(self), skippable=True)
             self.add_page(SkillsPage(self))  # get those starting skills
         else:
             # to choose a different school
@@ -380,6 +213,10 @@ class RankAdvDialog(WizardDialog):
     def on_finish(self):
         pass
 
+    def on_partial_progress(self):
+        for p in self.pages:
+            p.apply_rank_advancement()
+
 # ## MAIN ## #
 
 
@@ -395,8 +232,9 @@ def main():
         [])
 
     pc = models.AdvancedPcModel()
-    dlg = RankAdvDialog(pc, dstore, 2)
+    dlg = RankAdvDialog(pc, dstore, 1)
     dlg.exec_()
+
 
 if __name__ == '__main__':
     main()

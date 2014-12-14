@@ -26,10 +26,8 @@ import sys
 
 
 class FamilyChooserWidget(QtGui.QWidget):
-    def __init__(self, dstore, parent=None):
+    def __init__(self, parent=None):
         super(FamilyChooserWidget, self).__init__(parent)
-
-        self.dstore = dstore
 
         self.cb_clan = QtGui.QComboBox(self)
         self.cb_family = QtGui.QComboBox(self)
@@ -39,7 +37,7 @@ class FamilyChooserWidget(QtGui.QWidget):
         self.current_family_id = None
 
         self.build_ui()
-        self.load_clans()
+        #self.load_clans()
 
     def build_ui(self):
 
@@ -67,13 +65,31 @@ class FamilyChooserWidget(QtGui.QWidget):
         '''setting this property will also update the ui'''
         self.update_ui_with_family(value)
 
+    def clear(self):
+        self.current_clan_id = None
+        self.current_family_id = None
+
+    def load(self):
+        if not self.current_clan_id:
+            self.load_clans()
+
+    def apply_rank_advancement(self):
+        api.character.rankadv.set_clan(self.current_clan_id)
+        api.character.rankadv.set_family(self.current_family_id)
+
     def load_clans(self):
+        self.cb_clan.blockSignals(True)
         self.cb_clan.clear()
         self.cb_clan.addItem(self.tr("No Clan"), None)
         for c in sorted(self.dstore.clans, key=lambda x: x.name):
             self.cb_clan.addItem(c.name, c.id)
+        self.cb_clan.blockSignals(False)
+
+        # select first clan
+        self.on_clan_changed(0)
 
     def load_families(self, clanid=None):
+        self.cb_family.blockSignals(True)
         self.cb_family.clear()
 
         family_list = []
@@ -84,6 +100,10 @@ class FamilyChooserWidget(QtGui.QWidget):
 
         for f in sorted(family_list, key=lambda x: x.name):
             self.cb_family.addItem(f.name, f.id)
+        self.cb_family.blockSignals(False)
+
+        # select first family
+        self.on_family_changed(0)
 
     def update_ui_with_family(self, family_id):
 
@@ -91,7 +111,8 @@ class FamilyChooserWidget(QtGui.QWidget):
         self.cb_family.blockSignals(True)
 
         # get family_dal
-        family_dal = dal.query.get_family(self.dstore, family_id)
+        #family_dal = dal.query.get_family(self.dstore, family_id)
+        family_dal = api.data.family.get(family_id)
         if family_dal:
 
             self.current_family_id = family_id
@@ -121,19 +142,16 @@ class FamilyChooserWidget(QtGui.QWidget):
     def green(self, text):
         return '<span style="color: #0A0">' + text + '</span>'
 
-    def get_trait_or_ring(self, traitid):
-        return (dal.query.get_trait(self.dstore, traitid) or
-                dal.query.get_ring(self.dstore, traitid))
-
     def update_bonus_trait(self):
         bonus_trait = None
         try:
-            bonus_trait = dal.query.get_family(self.dstore, self.current_family_id).trait
+            # bonus_trait = dal.query.get_family(self.dstore, self.current_family_id).trait
+            bonus_trait = api.data.family.get(self.current_family_id).trait
 
             if not bonus_trait:
                 self.lb_trait.setText("")
             else:
-                self.lb_trait.setText(self.green("+1 {}").format(self.get_trait_or_ring(bonus_trait)))
+                self.lb_trait.setText(self.green("+1 {}").format(api.get_trait_or_ring(bonus_trait)))
         except:
             print('cannot find bonus trait of {}'.format(self.current_family_id))
 
@@ -146,13 +164,13 @@ def main():
     user_data_dir = os.environ['APPDATA'].decode('latin-1')
     pack_data_dir = os.path.join(user_data_dir, 'openningia', 'l5rcm')
 
-    dstore = dal.Data(
-        [os.path.join(pack_data_dir, 'core.data'),
-         os.path.join(pack_data_dir, 'data')],
-        [])
+    #dstore = dal.Data(
+    #    [os.path.join(pack_data_dir, 'core.data'),
+    #     os.path.join(pack_data_dir, 'data')],
+    #    [])
 
     dlg = QtGui.QDialog()
-    fam = FamilyChooserWidget(dstore, dlg)
+    fam = FamilyChooserWidget(dlg)
     fam.selected_family = 'scorpion_bayushi'
     vbox = QtGui.QVBoxLayout(dlg)
     vbox.addWidget(fam)
