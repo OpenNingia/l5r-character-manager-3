@@ -21,6 +21,7 @@ import dal
 ORG = 'openningia'
 APP = 'l5rcm'
 
+
 def get_user_data_path(rel_path = ''):
     user_data = '.'
     if os.name == 'posix': # Linux is ok but Macosx ???
@@ -28,6 +29,7 @@ def get_user_data_path(rel_path = ''):
     elif os.name == 'nt':
         user_data = os.environ['APPDATA'].decode('latin-1')
     return os.path.join(user_data, ORG, APP)
+
 
 class L5RCMAPI(object):
 
@@ -59,10 +61,9 @@ class L5RCMAPI(object):
         if self.locale:
             locations += [get_user_data_path('data.' + self.locale)]
 
-        print('load data from', locations)
-
-        self.ds = dal.Data(
-             locations,
-             self.blacklist)
+        if not self.ds:
+            self.ds = dal.Data(locations, self.blacklist)
+        else:
+            self.ds.rebuild(locations, self.blacklist)
 
 __api = L5RCMAPI()

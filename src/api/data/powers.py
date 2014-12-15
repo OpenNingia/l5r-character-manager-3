@@ -15,28 +15,27 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+__author__ = 'cns_dasi'
+
 from api import __api
-import api.data
-import api.character
-import models.chmodel
+from aql.initiators import query
 
 
-def get_trait_cost(trait_id):
-    """return the cost to increase the given trait"""
-    if not __api.pc:
-        return 0
-    trait_n = models.chmodel.attrib_from_name(trait_id)
-    return __api.pc.get_attrib_cost(trait_id)
+def kiho():
+    if not __api:
+        return []
+    return __api.ds.kihos
 
 
-def get_trait_increase_cost(trait_id, cur_value, new_value):
-    """increasing a trait cost new_value * trait_cost"""
-    # cur_value is ignored
-    cost = new_value * get_trait_cost(trait_id)
-    ring = api.data.get_trait_ring(trait_id)
+def get_kiho(kid):
+    return query(kiho()).where(lambda x: x.id == kid).first_or_default(None)
 
-    elemental_bless = "elem_bless_{}".format(ring.name)
-    if api.character.has_rule(elemental_bless):
-        cost -= 1
 
-    return cost
+def kata():
+    if not __api:
+        return []
+    return __api.ds.katas
+
+
+def get_kata(kid):
+    return query(kata()).where(lambda x: x.id == kid).first_or_default(None)
