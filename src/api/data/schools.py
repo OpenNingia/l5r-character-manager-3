@@ -66,3 +66,11 @@ def get_skills_to_choose(sid):
     school = get(sid)
     if not school: return []
     return school.skills_pc
+
+
+def get_emphasis_to_choose(sid):
+    school = get(sid)
+    if not school: return []
+    return query(school.skills) \
+        .where(lambda x: x.emph and x.emph.startswith('*')) \
+        .to_list()

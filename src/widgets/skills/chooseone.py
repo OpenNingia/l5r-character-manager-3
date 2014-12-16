@@ -191,28 +191,42 @@ class ChooseOneSkill(QtGui.QWidget):
     def on_search(self, tx):
 
         # search skills
-        found_skills = self.search_skill_by_text(tx.lower())
+        found_skills = api.data.skills.search_skill_by_text(tx.lower())
         if len(found_skills):
             self.set(found_skills[0])
             return
 
-        found_categs = self.search_categ_by_text(tx.lower())
+        found_categs = api.data.skills.search_categ_by_text(tx.lower())
         if len(found_categs):
             self.set_categ(found_categs[0])
             return
 
-    def search_skill_by_text(self, tx):
-
-        return query(api.data.skills.all()) \
-            .where(lambda x: tx in x.name.lower()) \
-            .to_list()
-
-    def search_categ_by_text(self, tx):
-
-        return query(api.data.skills.categories()) \
-            .where(lambda x: tx in x.name.lower()) \
-            .to_list()
-
     def set_categ(self, categ):
         idx = self.cb_categories.findData(categ)
         self.cb_categories.setCurrentIndex(idx)
+
+
+class ChooseOneEmphasis(QtGui.QWidget):
+    valueChanged = QtCore.Signal(str)
+
+    @property
+    def emphasis(self):
+        return self.tx_value.text()
+
+    def __init__(self, parent=None):
+        super(ChooseOneEmphasis, self).__init__(parent)
+
+        self.tx_value = QtGui.QLineEdit(self)
+        self.vbox = QtGui.QVBoxLayout(self)
+        self.vbox.addWidget(self.tx_value)
+
+        self.tx_value.textChanged.connect(self.valueChanged)
+
+    def load(self):
+        self.tx_value.clear()
+
+    def set(self, tx):
+
+        self.tx_value.blockSignals(True)
+        self.tx_value.setText(tx)
+        self.tx_value.blockSignals(False)
