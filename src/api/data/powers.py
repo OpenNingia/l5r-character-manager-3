@@ -18,7 +18,7 @@
 __author__ = 'cns_dasi'
 
 from api import __api
-from aql.initiators import query
+from asq.initiators import query
 
 
 def kiho():

@@ -39,3 +39,12 @@ def get(sid):
         return None
     return query(all()).where(lambda x: x.id == sid).first_or_default(None)
 
+
+def get_inclusive_tags(filter):
+    """return the list of inclusive skill wildcards"""
+    return [x.value for x in filter if not x.modifier or x.modifier == 'or']
+
+
+def get_exclusive_tags(filter):
+    """return the list of exclusive skill wildcards"""
+    return [x.value for x in filter if x.modifier and x.modifier == 'not']

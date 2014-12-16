@@ -16,16 +16,9 @@
 
 from api import __api
 
-def get_wildcard(index):
-    pc = __api.pc
-    if not pc:
-        return None
-    wc = pc.get_pending_wc_skills()
-    if len(wc) < index:
-        return wc[index]
-    return None
 
-def get_wildcards():
+def all():
+    """return all character skills"""
     if not __api.pc:
         return []
-    return __api.pc.get_pending_wc_skills()
+    return __api.pc.get_skills()
