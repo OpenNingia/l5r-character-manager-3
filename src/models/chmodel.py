@@ -41,7 +41,7 @@ def ring_from_name(name):
     return -1
 
 def ring_name_from_id(ring_id):
-    if ring_id >= 0 and ring_id < len(RINGS._ids):
+    if 0 <= ring_id < len(RINGS._ids):
         return RINGS._ids[ring_id]
 
 class ATTRIBS:
@@ -72,14 +72,14 @@ def attrib_from_name(name):
     return -1
 
 def attrib_name_from_id(attrib_id):
-    if attrib_id >= 0 and attrib_id < len(ATTRIBS._ids):
+    if 0 <= attrib_id < len(ATTRIBS._ids):
         return ATTRIBS._ids[attrib_id]
     else:
         print("unknown trait_id: {0}".format(attrib_id))
         return None
 
 def get_ring_id_from_attrib_id(attrib_id):
-    if attrib_id >= ATTRIBS.STAMINA and attrib_id <= ATTRIBS.INTELLIGENCE:
+    if ATTRIBS.STAMINA <= attrib_id <= ATTRIBS.INTELLIGENCE:
         return attrib_id // 2
     return -1
 

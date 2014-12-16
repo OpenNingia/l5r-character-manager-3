@@ -72,10 +72,7 @@ class StartingSkill(object):
         self.emphasis = emphasis
 
     def to_dict(self):
-        out = {}
-        out['skill_id'] = self.skill_id
-        out['rank'] = self.rank
-        out['emphasis'] = self.emphasis
+        out = {'skill_id': self.skill_id, 'rank': self.rank, 'emphasis': self.emphasis}
 
         return out
 
@@ -88,9 +85,7 @@ class CustomStartingSkill(object):
         #self.modifier = modifier
 
     def to_dict(self):
-        out = {}
-        out['rank'] = self.rank
-        out['options'] = self.options
+        out = {'rank': self.rank, 'options': self.options}
 
         return out
 

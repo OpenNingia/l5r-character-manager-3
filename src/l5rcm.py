@@ -2146,7 +2146,7 @@ class L5RMain(L5RCMCore):
 
             def school_free_kiho_count():
                 school = dal.query.get_school(self.dstore, self.pc.get_school_id(0))
-                if school.kihos == None: return 0
+                if school.kihos is None: return 0
                 return school.kihos.count
 
             # HACK. Fix free kiho for old characters created with 3 free kihos
@@ -2583,7 +2583,7 @@ class L5RMain(L5RCMCore):
         return msgBox.exec_()
 
     def not_enough_xp_advise(self, parent=None):
-        if parent == None: parent = self
+        if parent is None: parent = self
         QtGui.QMessageBox.warning(parent, self.tr("Not enough XP"),
                                   self.tr("Cannot purchase.\nYou've reached the XP Limit."))
         return

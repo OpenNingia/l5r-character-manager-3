@@ -49,7 +49,7 @@ class CkNumWidget(QtGui.QWidget):
         flag = fred.isChecked()
         
         if int(fred.objectName()) == old_v:
-            self.value = self.value - 1
+            self.value -= 1
         else:
             self.value = int(fred.objectName())
                 

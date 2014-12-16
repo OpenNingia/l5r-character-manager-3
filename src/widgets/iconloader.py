@@ -185,7 +185,7 @@ loader = None
 def icon(name, fallbackIcon=QIcon(),  iconSizes=[16, 24, 32, 48, 64]):
     global loader
     icon = QIcon()
-    #TODO: begins ifdef Q_WS_X11
+
     if not loader: loader = QtIconLoaderImplementation()
     for size in iconSizes:
 #        pix = QtIconLoaderImplementation().findIcon(size, name + ".png")
