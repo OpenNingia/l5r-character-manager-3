@@ -17,44 +17,46 @@
 import sys
 from PySide import QtCore, QtGui
 
+
 def find(f, seq):
-  """Return first item in sequence where f(item) == True."""
-  for item in seq:
-    if f(item):
-      return item
+    """Return first item in sequence where f(item) == True."""
+    for item in seq:
+        if f(item):
+            return item
+
 
 class CkNumWidget(QtGui.QWidget):
 
     valueChanged = QtCore.Signal(int, int)
 
-    def __init__(self, count = 9, parent = None):
+    def __init__(self, count=9, parent=None):
         super(CkNumWidget, self).__init__(parent)
 
-        self.count  = count
+        self.count = count
         self.checks = []
-        self.value  = 0
+        self.value = 0
         hbox = QtGui.QHBoxLayout(self)
         hbox.setSpacing(0)
-        hbox.setContentsMargins(0,0,0,0)
+        hbox.setContentsMargins(0, 0, 0, 0)
         for i in xrange(0, count):
             ck = QtGui.QCheckBox(self)
-            self.checks.append( ck )
-            hbox.addWidget( ck )
+            self.checks.append(ck)
+            hbox.addWidget(ck)
             ck.clicked.connect(self.on_ck_toggled)
-            ck.setObjectName( str(i+1) )
+            ck.setObjectName(str(i + 1))
 
     def on_ck_toggled(self):
         old_v = self.value
         fred = find(lambda ck: ck == self.sender(), self.checks)
         flag = fred.isChecked()
-        
+
         if int(fred.objectName()) == old_v:
             self.value = self.value - 1
         else:
             self.value = int(fred.objectName())
-                
-        #print 'old_v: %d, value: %d' % (old_v, self.value)
-         
+
+        # print 'old_v: %d, value: %d' % (old_v, self.value)
+
         for i in xrange(0, self.count):
             ck = self.checks[i]
             if flag:
@@ -87,13 +89,15 @@ class CkNumWidget(QtGui.QWidget):
     def get_value(self):
         return self.value
 
-### MAIN ###
+# MAIN ###
+
+
 def main():
     app = QtGui.QApplication(sys.argv)
 
     dlg = QtGui.QDialog()
     vbox = QtGui.QVBoxLayout(dlg)
-    vbox.addWidget( CkNumWidget(dlg) )
+    vbox.addWidget(CkNumWidget(dlg))
     dlg.show()
     sys.exit(app.exec_())
 

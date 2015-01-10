@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -24,8 +25,10 @@ import widgets
 import dal
 import dal.query
 
+
 class Sink4(QtCore.QObject):
-    def __init__(self, parent = None):
+
+    def __init__(self, parent=None):
         super(Sink4, self).__init__(parent)
         self.form = parent
 
@@ -42,7 +45,8 @@ class Sink4(QtCore.QObject):
         if not index.isValid():
             return
         item = index.model().data(index, QtCore.Qt.UserRole)
-        dlg  = dialogs.ModifierDialog(self.form.pc, self.form.dstore, self.form)
+        dlg = dialogs.ModifierDialog(
+            self.form.pc, self.form.dstore, self.form)
         dlg.load_modifier(item)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
             self.form.update_from_model()
@@ -64,15 +68,15 @@ class Sink4(QtCore.QObject):
         dlg = dialogs.ManageDataPackDlg(self.form.dstore, self.form)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
             self.form.update_data_blacklist()
-            self.reload_data_act           ()
+            self.reload_data_act()
 
     def reload_data_act(self):
-        self.form.reload_data  ()
+        self.form.reload_data()
         self.form.create_new_character()
 
     def add_equipment(self):
         equip_list = self.form.pc.get_property('equip', [])
-        equip_list.append( self.tr('Doubleclick to edit') )
+        equip_list.append(self.tr('Doubleclick to edit'))
         self.form.update_from_model()
 
     def remove_selected_equipment(self):
@@ -96,10 +100,10 @@ class Sink4(QtCore.QObject):
         item = form.th_view_model.data(index, QtCore.Qt.UserRole)
         try:
             school, tech = dal.query.get_tech(form.dstore, item.id)
-            dlg          = widgets.SimpleDescriptionDialog(form)
-            dlg.description().set_title   (tech.name  )
+            dlg = widgets.SimpleDescriptionDialog(form)
+            dlg.description().set_title(tech.name)
             dlg.description().set_subtitle(school.name)
-            dlg.description().set_content (tech.desc  )
+            dlg.description().set_content(tech.desc)
             dlg.exec_()
         except Exception as e:
             print("cannot retrieve information from tech model.", e)
@@ -109,14 +113,14 @@ class Sink4(QtCore.QObject):
         item = form.sp_view_model.data(index, QtCore.Qt.UserRole)
         try:
             spell = dal.query.get_spell(form.dstore, item.spell_id)
-            dlg   = widgets.SimpleDescriptionDialog(form)
-            dlg.description().set_title   (spell.name  )
+            dlg = widgets.SimpleDescriptionDialog(form)
+            dlg.description().set_title(spell.name)
             element_name = dal.query.get_ring(form.dstore, spell.element)
-            #if spell.element == 'all':
+            # if spell.element == 'all':
             #    element_name = self.tr("Universal")
             dlg.description().set_subtitle(self.tr("{element}, Mastery {mastery}")
-                .format(element=element_name, mastery=spell.mastery))
-            dlg.description().set_content (spell.desc  )
+                                           .format(element=element_name, mastery=spell.mastery))
+            dlg.description().set_content(spell.desc)
             dlg.exec_()
         except Exception as e:
             print("cannot retrieve information from spell model.", e)
@@ -124,8 +128,8 @@ class Sink4(QtCore.QObject):
     # NPC EXPORT
     def show_npc_export_dialog(self):
         form = self.form
-        dlg   = dialogs.NpcExportDialog(form)
+        dlg = dialogs.NpcExportDialog(form)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
             file_ = form.select_export_file(".pdf")
             if len(file_) > 0:
-                form.export_npc_characters( dlg.paths, file_ )
+                form.export_npc_characters(dlg.paths, file_)

@@ -20,23 +20,26 @@ import dal
 
 from PySide import QtCore, QtGui
 
+
 class RequirementsWidget(QtGui.QWidget):
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(RequirementsWidget, self).__init__(parent)
 
-        self.vbox     = QtGui.QVBoxLayout(self)
+        self.vbox = QtGui.QVBoxLayout(self)
         self.vbox.setContentsMargins(0, 0, 0, 0)
-        self.fr       = None # disposable inner frame
-        self.checks   = []   # checkbox list
+        self.fr = None  # disposable inner frame
+        self.checks = []   # checkbox list
 
-        self.setSizePolicy( QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding )
+        self.setSizePolicy(
+            QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
 
     def set_requirements(self, pc, dstore, requirements):
 
         self.setUpdatesEnabled(False)
         snap = models.CharacterSnapshot(pc)
-        if self.fr: self.fr.deleteLater()
+        if self.fr:
+            self.fr.deleteLater()
 
         self.checks = []
         self.fr = QtGui.QFrame()
@@ -53,32 +56,35 @@ class RequirementsWidget(QtGui.QWidget):
             if r.type == 'more':
                 # if type is more then it's likely the description is verbose
                 # better place it on a separated label
-                lb = QtGui.QLabel( unicode.format( u"<em>{0}</em>", r.text), self )
-                lb.setWordWrap (True)
+                lb = QtGui.QLabel(
+                    unicode.format(u"<em>{0}</em>", r.text), self)
+                lb.setWordWrap(True)
                 lb.setAlignment(QtCore.Qt.AlignJustify)
                 lb.setBuddy(ck)
-                ck.setText( self.tr("Role play") )
+                ck.setText(self.tr("Role play"))
             else:
                 ck.setText(r.text)
                 # check if requirement match
-                ck.setChecked( r.match(snap, dstore) )
+                ck.setChecked(r.match(snap, dstore))
 
             self.checks.append(ck)
             ly.addWidget(ck)
-            if lb: ly.addWidget(lb)
+            if lb:
+                ly.addWidget(lb)
 
         self.vbox.addWidget(self.fr)
         self.setUpdatesEnabled(True)
 
     def match(self):
         for c in self.checks:
-            if not c.isChecked(): return False
+            if not c.isChecked():
+                return False
         return True
 
     def match_at_least_one(self):
         if len(self.checks) == 0:
             return True
         for c in self.checks:
-            if c.isChecked(): return True
+            if c.isChecked():
+                return True
         return False
-

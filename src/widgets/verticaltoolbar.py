@@ -16,25 +16,27 @@
 
 from PySide import QtCore, QtGui
 
+
 class VerticalToolBar(QtGui.QFrame):
-    def __init__(self, parent = None):
+
+    def __init__(self, parent=None):
         super(VerticalToolBar, self).__init__(parent)
-        self.vbox     = QtGui.QVBoxLayout(self)
-        self.vbox.setContentsMargins(0, 6, 0, 6)        
-        self.bt_size  = QtCore.QSize(16,16)       
-    
+        self.vbox = QtGui.QVBoxLayout(self)
+        self.vbox.setContentsMargins(0, 6, 0, 6)
+        self.bt_size = QtCore.QSize(16, 16)
+
     def addButton(self, icon, text, target_slot):
         tb = QtGui.QToolButton(self)
         tb.setIconSize(self.bt_size)
         tb.setToolButtonStyle(QtCore.Qt.ToolButtonFollowStyle)
         tb.setIcon(icon)
         tb.setToolTip(text)
-        tb.clicked.connect( target_slot )
-        self.vbox.addWidget(tb)        
+        tb.clicked.connect(target_slot)
+        self.vbox.addWidget(tb)
         return tb
-    
+
     def addStretch(self):
         self.vbox.addStretch(1)
-        
+
     def addSpace(self):
         self.vbox.addSpacing(self.bt_size.height())

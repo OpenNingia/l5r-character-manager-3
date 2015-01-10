@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -16,27 +17,33 @@
 
 from PySide import QtGui, QtCore
 import dal.query
+import rules
 
 class SkillItemModel(object):
+
     def __init__(self):
-        self.name      = ''
-        self.rank      = ''
-        self.trait     = ''
+        self.name = ''
+        self.rank = ''
+        self.trait = ''
+        self.base_roll = ''
+        self.mod_roll = ''
         self.is_school = False
-        self.emph      = []
-        self.skill_id  = 0
+        self.emph = []
+        self.skill_id = 0
 
     def __str__(self):
         return self.name
 
+
 class SkillTableViewModel(QtCore.QAbstractTableModel):
-    def __init__(self, dstore, parent = None):
+
+    def __init__(self, dstore, parent=None):
         super(SkillTableViewModel, self).__init__(parent)
         self.items = []
-        self.headers = ['Name', 'Rank', 'Trait', 'Emphases']
+        self.headers = ['Name', 'Rank', 'Trait', 'Base Roll', 'Mod Roll', 'Emphases']
         self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
-        self.bg_color   = [ QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
-                            QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82)) ]        
+        self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
+                         QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
         self.item_size = QtCore.QSize(28, 28)
         if parent:
             self.bold_font = parent.font()
@@ -44,20 +51,20 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
 
         self.dstore = dstore
 
-    def rowCount(self, parent = QtCore.QModelIndex()):
+    def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
 
-    def columnCount(self, parent = QtCore.QModelIndex()):
+    def columnCount(self, parent=QtCore.QModelIndex()):
         return len(self.headers)
 
-    def headerData(self, section, orientation, role = QtCore.Qt.ItemDataRole.DisplayRole):
+    def headerData(self, section, orientation, role=QtCore.Qt.ItemDataRole.DisplayRole):
         if orientation != QtCore.Qt.Orientation.Horizontal:
             return None
         if role == QtCore.Qt.DisplayRole:
             return self.headers[section]
         return None
 
-    def data(self, index, role = QtCore.Qt.UserRole):
+    def data(self, index, role=QtCore.Qt.UserRole):
         if not index.isValid() or index.row() >= len(self.items):
             return None
         item = self.items[index.row()]
@@ -69,6 +76,10 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
             if index.column() == 2:
                 return item.trait
             if index.column() == 3:
+                return str(item.base_roll)
+            if index.column() == 4:
+                return str(item.mod_roll)
+            if index.column() == 5:
                 return ', '.join(item.emph)
         elif role == QtCore.Qt.FontRole:
             if item.is_school and self.bold_font:
@@ -76,7 +87,7 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
         elif role == QtCore.Qt.ForegroundRole:
             return self.text_color
         elif role == QtCore.Qt.BackgroundRole:
-            return self.bg_color[ index.row() % 2 ]            
+            return self.bg_color[index.row() % 2]
         elif role == QtCore.Qt.SizeHintRole:
             return self.item_size
         elif role == QtCore.Qt.UserRole:
@@ -100,17 +111,16 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
         self.items = []
         self.endResetModel()
 
-    def build_item_model(self, sk_id):
+    def build_item_model(self, sk):
         itm = SkillItemModel()
-        sk = dal.query.get_skill(self.dstore, sk_id)
-        if sk:
-            itm.skill_id = sk.id
-            itm.name     = sk.name
-            itm.trait    = sk.trait
+        itm.skill_id = sk.id
+        itm.name = sk.name
+        trait = (dal.query.get_trait(self.dstore, sk.trait) or
+                 dal.query.get_ring(self.dstore, sk.trait))
+        if trait:
+            itm.trait = trait.text
         else:
-            print('cannot find skill: {0}'.format(sk_id))
-        
-        # TODO: translate trait
+            itm.trait = sk.trait
         return itm
 
     def update_from_model(self, model):
@@ -118,10 +128,15 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
         skills_id_a = model.get_skills()
 
         self.clean()
-        for s in skills_id_a:           
-            itm = self.build_item_model(s)
+        for s in skills_id_a:
+            sk = dal.query.get_skill(self.dstore, s)
+            if not sk:
+                print('cannot find skill: {0}'.format(s))
+                continue
+            itm = self.build_item_model(sk)
             itm.rank = model.get_skill_rank(s)
             itm.emph = model.get_skill_emphases(s)
+            itm.base_roll = rules.calculate_base_skill_roll(model, sk)
+            itm.mod_roll = rules.calculate_mod_skill_roll(model, sk)
             itm.is_school = (s in skills_id_s)
             self.add_item(itm)
-     

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -19,49 +20,53 @@ from l5rcmcore import get_icon_path
 import dal
 import dal.query
 
+
 class SpellItemModel(object):
+
     def __init__(self):
-        self.name      = ''
-        self.ring      = ''
-        self.mastery   = ''
-        self.range     = ''
-        self.area      = ''
-        self.duration  = ''
-        self.raises    = ''
-        self.desc      = ''
-        self.memo      = False
+        self.name = ''
+        self.ring = ''
+        self.mastery = ''
+        self.range = ''
+        self.area = ''
+        self.duration = ''
+        self.raises = ''
+        self.desc = ''
+        self.memo = False
         self.is_school = False
-        self.tags      = ''
-        self.spell_id  = 0
-        self.adv       = None
+        self.tags = ''
+        self.spell_id = 0
+        self.adv = None
 
     def __str__(self):
         return self.name
 
+
 class SpellTableViewModel(QtCore.QAbstractTableModel):
-    def __init__(self, dstore, parent = None):
+
+    def __init__(self, dstore, parent=None):
         super(SpellTableViewModel, self).__init__(parent)
         self.items = []
         self.headers = ['Name', 'Ring', 'Mastery', 'Range', 'Area of Effect',
                         'Duration', 'Raises']
         self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
-        self.bg_color   = [ QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
-                            QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82)) ]
+        self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
+                         QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
         self.item_size = QtCore.QSize(28, 28)
         if parent:
             self.bold_font = parent.font()
             self.bold_font.setBold(True)
 
         self.dstore = dstore
-        self.memo_icon = QtGui.QIcon(get_icon_path('book',(16,16)))
+        self.memo_icon = QtGui.QIcon(get_icon_path('book', (16, 16)))
 
-    def rowCount(self, parent = QtCore.QModelIndex()):
+    def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
 
-    def columnCount(self, parent = QtCore.QModelIndex()):
+    def columnCount(self, parent=QtCore.QModelIndex()):
         return len(self.headers)
 
-    def headerData(self, section, orientation, role = QtCore.Qt.ItemDataRole.DisplayRole):
+    def headerData(self, section, orientation, role=QtCore.Qt.ItemDataRole.DisplayRole):
         if orientation != QtCore.Qt.Orientation.Horizontal:
             return None
         if role == QtCore.Qt.DisplayRole:
@@ -95,7 +100,7 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
         elif role == QtCore.Qt.ForegroundRole:
             return self.text_color
         elif role == QtCore.Qt.BackgroundRole:
-            return self.bg_color[ index.row() % 2 ]
+            return self.bg_color[index.row() % 2]
         elif role == QtCore.Qt.SizeHintRole:
             return self.item_size
         elif role == QtCore.Qt.ToolTipRole:
@@ -132,24 +137,23 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
         self.items = []
         self.endResetModel()
 
-
     def build_item_model(self, sp_id):
         itm = SpellItemModel()
         spell = dal.query.get_spell(self.dstore, sp_id)
 
-        itm.name     = spell.name
-        #itm.ring     = spell.element
+        itm.name = spell.name
+
         try:
             itm.ring = dal.query.get_ring(self.dstore, spell.element).text
         except:
             itm.ring = spell.element
-        itm.mastery  = spell.mastery
-        itm.range    = spell.range
-        itm.area     = spell.area
+        itm.mastery = spell.mastery
+        itm.range = spell.range
+        itm.area = spell.area
         itm.duration = spell.duration
-        itm.raises   = ', '.join(spell.raises)
-        itm.desc     = spell.desc
-        itm.tags     = ', '.join(spell.tags)
+        itm.raises = ', '.join(spell.raises)
+        itm.desc = spell.desc
+        itm.tags = ', '.join(spell.tags)
         itm.spell_id = sp_id
 
         return itm
@@ -165,11 +169,10 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
             itm.memo = s in memo_spells
             if itm.memo:
                 adv_ = filter(
-                lambda x: x.type == 'memo_spell' and x.spell == s,
-                model.advans)
+                    lambda x: x.type == 'memo_spell' and x.spell == s,
+                    model.advans)
 
                 if len(adv_):
                     itm.adv = adv_[0]
 
             self.add_item(itm)
-

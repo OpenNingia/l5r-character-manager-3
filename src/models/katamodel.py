@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -17,43 +18,47 @@
 from PySide import QtGui, QtCore
 import dal.query
 
+
 class KataItemModel(object):
+
     def __init__(self):
-        self.name      = ''
-        self.mastery   = ''
-        self.element   = ''
-        self.id        = False
-        self.adv       = None
-        self.text      = []
+        self.name = ''
+        self.mastery = ''
+        self.element = ''
+        self.id = False
+        self.adv = None
+        self.text = []
 
     def __str__(self):
         return self.name
 
+
 class KataTableViewModel(QtCore.QAbstractTableModel):
-    def __init__(self, dstore, parent = None):
+
+    def __init__(self, dstore, parent=None):
         super(KataTableViewModel, self).__init__(parent)
         self.items = []
         self.headers = ['Name', 'Mastery', 'Element']
         self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
-        self.bg_color   = [ QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
-                            QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82)) ]        
+        self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
+                         QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
         self.item_size = QtCore.QSize(28, 28)
         self.dstore = dstore
 
-    def rowCount(self, parent = QtCore.QModelIndex()):
+    def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
 
-    def columnCount(self, parent = QtCore.QModelIndex()):
+    def columnCount(self, parent=QtCore.QModelIndex()):
         return len(self.headers)
 
-    def headerData(self, section, orientation, role = QtCore.Qt.ItemDataRole.DisplayRole):
+    def headerData(self, section, orientation, role=QtCore.Qt.ItemDataRole.DisplayRole):
         if orientation != QtCore.Qt.Orientation.Horizontal:
             return None
         if role == QtCore.Qt.DisplayRole:
             return self.headers[section]
         return None
 
-    def data(self, index, role = QtCore.Qt.UserRole):
+    def data(self, index, role=QtCore.Qt.UserRole):
         if not index.isValid() or index.row() >= len(self.items):
             return None
         item = self.items[index.row()]
@@ -67,7 +72,7 @@ class KataTableViewModel(QtCore.QAbstractTableModel):
         elif role == QtCore.Qt.ForegroundRole:
             return self.text_color
         elif role == QtCore.Qt.BackgroundRole:
-            return self.bg_color[ index.row() % 2 ]
+            return self.bg_color[index.row() % 2]
         elif role == QtCore.Qt.SizeHintRole:
             return self.item_size
         elif role == QtCore.Qt.UserRole:
@@ -95,16 +100,15 @@ class KataTableViewModel(QtCore.QAbstractTableModel):
         itm = KataItemModel()
         ka = dal.query.get_kata(self.dstore, ka_id.kata)
         if ka:
-            itm.id       = ka.id
-            itm.adv      = ka_id
-            itm.name     = ka.name
-            itm.mastery  = ka.mastery
-            #itm.element  = ka.element
-            itm.element  = dal.query.get_ring(self.dstore, ka.element).text
-            itm.text     = ka.desc
+            itm.id = ka.id
+            itm.adv = ka_id
+            itm.name = ka.name
+            itm.mastery = ka.mastery
+            itm.element = dal.query.get_ring(self.dstore, ka.element).text
+            itm.text = ka.desc
         else:
             print('cannot find kata: {0}'.format(ka_id.kata))
-        
+
         # TODO: translate element
         return itm
 
@@ -112,7 +116,6 @@ class KataTableViewModel(QtCore.QAbstractTableModel):
         kata = model.get_kata()
 
         self.clean()
-        for s in kata:           
+        for s in kata:
             itm = self.build_item_model(s)
             self.add_item(itm)
-     

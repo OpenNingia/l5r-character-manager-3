@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -25,51 +26,58 @@ import rules
 from copy import deepcopy
 
 # RINGS
+
+
 class RINGS:
     EARTH = 0
-    AIR   = 1
+    AIR = 1
     WATER = 2
-    FIRE  = 3
-    VOID  = 4
+    FIRE = 3
+    VOID = 4
 
     _names = dict(earth=0, air=1, water=2, fire=3, void=4)
-    _ids   = ['earth', 'air', 'water', 'fire', 'void']
+    _ids = ['earth', 'air', 'water', 'fire', 'void']
+
 
 def ring_from_name(name):
     if name in RINGS._names:
         return RINGS._names[name]
     return -1
 
+
 def ring_name_from_id(ring_id):
     if ring_id >= 0 and ring_id < len(RINGS._ids):
         return RINGS._ids[ring_id]
 
+
 class ATTRIBS:
     # earth ring
-    STAMINA      = 0
-    WILLPOWER    = 1
+    STAMINA = 0
+    WILLPOWER = 1
 
     # air ring
-    REFLEXES     = 2
-    AWARENESS    = 3
+    REFLEXES = 2
+    AWARENESS = 3
 
     # water ring
-    STRENGTH     = 4
-    PERCEPTION   = 5
+    STRENGTH = 4
+    PERCEPTION = 5
 
     # fire ring
-    AGILITY      = 6
+    AGILITY = 6
     INTELLIGENCE = 7
 
     _names = dict(stamina=0, willpower=1, reflexes=2, awareness=3,
                   strength=4, perception=5, agility=6, intelligence=7)
-    _ids   = ['stamina', 'willpower', 'reflexes', 'awareness', 'strength',
-              'perception', 'agility', 'intelligence']
+    _ids = ['stamina', 'willpower', 'reflexes', 'awareness', 'strength',
+            'perception', 'agility', 'intelligence']
+
 
 def attrib_from_name(name):
     if name in ATTRIBS._names:
         return ATTRIBS._names[name]
     return -1
+
 
 def attrib_name_from_id(attrib_id):
     if attrib_id >= 0 and attrib_id < len(ATTRIBS._ids):
@@ -78,12 +86,15 @@ def attrib_name_from_id(attrib_id):
         print("unknown trait_id: {0}".format(attrib_id))
         return None
 
+
 def get_ring_id_from_attrib_id(attrib_id):
     if attrib_id >= ATTRIBS.STAMINA and attrib_id <= ATTRIBS.INTELLIGENCE:
         return attrib_id // 2
     return -1
 
+
 class MyJsonEncoder(json.JSONEncoder):
+
     def default(self, obj):
         if hasattr(obj, '__dict__'):
             return obj.__dict__
@@ -95,33 +106,33 @@ class MyJsonEncoder(json.JSONEncoder):
             return obj.__dict__
         return json.JSONEncoder.default(self, obj)
 
+
 class BasePcModel(object):
+
     def __init__(self):
-        self.void               = 0
-        self.attribs            = [0, 0, 0, 0, 0, 0, 0, 0]
-        self.skills             = {}
-        self.emph               = {}
-        self.pending_wc         = []
-        self.pending_wc_emph    = []
-        self.pending_wc_spell   = []
-        self.tags               = []
-        self.honor              = 0.0
-        self.glory              = 0.0
-        self.infamy             = 0.0
-        self.status             = 0.0
-        self.taint              = 0.0
-        #self.affinity           = None
-        #self.deficiency         = None
+        self.void = 0
+        self.attribs = [0, 0, 0, 0, 0, 0, 0, 0]
+        self.skills = {}
+        self.emph = {}
+        self.pending_wc = []
+        self.pending_wc_emph = []
+        self.pending_wc_spell = []
+        self.tags = []
+        self.honor = 0.0
+        self.glory = 0.0
+        self.infamy = 0.0
+        self.status = 0.0
+        self.taint = 0.0
 
         self.start_spell_count = 0
         self.school_tech = None
 
     def load_default(self):
-        self.void    = 2
+        self.void = 2
         self.attribs = [2, 2, 2, 2, 2, 2, 2, 2]
-        self.rank    = 1
-        self.glory   = 1.0
-        self.status  = 1.0
+        self.rank = 1
+        self.glory = 1.0
+        self.status = 1.0
 
     def add_tag(self, tag):
         if tag not in self.tags:
@@ -136,24 +147,26 @@ class BasePcModel(object):
 
     def clear_tags(self):
         self.tags = []
+
 
 class CharacterSchool(object):
-    def __init__(self, school_id = 0):
-        self.school_id   = school_id
+
+    def __init__(self, school_id=0):
+        self.school_id = school_id
         self.school_rank = 1
-        self.techs       = []
-        self.tech_rules  = []
-        self.skills      = {}
-        self.emph        = {}
-        self.spells      = []
-        self.tags        = []
-        self.outfit      = []
-        self.affinity    = None
-        self.deficiency  = None
+        self.techs = []
+        self.tech_rules = []
+        self.skills = {}
+        self.emph = {}
+        self.spells = []
+        self.tags = []
+        self.outfit = []
+        self.affinity = None
+        self.deficiency = None
 
         # alternate path
-        self.is_path     = False
-        self.path_rank   = 0
+        self.is_path = False
+        self.path_rank = 0
 
     def add_tag(self, tag):
         if tag not in self.tags:
@@ -169,7 +182,9 @@ class CharacterSchool(object):
     def clear_tags(self):
         self.tags = []
 
+
 class AdvancedPcModel(BasePcModel):
+
     def __init__(self):
         super(AdvancedPcModel, self).__init__()
 
@@ -183,26 +198,26 @@ class AdvancedPcModel(BasePcModel):
         self.unsaved = False
         self.version = '0.0'
 
-        self.name      = ''
-        self.clan      = None
-        self.school    = None
-        self.family    = None
+        self.name = ''
+        self.clan = None
+        self.school = None
+        self.family = None
 
-        self.insight   = 0
-        self.advans    = []
+        self.insight = 0
+        self.advans = []
 
-        self.armor      = None
-        self.weapons    = []
-        self.schools    = []
+        self.armor = None
+        self.weapons = []
+        self.schools = []
 
         self.mastery_abilities = []
         self.current_school_id = ''
 
         self.attrib_costs = [4, 4, 4, 4, 4, 4, 4, 4]
-        self.void_cost    = 6
+        self.void_cost = 6
         self.health_multiplier = 2
         self.spells_per_rank = 3
-        self.pending_spells_count = 0;
+        self.pending_spells_count = 0
         self.exp_limit = 40
         self.wounds = 0
         self.mod_init = (0, 0)
@@ -213,7 +228,7 @@ class AdvancedPcModel(BasePcModel):
         self.free_kiho_count = 0
         self.can_get_another_tech = False
 
-        self.modifiers  = []
+        self.modifiers = []
         self.properties = {}
 
     def load_default(self):
@@ -223,17 +238,21 @@ class AdvancedPcModel(BasePcModel):
         return self.unsaved
 
     def get_ring_rank(self, idx):
+
+        if isinstance(idx, str):
+            idx = ring_from_name(idx)
+
         if idx == RINGS.VOID:
             return self.get_void_rank()
 
-        idx_1 = idx*2
+        idx_1 = idx * 2
         idx_2 = idx_1 + 1
-        a, b   = self.get_attrib_rank(idx_1), self.get_attrib_rank(idx_2)
+        a, b = self.get_attrib_rank(idx_1), self.get_attrib_rank(idx_2)
 
         return min(a, b)
 
     def get_free_kiho_count(self):
-        #if not self.has_tag('monk'):
+        # if not self.has_tag('monk'):
         #    return 0
         return self.free_kiho_count
 
@@ -241,34 +260,44 @@ class AdvancedPcModel(BasePcModel):
         self.free_kiho_count = value
 
     def get_attrib_rank(self, attrib):
+
+        if isinstance(attrib, str):
+            attrib = attrib_from_name(attrib)
+
         a = self.step_0.attribs[attrib]
         b = self.step_1.attribs[attrib]
         c = self.step_2.attribs[attrib]
 
-        d = a+b+c
+        d = a + b + c
 
         for adv in self.advans:
             if adv.type != 'attrib':
                 continue
-            if adv.attrib == attrib: d += 1
+            if adv.attrib == attrib:
+                d += 1
 
         return d
 
     def get_mod_attrib_rank(self, attrib):
+
+        if isinstance(attrib, str):
+            attrib = attrib_from_name(attrib)
+
         a = self.step_0.attribs[attrib]
         b = self.step_1.attribs[attrib]
         c = self.step_2.attribs[attrib]
 
-        d = a+b+c
+        d = a + b + c
 
         for adv in self.advans:
             if adv.type != 'attrib':
                 continue
-            if adv.attrib == attrib: d += 1
+            if adv.attrib == attrib:
+                d += 1
 
         weakness_flaw = 'weak_%s' % attrib_name_from_id(attrib)
         if self.has_rule(weakness_flaw):
-            return d-1
+            return d - 1
         return d
 
     def get_void_rank(self):
@@ -291,26 +320,26 @@ class AdvancedPcModel(BasePcModel):
         return self.current_school_id
 
     def get_current_school(self):
-        school = [x for x in self.schools if x.school_id == self.current_school_id]
+        school = [
+            x for x in self.schools if x.school_id == self.current_school_id]
         if len(school):
             return school[0]
         return None
 
-    def get_school(self, index = -1):
+    def get_school(self, index=-1):
         if len(self.schools) == 0 or index >= len(self.schools):
             return None
         if index < 0:
-            #print('get current school is...', self.get_current_school())
             return self.get_current_school()
         return self.schools[index]
 
-    def get_school_id(self, index = -1):
+    def get_school_id(self, index=-1):
         try:
             return self.get_school(index).school_id
         except Exception as e:
             return None
 
-    def get_school_rank(self, index = -1):
+    def get_school_rank(self, index=-1):
         try:
             return self.get_school(index).school_rank
         except:
@@ -352,12 +381,12 @@ class AdvancedPcModel(BasePcModel):
         return self.taint
 
     def get_affinity(self):
-        #return self.step_2.affinity or 'None'
-        return [ x.affinity for x in self.schools if x.affinity is not None ]
+        # return self.step_2.affinity or 'None'
+        return [x.affinity for x in self.schools if x.affinity is not None]
 
     def get_deficiency(self):
-        #return self.step_2.deficiency or 'None'
-        return [ x.deficiency for x in self.schools if x.deficiency is not None ]
+        # return self.step_2.deficiency or 'None'
+        return [x.deficiency for x in self.schools if x.deficiency is not None]
 
     def get_insight(self):
         if self.insight_calculation:
@@ -368,20 +397,28 @@ class AdvancedPcModel(BasePcModel):
         value = self.get_insight()
 
         if value > 349:
-            return int((value - 349)/25 + 10)
-        if value > 324: return 9
-        if value > 299: return 8
-        if value > 274: return 7
-        if value > 249: return 6
-        if value > 224: return 5
-        if value > 199: return 4
-        if value > 174: return 3
-        if value > 149: return 2
+            return int((value - 349) / 25 + 10)
+        if value > 324:
+            return 9
+        if value > 299:
+            return 8
+        if value > 274:
+            return 7
+        if value > 249:
+            return 6
+        if value > 224:
+            return 5
+        if value > 199:
+            return 4
+        if value > 174:
+            return 3
+        if value > 149:
+            return 2
         return 1
 
     def get_base_tn(self):
         # reflexes * 5 + 5
-        return self.get_mod_attrib_rank(ATTRIBS.REFLEXES)*5+5
+        return self.get_mod_attrib_rank(ATTRIBS.REFLEXES) * 5 + 5
 
     def get_armor_tn(self):
         if self.armor is not None:
@@ -401,10 +438,10 @@ class AdvancedPcModel(BasePcModel):
         return self.get_armor_rd() + self.get_base_rd() + self.get_armor_rd_mod()
 
     def get_armor_tn_mod(self):
-        return sum( x.value[2] for x in self.get_modifiers('artn') if x.active and len(x.value) > 2)
+        return sum(x.value[2] for x in self.get_modifiers('artn') if x.active and len(x.value) > 2)
 
     def get_armor_rd_mod(self):
-        return sum( x.value[2] for x in self.get_modifiers('arrd') if x.active and len(x.value) > 2)
+        return sum(x.value[2] for x in self.get_modifiers('arrd') if x.active and len(x.value) > 2)
 
     def get_armor_name(self):
         if self.armor is not None:
@@ -429,7 +466,7 @@ class AdvancedPcModel(BasePcModel):
     def get_health_rank_mod(self):
         mod = 0
         if self.has_rule('crane_the_force_of_honor'):
-            mod = max(1, int(self.get_honor()-4))
+            mod = max(1, int(self.get_honor() - 4))
 
         for x in self.get_modifiers('hrnk'):
             if x.active and len(x.value) > 2:
@@ -444,10 +481,10 @@ class AdvancedPcModel(BasePcModel):
 
     def get_base_initiative(self):
         return (self.get_insight_rank() +
-               self.get_mod_attrib_rank(ATTRIBS.REFLEXES),
+                self.get_mod_attrib_rank(ATTRIBS.REFLEXES),
                 self.get_mod_attrib_rank(ATTRIBS.REFLEXES))
 
-    def get_init_modifiers (self):
+    def get_init_modifiers(self):
         r, k, b = 0, 0, 0
         mods = [x for x in
                 self.get_modifiers('anyr') + self.get_modifiers('init')
@@ -457,13 +494,13 @@ class AdvancedPcModel(BasePcModel):
             k += m.value[1]
             if len(m.value) > 2:
                 b += m.value[2]
-        return r,k,b
+        return r, k, b
 
-    def get_tot_initiative (self):
+    def get_tot_initiative(self):
         r, k = self.get_base_initiative()
-        b    = 0
-        r1, k1, b1 = self.get_init_modifiers ()
-        return r+r1, k+k1, b+b1
+        b = 0
+        r1, k1, b1 = self.get_init_modifiers()
+        return r + r1, k + k1, b + b1
 
     def get_px(self):
         count = 0
@@ -485,23 +522,25 @@ class AdvancedPcModel(BasePcModel):
 
     def get_school_skills(self):
         school_ = self.get_school(0)
-        if school_ is None: return []
+        if school_ is None:
+            return []
         return school_.skills.keys()
 
     def get_school_skill_rank(self, uuid):
         s_id = str(uuid)
         school_ = self.get_school(0)
-        if school_ is None or s_id not in school_.skills: return 0
+        if school_ is None or s_id not in school_.skills:
+            return 0
         return school_.skills[s_id]
 
-    def get_skills(self, school = True):
+    def get_skills(self, school=True):
         l = []
         if school:
             l = self.get_school_skills()
         for adv in self.advans:
-            if adv.type != 'skill' or \
-              adv.skill in self.get_school_skills() or \
-              adv.skill in l:
+            if (adv.type != 'skill' or
+                    adv.skill in self.get_school_skills() or
+                    adv.skill in l):
                 continue
             l.append(adv.skill)
         return l
@@ -524,9 +563,9 @@ class AdvancedPcModel(BasePcModel):
         ls = []
         for s in self.schools:
             ls += s.techs
-        if self.step_2.school_tech is not None and \
-           self.step_2.school_tech not in ls:
-               ls.insert(0, self.step_2.school_tech)
+        if (self.step_2.school_tech is not None and
+                self.step_2.school_tech not in ls):
+            ls.insert(0, self.step_2.school_tech)
         return ls
 
     def get_spells(self):
@@ -549,13 +588,15 @@ class AdvancedPcModel(BasePcModel):
 
     def get_merits(self):
         for adv in self.advans:
-            if adv.type != 'perk' or adv.cost < 0 or adv.tag == 'flaw': # cannot use != 'merit' for backward compatibility
+            # cannot use != 'merit' for backward compatibility
+            if adv.type != 'perk' or adv.cost < 0 or adv.tag == 'flaw':
                 continue
             yield adv
 
     def get_flaws(self):
         for adv in self.advans:
-            if adv.type != 'perk' or adv.cost > 0 or adv.tag == 'merit': # cannot use != 'flaw' for backward compatibility
+            # cannot use != 'flaw' for backward compatibility
+            if adv.type != 'perk' or adv.cost > 0 or adv.tag == 'merit':
                 continue
             yield adv
 
@@ -588,8 +629,8 @@ class AdvancedPcModel(BasePcModel):
         for s in self.schools:
             school_tags += s.tags
         return tag in self.tags or \
-               self.step_1.has_tag(tag) or \
-               tag in school_tags
+            self.step_1.has_tag(tag) or \
+            tag in school_tags
 
     def has_rule(self, rule):
         school_rules = []
@@ -606,7 +647,7 @@ class AdvancedPcModel(BasePcModel):
         for s in self.schools:
             school_rules += s.tech_rules
         count = 0
-        for adv in (self.advans+school_rules):
+        for adv in (self.advans + school_rules):
             if hasattr(adv, 'rule') and adv.rule == rule:
                 count += 1
         return count
@@ -692,12 +733,12 @@ class AdvancedPcModel(BasePcModel):
             return self.get_school(0).outfit
         return []
 
-    def get_modifiers(self, filter_type = None):
+    def get_modifiers(self, filter_type=None):
         if not filter_type:
             return self.modifiers
         return filter(lambda x: x.type == filter_type, self.modifiers)
 
-    def add_school_skill(self, skill_uid, skill_rank, emph = None):
+    def add_school_skill(self, skill_uid, skill_rank, emph=None):
         s_id = str(skill_uid)
         school_ = self.get_school(0)
         if school_ is None:
@@ -712,22 +753,22 @@ class AdvancedPcModel(BasePcModel):
                 school_.emph[s_id] = []
 
             if emph.startswith('*'):
-                self.add_pending_wc_emph( s_id )
+                self.add_pending_wc_emph(s_id)
             else:
                 school_.emph[s_id].append(emph)
 
         self.unsaved = True
 
     def add_pending_wc_skill(self, wc):
-        self.step_2.pending_wc.append( wc )
+        self.step_2.pending_wc.append(wc)
         self.unsaved = True
 
     def add_pending_wc_spell(self, wc):
-        self.step_2.pending_wc_spell.append( wc )
+        self.step_2.pending_wc_spell.append(wc)
         self.unsaved = True
 
     def add_pending_wc_emph(self, wc):
-        self.step_2.pending_wc_emph.append( wc )
+        self.step_2.pending_wc_emph.append(wc)
         self.unsaved = True
 
     def clear_pending_wc_skills(self):
@@ -743,17 +784,17 @@ class AdvancedPcModel(BasePcModel):
         self.unsaved = True
 
     def add_weapon(self, item):
-        self.weapons.append( item )
+        self.weapons.append(item)
 
     def add_modifier(self, item):
         self.modifiers.append(item)
 
-    def set_family(self, family_id = 0, perk = None, perkval = 1, tags = []):
+    def set_family(self, family_id=0, perk=None, perkval=1, tags=[]):
         if self.family == family_id:
             return
-        self.step_1  = BasePcModel()
+        self.step_1 = BasePcModel()
         self.unsaved = True
-        self.family  = family_id
+        self.family = family_id
         if family_id == 0:
             return
 
@@ -771,21 +812,21 @@ class AdvancedPcModel(BasePcModel):
                 return True
         return False
 
-    def set_school(self, school_id = 0, perk = None, perkval = 1,
-                         honor = 0.0, tags = []):
+    def set_school(self, school_id=0, perk=None, perkval=1,
+                   honor=0.0, tags=[]):
         if self.get_school_id() == school_id:
             return
-        self.step_2  = BasePcModel()
+        self.step_2 = BasePcModel()
         self.schools = []
         self.unsaved = True
-        self.school  = school_id
+        self.school = school_id
         self.clear_pending_wc_skills()
         self.clear_pending_wc_spells()
-        self.clear_pending_wc_emphs ()
+        self.clear_pending_wc_emphs()
         if school_id == 0:
             return
 
-        self.schools = [ CharacterSchool(school_id) ]
+        self.schools = [CharacterSchool(school_id)]
         self.step_2.honor = honor
         self.set_current_school_id(school_id)
 
@@ -793,7 +834,7 @@ class AdvancedPcModel(BasePcModel):
             self.get_school().add_tag(t)
 
         # reset money
-        self.set_property('money', (0,0,0))
+        self.set_property('money', (0, 0, 0))
 
         # void ?
         # print('perk is: {0}'.format(perk))
@@ -807,24 +848,24 @@ class AdvancedPcModel(BasePcModel):
                 return True
         return False
 
-    def set_free_school_tech(self, tech_uuid, rule = None):
+    def set_free_school_tech(self, tech_uuid, rule=None):
         school_ = self.get_school(0)
         if school_ is None:
             return
         self.step_2.school_tech = tech_uuid
         school_.techs.append(tech_uuid)
-        #if rule is not None:
+        # if rule is not None:
         school_.tech_rules.append(rule or 'N/A')
 
     def set_school_outfit(self, outfit, money):
         self.get_school(0).outfit = outfit
         self.set_property('money', money)
 
-    def add_tech(self, tech_uuid, rule = None):
+    def add_tech(self, tech_uuid, rule=None):
         school_ = self.get_school()
         if school_ is None:
             return
-        #print 'add tech %s, rule %s' % ( repr(tech_uuid), rule )
+        # print 'add tech %s, rule %s' % (repr(tech_uuid), rule)
         if tech_uuid not in self.get_techs():
             school_.techs.append(tech_uuid)
         if rule is not None and not self.has_rule(rule):
@@ -856,7 +897,7 @@ class AdvancedPcModel(BasePcModel):
         self.honor = value - self.step_2.honor
         self.unsaved = True
 
-    def set_glory(self, value):        
+    def set_glory(self, value):
         if self.has_tag('monk'):
             self.glory = value
         else:
@@ -900,10 +941,10 @@ class AdvancedPcModel(BasePcModel):
         schools_to_remove = []
         print('I got {0} schools'.format(len(self.schools)))
         for s in self.schools:
-            print('school {0}, rank {1}'.format( s.school_id, s.school_rank ))
-        tot_rank = sum( [x.school_rank for x in self.schools] )
+            print('school {0}, rank {1}'.format(s.school_id, s.school_rank))
+        tot_rank = sum([x.school_rank for x in self.schools])
 
-        print('insight rank: {0}, tot_rank: {1}'.format( insight_, tot_rank ))
+        print('insight rank: {0}, tot_rank: {1}'.format(insight_, tot_rank))
         if tot_rank > insight_:
             diff_ = tot_rank - insight_
             print('diff ranks: {0}'.format(diff_))
@@ -911,7 +952,8 @@ class AdvancedPcModel(BasePcModel):
                 while diff_ > 0 and s.school_rank > 0:
                     if s.school_id == self.get_school_id(0) and s.school_rank == 1:
                         break
-                    print('school {0} rank from {1} to {2}'.format(s.school_id, s.school_rank, s.school_rank-1))
+                    print('school {0} rank from {1} to {2}'.format(
+                        s.school_id, s.school_rank, s.school_rank - 1))
 
                     if len(s.techs) > 0:
                         s.techs.pop()
@@ -920,7 +962,7 @@ class AdvancedPcModel(BasePcModel):
 
                     self.pop_spells(self.spells_per_rank)
 
-                    diff_         -= 1
+                    diff_ -= 1
                     s.school_rank -= 1
 
                     if s.school_rank == 0:
@@ -933,8 +975,9 @@ class AdvancedPcModel(BasePcModel):
 
         elif tot_rank < insight_:
             if self.get_school() is not None:
-                self.get_school().school_rank += (insight_-tot_rank)
-                print('school {0} is now rank {1}'.format(self.get_school_id(), self.get_school_rank()))
+                self.get_school().school_rank += (insight_ - tot_rank)
+                print('school {0} is now rank {1}'.format(
+                    self.get_school_id(), self.get_school_rank()))
 
     def set_insight_calc_method(self, func):
         self.insight_calculation = func
@@ -943,7 +986,7 @@ class AdvancedPcModel(BasePcModel):
     def has_property(self, name):
         return name not in self.properties
 
-    def get_property(self, name, default = ''):
+    def get_property(self, name, default=''):
         if name not in self.properties:
             self.properties[name] = default
         return self.properties[name]
@@ -952,16 +995,16 @@ class AdvancedPcModel(BasePcModel):
         self.properties[name] = value
         self.unsaved = True
 
-### LOAD AND SAVE METHODS ###
+# LOAD AND SAVE METHODS ###
 
     def save_to(self, file):
         self.unsaved = False
 
-        print('saving to',file)
+        print('saving to', file)
 
         fp = open(file, 'wt')
         if fp:
-            json.dump( self, fp, cls=MyJsonEncoder, indent=2 )
+            json.dump(self, fp, cls=MyJsonEncoder, indent=2)
             fp.close()
             return True
         return False
@@ -1043,7 +1086,6 @@ class AdvancedPcModel(BasePcModel):
             except:
                 print('cannot recover current school')
 
-            self.unsaved  = False
+            self.unsaved = False
             return True
         return False
-

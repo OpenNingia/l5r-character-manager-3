@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -24,8 +25,10 @@ import osutil
 
 from l5rcmcore import get_app_file, DB_VERSION, get_icon_path
 
+
 class Sink1(QtCore.QObject):
-    def __init__(self, parent = None):
+
+    def __init__(self, parent=None):
         super(Sink1, self).__init__(parent)
         self.form = parent
 
@@ -36,9 +39,9 @@ class Sink1(QtCore.QObject):
         form.save_path = ''
         form.pc = models.AdvancedPcModel()
         form.pc.load_default()
-        form.load_clans   (  )
+        form.load_clans()
         form.load_families('')
-        form.load_schools ('')
+        form.load_schools('')
         form.tx_pc_notes.set_content('')
         form.pc.set_insight_calc_method(form.ic_calc_method)
         form.update_from_model()
@@ -125,9 +128,9 @@ class Sink1(QtCore.QObject):
         gender = self.sender().property('gender')
         name = ''
         if gender == 'male':
-            name = rules.get_random_name( get_app_file('male.txt') )
+            name = rules.get_random_name(get_app_file('male.txt'))
         else:
-            name = rules.get_random_name( get_app_file('female.txt') )
+            name = rules.get_random_name(get_app_file('female.txt'))
         form.pc.name = name
         form.update_from_model()
 
@@ -158,8 +161,8 @@ class Sink1(QtCore.QObject):
 
         ok = False
         val, ok = QtGui.QInputDialog.getInt(form, 'Set Experience Limit',
-                                       "XP Limit:", form.pc.exp_limit,
-                                        0, 10000, 1)
+                                            "XP Limit:", form.pc.exp_limit,
+                                            0, 10000, 1)
         if ok:
             form.set_exp_limit(val)
 
@@ -168,8 +171,8 @@ class Sink1(QtCore.QObject):
 
         ok = False
         val, ok = QtGui.QInputDialog.getInt(form, 'Set Health Multiplier',
-                                       "Multiplier:", form.pc.health_multiplier,
-                                        2, 5, 1)
+                                            "Multiplier:", form.pc.health_multiplier,
+                                            2, 5, 1)
         if ok:
             form.set_health_multiplier(val)
 
@@ -178,8 +181,8 @@ class Sink1(QtCore.QObject):
 
         ok = False
         val, ok = QtGui.QInputDialog.getInt(form, 'Cure/Inflict Damage',
-                                       "Wounds:", 1,
-                                        -1000, 1000, 1)
+                                            "Wounds:", 1,
+                                            -1000, 1000, 1)
         if ok:
             form.damage_health(val)
 
@@ -188,10 +191,12 @@ class Sink1(QtCore.QObject):
         form.cb_pc_school.blockSignals(True)
         form.pc.toggle_unlock_schools()
         if form.pc.unlock_schools:
-            form.bt_school_lock.setIcon( QtGui.QIcon(get_icon_path('lock_open',(16,16))) )
-            form.load_schools ()
+            form.bt_school_lock.setIcon(
+                QtGui.QIcon(get_icon_path('lock_open', (16, 16))))
+            form.load_schools()
         else:
-            form.bt_school_lock.setIcon( QtGui.QIcon(get_icon_path('lock_close',(16,16))) )
+            form.bt_school_lock.setIcon(
+                QtGui.QIcon(get_icon_path('lock_close', (16, 16))))
             form.load_schools(form.pc.clan or '')
         form.cb_pc_school.blockSignals(False)
         form.update_from_model()
@@ -211,8 +216,10 @@ class Sink1(QtCore.QObject):
             "removing it might lean to incoherences in your character.\n"
             "Continue anyway?"))
 
-        do_not_prompt_again = QtGui.QCheckBox(self.tr("Do not prompt again"), msgBox)
-        do_not_prompt_again.blockSignals(True) # PREVENT MSGBOX TO CLOSE ON CLICK
+        do_not_prompt_again = QtGui.QCheckBox(
+            self.tr("Do not prompt again"), msgBox)
+        # PREVENT MSGBOX TO CLOSE ON CLICK
+        do_not_prompt_again.blockSignals(True)
         msgBox.addButton(QtGui.QMessageBox.Yes)
         msgBox.addButton(QtGui.QMessageBox.No)
         msgBox.addButton(do_not_prompt_again, QtGui.QMessageBox.ActionRole)
@@ -224,12 +231,13 @@ class Sink1(QtCore.QObject):
             return True
         return False
 
-    def refund_advancement(self, adv_idx = -1):
+    def refund_advancement(self, adv_idx=-1):
         '''refund the specified advancement and recalculate ranks'''
         form = self.form
 
         if adv_idx < 0:
-            adv_idx = len(form.pc.advans) - form.adv_view.selectionModel().currentIndex().row() - 1
+            adv_idx = (len(form.pc.advans) -
+                       form.adv_view.selectionModel().currentIndex().row() - 1)
         if adv_idx >= len(form.pc.advans) or adv_idx < 0:
             return self.refund_last_adv()
 
@@ -240,8 +248,7 @@ class Sink1(QtCore.QObject):
             return True
         return False
 
-
-    #OPTIONS
+    # OPTIONS
     def on_toggle_buy_for_free(self, flag):
         models.Advancement.set_buy_for_free(flag)
 
@@ -265,22 +272,23 @@ class Sink1(QtCore.QObject):
                 else:
                     logo.hide()
                     form.widgets.adjustSize()
-                    form.widgets.resize(1,1)
-                    form.widgets.setGeometry( QtCore.QRect(0, 0, 727, 573) )
+                    form.widgets.resize(1, 1)
+                    form.widgets.setGeometry(QtCore.QRect(0, 0, 727, 573))
                 break
-        #form.widgets.adjustSize()
+        # form.widgets.adjustSize()
 
     def open_image_dialog(self):
-        supported_ext     = ['.png']
+        supported_ext = ['.png']
         supported_filters = [self.tr("PNG Images (*.png)")]
 
         settings = QtCore.QSettings()
-        last_data_dir = settings.value('last_open_image_dir', QtCore.QDir.homePath())
+        last_data_dir = settings.value(
+            'last_open_image_dir', QtCore.QDir.homePath())
         fileName = QtGui.QFileDialog.getOpenFileName(
-                                self.form,
-                                self.tr("Open image"),
-                                last_data_dir,
-                                ";;".join(supported_filters))
+            self.form,
+            self.tr("Open image"),
+            last_data_dir,
+            ";;".join(supported_filters))
         if len(fileName) != 2:
             return None
 
@@ -307,7 +315,8 @@ class Sink1(QtCore.QObject):
     def on_set_background_color(self):
         form = self.form
         color = self.open_color_dialog()
-        if not color: return
+        if not color:
+            return
 
         if color.isValid():
             form.view.setStyleSheet("background-color:%s;" % color.name())
@@ -316,7 +325,8 @@ class Sink1(QtCore.QObject):
 
     def on_set_background(self):
         file = self.open_image_dialog()
-        if not file: return
+        if not file:
+            return
 
         settings = QtCore.QSettings()
         settings.setValue('background_image', file)
@@ -327,7 +337,7 @@ class Sink1(QtCore.QObject):
         form = self.form
         settings = QtCore.QSettings()
         settings.setValue('background_image', '')
-        form.view.set_wallpaper( None )
+        form.view.set_wallpaper(None)
 
     def open_data_dir_act(self):
         path = os.path.normpath(osutil.get_user_data_path())
@@ -338,4 +348,3 @@ class Sink1(QtCore.QObject):
     def on_reset_geometry(self):
         form = self.form
         form.reset_geometry()
-

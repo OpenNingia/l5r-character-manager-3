@@ -4,7 +4,9 @@ import models
 import dal
 import os
 
+
 class NpcExportTest(object):
+
     def __init__(self):
 
         self.out = 'npc.fdf'
@@ -21,16 +23,16 @@ class NpcExportTest(object):
                 pcs.append(c)
 
         user_data_dir = os.environ['APPDATA'].decode('latin-1')
-        pack_data_dir = os.path.join( user_data_dir, 'openningia', 'l5rcm' )
+        pack_data_dir = os.path.join(user_data_dir, 'openningia', 'l5rcm')
 
         dstore = dal.Data(
             [os.path.join(pack_data_dir, 'core.data'),
              os.path.join(pack_data_dir, 'data')],
-             [])
+            [])
 
-        exporter = exporters.FDFExporterTwoNPC( dstore, pcs )
+        exporter = exporters.FDFExporterTwoNPC(dstore, pcs)
 
-        with open( self.out, 'wb' ) as fobj:
+        with open(self.out, 'wb') as fobj:
             exporter.export(fobj)
 
 if __name__ == '__main__':

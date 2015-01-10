@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -21,17 +22,20 @@ import dal.query
 
 from PySide import QtCore, QtGui
 
-def grouped_widget(title, widget, parent = None):
-    grp     = QtGui.QGroupBox(title, parent)
-    vbox    = QtGui.QVBoxLayout(grp)
+
+def grouped_widget(title, widget, parent=None):
+    grp = QtGui.QGroupBox(title, parent)
+    vbox = QtGui.QVBoxLayout(grp)
     vbox.addWidget(widget)
 
     return grp
 
+
 class CustomArmorDialog(QtGui.QDialog):
-    def __init__(self, pc, parent = None):
+
+    def __init__(self, pc, parent=None):
         super(CustomArmorDialog, self).__init__(parent)
-        self.pc  = pc
+        self.pc = pc
         self.item = None
         self.build_ui()
         self.load_data()
@@ -41,7 +45,7 @@ class CustomArmorDialog(QtGui.QDialog):
 
         self.setMinimumSize(400, 0)
 
-        self.bt_accept = QtGui.QPushButton(self.tr("Ok")    , self)
+        self.bt_accept = QtGui.QPushButton(self.tr("Ok"), self)
         self.bt_cancel = QtGui.QPushButton(self.tr("Cancel"), self)
 
         lvbox = QtGui.QVBoxLayout(self)
@@ -50,9 +54,9 @@ class CustomArmorDialog(QtGui.QDialog):
 
         self.tx_tn = QtGui.QLineEdit(self)
         self.tx_rd = QtGui.QLineEdit(self)
-        fr      = QtGui.QFrame(self)
-        hbox    = QtGui.QHBoxLayout(fr)
-        hbox.addWidget(grouped_widget(self.tr("Armor TN" ), self.tx_tn, self))
+        fr = QtGui.QFrame(self)
+        hbox = QtGui.QHBoxLayout(fr)
+        hbox.addWidget(grouped_widget(self.tr("Armor TN"), self.tx_tn, self))
         hbox.addWidget(grouped_widget(self.tr("Reduction"), self.tx_rd, self))
         lvbox.addWidget(fr)
 
@@ -64,26 +68,26 @@ class CustomArmorDialog(QtGui.QDialog):
         self.btbox.addButton(self.bt_cancel, QtGui.QDialogButtonBox.RejectRole)
 
         self.btbox.accepted.connect(self.on_accept)
-        self.btbox.rejected.connect(self.close    )
+        self.btbox.rejected.connect(self.close)
 
         lvbox.addWidget(self.btbox)
 
     def load_data(self):
         if self.pc.armor is None:
             return
-        self.tx_name .setText(self.pc.armor.name    )
-        self.tx_tn   .setText(str(self.pc.armor.tn) )
-        self.tx_rd   .setText(str(self.pc.armor.rd) )
+        self.tx_name .setText(self.pc.armor.name)
+        self.tx_tn   .setText(str(self.pc.armor.tn))
+        self.tx_rd   .setText(str(self.pc.armor.rd))
         self.tx_notes.setText(self.pc.armor.desc)
 
     def on_accept(self):
         self.item = models.ArmorOutfit()
         try:
-            self.item.tn   = int(self.tx_tn.text())
-            self.item.rd   = int(self.tx_rd.text())
+            self.item.tn = int(self.tx_tn.text())
+            self.item.rd = int(self.tx_rd.text())
         except:
-            self.item.tn   = 0
-            self.item.rd   = 0
+            self.item.tn = 0
+            self.item.rd = 0
 
         self.item.name = self.tx_name.text()
         self.item.desc = self.tx_notes.toPlainText()
@@ -96,11 +100,13 @@ class CustomArmorDialog(QtGui.QDialog):
         self.pc.armor = self.item
         self.accept()
 
+
 class CustomWeaponDialog(QtGui.QDialog):
-    def __init__(self, pc, dstore, parent = None):
+
+    def __init__(self, pc, dstore, parent=None):
         super(CustomWeaponDialog, self).__init__(parent)
-        self.pc  = pc
-        self.dstore  = dstore
+        self.pc = pc
+        self.dstore = dstore
         self.item = None
         self.edit_mode = False
         self.build_ui()
@@ -111,7 +117,7 @@ class CustomWeaponDialog(QtGui.QDialog):
 
         self.setMinimumSize(400, 0)
 
-        self.bt_accept = QtGui.QPushButton(self.tr("Ok")    , self)
+        self.bt_accept = QtGui.QPushButton(self.tr("Ok"), self)
         self.bt_cancel = QtGui.QPushButton(self.tr("Cancel"), self)
 
         # Weapon Name
@@ -121,24 +127,25 @@ class CustomWeaponDialog(QtGui.QDialog):
 
         # Base Weapon
         self.cb_base_weap = QtGui.QComboBox(self)
-        lvbox.addWidget(grouped_widget(self.tr("Base Weapon"), self.cb_base_weap, self))
-        self.cb_base_weap.currentIndexChanged.connect( self.on_base_weap_change )
+        lvbox.addWidget(
+            grouped_widget(self.tr("Base Weapon"), self.cb_base_weap, self))
+        self.cb_base_weap.currentIndexChanged.connect(self.on_base_weap_change)
 
         # Stats
         stats_fr = QtGui.QFrame(self)
-        form_lo  = QtGui.QFormLayout(stats_fr)
+        form_lo = QtGui.QFormLayout(stats_fr)
 
-        self.tx_dr      = QtGui.QLineEdit(self)
-        self.tx_dr_alt  = QtGui.QLineEdit(self)
-        self.tx_rng     = QtGui.QLineEdit(self)
-        self.tx_str     = QtGui.QLineEdit(self)
+        self.tx_dr = QtGui.QLineEdit(self)
+        self.tx_dr_alt = QtGui.QLineEdit(self)
+        self.tx_rng = QtGui.QLineEdit(self)
+        self.tx_str = QtGui.QLineEdit(self)
         self.tx_min_str = QtGui.QLineEdit(self)
 
-        form_lo.addRow(self.tr("Primary DR"     ), self.tx_dr)
-        form_lo.addRow(self.tr("Secondary DR"   ), self.tx_dr_alt)
-        form_lo.addRow(self.tr("Range"          ), self.tx_rng)
+        form_lo.addRow(self.tr("Primary DR"), self.tx_dr)
+        form_lo.addRow(self.tr("Secondary DR"), self.tx_dr_alt)
+        form_lo.addRow(self.tr("Range"), self.tx_rng)
         form_lo.addRow(self.tr("Weapon Strength"), self.tx_str)
-        form_lo.addRow(self.tr("Min. Strength"  ), self.tx_min_str)
+        form_lo.addRow(self.tr("Min. Strength"), self.tx_min_str)
 
         lvbox.addWidget(grouped_widget(self.tr("Stats"), stats_fr, self))
 
@@ -150,7 +157,7 @@ class CustomWeaponDialog(QtGui.QDialog):
         self.btbox.addButton(self.bt_cancel, QtGui.QDialogButtonBox.RejectRole)
 
         self.btbox.accepted.connect(self.on_accept)
-        self.btbox.rejected.connect(self.close    )
+        self.btbox.rejected.connect(self.close)
 
         lvbox.addWidget(self.btbox)
 
@@ -159,17 +166,17 @@ class CustomWeaponDialog(QtGui.QDialog):
             self.cb_base_weap.addItem(weapon.name, weapon.name)
 
     def load_item(self, item):
-        self.tx_name    .setText( item.name   )
-        self.tx_dr      .setText( item.dr     )
-        self.tx_dr_alt  .setText( item.dr_alt )
-        self.tx_rng     .setText( item.range  )
-        self.tx_notes   .setText( item.desc   )
-        self.tx_str     .setText( str(item.strength) )
-        self.tx_min_str .setText( str(item.min_str)  )
+        self.tx_name    .setText(item.name)
+        self.tx_dr      .setText(item.dr)
+        self.tx_dr_alt  .setText(item.dr_alt)
+        self.tx_rng     .setText(item.range)
+        self.tx_notes   .setText(item.desc)
+        self.tx_str     .setText(str(item.strength))
+        self.tx_min_str .setText(str(item.min_str))
         self.item = item
         self.cb_base_weap.setVisible(False)
 
-    def on_base_weap_change(self, text = ''):
+    def on_base_weap_change(self, text=''):
         selected = self.cb_base_weap.currentIndex()
         if selected < 0:
             return
@@ -177,14 +184,14 @@ class CustomWeaponDialog(QtGui.QDialog):
         weap_uuid = self.cb_base_weap.itemData(selected)
         self.item = itm = models.weapon_outfit_from_db(self.dstore, weap_uuid)
 
-        self.tx_str    .setText( str(itm.strength) )
-        self.tx_min_str.setText( str(itm.min_str)  )
+        self.tx_str    .setText(str(itm.strength))
+        self.tx_min_str.setText(str(itm.min_str))
 
-        self.tx_dr     .setText( itm.dr     )
-        self.tx_dr_alt .setText( itm.dr_alt )
-        self.tx_rng    .setText( itm.range  )
-        self.tx_name   .setText( itm.name   )
-        self.tx_notes  .setText( itm.desc   )
+        self.tx_dr     .setText(itm.dr)
+        self.tx_dr_alt .setText(itm.dr_alt)
+        self.tx_rng    .setText(itm.range)
+        self.tx_name   .setText(itm.name)
+        self.tx_notes  .setText(itm.desc)
 
     def on_accept(self):
         if not self.item:
@@ -199,21 +206,21 @@ class CustomWeaponDialog(QtGui.QDialog):
         def _try_get_dr(widget):
             text = widget.text()
             r, k = rules.parse_rtk(text)
-            return rules.format_rtk(r,k)
+            return rules.format_rtk(r, k)
 
-        self.item.strength = _try_get_int(self.tx_str     )
-        self.item.min_str  = _try_get_int(self.tx_min_str )
+        self.item.strength = _try_get_int(self.tx_str)
+        self.item.min_str = _try_get_int(self.tx_min_str)
 
-        self.item.dr     = _try_get_dr(self.tx_dr    ) or self.tr("N/A")
+        self.item.dr = _try_get_dr(self.tx_dr) or self.tr("N/A")
         self.item.dr_alt = _try_get_dr(self.tx_dr_alt) or self.tr("N/A")
-        self.item.range  = self.tx_rng  .text()
-        self.item.name   = self.tx_name .text()
-        self.item.desc   = self.tx_notes.toPlainText()
+        self.item.range = self.tx_rng  .text()
+        self.item.name = self.tx_name .text()
+        self.item.desc = self.tx_notes.toPlainText()
 
         if self.item.name == '':
             QtGui.QMessageBox.warning(self, self.tr("Custom Weapon"),
                                       self.tr("Please enter a name."))
             return
         if not self.edit_mode:
-            self.pc.add_weapon( self.item )
+            self.pc.add_weapon(self.item)
         self.accept()

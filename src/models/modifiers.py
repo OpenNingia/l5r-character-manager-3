@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -20,16 +21,18 @@ import dal
 import dal.query
 
 MOD_TYPES = {
-    "none" : "Select a modifier",
-    "wdmg" : "Damage Roll",
-    #"spcr" : "Spell Casting Roll",
-    "anyr" : "Any Roll",
-    "skir" : "Skill Roll",
-    "atkr" : "Attack Roll",
-    "hrnk" : "Health Rank",    
-    "artn" : "Armor TN",
-    "arrd" : "Armor RD",
-    "init" : "Initiative"
+    "none": "Select a modifier",
+    "wdmg": "Damage Roll",
+    # "spcr" : "Spell Casting Roll",
+    "anyr": "Any Roll",
+    "skir": "Skill Roll",
+    "atkr": "Attack Roll",
+    "trat": "Trait Roll",
+    "ring": "Ring Roll",
+    "hrnk": "Health Rank",
+    "artn": "Armor TN",
+    "arrd": "Armor RD",
+    "init": "Initiative"
 }
 
 MOD_DTLS = {
@@ -37,6 +40,8 @@ MOD_DTLS = {
     "anyr": ("none", "N/A"),
     "hrnk": ("none", "N/A"),
     "skir": ("skill", "Select Skill"),
+    "trat": ("trait", "Select Trait"),
+    "ring": ("ring", "Select Ring"),
     "wdmg": ("aweap", "Select Weapon"),
     'atkr': ("aweap", "Select Weapon"),
     "artn": ("none", "N/A"),
@@ -44,41 +49,44 @@ MOD_DTLS = {
     "init": ("none", "N/A"),
 }
 
+
 class ModifierModel(object):
+
     def __init__(self):
-        self.type   = 'none'
-        self.dtl    = None
-        self.value  = (0, 0, 0)
+        self.type = 'none'
+        self.dtl = None
+        self.value = (0, 0, 0)
         self.reason = "I'm just this good"
         self.active = False
-       
+
+
 class ModifiersTableViewModel(QtCore.QAbstractTableModel):
     user_change = QtCore.Signal()
-    
-    def __init__(self, parent = None):
+
+    def __init__(self, parent=None):
         super(ModifiersTableViewModel, self).__init__(parent)
         self.items = []
         self.headers = ['Modifies', 'Detail', 'Value', 'Reason']
-        self.dirty   = False
+        self.dirty = False
         self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
-        self.bg_color   = [ QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
-                            QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82)) ]        
+        self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
+                         QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
         self.item_size = QtCore.QSize(28, 28)
 
-    def rowCount(self, parent = QtCore.QModelIndex()):
+    def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
 
-    def columnCount(self, parent = QtCore.QModelIndex()):
+    def columnCount(self, parent=QtCore.QModelIndex()):
         return len(self.headers)
 
-    def headerData(self, section, orientation, role = QtCore.Qt.ItemDataRole.DisplayRole):
+    def headerData(self, section, orientation, role=QtCore.Qt.ItemDataRole.DisplayRole):
         if orientation != QtCore.Qt.Orientation.Horizontal:
             return None
         if role == QtCore.Qt.DisplayRole:
             return self.headers[section]
         return None
 
-    def data(self, index, role = QtCore.Qt.UserRole):
+    def data(self, index, role=QtCore.Qt.UserRole):
         if not index.isValid() or index.row() >= len(self.items):
             return None
         item = self.items[index.row()]
@@ -87,20 +95,20 @@ class ModifiersTableViewModel(QtCore.QAbstractTableModel):
         elif role == QtCore.Qt.ForegroundRole:
             return self.text_color
         elif role == QtCore.Qt.BackgroundRole:
-            return self.bg_color[ index.row() % 2 ]            
+            return self.bg_color[index.row() % 2]
         elif role == QtCore.Qt.SizeHintRole:
             return self.item_size
         elif role == QtCore.Qt.CheckStateRole:
             return self.__checkstate_role(item, index.column())
         elif role == QtCore.Qt.UserRole:
-            return item    
+            return item
         return None
-    
+
     def setData(self, index, value, role):
         if not index.isValid():
             return False
-        
-        ret  = False
+
+        ret = False
         item = self.items[index.row()]
         self.dirty = True
 
@@ -120,40 +128,40 @@ class ModifiersTableViewModel(QtCore.QAbstractTableModel):
                 ret = False
             ret = True
         else:
-            ret = super(ModifiersTableViewModel, self).setData(index, value, role)
-        
+            ret = super(ModifiersTableViewModel, self).setData(
+                index, value, role)
+
         if ret:
-            print('user change' + str(item.active))
             self.user_change.emit()
         return ret
-        
+
     def __display_role(self, item, column):
         if column == 0:
             return MOD_TYPES[item.type] if item.type else None
         if column == 1:
-            return item.dtl or ( MOD_DTLS[item.type][1] if item.type in MOD_DTLS else None )
+            return item.dtl or (MOD_DTLS[item.type][1] if item.type in MOD_DTLS else None)
         if column == 2:
             return rules.format_rtk_t(item.value)
         if column == 3:
             return item.reason
         return None
-        
+
     def __checkstate_role(self, item, column):
         if column == 0:
             return QtCore.Qt.Checked if item.active else QtCore.Qt.Unchecked
         return None
-        
+
     def flags(self, index):
         if not index.isValid():
             return QtCore.Qt.ItemIsDropEnabled
         flags = QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled
         if index.column() == 0:
-	        flags |= QtCore.Qt.ItemIsUserCheckable        
+            flags |= QtCore.Qt.ItemIsUserCheckable
         return flags
 
     def add_item(self, item):
         row = self.rowCount()
-        self.beginInsertRows(QtCore.QModelIndex(), row, row)               
+        self.beginInsertRows(QtCore.QModelIndex(), row, row)
         self.items.append(item)
         self.endInsertRows()
 
@@ -166,8 +174,7 @@ class ModifiersTableViewModel(QtCore.QAbstractTableModel):
         self.clean()
         for m in model.get_modifiers():
             self.add_item(m)
-        
+
         if self.dirty:
-            print('set model unsaved')
             model.unsaved = True
-            self.dirty    = False                        
+            self.dirty = False

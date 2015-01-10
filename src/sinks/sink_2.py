@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
@@ -18,105 +19,107 @@ from PySide import QtCore, QtGui
 
 import dialogs
 
+
 class Sink2(QtCore.QObject):
-    def __init__(self, parent = None):
+
+    def __init__(self, parent=None):
         super(Sink2, self).__init__(parent)
         self.form = parent
 
     def act_buy_merit(self):
         form = self.form
-        
+
         dlg = dialogs.BuyPerkDialog(form.pc, 'merit',
                                     form.dstore, form)
         dlg.exec_()
         form.update_from_model()
-        
+
     def act_buy_flaw(self):
         form = self.form
-        
+
         dlg = dialogs.BuyPerkDialog(form.pc, 'flaw',
                                     form.dstore, form)
         dlg.exec_()
-        form.update_from_model() 
+        form.update_from_model()
 
     def act_edit_merit(self):
         form = self.form
-        
+
         sel_idx = form.merit_view.selectionModel().currentIndex()
         if not sel_idx.isValid():
             return
         sel_itm = form.merit_view.model().data(sel_idx, QtCore.Qt.UserRole)
-        
+
         dlg = dialogs.BuyPerkDialog(form.pc, 'merit',
                                     form.dstore, form)
 
-        dlg.set_edit_mode(True)        
+        dlg.set_edit_mode(True)
         dlg.load_item(sel_itm)
         dlg.exec_()
         form.update_from_model()
-    
-    def act_edit_flaw(self):   
-        form = self.form    
-        
+
+    def act_edit_flaw(self):
+        form = self.form
+
         sel_idx = form.flaw_view.selectionModel().currentIndex()
         if not sel_idx.isValid():
             return
         sel_itm = form.flaw_view.model().data(sel_idx, QtCore.Qt.UserRole)
-        
+
         dlg = dialogs.BuyPerkDialog(form.pc, 'flaw',
                                     form.dstore, form)
 
-        dlg.set_edit_mode(True)        
-        dlg.load_item(sel_itm)                
+        dlg.set_edit_mode(True)
+        dlg.load_item(sel_itm)
         dlg.exec_()
         form.update_from_model()
 
     def act_del_merit(self):
         form = self.form
-        
+
         sel_idx = form.merit_view.selectionModel().currentIndex()
         if not sel_idx.isValid():
             return
-        sel_itm = form.merit_view.model().data(sel_idx, QtCore.Qt.UserRole)        
-        form.remove_advancement_item(sel_itm.adv)        
-        
+        sel_itm = form.merit_view.model().data(sel_idx, QtCore.Qt.UserRole)
+        form.remove_advancement_item(sel_itm.adv)
+
     def act_del_flaw(self):
         form = self.form
-        
+
         sel_idx = form.flaw_view.selectionModel().currentIndex()
         if not sel_idx.isValid():
             return
         sel_itm = form.flaw_view.model().data(sel_idx, QtCore.Qt.UserRole)
-        form.remove_advancement_item(sel_itm.adv)       
+        form.remove_advancement_item(sel_itm.adv)
 
     def act_buy_kata(self):
         form = self.form
-        
-        dlg = dialogs.KataDialog( form.pc, form.dstore, form )
+
+        dlg = dialogs.KataDialog(form.pc, form.dstore, form)
         dlg.exec_()
-        form.update_from_model()      
+        form.update_from_model()
 
     def act_buy_kiho(self):
         form = self.form
-        dlg = dialogs.KihoDialog( form.pc, form.dstore, form )
-        dlg.exec_()        
+        dlg = dialogs.KihoDialog(form.pc, form.dstore, form)
+        dlg.exec_()
         form.update_from_model()
-        
+
     def act_buy_tattoo(self):
         form = self.form
-        dlg = dialogs.TattooDialog( form.pc, form.dstore, form )
-        dlg.exec_()        
-        form.update_from_model()        
-        
+        dlg = dialogs.TattooDialog(form.pc, form.dstore, form)
+        dlg.exec_()
+        form.update_from_model()
+
     def act_del_kata(self):
         form = self.form
-        
+
         sel_idx = form.kata_view.selectionModel().currentIndex()
         if not sel_idx.isValid():
             return
         sel_itm = form.ka_table_view.model().data(sel_idx, QtCore.Qt.UserRole)
         form.remove_advancement_item(sel_itm.adv)
-        
+
     def act_del_kiho(self):
         form = self.form
         print('act_del_kiho')
@@ -126,4 +129,4 @@ class Sink2(QtCore.QObject):
             return
         sel_itm = form.ki_table_view.model().data(sel_idx, QtCore.Qt.UserRole)
         print('to remove', sel_itm)
-        form.remove_advancement_item(sel_itm.adv)        
+        form.remove_advancement_item(sel_itm.adv)
