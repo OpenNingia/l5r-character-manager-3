@@ -1,4 +1,5 @@
-# Copyright (C) 2014 Daniele Simonetti
+# -*- coding: iso-8859-1 -*-
+# Copyright (C) 2011 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,15 +14,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-from distutils.core import setup
-import py2exe
+from setuptools import setup
+
+APP = ['l5rcm.py']
+DATA_FILES = []
+OPTIONS = {'argv_emulation': True}
 
 setup(
-    windows = [
-        {
-            "script": "l5rcm.py",
-            "icon_resources": [(0, "../tools/deploy/windows/l5rcm.ico"), (1, "../tools/deploy/windows/l5rcmpack.ico")]
-        }
-    ],
-    options={"py2exe": {"includes": ["PySide.QtGui", 'lxml.etree', 'lxml._elementpath'] }},
-    )
+    app=APP,
+    data_files=DATA_FILES,
+    options={'py2app': OPTIONS},
+    setup_requires=['py2app'],
+)
