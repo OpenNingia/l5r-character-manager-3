@@ -32,6 +32,10 @@ from PySide import QtGui, QtCore
 
 from l5rcmcore import *
 
+import api.data.clans
+import api.data.families
+import api.data.schools
+
 
 def new_small_le(parent=None, ro=True):
     le = QtGui.QLineEdit(parent)
@@ -288,8 +292,8 @@ class L5RMain(L5RCMCore):
             grid = QtGui.QGridLayout(fr_pc_info)
             self.tx_pc_name = QtGui.QLineEdit(self)
             self.tx_pc_rank = QtGui.QLineEdit(self)
-            self.cb_pc_clan = QtGui.QComboBox(self)
-            self.cb_pc_family = QtGui.QComboBox(self)
+            self.lb_pc_clan = QtGui.QLabel(self)
+            self.lb_pc_family = QtGui.QLabel(self)
             self.cb_pc_school = QtGui.QComboBox(self)
             self.tx_pc_exp = QtGui.QLineEdit(self)
             self.tx_pc_ins = QtGui.QLineEdit(self)
@@ -307,6 +311,18 @@ class L5RMain(L5RCMCore):
             bt_lock.setIcon(QtGui.QIcon(get_icon_path('lock_close', (16, 16))))
             hb_school.addWidget(lb_school)
             hb_school.addWidget(bt_lock)
+
+            #
+            bt_edit_family = QtGui.QToolButton(self)
+            bt_edit_family.setToolTip(self.tr("Edit character family and clan"))
+            bt_edit_family.setAutoRaise(True)
+            bt_edit_family.setIcon(QtGui.QIcon(get_icon_path('edit', (16, 16))))
+
+            fr_family = QtGui.QFrame(self)
+            hb_family = QtGui.QHBoxLayout(fr_family)
+            hb_family.setContentsMargins(0, 0, 0, 0)
+            hb_family.addWidget(QtGui.QLabel(self.tr("Family")))
+            hb_family.addWidget(bt_edit_family)
 
             # Place "generate random name" near the Name label
             lb_name = QtGui.QLabel(self.tr("Name"), self)
@@ -333,9 +349,10 @@ class L5RMain(L5RCMCore):
 
             grid.addLayout(hb_name, 0, 0)
             grid.addWidget(QtGui.QLabel(self.tr("Clan"), self), 1, 0)
-            grid.addWidget(QtGui.QLabel(self.tr("Family"), self), 2, 0)
+            grid.addWidget(fr_family, 2, 0)
             grid.addWidget(fr_school, 3, 0)
 
+            self.bt_edit_family = bt_edit_family
             self.bt_school_lock = bt_lock
 
             # 3rd column
@@ -358,8 +375,8 @@ class L5RMain(L5RCMCore):
 
             # 2nd column
             grid.addWidget(self.tx_pc_name, 0, 1, 1, 2)
-            grid.addWidget(self.cb_pc_clan, 1, 1, 1, 2)
-            grid.addWidget(self.cb_pc_family, 2, 1, 1, 2)
+            grid.addWidget(self.lb_pc_clan, 1, 1, 1, 2)
+            grid.addWidget(self.lb_pc_family, 2, 1, 1, 2)
             grid.addWidget(self.cb_pc_school, 3, 1, 1, 2)
 
             # 4th column
@@ -1542,11 +1559,8 @@ class L5RMain(L5RCMCore):
         self.statusBar().addPermanentWidget(self.paypal_bt)
 
     def connect_signals(self):
-        # only user change
-        self.cb_pc_clan  .activated.connect(self.on_clan_change)
 
         # user and programmatically change
-        self.cb_pc_family.currentIndexChanged.connect(self.on_family_change)
         self.cb_pc_school.currentIndexChanged.connect(self.on_school_change)
 
         # notify only user edit
@@ -1572,6 +1586,7 @@ class L5RMain(L5RCMCore):
         self.ic_act_grp.triggered.connect(self.on_change_insight_calculation)
         self.hm_act_grp.triggered.connect(self.on_change_health_visualization)
 
+        self.bt_edit_family.clicked.connect(self.sink4.on_edit_family)
         self.bt_school_lock.clicked.connect(self.sink1.on_unlock_school_act)
         self.bt_set_exp_points.clicked.connect(self.sink1.on_set_exp_limit)
 
@@ -1641,45 +1656,27 @@ class L5RMain(L5RCMCore):
         if (self.buy_kiho(kiho) == CMErrors.NOT_ENOUGH_XP):
             self.not_enough_xp_advise(self)
 
-    def on_clan_change(self, text):
-        # print 'on_clan_change %s' % text
-        # self.cb_pc_family.clear()
-        index = self.cb_pc_clan.currentIndex()
-        if index < 0:
-            self.pc.clan = None
-        else:
-            clan_id = self.cb_pc_clan.itemData(index)
-            self.pc.clan = clan_id
+    #def on_family_change(self, text):
+        # index = self.cb_pc_family.currentIndex()
+        #if index <= 0:
+        #    self.pc.set_family()
+        #    self.update_from_model()
+        #    return
 
-        self.load_families(self.pc.clan)
-        if self.pc.unlock_schools:
-            self.load_schools()
-        else:
-            self.load_schools(self.pc.clan)
-        self.cb_pc_family.setCurrentIndex(0)
-        self.cb_pc_school.setCurrentIndex(0)
-
-    def on_family_change(self, text):
-        index = self.cb_pc_family.currentIndex()
-        if index <= 0:
-            self.pc.set_family()
-            self.update_from_model()
-            return
-
-        uuid = self.cb_pc_family.itemData(index)
-        if uuid == self.pc.get_family():
-            return
+        #uuid = self.cb_pc_family.itemData(index)
+        #if uuid == self.pc.get_family():
+        #    return
         # should modify step_1 character
         # get family perk
 
-        family = dal.query.get_family(self.dstore, uuid)
-        clan = dal.query.get_clan(self.dstore, family.clanid)
+        #family = dal.query.get_family(self.dstore, uuid)
+        #clan = dal.query.get_clan(self.dstore, family.clanid)
 
-        if not family or not clan:
-            return
+        #if not family or not clan:
+        #    return
 
-        self.pc.set_family(family.id, family.trait, 1, [family.id, clan.id])
-        self.update_from_model()
+        #self.pc.set_family(family.id, family.trait, 1, [family.id, clan.id])
+        #self.update_from_model()
 
     def on_school_change(self, text):
         index = self.cb_pc_school.currentIndex()
@@ -2146,8 +2143,7 @@ class L5RMain(L5RCMCore):
             self.set_pc_deficiency(deficiency)
 
     def load_character_from(self, path):
-        pause_signals([self.tx_pc_name, self.cb_pc_clan, self.cb_pc_family,
-                       self.cb_pc_school])
+        pause_signals([self.tx_pc_name, self.cb_pc_school])
         pause_signals(self.pers_info_widgets)
 
         if not self.pc:
@@ -2181,7 +2177,7 @@ class L5RMain(L5RCMCore):
 
             # TODO: checks for books / data extensions
 
-            self.load_families(self.pc.clan)
+            # self.load_families(self.pc.clan)
             if self.pc.unlock_schools:
                 self.load_schools()
             else:
@@ -2194,17 +2190,9 @@ class L5RMain(L5RCMCore):
         else:
             print('character load failure')
 
-        resume_signals([self.tx_pc_name, self.cb_pc_clan, self.cb_pc_family,
-                        self.cb_pc_school])
+        resume_signals([self.tx_pc_name, self.cb_pc_school])
         resume_signals(self.pers_info_widgets)
 
-    def load_clans(self):
-        # clans
-        self.cb_pc_clan.clear()
-        self.cb_pc_clan.addItem(self.tr("No Clan"), None)
-
-        for c in self.dstore.clans:
-            self.cb_pc_clan.addItem(c.name, c.id)
 
     def load_schools(self, clan_id=None):
         print('load schools for clan_id {0}'.format(clan_id))
@@ -2221,40 +2209,23 @@ class L5RMain(L5RCMCore):
         for s in schools:
             self.cb_pc_school.addItem(s.name, s.id)
 
-    def load_families(self, clan_id):
-        print('load families for clan_id {0}'.format(clan_id))
-
-        families = []
-        self.cb_pc_family.clear()
-        if clan_id:
-            families = [
-                x for x in self.dstore.families if x.clanid == clan_id]
-
-        self.cb_pc_family.addItem(self.tr("No Family"), None)
-        for f in families:
-            self.cb_pc_family.addItem(f.name, f.id)
-
     def set_clan(self, clan_id):
-        idx = self.cb_pc_clan.currentIndex()
-        c_uuid = self.cb_pc_clan.itemData(idx)
+        """Set UI clan"""
 
-        if c_uuid == clan_id:
-            return
-        for i in xrange(0, self.cb_pc_clan.count()):
-            if self.cb_pc_clan.itemData(i) == clan_id:
-                self.cb_pc_clan.setCurrentIndex(i)
-                return
+        clan_ = api.data.clans.get(clan_id)
+        if clan_:
+            self.lb_pc_clan.setText(clan_.name)
+        else:
+            self.lb_pc_clan.setText(self.tr("No Clan"))
 
     def set_family(self, family_id):
-        idx = self.cb_pc_family.currentIndex()
-        f_uuid = self.cb_pc_family.itemData(idx)
+        """Set UI family"""
+        family_ = api.data.families.get(family_id)
+        if family_:
+            self.lb_pc_family.setText(family_.name)
+        else:
+            self.lb_pc_family.setText(self.tr("No Family"))
 
-        if f_uuid == family_id:
-            return
-        for i in xrange(0, self.cb_pc_family.count()):
-            if self.cb_pc_family.itemData(i) == family_id:
-                self.cb_pc_family.setCurrentIndex(i)
-                return
 
     def set_school(self, school_id):
 
@@ -2310,8 +2281,7 @@ class L5RMain(L5RCMCore):
 
     def update_from_model(self):
 
-        pause_signals([self.tx_pc_name, self.cb_pc_clan, self.cb_pc_family,
-                       self.cb_pc_school])
+        pause_signals([self.tx_pc_name, self.cb_pc_school])
         pause_signals(self.pers_info_widgets)
 
         self.tx_pc_name.setText(self.pc.name)
@@ -2323,8 +2293,7 @@ class L5RMain(L5RCMCore):
             if hasattr(w, 'link'):
                 w.setText(self.pc.get_property(w.link))
 
-        resume_signals([self.tx_pc_name, self.cb_pc_clan, self.cb_pc_family,
-                        self.cb_pc_school])
+        resume_signals([self.tx_pc_name, self.cb_pc_school])
         resume_signals(self.pers_info_widgets)
 
         pc_xp = self.pc.get_px()
@@ -2414,9 +2383,9 @@ class L5RMain(L5RCMCore):
 
         # disable step 0-1-2 if any xp are spent
         has_adv = len(self.pc.advans) > 0
-        self.cb_pc_clan  .setEnabled(not has_adv)
+        # self.cb_pc_clan  .setEnabled(not has_adv)
         self.cb_pc_school.setEnabled(not has_adv)
-        self.cb_pc_family.setEnabled(not has_adv)
+        #self.cb_pc_family.setEnabled(not has_adv)
 
         # Update view-models
         self.sk_view_model    .update_from_model(self.pc)

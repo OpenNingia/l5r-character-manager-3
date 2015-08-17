@@ -42,6 +42,7 @@ def get_rank(mid, rank):
         return None
     return query(merit.ranks).where(lambda x: x.id == rank).first_or_default(None)
 
+
 def get_rank_cost(mid, rank):
     """returns the cost of a merit rank"""
     merit_rank = get_rank(mid, rank)

@@ -194,10 +194,10 @@ class TextExporter(object):
                          weap.name, weap.dr, weap.qty))
 
     def get_clan_name(self, model):
-        return self.form.cb_pc_clan.currentText()
+        return self.form.lb_pc_clan.text()
 
     def get_family_name(self, model):
-        return self.form.cb_pc_family.currentText()
+        return self.form.lb_pc_family.text()
 
     def get_school_name(self, model):
         return self.form.cb_pc_school.currentText()

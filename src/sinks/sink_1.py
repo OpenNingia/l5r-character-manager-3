@@ -47,8 +47,8 @@ class Sink1(QtCore.QObject):
         # backward compatibility, assign to form
         form.pc = api.character.model()
 
-        form.load_clans()
-        form.load_families('')
+        # form.load_clans()
+        # form.load_families('')
         form.load_schools('')
         form.tx_pc_notes.set_content('')
         form.pc.set_insight_calc_method(form.ic_calc_method)

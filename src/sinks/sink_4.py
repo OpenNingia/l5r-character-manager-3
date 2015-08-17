@@ -133,3 +133,10 @@ class Sink4(QtCore.QObject):
             file_ = form.select_export_file(".pdf")
             if len(file_) > 0:
                 form.export_npc_characters(dlg.paths, file_)
+
+    # EDIT FAMILY
+    def on_edit_family(self):
+        form = self.form
+        dlg = widgets.FamilyChooserDialog(form)
+        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+            form.update_from_model()

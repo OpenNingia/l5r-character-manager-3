@@ -112,3 +112,21 @@ def increase_trait(trait_id):
 def insight_rank():
     """returns PC's insight rank"""
     return __api.pc.get_insight_rank()
+
+
+def set_clan(clan_id):
+    """set PC clan"""
+    __api.pc.clan = clan_id
+
+
+def set_family(family_id):
+    """set PC family"""
+
+    family_ = api.data.families.get(family_id)
+    if family_:
+        __api.pc.set_family(family_.id, family_.trait, 1, [family_.id, family_.clanid])
+
+
+def get_family():
+    """get PC family"""
+    return __api.pc.family
