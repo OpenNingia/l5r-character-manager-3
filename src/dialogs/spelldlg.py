@@ -20,7 +20,9 @@ import dal.query
 
 import api
 import api.character
+import api.character.schools
 import api.data
+import api.data.schools
 
 import models
 import widgets
@@ -88,6 +90,21 @@ class SpellAdvDialog(QtGui.QDialog):
         center_fr = QtGui.QFrame(self)
         cfr_vbox = QtGui.QVBoxLayout(center_fr)
 
+        # player school
+        player_school_id = api.character.schools.get_current()
+        player_school_ob = api.data.schools.get(player_school_id)
+        player_school_nm = (
+            player_school_ob.name if player_school_ob is not None
+            else "" )
+
+        lb_school_txt = QtGui.QLabel(self.tr("School"), self)
+        lb_school_val = QtGui.QLabel(player_school_nm, self)
+
+        # form layout
+        player_info_fr = QtGui.QFrame(self)
+        player_info_ly = QtGui.QFormLayout(player_info_fr)
+        player_info_ly.addRow(lb_school_txt, lb_school_val)
+
         self.grp_maho = QtGui.QGroupBox(self.tr('Maho'), self)
         bottom_bar = QtGui.QFrame(self)
 
@@ -119,6 +136,7 @@ class SpellAdvDialog(QtGui.QDialog):
         cfr_vbox.setContentsMargins(100, 20, 100, 20)
 
         self.vbox_lo.addWidget(self.header)
+        self.vbox_lo.addWidget(player_info_fr)
         self.vbox_lo.addWidget(center_fr)
         self.vbox_lo.addWidget(self.error_bar)
         self.vbox_lo.addWidget(bottom_bar)

@@ -311,7 +311,7 @@ class L5RCMCore(QtGui.QMainWindow):
 
         res = api.character.increase_trait(attrib)
         if res == CMErrors.NO_ERROR:
-        self.update_from_model()
+            self.update_from_model()
         return res
 
     def increase_void(self):
