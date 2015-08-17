@@ -28,11 +28,14 @@ from math import ceil
 from tempfile import mkstemp
 import subprocess
 
+import api.data
+from api.data import CMErrors
+
 from PySide import QtCore, QtGui
 
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
-APP_VERSION = '3.9.5'
+APP_VERSION = '3.9.7'
 DB_VERSION = '3.0'
 APP_ORG = 'openningia'
 
@@ -99,13 +102,7 @@ def get_icon_path(name, size=(48, 48)):
         return os.path.join(MY_CWD, base, name + '.png')
 
 
-class CMErrors(object):
-    NO_ERROR = 'no_error'
-    NOT_ENOUGH_XP = 'not_enough_xp'
-
-
 class L5RCMCore(QtGui.QMainWindow):
-
     dstore = None
 
     def __init__(self, locale, parent=None):
@@ -129,25 +126,18 @@ class L5RCMCore(QtGui.QMainWindow):
 
     def reload_data(self):
         settings = QtCore.QSettings()
-        self.data_pack_blacklist = settings.value('data_pack_blacklist', [])
 
-        # Data storage
-        if not self.dstore:
-            self.dstore = dal.Data(
-                [osutil.get_user_data_path('core.data'),
-                 osutil.get_user_data_path('data'),
-                 osutil.get_user_data_path('data.' + self.locale)],
-                self.data_pack_blacklist)
-        else:
-            print('Re-loading datapack data')
-            self.dstore.rebuild(
-                [osutil.get_user_data_path('core.data'),
-                    osutil.get_user_data_path('data'),
-                    osutil.get_user_data_path('data.' + self.locale)],
-                self.data_pack_blacklist)
+        # self.data_pack_blacklist = settings.value('data_pack_blacklist', [])
+
+        api.data.set_locale(self.locale)
+        api.data.set_blacklist(settings.value('data_pack_blacklist', []))
+        api.data.reload()
+
+        # assign Data storage reference, for backward compatibility
+        self.dstore = api.data.model()
 
     def check_datapacks(self):
-        if len(self.dstore.get_packs()) == 0:
+        if not len(api.data.packs()):
             self.advise_warning(self.tr("No Datapacks installed"),
                                 self.tr("Without data packs the software will be of little use."
                                         "<p>Download a datapack from <a href=\"{0}\">{0}</a>.</p>"
@@ -174,6 +164,7 @@ class L5RCMCore(QtGui.QMainWindow):
         fd, fpath = mkstemp(suffix='.fdf', text=False)
         with os.fdopen(fd, 'wb') as fobj:
             exporter.export(fobj)
+
         return fpath
 
     def flatten_pdf(self, fdf_file, source_pdf, target_pdf, target_suffix=None):
@@ -268,6 +259,8 @@ class L5RCMCore(QtGui.QMainWindow):
         is_shugenja = self.pc.has_tag('shugenja')
         is_bushi = self.pc.has_tag('bushi')
         is_courtier = self.pc.has_tag('courtier')
+        spell_offset = 0
+        spell_count = len(self.pc.get_spells())
 
         # SHUGENJA/BUSHI/MONK SHEET
         if is_shugenja:
@@ -311,30 +304,15 @@ class L5RCMCore(QtGui.QMainWindow):
         self.commit_pdf_export(export_file)
 
     def remove_advancement_item(self, adv_itm):
-        if adv_itm in self.pc.advans:
-            self.pc.advans.remove(adv_itm)
+        if api.character.remove_advancement(adv_itm):
             self.update_from_model()
 
     def increase_trait(self, attrib):
-        cur_value = self.pc.get_attrib_rank(attrib)
-        new_value = cur_value + 1
-        ring_id = models.get_ring_id_from_attrib_id(attrib)
-        ring_nm = models.ring_name_from_id(ring_id)
-        cost = self.pc.get_attrib_cost(attrib) * new_value
-        if self.pc.has_rule('elem_bless_%s' % ring_nm):
-            cost -= 1
-        text = models.attrib_name_from_id(attrib).capitalize()
-        adv = models.AttribAdv(attrib, cost)
-        adv.desc = (self.tr('{0}, Rank {1} to {2}. Cost: {3} xp')
-                    .format(text, cur_value, new_value, adv.cost))
 
-        if (adv.cost + self.pc.get_px()) > self.pc.exp_limit:
-            return CMErrors.NOT_ENOUGH_XP
-
-        self.pc.add_advancement(adv)
-        self.update_from_model()
-
-        return CMErrors.NO_ERROR
+        res = api.character.increase_trait(attrib)
+        if res == CMErrors.NO_ERROR:
+            self.update_from_model()
+        return res
 
     def increase_void(self):
         cur_value = self.pc.get_ring_rank(models.RINGS.VOID)
@@ -505,10 +483,12 @@ class L5RCMCore(QtGui.QMainWindow):
             return False
 
     def update_data_blacklist(self):
-        self.data_pack_blacklist = [
-            x.id for x in self.dstore.packs if not x.active]
+
+        api.data.set_blacklist( [
+            x.id for x in self.dstore.packs if not x.active] )
+
         settings = QtCore.QSettings()
-        settings.setValue('data_pack_blacklist', self.data_pack_blacklist)
+        settings.setValue('data_pack_blacklist', api.data.get_blacklist())
 
     def please_donate(self):
         donate_url = QtCore.QUrl(

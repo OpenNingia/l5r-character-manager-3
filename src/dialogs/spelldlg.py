@@ -17,7 +17,14 @@
 
 import dal
 import dal.query
-import models
+
+import api
+import api.character
+import api.character.schools
+import api.character.spells
+import api.data
+import api.data.schools
+
 import widgets
 from PySide import QtCore, QtGui
 
@@ -83,6 +90,41 @@ class SpellAdvDialog(QtGui.QDialog):
         center_fr = QtGui.QFrame(self)
         cfr_vbox = QtGui.QVBoxLayout(center_fr)
 
+        # player school
+        player_school_id = api.character.schools.get_current()
+        player_school_ob = api.data.schools.get(player_school_id)
+        player_school_nm = (
+            player_school_ob.name if player_school_ob is not None
+            else "" )
+
+        lb_school_txt = QtGui.QLabel(self.tr("School:"), self)
+        lb_school_val = QtGui.QLabel(player_school_nm, self)
+
+        # player affinities
+        player_affinities_lst = api.character.spells.affinities()
+        player_affinities_str = ', '.join(player_affinities_lst)
+
+        lb_aff_txt = QtGui.QLabel(self.tr("Affinities:"), self)
+        lb_aff_val = QtGui.QLabel(player_affinities_str, self)
+
+        player_deficiencies_lst = api.character.spells.deficiencies()
+        player_deficiencies_str = ', '.join(player_deficiencies_lst)
+
+        lb_def_txt = QtGui.QLabel(self.tr("Deficiencies:"), self)
+        lb_def_val = QtGui.QLabel(player_deficiencies_str, self)
+
+        if player_deficiencies_str == 'special':
+            lb_aff_val.setText(self.tr('See school description'))
+        if player_deficiencies_str == 'special':
+            lb_def_val.setText(self.tr('See school description'))
+
+        # form layout
+        player_info_fr = QtGui.QFrame(self)
+        player_info_ly = QtGui.QFormLayout(player_info_fr)
+        player_info_ly.addRow(lb_school_txt, lb_school_val)
+        player_info_ly.addRow(lb_aff_txt, lb_aff_val)
+        player_info_ly.addRow(lb_def_txt, lb_def_val)
+
         self.grp_maho = QtGui.QGroupBox(self.tr('Maho'), self)
         bottom_bar = QtGui.QFrame(self)
 
@@ -109,6 +151,7 @@ class SpellAdvDialog(QtGui.QDialog):
         hbox.addWidget(self.bt_back)
         hbox.addWidget(self.bt_next)
 
+        cfr_vbox.addWidget(player_info_fr)
         cfr_vbox.addWidget(self.spell_wdg)
         cfr_vbox.addWidget(self.grp_maho)
         cfr_vbox.setContentsMargins(100, 20, 100, 20)
@@ -128,6 +171,8 @@ class SpellAdvDialog(QtGui.QDialog):
         self.rb_amaho.toggled.connect(self.on_maho_toggled)
         self.rb_nmaho.toggled.connect(self.on_maho_toggled)
         self.rb_omaho.toggled.connect(self.on_maho_toggled)
+
+        self.spell_wdg.spell_changed.connect(self.on_spell_changed)
 
     def load_data(self):
         current_spell = self.selected[self.current_page]
@@ -222,6 +267,9 @@ class SpellAdvDialog(QtGui.QDialog):
 
     def on_maho_toggled(self):
         self.spell_wdg.set_maho_filter(self.sender().property('tag'))
+
+    def on_spell_changed(self, spell):
+        self.bt_next.setEnabled(self.spell_wdg.can_learn())
 
     def accept(self):
         for s in self.selected:
