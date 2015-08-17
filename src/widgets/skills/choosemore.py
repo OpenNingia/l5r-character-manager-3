@@ -26,11 +26,14 @@ from asq.selectors import a_
 from copy import deepcopy
 from l5rcmcore import get_icon_path
 
+
 def blue(text):
     return u'<p style="color: #00A"><em>{}</em></p>'.format(text)
 
+
 def selected(text):
     return u'<p style="background: #00A color: #FFF"><em>{}</em></p>'.format(text)
+
 
 class ChooseMoreSkill(QtGui.QWidget):
 

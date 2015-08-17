@@ -57,6 +57,20 @@ def get_trait_or_ring(traitid):
             dal.query.get_ring(__api.ds, traitid))
 
 
+def rings():
+    """returns all the rings"""
+    if not __api.ds:
+        return []
+    return __api.ds.rings
+
+
+def traits():
+    """returns all the traits"""
+    if not __api.ds:
+        return []
+    return __api.ds.traits
+
+
 def get_trait_ring(trait_id):
     """
         # earth ring
@@ -83,6 +97,7 @@ def get_trait_ring(trait_id):
         return get_ring('water')
     if trait_id == 'agility' or trait_id == 'intelligence':
         return get_ring('fire')
+
 
 def model():
     """returns data access model"""

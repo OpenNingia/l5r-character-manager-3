@@ -14,16 +14,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import os
-import sys
-import dal
-import dal.query
-import models
-import widgets
-
+from widgets.spells.choosemore import ChooseMoreSpells
 from wizardpage import WizardPage
-from PySide import QtCore, QtGui
 
 class SpellsPage(WizardPage):
     def __init__(self, parent=None):
         super(SpellsPage, self).__init__(parent)
+
+        w = ChooseMoreSpells(self)
+        w.statusChanged.connect(self.nextAllowed)
+
+        self._set_ui(w)
+
+    def get_h1_text(self):
+        return self.tr('''
+<center>
+<h1>Choose school's spells</h1>
+<p style="color: #666">Your school has granted you knowledge of several spells.</p>
+</center>
+        ''')

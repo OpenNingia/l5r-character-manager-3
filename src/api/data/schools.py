@@ -61,12 +61,19 @@ def get_skills(sid):
     if not school: return []
     return school.skills
 
+
 def get_skills_to_choose(sid):
     """return variable school skills"""
     school = get(sid)
     if not school: return []
     return school.skills_pc
 
+
+def get_spells_to_choose(sid):
+    """return variable school skills"""
+    school = get(sid)
+    if not school: return []
+    return school.spells_pc
 
 def get_emphasis_to_choose(sid):
     school = get(sid)

@@ -14,15 +14,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import os
-import sys
-import dal
-import dal.query
-import models
 from widgets.skills.choosemore import ChooseMoreSkill
-
 from wizardpage import WizardPage
-from PySide import QtCore, QtGui
+
 
 class SkillsPage(WizardPage):
     def __init__(self, parent=None):
@@ -36,9 +30,7 @@ class SkillsPage(WizardPage):
     def get_h1_text(self):
         return self.tr('''
 <center>
-<h1>Join your First School</h1>
-<p style="color: #666">In this phase you're limited to base schools,
-        however you can replace this rank with an alternate path
-        on the next step</p>
+<h1>Choose school's skills</h1>
+<p style="color: #666">Your school has granted you knowledge of several skills.</p>
 </center>
         ''')

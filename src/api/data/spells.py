@@ -15,8 +15,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-__author__ = 'cns_dasi'
-
 from api import __api
 from asq.initiators import query
 
@@ -29,3 +27,4 @@ def all():
 
 def get(sid):
     return query(all()).where(lambda x: x.id == sid).first_or_default(None)
+
