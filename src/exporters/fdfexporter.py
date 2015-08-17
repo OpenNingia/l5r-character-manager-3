@@ -22,6 +22,8 @@ import rules
 import hashlib
 import dal
 import dal.query
+import api.data.spells
+import api.character.schools
 
 
 class FDFExporter(object):
@@ -332,7 +334,8 @@ class FDFExporterShugenja(FDFExporter):
             fields['SPELL_RAISE.%d.%d' %
                    (lPageNumber, lControlNumber)] = spell.raises
             fields['SPELL_TAGS.%d.%d' %
-                   (lPageNumber, lControlNumber)] = spell.tags
+                   (lPageNumber, lControlNumber)] = ', '.join(api.data.spells.tags(spell.id,
+                                                                                   api.character.schools.get_current()))
             if spell.desc:
                 fields['SPELL_EFFECT.%d.%d' %
                        (lPageNumber, lControlNumber)] = spell.desc

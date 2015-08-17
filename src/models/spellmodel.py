@@ -20,6 +20,9 @@ from l5rcmcore import get_icon_path
 import dal
 import dal.query
 
+import api.data.spells
+import api.character.schools
+
 
 class SpellItemModel(object):
 
@@ -153,7 +156,8 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
         itm.duration = spell.duration
         itm.raises = ', '.join(spell.raises)
         itm.desc = spell.desc
-        itm.tags = ', '.join(spell.tags)
+        spell_tags = api.data.spells.tags(spell.id, api.character.schools.get_current())
+        itm.tags = ', '.join(spell_tags)
         itm.spell_id = sp_id
 
         return itm

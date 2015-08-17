@@ -32,3 +32,34 @@ def get(sid):
         return None
     return query(all()).where(lambda x: x.id == sid).first_or_default(None)
 
+
+def has_tag(sid, tag, school=None):
+    """return True if the given spell has the given tag, with support for school-only tags"""
+    return tag in tags(sid, school)
+
+
+def tags(sid, school=None):
+    """return all the tags of the given spell, with support for school-only tags"""
+    s = get(sid)
+    if not s:
+        return []
+    return query(s.tags).where(lambda x: x.school is None or x.school == school).select(lambda x: x.name)
+
+
+def is_multi_element(sid):
+    """returns true if the spell is multi element"""
+    s = get(sid)
+    if not s:
+        return False
+    return s.element == 'multi'
+
+
+def is_dragon(sid):
+    """returns true if the spell is a dragon spell"""
+    s = get(sid)
+    if not s:
+        return False
+    return s.element == 'dragon'
+
+
+

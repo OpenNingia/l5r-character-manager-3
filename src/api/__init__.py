@@ -22,12 +22,14 @@ ORG = 'openningia'
 APP = 'l5rcm'
 
 
-def get_user_data_path(rel_path = ''):
+def get_user_data_path(rel_path = None):
     user_data = '.'
     if os.name == 'posix': # Linux is ok but Macosx ???
         user_data = '%s/.config' % (os.environ['HOME'])
     elif os.name == 'nt':
         user_data = os.environ['APPDATA'].decode('latin-1')
+    if rel_path:
+        return os.path.join(user_data, ORG, APP, rel_path)
     return os.path.join(user_data, ORG, APP)
 
 
@@ -52,11 +54,11 @@ class L5RCMAPI(object):
         '''initialize api'''
 
         # load data
-        self.reload()
+        # self.reload()
 
     def reload(self):
 
-        locations =  [get_user_data_path('core.data'),
+        locations = [get_user_data_path('core.data'),
                      get_user_data_path('data')]
         if self.locale:
             locations += [get_user_data_path('data.' + self.locale)]

@@ -64,7 +64,7 @@ def special_spell_affinity(spell):
 
     # special handling of scorpion_yogo_wardmaster_school
     if school == 'scorpion_yogo_wardmaster_school':
-        if 'wards' in spell.tags:
+        if api.data.spells.has_tag(spell.id, 'wards', school):
             ret += 1
 
     return ret
@@ -76,7 +76,8 @@ def special_spell_deficiency(spell):
 
     # special handling of scorpion_yogo_wardmaster_school
     if school == 'scorpion_yogo_wardmaster_school':
-        if 'travel' in spell.tags or 'craft' in spell.tags:
+        if (api.data.spells.has_tag(spell.id, 'travel', school) and
+                api.data.spells.has_tag(spell.id, 'craft', school)):
             ret += 1
 
     return ret

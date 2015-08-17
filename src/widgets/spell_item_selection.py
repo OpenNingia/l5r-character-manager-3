@@ -110,6 +110,8 @@ class SpellItemSelection(QtGui.QWidget):
         self.cb_element.addItem(self.tr('Water'), 'water')
         self.cb_element.addItem(self.tr('Fire'), 'fire')
         self.cb_element.addItem(self.tr('Void'), 'void')
+        self.cb_element.addItem(self.tr('Multi-Element'), 'multi')
+        #self.cb_element.addItem(self.tr('Dragon Spells'), 'dragon')
 
         # Also masteries are fixed now
         for x in range(0, 6):
@@ -130,21 +132,6 @@ class SpellItemSelection(QtGui.QWidget):
 
     def set_element_restriction(self, ring):
         self.element = ring
-        #print('set_fixed_ring', ring)
-        #if not ring:
-        #    self.cb_element.setEnabled(True)
-        #    return
-        #if ring.startswith('!'):
-        #    ring = ring[1:]
-        #    for i in xrange(0, self.cb_element.count()):
-        #        if self.cb_element.itemData(i) == ring:
-        #            self.cb_element.removeItem(i)
-        #            break
-        #else:
-        #    for i in xrange(0, self.cb_element.count()):
-        #        if self.cb_element.itemData(i) == ring:
-        #            self.cb_element.setCurrentIndex(i)
-        #            break
 
     def set_tag_restriction(self, tag):
         self.tag = tag
@@ -154,30 +141,14 @@ class SpellItemSelection(QtGui.QWidget):
         self.update_spell_list()
 
     def on_mastery_change(self, index):
-
-        ring = self.get_ring()
-
-        mastery = self.get_mastery()
-
-        affin = api.character.spells.affinities()
-        defic = api.character.spells.deficiencies()
-
-        # SPECIAL FLAGS
-        # only_maho = self.maho_flt == 'only_maho'
-        # no_defic = self.no_deficiency
-
-        #if defic == ring and no_defic:
-        #    self.cb_spell.clear()
-        #else:
         self.update_spell_list()
 
     def on_spell_change(self, index):
         spell = self.get_spell()
         if spell:
-            #self.tx_descr.setText(
-            #    u"<pre>{}</pre>".format(spell.desc))
+            spell_tags = api.data.spells.tags(spell.id, api.character.schools.get_current())
             self.tx_descr.setText(spell.desc)
-            self.tx_tags.setText(', '.join(spell.tags))
+            self.tx_tags.setText(', '.join(spell_tags))
 
             self.spell_changed.emit(self.get_spell())
 
@@ -213,19 +184,10 @@ class SpellItemSelection(QtGui.QWidget):
                 return dal.query.get_maho_spells(self.dstore, ring, mastery)
             elif self.maho_flt == 'no_maho':
                 return [x for x in dal.query.get_spells(self.dstore, ring, mastery) if 'maho' not in x.tags]
-            #elif self.tag is not None:
-            #    return [x for x in dal.query.get_spells(self.dstore, ring, mastery) if self.tag in x.tags]
             else:
                 return dal.query.get_spells(self.dstore, ring, mastery)
 
         avail_spells = get_avail_spells()
-        # school_id = self.pc.get_school_id()
-
-        # special handling of scorpion_yogo_wardmaster_school
-        #if school_id == 'scorpion_yogo_wardmaster_school':
-        #    if mastery == self.max_mastery:
-        #        avail_spells = [
-        #            x for x in avail_spells if 'travel' not in x.tags and 'craft' not in x.tags]
 
         # remove blacklisted spells
         if not self.blacklist:
@@ -298,7 +260,7 @@ class SpellItemSelection(QtGui.QWidget):
         spell = self.get_spell()
         if not spell:
             return False
-        return self.tag in spell.tags
+        return api.data.spells.has_tag(spell.id, self.tag, api.character.schools.get_current())
 
     def match_element_restriction(self):
         if not self.element:

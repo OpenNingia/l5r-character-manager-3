@@ -307,13 +307,15 @@ class SpellAdvDialog(QtGui.QDialog):
             o = self.tr("any spell but [{0}]").format(colored_span('orange', ring_[1:]))
         elif tag_ and tag_[0] == '!':
             o = self.tr("any spell but [{0}]").format(colored_span('orange', tag_[1:]))
-        else:
+        elif tag_ is not None or ring_ is not None:
             o = self.tr("a [{0}] spell").format(colored_span('navy', tag_ or ring_))
+        else:
+            o = self.tr("Any spell")
 
         if no_maho_:
-            o += u", {0}".format(self.tr("No maho"))
+            o += u", {0}".format(self.tr("but Maho spells"))
         elif only_maho_:
-            o += u", {0}".format(self.tr("Only maho"))
+            o += u", {0}".format(self.tr("only Maho spells"))
 
         if no_defic:
             o += u", {0}".format(self.tr("Excluded deficiency"))
