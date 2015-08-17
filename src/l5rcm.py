@@ -294,25 +294,24 @@ class L5RMain(L5RCMCore):
             self.tx_pc_rank = QtGui.QLineEdit(self)
             self.lb_pc_clan = QtGui.QLabel(self)
             self.lb_pc_family = QtGui.QLabel(self)
-            self.cb_pc_school = QtGui.QComboBox(self)
+            self.lb_pc_school = QtGui.QLabel(self)
             self.tx_pc_exp = QtGui.QLineEdit(self)
             self.tx_pc_ins = QtGui.QLineEdit(self)
 
-            # 1st column
+            # School
             fr_school = QtGui.QFrame(self)
             hb_school = QtGui.QHBoxLayout(fr_school)
             hb_school.setContentsMargins(0, 0, 0, 0)
-            lb_school = QtGui.QLabel(self.tr("School"), self)
-            bt_lock = QtGui.QToolButton(self)
-            bt_lock.setCheckable(True)
-            bt_lock.setToolTip(
-                self.tr("Toggle show schools from all the clans"))
-            bt_lock.setAutoRaise(True)
-            bt_lock.setIcon(QtGui.QIcon(get_icon_path('lock_close', (16, 16))))
-            hb_school.addWidget(lb_school)
-            hb_school.addWidget(bt_lock)
 
-            #
+            bt_edit_school = QtGui.QToolButton(self)
+            bt_edit_school.setToolTip(self.tr("Edit character first school"))
+            bt_edit_school.setAutoRaise(True)
+            bt_edit_school.setIcon(QtGui.QIcon(get_icon_path('edit', (16, 16))))
+
+            hb_school.addWidget(QtGui.QLabel(self.tr("School"), self))
+            hb_school.addWidget(bt_edit_school)
+
+            # Family
             bt_edit_family = QtGui.QToolButton(self)
             bt_edit_family.setToolTip(self.tr("Edit character family and clan"))
             bt_edit_family.setAutoRaise(True)
@@ -353,7 +352,7 @@ class L5RMain(L5RCMCore):
             grid.addWidget(fr_school, 3, 0)
 
             self.bt_edit_family = bt_edit_family
-            self.bt_school_lock = bt_lock
+            self.bt_edit_school = bt_edit_school
 
             # 3rd column
             fr_exp = QtGui.QFrame(self)
@@ -377,7 +376,7 @@ class L5RMain(L5RCMCore):
             grid.addWidget(self.tx_pc_name, 0, 1, 1, 2)
             grid.addWidget(self.lb_pc_clan, 1, 1, 1, 2)
             grid.addWidget(self.lb_pc_family, 2, 1, 1, 2)
-            grid.addWidget(self.cb_pc_school, 3, 1, 1, 2)
+            grid.addWidget(self.lb_pc_school, 3, 1, 1, 2)
 
             # 4th column
             grid.addWidget(self.tx_pc_rank, 0, 4, 1, 2)
@@ -1560,9 +1559,6 @@ class L5RMain(L5RCMCore):
 
     def connect_signals(self):
 
-        # user and programmatically change
-        self.cb_pc_school.currentIndexChanged.connect(self.on_school_change)
-
         # notify only user edit
         self.tx_mod_init.editingFinished.connect(self.update_from_model)
 
@@ -1587,7 +1583,8 @@ class L5RMain(L5RCMCore):
         self.hm_act_grp.triggered.connect(self.on_change_health_visualization)
 
         self.bt_edit_family.clicked.connect(self.sink4.on_edit_family)
-        self.bt_school_lock.clicked.connect(self.sink1.on_unlock_school_act)
+        self.bt_edit_school.clicked.connect(self.sink4.on_edit_first_school)
+
         self.bt_set_exp_points.clicked.connect(self.sink1.on_set_exp_limit)
 
     def show_nicebar(self, wdgs):
@@ -1655,99 +1652,6 @@ class L5RMain(L5RCMCore):
         '''attempt to buy a new kiho'''
         if (self.buy_kiho(kiho) == CMErrors.NOT_ENOUGH_XP):
             self.not_enough_xp_advise(self)
-
-    #def on_family_change(self, text):
-        # index = self.cb_pc_family.currentIndex()
-        #if index <= 0:
-        #    self.pc.set_family()
-        #    self.update_from_model()
-        #    return
-
-        #uuid = self.cb_pc_family.itemData(index)
-        #if uuid == self.pc.get_family():
-        #    return
-        # should modify step_1 character
-        # get family perk
-
-        #family = dal.query.get_family(self.dstore, uuid)
-        #clan = dal.query.get_clan(self.dstore, family.clanid)
-
-        #if not family or not clan:
-        #    return
-
-        #self.pc.set_family(family.id, family.trait, 1, [family.id, clan.id])
-        #self.update_from_model()
-
-    def on_school_change(self, text):
-        index = self.cb_pc_school.currentIndex()
-        if index <= 0:
-            self.pc.set_school()
-            self.update_from_model()
-            return
-
-        uuid = self.cb_pc_school.itemData(index)
-        if uuid == self.pc.school:
-            return
-
-        # should modify step_2 character
-        # get school perk
-        school = dal.query.get_school(self.dstore, uuid)
-        clan = dal.query.get_clan(self.dstore, school.clanid)
-
-        try:
-            self.pc.set_school(
-                school.id, school.trait, 1, school.honor, school.tags + [school.id, clan.id])
-        except:
-            self.pc.set_school(uuid, None, None, None)
-
-        for sk in school.skills:
-            self.pc.add_school_skill(sk.id, sk.rank, sk.emph)
-
-        # player choose (aka wildcards)
-        for sk in school.skills_pc:
-            self.pc.add_pending_wc_skill(sk)
-
-        # get school tech rank 1
-        tech0 = dal.query.get_school_tech(school, 1)
-        # rule == techid ???
-
-        if tech0:
-            self.pc.set_free_school_tech(tech0.id, tech0.id)
-
-        # outfit
-        print('outfit', school.outfit)
-        self.pc.set_school_outfit(school.outfit, tuple(school.money))
-
-        # if shugenja get universal spells
-        # also player should choose some spells from list
-
-        if 'shugenja' in school.tags:
-            count = 0
-            for spell in school.spells:
-                self.pc.add_free_spell(spell.id)
-                count += 1
-
-            for spell in school.spells_pc:
-                self.pc.add_pending_wc_spell(
-                    (spell.element, spell.count, spell.tag))
-                count += spell.count
-
-            print('starting spells count are {0}'.format(count))
-            self.pc.set_school_spells_qty(count)
-
-            # affinity / deficiency
-            print('school: {0}, affinity: {1}, deficiency: {2}'.format(
-                school, school.affinity, school.deficiency))
-            self.pc.set_affinity(school.affinity)
-            self.pc.set_deficiency(school.deficiency)
-            self.pc.get_school().affinity = school.affinity
-            self.pc.get_school().deficiency = school.deficiency
-
-        # free kihos ?
-        if school.kihos:
-            self.pc.set_free_kiho_count(school.kihos.count)
-
-        self.update_from_model()
 
     def on_pc_name_change(self):
         self.pc.name = self.tx_pc_name.text()
@@ -2143,7 +2047,7 @@ class L5RMain(L5RCMCore):
             self.set_pc_deficiency(deficiency)
 
     def load_character_from(self, path):
-        pause_signals([self.tx_pc_name, self.cb_pc_school])
+        pause_signals([self.tx_pc_name])
         pause_signals(self.pers_info_widgets)
 
         if not self.pc:
@@ -2190,24 +2094,8 @@ class L5RMain(L5RCMCore):
         else:
             print('character load failure')
 
-        resume_signals([self.tx_pc_name, self.cb_pc_school])
+        resume_signals([self.tx_pc_name])
         resume_signals(self.pers_info_widgets)
-
-
-    def load_schools(self, clan_id=None):
-        print('load schools for clan_id {0}'.format(clan_id))
-
-        self.cb_pc_school.clear()
-        schools = []
-
-        # TODO: Sort
-        schools = dal.query.get_base_schools(self.dstore)
-        if clan_id is not None:
-            schools = [x for x in schools if x.clanid == clan_id]
-
-        self.cb_pc_school.addItem(self.tr("No School"), None)
-        for s in schools:
-            self.cb_pc_school.addItem(s.name, s.id)
 
     def set_clan(self, clan_id):
         """Set UI clan"""
@@ -2226,31 +2114,13 @@ class L5RMain(L5RCMCore):
         else:
             self.lb_pc_family.setText(self.tr("No Family"))
 
-
     def set_school(self, school_id):
-
-        idx = self.cb_pc_school.currentIndex()
-        s_uuid = self.cb_pc_school.itemData(idx)
-
-        if s_uuid == school_id:
-            return
-
-        print(
-            'set school to {0}, current school is {1}'.format(school_id, s_uuid))
-
-        found = False
-        self.cb_pc_school.blockSignals(True)
-        for i in xrange(0, self.cb_pc_school.count()):
-            if self.cb_pc_school.itemData(i) == school_id:
-                self.cb_pc_school.setCurrentIndex(i)
-                found = True
-                break
-
-        if not found:
-            school = dal.query.get_school(self.dstore, school_id)
-            if school:
-                self.cb_pc_school.addItem(school.name, school.id)
-        self.cb_pc_school.blockSignals(False)
+        """Set UI school"""
+        school_ = api.data.schools.get(school_id)
+        if school_:
+            self.lb_pc_school.setText(school_.name)
+        else:
+            self.lb_pc_school.setText(self.tr("No School"))
 
     def set_void_points(self, value):
         if self.void_points.value == value:
@@ -2281,7 +2151,7 @@ class L5RMain(L5RCMCore):
 
     def update_from_model(self):
 
-        pause_signals([self.tx_pc_name, self.cb_pc_school])
+        pause_signals([self.tx_pc_name])
         pause_signals(self.pers_info_widgets)
 
         self.tx_pc_name.setText(self.pc.name)
@@ -2293,7 +2163,7 @@ class L5RMain(L5RCMCore):
             if hasattr(w, 'link'):
                 w.setText(self.pc.get_property(w.link))
 
-        resume_signals([self.tx_pc_name, self.cb_pc_school])
+        resume_signals([self.tx_pc_name])
         resume_signals(self.pers_info_widgets)
 
         pc_xp = self.pc.get_px()
@@ -2384,8 +2254,10 @@ class L5RMain(L5RCMCore):
         # disable step 0-1-2 if any xp are spent
         has_adv = len(self.pc.advans) > 0
         # self.cb_pc_clan  .setEnabled(not has_adv)
-        self.cb_pc_school.setEnabled(not has_adv)
-        #self.cb_pc_family.setEnabled(not has_adv)
+        # self.cb_pc_school.setEnabled(not has_adv)
+        # self.cb_pc_family.setEnabled(not has_adv)
+        self.bt_edit_family.setEnabled(not has_adv)
+        self.bt_edit_school.setEnabled(not has_adv)
 
         # Update view-models
         self.sk_view_model    .update_from_model(self.pc)

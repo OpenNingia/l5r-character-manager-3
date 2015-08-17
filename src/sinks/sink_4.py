@@ -140,3 +140,10 @@ class Sink4(QtCore.QObject):
         dlg = widgets.FamilyChooserDialog(form)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
             form.update_from_model()
+
+    # EDIT FIRST SCHOOL
+    def on_edit_first_school(self):
+        form = self.form
+        dlg = widgets.FirstSchoolChooserDialog(form)
+        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+            form.update_from_model()

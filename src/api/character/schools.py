@@ -37,3 +37,52 @@ def get_rank(sid):
         .order_by_descending(a_('school_rank')) \
         .select(a_('school_rank')).first_or_default(0)
 
+
+def set_first_school(sid):
+    """set first school to PC"""
+    school_ = api.data.schools.get(sid)
+    if not school_:
+        return
+
+    # set schools
+    __api.pc.set_school(school_.id, school_.trait, 1, school_.honor, school_.tags + [school_.id])
+
+    # set starting skills
+    for sk in school_.skills:
+        __api.pc.add_school_skill(sk.id, sk.rank, sk.emph)
+
+    # pending player choose skills
+    for sk in school_.skills_pc:
+        __api.pc.add_pending_wc_skill(sk)
+
+    # get school tech rank 1
+    tech0 = query(school_.techs).where(lambda x: x.rank == 1).first_or_default(None)
+    if tech0:
+        __api.pc.set_free_school_tech(tech0.id, tech0.id)
+
+    # outfit and money
+    __api.pc.set_school_outfit(school_.outfit, tuple(school_.money))
+
+    # starting spells
+    count = 0
+
+    for spell in school_.spells:
+        __api.pc.add_free_spell(spell.id)
+        count += 1
+
+    for spell in school_.spells_pc:
+        __api.pc.add_pending_wc_spell(
+            (spell.element, spell.count, spell.tag))
+        count += spell.count
+
+    __api.pc.set_school_spells_qty(count)
+
+    # affinity / deficiency
+    __api.pc.set_affinity(school_.affinity)
+    __api.pc.set_deficiency(school_.deficiency)
+    __api.pc.get_school().affinity = school_.affinity
+    __api.pc.get_school().deficiency = school_.deficiency
+
+    # starting kiho
+    if school_.kihos:
+        __api.pc.set_free_kiho_count(school_.kihos.count)

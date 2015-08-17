@@ -114,17 +114,21 @@ def insight_rank():
     return __api.pc.get_insight_rank()
 
 
-def set_clan(clan_id):
-    """set PC clan"""
-    __api.pc.clan = clan_id
-
-
 def set_family(family_id):
     """set PC family"""
 
     family_ = api.data.families.get(family_id)
     if family_:
         __api.pc.set_family(family_.id, family_.trait, 1, [family_.id, family_.clanid])
+        __api.pc.clan = family_.clanid
+
+
+def get_clan():
+    """get PC clan"""
+    family_ = api.data.families.get(get_family())
+    if not family_:
+        return None
+    return family_.clanid
 
 
 def get_family():
