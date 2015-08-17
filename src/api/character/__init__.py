@@ -31,6 +31,11 @@ def new():
     __api.pc.load_default()
 
 
+def set_model(model):
+    """set character model"""
+    __api.pc = model
+
+
 def has_tag(tag):
     return tag in __api.pc.tags
 
@@ -102,3 +107,8 @@ def increase_trait(trait_id):
     append_advancement(adv)
 
     return api.data.CMErrors.NO_ERROR
+
+
+def insight_rank():
+    """returns PC's insight rank"""
+    return __api.pc.get_insight_rank()

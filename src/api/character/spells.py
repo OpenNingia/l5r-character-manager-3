@@ -41,10 +41,15 @@ def affinities():
 
 def is_learnable(spell):
     """returns true if character can learn this spell"""
-    max_mastery = api.character.rank.insight_rank()
+    max_mastery = api.character.insight_rank()
 
-    def_cnt = query(deficiencies()).where(lambda x: x == spell.element).count() + special_spell_affinity(spell)
-    aff_cnt = query(affinities()).where(lambda x: x == spell.element).count() + special_spell_deficiency(spell)
+    def_cnt = (
+        query(deficiencies()).where(lambda x: x == spell.element or spell.element in x).count() +
+        special_spell_deficiency(spell))
+
+    aff_cnt = (
+        query(affinities()).where(lambda x: x == spell.element or spell.element in x).count() +
+        special_spell_affinity(spell))
 
     max_mastery -= def_cnt
     max_mastery += aff_cnt
@@ -55,10 +60,10 @@ def is_learnable(spell):
 def special_spell_affinity(spell):
 
     ret = 0
-    school = api.character.school.get_current()
+    school = api.character.schools.get_current()
 
     # special handling of scorpion_yogo_wardmaster_school
-    if school.id == 'scorpion_yogo_wardmaster_school':
+    if school == 'scorpion_yogo_wardmaster_school':
         if 'wards' in spell.tags:
             ret += 1
 
@@ -66,7 +71,15 @@ def special_spell_affinity(spell):
 
 
 def special_spell_deficiency(spell):
-    return 0
+    ret = 0
+    school = api.character.schools.get_current()
+
+    # special handling of scorpion_yogo_wardmaster_school
+    if school == 'scorpion_yogo_wardmaster_school':
+        if 'travel' in spell.tags or 'craft' in spell.tags:
+            ret += 1
+
+    return ret
 
 
 def character_can_learn():

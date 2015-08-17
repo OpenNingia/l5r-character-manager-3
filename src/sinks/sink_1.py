@@ -23,6 +23,8 @@ import models
 import os
 import osutil
 
+import api.character
+
 from l5rcmcore import get_app_file, DB_VERSION, get_icon_path
 
 
@@ -37,8 +39,14 @@ class Sink1(QtCore.QObject):
 
         form.last_rank = 1
         form.save_path = ''
-        form.pc = models.AdvancedPcModel()
-        form.pc.load_default()
+
+
+        # create new character
+        api.character.new()
+
+        # backward compatibility, assign to form
+        form.pc = api.character.model()
+
         form.load_clans()
         form.load_families('')
         form.load_schools('')
@@ -50,6 +58,9 @@ class Sink1(QtCore.QObject):
         form = self.form
         path = form.select_load_path()
         form.load_character_from(path)
+
+        # TODO. let the API handle the loading
+        api.character.set_model(form.pc)
 
     def save_character(self):
         form = self.form

@@ -17,6 +17,10 @@
 import sys
 import dal
 import dal.query
+
+import api.character.spells
+import api.data.spells
+
 from PySide import QtCore, QtGui
 
 
@@ -46,6 +50,9 @@ class SpellItemSelection(QtGui.QWidget):
     # text browser for spell description
     tx_descr = None
 
+    # spell changed
+    spell_changed = QtCore.Signal(int)
+
     def __init__(self, pc, dstore, parent=None):
         super(SpellItemSelection, self).__init__(parent)
 
@@ -62,7 +69,12 @@ class SpellItemSelection(QtGui.QWidget):
         self.lb_ring = QtGui.QLabel(self.tr('Ring'), self)
         self.lb_mastery = QtGui.QLabel(self.tr('Mastery'), self)
         self.lb_spell = QtGui.QLabel(self.tr('Spell'), self)
+        self.lb_tags = QtGui.QLabel(self.tr('Tags'), self)
+        self.lb_mastery_mod = QtGui.QLabel(self.tr('Mastery modifier:'), self)
+
         self.tx_descr = QtGui.QTextEdit(self)
+        self.tx_tags = QtGui.QLabel(self)
+        self.tx_mastery_mod = QtGui.QLabel(self)
 
         self.cb_element.setEditable(False)
         self.cb_mastery.setEditable(False)
@@ -75,6 +87,8 @@ class SpellItemSelection(QtGui.QWidget):
         form_lo.addRow(self.lb_ring, self.cb_element)
         form_lo.addRow(self.lb_mastery, self.cb_mastery)
         form_lo.addRow(self.lb_spell, self.cb_spell)
+        form_lo.addRow(self.lb_tags, self.tx_tags)
+        form_lo.addRow(self.lb_mastery_mod, self.tx_mastery_mod)
 
         vbox = QtGui.QVBoxLayout(self)
         vbox.addItem(form_lo)
@@ -90,6 +104,11 @@ class SpellItemSelection(QtGui.QWidget):
         self.cb_element.addItem(self.tr('Water'), 'water')
         self.cb_element.addItem(self.tr('Fire'), 'fire')
         self.cb_element.addItem(self.tr('Void'), 'void')
+
+        # Also masteries are fixed now
+        for x in range(0, 6):
+            self.cb_mastery.addItem(
+                self.tr('Mastery Level {0}').format(x + 1), x + 1)
 
     def set_blacklist(self, bk):
         self.blacklist = bk
@@ -125,88 +144,99 @@ class SpellItemSelection(QtGui.QWidget):
 
     def on_ring_change(self, index):
 
-        ring = self.cb_element.itemData(self.cb_element.currentIndex())
+        ring = self.get_ring()
 
         # SPECIAL FLAGS
-        only_maho = self.maho_flt == 'only_maho'
-        no_defic = self.no_deficiency
+        # only_maho = self.maho_flt == 'only_maho'
+        # no_defic = self.no_deficiency
 
         # UPDATE MASTERY COMBOBOX BASED ON AFFINITY/DEFICIENCY
-        affin = [
-            x for x in self.pc.get_affinity() if x not in self.pc.get_deficiency()]
-        defic = [
-            x for x in self.pc.get_deficiency() if x not in self.pc.get_affinity()]
+        #affin = api.character.spells.affinities()
+        #defic = api.character.spells.deficiencies()
 
-        self.cb_mastery.blockSignals(True)
-        self.cb_mastery.clear()
+        #self.cb_mastery.blockSignals(True)
+        #self.cb_mastery.clear()
 
-        mod_ = 0
-        for a in affin:
-            if a == ring or ring in a:
-                mod_ = 1
-        for d in defic:
-            if d == ring and not only_maho:
-                mod_ = -1
+        #mod_ = 0
+        #for a in affin:
+        #    if a == ring or ring in a:
+        #        mod_ += 1
+        #for d in defic:
+        #    if (d == ring or ring in a) and not only_maho:
+        #        mod_ -= -1
 
-        school_id = self.pc.get_school_id()
+        #school_id = self.pc.get_school_id()
 
         # special handling of scorpion_yogo_wardmaster_school
-        if school_id == 'scorpion_yogo_wardmaster_school':
-            if self.tag == 'wards':
-                mod_ = 1
+        #if school_id == 'scorpion_yogo_wardmaster_school':
+        #    if self.tag == 'wards':
+        #        mod_ += 1
 
-        print(
-            "affinity: {0}, deficiency: {1}, element: {2}".format(affin, defic, ring))
-        print('max mastery: {0}'.format(self.pc.get_insight_rank() + mod_))
+        #print(
+        #    "affinity: {0}, deficiency: {1}, element: {2}".format(affin, defic, ring))
+        #print('max mastery: {0}'.format(self.pc.get_insight_rank() + mod_))
 
-        self.max_mastery = self.pc.get_insight_rank() + mod_
+        #self.max_mastery = self.pc.get_insight_rank() + mod_
 
-        for x in xrange(0, self.max_mastery):
-            self.cb_mastery.addItem(
-                self.tr('Mastery Level {0}').format(x + 1), x + 1)
+        #for x in xrange(0, self.max_mastery):
+        #    self.cb_mastery.addItem(
+        #        self.tr('Mastery Level {0}').format(x + 1), x + 1)
 
-        self.cb_mastery.blockSignals(False)
+        #self.cb_mastery.blockSignals(False)
 
-        if self.cb_mastery.currentIndex() < 0:
-            self.cb_mastery.setCurrentIndex(0)
+        #if self.cb_mastery.currentIndex() < 0:
+        #    self.cb_mastery.setCurrentIndex(0)
 
-        mastery = self.cb_mastery.itemData(self.cb_mastery.currentIndex()) or 0
+        #mastery = self.cb_mastery.itemData(self.cb_mastery.currentIndex()) or 0
 
-        if defic == ring and no_defic:
-            self.cb_spell.clear()
-        else:
-            self.update_spell_list()
+        #if defic == ring and no_defic:
+        #    self.cb_spell.clear()
+        #else:
+        self.update_spell_list()
 
     def on_mastery_change(self, index):
 
-        ring = self.cb_element.itemData(self.cb_element.currentIndex())
-        mastery = self.cb_mastery.itemData(
-            self.cb_mastery.currentIndex()) or 0
+        ring = self.get_ring()
 
-        affin = [
-            x for x in self.pc.get_affinity() if x not in self.pc.get_deficiency()]
-        defic = [
-            x for x in self.pc.get_deficiency() if x not in self.pc.get_affinity()]
+        mastery = self.get_mastery()
+
+        affin = api.character.spells.affinities()
+        defic = api.character.spells.deficiencies()
 
         # SPECIAL FLAGS
-        only_maho = self.maho_flt == 'only_maho'
-        no_defic = self.no_deficiency
+        # only_maho = self.maho_flt == 'only_maho'
+        # no_defic = self.no_deficiency
 
-        if defic == ring and no_defic:
-            self.cb_spell.clear()
-        else:
-            self.update_spell_list()
+        #if defic == ring and no_defic:
+        #    self.cb_spell.clear()
+        #else:
+        self.update_spell_list()
 
     def on_spell_change(self, index):
-        spell = self.cb_spell.itemData(self.cb_spell.currentIndex())
+        spell = self.get_spell()
         if spell:
             self.tx_descr.setText(
                 "<em>{}</em>".format(spell.desc))
+            self.tx_tags.setText(', '.join(spell.tags))
+
+            self.spell_changed.emit(self.get_spell())
+
+            mmod = (
+                api.character.spells.special_spell_affinity(spell) -
+                api.character.spells.special_spell_deficiency(spell)
+            )
+
+            if mmod == 0:
+                self.tx_mastery_mod.setText(self.tr("None"))
+            elif mmod > 0:
+                self.tx_mastery_mod.setText("<span style='color:green'>+{}</span>".format(mmod))
+            else:
+                self.tx_mastery_mod.setText("<span style='color:red'>{}</span>".format(mmod))
 
     def update_spell_list(self):
-        ring = self.cb_element.itemData(self.cb_element.currentIndex())
-        mastery = self.cb_mastery.itemData(
-            self.cb_mastery.currentIndex()) or 0
+
+        ring = self.get_ring()
+        mastery = self.get_mastery()
 
         self.cb_spell.clear()
 
@@ -215,29 +245,27 @@ class SpellItemSelection(QtGui.QWidget):
                 return []
 
             no_defic = self.no_deficiency
-            defic = [
-                x for x in self.pc.get_deficiency() if x not in self.pc.get_affinity()]
 
-            if ring in defic and no_defic:
+            if ring in api.character.spells.deficiencies() and no_defic:
                 return []
 
             if self.maho_flt == 'only_maho':
                 return dal.query.get_maho_spells(self.dstore, ring, mastery)
             elif self.maho_flt == 'no_maho':
                 return [x for x in dal.query.get_spells(self.dstore, ring, mastery) if 'maho' not in x.tags]
-            elif self.tag is not None:
-                return [x for x in dal.query.get_spells(self.dstore, ring, mastery) if self.tag in x.tags]
+            #elif self.tag is not None:
+            #    return [x for x in dal.query.get_spells(self.dstore, ring, mastery) if self.tag in x.tags]
             else:
                 return dal.query.get_spells(self.dstore, ring, mastery)
 
         avail_spells = get_avail_spells()
-        school_id = self.pc.get_school_id()
+        # school_id = self.pc.get_school_id()
 
         # special handling of scorpion_yogo_wardmaster_school
-        if school_id == 'scorpion_yogo_wardmaster_school':
-            if mastery == self.max_mastery:
-                avail_spells = [
-                    x for x in avail_spells if 'travel' not in x.tags and 'craft' not in x.tags]
+        #if school_id == 'scorpion_yogo_wardmaster_school':
+        #    if mastery == self.max_mastery:
+        #        avail_spells = [
+        #            x for x in avail_spells if 'travel' not in x.tags and 'craft' not in x.tags]
 
         # remove blacklisted spells
         if not self.blacklist:
@@ -258,7 +286,7 @@ class SpellItemSelection(QtGui.QWidget):
             self.cb_element.blockSignals(True)
             self.cb_mastery.blockSignals(True)
 
-            for i in xrange(0, self.cb_element.count()):
+            for i in range(0, self.cb_element.count()):
                 if self.cb_element.itemData(i) == spell.element:
                     self.cb_element.setCurrentIndex(i)
                     self.on_ring_change(i)
@@ -283,5 +311,20 @@ class SpellItemSelection(QtGui.QWidget):
             self.cb_element.setCurrentIndex(0)
             self.on_ring_change(0)
 
+        if self.get_spell() is not None:
+            self.spell_changed.emit(self.get_spell())
+
     def get_spell(self):
         return self.cb_spell.itemData(self.cb_spell.currentIndex())
+
+    def get_ring(self):
+        return self.cb_element.itemData(self.cb_element.currentIndex())
+
+    def get_mastery(self):
+        return self.cb_mastery.itemData(self.cb_mastery.currentIndex()) or 0
+
+    def can_learn(self):
+        if not self.get_spell():
+            return False
+        else:
+            return api.character.spells.is_learnable(self.get_spell())
