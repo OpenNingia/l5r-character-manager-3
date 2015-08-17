@@ -30,6 +30,11 @@ def set_blacklist(blk):
     __api.blacklist = blk
 
 
+def get_blacklist(blk):
+    """return data blacklist"""
+    return __api.blacklist
+
+
 def reload():
     """reloads data from storage"""
     __api.reload()

@@ -17,6 +17,11 @@
 
 import dal
 import dal.query
+
+import api
+import api.character
+import api.data
+
 import models
 import widgets
 from PySide import QtCore, QtGui
