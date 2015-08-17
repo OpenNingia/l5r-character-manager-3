@@ -20,11 +20,15 @@ from asq.initiators import query
 
 
 def all():
+    """returns the list of spells"""
     if not __api:
         return []
     return __api.ds.spells
 
 
 def get(sid):
+    """return the spell that matches the given id"""
+    if not sid:
+        return None
     return query(all()).where(lambda x: x.id == sid).first_or_default(None)
 

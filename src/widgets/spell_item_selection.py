@@ -60,7 +60,7 @@ class SpellItemSelection(QtGui.QWidget):
         self.pc = pc
 
         self.tag = None
-        self.max_mastery = 0
+        self.element = None
 
         self.cb_element = QtGui.QComboBox(self)
         self.cb_mastery = QtGui.QComboBox(self)
@@ -79,7 +79,13 @@ class SpellItemSelection(QtGui.QWidget):
         self.cb_element.setEditable(False)
         self.cb_mastery.setEditable(False)
 
+        monos_ = QtGui.QFont('Monospace')
+        monos_.setStyleHint(QtGui.QFont.Courier)
+
         self.tx_descr.setReadOnly(True)
+        self.tx_descr.setFont(monos_)
+        self.tx_descr.setLineWrapMode(QtGui.QTextEdit.WidgetWidth)
+        self.tx_descr.setWordWrapMode(QtGui.QTextOption.WordWrap)
 
         form_lo = QtGui.QFormLayout()
         form_lo.setVerticalSpacing(9)
@@ -122,76 +128,29 @@ class SpellItemSelection(QtGui.QWidget):
         self.no_deficiency = flag
         self.update_spell_list()
 
-    def set_fixed_ring(self, ring):
-        print('set_fixed_ring', ring)
-        if not ring:
-            self.cb_element.setEnabled(True)
-            return
-        if ring.startswith('!'):
-            ring = ring[1:]
-            for i in xrange(0, self.cb_element.count()):
-                if self.cb_element.itemData(i) == ring:
-                    self.cb_element.removeItem(i)
-                    break
-        else:
-            for i in xrange(0, self.cb_element.count()):
-                if self.cb_element.itemData(i) == ring:
-                    self.cb_element.setCurrentIndex(i)
-                    break
+    def set_element_restriction(self, ring):
+        self.element = ring
+        #print('set_fixed_ring', ring)
+        #if not ring:
+        #    self.cb_element.setEnabled(True)
+        #    return
+        #if ring.startswith('!'):
+        #    ring = ring[1:]
+        #    for i in xrange(0, self.cb_element.count()):
+        #        if self.cb_element.itemData(i) == ring:
+        #            self.cb_element.removeItem(i)
+        #            break
+        #else:
+        #    for i in xrange(0, self.cb_element.count()):
+        #        if self.cb_element.itemData(i) == ring:
+        #            self.cb_element.setCurrentIndex(i)
+        #            break
 
-    def set_spell_tag(self, tag):
+    def set_tag_restriction(self, tag):
         self.tag = tag
 
     def on_ring_change(self, index):
-
         ring = self.get_ring()
-
-        # SPECIAL FLAGS
-        # only_maho = self.maho_flt == 'only_maho'
-        # no_defic = self.no_deficiency
-
-        # UPDATE MASTERY COMBOBOX BASED ON AFFINITY/DEFICIENCY
-        #affin = api.character.spells.affinities()
-        #defic = api.character.spells.deficiencies()
-
-        #self.cb_mastery.blockSignals(True)
-        #self.cb_mastery.clear()
-
-        #mod_ = 0
-        #for a in affin:
-        #    if a == ring or ring in a:
-        #        mod_ += 1
-        #for d in defic:
-        #    if (d == ring or ring in a) and not only_maho:
-        #        mod_ -= -1
-
-        #school_id = self.pc.get_school_id()
-
-        # special handling of scorpion_yogo_wardmaster_school
-        #if school_id == 'scorpion_yogo_wardmaster_school':
-        #    if self.tag == 'wards':
-        #        mod_ += 1
-
-        #print(
-        #    "affinity: {0}, deficiency: {1}, element: {2}".format(affin, defic, ring))
-        #print('max mastery: {0}'.format(self.pc.get_insight_rank() + mod_))
-
-        #self.max_mastery = self.pc.get_insight_rank() + mod_
-
-        #for x in xrange(0, self.max_mastery):
-        #    self.cb_mastery.addItem(
-        #        self.tr('Mastery Level {0}').format(x + 1), x + 1)
-
-        #self.cb_mastery.blockSignals(False)
-
-        #if self.cb_mastery.currentIndex() < 0:
-        #    self.cb_mastery.setCurrentIndex(0)
-
-        #mastery = self.cb_mastery.itemData(self.cb_mastery.currentIndex()) or 0
-
-        #if defic == ring and no_defic:
-        #    self.cb_spell.clear()
-        #else:
         self.update_spell_list()
 
     def on_mastery_change(self, index):
@@ -215,8 +174,9 @@ class SpellItemSelection(QtGui.QWidget):
     def on_spell_change(self, index):
         spell = self.get_spell()
         if spell:
-            self.tx_descr.setText(
-                "<em>{}</em>".format(spell.desc))
+            #self.tx_descr.setText(
+            #    u"<pre>{}</pre>".format(spell.desc))
+            self.tx_descr.setText(spell.desc)
             self.tx_tags.setText(', '.join(spell.tags))
 
             self.spell_changed.emit(self.get_spell())
@@ -327,4 +287,26 @@ class SpellItemSelection(QtGui.QWidget):
         if not self.get_spell():
             return False
         else:
-            return api.character.spells.is_learnable(self.get_spell())
+            return (
+                api.character.spells.is_learnable(self.get_spell()) and
+                self.match_element_restriction() and
+                self.match_tag_restriction())
+
+    def match_tag_restriction(self):
+        if not self.tag:
+            return True
+        spell = self.get_spell()
+        if not spell:
+            return False
+        return self.tag in spell.tags
+
+    def match_element_restriction(self):
+        if not self.element:
+            return True
+        spell = self.get_spell()
+        if not spell:
+            return False
+
+        if self.element[0] == '!':
+            return self.element[1:] != spell.element
+        return self.element == spell.element

@@ -29,6 +29,11 @@ import widgets
 from PySide import QtCore, QtGui
 
 
+def colored_span(col, text):
+    """return a span element with colored text"""
+    return "<span style='color:{0}'>{1}</span>".format(col, text)
+
+
 class SpellAdvDialog(QtGui.QDialog):
 
     # character model
@@ -118,12 +123,17 @@ class SpellAdvDialog(QtGui.QDialog):
         if player_deficiencies_str == 'special':
             lb_def_val.setText(self.tr('See school description'))
 
+        # spell selection
+        lb_restrictions = QtGui.QLabel(self.tr('Restrictions'), self)
+        self.tx_restrictions = QtGui.QLabel(self)
+
         # form layout
         player_info_fr = QtGui.QFrame(self)
         player_info_ly = QtGui.QFormLayout(player_info_fr)
         player_info_ly.addRow(lb_school_txt, lb_school_val)
         player_info_ly.addRow(lb_aff_txt, lb_aff_val)
         player_info_ly.addRow(lb_def_txt, lb_def_val)
+        player_info_ly.addRow(lb_restrictions, self.tx_restrictions)
 
         self.grp_maho = QtGui.QGroupBox(self.tr('Maho'), self)
         bottom_bar = QtGui.QFrame(self)
@@ -161,7 +171,7 @@ class SpellAdvDialog(QtGui.QDialog):
         self.vbox_lo.addWidget(self.error_bar)
         self.vbox_lo.addWidget(bottom_bar)
 
-        self.resize(600, 400)
+        self.resize(620, 640)
         self.update_label_count()
 
     def connect_signals(self):
@@ -193,6 +203,8 @@ class SpellAdvDialog(QtGui.QDialog):
 
         props = self.properties[self.current_page]
 
+        self.update_restrictions(props)
+
         if props:
             if 'maho' in props:
                 if props['maho'] == 'only_maho':
@@ -201,14 +213,16 @@ class SpellAdvDialog(QtGui.QDialog):
                     self.rb_nmaho.setChecked(True)
                 else:
                     self.rb_amaho.setChecked(True)
+
             self.grp_maho.setEnabled('maho' not in props)
+
             if 'ring' in props:
-                self.spell_wdg.set_fixed_ring(props['ring'])
+                self.spell_wdg.set_element_restriction(props['ring'])
             else:
-                self.spell_wdg.set_fixed_ring(None)
+                self.spell_wdg.set_element_restriction(None)
 
             if 'tag' in props:
-                self.spell_wdg.set_spell_tag(props['tag'])
+                self.spell_wdg.set_tag_restriction(props['tag'])
 
             self.spell_wdg.set_no_defic('no_defic' in props)
 
@@ -270,6 +284,41 @@ class SpellAdvDialog(QtGui.QDialog):
 
     def on_spell_changed(self, spell):
         self.bt_next.setEnabled(self.spell_wdg.can_learn())
+
+    def update_restrictions(self, properties):
+        self.tx_restrictions.setText(
+            self.get_restrictions_string(properties)
+        )
+
+    def get_restrictions_string(self, properties):
+        o = u""
+
+        tag_ = properties['tag'] if 'tag' in properties else None
+        ring_ = properties['ring'] if 'ring' in properties else None
+        no_maho_ = False
+        only_maho_ = False
+        no_defic = 'no_defic' in properties
+
+        if 'maho' in properties:
+            only_maho_ = properties['maho'] == 'only_maho'
+            no_maho_ = properties['maho'] == 'no_maho'
+
+        if ring_ and ring_[0] == '!':
+            o = self.tr("any spell but [{0}]").format(colored_span('orange', ring_[1:]))
+        elif tag_ and tag_[0] == '!':
+            o = self.tr("any spell but [{0}]").format(colored_span('orange', tag_[1:]))
+        else:
+            o = self.tr("a [{0}] spell").format(colored_span('navy', tag_ or ring_))
+
+        if no_maho_:
+            o += u", {0}".format(self.tr("No maho"))
+        elif only_maho_:
+            o += u", {0}".format(self.tr("Only maho"))
+
+        if no_defic:
+            o += u", {0}".format(self.tr("Excluded deficiency"))
+
+        return o
 
     def accept(self):
         for s in self.selected:

@@ -27,7 +27,7 @@ def categories():
 
 
 def all():
-    """returns a list of skills"""
+    """returns the list of skills"""
     if not __api.ds:
         return []
     return __api.ds.skills
@@ -35,7 +35,7 @@ def all():
 
 def get(sid):
     """return a skill by its id"""
-    if not __api.ds:
+    if not sid:
         return None
     return query(all()).where(lambda x: x.id == sid).first_or_default(None)
 
