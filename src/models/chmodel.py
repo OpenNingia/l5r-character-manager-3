@@ -28,79 +28,60 @@ from copy import deepcopy
 # RINGS
 
 
-class RINGS(object):
-    def __init__(self):
-        self.EARTH = 0
-        self.AIR = 1
-        self.WATER = 2
-        self.FIRE = 3
-        self.VOID = 4
+class RINGS:
+    EARTH = 0
+    AIR = 1
+    WATER = 2
+    FIRE = 3
+    VOID = 4
 
-        self._names = dict(earth=0, air=1, water=2, fire=3, void=4)
-        self._ids = ['earth', 'air', 'water', 'fire', 'void']
-
-    @property
-    def map(self):
-        return self._names
-
-    @property
-    def strings(self):
-        return self._ids
+    _names = dict(earth=0, air=1, water=2, fire=3, void=4)
+    _ids = ['earth', 'air', 'water', 'fire', 'void']
 
 
 def ring_from_name(name):
-    if name in RINGS.map:
-        return RINGS.map[name]
+    if name in RINGS._names:
+        return RINGS._names[name]
     return -1
 
 
 def ring_name_from_id(ring_id):
-    if 0 <= ring_id < len(RINGS.strings):
-        return RINGS.strings[ring_id]
+    if 0 <= ring_id < len(RINGS._ids):
+        return RINGS._ids[ring_id]
 
 
-class ATTRIBS(object):
-    def __init__(self):
+class ATTRIBS:
+    # earth ring
+    STAMINA = 0
+    WILLPOWER = 1
 
-        # earth ring
-        self.STAMINA = 0
-        self.WILLPOWER = 1
+    # air ring
+    REFLEXES = 2
+    AWARENESS = 3
 
-        # air ring
-        self.REFLEXES = 2
-        self.AWARENESS = 3
+    # water ring
+    STRENGTH = 4
+    PERCEPTION = 5
 
-        # water ring
-        self.STRENGTH = 4
-        self.PERCEPTION = 5
+    # fire ring
+    AGILITY = 6
+    INTELLIGENCE = 7
 
-        # fire ring
-        self.AGILITY = 6
-        self.INTELLIGENCE = 7
-
-        self._names = dict(stamina=0, willpower=1, reflexes=2, awareness=3,
-                      strength=4, perception=5, agility=6, intelligence=7)
-        self._ids = ['stamina', 'willpower', 'reflexes', 'awareness', 'strength',
-                     'perception', 'agility', 'intelligence']
-
-    @property
-    def map(self):
-        return self._names
-
-    @property
-    def strings(self):
-        return self._ids
+    _names = dict(stamina=0, willpower=1, reflexes=2, awareness=3,
+                  strength=4, perception=5, agility=6, intelligence=7)
+    _ids = ['stamina', 'willpower', 'reflexes', 'awareness', 'strength',
+            'perception', 'agility', 'intelligence']
 
 
 def attrib_from_name(name):
-    if name in ATTRIBS.map:
-        return ATTRIBS.map[name]
+    if name in ATTRIBS._names:
+        return ATTRIBS._names[name]
     return -1
 
 
 def attrib_name_from_id(attrib_id):
-    if 0 <= attrib_id < len(ATTRIBS.strings):
-        return ATTRIBS.strings[attrib_id]
+    if 0 <= attrib_id < len(ATTRIBS._ids):
+        return ATTRIBS._ids[attrib_id]
     else:
         print("unknown trait_id: {0}".format(attrib_id))
         return None
@@ -271,8 +252,6 @@ class AdvancedPcModel(BasePcModel):
         return min(a, b)
 
     def get_free_kiho_count(self):
-        # if not self.has_tag('monk'):
-        #    return 0
         return self.free_kiho_count
 
     def set_free_kiho_count(self, value):
@@ -808,9 +787,7 @@ class AdvancedPcModel(BasePcModel):
     def add_modifier(self, item):
         self.modifiers.append(item)
 
-    def set_family(self, family_id=0, perk=None, perkval=1, tags=None):
-        if not tags:
-            tags = []
+    def set_family(self, family_id=0, perk=None, perkval=1, tags=[]):
         if self.family == family_id:
             return
         self.step_1 = BasePcModel()
@@ -833,9 +810,8 @@ class AdvancedPcModel(BasePcModel):
                 return True
         return False
 
-    def set_school(self, school_id=0, perk=None, perkval=1, honor=0.0, tags=None):
-        if not tags:
-            tags = []
+    def set_school(self, school_id=0, perk=None, perkval=1,
+                   honor=0.0, tags=[]):
         if self.get_school_id() == school_id:
             return
         self.step_2 = BasePcModel()
