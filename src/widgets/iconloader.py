@@ -198,20 +198,22 @@ class QtIconLoaderImplementation():
 loader = None
 
 
-def icon(name, fallbackIcon=QIcon(),  iconSizes=[16, 24, 32, 48, 64]):
+def icon(name, fallback_icon=QIcon(), icon_sizes=None):
+    if not icon_sizes:
+        icon_sizes = [16, 24, 32, 48, 64]
     global loader
-    icon = QIcon()
+    icon_ = QIcon()
     # TODO: begins ifdef Q_WS_X11
     if not loader:
         loader = QtIconLoaderImplementation()
-    for size in iconSizes:
-#        pix = QtIconLoaderImplementation().findIcon(size, name + ".png")
+    for size in icon_sizes:
+
         pix = loader.findIcon(size, name + ".png")
-        icon.addPixmap(pix)
-    # ends idef Q_WS_X11
-    if icon.isNull():
-        icon = fallbackIcon
-    return icon
+        icon_.addPixmap(pix)
+
+    if icon_.isNull():
+        icon_ = fallback_icon
+    return icon_
 
 _version = None
 

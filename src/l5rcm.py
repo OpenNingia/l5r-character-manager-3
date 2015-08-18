@@ -400,12 +400,9 @@ class L5RMain(L5RCMCore):
             grid.setSpacing(1)
 
             # rings
-            rings = []
-            rings.append((self.tr("Earth"), new_small_le(self)))
-            rings.append((self.tr("Air"), new_small_le(self)))
-            rings.append((self.tr("Water"), new_small_le(self)))
-            rings.append((self.tr("Fire"), new_small_le(self)))
-            rings.append((self.tr("Void"), new_small_le(self)))
+            rings = [(self.tr("Earth"), new_small_le(self)), (self.tr("Air"), new_small_le(self)),
+                     (self.tr("Water"), new_small_le(self)), (self.tr("Fire"), new_small_le(self)),
+                     (self.tr("Void"), new_small_le(self))]
 
             # keep reference to the rings
             self.rings = rings
@@ -594,23 +591,17 @@ class L5RMain(L5RCMCore):
 
             grd = QtGui.QGridLayout(grp)
 
-            wnd = []
-            wnd.append(
-                (QtGui.QLabel(self), new_small_le(self), new_small_le(self)))
-            wnd.append(
-                (QtGui.QLabel(self), new_small_le(self), new_small_le(self)))
-            wnd.append(
-                (QtGui.QLabel(self), new_small_le(self), new_small_le(self)))
-            wnd.append(
-                (QtGui.QLabel(self), new_small_le(self), new_small_le(self)))
-            wnd.append(
-                (QtGui.QLabel(self), new_small_le(self), new_small_le(self)))
-            wnd.append(
-                (QtGui.QLabel(self), new_small_le(self), new_small_le(self)))
-            wnd.append(
-                (QtGui.QLabel(self), new_small_le(self), new_small_le(self)))
-            wnd.append((QtGui.QLabel(self.tr("Out"), self),
-                        new_small_le(self), new_small_le(self)))
+            wnd = [(QtGui.QLabel(self), new_small_le(self), new_small_le(self)),
+                   (QtGui.QLabel(self), new_small_le(self), new_small_le(self)),
+                   (QtGui.QLabel(self), new_small_le(self), new_small_le(self)),
+                   (QtGui.QLabel(self), new_small_le(self), new_small_le(self)),
+                   (QtGui.QLabel(self), new_small_le(self), new_small_le(self)),
+                   (QtGui.QLabel(self), new_small_le(self), new_small_le(self)),
+                   (QtGui.QLabel(self), new_small_le(self), new_small_le(self)),
+
+                   (QtGui.QLabel(self.tr("Out"), self),
+                                                                                  new_small_le(self),
+                                                                                  new_small_le(self))]
 
             self.wounds = wnd
             self.wnd_lb = grp

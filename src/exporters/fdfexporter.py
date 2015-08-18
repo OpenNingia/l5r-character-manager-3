@@ -124,14 +124,13 @@ class FDFExporterAll(FDFExporter):
         m = self.model
         f = self.form
 
-        fields = {}
-        fields['NAME'] = m.name
-        fields['CLAN'] = self.get_clan_name()
-        fields['RANK'] = m.get_insight_rank()
-        fields['FAMILY'] = self.get_family_name()
-        fields['SCHOOL'] = self.get_school_name()
-        fields['EXP'] = self.get_exp()
-        fields['INSIGHT'] = m.get_insight()
+        fields = {'NAME': m.name,
+                  'CLAN': self.get_clan_name(),
+                  'RANK': m.get_insight_rank(),
+                  'FAMILY': self.get_family_name(),
+                  'SCHOOL': self.get_school_name(),
+                  'EXP': self.get_exp(),
+                  'INSIGHT': m.get_insight()}
 
         # TRAITS AND RINGS
         for i in xrange(0, 8):

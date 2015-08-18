@@ -51,11 +51,9 @@ class CkNumWidget(QtGui.QWidget):
         flag = fred.isChecked()
 
         if int(fred.objectName()) == old_v:
-            self.value = self.value - 1
+            self.value -= 1
         else:
             self.value = int(fred.objectName())
-
-        # print 'old_v: %d, value: %d' % (old_v, self.value)
 
         for i in xrange(0, self.count):
             ck = self.checks[i]
