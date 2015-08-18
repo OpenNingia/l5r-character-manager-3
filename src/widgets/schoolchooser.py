@@ -112,6 +112,8 @@ class SchoolChooserWidget(QtGui.QWidget):
         self.cb_clan = QtGui.QComboBox(self)
         self.cb_school = QtGui.QComboBox(self)
         self.lb_trait = QtGui.QLabel(self)
+        self.lb_book = QtGui.QLabel(self)
+        self.lb_desc = QtGui.QLabel(self)
 
         self.req_list = None
         self.current_clan_id = None
@@ -178,6 +180,7 @@ class SchoolChooserWidget(QtGui.QWidget):
         #
         # [ clan:   ____ ]
         # [ school: ____ ]
+        # Core Book, page 183
         #
         # Bonus: ______
         #
@@ -197,6 +200,7 @@ class SchoolChooserWidget(QtGui.QWidget):
         form = QtGui.QFormLayout(self)
         form.addRow(self.tr("Clan:"), self.cb_clan)
         form.addRow(self.tr("School:"), self.cb_school)
+        form.addRow(self.lb_book, self.lb_desc)
 
         form.addRow(" ", QtGui.QWidget(self))  # empty row
         form.addRow(self.tr("Bonus:"), self.lb_trait)
@@ -488,6 +492,7 @@ class SchoolChooserWidget(QtGui.QWidget):
         if school_dal:
             self.update_bonus_trait(school_dal)
             self.update_school_requirements(school_dal)
+            self.update_book(school_dal)
 
             self.statusChanged.emit(self.req_list.match())
 
@@ -511,6 +516,19 @@ class SchoolChooserWidget(QtGui.QWidget):
             self.lb_trait.setText(red(self.tr("None")))
         else:
             self.lb_trait.setText(green("+1 {}").format(api.data.get_trait_or_ring(bonus_trait)))
+
+    def update_book(self, school_dal):
+        source_book = None
+        try:
+            source_book = school_dal.pack
+        except:
+            print('cannot find source book of {}'.format(self.current_school_id))
+
+        if not source_book:
+            self.lb_book.setText("")
+        else:
+            self.lb_book.setText(source_book.display_name)
+
 
     def show_or_hide_option_panel(self):
         self._show_options_panel = (self._show_multiple_school_check or

@@ -45,8 +45,8 @@
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "l5rcm-${PRODUCT_VERSION}_x64.exe"
-InstallDir "$PROGRAMFILES64\OpenNingia\L5RCM"
+OutFile "l5rcm-${PRODUCT_VERSION}_x86.exe"
+InstallDir "$PROGRAMFILES32\OpenNingia\L5RCM"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
 ShowUnInstDetails show

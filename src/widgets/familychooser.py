@@ -98,6 +98,8 @@ class FamilyChooserWidget(QtGui.QWidget):
         self.cb_clan = QtGui.QComboBox(self)
         self.cb_family = QtGui.QComboBox(self)
         self.lb_trait = QtGui.QLabel(self)
+        self.lb_book = QtGui.QLabel(self)
+        self.lb_desc = QtGui.QLabel(self)
 
         self.current_clan_id = None
         self.current_family_id = None
@@ -109,12 +111,14 @@ class FamilyChooserWidget(QtGui.QWidget):
         #
         # [ clan  : ____ ]
         # [ family: ____ ]
+        # Core Book, page 183
         #
         # Bonus: ______
         #
         form = QtGui.QFormLayout(self)
         form.addRow(self.tr("Clan:"), self.cb_clan)
         form.addRow(self.tr("Family:"), self.cb_family)
+        form.addRow(self.lb_book, self.lb_desc)
         form.addRow("<hr/>", QtGui.QWidget(self))  # empty row
         form.addRow(self.tr("Bonus:"), self.lb_trait)
 
@@ -199,6 +203,7 @@ class FamilyChooserWidget(QtGui.QWidget):
             self.cb_family.setCurrentIndex(family_index)
 
             self.update_bonus_trait()
+            self.update_book()
 
         self.cb_clan.blockSignals(False)
         self.cb_family.blockSignals(False)
@@ -210,6 +215,18 @@ class FamilyChooserWidget(QtGui.QWidget):
     def on_family_changed(self, index_or_text):
         self.current_family_id = self.cb_family.itemData(self.cb_family.currentIndex())
         self.update_bonus_trait()
+        self.update_book()
+
+    def update_book(self):
+        try:
+            source_book = api.data.families.get(self.current_family_id).pack
+
+            if not source_book:
+                self.lb_book.setText("")
+            else:
+                self.lb_book.setText(source_book.display_name)
+        except:
+            print('cannot find source book of {}'.format(self.current_family_id))
 
     def update_bonus_trait(self):
         try:

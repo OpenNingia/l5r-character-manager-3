@@ -30,7 +30,7 @@ def set_blacklist(blk):
     __api.blacklist = blk
 
 
-def get_blacklist(blk):
+def get_blacklist():
     """return data blacklist"""
     return __api.blacklist
 

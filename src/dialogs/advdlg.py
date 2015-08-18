@@ -16,17 +16,83 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import models.advances as advances
-import models
-import string
 import dal
 import dal.query
 
-from math import ceil
+import api.data.skills
 
 from PySide import QtCore, QtGui
 
-import rules
 
+class SkillSelectInformativeWidget(QtGui.QWidget):
+
+    currentIndexChanged = QtCore.Signal(str)
+
+    def __init__(self, parent=None):
+        super(SkillSelectInformativeWidget, self).__init__(parent)
+
+        self.cb_skills = QtGui.QComboBox(self)
+        self.lb_book = QtGui.QLabel(self)
+        self.lb_desc = QtGui.QLabel(self)
+
+        # build UI
+        vb = QtGui.QVBoxLayout(self)
+        vb.addWidget(self.cb_skills)
+
+        fr_desc = QtGui.QFrame(self)
+        fly = QtGui.QFormLayout(fr_desc)
+        fly.addRow(self.lb_book, self.lb_desc)
+
+        vb.addWidget(fr_desc)
+
+        self.cb_skills.currentIndexChanged.connect(self.updateItem)
+
+    def clear(self):
+        self.cb_skills.clear()
+        self.lb_book.clear()
+        self.lb_desc.clear()
+
+    def addItem(self, text, data):
+        self.cb_skills.addItem(text, data)
+
+    def currentIndex(self):
+        return self.cb_skills.currentIndex()
+
+    def setCurrentIndex(self, index):
+        self.cb_skills.setCurrentIndex()
+
+    def currentText(self):
+        return self.cb_skills.currentText()
+
+    def currentItem(self):
+        return self.itemData(self.currentIndex())
+
+    def itemText(self, index):
+        return self.cb_skills.itemText(index)
+
+    def itemData(self, index):
+        return self.cb_skills.itemData(index)
+
+    def updateItem(self, item):
+
+        # the stored data could be the skill_id or a tuple (skill_id, skill_rank)
+        item_ = self.currentItem()
+        skill_id = None
+        skill_rank = None
+        if isinstance(item_, tuple):
+            skill_id, skill_rank = item_
+        elif isinstance(item_, list):
+            skill_id, skill_rank = item_[0], item_[1]
+        else:
+            skill_id = item_
+
+        skill_ = api.data.skills.get(skill_id)
+        if skill_ and skill_.pack:
+            self.lb_book.setText(skill_.pack.display_name)
+        if skill_ and skill_.desc:
+            self.lb_desc.setText(skill_.desc)
+
+        self.currentIndexChanged.emit(item)
 
 class BuyAdvDialog(QtGui.QDialog):
 
@@ -59,7 +125,8 @@ class BuyAdvDialog(QtGui.QDialog):
 
         self.widgets = dict(
             skill=(
-                QtGui.QComboBox(self), QtGui.QComboBox(self)),
+                #QtGui.QComboBox(self), QtGui.QComboBox(self)),
+                QtGui.QComboBox(self), SkillSelectInformativeWidget(self)),
             emph =(QtGui.QComboBox(self), QtGui.QLineEdit(self)))
 
         for t in self.widgets.itervalues():
@@ -273,12 +340,16 @@ class SelWcSkills(QtGui.QDialog):
     def build_ui(self):
         self.setWindowTitle(self.tr('Choose School Skills'))
 
-        grid = QtGui.QGridLayout(self)
-        grid.addWidget(QtGui.QLabel(self.tr("<i>Your school has granted you \
+        vb = QtGui.QVBoxLayout(self)
+        #grid = QtGui.QGridLayout(self)
+
+        self.header = QtGui.QLabel(self.tr("<i>Your school has granted you \
                                              the right to choose some skills.</i> \
-                                             <br/><b>Choose with care.</b>"), self),
-                       0, 0, 1, 3)
-        grid.setRowStretch(0, 2)
+                                             <br/><b>Choose with care.</b>"), self)
+
+        # grid.addWidget(self.header, 0, 0, 1, 3)
+        # grid.setRowStretch(0, 2)
+        vb.addWidget(self.header)
 
         self.bt_ok = QtGui.QPushButton(self.tr('Ok'), self)
         self.bt_cancel = QtGui.QPushButton(self.tr('Cancel'), self)
@@ -295,24 +366,35 @@ class SelWcSkills(QtGui.QDialog):
                 not_wc = [
                     x.value for x in wl if x.modifier and x.modifier == 'not']
 
-                sw1 = self.tr(' or ').join(or_wc)
-                sw2 = ', '.join(not_wc)
+                or_categories = [
+                    api.data.skills.get_category(x).name for x in or_wc if api.data.skills.get_category(x) is not None
+                ]
 
-                if (wl[0].value == 'any'):
-                    sw1 = 'one'
+                nor_categories = [
+                    api.data.skills.get_category(x).name for x in not_wc if api.data.skills.get_category(x) is not None
+                ]
+
+                sw1 = ', '.join(or_categories)
+                sw2 = ', '.join(nor_categories)
+
+                if wl[0].value == 'any':
+                    sw1 = self.tr('skill')
 
                 if len(not_wc):
-                    lb = self.tr('Any {0}, not {1} skill (rank {2}):').format(
+                    lb = self.tr('Any {0}, but {1} (rank {2}):').format(
                         sw1, sw2, ws.rank)
                 else:
                     lb = self.tr(
                         'Any {0} skill (rank {1}):').format(sw1, ws.rank)
 
-            grid.addWidget(QtGui.QLabel(lb, self), row_, 0)
+            #grid.addWidget(QtGui.QLabel(lb, self), row_, 0)
+            vb.addWidget(QtGui.QLabel(lb, self))
 
-            cb = QtGui.QComboBox(self)
+            # cb = QtGui.QComboBox(self)
+            cb = SkillSelectInformativeWidget(self)
             self.cbs.append(cb)
-            grid.addWidget(cb, row_, 1, 1, 2)
+            vb.addWidget(cb)
+            #grid.addWidget(cb, row_, 1, 1, 2)
 
             row_ += 1
 
@@ -320,20 +402,31 @@ class SelWcSkills(QtGui.QDialog):
             lb = self.tr("{0}'s Emphases: ").format(
                 dal.query.get_skill(self.dstore, s).name)
 
-            grid.addWidget(QtGui.QLabel(lb, self), row_, 0)
+            #grid.addWidget(QtGui.QLabel(lb, self), row_, 0)
+            vb.addWidget(QtGui.QLabel(lb, self))
 
             le = QtGui.QLineEdit(self)
             self.les.append(le)
-            grid.addWidget(le, row_, 1, 1, 2)
+            vb.addWidget(le)
+            #grid.addWidget(le, row_, 1, 1, 2)
 
             row_ += 1
 
         self.error_bar = QtGui.QLabel(self)
         self.error_bar.setVisible(False)
-        grid.addWidget(self.error_bar, row_, 0, 1, 3)
 
-        grid.addWidget(self.bt_ok, row_ + 1, 1)
-        grid.addWidget(self.bt_cancel, row_ + 1, 2)
+        vb.addWidget(self.error_bar)
+        #grid.addWidget(self.error_bar, row_, 0, 1, 3)
+
+        fr_bottom = QtGui.QFrame(self)
+        hb = QtGui.QHBoxLayout(fr_bottom)
+        hb.addWidget(self.bt_ok)
+        hb.addWidget(self.bt_cancel)
+
+        vb.addWidget(fr_bottom)
+
+        #grid.addWidget(self.bt_ok, row_ + 1, 1)
+        #grid.addWidget(self.bt_cancel, row_ + 1, 2)
 
     def cleanup(self):
         self.cbs = []

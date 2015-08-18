@@ -26,6 +26,11 @@ def categories():
     return __api.ds.skcategs
 
 
+def get_category(categ_id):
+    """return a category by id"""
+    return query(categories()).where(lambda x: x.id == categ_id).first_or_default(None)
+
+
 def all():
     """returns the list of skills"""
     if not __api.ds:
