@@ -23,37 +23,37 @@ import api.character
 
 
 def all():
-    """returns all the merits"""
+    """returns all the flaws"""
     if not __api.pc:
         return []
-    return __api.ds.merits
+    return __api.ds.flaws
 
 
-def get(mid):
-    """returns a merit by its id, None if not found"""
+def get(fid):
+    """returns a flaw by its id, None if not found"""
     if not __api.pc:
         return None
-    return query(all()).where(lambda x: x.id == mid).first_or_default(None)
+    return query(all()).where(lambda x: x.id == fid).first_or_default(None)
 
 
-def get_rank(mid, rank):
-    """returns a merit rank"""
-    merit_ = get(mid)
-    if not merit_:
+def get_rank(fid, rank):
+    """returns a flaw rank"""
+    flaw_ = get(fid)
+    if not flaw_:
         return None
-    return query(merit_.ranks).where(lambda x: x.id == rank).first_or_default(None)
+    return query(flaw_.ranks).where(lambda x: x.id == rank).first_or_default(None)
 
 
-def get_rank_cost(mid, rank):
-    """returns the cost of a merit rank"""
-    merit_rank = get_rank(mid, rank)
-    if not merit_rank:
+def get_rank_gain(fid, rank):
+    """returns the gain of a flaw rank"""
+    flaw_rank = get_rank(fid, rank)
+    if not flaw_rank:
         return 0
 
     # calculate the cost with exceptions
-    cost = merit_rank.value
+    gain_ = flaw_rank.value
 
-    for e in merit_rank.exceptions:
+    for e in flaw_rank.exceptions:
         if api.character.has_tag_or_rule(e.tag):
-            cost = e.value
-    return cost
+            gain_ = e.value
+    return gain_

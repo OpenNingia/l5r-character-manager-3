@@ -203,9 +203,9 @@ class SpellAdvDialog(QtGui.QDialog):
 
         props = self.properties[self.current_page]
 
-        self.update_restrictions(props)
-
         if props:
+            self.update_restrictions(props)
+
             if 'maho' in props:
                 if props['maho'] == 'only_maho':
                     self.rb_omaho.setChecked(True)

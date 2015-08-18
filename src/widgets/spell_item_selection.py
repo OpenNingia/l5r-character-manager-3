@@ -152,10 +152,7 @@ class SpellItemSelection(QtGui.QWidget):
 
             self.spell_changed.emit(self.get_spell())
 
-            mmod = (
-                api.character.spells.special_spell_affinity(spell) -
-                api.character.spells.special_spell_deficiency(spell)
-            )
+            mmod = api.character.spells.get_mastery_modifier(spell)
 
             if mmod == 0:
                 self.tx_mastery_mod.setText(self.tr("None"))

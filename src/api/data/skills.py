@@ -56,6 +56,7 @@ def search_skill_by_text(tx):
         .where(lambda x: tx in x.name.lower()) \
         .to_list()
 
+
 def search_categ_by_text(tx):
     """search as category by text"""
     return query(categories()) \

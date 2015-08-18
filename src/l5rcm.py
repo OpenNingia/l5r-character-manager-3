@@ -36,6 +36,10 @@ import api.data.clans
 import api.data.families
 import api.data.schools
 
+import api.character
+import api.character.spells
+import api.character.skills
+
 
 def new_small_le(parent=None, ro=True):
     le = QtGui.QLineEdit(parent)
@@ -223,7 +227,7 @@ class L5RMain(L5RCMCore):
         self.tabs = QtGui.QTabWidget(self)
         self.scene = QtGui.QGraphicsScene(self)
         proxy_widget = self.scene.addWidget(self.widgets, QtCore.Qt.Widget)
-        proxy_widget.setOpacity(float(settings.value('opacity', 0.96)))
+        #proxy_widget.setOpacity(float(settings.value('opacity', 0.96)))
         self.view.setScene(self.scene)
         self.view.setInteractive(True)
         self.setCentralWidget(self.view)
@@ -1795,6 +1799,7 @@ class L5RMain(L5RCMCore):
             school = dal.query.get_school(self.dstore, path.school_id)
             for tech in [x for x in school.techs if x.rank == (last_tech.rank + 1)]:
                 path.techs.append(tech.id)
+                api.rules.apply_tech_side_effects(tech.id)
                 print(
                     'learn next tech from alternate path {0}. tech: {1}'.format(school.id, tech.id))
         else:
@@ -1839,6 +1844,8 @@ class L5RMain(L5RCMCore):
 
                 self.pc.add_tech(next_tech.id, next_tech.id)
 
+                api.rules.apply_tech_side_effects(next_tech.id)
+
         self.pc.recalc_ranks()
         self.pc.set_can_get_other_tech(False)
         self.update_from_model()
@@ -1871,7 +1878,7 @@ class L5RMain(L5RCMCore):
             # debug
             # dump_slots(self, 'after_a_while.txt')
 
-    def check_school_tech_and_spells(self):
+    def check_school_new_tech(self):
         if self.nicebar:
             return
 
@@ -1880,7 +1887,13 @@ class L5RMain(L5RCMCore):
                 self.check_if_tech_available() and
                 self.check_tech_school_requirements()):
             self.learn_next_school_tech()
-        elif self.pc.can_get_other_spells():
+
+    def check_school_new_spells(self):
+        if self.nicebar:
+            return
+
+        # Show nicebar if can get other spells
+        if self.pc.can_get_other_spells():
             lb = QtGui.QLabel(
                 self.tr("You now fit the requirements to learn other Spells"), self)
             bt = QtGui.QPushButton(self.tr("Learn Spells"), self)
@@ -1931,6 +1944,22 @@ class L5RMain(L5RCMCore):
                     self.dstore, adv.perk) or dal.query.get_flaw(self.dstore, adv.perk)
                 adv.rule = perk.rule
 
+    def check_new_skills(self):
+        if self.nicebar:
+            return
+
+        # Show nicebar if pending wildcard skills
+        wcs = self.pc.get_pending_wc_skills()
+        wce = self.pc.get_pending_wc_emphs()
+        if len(wcs) > 0 or len(wce) > 0:
+            lb = QtGui.QLabel(
+                self.tr("Your school gives you the choice of certain skills"), self)
+            bt = QtGui.QPushButton(self.tr("Choose Skills"), self)
+            bt.setSizePolicy(QtGui.QSizePolicy.Maximum,
+                             QtGui.QSizePolicy.Preferred)
+            bt.clicked.connect(self.act_choose_skills)
+            self.show_nicebar([lb, bt])
+
     def check_affinity_wc(self):
         if self.nicebar:
             return
@@ -1939,6 +1968,7 @@ class L5RMain(L5RCMCore):
             return
 
         print('check affinity wc: {0}'.format(self.pc.get_affinity()))
+
         if ('any' in self.pc.get_affinity() or
            'nonvoid' in self.pc.get_affinity()):
             lb = QtGui.QLabel(
@@ -2015,7 +2045,6 @@ class L5RMain(L5RCMCore):
                                                      self.tr(
                                                          "Select your elemental affinity"),
                                                      chooses, 0, False)
-        # print affinity, is_ok
         if is_ok:
             self.set_pc_affinity(affinity)
 
@@ -2071,12 +2100,6 @@ class L5RMain(L5RCMCore):
                 self.pc.set_free_kiho_count(school_free_kiho_count())
 
             # TODO: checks for books / data extensions
-
-            # self.load_families(self.pc.clan)
-            if self.pc.unlock_schools:
-                self.load_schools()
-            else:
-                self.load_schools(self.pc.clan)
 
             self.tx_pc_notes.set_content(self.pc.extra_notes)
             self.pc.set_insight_calc_method(self.ic_calc_method)
@@ -2224,22 +2247,12 @@ class L5RMain(L5RCMCore):
 
         self.hide_nicebar()
 
-        # Show nicebar if pending wildcard skills
-        wcs = self.pc.get_pending_wc_skills()
-        wce = self.pc.get_pending_wc_emphs()
-        if len(wcs) > 0 or len(wce) > 0:
-            lb = QtGui.QLabel(
-                self.tr("Your school gives you the choice of certain skills"), self)
-            bt = QtGui.QPushButton(self.tr("Choose Skills"), self)
-            bt.setSizePolicy(QtGui.QSizePolicy.Maximum,
-                             QtGui.QSizePolicy.Preferred)
-            bt.clicked.connect(self.act_choose_skills)
-            self.show_nicebar([lb, bt])
-
+        self.check_new_skills()
         self.check_affinity_wc()
         self.check_rank_advancement()
         self.check_missing_requirements()
-        self.check_school_tech_and_spells()
+        self.check_school_new_tech()
+        self.check_school_new_spells()
         self.check_free_kihos()
 
         # disable step 0-1-2 if any xp are spent
@@ -2666,8 +2679,8 @@ def main():
         # Setup translation
         settings = QtCore.QSettings()
         use_machine_locale = settings.value('use_machine_locale', 1)
-        app_translator = QtCore.QTranslator()
-        qt_translator = QtCore.QTranslator()
+        app_translator = QtCore.QTranslator(app)
+        qt_translator = QtCore.QTranslator(app)
 
         print('use_machine_locale', use_machine_locale,
               QtCore.QLocale.system().name())

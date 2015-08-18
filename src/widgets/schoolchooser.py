@@ -21,6 +21,7 @@ from asq.selectors import a_
 import api.data
 import api.character
 import api.character.rankadv
+import api.character.merits
 import api.data.schools
 import api.data.clans
 import widgets
@@ -162,7 +163,7 @@ class SchoolChooserWidget(QtGui.QWidget):
     def apply_to_first_school(self):
         api.character.schools.set_first_school(self.current_school_id)
         if self.ck_different_school.isChecked():
-            api.character.rankadv.add_merit('different_school', rank=1)
+            api.character.merits.add('different_school')
 
     def connect_signals(self):
         self.cb_clan.currentIndexChanged.connect(self.on_clan_changed)

@@ -51,33 +51,40 @@ def is_path(sid):
     """returns true if the given school is an alternate path"""
 
     school = get(sid)
-    if not school: return False
+    if not school:
+        return False
     return 'alternate' in school.tags
 
 
 def get_skills(sid):
     """return fixed school skills"""
     school = get(sid)
-    if not school: return []
+    if not school:
+        return []
     return school.skills
 
 
 def get_skills_to_choose(sid):
     """return variable school skills"""
     school = get(sid)
-    if not school: return []
+    if not school:
+        return []
     return school.skills_pc
 
 
 def get_spells_to_choose(sid):
     """return variable school skills"""
     school = get(sid)
-    if not school: return []
+    if not school:
+        return []
     return school.spells_pc
 
+
 def get_emphasis_to_choose(sid):
+    """returns player choose emphasis"""
     school = get(sid)
-    if not school: return []
+    if not school:
+        return []
     return query(school.skills) \
         .where(lambda x: x.emph and x.emph.startswith('*')) \
         .to_list()

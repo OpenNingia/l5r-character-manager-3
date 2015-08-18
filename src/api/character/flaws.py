@@ -14,46 +14,45 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
 __author__ = 'Daniele'
+
+# for rank advancement models
+import models
 
 from api import __api
 from asq.initiators import query
 
-import api.character
+import api.data.merits
 
 
 def all():
-    """returns all the merits"""
+    """returns character flaws"""
     if not __api.pc:
         return []
-    return __api.ds.merits
+    return query(__api.pc.advans).where(
+        lambda x: x.type == 'perk' and (x.cost < 0 or x.tag == 'flaw')).to_list()
 
 
-def get(mid):
-    """returns a merit by its id, None if not found"""
-    if not __api.pc:
-        return None
-    return query(all()).where(lambda x: x.id == mid).first_or_default(None)
+def add(flaw_id, rank=None):
+    """add a flaw advancement"""
 
+    flaw_ = api.data.merits.get(flaw_id)
+    if not flaw_:
+        return
 
-def get_rank(mid, rank):
-    """returns a merit rank"""
-    merit_ = get(mid)
-    if not merit_:
-        return None
-    return query(merit_.ranks).where(lambda x: x.id == rank).first_or_default(None)
+    if not rank:
+        rank = 1
 
+    flaw_rank_ = api.data.merits.get_rank(flaw_id, rank)
+    if not flaw_rank_:
+        return
 
-def get_rank_cost(mid, rank):
-    """returns the cost of a merit rank"""
-    merit_rank = get_rank(mid, rank)
-    if not merit_rank:
-        return 0
+    gain_ = api.data.flaws.get_rank_gain(flaw_id, rank)
 
-    # calculate the cost with exceptions
-    cost = merit_rank.value
+    adv_ = models.PerkAdv(flaw_id, flaw_rank_.id, -gain_, "flaw")
+    adv_.rule = flaw_id
+    adv_.desc = unicode.format(__api.tr("{0} Rank {1}, XP Gain: {2}"),
+                               flaw_.name, flaw_rank_.id, gain_)
 
-    for e in merit_rank.exceptions:
-        if api.character.has_tag_or_rule(e.tag):
-            cost = e.value
-    return cost
+    api.character.append_advancement(adv_)

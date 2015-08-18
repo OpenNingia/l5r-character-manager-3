@@ -18,6 +18,7 @@ import api
 from api import __api
 from asq.initiators import query
 
+
 def all():
     """return all character skills"""
     if not __api.pc:
@@ -43,21 +44,13 @@ def is_learnable(spell):
     """returns true if character can learn this spell"""
     max_mastery = api.character.insight_rank()
 
-    def_cnt = (
-        query(deficiencies()).where(lambda x: x == spell.element or spell.element in x).count() +
-        special_spell_deficiency(spell))
-
-    aff_cnt = (
-        query(affinities()).where(lambda x: x == spell.element or spell.element in x).count() +
-        special_spell_affinity(spell))
-
-    max_mastery -= def_cnt
-    max_mastery += aff_cnt
+    max_mastery -= deficiency(spell)
+    max_mastery += affinity(spell)
 
     return max_mastery >= spell.mastery
 
 
-def special_spell_affinity(spell):
+def special_affinity(spell):
 
     ret = 0
     school = api.character.schools.get_current()
@@ -67,10 +60,15 @@ def special_spell_affinity(spell):
         if api.data.spells.has_tag(spell.id, 'wards', school):
             ret += 1
 
+    if api.character.has_tag_or_rule('phoenix_embrace_the_elements'):
+        affinity_, deficiencies_ = phoenix_embrace_the_elements()
+        if affinity_ == spell.element:
+            ret += 1
+
     return ret
 
 
-def special_spell_deficiency(spell):
+def special_deficiency(spell):
     ret = 0
     school = api.character.schools.get_current()
 
@@ -80,7 +78,45 @@ def special_spell_deficiency(spell):
                 api.data.spells.has_tag(spell.id, 'craft', school)):
             ret += 1
 
+    if api.character.has_tag_or_rule('phoenix_embrace_the_elements'):
+        affinity_, deficiencies_ = phoenix_embrace_the_elements()
+        ret += query(deficiencies_).where(lambda x: x == spell.element or x in spell.elements).count()
+
     return ret
+
+
+def phoenix_embrace_the_elements():
+    main_affinity_ = affinities()[0] if len(affinities()) else None
+    if main_affinity_ is None:
+        return None, []
+
+    deficiencies_ = [x.id for x in api.data.rings() if x.id != main_affinity_]
+    return main_affinity_, deficiencies_
+
+
+def affinity(spell):
+    """calculate affinity with a given spell"""
+    return (
+        query(affinities()).where(lambda x: x == spell.element or spell.element in x).count() +
+        special_affinity(spell))
+
+
+def deficiency(spell):
+    """calculate deficiency with a given spell"""
+    return (
+        query(deficiencies()).where(lambda x: x == spell.element or spell.element in x or x in spell.elements).count() +
+        special_deficiency(spell))
+
+
+def get_mastery_modifier(spell):
+    """get mastery bonus or malus for a given spell"""
+    if spell.element != 'multi':
+        return (
+            api.character.spells.affinity(spell) -
+            api.character.spells.deficiency(spell)
+        )
+    else:
+        return -api.character.spells.deficiency(spell)
 
 
 def character_can_learn():

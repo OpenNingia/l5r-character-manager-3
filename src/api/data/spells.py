@@ -43,7 +43,7 @@ def tags(sid, school=None):
     s = get(sid)
     if not s:
         return []
-    return query(s.tags).where(lambda x: x.school is None or x.school == school).select(lambda x: x.name)
+    return query(s.tags).where(lambda x: x.school is None or x.school == school).select(lambda x: x.name).to_list()
 
 
 def is_multi_element(sid):

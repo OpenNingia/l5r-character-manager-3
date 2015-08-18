@@ -21,22 +21,26 @@ import api.character
 import models.chmodel
 
 
-def get_trait_cost(trait_id):
+def get_trait_cost(trait_nm):
     """return the cost to increase the given trait"""
     if not __api.pc:
         return 0
-    trait_n = models.chmodel.attrib_from_name(trait_id)
+    trait_id = models.chmodel.attrib_from_name(trait_nm)
     return __api.pc.get_attrib_cost(trait_id)
 
 
-def get_trait_increase_cost(trait_id, cur_value, new_value):
+def get_trait_increase_cost(trait_nm, cur_value, new_value):
     """increasing a trait cost new_value * trait_cost"""
     # cur_value is ignored
-    cost = new_value * get_trait_cost(trait_id)
-    ring = api.data.get_trait_ring(trait_id)
+    cost = new_value * get_trait_cost(trait_nm)
+    ring = api.data.get_trait_ring(trait_nm)
 
-    elemental_bless = "elem_bless_{}".format(ring.name)
+    elemental_bless = "elem_bless_{}".format(ring.text)
     if api.character.has_rule(elemental_bless):
         cost -= 1
 
     return cost
+
+
+def apply_tech_side_effects(tech_id):
+    pass

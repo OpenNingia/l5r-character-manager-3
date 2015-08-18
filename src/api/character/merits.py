@@ -14,46 +14,45 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
 __author__ = 'Daniele'
+
+# for rank advancement models
+import models
 
 from api import __api
 from asq.initiators import query
 
-import api.character
+import api.data.merits
 
 
 def all():
-    """returns all the merits"""
+    """returns character merits"""
     if not __api.pc:
         return []
-    return __api.ds.merits
+    return query(__api.pc.advans).where(
+        lambda x: x.type == 'perk' and (x.cost > 0 or x.tag == 'merit')).to_list()
 
 
-def get(mid):
-    """returns a merit by its id, None if not found"""
-    if not __api.pc:
-        return None
-    return query(all()).where(lambda x: x.id == mid).first_or_default(None)
+def add(merit_id, rank=None):
+    """add a merit advancement"""
 
-
-def get_rank(mid, rank):
-    """returns a merit rank"""
-    merit_ = get(mid)
+    merit_ = api.data.merits.get(merit_id)
     if not merit_:
-        return None
-    return query(merit_.ranks).where(lambda x: x.id == rank).first_or_default(None)
+        return
 
+    if not rank:
+        rank = 1
 
-def get_rank_cost(mid, rank):
-    """returns the cost of a merit rank"""
-    merit_rank = get_rank(mid, rank)
-    if not merit_rank:
-        return 0
+    merit_rank_ = api.data.merits.get_rank(merit_id, rank)
+    if not merit_rank_:
+        return
 
-    # calculate the cost with exceptions
-    cost = merit_rank.value
+    cost_ = api.data.merits.get_rank_cost(merit_id, rank)
 
-    for e in merit_rank.exceptions:
-        if api.character.has_tag_or_rule(e.tag):
-            cost = e.value
-    return cost
+    adv_ = models.PerkAdv(merit_id, merit_rank_.id, cost_, "merit")
+    adv_.rule = merit_id
+    adv_.desc = unicode.format(__api.tr("{0} Rank {1}, XP Cost: {2}"),
+                               merit_.name, merit_rank_.id, cost_)
+
+    api.character.append_advancement(adv_)

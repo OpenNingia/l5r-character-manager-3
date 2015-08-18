@@ -25,7 +25,8 @@ from asq.selectors import a_
 
 def get_current():
     """returns the id of the character current school"""
-    if not __api.pc: return None
+    if not __api.pc:
+        return None
     return __api.pc.current_school_id
 
 

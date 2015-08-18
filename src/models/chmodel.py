@@ -279,7 +279,13 @@ class AdvancedPcModel(BasePcModel):
     def get_mod_attrib_rank(self, attrib):
 
         if isinstance(attrib, str):
+            if attrib == 'void':
+                return self.get_void_rank()
             attrib = attrib_from_name(attrib)
+
+        if attrib < 0:
+            return 0
+
 
         a = self.step_0.attribs[attrib]
         b = self.step_1.attribs[attrib]
@@ -633,7 +639,7 @@ class AdvancedPcModel(BasePcModel):
     def has_rule(self, rule):
         school_rules = []
         for s in self.schools:
-            school_rules += s.tech_rules
+            school_rules += s.techs
 
         for adv in self.advans:
             if hasattr(adv, 'rule') and adv.rule == rule:
@@ -643,7 +649,7 @@ class AdvancedPcModel(BasePcModel):
     def cnt_rule(self, rule):
         school_rules = []
         for s in self.schools:
-            school_rules += s.tech_rules
+            school_rules += s.techs
         count = 0
         for adv in (self.advans + school_rules):
             if hasattr(adv, 'rule') and adv.rule == rule:
@@ -852,8 +858,6 @@ class AdvancedPcModel(BasePcModel):
             return
         self.step_2.school_tech = tech_uuid
         school_.techs.append(tech_uuid)
-        # if rule is not None:
-        school_.tech_rules.append(rule or 'N/A')
 
     def set_school_outfit(self, outfit, money):
         self.get_school(0).outfit = outfit
@@ -866,8 +870,6 @@ class AdvancedPcModel(BasePcModel):
         # print 'add tech %s, rule %s' % (repr(tech_uuid), rule)
         if tech_uuid not in self.get_techs():
             school_.techs.append(tech_uuid)
-        if rule is not None and not self.has_rule(rule):
-            school_.tech_rules.append(rule)
         self.unsaved = True
 
     def set_school_spells_qty(self, qty):

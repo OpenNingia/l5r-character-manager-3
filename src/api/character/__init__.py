@@ -17,6 +17,7 @@
 
 from api import __api
 import api.data
+import api.rules
 import models
 
 
@@ -41,7 +42,7 @@ def has_tag(tag):
 
 
 def has_rule(tag):
-    return tag in __api.pc.rules
+    return __api.pc.has_rule(tag)
 
 
 def has_tag_or_rule(tag):
@@ -65,7 +66,7 @@ def xp():
 def xp_limit():
     if not __api.pc:
         return 0
-    return __api.pc.get_xp_limit()
+    return __api.pc.exp_limit
 
 
 def trait_rank(trait_id):
@@ -84,7 +85,8 @@ def increase_trait(trait_id):
     cur_value = trait_rank(trait_id)
     new_value = cur_value + 1
 
-    cost = api.rules.get_trait_increase_cost(trait_id, cur_value, new_value)
+    trait_nm = models.chmodel.attrib_name_from_id(trait_id)
+    cost = api.rules.get_trait_increase_cost(trait_nm, cur_value, new_value)
 
     # cur_value = self.pc.get_attrib_rank(attrib)
     # new_value = cur_value + 1

@@ -33,6 +33,9 @@ def get_user_data_path(rel_path = None):
     return os.path.join(user_data, ORG, APP)
 
 
+def set_translation_context(obj):
+    __api.translation_provider = obj
+
 class L5RCMAPI(object):
 
     # character model
@@ -50,11 +53,17 @@ class L5RCMAPI(object):
     # current rank advancement
     current_rank_adv = None
 
-    def __init__(self):
+    # translation provider
+    translation_provider = None
+
+    def __init__(self, app=None):
         '''initialize api'''
 
         # load data
         # self.reload()
+
+        if app:
+            self.translation_provider = app
 
     def reload(self):
 
@@ -67,5 +76,8 @@ class L5RCMAPI(object):
             self.ds = dal.Data(locations, self.blacklist)
         else:
             self.ds.rebuild(locations, self.blacklist)
+
+    def tr(self, *args, **kwargs):
+        return self.translation_provider.tr(*args, **kwargs)
 
 __api = L5RCMAPI()

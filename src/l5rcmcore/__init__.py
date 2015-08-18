@@ -121,6 +121,9 @@ class L5RCMCore(QtGui.QMainWindow):
         # current locale
         self.locale = locale
 
+        # set api translator context
+        api.set_translation_context(self)
+
         # load data
         self.reload_data()
 

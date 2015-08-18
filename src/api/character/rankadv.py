@@ -25,7 +25,8 @@ import api.data.merits
 
 
 def all():
-    if __api.pc: return []
+    if not __api.pc:
+        return []
     return query(__api.pc.advans).where(lambda x: x.type == 'rank').to_list()
 
 
