@@ -15,7 +15,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtCore, QtGui
-APP_NAME = "L5R: CM"
+APP_NAME = u"L5R: CM"
 
 
 def new_horiz_line(parent=None):

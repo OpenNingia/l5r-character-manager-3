@@ -31,7 +31,6 @@ class FDFExporter(object):
     def __init__(self):
         self.model = None
         self.form = None
-        self.pdf_encoding = 'iso-8859-15'
 
     def set_model(self, model):
         self.model = model
@@ -45,18 +44,17 @@ class FDFExporter(object):
         self.export_footer(io)
 
     def export_header(self, io):
-        io.write("%FDF-1.2\n%????\n1 0 obj \n<< /FDF << /Fields [ ")
+        hd = u"""<?xml version="1.0" encoding="UTF-8"?>
+        <xfdf xmlns="http://ns.adobe.com/xfdf/" xml:space="preserve"><fields>"""
+
+        io.write(hd.encode('UTF-8'))
 
     def export_body(self, io):
         pass
 
     def export_footer(self, io):
-        hash_ = hashlib.md5()
-        hash_.update(str(datetime.now()))
-        io.write(unicode.format(u"] \n/F (dummy.pdf) /ID [ <{0}>\n] >>",
-                 hash_.hexdigest()))
-        io.write(u" \n>> \nendobj\ntrailer\n")
-        io.write(u"<<\n/Root 1 0 R \n\n>>\n%%EOF\n")
+        ft = u"""</fields></xfdf>"""
+        io.write(ft.encode('UTF-8'))
 
     def fdf_escape(self, value):
         return value.replace('\\', '\\\\').replace('(', '\\(').replace(')', '\\)')
@@ -69,22 +67,10 @@ class FDFExporter(object):
         else:
             string_value = unicode(value)
 
-        # from unicode to UTF-8
-        string_value = string_value.encode(self.pdf_encoding,
-                                           'xmlcharrefreplace')
+        tx = u"""<field name="{n}"><value>{v}</value></field>\n""".format(
+            n=key, v=string_value)
 
-        # escape
-        string_value = self.fdf_escape(string_value)
-
-        to_write = str.format("<< /V({1}) /T({0})>>", key, string_value)
-
-        # if isinstance(value, bool):
-        #    io.write(
-        #        unicode.format(u"<< /V /{1} /T({0})>>", key, u'Yes' if value else u'No'))
-        # else:
-        #    to_write = unicode.format(u"<< /V({1}) /T({0})>>", key, self.fdf_escape(value)).encode(
-        #        "iso-8859-15", "xmlcharrefreplace")
-        io.write(to_write)
+        io.write(tx.encode('UTF-8'))
 
     # HELPERS
 
@@ -95,7 +81,7 @@ class FDFExporter(object):
         return self.form.lb_pc_family.text()
 
     def get_school_name(self):
-        return self.form.cb_pc_school.currentText()
+        return self.form.lb_pc_school.text()
 
     def get_exp(self):
         return u'%s / %s' % (self.model.get_px(), self.model.exp_limit)
@@ -190,7 +176,8 @@ class FDFExporterAll(FDFExporter):
                                      + m.get_insight_rank())
         fields['WOUND_HEAL_CUR'] = fields['WOUND_HEAL_BASE']
 
-        # SKILLS
+        # SKILLS, LEAVE THE FIRST PAGE EMPTY
+        '''
         sorted_skills = sorted(
             f.sk_view_model.items, key=lambda x: (not x.is_school, -x.rank, x.name))
         for i, sk in enumerate(sorted_skills):
@@ -204,6 +191,7 @@ class FDFExporterAll(FDFExporter):
             fields['SKILL_TRAIT.%d' % j] = sk.trait
             fields['SKILL_ROLL.%d' % j] = sk.mod_roll
             fields['SKILL_EMPH_MA.%d' % j] = ', '.join(sk.emph)
+        '''
 
         # MERITS AND FLAWS
         merits = f.merits_view_model.items
@@ -377,7 +365,7 @@ class FDFExporterShugenja(FDFExporter):
             else:
                 print('cannot export character school', schools[i].school_id)
 
-        # EXPORT FIELDS5
+        # EXPORT FIELDS
         for k in fields.iterkeys():
             self.export_field(k, fields[k], io)
 
@@ -395,7 +383,7 @@ class FDFExporterSpells(FDFExporterShugenja):
         fields = {}
         self.export_spells(fields=fields, pg=2, off=self.spell_offset)
 
-        # EXPORT FIELDS5
+        # EXPORT FIELDS
         for k in fields.iterkeys():
             self.export_field(k, fields[k], io)
 

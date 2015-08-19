@@ -21,6 +21,16 @@ from api import __api
 
 from asq.initiators import query
 
+__TRAITS = [
+    'stamina',
+    'willpower',
+    'reflexes',
+    'awareness',
+    'strength',
+    'perception',
+    'agility',
+    'intelligence']
+
 
 def set_locale(loc):
     """set data locale"""
@@ -104,6 +114,13 @@ def get_trait_ring(trait_id):
         return get_ring('water')
     if trait_id == 'agility' or trait_id == 'intelligence':
         return get_ring('fire')
+
+
+def get_trait_by_index(trait_n):
+    """return trait name from index"""
+    if 0 <= trait_n <= len(__TRAITS):
+        return get_trait(__TRAITS[trait_n])
+    return None
 
 
 def model():

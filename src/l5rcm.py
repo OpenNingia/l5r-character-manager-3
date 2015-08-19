@@ -28,9 +28,8 @@ import dal
 import dal.query
 import mimetypes
 
-from PySide import QtGui, QtCore
-
 from l5rcmcore import *
+import l5rcmcore.log as log
 
 import api.data.clans
 import api.data.families
@@ -39,6 +38,7 @@ import api.data.schools
 import api.character
 import api.character.spells
 import api.character.skills
+
 
 def new_small_le(parent=None, ro=True):
     le = QtGui.QLineEdit(parent)
@@ -89,8 +89,7 @@ def new_small_plus_bt(parent=None):
 
 
 class ZoomableView(QtGui.QGraphicsView):
-
-    '''A QGraphicsView that zoom on CTRL+MouseWheel'''
+    """A QGraphicsView that zoom on CTRL+MouseWheel"""
 
     def __init__(self, parent=None):
         super(ZoomableView, self).__init__(parent)
@@ -154,6 +153,8 @@ class L5RMain(L5RCMCore):
     def __init__(self, locale=None, parent=None):
         super(L5RMain, self).__init__(locale, parent)
 
+        log.ui.debug(u"Initialize L5RMain window")
+
         # character file save path
         self.save_path = ''
 
@@ -183,7 +184,7 @@ class L5RMain(L5RCMCore):
         self.tabs.setIconSize(QtCore.QSize(24, 24))
         tabs_icons = ['samurai', 'music', 'burn', 'powers', 'userinfo', 'book',
                       'katana', 'disk', 'text', 'bag']
-        for i in xrange(0, self.num_tabs):
+        for i in range(0, self.num_tabs):
             self.tabs.setTabIcon(i, QtGui.QIcon(get_tab_icon(tabs_icons[i])))
             self.tabs.setTabText(i, '')
 
@@ -197,6 +198,9 @@ class L5RMain(L5RCMCore):
         self.connect_signals()
 
     def build_ui(self):
+
+        log.ui.debug(u"Build L5RMain UI")
+
         # Main interface widgets
         self.view = ZoomableView(self)
         settings = QtCore.QSettings()
@@ -209,6 +213,8 @@ class L5RMain(L5RCMCore):
         if(not color.isValid()):
             color = QtGui.QColor('#000000')
         self.view.setStyleSheet("background-color:%s;" % color.name())
+
+        log.ui.debug(u"background color: %s", color.name())
 
         self.widgets = QtGui.QFrame()
         self.widgets.setFrameShape(QtGui.QFrame.StyledPanel)
@@ -226,16 +232,18 @@ class L5RMain(L5RCMCore):
 
         # Set Banner
         lIsBannerEnabled = settings.value('isbannerenabled')
-        if(lIsBannerEnabled) is None:
+        if lIsBannerEnabled is None:
             lIsBannerEnabled = 1
         settings.setValue('isbannerenabled', lIsBannerEnabled)
         logo.setScaledContents(True)
         logo.setPixmap(QtGui.QPixmap(get_app_file('banner_s.png')))
         logo.setObjectName('BANNER')
-        if(lIsBannerEnabled == 0):
+        if lIsBannerEnabled == 0:
             logo.hide()
         mvbox.addWidget(logo)
         mvbox.addWidget(self.tabs)
+
+        log.ui.debug(u"show banner: %s", u"yes" if lIsBannerEnabled else u"no" )
 
         self.mvbox = mvbox
 
@@ -244,15 +252,20 @@ class L5RMain(L5RCMCore):
 
         if geo is not None:
             self.restoreGeometry(geo)
+            log.ui.info(u"restore geometry from settings")
         else:
+            log.ui.info(u"using default geometry")
             self.reset_geometry()
 
         self.ic_idx = int(settings.value('insight_calculation', 1)) - 1
         ic_calcs = [rules.insight_calculation_1,
                     rules.insight_calculation_2,
                     rules.insight_calculation_3]
-        if self.ic_idx not in range(0, 3):
+        if self.ic_idx not in range(0, len(ic_calcs)):
             self.ic_idx = 0
+
+        log.rules.info(u"insight calculator settings: %d/%d", self.ic_idx+1, len(ic_calcs))
+
         self.ic_calc_method = ic_calcs[self.ic_idx]
 
         self.update_background_image()
@@ -260,8 +273,15 @@ class L5RMain(L5RCMCore):
     def update_background_image(self):
         settings = QtCore.QSettings()
         wallpaper_ = settings.value('background_image', '')
+
+        if len(wallpaper_) == 0:
+            return
+
         if os.path.exists(wallpaper_):
             self.view.set_wallpaper(QtGui.QImage(wallpaper_))
+            log.ui.info(u"set background image: %s", wallpaper_)
+        else:
+            log.ui.warning(u"image not found: %s", wallpaper_)
 
     def reset_geometry(self):
         self.setGeometry(QtCore.QRect(100, 100, 820, 720))
@@ -1261,7 +1281,7 @@ class L5RMain(L5RCMCore):
                   <a href="%s">Alderac Entertainment Group (AEG)</a>
                   </p>
                   </p>
-                  <p style='color:palette(mid)'>&copy; 2011 %s</p>
+                  <p style='color:palette(mid)'>&copy; 2015 %s</p>
                   <p>Special Thanks:</p>
                   <p style="margin-left: 10;">
                   Paul Tar, Jr aka Geiko (Lots of cool stuff)</p>
@@ -1429,11 +1449,11 @@ class L5RMain(L5RCMCore):
         self.options_act_grp.setExclusive(False)
 
         options_set_background_act = QtGui.QAction(
-            self.tr("Set background image   "), self)
+            self.tr("Set background image..."), self)
         options_rem_background_act = QtGui.QAction(
             self.tr("Remove background image"), self)
         options_set_background_color_act = QtGui.QAction(
-            self.tr("Set background color"), self)
+            self.tr("Set background color..."), self)
         options_banner_act = QtGui.QAction(
             self.tr("Toggle banner display"), self)
         options_buy_for_free_act = QtGui.QAction(
@@ -1446,14 +1466,20 @@ class L5RMain(L5RCMCore):
         options_list = [
             options_set_background_act, options_rem_background_act, options_set_background_color_act, options_banner_act,
             options_buy_for_free_act, options_open_data_dir_act, options_dice_roll_act]  # , options_reset_geometry_act
-        for act in options_list:
+        for i, act in enumerate(options_list):
             self.options_act_grp.addAction(act)
             m_options.addAction(act)
-            if(act.text() != 'Set background image   '):
+
+            if i % 2 == 0:
                 m_options.addSeparator()
 
         options_buy_for_free_act.setCheckable(True)
         options_buy_for_free_act.setChecked(False)
+
+        settings = QtCore.QSettings()
+        options_banner_act.setCheckable(True)
+        options_banner_act.setChecked(settings.value('isbannerenabled') == 1)
+
         options_set_background_act.triggered.connect(
             self.sink1.on_set_background)
         options_rem_background_act.triggered.connect(
@@ -1499,7 +1525,6 @@ class L5RMain(L5RCMCore):
         self.app_menu.addAction(add_cust_weap_act)
         self.app_menu.addSeparator()
         # RULES
-        # self.app_menu.addAction(set_exp_limit_act)
         self.app_menu.addAction(set_wound_mult_act)
         self.app_menu.addSeparator()
         # INSIGHT
@@ -1525,7 +1550,7 @@ class L5RMain(L5RCMCore):
         reload_data_act  .triggered.connect(self.sink4.reload_data_act)
 
     def init(self):
-        ''' second step initialization '''
+        """ second step initialization """
         pass
 
     def setup_donate_button(self):
@@ -1618,23 +1643,33 @@ class L5RMain(L5RCMCore):
         self.nicebar = None
 
     def on_trait_increase(self, tag):
-        '''raised when user click on the small '+' button near traits'''
-        if (self.increase_trait(int(tag)) == CMErrors.NOT_ENOUGH_XP):
+        """raised when user click on the small '+' button near traits"""
+
+        trait_ = api.data.get_trait_by_index(int(tag))
+        if not trait_:
+            log.ui.error(u"trait not found by index: %d", tag)
+            return
+
+        if self.increase_trait(int(tag)) == CMErrors.NOT_ENOUGH_XP:
+            log.ui.warning("not enough xp to increase trait: %s", trait_.id)
             self.not_enough_xp_advise(self)
 
     def on_void_increase(self):
-        '''raised when user click on the small '+' button near void ring'''
-        if (self.increase_void() == CMErrors.NOT_ENOUGH_XP):
+        """raised when user click on the small '+' button near void ring"""
+        if self.increase_void() == CMErrors.NOT_ENOUGH_XP:
+            log.ui.warning("not enough xp to increase void ring")
             self.not_enough_xp_advise(self)
 
     def do_buy_kata(self, kata):
-        '''attempt to buy a new kata'''
-        if (self.buy_kata(kata) == CMErrors.NOT_ENOUGH_XP):
+        """attempt to buy a new kata"""
+        if self.buy_kata(kata) == CMErrors.NOT_ENOUGH_XP:
+            log.ui.warning("not enough xp to buy kata: %s", kata)
             self.not_enough_xp_advise(self)
 
     def do_buy_kiho(self, kiho):
-        '''attempt to buy a new kiho'''
-        if (self.buy_kiho(kiho) == CMErrors.NOT_ENOUGH_XP):
+        """attempt to buy a new kiho"""
+        if self.buy_kiho(kiho) == CMErrors.NOT_ENOUGH_XP:
+            log.ui.warning("not enough xp to buy kiho: %s", kiho)
             self.not_enough_xp_advise(self)
 
     def on_pc_name_change(self):
@@ -1697,11 +1732,12 @@ class L5RMain(L5RCMCore):
             err_ = self.buy_next_skill_rank(skill_id)
             if err_ != CMErrors.NO_ERROR:
                 if err_ == CMErrors.NOT_ENOUGH_XP:
+                    log.ui.warning("not enough xp to buy skill rank: %s", skill_id)
                     self.not_enough_xp_advise(self)
                 return
 
             idx = None
-            for i in xrange(0, self.skill_table_view.model().rowCount()):
+            for i in range(0, self.skill_table_view.model().rowCount()):
                 idx = self.skill_table_view.model().index(i, 0)
                 if model_.data(idx, QtCore.Qt.UserRole) == skill_id:
                     break
@@ -2635,8 +2671,6 @@ def dump_slots(obj, out_file):
 
 OPEN_CMD_SWITCH = '--open'
 IMPORT_CMD_SWITCH = '--import'
-DATA_CHECK_SWITCH = '--datacheck'
-DATA_REPT_SWITCH = '--datareport'
 
 MIME_L5R_CHAR = "applications/x-l5r-character"
 MIME_L5R_PACK = "applications/x-l5r-pack"
@@ -2646,25 +2680,17 @@ def main():
     try:
         app = QtGui.QApplication(sys.argv)
 
+        log.app.info(u"START")
+
         # setup mimetypes
         mimetypes.add_type(MIME_L5R_CHAR, ".l5r")
         mimetypes.add_type(MIME_L5R_PACK, ".l5rcmpack")
 
-        if DATA_CHECK_SWITCH in sys.argv:
-            import dal_check
-            dc = dal_check.DataCheck()
-            dc.check()
-            return
-
-        if DATA_REPT_SWITCH in sys.argv:
-            import dal.report
-            dr = dal.report.ReportBuilder('./data_packs', './data_report')
-            dr.build()
-            return
-
         QtCore.QCoreApplication.setApplicationName(APP_NAME)
         QtCore.QCoreApplication.setApplicationVersion(APP_VERSION)
         QtCore.QCoreApplication.setOrganizationName(APP_ORG)
+
+        log.app.info(u"%s %s %s by %s", APP_NAME, APP_VERSION, APP_DESC, APP_ORG)
 
         app.setWindowIcon(QtGui.QIcon(get_app_icon_path()))
 
@@ -2674,23 +2700,19 @@ def main():
         app_translator = QtCore.QTranslator(app)
         qt_translator = QtCore.QTranslator(app)
 
-        print('use_machine_locale', use_machine_locale,
-              QtCore.QLocale.system().name())
+        log.app.debug(u"use machine locale: %s, machine locale: %s",
+                      "yes" if use_machine_locale else "no", QtCore.QLocale.system().name())
 
         if use_machine_locale == 1:
             use_locale = QtCore.QLocale.system().name()
         else:
             use_locale = settings.value('use_locale')
 
-        print('current locale is {0}'.format(use_locale))
-
         qt_loc = 'qt_{0}'.format(use_locale[:2])
-
-        print(qt_loc)
         app_loc = get_app_file('i18n/{0}'.format(use_locale))
 
-        print(QtCore.QLibraryInfo.location(
-            QtCore.QLibraryInfo.TranslationsPath))
+        log.app.debug(u"current locale: %s, qt locale: %s, app locale file: %s", use_locale, qt_loc, app_loc)
+        log.app.debug(u"qt translation path: %s", QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.TranslationsPath))
 
         qt_translator .load(
             qt_loc, QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.TranslationsPath))
@@ -2699,7 +2721,6 @@ def main():
         app.installTranslator(app_translator)
 
         # start main form
-        print("create main form")
         l5rcm = L5RMain(use_locale)
         l5rcm.setWindowTitle(APP_DESC + ' v' + APP_VERSION)
         l5rcm.show()
@@ -2710,14 +2731,18 @@ def main():
 
         if len(sys.argv) > 1:
             if OPEN_CMD_SWITCH in sys.argv:
+                log.app.debug(u"open character from command line")
                 of = sys.argv.index(OPEN_CMD_SWITCH)
                 l5rcm.load_character_from(sys.argv[of + 1])
             elif IMPORT_CMD_SWITCH in sys.argv:
+                log.app.debug(u"import datapack from command line")
                 imf = sys.argv.index(IMPORT_CMD_SWITCH)
                 l5rcm.import_data_pack(sys.argv[imf + 1])
             else:
                 # check mimetype
+                log.app.debug(u"import file from command line ( should guess mimetype )")
                 mime = mimetypes.guess_type(sys.argv[1])
+                log.app.info(u"open file: %s, mime type: %s", sys.argv[1], mime)
                 if mime[0] == MIME_L5R_CHAR:
                     l5rcm.load_character_from(sys.argv[1])
                 elif mime[0] == MIME_L5R_PACK:
@@ -2726,15 +2751,14 @@ def main():
         # alert if not datapacks are installed
         l5rcm.check_datapacks()
 
-        # check for updates
-        # if sys.platform != 'linux2':
-        l5rcm.check_updates()
+        # REMOVE CHECK FOR UPDATES UNTIL BETTER IMPLEMENTED
+        # l5rcm.check_updates()
 
         sys.exit(app.exec_())
     except Exception as e:
-        print("HOLYMOLY!", e)
+        log.app.exception(e)
     finally:
-        print("KTHXBYE")
+        log.app.info("KTHXBYE")
 
 if __name__ == '__main__':
     main()

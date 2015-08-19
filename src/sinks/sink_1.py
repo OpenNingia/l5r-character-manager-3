@@ -262,7 +262,7 @@ class Sink1(QtCore.QObject):
             lIsBannerEnabled = 1
         settings.setValue('isbannerenabled', lIsBannerEnabled)
 
-        for i in xrange(0, form.mvbox.count()):
+        for i in range(0, form.mvbox.count()):
             logo = form.mvbox.itemAt(i).widget()
             if (logo.objectName() == 'BANNER'):
                 if(lIsBannerEnabled == 1):
