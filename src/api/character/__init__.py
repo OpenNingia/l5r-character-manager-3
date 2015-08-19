@@ -74,9 +74,17 @@ def xp_left():
 
 
 def trait_rank(trait_id):
+    """returns the rank of the given trait"""
     if not __api.pc:
         return 0
     return __api.pc.get_attrib_rank(trait_id)
+
+
+def void_rank():
+    """returns the Void ring rank"""
+    if not __api.pc:
+        return 0
+    return __api.pc.get_void_rank()
 
 
 def append_advancement(adv):
@@ -84,35 +92,44 @@ def append_advancement(adv):
         __api.pc.add_advancement(adv)
 
 
-def increase_trait(trait_id):
+def purchase_advancement(adv):
+    """returns True if there are enought xp to purchase the advancement"""
+    if (adv.cost + xp()) > xp_limit():
+        return api.data.CMErrors.NOT_ENOUGH_XP
 
+    api.character.append_advancement(adv)
+
+    return api.data.CMErrors.NO_ERROR
+
+
+def purchase_trait_rank(trait_id):
+    """purchase the next rank in a trait"""
     cur_value = trait_rank(trait_id)
     new_value = cur_value + 1
 
     trait_nm = models.chmodel.attrib_name_from_id(trait_id)
-    cost = api.rules.get_trait_increase_cost(trait_nm, cur_value, new_value)
-
-    # cur_value = self.pc.get_attrib_rank(attrib)
-    # new_value = cur_value + 1
-    # ring_id = models.get_ring_id_from_attrib_id(attrib)
-    # ring_nm = models.ring_name_from_id(ring_id)
-    # cost = self.pc.get_attrib_cost(attrib) * new_value
-    # if self.pc.has_rule('elem_bless_%s' % ring_nm):
-    #    cost -= 1
-    # text = models.attrib_name_from_id(attrib).capitalize()
+    cost = api.rules.get_trait_rank_cost(trait_nm, new_value)
 
     # build advancement model
     adv = models.advances.AttribAdv(trait_id, cost)
 
-    #adv.desc = (self.tr('{0}, Rank {1} to {2}. Cost: {3} xp')
-    #            .format(trait.name, cur_value, new_value, adv.cost))
+    adv.desc = (api.tr('{0}, Rank {1} to {2}. Cost: {3} xp')
+                .format(trait_nm, cur_value, new_value, adv.cost))
 
-    if (adv.cost + xp()) > xp_limit():
-        return api.data.CMErrors.NOT_ENOUGH_XP
+    return purchase_advancement(adv)
 
-    append_advancement(adv)
 
-    return api.data.CMErrors.NO_ERROR
+def purchase_void_rank():
+    cur_value = void_rank()
+    new_value = cur_value + 1
+
+    cost = api.rules.get_void_rank_cost(new_value)
+
+    adv = models.VoidAdv(cost)
+    adv.desc = (api.tr('Void Ring, Rank {0} to {1}. Cost: {2} xp')
+                .format(cur_value, new_value, adv.cost))
+
+    return purchase_advancement(adv)
 
 
 def insight_rank():

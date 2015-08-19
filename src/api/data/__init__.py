@@ -143,3 +143,4 @@ def pack_by_id(pack_id):
 class CMErrors(object):
     NO_ERROR = 'no_error'
     NOT_ENOUGH_XP = 'not_enough_xp'
+    INTERNAL_ERROR = 'internal_error'

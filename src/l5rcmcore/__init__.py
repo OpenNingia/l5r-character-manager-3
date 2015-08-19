@@ -27,6 +27,7 @@ import osutil
 from math import ceil
 from tempfile import mkstemp
 import subprocess
+import log
 
 import api.data
 from api.data import CMErrors
@@ -313,28 +314,16 @@ class L5RCMCore(QtGui.QMainWindow):
             self.update_from_model()
 
     def increase_trait(self, attrib):
-
-        res = api.character.increase_trait(attrib)
+        res = api.character.purchase_trait_rank(attrib)
         if res == CMErrors.NO_ERROR:
             self.update_from_model()
         return res
 
     def increase_void(self):
-        cur_value = self.pc.get_ring_rank(models.RINGS.VOID)
-        new_value = cur_value + 1
-        cost = self.pc.void_cost * new_value
-        if self.pc.has_rule('enlightened'):
-            cost -= 2
-        adv = models.VoidAdv(cost)
-        adv.desc = (self.tr('Void Ring, Rank {0} to {1}. Cost: {2} xp')
-                    .format(cur_value, new_value, adv.cost))
-        if (adv.cost + self.pc.get_px()) > self.pc.exp_limit:
-            return CMErrors.NOT_ENOUGH_XP
-
-        self.pc.add_advancement(adv)
-        self.update_from_model()
-
-        return CMErrors.NO_ERROR
+        res = api.character.purchase_void_rank()
+        if res == CMErrors.NO_ERROR:
+            self.update_from_model()
+        return res
 
     def set_exp_limit(self, val):
         self.pc.exp_limit = val
@@ -354,55 +343,16 @@ class L5RCMCore(QtGui.QMainWindow):
         self.update_from_model()
 
     def buy_next_skill_rank(self, skill_id):
-        print('buy skill rank {0}'.format(skill_id))
-        cur_value = self.pc.get_skill_rank(skill_id)
-        new_value = cur_value + 1
-
-        cost = new_value
-        skill = dal.query.get_skill(self.dstore, skill_id)
-        sk_type = skill.type
-        text = skill.name
-
-        if (self.pc.has_rule('obtuse') and
-                sk_type == 'high' and
-                skill_id != 'investigation' and  # investigation
-                skill_id != 'medicine'):     # medicine
-
-            # double the cost for high skill
-            # other than medicine and investigation
-            cost *= 2
-
-        adv = models.SkillAdv(skill_id, cost)
-        adv.rule = dal.query.get_mastery_ability_rule(
-            self.dstore, skill_id, new_value)
-        adv.desc = (self.tr('{0}, Rank {1} to {2}. Cost: {3} xp')
-                    .format(text, cur_value, new_value, adv.cost))
-
-        if adv.cost + self.pc.get_px() > self.pc.exp_limit:
-            return CMErrors.NOT_ENOUGH_XP
-
-        self.pc.add_advancement(adv)
-        self.update_from_model()
-
-        return CMErrors.NO_ERROR
+        res = api.character.skills.purchase_skill_rank(skill_id)
+        if res == CMErrors.NO_ERROR:
+            self.update_from_model()
+        return res
 
     def memo_spell(self, spell_id):
-        print('memorize spell {0}'.format(spell_id))
-        info_ = dal.query.get_spell(self.dstore, spell_id)
-        cost = info_.mastery
-        text = info_.name
-
-        adv = models.MemoSpellAdv(spell_id, cost)
-        adv.desc = (self.tr('{0}, Mastery {1}. Cost: {2} xp')
-                    .format(text, cost, adv.cost))
-
-        if adv.cost + self.pc.get_px() > self.pc.exp_limit:
-            return CMErrors.NOT_ENOUGH_XP
-
-        self.pc.add_advancement(adv)
-        self.update_from_model()
-
-        return CMErrors.NO_ERROR
+        res = api.character.skills.purchase_memo_spell(spell_id)
+        if res == CMErrors.NO_ERROR:
+            self.update_from_model()
+        return res
 
     def remove_spell(self, spell_id):
         self.pc.remove_spell(spell_id)
@@ -410,18 +360,21 @@ class L5RCMCore(QtGui.QMainWindow):
 
     def buy_school_requirements(self):
         for skill_uuid in self.get_missing_school_requirements():
-            print('buy requirement skill {0}'.format(skill_uuid))
+            log.app.info(u"buy requirement skill: %s", skill_uuid)
             if self.buy_next_skill_rank(skill_uuid) != CMErrors.NO_ERROR:
                 return
 
     def check_if_tech_available(self):
-        school = dal.query.get_school(self.dstore, self.pc.get_school_id())
-        if school:
-            count = len(school.techs)
-            print('check_if_tech_available', school.id,
-                  count, self.pc.get_school_rank())
-            return count >= self.pc.get_school_rank()
-        return False
+        school_ = api.data.schools.get(
+            api.character.schools.get_current()
+        )
+        if not school_:
+            return False
+        count = len(school_.techs)
+        ret = count >= self.pc.get_school_rank()
+        log.app.debug(u"check if tech is available. techs acquired: %d, school rank: %d. available: %s",
+                      count, self.pc.get_school_rank(), "yes" if ret else "no")
+        return ret
 
     def check_tech_school_requirements(self):
         # one should have at least one rank in all school skills
@@ -429,16 +382,23 @@ class L5RCMCore(QtGui.QMainWindow):
         return len(self.get_missing_school_requirements()) == 0
 
     def get_missing_school_requirements(self):
+        school_ = api.data.schools.get(
+            api.character.schools.get_current()
+        )
+        if not school_:
+            return []
+
         list_ = []
-        school_id = self.pc.get_school_id()
-        school = dal.query.get_school(self.dstore, school_id)
-        if school:
-            print('check requirement for school {0}'.format(school_id))
-            for sk in school.skills:
-                print('needed {0}, got rank {1}'.format(
-                    sk.id, self.pc.get_skill_rank(sk.id)))
-                if self.pc.get_skill_rank(sk.id) < 1:
-                    list_.append(sk.id)
+
+        #log.app.info(u"check implicit requirements for school: %s", school_.id)
+        for sk in school_.skills:
+            skill_rank_ = api.character.skills.get_skill_rank(sk.id)
+            #log.app.debug(u"need 1 rank in skill %s, character has rank %d in that skill",
+            #             sk.id, skill_rank_)
+            if skill_rank_ < 1:
+                list_.append(sk.id)
+                log.app.warning(u"missing 1 skill rank in: %s, for school: %s", sk.id, school_.id)
+
         return list_
 
     def set_pc_affinity(self, affinity):

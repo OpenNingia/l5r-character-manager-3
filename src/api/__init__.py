@@ -44,6 +44,11 @@ def ver_cmp(version1, version2):
     return cmp(normalize(version1), normalize(version2))
 
 
+def tr(*args, **kwargs):
+    """translate text"""
+    return __api.tr(*args, **kwargs)
+
+
 class L5RCMAPI(object):
 
     # character model
