@@ -27,6 +27,7 @@ import api.character.schools
 class SpellItemModel(object):
 
     def __init__(self):
+        self.id = ''
         self.name = ''
         self.ring = ''
         self.mastery = ''
@@ -144,12 +145,14 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
         itm = SpellItemModel()
         spell = dal.query.get_spell(self.dstore, sp_id)
 
+        itm.id = spell.id
         itm.name = spell.name
 
         try:
             itm.ring = dal.query.get_ring(self.dstore, spell.element).text
         except:
             itm.ring = spell.element
+
         itm.mastery = spell.mastery
         itm.range = spell.range
         itm.area = spell.area

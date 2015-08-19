@@ -95,7 +95,7 @@ class FDFExporter(object):
         return self.form.lb_pc_family.text()
 
     def get_school_name(self):
-        return self.form.cb_pc_school.currentText()
+        return self.form.lb_pc_school.text()
 
     def get_exp(self):
         return u'%s / %s' % (self.model.get_px(), self.model.exp_limit)
