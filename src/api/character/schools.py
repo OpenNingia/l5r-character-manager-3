@@ -107,3 +107,36 @@ def set_first(sid):
     # starting kiho
     if school_.kihos:
         __api.pc.set_free_kiho_count(school_.kihos.count)
+
+
+def join_new(sid):
+    """join a new school"""
+
+    school_ = api.data.schools.get(sid)
+    if not school_:
+        return
+
+    import models
+
+    school_nm = school_.name
+
+    school_obj = models.CharacterSchool(school_.id)
+    school_obj.tags = school_.tags
+    school_obj.school_rank = 0
+
+    school_obj.affinity = school_.affinity
+    school_obj.deficiency = school_.deficiency
+
+    __api.pc.schools.append(school_obj)
+
+    # check free kihos
+    if school_.kihos:
+        __api.pc.set_free_kiho_count(school_.kihos.count)
+
+    # check for alternate path
+    if school_obj.has_tag('alternate'):
+        school_obj.is_path = True
+        school_obj.path_rank = api.character.insight_rank()
+
+    __api.pc.set_current_school_id(school_.id)
+    __api.pc.set_can_get_other_tech(True)

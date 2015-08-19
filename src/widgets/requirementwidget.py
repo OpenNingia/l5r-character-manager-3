@@ -21,6 +21,21 @@ import dal
 from PySide import QtCore, QtGui
 
 
+def paintLayout(painter, item):
+    layout = item.layout()
+    if layout:
+        for i in range(0, layout.count()):
+            paintLayout(painter, layout.itemAt(i))
+    painter.drawRect(item.geometry())
+
+def clearLayout(item):
+    layout = item.layout()
+    if layout:
+        for i in range(0, layout.count()):
+            sub_item = layout.itemAt(i)
+            clearLayout(sub_item)
+            layout.removeItem(sub_item)
+
 class RequirementsWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
@@ -30,18 +45,35 @@ class RequirementsWidget(QtGui.QWidget):
         self.vbox.setContentsMargins(0, 0, 0, 0)
         self.fr = None  # disposable inner frame
         self.checks = []   # checkbox list
+        self.debug = False
 
         self.setSizePolicy(
             QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
 
+    def paintEvent(self, ev):
+        if not self.debug:
+            return
+        painter = QtGui.QPainter(self)
+        if self.layout():
+            paintLayout(painter, self.layout())
+
+    def clear_current_layout(self):
+        if self.layout():
+            clearLayout(self.layout())
+        if self.fr:
+            self.fr.deleteLater()
+            self.fr = None
+        self.checks = []
+
     def set_requirements(self, pc, dstore, requirements):
+
+        self.clear_current_layout()
+        if not len(requirements):
+            return
 
         self.setUpdatesEnabled(False)
         snap = models.CharacterSnapshot(pc)
-        if self.fr:
-            self.fr.deleteLater()
 
-        self.checks = []
         self.fr = QtGui.QFrame()
         ly = QtGui.QVBoxLayout(self.fr)
 

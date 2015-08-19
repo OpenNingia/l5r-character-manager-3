@@ -69,6 +69,10 @@ def xp_limit():
     return __api.pc.exp_limit
 
 
+def xp_left():
+    return xp_limit() - xp()
+
+
 def trait_rank(trait_id):
     if not __api.pc:
         return 0

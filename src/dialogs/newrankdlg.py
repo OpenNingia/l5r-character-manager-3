@@ -45,18 +45,14 @@ what would you want to do?
         self.bt_go_on = QtGui.QPushButton(
             self.tr("Advance in my current school")
         )
-        self.bt_new_school_1 = QtGui.QPushButton(
-            self.tr("Buy 'Multiple School' advantage\n"
-                    "and join a new school"))
-        self.bt_new_school_2 = QtGui.QPushButton(
-            self.tr("Just join a new school"))
+        self.bt_new_school = QtGui.QPushButton(
+            self.tr("Join a new school"))
 
-        for bt in [self.bt_go_on, self.bt_new_school_1, self.bt_new_school_2]:
+        for bt in [self.bt_go_on, self.bt_new_school]:
             bt.setMinimumSize(QtCore.QSize(0, 38))
 
         vbox.addWidget(self.bt_go_on)
-        vbox.addWidget(self.bt_new_school_1)
-        vbox.addWidget(self.bt_new_school_2)
+        vbox.addWidget(self.bt_new_school)
 
         vbox.setSpacing(12)
 
@@ -67,68 +63,14 @@ what would you want to do?
 
     def connect_signals(self):
         self.bt_go_on.clicked.connect(self.simply_go_on)
-        self.bt_new_school_1.clicked.connect(self.merit_plus_school)
-        self.bt_new_school_2.clicked.connect(self.join_new_school)
+        self.bt_new_school.clicked.connect(self.join_new_school)
 
     def join_new_school(self):
-        dlg = SchoolChoiceDlg(self.pc, self.dstore, self)
+        dlg = widgets.SchoolChooserDialog(self)
         if dlg.exec_() == QtGui.QDialog.Rejected:
-            # self.reject()
             return
-        sc = dal.query.get_school(self.dstore, dlg.get_school_id())
-
-        school_nm = sc.name
-        school_obj = models.CharacterSchool(sc.id)
-        school_obj.tags = sc.tags
-        school_obj.school_rank = 0
-
-        school_obj.affinity = sc.affinity
-        school_obj.deficiency = sc.deficiency
-
-        self.pc.schools.append(school_obj)
-
-        # check free kihos
-        if sc.kihos:
-            self.pc.set_free_kiho_count(sc.kihos.count)
-
-        # check for alternate path
-        if school_obj.has_tag('alternate'):
-            school_obj.is_path = True
-            school_obj.path_rank = self.pc.get_insight_rank()
-
-        self.pc.set_current_school_id(sc.id)
-        self.pc.set_can_get_other_tech(True)
 
         self.accept()
-
-    def merit_plus_school(self):
-        mult_school_merit = dal.query.get_merit(
-            self.dstore, 'multiple_schools')
-        try:
-            uuid = mult_school_merit.id
-            name = mult_school_merit.name
-            rule = mult_school_merit.id
-            cost = mult_school_merit.get_rank_value(1)
-
-            if not uuid or not cost:
-                self.reject()
-
-            itm = models.PerkAdv(uuid, 1, cost)
-            itm.rule = rule
-            itm.desc = unicode.format(self.tr("{0} Rank {1}, XP Cost: {2}"),
-                                      name,
-                                      1, itm.cost)
-
-            if (itm.cost + self.pc.get_px()) > self.pc.exp_limit:
-                QtGui.QMessageBox.warning(self, self.tr("Not enough XP"),
-                                          self.tr("Cannot purchase.\nYou've reached the XP Limit."))
-                self.reject()
-                return
-
-            self.pc.add_advancement(itm)
-            self.join_new_school()
-        except:
-            self.reject()
 
     def simply_go_on(self):
         # check if the PC is following an alternate path
