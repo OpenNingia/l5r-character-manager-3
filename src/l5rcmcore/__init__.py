@@ -31,6 +31,8 @@ import subprocess
 import api.data
 from api.data import CMErrors
 
+from qtsignalsutils import *
+
 from PySide import QtCore, QtGui
 
 APP_NAME = 'l5rcm'

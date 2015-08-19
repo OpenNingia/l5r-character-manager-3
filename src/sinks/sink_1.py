@@ -24,6 +24,7 @@ import os
 import osutil
 
 import api.character
+import api.character.books
 
 from l5rcmcore import get_app_file, DB_VERSION, get_icon_path
 
@@ -69,6 +70,10 @@ class Sink1(QtCore.QObject):
             form.pc.extra_notes = form.tx_pc_notes.get_content()
             # pending rank advancement?
             form.pc.last_rank = form.last_rank
+
+            # set book dependencies
+            api.character.books.set_dependencies()
+
             form.pc.save_to(form.save_path)
 
     def export_character_as_text(self):

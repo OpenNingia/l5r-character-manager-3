@@ -23,6 +23,13 @@ from asq.initiators import query
 from asq.selectors import a_
 
 
+def get_all():
+    """return all the character schools"""
+    if not __api.pc:
+        return []
+    return [x.school_id for x in __api.pc.schools]
+
+
 def get_current():
     """returns the id of the character current school"""
     if not __api.pc:
@@ -32,14 +39,27 @@ def get_current():
 
 def get_rank(sid):
     """returns the character rank in the given school"""
+    if not __api.pc:
+        return 0
 
-    return query(api.character.rankadv.all()) \
-        .where(lambda x: x.school == sid) \
-        .order_by_descending(a_('school_rank')) \
+    return query(__api.pc.schools) \
+        .where(lambda x: x.school_id == sid) \
         .select(a_('school_rank')).first_or_default(0)
 
+    #return query(api.character.rankadv.all()) \
+    #    .where(lambda x: x.school == sid) \
+    #    .order_by_descending(a_('school_rank')) \
+    #    .select(a_('school_rank')).first_or_default(0)
 
-def set_first_school(sid):
+
+def get_first():
+    """returns character starting school"""
+    if not __api.pc:
+        return None
+    return __api.pc.school
+
+
+def set_first(sid):
     """set first school to PC"""
     school_ = api.data.schools.get(sid)
     if not school_:

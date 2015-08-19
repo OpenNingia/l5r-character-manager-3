@@ -17,6 +17,7 @@
 
 import os
 import dal
+import re
 
 ORG = 'openningia'
 APP = 'l5rcm'
@@ -35,6 +36,13 @@ def get_user_data_path(rel_path = None):
 
 def set_translation_context(obj):
     __api.translation_provider = obj
+
+
+def ver_cmp(version1, version2):
+    def normalize(v):
+        return [int(x) for x in re.sub(r'(\.0+)*$', '', v).split(".")]
+    return cmp(normalize(version1), normalize(version2))
+
 
 class L5RCMAPI(object):
 

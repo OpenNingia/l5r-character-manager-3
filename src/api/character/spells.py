@@ -19,7 +19,7 @@ from api import __api
 from asq.initiators import query
 
 
-def all():
+def get_all():
     """return all character skills"""
     if not __api.pc:
         return []
@@ -121,6 +121,6 @@ def get_mastery_modifier(spell):
 
 def character_can_learn():
     """returns spells that the character can learn at its current school rank"""
-    return [x for x in all() if is_learnable(x)]
+    return [x for x in get_all() if is_learnable(x)]
 
 

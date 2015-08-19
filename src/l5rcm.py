@@ -40,7 +40,6 @@ import api.character
 import api.character.spells
 import api.character.skills
 
-
 def new_small_le(parent=None, ro=True):
     le = QtGui.QLineEdit(parent)
     le.setSizePolicy(QtGui.QSizePolicy.Maximum,
@@ -87,16 +86,6 @@ def new_small_plus_bt(parent=None):
     bt.setMinimumSize(16, 16)
     bt.setToolButtonStyle(QtCore.Qt.ToolButtonFollowStyle)
     return bt
-
-
-def pause_signals(wdgs):
-    for w in wdgs:
-        w.blockSignals(True)
-
-
-def resume_signals(wdgs):
-    for w in wdgs:
-        w.blockSignals(False)
 
 
 class ZoomableView(QtGui.QGraphicsView):
@@ -2067,49 +2056,53 @@ class L5RMain(L5RCMCore):
             self.set_pc_deficiency(deficiency)
 
     def load_character_from(self, path):
-        pause_signals([self.tx_pc_name])
-        pause_signals(self.pers_info_widgets)
 
-        if not self.pc:
-            self.create_new_character()
+        with QtSignalLock(self.pers_info_widgets + [self.tx_pc_name]):
 
-        if self.pc.load_from(path):
-            self.save_path = path
+            if not self.pc:
+                self.create_new_character()
 
-            print(
-                'successfully save character. saving file path', self.save_path)
+            if self.pc.load_from(path):
+                self.save_path = path
 
-            try:
-                if self.pc.last_rank > self.pc.get_insight_rank():
-                    print(
-                        "ERROR. last_rank should never be > insight rank. I'll try to fix this.")
-                    self.pc.last_rank = self.pc.get_insight_rank()
-                self.last_rank = self.pc.last_rank
-            except:
-                self.last_rank = self.pc.get_insight_rank()
+                if not api.character.books.fulfills_dependencies():
+                    # warn about missing dependencies
+                    self.warn_about_missing_books()
 
-            def school_free_kiho_count():
-                school = dal.query.get_school(
-                    self.dstore, self.pc.get_school_id(0))
-                if school.kihos is None:
-                    return 0
-                return school.kihos.count
+                    # immediately create a new character
+                    self.create_new_character()
+                    return False
 
-            # HACK. Fix free kiho for old characters created with 3 free kihos
-            if self.pc.get_free_kiho_count() == 3 and school_free_kiho_count() != 3:
-                self.pc.set_free_kiho_count(school_free_kiho_count())
+                print('successfully loaded character from {0}'.format(self.save_path))
 
-            # TODO: checks for books / data extensions
+                try:
+                    if self.pc.last_rank > self.pc.get_insight_rank():
+                        print(
+                            "ERROR. last_rank should never be > insight rank. I'll try to fix this.")
+                        self.pc.last_rank = self.pc.get_insight_rank()
+                    self.last_rank = self.pc.last_rank
+                except:
+                    self.last_rank = self.pc.get_insight_rank()
 
-            self.tx_pc_notes.set_content(self.pc.extra_notes)
-            self.pc.set_insight_calc_method(self.ic_calc_method)
-            self.check_rules()
-            self.update_from_model()
-        else:
-            print('character load failure')
+                def school_free_kiho_count():
+                    school = dal.query.get_school(
+                        self.dstore, self.pc.get_school_id(0))
+                    if school.kihos is None:
+                        return 0
+                    return school.kihos.count
 
-        resume_signals([self.tx_pc_name])
-        resume_signals(self.pers_info_widgets)
+                # HACK. Fix free kiho for old characters created with 3 free kihos
+                if self.pc.get_free_kiho_count() == 3 and school_free_kiho_count() != 3:
+                    self.pc.set_free_kiho_count(school_free_kiho_count())
+
+                # TODO: checks for books / data extensions
+
+                self.tx_pc_notes.set_content(self.pc.extra_notes)
+                self.pc.set_insight_calc_method(self.ic_calc_method)
+                self.check_rules()
+                self.update_from_model()
+            else:
+                print('character load failure')
 
     def set_clan(self, clan_id):
         """Set UI clan"""
@@ -2165,20 +2158,16 @@ class L5RMain(L5RCMCore):
 
     def update_from_model(self):
 
-        pause_signals([self.tx_pc_name])
-        pause_signals(self.pers_info_widgets)
+        with QtSignalLock(self.pers_info_widgets+[self.tx_pc_name]):
 
-        self.tx_pc_name.setText(self.pc.name)
-        self.set_clan(self.pc.clan)
-        self.set_family(self.pc.get_family())
-        self.set_school(self.pc.get_school_id())
+            self.tx_pc_name.setText(self.pc.name)
+            self.set_clan(self.pc.clan)
+            self.set_family(self.pc.get_family())
+            self.set_school(self.pc.get_school_id())
 
-        for w in self.pers_info_widgets:
-            if hasattr(w, 'link'):
-                w.setText(self.pc.get_property(w.link))
-
-        resume_signals([self.tx_pc_name])
-        resume_signals(self.pers_info_widgets)
+            for w in self.pers_info_widgets:
+                if hasattr(w, 'link'):
+                    w.setText(self.pc.get_property(w.link))
 
         pc_xp = self.pc.get_px()
         self.tx_pc_exp.setText('{0} / {1}'.format(pc_xp, self.pc.exp_limit))
@@ -2196,21 +2185,15 @@ class L5RMain(L5RCMCore):
         self.tx_pc_ins .setText(str(self.pc.get_insight()))
 
         # pc flags
-        pause_signals(self.pc_flags_points)
-        pause_signals(self.pc_flags_rank)
-        pause_signals([self.void_points])
+        with QtSignalLock(self.pc_flags_points+self.pc_flags_rank+[self.void_points]):
 
-        self.set_honor(self.pc.get_honor())
-        self.set_glory(self.pc.get_glory())
-        self.set_infamy(self.pc.get_infamy())
-        self.set_status(self.pc.get_status())
-        self.set_taint(self.pc.get_taint())
+            self.set_honor(self.pc.get_honor())
+            self.set_glory(self.pc.get_glory())
+            self.set_infamy(self.pc.get_infamy())
+            self.set_status(self.pc.get_status())
+            self.set_taint(self.pc.get_taint())
 
-        self.set_void_points(self.pc.void_points)
-
-        resume_signals([self.void_points])
-        resume_signals(self.pc_flags_points)
-        resume_signals(self.pc_flags_rank)
+            self.set_void_points(self.pc.void_points)
 
         # armor
         self.tx_armor_nm .setText(str(self.pc.get_armor_name()))
@@ -2241,9 +2224,8 @@ class L5RMain(L5RCMCore):
             ', '.join([x.capitalize() for x in self.pc.get_deficiency()]))
 
         # money
-        pause_signals([self.money_widget])
-        self.money_widget.set_value(self.pc.get_property('money', (0, 0, 0)))
-        resume_signals([self.money_widget])
+        with QtSignalLock([self.money_widget]):
+            self.money_widget.set_value(self.pc.get_property('money', (0, 0, 0)))
 
         self.hide_nicebar()
 
@@ -2257,9 +2239,6 @@ class L5RMain(L5RCMCore):
 
         # disable step 0-1-2 if any xp are spent
         has_adv = len(self.pc.advans) > 0
-        # self.cb_pc_clan  .setEnabled(not has_adv)
-        # self.cb_pc_school.setEnabled(not has_adv)
-        # self.cb_pc_family.setEnabled(not has_adv)
         self.bt_edit_family.setEnabled(not has_adv)
         self.bt_edit_school.setEnabled(not has_adv)
 
@@ -2629,6 +2608,19 @@ class L5RMain(L5RCMCore):
 
     def get_health_rank(self, idx):
         return self.wounds[idx][1].text()
+
+    def warn_about_missing_books(self):
+
+        text = self.tr("<h3>Missing books</h3>")
+        text += self.tr("<p>To load this character you need this additional books:</p>")
+        dtl_text = u"<ul>"
+        for b in api.character.books.get_missing_dependencies():
+            dtl_text += "<li>{book_nm} &gt;= {book_ver}</li>".format(
+                book_nm=b.name, book_ver=b.version)
+        dtl_text += u"</ul>"
+
+        self.advise_error(text, dtl_text)
+
 
 # MAIN ###
 

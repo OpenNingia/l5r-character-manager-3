@@ -163,7 +163,7 @@ class SchoolChooserWidget(QtGui.QWidget):
             api.character.rankadv.add_merit('different_school', rank=1)
 
     def apply_to_first_school(self):
-        api.character.schools.set_first_school(self.current_school_id)
+        api.character.schools.set_first(self.current_school_id)
         if self.ck_different_school.isChecked():
             api.character.merits.add('different_school')
 

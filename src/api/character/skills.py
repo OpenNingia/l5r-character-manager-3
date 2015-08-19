@@ -16,9 +16,36 @@
 
 from api import __api
 
+import api.data.schools
+import api.data.skills
 
-def all():
+from asq.initiators import query
+
+
+def get_all():
     """return all character skills"""
     if not __api.pc:
         return []
-    return __api.pc.get_skills()
+
+    return get_starting() + get_learned()
+
+
+def get_learned():
+    """return all the learned ( not starting ) skills"""
+    if not __api.pc:
+        return []
+    return query(__api.pc.advans).where(
+        lambda x: x.type == 'skill' and x.skill not in get_starting()).select(
+        lambda x: x.skill).distinct().to_list()
+
+
+def get_starting():
+    """get character starting skills"""
+    if not __api.pc:
+        return []
+    first_id = api.character.schools.get_first()
+    ch_school = query(__api.pc.schools).where(lambda x: x.school_id == first_id).first_or_default(None)
+    if not ch_school:
+        return []
+    return ch_school.skills.keys()
+

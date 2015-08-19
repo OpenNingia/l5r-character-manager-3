@@ -228,6 +228,7 @@ class AdvancedPcModel(BasePcModel):
         self.free_kiho_count = 0
         self.can_get_another_tech = False
 
+        self.pack_refs = []
         self.modifiers = []
         self.properties = {}
 

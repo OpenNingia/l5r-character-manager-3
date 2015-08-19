@@ -19,6 +19,8 @@
 import dal.query
 from api import __api
 
+from asq.initiators import query
+
 
 def set_locale(loc):
     """set data locale"""
@@ -114,6 +116,11 @@ def packs():
     if not __api.ds:
         return []
     return __api.ds.get_packs()
+
+
+def pack_by_id(pack_id):
+    """return a pack by its id"""
+    return query(packs()).where(lambda x: x.id == pack_id).first_or_default(None)
 
 
 class CMErrors(object):
