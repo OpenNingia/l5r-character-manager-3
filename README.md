@@ -45,3 +45,39 @@ then place the executable in the system path.
 `cd l5r`
 `python main.py`
 
+## Getting the Datapacks
+The software alone is not useful. You need game data in order to create and
+manage your characters.
+
+Game data is provided through packages named "datapacks" that are downloadable
+from the project website:
+http://sourceforge.net/projects/l5rcm/files/Data%20Packs/
+
+however you might want to compile the datapack yourself; in order to do so follow these simple instructions.
+
+### Clone the datapack repository
+The data pack sources are hosted in a different repo, to get them run:
+
+`git clone https://github.com/OpenNingia/l5rcm-data-packs.git`
+`git checkout develop`
+
+### Build the datapacks
+In the repo there is a convenience script that builds all the datapacks
+
+`cd scripts`
+`python make_all_packs.py`
+
+### Installing the datapacks
+The preferred way to install datapacks is from the application menu.
+Click on Gear menu -> Import datapack... and select the files to import.
+Tipically datapacks have the ".l5rcmpack" extension.
+This operation is only needed the first time and on each datapack update.
+
+If the program was installed using the setup and/or debian file then you can also doubleclick the datapack files.
+
+## CONTRIBUITE
+
+If you make a modification to the software or datapack that add value to the application
+don't esitate to share it!
+
+Please submit a pull request to the relative repository :)
