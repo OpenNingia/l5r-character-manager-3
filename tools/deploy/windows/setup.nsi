@@ -1,6 +1,6 @@
 ; L5RCM INSTALL ROUTINE
 
-!define EXE_NAME "l5rcm.exe"
+!define EXE_NAME "main.exe"
 
 !define PRODUCT_DESC "The greatest tool for GM and Players of L5R RPG :)"
 !define PRODUCT_NAME "Legend of the Five Rings: Character Manager"

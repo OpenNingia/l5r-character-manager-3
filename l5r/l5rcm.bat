@@ -1,1 +1,1 @@
-python l5rcm.py
+c:\python27\python main.py
