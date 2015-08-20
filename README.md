@@ -16,9 +16,12 @@ the simplest way is to run
 `pip install -r requirements.txt`
 
 otherwise you can install them one by one
-`pip install -U PySide'
-`pip install -U asq'
-`pip install -U lxml'
+
+```language-bash
+pip install -U PySide
+pip install -U asq
+pip install -U lxml
+```
 
 ### Note for Windows users
 You will need a basic compiler in order to build some of the dependencies. I recommend getting this one:
