@@ -140,3 +140,9 @@ def join_new(sid):
 
     __api.pc.set_current_school_id(school_.id)
     __api.pc.set_can_get_other_tech(True)
+
+
+def get_schools_by_tag(tag):
+    """returns character schools by tag"""
+    return query(get_all()).where(
+        lambda x: tag in api.data.schools.get(x).tags if api.data.schools.get(x) is not None else False).to_list()

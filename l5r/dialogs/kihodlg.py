@@ -20,6 +20,8 @@ import dal.query
 import models
 import widgets
 
+import api.character.powers
+
 from PySide import QtCore, QtGui
 
 
@@ -158,12 +160,12 @@ class KihoDialog(QtGui.QDialog):
             pc_status = status_ko
 
         str_eligible = self.tr("You are eligible")
-        str_no_eligible = [
-            self.tr("Your {0} Ring or School Rank are not enough"),  # monk
-            self.tr("Your {0} Ring Rank is not enough"),  # shugenja
-            self.tr("Your School Rank is not enough"),  # ninja
-            self.tr("You are not eligible"),  # n/a
-        ]
+        #str_no_eligible = [
+        #    self.tr("Your {0} Ring or School Rank are not enough"),  # monk
+        #    self.tr("Your {0} Ring Rank is not enough"),  # shugenja
+        #    self.tr("Your School Rank is not enough"),  # ninja
+        #    self.tr("You are not eligible"),  # n/a
+        #]
 
         if pc_status == status_ko:
             self.tx_pc_status.setText(
@@ -172,23 +174,25 @@ class KihoDialog(QtGui.QDialog):
             self.tx_pc_status.setText(
                 u"""<span style="color:#0A0">{0}</span>""".format(pc_status))
 
-        is_eligible = self.parent().check_kiho_eligibility(kiho)
+        is_eligible, reason = api.character.powers.check_kiho_eligibility(kiho.id)
+        # is_eligible = self.parent().check_kiho_eligibility(kiho)
+
         if is_eligible:
             self.tx_eligibility.setText(
                 """<span style="color: #0A0">{0}</span>""".format(str_eligible))
         else:
-            tmp = "N/A"
-            if is_monk:
-                tmp = str_no_eligible[0].format(ring_name.text)
-            elif is_shugenja:
-                tmp = str_no_eligible[1].format(ring_name.text)
-            elif is_ninja:
-                tmp = str_no_eligible[2]
-            else:
-                tmp = str_no_eligible[3]
+            #tmp = "N/A"
+            #if is_monk:
+            #    tmp = str_no_eligible[0].format(ring_name.text)
+            #elif is_shugenja:
+            #    tmp = str_no_eligible[1].format(ring_name.text)
+            #elif is_ninja:
+            #    tmp = str_no_eligible[2]
+            #else:
+            #    tmp = str_no_eligible[3]
 
             self.tx_eligibility.setText(
-                u"""<span style="color: #A00">{0}</span>""".format(tmp))
+                u"""<span style="color: #A00">{0}</span>""".format(reason))
 
         self.tx_detail.setText(u"<p><em>{0}</em></p>".format(kiho.desc))
         self.bt_ok.setEnabled(is_eligible)

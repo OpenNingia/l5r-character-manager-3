@@ -21,6 +21,9 @@ import api.data
 import api.rules
 import models
 
+from asq.initiators import query
+from asq.selectors import a_
+
 from util import log
 
 
@@ -80,8 +83,22 @@ def trait_rank(trait_id):
     """returns the rank of the given trait"""
     if not __api.pc:
         return 0
+
+    if isinstance(trait_id, str):
+        ring_id = models.attrib_from_name(trait_id)
+
     return __api.pc.get_attrib_rank(trait_id)
 
+
+def ring_rank(ring_id):
+    """returns the rank of the given ring"""
+    if not __api.pc:
+        return 0
+
+    if isinstance(ring_id, str):
+        ring_id = models.ring_from_name(ring_id)
+
+    return __api.pc.get_attrib_rank(ring_id)
 
 def void_rank():
     """returns the Void ring rank"""
@@ -162,3 +179,45 @@ def get_clan():
 def get_family():
     """get PC family"""
     return __api.pc.family
+
+
+def is_monk():
+    """return if pc is a Monk and if its a monk of the brotherhood of shinsei"""
+    # is monk ?
+    monk_schools = api.character.schools.get_schools_by_tag('monk')
+        #x for x in api.character.schools.get_all() if x.has_tag('monk')]
+    is_monk = len(monk_schools) > 0
+    # is brotherhood monk?
+    brotherhood_schools = [
+        x for x in monk_schools if 'brotherhood' in api.data.schools.get(x).tags]
+    is_brotherhood = len(brotherhood_schools) > 0
+
+    # a friend of the brotherhood pay the same as the brotherhood members
+    is_brotherhood = is_brotherhood or has_rule(
+        'friend_brotherhood')
+
+    return is_monk, is_brotherhood
+
+
+def is_ninja():
+    """returns True if the character is a ninja"""
+    # is ninja?
+    return len(api.character.schools.get_schools_by_tag('ninja')) > 0
+
+
+def is_shugenja():
+    """returns True if the character is a shugenja"""
+    # is shugenja?
+    return len(api.character.schools.get_schools_by_tag('shugenja')) > 0
+
+
+def is_bushi():
+    """returns True if the character is a shugenja"""
+    # is shugenja?
+    return query(api.character.schools.get_all()).where(lambda x: x.has_tag('bushi')).count() > 0
+
+
+def is_courtier():
+    """returns True if the character is a shugenja"""
+    # is shugenja?
+    return query(api.character.schools.get_all()).where(lambda x: x.has_tag('courtier')).count() > 0

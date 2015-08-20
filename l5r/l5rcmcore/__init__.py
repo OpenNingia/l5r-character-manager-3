@@ -476,34 +476,13 @@ class L5RCMCore(QtGui.QMainWindow):
         return CMErrors.NO_ERROR
 
     def pc_is_monk(self):
-        # is monk ?
-        monk_schools = [
-            x for x in self.pc.schools if x.has_tag('monk')]
-        is_monk = len(monk_schools) > 0
-        # is brotherhood monk?
-        brotherhood_schools = [
-            x for x in monk_schools if x.has_tag('brotherhood')]
-        is_brotherhood = len(brotherhood_schools) > 0
-
-        # a friend of the brotherhood pay the same as the brotherhood members
-        is_brotherhood = is_brotherhood or self.pc.has_rule(
-            'friend_brotherhood')
-
-        return is_monk, is_brotherhood
+        return api.character.is_monk()
 
     def pc_is_ninja(self):
-        # is ninja?
-        ninja_schools = [
-            x for x in self.pc.schools if x.has_tag('ninja')]
-        is_ninja = len(ninja_schools) > 0
-        return is_ninja
+        return api.character.is_ninja()
 
     def pc_is_shugenja(self):
-        # is shugenja?
-        shugenja_schools = [
-            x for x in self.pc.schools if x.has_tag('shugenja')]
-        is_shugenja = len(shugenja_schools) > 0
-        return is_shugenja
+        return api.character.is_shugenja()
 
     def calculate_kiho_cost(self, kiho):
 
