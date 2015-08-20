@@ -15,10 +15,21 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import sys
+import os
+
+here = ''
+
+try:
+    here = os.path.abspath(os.path.dirname(__file__))
+except NameError:  # We are the main py2exe script, not a module
+    here = os.path.dirname(os.path.abspath(sys.argv[0]))
+
+parent = os.path.abspath(os.path.dirname(here))
+sys.path.append(here)
+
 import mimetypes
 
-import sys
-import rules
 import models
 import widgets
 import dialogs
@@ -32,11 +43,12 @@ import api.data.schools
 import api.character
 import api.character.spells
 import api.character.skills
+import api.rules
 
 from PySide import QtGui, QtCore
 
-from l5r.l5rcmcore import *
-from l5r.util import log
+from l5rcmcore import *
+from util import log
 
 
 def new_small_le(parent=None, ro=True):
@@ -257,9 +269,9 @@ class L5RMain(L5RCMCore):
             self.reset_geometry()
 
         self.ic_idx = int(settings.value('insight_calculation', 1)) - 1
-        ic_calcs = [rules.insight_calculation_1,
-                    rules.insight_calculation_2,
-                    rules.insight_calculation_3]
+        ic_calcs = [api.rules.insight_calculation_1,
+                    api.rules.insight_calculation_2,
+                    api.rules.insight_calculation_3]
         if self.ic_idx not in range(0, len(ic_calcs)):
             self.ic_idx = 0
 
@@ -1404,9 +1416,9 @@ class L5RMain(L5RCMCore):
             self.tr("Ignore Rank 1 Skills"), self)
         ic_no_rank1_2 = QtGui.QAction(
             self.tr("Account Rank 1 School Skills"), self)
-        ic_default_act.setProperty('method', rules.insight_calculation_1)
-        ic_no_rank1_1 .setProperty('method', rules.insight_calculation_2)
-        ic_no_rank1_2 .setProperty('method', rules.insight_calculation_3)
+        ic_default_act.setProperty('method', api.rules.insight_calculation_1)
+        ic_no_rank1_1 .setProperty('method', api.rules.insight_calculation_2)
+        ic_no_rank1_2 .setProperty('method', api.rules.insight_calculation_3)
         ic_list = [ic_default_act, ic_no_rank1_1, ic_no_rank1_2]
         for act in ic_list:
             self.ic_act_grp.addAction(act)
@@ -1818,9 +1830,7 @@ class L5RMain(L5RCMCore):
             school = dal.query.get_school(self.dstore, path.school_id)
             for tech in [x for x in school.techs if x.rank == (last_tech.rank + 1)]:
                 path.techs.append(tech.id)
-                api.rules.apply_tech_side_effects(tech.id)
-                print(
-                    'learn next tech from alternate path {0}. tech: {1}'.format(school.id, tech.id))
+                log.app.info(u"learned tech from alternate path: %s, tech: %s", school.id, tech.id)
         else:
 
             prev_school, next_school = self.get_prev_and_next_school()
@@ -1862,8 +1872,6 @@ class L5RMain(L5RCMCore):
                       next_tech.id, 'rank', next_tech.rank)
 
                 self.pc.add_tech(next_tech.id, next_tech.id)
-
-                api.rules.apply_tech_side_effects(next_tech.id)
 
         self.pc.recalc_ranks()
         self.pc.set_can_get_other_tech(False)
@@ -2165,7 +2173,7 @@ class L5RMain(L5RCMCore):
         self.void_points.set_value(value)
 
     def set_flag(self, flag, value):
-        rank, points = rules.split_decimal(value)
+        rank, points = api.rules.split_decimal(value)
         # set rank
         self.pc_flags_rank[flag].setText(str(rank))
         # set points
@@ -2241,11 +2249,11 @@ class L5RMain(L5RCMCore):
 
         # initiative
         self.tx_base_init.setText(
-            rules.format_rtk_t(self.pc.get_base_initiative()))
+            api.rules.format_rtk_t(self.pc.get_base_initiative()))
         self.tx_mod_init.setText(
-            rules.format_rtk_t(self.pc.get_init_modifiers()))
+            api.rules.format_rtk_t(self.pc.get_init_modifiers()))
         self.tx_cur_init.setText(
-            rules.format_rtk_t(self.pc.get_tot_initiative()))
+            api.rules.format_rtk_t(self.pc.get_tot_initiative()))
 
         # affinity / deficiency
         self.lb_affin.setText(
@@ -2485,9 +2493,9 @@ class L5RMain(L5RCMCore):
         settings = QtCore.QSettings()
         settings.setValue('geometry', self.saveGeometry())
 
-        if self.pc.insight_calculation == rules.insight_calculation_2:
+        if self.pc.insight_calculation == api.rules.insight_calculation_2:
             settings.setValue('insight_calculation', 2)
-        elif self.pc.insight_calculation == rules.insight_calculation_3:
+        elif self.pc.insight_calculation == api.rules.insight_calculation_3:
             settings.setValue('insight_calculation', 3)
         else:
             settings.setValue('insight_calculation', 1)
@@ -2668,7 +2676,6 @@ IMPORT_CMD_SWITCH = '--import'
 
 MIME_L5R_CHAR = "applications/x-l5r-character"
 MIME_L5R_PACK = "applications/x-l5r-pack"
-
 
 def main():
     try:

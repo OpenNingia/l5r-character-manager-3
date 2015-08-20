@@ -19,7 +19,7 @@ import dal
 import dal.query
 import models
 import widgets
-import rules
+
 from PySide import QtCore, QtGui
 
 

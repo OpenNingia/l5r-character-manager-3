@@ -103,16 +103,16 @@ SectionEnd
 
 Section "Fonts"
   StrCpy $FONT_DIR $FONTS
-  #StrCpy $FONT_DIR "$WINDIR\Fonts"
-
-#  !insertmacro InstallTTFFont "fonts\OLDSH___.TTF"
-#  !insertmacro InstallTTFFont "fonts\OLDSIH__.TTF"
-#  !insertmacro InstallTTFFont "fonts\OLDSSCH_.TTF"
 
   !insertmacro InstallTTF "fonts\OLDSH___.TTF"
   !insertmacro InstallTTF "fonts\OLDSIH__.TTF"
   !insertmacro InstallTTF "fonts\OLDSSCH_.TTF"
-  
+
+  !insertmacro InstallTTF "fonts\LiberationSans-Bold.ttf"
+  !insertmacro InstallTTF "fonts\LiberationSans-BoldItalic.ttf"
+  !insertmacro InstallTTF "fonts\LiberationSans-Italic.ttf"
+  !insertmacro InstallTTF "fonts\LiberationSans-Regular.ttf"
+
   SendMessage ${HWND_BROADCAST} ${WM_FONTCHANGE} 0 0 /TIMEOUT=5000
 SectionEnd
 

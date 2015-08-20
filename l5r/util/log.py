@@ -17,10 +17,11 @@
 __author__ = 'Daniele'
 
 import os
-import api
+import sys
 import logging
 import logging.handlers
 
+import api
 
 def log_setup(base_path, base_name):
     # check base path
@@ -54,7 +55,9 @@ def log_setup(base_path, base_name):
 
     # add the handlers to the root logger
     logging.getLogger('').addHandler(rotation)
-    logging.getLogger('').addHandler(console )
+
+    if not hasattr(sys, "frozen"):
+        logging.getLogger('').addHandler(console )
 
 log_path = api.get_user_data_path('logs')
 log_setup(log_path, 'l5rcm.log')

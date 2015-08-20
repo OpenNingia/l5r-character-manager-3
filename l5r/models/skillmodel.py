@@ -16,13 +16,13 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtGui, QtCore
-import rules
 
+
+import api.rules
 import api.data
 import api.data.skills
 import api.character.skills
-
-from l5r.util import log
+from util import log
 
 
 class SkillItemModel(object):
@@ -145,7 +145,7 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
             itm = self.build_item_model(sk)
             itm.rank = model.get_skill_rank(s)
             itm.emph = model.get_skill_emphases(s)
-            itm.base_roll = rules.calculate_base_skill_roll(model, sk)
-            itm.mod_roll = rules.calculate_mod_skill_roll(model, sk)
+            itm.base_roll = api.rules.calculate_base_skill_roll(model, sk)
+            itm.mod_roll = api.rules.calculate_mod_skill_roll(model, sk)
             itm.is_school = (s in skills_id_s)
             self.add_item(itm)

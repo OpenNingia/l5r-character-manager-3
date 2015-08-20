@@ -33,7 +33,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='9.0.7',
+    version='9.0.22',
 
     description='L5R RPG character manager',
 
@@ -89,35 +89,59 @@ setup(
     # If there are data files included in your packages that need to be
     # installed, specify them here.  If using Python 2.6 or less, then these
     # have to be included in MANIFEST.in as well.
-    #package_data={
-    #    'share': glob.glob('share/*'),
-    #    'tools': glob.glob('../tools/pdftk/*')
-    #},
+    package_data={
+        'l5r.share.l5rcm': ['*.pdf', '*.txt', '*.png'],
+        'l5r.share.l5rcm.i18n': ['*.qm'],
+        'l5r.share.icons.l5rcm': ['*.png'],
+        'l5r.share.icons.l5rcm.tabs': ['*.png'],
+        'l5r.share.icons.l5rcm.16x16': ['*.png'],
+        'l5r.share.icons.l5rcm.32x32': ['*.png'],
+        'l5r.share.icons.l5rcm.48x48': ['*.png'],
+        'l5r.share.icons.l5rcm.64x64': ['*.png'],
+        'l5r.share.icons.l5rcm.128x128': ['*.png'],
+        'l5r.share.icons.l5rcm.256x256': ['*.png'],
+        'l5r.tools': ['*.*'],
+        #'tools': glob.glob('../tools/pdftk/*')
+    },
 
     # Although 'package_data' is the preferred approach, in some case you may
     # need to place data files outside of your packages. See:
     # http://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files # noqa
     # In this case, 'data_file' will be installed into '<sys.prefix>/my_data'
-    data_files=[
-        ('share/icons/l5rcm/256x256', glob.glob('l5rcm/share/icons/l5rcm/256x256/*')),
-        ('share/icons/l5rcm/128x128', glob.glob('l5rcm/share/icons/l5rcm/128x128/*')),
-        ('share/icons/l5rcm/64x64', glob.glob('l5rcm/share/icons/l5rcm/64x64/*')),
-        ('share/icons/l5rcm/48x48', glob.glob('l5rcm/share/icons/l5rcm/48x48/*')),
-        ('share/icons/l5rcm/32x32', glob.glob('l5rcm/share/icons/l5rcm/32x32/*')),
-        ('share/icons/l5rcm/16x16', glob.glob('l5rcm/share/icons/l5rcm/16x16/*')),
-        ('share/icons/l5rcm/tabs', glob.glob('l5rcm/share/icons/l5rcm/tabs/*')),
-        ('share/icons/l5rcm', glob.glob('l5rcm/share/icons/l5rcm/*.*')),
+    #data_files=[
+    #    ('share/icons/l5rcm/256x256', glob.glob('l5rcm/share/icons/l5rcm/256x256/*')),
+    #    ('share/icons/l5rcm/128x128', glob.glob('l5rcm/share/icons/l5rcm/128x128/*')),
+    #    ('share/icons/l5rcm/64x64', glob.glob('l5rcm/share/icons/l5rcm/64x64/*')),
+    #    ('share/icons/l5rcm/48x48', glob.glob('l5rcm/share/icons/l5rcm/48x48/*')),
+    #    ('share/icons/l5rcm/32x32', glob.glob('l5rcm/share/icons/l5rcm/32x32/*')),
+    #    ('share/icons/l5rcm/16x16', glob.glob('l5rcm/share/icons/l5rcm/16x16/*')),
+    #    ('share/icons/l5rcm/tabs', glob.glob('l5rcm/share/icons/l5rcm/tabs/*')),
+    #    ('share/icons/l5rcm', glob.glob('l5rcm/share/icons/l5rcm/*.*')),
+    #
+    #    ('share/l5rcm/i18n', glob.glob('l5rcm/share/l5rcm/i18n/*')),
+    #    ('share/l5rcm', glob.glob('l5rcm/share/l5rcm/*.*')),
+    #
+    #    ('tools', glob.glob('tools/pdftk/*.*')),
+    #],
 
-        ('share/l5rcm/i18n', glob.glob('l5rcm/share/l5rcm/i18n/*')),
-        ('share/l5rcm', glob.glob('l5rcm/share/l5rcm/*.*')),
+    # To provide executable scripts, use entry points in preference to the
+    # "scripts" keyword. Entry points provide cross-platform support and allow
+    # pip to create the appropriate form of executable for the target platform.
+    entry_points={
+        'console_scripts': [
+            'l5rcm=l5r.main:main',
+        ],
 
-        ('tools', glob.glob('tools/pdftk/*.*')),
-    ],
+        'gui_scripts': [
+            'l5rcm_win=l5r.main:main',
+        ]
+
+    },
 
     windows=[
         {
             "script": "main.py",
-            "icon_resources": [(0, "../tools/deploy/windows/l5rcm.ico"), (1, "../tools/deploy/windows/l5rcmpack.ico")]
+            "icon_resources": [(0, "tools/deploy/windows/l5rcm.ico"), (1, "tools/deploy/windows/l5rcmpack.ico")]
         }
     ],
     options={

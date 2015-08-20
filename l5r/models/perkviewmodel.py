@@ -18,8 +18,7 @@
 from PySide import QtGui, QtCore
 import api.data.merits
 import api.data.flaws
-from l5r.util import log
-
+from util import log
 
 class PerkItemModel(object):
 

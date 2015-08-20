@@ -16,11 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtCore, QtGui
-import rules
 import models
-import dal
-import dal.query
-
 
 class ChooseItemDialog(QtGui.QDialog):
 

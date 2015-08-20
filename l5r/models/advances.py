@@ -19,7 +19,7 @@ from PySide import QtCore, QtGui
 from datetime import datetime
 import time
 
-from l5r.util import log
+from util import log
 
 
 class Advancement(object):

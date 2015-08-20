@@ -17,16 +17,16 @@
 
 from PySide import QtCore, QtGui
 
-import rules
 import dialogs
 import models
 import os
-from l5r.util import log, osutil
+
+from util import log, osutil, names
 
 import api.character
 import api.character.books
 
-from l5r.l5rcmcore import get_app_file, DB_VERSION, get_icon_path
+from l5rcmcore import get_app_file, DB_VERSION, get_icon_path
 
 
 class Sink1(QtCore.QObject):
@@ -141,9 +141,9 @@ class Sink1(QtCore.QObject):
         gender = self.sender().property('gender')
         name = ''
         if gender == 'male':
-            name = rules.get_random_name(get_app_file('male.txt'))
+            name = names.get_random_name(get_app_file('male.txt'))
         else:
-            name = rules.get_random_name(get_app_file('female.txt'))
+            name = names.get_random_name(get_app_file('female.txt'))
         form.pc.name = name
         form.update_from_model()
 

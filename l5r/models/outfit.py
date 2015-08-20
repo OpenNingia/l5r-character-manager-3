@@ -16,10 +16,11 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtCore, QtGui
-import rules
+
+import api.rules
 import api.data.outfit
 import api.data.skills
-from l5r.util import log
+from util import log
 
 
 class ArmorOutfit(object):
@@ -215,14 +216,14 @@ class WeaponTableViewModel(QtCore.QAbstractTableModel):
         for w in model.get_weapons():
             if self.type in w.tags:
                 # calculate weapon atk
-                w.base_atk = rules.format_rtk_t(
-                    rules.calculate_base_attack_roll(model, w))
-                w.max_atk = rules.format_rtk_t(
-                    rules.calculate_mod_attack_roll(model, w))
-                w.base_dmg = rules.format_rtk_t(
-                    rules.calculate_base_damage_roll(model, w))
-                w.max_dmg = rules.format_rtk_t(
-                    rules.calculate_mod_damage_roll(model, w))
+                w.base_atk = api.rules.format_rtk_t(
+                    api.rules.calculate_base_attack_roll(model, w))
+                w.max_atk = api.rules.format_rtk_t(
+                    api.rules.calculate_mod_attack_roll(model, w))
+                w.base_dmg = api.rules.format_rtk_t(
+                    api.rules.calculate_base_damage_roll(model, w))
+                w.max_dmg = api.rules.format_rtk_t(
+                    api.rules.calculate_mod_damage_roll(model, w))
                 self.add_item(w)
 
 

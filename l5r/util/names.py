@@ -15,3 +15,26 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
+
+import os
+
+# global cache
+_cache_names = {}
+
+
+def get_random_name(path):
+    global _cache_names
+
+    names = []
+    if path in _cache_names:
+        names = _cache_names[path]
+    else:
+        f = open(path, 'rt')
+        for l in f:
+            if l.strip().startswith('*'):
+                names.append(l.strip('* \n\r'))
+        f.close()
+        _cache_names[path] = names
+
+    i = (ord(os.urandom(1)) + (ord(os.urandom(1)) << 8)) % len(names)
+    return names[i]

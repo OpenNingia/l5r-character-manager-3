@@ -18,10 +18,10 @@
 from PySide import QtGui, QtCore
 from datetime import datetime
 import models
-import rules
 import hashlib
 import dal
 import dal.query
+import api.rules
 import api.data.spells
 import api.character.schools
 
@@ -126,10 +126,10 @@ class FDFExporterAll(FDFExporter):
             fields[models.ring_name_from_id(i).upper()] = m.get_ring_rank(i)
 
         # HONOR, GLORY, STATUS, TAINT
-        hvalue, hdots = rules.split_decimal(m.get_honor())
-        gvalue, gdots = rules.split_decimal(m.get_glory())
-        svalue, sdots = rules.split_decimal(m.get_status())
-        tvalue, tdots = rules.split_decimal(m.get_taint())
+        hvalue, hdots = api.rules.split_decimal(m.get_honor())
+        gvalue, gdots = api.rules.split_decimal(m.get_glory())
+        svalue, sdots = api.rules.split_decimal(m.get_status())
+        tvalue, tdots = api.rules.split_decimal(m.get_taint())
 
         fields['HONOR'] = hvalue
         fields['GLORY'] = gvalue
@@ -531,14 +531,14 @@ class FDFExporterWeapons(FDFExporter):
         j = 0
 
         for weap in m.get_weapons()[0:count]:
-            weap.base_atk = rules.format_rtk_t(
-                rules.calculate_base_attack_roll(m, weap))
-            weap.max_atk = rules.format_rtk_t(
-                rules.calculate_mod_attack_roll(m, weap))
-            weap.base_dmg = rules.format_rtk_t(
-                rules.calculate_base_damage_roll(m, weap))
-            weap.max_dmg = rules.format_rtk_t(
-                rules.calculate_mod_damage_roll(m, weap))
+            weap.base_atk = api.rules.format_rtk_t(
+                api.rules.calculate_base_attack_roll(m, weap))
+            weap.max_atk = api.rules.format_rtk_t(
+                api.rules.calculate_mod_attack_roll(m, weap))
+            weap.base_dmg = api.rules.format_rtk_t(
+                api.rules.calculate_base_damage_roll(m, weap))
+            weap.max_dmg = api.rules.format_rtk_t(
+                api.rules.calculate_mod_damage_roll(m, weap))
 
             fields['WEAPON.TYPE.%d' % j] = weap.name
             if weap.base_atk != weap.max_atk:

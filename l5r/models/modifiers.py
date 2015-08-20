@@ -16,9 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtCore, QtGui
-import rules
-import dal
-import dal.query
+import api.rules
 
 MOD_TYPES = {
     "none": "Select a modifier",
@@ -121,7 +119,7 @@ class ModifiersTableViewModel(QtCore.QAbstractTableModel):
             elif index.column() == 1:
                 item.dtl = value
             elif index.column() == 2:
-                item.value = rules.parse_rtk_with_bonus(value)
+                item.value = api.rules.parse_rtk_with_bonus(value)
             elif index.column() == 3:
                 item.reason = value
             else:
@@ -141,7 +139,7 @@ class ModifiersTableViewModel(QtCore.QAbstractTableModel):
         if column == 1:
             return item.dtl or (MOD_DTLS[item.type][1] if item.type in MOD_DTLS else None)
         if column == 2:
-            return rules.format_rtk_t(item.value)
+            return api.rules.format_rtk_t(item.value)
         if column == 3:
             return item.reason
         return None

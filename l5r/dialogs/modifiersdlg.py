@@ -15,13 +15,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import dal
-import dal.query
 import models
 import widgets
-import rules
+import api.rules
 from PySide import QtCore, QtGui
-# from models.modifiers import
 
 
 class ModifierDialog(QtGui.QDialog):
@@ -111,7 +108,7 @@ class ModifierDialog(QtGui.QDialog):
 
         if item:
             self.tx_reason .setText(item.reason)
-            self.tx_value  .setText(rules.format_rtk_t(item.value))
+            self.tx_value  .setText(api.rules.format_rtk_t(item.value))
             self.tx_detail .setText(
                 item.dtl or (models.MOD_DTLS[item.type][1] if item.type in models.MOD_DTLS else None))
 
@@ -184,5 +181,5 @@ class ModifierDialog(QtGui.QDialog):
             self.cb_modifier.currentIndex())
         self.item.reason = self.tx_reason.text()
         self.item.dtl = self.tx_detail.text()
-        self.item.value = rules.parse_rtk_with_bonus(self.tx_value.text())
+        self.item.value = api.rules.parse_rtk_with_bonus(self.tx_value.text())
         super(ModifierDialog, self).accept()

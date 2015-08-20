@@ -16,9 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtGui, QtCore
-from l5r.l5rcmcore import get_icon_path
-import dal
-import dal.query
+from l5rcmcore import get_icon_path
 
 import api.data.spells
 import api.character.schools

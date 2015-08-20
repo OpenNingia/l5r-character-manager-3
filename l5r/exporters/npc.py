@@ -18,7 +18,7 @@
 import dal
 import dal.query
 import models
-import rules
+import api.rules
 from fdfexporter import FDFExporter, zigzag
 
 
@@ -106,7 +106,7 @@ class FDFExporterTwoNPC(FDFExporter):
         _af("Agility", pc.get_attrib_rank(models.ATTRIBS.AGILITY))
         _af("Intelligence", pc.get_attrib_rank(models.ATTRIBS.INTELLIGENCE))
 
-        _af("Initiative", rules.format_rtk_t(pc.get_tot_initiative()))
+        _af("Initiative", api.rules.format_rtk_t(pc.get_tot_initiative()))
         _af("Armor", pc.get_cur_tn())
         _af("Reduction", pc.get_full_rd())
 
@@ -135,11 +135,11 @@ class FDFExporterTwoNPC(FDFExporter):
                 break
             j = (index - 1) * 2 + i + 1
             _af("Type", weapon.name, j)
-            atk_roll = rules.format_rtk_t(
-                rules.calculate_mod_attack_roll(pc, weapon))
+            atk_roll = api.rules.format_rtk_t(
+                api.rules.calculate_mod_attack_roll(pc, weapon))
             _af("Attack", atk_roll, j)
-            dmg_roll = rules.format_rtk_t(
-                rules.calculate_mod_damage_roll(pc, weapon))
+            dmg_roll = api.rules.format_rtk_t(
+                api.rules.calculate_mod_damage_roll(pc, weapon))
             _af("Damage", atk_roll, j)
             _af("Notes", weapon.desc, j)
 

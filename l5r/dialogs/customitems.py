@@ -16,8 +16,9 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import models
-import rules
+
 import api.data.outfit
+import api.rules
 
 from PySide import QtCore, QtGui
 
@@ -203,8 +204,8 @@ class CustomWeaponDialog(QtGui.QDialog):
 
         def _try_get_dr(widget):
             text = widget.text()
-            r, k = rules.parse_rtk(text)
-            return rules.format_rtk(r, k)
+            r, k = api.rules.parse_rtk(text)
+            return api.rules.format_rtk(r, k)
 
         self.item.strength = _try_get_int(self.tx_str)
         self.item.min_str = _try_get_int(self.tx_min_str)

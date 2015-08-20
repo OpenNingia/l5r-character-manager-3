@@ -30,7 +30,7 @@ import dal
 import dal.query
 import dal.dataimport
 
-from l5r.util import log, osutil
+from util import log, osutil
 import api.data
 from api.data import CMErrors
 from qtsignalsutils import *
@@ -52,11 +52,15 @@ PROJECT_DOWNLOADS_LINK = 'https://sourceforge.net/projects/l5rcm/'
 L5RCM_GPLUS_PAGE = "https://plus.google.com/114911686277310621574"
 L5RCM_GPLUS_COMM = "https://plus.google.com/communities/107752342280671357654"
 
+HERE = os.path.abspath(os.path.dirname(__file__))
 MY_CWD = os.getcwd()
+
 if not os.path.exists(os.path.join(MY_CWD, 'share/l5rcm')):
-    MY_CWD = sys.path[0]
+    MY_CWD = HERE
     if not os.path.exists(os.path.join(MY_CWD, 'share/l5rcm')):
-        MY_CWD = os.path.dirname(sys.path[0])
+        MY_CWD = os.path.dirname(HERE)
+
+log.app.info(u"l5rcm base dir: %s", MY_CWD)
 
 
 def get_app_file(rel_path):

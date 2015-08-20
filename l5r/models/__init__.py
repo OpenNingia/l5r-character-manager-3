@@ -15,16 +15,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from models.advances import *
-from models.chmodel import *
-from models.skillmodel import *
-from models.outfit import *
-from models.techviewmodel import *
-from models.perkviewmodel import *
-from models.maviewmodel import *
-from models.spellmodel import *
-from models.sortproxymodel import *
-from models.modifiers import *
-from models.katamodel import *
-from models.kihomodel import *
-from models.charsnapshot import *
+from advances import *
+from chmodel import *
+from skillmodel import *
+from outfit import *
+from techviewmodel import *
+from perkviewmodel import *
+from maviewmodel import *
+from spellmodel import *
+from sortproxymodel import *
+from modifiers import *
+from katamodel import *
+from kihomodel import *
+from charsnapshot import *

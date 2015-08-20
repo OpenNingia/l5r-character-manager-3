@@ -18,7 +18,7 @@
 from PySide import QtGui, QtCore
 import api.data
 import api.data.powers
-from l5r.util import log
+from util import log
 
 
 class KihoItemModel(object):

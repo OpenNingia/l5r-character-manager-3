@@ -21,7 +21,7 @@ import modifiers
 import dal.school
 import json
 import os
-import rules
+import api.rules
 
 from copy import deepcopy
 
@@ -396,7 +396,7 @@ class AdvancedPcModel(BasePcModel):
     def get_insight(self):
         if self.insight_calculation:
             return self.insight_calculation(self)
-        return rules.insight_calculation_1(self)
+        return api.rules.insight_calculation_1(self)
 
     def get_insight_rank(self):
         value = self.get_insight()

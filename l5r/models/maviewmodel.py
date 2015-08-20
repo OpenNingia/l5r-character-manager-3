@@ -17,7 +17,7 @@
 
 from PySide import QtGui, QtCore
 import api.data.skills
-from l5r.util import log
+from util import log
 
 class MaItemModel(object):
 
