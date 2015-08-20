@@ -17,7 +17,7 @@ __author__ = 'Daniele'
 
 import models
 from api import __api
-from src.util import log
+from l5r.util import log
 
 import api.data.schools
 import api.data.skills

@@ -19,7 +19,7 @@ from PySide import QtCore, QtGui
 import rules
 import api.data.outfit
 import api.data.skills
-from src.util import log
+from l5r.util import log
 
 
 class ArmorOutfit(object):

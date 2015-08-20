@@ -18,10 +18,10 @@
 from PySide import QtGui, QtCore
 import api.data
 import api.data.powers
-from src.util import log
+from l5r.util import log
 
 
-class KataItemModel(object):
+class KihoItemModel(object):
 
     def __init__(self):
         self.name = ''
@@ -35,10 +35,10 @@ class KataItemModel(object):
         return self.name
 
 
-class KataTableViewModel(QtCore.QAbstractTableModel):
+class KihoTableViewModel(QtCore.QAbstractTableModel):
 
     def __init__(self, parent=None):
-        super(KataTableViewModel, self).__init__(parent)
+        super(KihoTableViewModel, self).__init__(parent)
         self.items = []
         self.headers = ['Name', 'Mastery', 'Element']
         self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
@@ -97,31 +97,35 @@ class KataTableViewModel(QtCore.QAbstractTableModel):
         self.items = []
         self.endResetModel()
 
-    def build_item_model(self, ka_id):
-        itm = KataItemModel()
-        ka = api.data.powers.get_kata(ka_id.kata)
+    def build_item_model(self, ki_id):
+        itm = KihoItemModel()
+        ki = api.data.powers.get_kiho(ki_id.kiho)
 
-        if ka:
-            itm.id = ka.id
-            itm.adv = ka_id
-            itm.name = ka.name
-            itm.mastery = ka.mastery
+        if ki:
+            itm.id = ki.id
+            itm.adv = ki_id
+            itm.name = ki.name
+            itm.mastery = ki.mastery
 
             try:
-                itm.element = api.data.get_ring(ka.element).text
+                itm.element = api.data.get_ring(ki.element).text
             except:
-                itm.element = ka.element
+                itm.element = ki.element
 
-            itm.text = ka.desc
+            itm.text = ki.desc
         else:
-            log.model.error(u"kata not found: %s", ka_id.kata)
+            log.model.error(u"kiho not found: %s", ki_id.kiho)
+
+        if ki.type == 'tattoo':
+            itm.mastery = "N/A"
+            itm.element = "Tattoo"
 
         return itm
 
     def update_from_model(self, model):
-        kata = model.get_kata()
+        kiho = model.get_kiho()
 
         self.clean()
-        for s in kata:
+        for s in kiho:
             itm = self.build_item_model(s)
             self.add_item(itm)

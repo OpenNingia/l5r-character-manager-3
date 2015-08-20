@@ -5,7 +5,7 @@ set root=%~dp0
 del /S /F /Q .\dist\*.*
 
 REM GO TO SOURCE DIR
-cd ..\..\..\src
+cd ..\..\..\l5r
 
 REM BUILD EXECUTABLE
 python setup.py py2exe

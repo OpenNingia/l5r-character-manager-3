@@ -1,7 +1,6 @@
-cd ..\..\src
+cd ..\..\l5r
 call c:\python27\scripts\pylint -E --rcfile pylint.rc l5rcm.py
 call c:\python27\scripts\pylint -E --rcfile pylint.rc l5rcmcore
-call c:\python27\scripts\pylint -E --rcfile pylint.rc autoupdate
 call c:\python27\scripts\pylint -E --rcfile pylint.rc exporters
 call c:\python27\scripts\pylint -E --rcfile pylint.rc widgets
 call c:\python27\scripts\pylint -E --rcfile pylint.rc util

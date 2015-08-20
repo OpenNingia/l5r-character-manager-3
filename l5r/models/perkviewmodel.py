@@ -16,26 +16,32 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtGui, QtCore
-import api.data.skills
-from src.util import log
+import api.data.merits
+import api.data.flaws
+from l5r.util import log
 
-class MaItemModel(object):
+
+class PerkItemModel(object):
 
     def __init__(self):
-        self.skill_name = ''
-        self.skill_rank = ''
-        self.desc = ''
+        self.name = ''
+        self.cost = ''
+        self.rank = ''
+        self.tag = ''
+        self.notes = ''
+        self.adv = None
 
     def __str__(self):
-        return self.desc
+        return self.name
 
 
-class MaViewModel(QtCore.QAbstractListModel):
+class PerkViewModel(QtCore.QAbstractListModel):
 
-    def __init__(self, parent=None):
-        super(MaViewModel, self).__init__(parent)
+    def __init__(self, type_, parent=None):
+        super(PerkViewModel, self).__init__(parent)
 
         self.items = []
+        self.type = type_
         self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
         self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
                          QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
@@ -44,16 +50,26 @@ class MaViewModel(QtCore.QAbstractListModel):
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
 
-    def add_item(self, sk_name, sk_rnk, ma_brief):
+    def build_item_model(self, model, perk_adv):
+        itm = PerkItemModel()
+        perk = api.data.merits.get(perk_adv.perk) or api.data.flaws.get(perk_adv.perk)
+
+        if perk:
+            itm.adv = perk_adv
+            itm.name = perk.name
+            itm.rank = perk_adv.rank
+            itm.tag = perk_adv.tag
+            itm.cost = perk_adv.cost
+            itm.notes = perk_adv.extra
+        else:
+            log.model.error(u"perk not found: %s", perk_adv.perk)
+
+        return itm
+
+    def add_item(self, model, item_id):
         row = self.rowCount()
         self.beginInsertRows(QtCore.QModelIndex(), row, row)
-
-        itm = MaItemModel()
-        itm.skill_name = sk_name
-        itm.skill_rank = str(sk_rnk)
-        itm.desc = ma_brief
-
-        self.items.append(itm)
+        self.items.append(self.build_item_model(model, item_id))
         self.endInsertRows()
 
     def clean(self):
@@ -61,24 +77,14 @@ class MaViewModel(QtCore.QAbstractListModel):
         self.items = []
         self.endResetModel()
 
-    def get_mastery_abilities(self, model):
-        for sk_uuid in model.get_skills():
-            sk_rank = model.get_skill_rank(sk_uuid)
-            sk = api.data.skills.get(sk_uuid)
-
-            if not sk:
-                log.model.error(u"skill not found: %s", sk_uuid)
-                continue
-
-            mas = [x for x in sk.mastery_abilities if x.rank <= sk_rank]
-
-            for ma in mas:
-                yield sk.name, ma.rank, ma.desc
-
     def update_from_model(self, model):
         self.clean()
-        for sk_name, sk_rnk, ma_brief in self.get_mastery_abilities(model):
-            self.add_item(sk_name, sk_rnk, ma_brief)
+        if self.type == 'merit':
+            for perk in model.get_merits():
+                self.add_item(model, perk)
+        else:
+            for perk in model.get_flaws():
+                self.add_item(model, perk)
 
     def data(self, index, role):
         if not index.isValid() or index.row() >= len(self.items):
@@ -92,19 +98,21 @@ class MaViewModel(QtCore.QAbstractListModel):
             return self.bg_color[index.row() % 2]
         elif role == QtCore.Qt.SizeHintRole:
             return self.item_size
+        elif role == QtCore.Qt.ToolTipRole:
+            return item.notes
         elif role == QtCore.Qt.UserRole:
             return item
         return None
 
 
-class MaItemDelegate(QtGui.QStyledItemDelegate):
+class PerkItemDelegate(QtGui.QStyledItemDelegate):
 
     def __init__(self, parent=None):
-        super(MaItemDelegate, self).__init__(parent)
+        super(PerkItemDelegate, self).__init__(parent)
 
     def paint(self, painter, option, index):
         if not index.isValid():
-            super(MaItemDelegate, self).paint(painter, option, index)
+            super(PerkItemDelegate, self).paint(painter, option, index)
             return
 
         item = index.data(QtCore.Qt.UserRole)
@@ -138,8 +146,11 @@ class MaItemDelegate(QtGui.QStyledItemDelegate):
         # suppose to have 24 pixels in vertical
         main_font.setBold(True)
         painter.setFont(main_font)
+        font_metric = painter.fontMetrics()
+        perk_nm = item.name
+        perk_nm_rect = font_metric.boundingRect(perk_nm)
 
-        rank = item.skill_rank
+        rank = str(item.rank)
 
         rank_pen = QtGui.QPen(text_color, 2)
         painter.setPen(rank_pen)
@@ -151,24 +162,21 @@ class MaItemDelegate(QtGui.QStyledItemDelegate):
 
         margin += rank_rect.width() + margin
 
-        font_metric = painter.fontMetrics()
-        sk_nm = item.skill_name
-        sk_nm_rect = font_metric.boundingRect(sk_nm)
-
         text_pen = QtGui.QPen(text_color, 1)
 
         painter.setPen(text_pen)
         painter.drawText(margin + option.rect.left(),
-                         option.rect.top() + sk_nm_rect.height(), sk_nm)
+                         option.rect.top() + perk_nm_rect.height(), perk_nm)
 
-        # paint adv type & cost
-        painter.setFont(sub_font)
-        font_metric = painter.fontMetrics()
-        ma_brief = item.desc
-        ma_brief_rect = font_metric.boundingRect(ma_brief)
-        painter.drawText(margin + option.rect.left(),
-                         option.rect.top() + sk_nm_rect.height() +
-                         ma_brief_rect.height(),
-                         ma_brief)
+        if item.tag:
+            # paint adv type & cost
+            painter.setFont(sub_font)
+            font_metric = painter.fontMetrics()
+            tag_nm = item.tag
+            tag_nm_rect = font_metric.boundingRect(tag_nm)
+            painter.drawText(margin + option.rect.left(),
+                             option.rect.top() + perk_nm_rect.height() +
+                             tag_nm_rect.height(),
+                             tag_nm)
 
         painter.restore()

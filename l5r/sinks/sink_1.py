@@ -21,12 +21,12 @@ import rules
 import dialogs
 import models
 import os
-from src.util import log, osutil
+from l5r.util import log, osutil
 
 import api.character
 import api.character.books
 
-from l5rcmcore import get_app_file, DB_VERSION, get_icon_path
+from l5r.l5rcmcore import get_app_file, DB_VERSION, get_icon_path
 
 
 class Sink1(QtCore.QObject):

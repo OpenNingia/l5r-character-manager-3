@@ -16,35 +16,44 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtGui, QtCore
+import rules
+
 import api.data
-import api.data.powers
-from src.util import log
+import api.data.skills
+import api.character.skills
+
+from l5r.util import log
 
 
-class KihoItemModel(object):
+class SkillItemModel(object):
 
     def __init__(self):
         self.name = ''
-        self.mastery = ''
-        self.element = ''
-        self.id = False
-        self.adv = None
-        self.text = []
+        self.rank = ''
+        self.trait = ''
+        self.base_roll = ''
+        self.mod_roll = ''
+        self.is_school = False
+        self.emph = []
+        self.skill_id = 0
 
     def __str__(self):
         return self.name
 
 
-class KihoTableViewModel(QtCore.QAbstractTableModel):
+class SkillTableViewModel(QtCore.QAbstractTableModel):
 
     def __init__(self, parent=None):
-        super(KihoTableViewModel, self).__init__(parent)
+        super(SkillTableViewModel, self).__init__(parent)
         self.items = []
-        self.headers = ['Name', 'Mastery', 'Element']
+        self.headers = ['Name', 'Rank', 'Trait', 'Base Roll', 'Mod Roll', 'Emphases']
         self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
         self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
                          QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
         self.item_size = QtCore.QSize(28, 28)
+        if parent:
+            self.bold_font = parent.font()
+            self.bold_font.setBold(True)
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
@@ -67,9 +76,18 @@ class KihoTableViewModel(QtCore.QAbstractTableModel):
             if index.column() == 0:
                 return item.name
             if index.column() == 1:
-                return item.mastery
+                return item.rank
             if index.column() == 2:
-                return item.element
+                return item.trait
+            if index.column() == 3:
+                return str(item.base_roll)
+            if index.column() == 4:
+                return str(item.mod_roll)
+            if index.column() == 5:
+                return ', '.join(item.emph)
+        elif role == QtCore.Qt.FontRole:
+            if item.is_school and self.bold_font:
+                return self.bold_font
         elif role == QtCore.Qt.ForegroundRole:
             return self.text_color
         elif role == QtCore.Qt.BackgroundRole:
@@ -77,7 +95,7 @@ class KihoTableViewModel(QtCore.QAbstractTableModel):
         elif role == QtCore.Qt.SizeHintRole:
             return self.item_size
         elif role == QtCore.Qt.UserRole:
-            return item
+            return item.skill_id
         return None
 
     def flags(self, index):
@@ -97,35 +115,37 @@ class KihoTableViewModel(QtCore.QAbstractTableModel):
         self.items = []
         self.endResetModel()
 
-    def build_item_model(self, ki_id):
-        itm = KihoItemModel()
-        ki = api.data.powers.get_kiho(ki_id.kiho)
+    def build_item_model(self, sk):
+        itm = SkillItemModel()
+        itm.skill_id = sk.id
+        itm.name = sk.name
 
-        if ki:
-            itm.id = ki.id
-            itm.adv = ki_id
-            itm.name = ki.name
-            itm.mastery = ki.mastery
+        trait = api.data.get_trait_or_ring(sk.trait)
 
-            try:
-                itm.element = api.data.get_ring(ki.element).text
-            except:
-                itm.element = ki.element
-
-            itm.text = ki.desc
+        if trait:
+            itm.trait = trait.text
         else:
-            log.model.error(u"kiho not found: %s", ki_id.kiho)
-
-        if ki.type == 'tattoo':
-            itm.mastery = "N/A"
-            itm.element = "Tattoo"
+            itm.trait = sk.trait
 
         return itm
 
     def update_from_model(self, model):
-        kiho = model.get_kiho()
+        skills_id_s = model.get_school_skills()
+        skills_id_a = model.get_skills()
 
         self.clean()
-        for s in kiho:
-            itm = self.build_item_model(s)
+        for s in skills_id_a:
+
+            sk = api.data.skills.get(s)
+
+            if not sk:
+                log.model.error(u"skill not found: %s", s)
+                continue
+
+            itm = self.build_item_model(sk)
+            itm.rank = model.get_skill_rank(s)
+            itm.emph = model.get_skill_emphases(s)
+            itm.base_roll = rules.calculate_base_skill_roll(model, sk)
+            itm.mod_roll = rules.calculate_mod_skill_roll(model, sk)
+            itm.is_school = (s in skills_id_s)
             self.add_item(itm)

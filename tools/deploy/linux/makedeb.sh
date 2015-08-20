@@ -21,8 +21,8 @@ else
    exit 1
 fi
 
-APP_NAME=`grep -E '^APP_NAME\s*=\s*' '../../../src/l5rcmcore/__init__.py' | cut -d\' -f2`
-APP_VER=`grep '^APP_VERSION\s*=\s*' '../../../src/l5rcmcore/__init__.py' | cut -d\' -f2`
+APP_NAME=`grep -E '^APP_NAME\s*=\s*' '../../../l5r/l5rcmcore/__init__.py' | cut -d\' -f2`
+APP_VER=`grep '^APP_VERSION\s*=\s*' '../../../l5r/l5rcmcore/__init__.py' | cut -d\' -f2`
 echo 'APP_VERSION:' $APP_NAME'_'$APP_VER
 
 DEB_VER_FLL=`grep '^Version:\s' './DEBIAN/control' | cut -d\   -f2`

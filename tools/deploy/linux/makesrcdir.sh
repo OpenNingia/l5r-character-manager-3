@@ -13,7 +13,7 @@ rm $1.deb
 find ./ | grep '~' | xargs rm
 
 # make source tarball
-tar -vzcf $1.tar.gz --exclude-vcs -X exclude_from_tarball --exclude-backups --exclude-caches ../../../src/
+tar -vzcf $1.tar.gz --exclude-vcs -X exclude_from_tarball --exclude-backups --exclude-caches ../../../l5r/
 
 # remove old directory
 # should ask for root password

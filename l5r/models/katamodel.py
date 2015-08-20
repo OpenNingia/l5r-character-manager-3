@@ -16,44 +16,35 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtGui, QtCore
-import rules
-
 import api.data
-import api.data.skills
-import api.character.skills
-
-from src.util import log
+import api.data.powers
+from l5r.util import log
 
 
-class SkillItemModel(object):
+class KataItemModel(object):
 
     def __init__(self):
         self.name = ''
-        self.rank = ''
-        self.trait = ''
-        self.base_roll = ''
-        self.mod_roll = ''
-        self.is_school = False
-        self.emph = []
-        self.skill_id = 0
+        self.mastery = ''
+        self.element = ''
+        self.id = False
+        self.adv = None
+        self.text = []
 
     def __str__(self):
         return self.name
 
 
-class SkillTableViewModel(QtCore.QAbstractTableModel):
+class KataTableViewModel(QtCore.QAbstractTableModel):
 
     def __init__(self, parent=None):
-        super(SkillTableViewModel, self).__init__(parent)
+        super(KataTableViewModel, self).__init__(parent)
         self.items = []
-        self.headers = ['Name', 'Rank', 'Trait', 'Base Roll', 'Mod Roll', 'Emphases']
+        self.headers = ['Name', 'Mastery', 'Element']
         self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
         self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
                          QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
         self.item_size = QtCore.QSize(28, 28)
-        if parent:
-            self.bold_font = parent.font()
-            self.bold_font.setBold(True)
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
@@ -76,18 +67,9 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
             if index.column() == 0:
                 return item.name
             if index.column() == 1:
-                return item.rank
+                return item.mastery
             if index.column() == 2:
-                return item.trait
-            if index.column() == 3:
-                return str(item.base_roll)
-            if index.column() == 4:
-                return str(item.mod_roll)
-            if index.column() == 5:
-                return ', '.join(item.emph)
-        elif role == QtCore.Qt.FontRole:
-            if item.is_school and self.bold_font:
-                return self.bold_font
+                return item.element
         elif role == QtCore.Qt.ForegroundRole:
             return self.text_color
         elif role == QtCore.Qt.BackgroundRole:
@@ -95,7 +77,7 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
         elif role == QtCore.Qt.SizeHintRole:
             return self.item_size
         elif role == QtCore.Qt.UserRole:
-            return item.skill_id
+            return item
         return None
 
     def flags(self, index):
@@ -115,37 +97,31 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
         self.items = []
         self.endResetModel()
 
-    def build_item_model(self, sk):
-        itm = SkillItemModel()
-        itm.skill_id = sk.id
-        itm.name = sk.name
+    def build_item_model(self, ka_id):
+        itm = KataItemModel()
+        ka = api.data.powers.get_kata(ka_id.kata)
 
-        trait = api.data.get_trait_or_ring(sk.trait)
+        if ka:
+            itm.id = ka.id
+            itm.adv = ka_id
+            itm.name = ka.name
+            itm.mastery = ka.mastery
 
-        if trait:
-            itm.trait = trait.text
+            try:
+                itm.element = api.data.get_ring(ka.element).text
+            except:
+                itm.element = ka.element
+
+            itm.text = ka.desc
         else:
-            itm.trait = sk.trait
+            log.model.error(u"kata not found: %s", ka_id.kata)
 
         return itm
 
     def update_from_model(self, model):
-        skills_id_s = model.get_school_skills()
-        skills_id_a = model.get_skills()
+        kata = model.get_kata()
 
         self.clean()
-        for s in skills_id_a:
-
-            sk = api.data.skills.get(s)
-
-            if not sk:
-                log.model.error(u"skill not found: %s", s)
-                continue
-
-            itm = self.build_item_model(sk)
-            itm.rank = model.get_skill_rank(s)
-            itm.emph = model.get_skill_emphases(s)
-            itm.base_roll = rules.calculate_base_skill_roll(model, sk)
-            itm.mod_roll = rules.calculate_mod_skill_roll(model, sk)
-            itm.is_school = (s in skills_id_s)
+        for s in kata:
+            itm = self.build_item_model(s)
             self.add_item(itm)

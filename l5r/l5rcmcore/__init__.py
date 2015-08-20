@@ -30,7 +30,7 @@ import dal
 import dal.query
 import dal.dataimport
 
-from src.util import log, osutil
+from l5r.util import log, osutil
 import api.data
 from api.data import CMErrors
 from qtsignalsutils import *

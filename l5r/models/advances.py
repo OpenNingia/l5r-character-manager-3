@@ -17,8 +17,9 @@
 
 from PySide import QtCore, QtGui
 from datetime import datetime
-#from l5rcmcore import log
 import time
+
+from l5r.util import log
 
 
 class Advancement(object):
@@ -27,7 +28,7 @@ class Advancement(object):
     @staticmethod
     def set_buy_for_free(flag):
         Advancement.BUY_FOR_FREE = flag
-        #log.rules.info(u"set buy for free? %s", Advancement.BUY_FOR_FREE)
+        log.rules.info(u"set buy for free? %s", Advancement.BUY_FOR_FREE)
 
     @staticmethod
     def get_buy_for_free():

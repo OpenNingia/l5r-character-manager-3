@@ -35,9 +35,8 @@ import api.character.skills
 
 from PySide import QtGui, QtCore
 
-from src.l5rcmcore import *
-
-from src.util import log
+from l5r.l5rcmcore import *
+from l5r.util import log
 
 
 def new_small_le(parent=None, ro=True):

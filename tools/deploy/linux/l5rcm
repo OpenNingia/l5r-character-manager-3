@@ -1,2 +1,2 @@
 #!/bin/bash
-python /opt/l5rcm/src/l5rcm.pyc "$1" "$2" "$3" "$4" "$5"
+python /opt/l5rcm/l5r/l5rcm.pyc "$1" "$2" "$3" "$4" "$5"

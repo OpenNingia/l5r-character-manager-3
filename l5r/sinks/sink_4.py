@@ -20,7 +20,7 @@ from PySide import QtCore, QtGui
 import os
 import models
 import dialogs
-from src.util import log, osutil
+from l5r.util import log, osutil
 import widgets
 import dal
 import dal.query

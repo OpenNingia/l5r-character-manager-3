@@ -21,7 +21,7 @@ import api.data
 import api.rules
 import models
 
-from src.util import log
+from l5r.util import log
 
 
 def model():
