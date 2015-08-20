@@ -1,0 +1,3 @@
+pip install PySide
+pip install lxml
+pip install asq
