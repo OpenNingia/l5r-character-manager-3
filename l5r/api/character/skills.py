@@ -84,20 +84,3 @@ def purchase_skill_rank(skill_id):
     return api.character.purchase_advancement(adv)
 
 
-def purchase_memo_spell(self, spell_id):
-    log.api.info(u"purchase memorized spell: %s", spell_id)
-
-    spell_ = api.data.spells.get(spell_id)
-    if not spell_:
-        log.api.error(u"spell not found")
-        return api.data.CMErrors.INTERNAL_ERROR
-
-    # no special rules for memorized spells
-    cost = spell_.mastery
-    text = spell_.name
-
-    adv = models.MemoSpellAdv(spell_id, cost)
-    adv.desc = (api.tr('{0}, Mastery {1}. Cost: {2} xp')
-                .format(text, cost, adv.cost))
-
-    return api.character.purchase_advancement(adv)

@@ -68,3 +68,8 @@ def search_categ_by_text(tx):
     return query(categories()) \
         .where(lambda x: tx in x.name.lower()) \
         .to_list()
+
+
+def get_mastery_ability():
+    """returns the mastery ability for a given rank"""
+    pass

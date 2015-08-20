@@ -141,7 +141,7 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
     def build_item_model(self, sp_id):
         itm = SpellItemModel()
 
-        spell = api.data.spells.get(sp_ip)
+        spell = api.data.spells.get(sp_id)
 
         itm.id = spell.id
         itm.name = spell.name

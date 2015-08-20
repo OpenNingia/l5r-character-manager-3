@@ -352,7 +352,7 @@ class L5RCMCore(QtGui.QMainWindow):
         return res
 
     def memo_spell(self, spell_id):
-        res = api.character.skills.purchase_memo_spell(spell_id)
+        res = api.character.spells.purchase_memo_spell(spell_id)
         if res == CMErrors.NO_ERROR:
             self.update_from_model()
         return res

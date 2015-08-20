@@ -18,6 +18,7 @@ __author__ = 'Daniele'
 import api
 from api import __api
 from asq.initiators import query
+from util import log
 
 
 def get_all():
@@ -27,18 +28,28 @@ def get_all():
     return __api.pc.get_spells()
 
 
-def deficiencies():
+def base_deficiencies():
     """returns character deficiencies"""
     if not __api.pc:
         return []
     return __api.pc.get_deficiency()
 
 
-def affinities():
+def deficiencies():
     """returns character deficiencies"""
+    return base_deficiencies() + additional_deficiencies()
+
+
+def base_affinities():
+    """returns character base affinities"""
     if not __api.pc:
         return []
     return __api.pc.get_affinity()
+
+
+def affinities():
+    """returns character affinities"""
+    return base_affinities() + additional_affinities()
 
 
 def is_learnable(spell):
@@ -51,6 +62,31 @@ def is_learnable(spell):
     return max_mastery >= spell.mastery
 
 
+def additional_affinities():
+    """return additional affinities of the character"""
+    result_ = []
+
+    if api.character.has_tag_or_rule('phoenix_embrace_the_elements'):
+        affinity_, deficiencies_ = phoenix_embrace_the_elements()
+        result_.append(affinity_)
+
+    if api.character.has_tag_or_rule('mantis_favor_of_the_sun'):
+        result_.append('fire')
+
+    return result_
+
+
+def additional_deficiencies():
+    """return additional deficiencies of the character"""
+    result_ = []
+
+    if api.character.has_tag_or_rule('phoenix_embrace_the_elements'):
+        affinity_, deficiencies_ = phoenix_embrace_the_elements()
+        result_ += deficiencies_
+
+    return result_
+
+
 def special_affinity(spell):
 
     ret = 0
@@ -61,10 +97,10 @@ def special_affinity(spell):
         if api.data.spells.has_tag(spell.id, 'wards', school):
             ret += 1
 
-    if api.character.has_tag_or_rule('phoenix_embrace_the_elements'):
-        affinity_, deficiencies_ = phoenix_embrace_the_elements()
-        if affinity_ == spell.element:
-            ret += 1
+    #if api.character.has_tag_or_rule('phoenix_embrace_the_elements'):
+    #    affinity_, deficiencies_ = phoenix_embrace_the_elements()
+    #    if affinity_ == spell.element:
+    #        ret += 1
 
     return ret
 
@@ -79,15 +115,15 @@ def special_deficiency(spell):
                 api.data.spells.has_tag(spell.id, 'craft', school)):
             ret += 1
 
-    if api.character.has_tag_or_rule('phoenix_embrace_the_elements'):
-        affinity_, deficiencies_ = phoenix_embrace_the_elements()
-        ret += query(deficiencies_).where(lambda x: x == spell.element or x in spell.elements).count()
+    #if api.character.has_tag_or_rule('phoenix_embrace_the_elements'):
+    #    affinity_, deficiencies_ = phoenix_embrace_the_elements()
+    #    ret += query(deficiencies_).where(lambda x: x == spell.element or x in spell.elements).count()
 
     return ret
 
 
 def phoenix_embrace_the_elements():
-    main_affinity_ = affinities()[0] if len(affinities()) else None
+    main_affinity_ = affinities()[0] if len(base_affinities()) else None
     if main_affinity_ is None:
         return None, []
 
@@ -125,3 +161,21 @@ def character_can_learn():
     return [x for x in get_all() if is_learnable(x)]
 
 
+def purchase_memo_spell(self, spell_id):
+    """purchase a memorized spell"""
+    log.api.info(u"purchase memorized spell: %s", spell_id)
+
+    spell_ = api.data.spells.get(spell_id)
+    if not spell_:
+        log.api.error(u"spell not found")
+        return api.data.CMErrors.INTERNAL_ERROR
+
+    # no special rules for memorized spells
+    cost = spell_.mastery
+    text = spell_.name
+
+    adv = models.MemoSpellAdv(spell_id, cost)
+    adv.desc = (api.tr('{0}, Mastery {1}. Cost: {2} xp')
+                .format(text, cost, adv.cost))
+
+    return api.character.purchase_advancement(adv)
