@@ -70,6 +70,9 @@ def search_categ_by_text(tx):
         .to_list()
 
 
-def get_mastery_ability():
+def get_mastery_ability(skill_id, rank):
     """returns the mastery ability for a given rank"""
-    pass
+    skill_ = get(skill_id)
+    if not skill_:
+        return None
+    return query(skill_.mastery_abilities).where(lambda x: x.rank == rank).first_or_default(None)

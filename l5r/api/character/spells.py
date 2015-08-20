@@ -123,7 +123,7 @@ def special_deficiency(spell):
 
 
 def phoenix_embrace_the_elements():
-    main_affinity_ = affinities()[0] if len(base_affinities()) else None
+    main_affinity_ = base_affinities()[0] if len(base_affinities()) else None
     if main_affinity_ is None:
         return None, []
 
