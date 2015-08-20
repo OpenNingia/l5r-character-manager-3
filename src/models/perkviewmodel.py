@@ -16,8 +16,9 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtGui, QtCore
-import dal
-import dal.query
+import api.data.merits
+import api.data.flaws
+from src.util import log
 
 
 class PerkItemModel(object):
@@ -36,10 +37,9 @@ class PerkItemModel(object):
 
 class PerkViewModel(QtCore.QAbstractListModel):
 
-    def __init__(self, dstore, type_, parent=None):
+    def __init__(self, type_, parent=None):
         super(PerkViewModel, self).__init__(parent)
 
-        self.dstore = dstore
         self.items = []
         self.type = type_
         self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
@@ -52,8 +52,7 @@ class PerkViewModel(QtCore.QAbstractListModel):
 
     def build_item_model(self, model, perk_adv):
         itm = PerkItemModel()
-        perk = dal.query.get_merit(self.dstore, perk_adv.perk) or dal.query.get_flaw(
-            self.dstore, perk_adv.perk)
+        perk = api.data.merits.get(perk_adv.perk) or api.data.flaws.get(perk_adv.perk)
 
         if perk:
             itm.adv = perk_adv
@@ -62,6 +61,8 @@ class PerkViewModel(QtCore.QAbstractListModel):
             itm.tag = perk_adv.tag
             itm.cost = perk_adv.cost
             itm.notes = perk_adv.extra
+        else:
+            log.model.error(u"perk not found: %s", perk_adv.perk)
 
         return itm
 

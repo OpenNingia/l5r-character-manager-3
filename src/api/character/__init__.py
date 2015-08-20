@@ -14,11 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+__author__ = 'Daniele'
 
 from api import __api
 import api.data
 import api.rules
 import models
+
+from src.util import log
 
 
 def model():
@@ -95,6 +98,8 @@ def append_advancement(adv):
 def purchase_advancement(adv):
     """returns True if there are enought xp to purchase the advancement"""
     if (adv.cost + xp()) > xp_limit():
+        log.api.warning(u"not enough xp to purchase advancement: %s. xp left: %d",
+                        adv.desc, xp_left())
         return api.data.CMErrors.NOT_ENOUGH_XP
 
     api.character.append_advancement(adv)

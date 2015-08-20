@@ -13,10 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+__author__ = 'Daniele'
 
 import models
 from api import __api
-from l5rcmcore import log
+from src.util import log
 
 import api.data.schools
 import api.data.skills

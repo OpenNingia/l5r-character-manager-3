@@ -18,23 +18,22 @@
 import sys
 import os
 import shutil
+from math import ceil
+from tempfile import mkstemp
+import subprocess
+
+from PySide import QtCore, QtGui
+
 import models
 import exporters
 import dal
 import dal.query
 import dal.dataimport
-import osutil
-from math import ceil
-from tempfile import mkstemp
-import subprocess
-import log
 
+from src.util import log, osutil
 import api.data
 from api.data import CMErrors
-
 from qtsignalsutils import *
-
-from PySide import QtCore, QtGui
 
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'

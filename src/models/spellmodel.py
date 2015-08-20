@@ -48,7 +48,7 @@ class SpellItemModel(object):
 
 class SpellTableViewModel(QtCore.QAbstractTableModel):
 
-    def __init__(self, dstore, parent=None):
+    def __init__(self, parent=None):
         super(SpellTableViewModel, self).__init__(parent)
         self.items = []
         self.headers = ['Name', 'Ring', 'Mastery', 'Range', 'Area of Effect',
@@ -61,7 +61,6 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
             self.bold_font = parent.font()
             self.bold_font.setBold(True)
 
-        self.dstore = dstore
         self.memo_icon = QtGui.QIcon(get_icon_path('book', (16, 16)))
 
     def rowCount(self, parent=QtCore.QModelIndex()):
@@ -143,13 +142,14 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
 
     def build_item_model(self, sp_id):
         itm = SpellItemModel()
-        spell = dal.query.get_spell(self.dstore, sp_id)
+
+        spell = api.data.spells.get(sp_ip)
 
         itm.id = spell.id
         itm.name = spell.name
 
         try:
-            itm.ring = dal.query.get_ring(self.dstore, spell.element).text
+            itm.ring = api.data.get_ring(spell.element).text
         except:
             itm.ring = spell.element
 
@@ -159,8 +159,8 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
         itm.duration = spell.duration
         itm.raises = ', '.join(spell.raises)
         itm.desc = spell.desc
-        spell_tags = api.data.spells.tags(spell.id, api.character.schools.get_current())
-        itm.tags = ', '.join(spell_tags)
+
+        itm.tags = ', '.join(api.data.spells.tags(spell.id))
         itm.spell_id = sp_id
 
         return itm

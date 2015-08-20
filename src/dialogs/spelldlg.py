@@ -15,15 +15,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import dal
-import dal.query
-
 import api
 import api.character
 import api.character.schools
 import api.character.spells
 import api.data
 import api.data.schools
+import api.data.spells
 
 import widgets
 from PySide import QtCore, QtGui
@@ -38,8 +36,6 @@ class SpellAdvDialog(QtGui.QDialog):
 
     # character model
     pc = None
-    # data storage
-    dstore = None
     # error bar, visible on error
     error_bar = None
     # title bar
@@ -70,11 +66,11 @@ class SpellAdvDialog(QtGui.QDialog):
     # max pages
     max_page_count = 50
 
-    def __init__(self, pc, dstore, mode='bounded', parent=None):
+    def __init__(self, pc, mode='bounded', parent=None):
         super(SpellAdvDialog, self).__init__(parent)
         self.pc = pc
         self.mode = mode
-        self.dstore = dstore
+
         if mode == 'bounded':
             self.page_count = self.pc.get_how_many_spell_i_miss()
         self.properties = [None] * self.max_page_count
@@ -88,7 +84,7 @@ class SpellAdvDialog(QtGui.QDialog):
         self.bt_next = QtGui.QPushButton(self.tr('Next'), self)
         self.bt_back = QtGui.QPushButton(self.tr('Back'), self)
         self.lb_pgcnt = QtGui.QLabel(self)
-        self.spell_wdg = widgets.SpellItemSelection(self.pc, self.dstore, self)
+        self.spell_wdg = widgets.SpellItemSelection(self.pc, self)
         self.header = QtGui.QLabel(self)
         self.error_bar = QtGui.QLabel(self)
 
@@ -186,8 +182,7 @@ class SpellAdvDialog(QtGui.QDialog):
 
     def load_data(self):
         current_spell = self.selected[self.current_page]
-        pc_spells = [dal.query.get_spell(self.dstore, x)
-                     for x in self.pc.get_spells()]
+        pc_spells = [api.data.spells.get(x) for x in api.character.spells.get_all()]
 
         blacklist = pc_spells + \
             [x for x in self.selected if x is not current_spell]

@@ -131,7 +131,7 @@ class ChooseItemDialog(QtGui.QDialog):
         if selected < 0:
             return
         armor_uuid = self.cb.itemData(selected)
-        self.item = models.armor_outfit_from_db(self.dstore, armor_uuid)
+        self.item = models.armor_outfit_from_db(armor_uuid)
 
         stats_text = '''<p><pre>%-20s %s</pre></p>
                         <p><pre>%-20s %s</pre></p>
@@ -166,7 +166,7 @@ class ChooseItemDialog(QtGui.QDialog):
         weap_nm = self.cb2.itemData(selected)
         sk_uuid = self.cb1.itemData(self.cb1.currentIndex())
 
-        self.item = models.weapon_outfit_from_db(self.dstore, weap_nm, sk_uuid)
+        self.item = models.weapon_outfit_from_db(weap_nm, sk_uuid)
         lines = []
 
         # pylint: disable-msg=E1103

@@ -14,9 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+__author__ = 'Daniele'
 
 from api import __api
 from asq.initiators import query
+
+import api.character.schools
 
 
 def all():
@@ -43,7 +46,14 @@ def tags(sid, school=None):
     s = get(sid)
     if not s:
         return []
-    return query(s.tags).where(lambda x: x.school is None or x.school == school).select(lambda x: x.name).to_list()
+
+    school_id_list = []
+    if school is not None:
+        school_id_list = [school.id]
+    else:
+        school_id_list = api.character.schools.get_all()
+
+    return query(s.tags).where(lambda x: x.school is None or x.school in school_id_list).select(lambda x: x.name).to_list()
 
 
 def is_multi_element(sid):
@@ -62,4 +72,14 @@ def is_dragon(sid):
     return s.element == 'dragon'
 
 
+def get_maho(ring, mastery):
+    """returns all the maho spells for the given ring and mastery"""
+    return query(get(ring, mastery)).where(lambda x: 'maho' in x.tags).to_list()
 
+
+def get(ring, mastery, maho=True):
+    """returns all the maho spells for the given ring and mastery, if maho include maho spells"""
+    including_maho = query(all()).where(lambda x: x.element == ring and x.mastery == mastery)
+    if not maho:
+        return query(including_maho).where(lambda x: 'maho' not in x.tags).to_list()
+    return including_maho.to_list()

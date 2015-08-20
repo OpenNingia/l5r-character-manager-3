@@ -321,8 +321,8 @@ class FDFExporterShugenja(FDFExporter):
             fields['SPELL_RAISE.%d.%d' %
                    (lPageNumber, lControlNumber)] = spell.raises
             fields['SPELL_TAGS.%d.%d' %
-                   (lPageNumber, lControlNumber)] = ', '.join(api.data.spells.tags(spell.id,
-                                                                                   api.character.schools.get_current()))
+                   (lPageNumber, lControlNumber)] = ', '.join(api.data.spells.tags(spell.id))
+
             if spell.desc:
                 fields['SPELL_EFFECT.%d.%d' %
                        (lPageNumber, lControlNumber)] = spell.desc

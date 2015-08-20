@@ -15,9 +15,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys
-import os
+import mimetypes
 
+import sys
 import rules
 import models
 import widgets
@@ -26,18 +26,18 @@ import autoupdate
 import sinks
 import dal
 import dal.query
-import mimetypes
-
-from l5rcmcore import *
-import l5rcmcore.log as log
-
 import api.data.clans
 import api.data.families
 import api.data.schools
-
 import api.character
 import api.character.spells
 import api.character.skills
+
+from PySide import QtGui, QtCore
+
+from src.l5rcmcore import *
+
+from src.util import log
 
 
 def new_small_le(parent=None, ro=True):
@@ -870,8 +870,8 @@ class L5RMain(L5RCMCore):
         return view
 
     def build_ui_page_2(self):
-        self.sk_view_model = models.SkillTableViewModel(self.dstore, self)
-        self.ma_view_model = models.MaViewModel(self.dstore, self)
+        self.sk_view_model = models.SkillTableViewModel(self)
+        self.ma_view_model = models.MaViewModel(self)
 
         # enable sorting through a proxy model
         sk_sort_model = models.ColorFriendlySortProxyModel(self)
@@ -901,8 +901,8 @@ class L5RMain(L5RCMCore):
         self.tabs.addTab(frame_, self.tr("Skills"))
 
     def build_ui_page_3(self):
-        self.sp_view_model = models.SpellTableViewModel(self.dstore, self)
-        self.th_view_model = models.TechViewModel(self.dstore, self)
+        self.sp_view_model = models.SpellTableViewModel(self)
+        self.th_view_model = models.TechViewModel(self)
 
         # enable sorting through a proxy model
         sp_sort_model = models.ColorFriendlySortProxyModel(self)
@@ -918,8 +918,8 @@ class L5RMain(L5RCMCore):
         self.tabs.addTab(frame_, self.tr("Techniques"))
 
     def build_ui_page_4(self):
-        self.ka_view_model = models.KataTableViewModel(self.dstore, self)
-        self.ki_view_model = models.KihoTableViewModel(self.dstore, self)
+        self.ka_view_model = models.KataTableViewModel(self)
+        self.ki_view_model = models.KihoTableViewModel(self)
 
         # enable sorting through a proxy model
         ka_sort_model = models.ColorFriendlySortProxyModel(self)
@@ -968,8 +968,8 @@ class L5RMain(L5RCMCore):
             vtb.addStretch()
             return vtb
 
-        self.merits_view_model = models.PerkViewModel(self.dstore, 'merit')
-        self.flaws_view_model = models.PerkViewModel(self.dstore, 'flaws')
+        self.merits_view_model = models.PerkViewModel('merit')
+        self.flaws_view_model = models.PerkViewModel('flaws')
 
         merit_view = QtGui.QListView(self)
         merit_view.setModel(self.merits_view_model)
@@ -1651,25 +1651,21 @@ class L5RMain(L5RCMCore):
             return
 
         if self.increase_trait(int(tag)) == CMErrors.NOT_ENOUGH_XP:
-            log.ui.warning("not enough xp to increase trait: %s", trait_.id)
             self.not_enough_xp_advise(self)
 
     def on_void_increase(self):
         """raised when user click on the small '+' button near void ring"""
         if self.increase_void() == CMErrors.NOT_ENOUGH_XP:
-            log.ui.warning("not enough xp to increase void ring")
             self.not_enough_xp_advise(self)
 
     def do_buy_kata(self, kata):
         """attempt to buy a new kata"""
         if self.buy_kata(kata) == CMErrors.NOT_ENOUGH_XP:
-            log.ui.warning("not enough xp to buy kata: %s", kata)
             self.not_enough_xp_advise(self)
 
     def do_buy_kiho(self, kiho):
         """attempt to buy a new kiho"""
         if self.buy_kiho(kiho) == CMErrors.NOT_ENOUGH_XP:
-            log.ui.warning("not enough xp to buy kiho: %s", kiho)
             self.not_enough_xp_advise(self)
 
     def on_pc_name_change(self):
@@ -1732,7 +1728,6 @@ class L5RMain(L5RCMCore):
             err_ = self.buy_next_skill_rank(skill_id)
             if err_ != CMErrors.NO_ERROR:
                 if err_ == CMErrors.NOT_ENOUGH_XP:
-                    log.ui.warning("not enough xp to buy skill rank: %s", skill_id)
                     self.not_enough_xp_advise(self)
                 return
 
@@ -1773,14 +1768,14 @@ class L5RMain(L5RCMCore):
             idx = None
             for i in xrange(0, self.spell_table_view.model().rowCount()):
                 idx = self.spell_table_view.model().index(i, 0)
-                if (model_.data(idx, QtCore.Qt.UserRole).spell_id == spell_itm.spell_id):
+                if model_.data(idx, QtCore.Qt.UserRole).spell_id == spell_itm.spell_id:
                     break
             if idx.isValid():
                 sm_.setCurrentIndex(idx, (QtGui.QItemSelectionModel.Select |
                                           QtGui.QItemSelectionModel.Rows))
 
     def act_buy_spell(self):
-        dlg = dialogs.SpellAdvDialog(self.pc, self.dstore, 'freeform', self)
+        dlg = dialogs.SpellAdvDialog(self.pc, 'freeform', self)
         dlg.setWindowTitle(self.tr('Add New Spell'))
         dlg.set_header_text(
             self.tr("<center><h2>Select the spell to learn</h2></center>"))
@@ -2016,7 +2011,7 @@ class L5RMain(L5RCMCore):
     def learn_next_school_spells(self):
         self.pc.recalc_ranks()
 
-        dlg = dialogs.SpellAdvDialog(self.pc, self.dstore, 'bounded', self)
+        dlg = dialogs.SpellAdvDialog(self.pc, 'bounded', self)
         dlg.setWindowTitle(self.tr('Choose School Spells'))
         dlg.set_header_text(self.tr("<center><h2>Your school has granted you \
                                      the right to choose some spells.</h2> \
@@ -2624,8 +2619,8 @@ class L5RMain(L5RCMCore):
             version_str = update_info['version']
 
         if need_update and self.ask_to_upgrade(version_str) == QtGui.QMessageBox.Yes:
-            import osutil
-            osutil.portable_open(PROJECT_DOWNLOADS_LINK)
+            import util
+            util.portable_open(PROJECT_DOWNLOADS_LINK)
 
     def on_change_insight_calculation(self):
         method = self.sender().checkedAction().property('method')

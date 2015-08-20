@@ -21,7 +21,7 @@ import rules
 import dialogs
 import models
 import os
-import osutil
+from src.util import log, osutil
 
 import api.character
 import api.character.books

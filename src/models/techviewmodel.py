@@ -16,8 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtGui, QtCore
-import dal
-import dal.query
+import api.data.schools
 
 
 class TechItemModel(object):
@@ -47,10 +46,9 @@ class TechItemModel(object):
 
 class TechViewModel(QtCore.QAbstractListModel):
 
-    def __init__(self, dstore, parent=None):
+    def __init__(self, parent=None):
         super(TechViewModel, self).__init__(parent)
 
-        self.dstore = dstore
         self.items = []
         self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
         self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
@@ -63,13 +61,15 @@ class TechViewModel(QtCore.QAbstractListModel):
     def build_item_model(self, tech_id, adjusted_rank=0):
         itm = TechItemModel()
 
-        school, tech = dal.query.get_tech(self.dstore, tech_id)
-        if tech and school:
-            itm.name = tech.name
+        school_, tech_ = api.data.schools.get_technique(tech_id)
+
+        if school_ and tech_:
+            itm.name = tech_.name
             itm.id = tech_id
-            itm.school_name = school.name
+            itm.school_name = school_.name
+
             if adjusted_rank == 0:
-                itm.rank = str(tech.rank)
+                itm.rank = str(tech_.rank)
             else:
                 itm.rank = str(adjusted_rank)
         return itm

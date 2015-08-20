@@ -16,7 +16,9 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtGui, QtCore
-import dal.query
+import api.data
+import api.data.powers
+from src.util import log
 
 
 class KataItemModel(object):
@@ -35,7 +37,7 @@ class KataItemModel(object):
 
 class KataTableViewModel(QtCore.QAbstractTableModel):
 
-    def __init__(self, dstore, parent=None):
+    def __init__(self, parent=None):
         super(KataTableViewModel, self).__init__(parent)
         self.items = []
         self.headers = ['Name', 'Mastery', 'Element']
@@ -43,7 +45,6 @@ class KataTableViewModel(QtCore.QAbstractTableModel):
         self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
                          QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
         self.item_size = QtCore.QSize(28, 28)
-        self.dstore = dstore
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
@@ -98,18 +99,23 @@ class KataTableViewModel(QtCore.QAbstractTableModel):
 
     def build_item_model(self, ka_id):
         itm = KataItemModel()
-        ka = dal.query.get_kata(self.dstore, ka_id.kata)
+        ka = api.data.powers.get_kata(ka_id.kata)
+
         if ka:
             itm.id = ka.id
             itm.adv = ka_id
             itm.name = ka.name
             itm.mastery = ka.mastery
-            itm.element = dal.query.get_ring(self.dstore, ka.element).text
+
+            try:
+                itm.element = api.data.get_ring(ka.element).text
+            except:
+                itm.element = ka.element
+
             itm.text = ka.desc
         else:
-            print('cannot find kata: {0}'.format(ka_id.kata))
+            log.model.error(u"kata not found: %s", ka_id.kata)
 
-        # TODO: translate element
         return itm
 
     def update_from_model(self, model):

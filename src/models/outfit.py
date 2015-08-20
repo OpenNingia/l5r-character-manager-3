@@ -17,8 +17,9 @@
 
 from PySide import QtCore, QtGui
 import rules
-import dal
-import dal.query
+import api.data.outfit
+import api.data.skills
+from src.util import log
 
 
 class ArmorOutfit(object):
@@ -54,11 +55,12 @@ class WeaponOutfit(object):
         self.tags = []
 
 
-def weapon_outfit_from_db(dstore, weap_nm, sk_uuid=None):
+def weapon_outfit_from_db(weap_nm, sk_uuid=None):
     itm = WeaponOutfit()
-    weapon = dal.query.get_weapon(dstore, weap_nm)
-    effect_tx = dal.query.get_weapon_effect(
-        dstore, weapon.effectid).text if (weapon.effectid is not None) else ''
+
+    weapon = api.data.outfit.get_weapon(weap_nm)
+    effect_ = api.data.outfit.get_effect(weapon.effectid)
+    effect_tx = effect_.text if effect_ is not None else ''
 
     itm.name = weapon.name
     itm.dr = weapon.dr or 'N/A'
@@ -73,19 +75,19 @@ def weapon_outfit_from_db(dstore, weap_nm, sk_uuid=None):
     itm.skill_id = weapon.skill
 
     try:
-        itm.skill_nm = dal.query.get_skill(dstore, weapon.skill).name
+        itm.skill_nm = api.data.skills.get(weapon.skill).name
     except Exception as ex:
-        print(ex)
-        pass
+        log.model.error(u"weapon skill not found: %s", weapon.skill)
+
     return itm
 
 
-def armor_outfit_from_db(dstore, armor_nm):
+def armor_outfit_from_db(armor_nm):
     itm = ArmorOutfit()
 
-    armor = dal.query.get_armor(dstore, armor_nm)
-    effect_tx = dal.query.get_weapon_effect(
-        dstore, armor.effectid).text if (armor.effectid is not None) else ''
+    armor = api.data.outfit.get_armor(armor_nm)
+    effect_ = api.data.outfit.get_effect(armor.effectid)
+    effect_tx = effect_.text if effect_ is not None else ''
 
     itm.name = armor.name
     itm.tn = armor.tn

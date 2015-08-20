@@ -16,9 +16,8 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtGui, QtCore
-import dal
-import dal.query
-
+import api.data.skills
+from src.util import log
 
 class MaItemModel(object):
 
@@ -33,10 +32,9 @@ class MaItemModel(object):
 
 class MaViewModel(QtCore.QAbstractListModel):
 
-    def __init__(self, dstore, parent=None):
+    def __init__(self, parent=None):
         super(MaViewModel, self).__init__(parent)
 
-        self.dstore = dstore
         self.items = []
         self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
         self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
@@ -66,7 +64,12 @@ class MaViewModel(QtCore.QAbstractListModel):
     def get_mastery_abilities(self, model):
         for sk_uuid in model.get_skills():
             sk_rank = model.get_skill_rank(sk_uuid)
-            sk = dal.query.get_skill(self.dstore, sk_uuid)
+            sk = api.data.skills.get(sk_uuid)
+
+            if not sk:
+                log.model.error(u"skill not found: %s", sk_uuid)
+                continue
+
             mas = [x for x in sk.mastery_abilities if x.rank <= sk_rank]
 
             for ma in mas:

@@ -16,7 +16,9 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
 
-from models.advances import Advancement
+from models.advances import *
+#from ..models.advances import Advancement
+
 
 class Rank(Advancement):
     def __init__(self):

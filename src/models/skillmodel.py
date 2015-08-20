@@ -16,8 +16,14 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtGui, QtCore
-import dal.query
 import rules
+
+import api.data
+import api.data.skills
+import api.character.skills
+
+from src.util import log
+
 
 class SkillItemModel(object):
 
@@ -37,7 +43,7 @@ class SkillItemModel(object):
 
 class SkillTableViewModel(QtCore.QAbstractTableModel):
 
-    def __init__(self, dstore, parent=None):
+    def __init__(self, parent=None):
         super(SkillTableViewModel, self).__init__(parent)
         self.items = []
         self.headers = ['Name', 'Rank', 'Trait', 'Base Roll', 'Mod Roll', 'Emphases']
@@ -48,8 +54,6 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
         if parent:
             self.bold_font = parent.font()
             self.bold_font.setBold(True)
-
-        self.dstore = dstore
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
@@ -115,12 +119,14 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
         itm = SkillItemModel()
         itm.skill_id = sk.id
         itm.name = sk.name
-        trait = (dal.query.get_trait(self.dstore, sk.trait) or
-                 dal.query.get_ring(self.dstore, sk.trait))
+
+        trait = api.data.get_trait_or_ring(sk.trait)
+
         if trait:
             itm.trait = trait.text
         else:
             itm.trait = sk.trait
+
         return itm
 
     def update_from_model(self, model):
@@ -129,10 +135,13 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
 
         self.clean()
         for s in skills_id_a:
-            sk = dal.query.get_skill(self.dstore, s)
+
+            sk = api.data.skills.get(s)
+
             if not sk:
-                print('cannot find skill: {0}'.format(s))
+                log.model.error(u"skill not found: %s", s)
                 continue
+
             itm = self.build_item_model(sk)
             itm.rank = model.get_skill_rank(s)
             itm.emph = model.get_skill_emphases(s)

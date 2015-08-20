@@ -16,7 +16,9 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtGui, QtCore
-import dal.query
+import api.data
+import api.data.powers
+from src.util import log
 
 
 class KihoItemModel(object):
@@ -35,7 +37,7 @@ class KihoItemModel(object):
 
 class KihoTableViewModel(QtCore.QAbstractTableModel):
 
-    def __init__(self, dstore, parent=None):
+    def __init__(self, parent=None):
         super(KihoTableViewModel, self).__init__(parent)
         self.items = []
         self.headers = ['Name', 'Mastery', 'Element']
@@ -43,7 +45,6 @@ class KihoTableViewModel(QtCore.QAbstractTableModel):
         self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
                          QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
         self.item_size = QtCore.QSize(28, 28)
-        self.dstore = dstore
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
@@ -98,19 +99,22 @@ class KihoTableViewModel(QtCore.QAbstractTableModel):
 
     def build_item_model(self, ki_id):
         itm = KihoItemModel()
-        ki = dal.query.get_kiho(self.dstore, ki_id.kiho)
+        ki = api.data.powers.get_kiho(ki_id.kiho)
+
         if ki:
             itm.id = ki.id
             itm.adv = ki_id
             itm.name = ki.name
             itm.mastery = ki.mastery
+
             try:
-                itm.element = dal.query.get_ring(self.dstore, ki.element).text
+                itm.element = api.data.get_ring(ki.element).text
             except:
                 itm.element = ki.element
+
             itm.text = ki.desc
         else:
-            print('cannot find kiho: {0}'.format(ki_id.kiho))
+            log.model.error(u"kiho not found: %s", ki_id.kiho)
 
         if ki.type == 'tattoo':
             itm.mastery = "N/A"

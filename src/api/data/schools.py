@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+__author__ = 'Daniele'
 
 import dal.query
 from asq.initiators import query
@@ -88,3 +89,8 @@ def get_emphasis_to_choose(sid):
     return query(school.skills) \
         .where(lambda x: x.emph and x.emph.startswith('*')) \
         .to_list()
+
+
+def get_technique(tech_id):
+    """returns the school and the technique by tech_id"""
+    return dal.query.get_tech(__api.ds, tech_id)

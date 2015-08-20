@@ -16,18 +16,42 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
 
-import dal.query
-from asq.initiators import query
 from api import __api
+from asq.initiators import query
+import dal.query
 
 
-def get(c):
-    """returns a clan by its clan id"""
-    return query(all()).where(lambda x: x.id == c).first_or_default(None)
-
-
-def all():
-    """returns all clans"""
+def get_weapons():
+    """returns all the weapons"""
     if not __api.ds:
         return []
-    return __api.ds.clans
+    return __api.ds.weapons
+
+
+def get_armors():
+    """returns all the armors"""
+    if not __api.ds:
+        return []
+    return __api.ds.armors
+
+
+def get_weapon(weap_nm):
+    """returns a weapon by name"""
+    if not __api.ds:
+        return None
+    return dal.query.get_weapon(__api.ds, weap_nm)
+
+
+def get_armor(armor_nm):
+    """returns an armor by name"""
+    if not __api.ds:
+        return None
+    return dal.query.get_armor(__api.ds, armor_nm)
+
+
+def get_effect(effectid):
+    """returns an item effect by id"""
+    if not __api.ds:
+        return None
+    return dal.query.get_weapon_effect(__api.ds, effectid)
+

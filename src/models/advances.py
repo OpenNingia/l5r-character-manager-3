@@ -17,6 +17,7 @@
 
 from PySide import QtCore, QtGui
 from datetime import datetime
+#from l5rcmcore import log
 import time
 
 
@@ -26,11 +27,10 @@ class Advancement(object):
     @staticmethod
     def set_buy_for_free(flag):
         Advancement.BUY_FOR_FREE = flag
-        print 'set buy for free? %s ' % Advancement.BUY_FOR_FREE
+        #log.rules.info(u"set buy for free? %s", Advancement.BUY_FOR_FREE)
 
     @staticmethod
     def get_buy_for_free():
-        print 'get buy for free? %s ' % Advancement.BUY_FOR_FREE
         return Advancement.BUY_FOR_FREE
 
     def __init__(self, tag, cost):
@@ -210,11 +210,6 @@ class AdvancementItemDelegate(QtGui.QStyledItemDelegate):
         painter.setFont(main_font)
         font_metric = painter.fontMetrics()
 
-        try:
-            tmp = unicode(item).split(u',')
-        except:
-            tmp = str(item).split(',')
-
         adv_time = None
         if hasattr(item, 'timestamp') and item.timestamp is not None:
             adv_time = "{0:%Y}-{0:%m}-{0:%d} {0:%H}:{0:%M}:{0:%S}".format(
@@ -231,21 +226,29 @@ class AdvancementItemDelegate(QtGui.QStyledItemDelegate):
         main_font.setBold(True)
         painter.setFont(main_font)
 
-        adv_nm = tmp[0]
-        adv_nm_rect = font_metric.boundingRect(adv_nm)
-        painter.drawText(left_margin + option.rect.left(),
-                         option.rect.top() + adv_tp_rect.height() +
-                         adv_nm_rect.height(),
-                         adv_nm)
+        try:
+            tmp = unicode(item).split(u',')
+        except:
+            tmp = str(item).split(',')
 
-        main_font.setBold(False)
-        painter.setFont(main_font)
-        adv_nm = tmp[1]
-        adv_nm_rect = font_metric.boundingRect(adv_nm)
-        painter.drawText(
-            option.rect.right() - adv_nm_rect.width() - right_margin,
-            option.rect.top() + adv_tp_rect.height(
-            ) + adv_nm_rect.height(),
-            adv_nm)
+        if len(tmp) > 0:
+
+            adv_nm = tmp[0]
+            adv_nm_rect = font_metric.boundingRect(adv_nm)
+            painter.drawText(left_margin + option.rect.left(),
+                             option.rect.top() + adv_tp_rect.height() +
+                             adv_nm_rect.height(),
+                             adv_nm)
+
+        if len(tmp) > 1:
+            main_font.setBold(False)
+            painter.setFont(main_font)
+            adv_nm = tmp[1]
+            adv_nm_rect = font_metric.boundingRect(adv_nm)
+            painter.drawText(
+                option.rect.right() - adv_nm_rect.width() - right_margin,
+                option.rect.top() + adv_tp_rect.height(
+                ) + adv_nm_rect.height(),
+                adv_nm)
 
         painter.restore()

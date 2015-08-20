@@ -34,8 +34,6 @@ class SpellItemSelection(QtGui.QWidget):
     lb_mastery = None
     lb_spell = None
 
-    dstore = None
-
     form_lo = None
 
     # filter can be 'no_maho', 'allow_maho' or 'only_maho'
@@ -53,10 +51,9 @@ class SpellItemSelection(QtGui.QWidget):
     # spell changed
     spell_changed = QtCore.Signal(int)
 
-    def __init__(self, pc, dstore, parent=None):
+    def __init__(self, pc, parent=None):
         super(SpellItemSelection, self).__init__(parent)
 
-        self.dstore = dstore
         self.pc = pc
 
         self.tag = None
@@ -178,11 +175,11 @@ class SpellItemSelection(QtGui.QWidget):
                 return []
 
             if self.maho_flt == 'only_maho':
-                return dal.query.get_maho_spells(self.dstore, ring, mastery)
+                return api.data.spells.get_maho(ring, mastery)
             elif self.maho_flt == 'no_maho':
-                return [x for x in dal.query.get_spells(self.dstore, ring, mastery) if 'maho' not in x.tags]
+                return api.data.spells.get(ring, mastery, maho=False)
             else:
-                return dal.query.get_spells(self.dstore, ring, mastery)
+                return api.data.spells.get(ring, mastery, maho=True)
 
         avail_spells = get_avail_spells()
 
