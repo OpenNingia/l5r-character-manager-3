@@ -4,7 +4,11 @@
 
 ### First of all, clone the repo
 
-`git clone https://github.com/OpenNingia/l5r-character-manager-3.git`
+```
+git clone https://github.com/OpenNingia/l5r-character-manager-3.git
+git submodule init
+git submodule update
+```
 
 ### Switch to develop branch
 master branch is often outdated, so you want to get the develop branch by running
