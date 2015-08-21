@@ -275,6 +275,9 @@ class SpellAdvDialog(QtGui.QDialog):
         self.load_data()
 
     def on_maho_toggled(self):
+        sender_ = self.sender()
+        if not sender_.isChecked():
+            return
         self.spell_wdg.set_maho_filter(self.sender().property('tag'))
 
     def on_spell_changed(self, spell):

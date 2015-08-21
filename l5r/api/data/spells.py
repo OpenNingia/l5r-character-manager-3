@@ -53,7 +53,8 @@ def tags(sid, school=None):
     else:
         school_id_list = api.character.schools.get_all()
 
-    return query(s.tags).where(lambda x: x.school is None or x.school in school_id_list).select(lambda x: x.name).to_list()
+    return query(s.tags).where(
+        lambda x: x.school is None or x.school in school_id_list).select(lambda x: x.name).to_list()
 
 
 def is_multi_element(sid):
@@ -74,12 +75,12 @@ def is_dragon(sid):
 
 def get_maho_spells(ring, mastery):
     """returns all the maho spells for the given ring and mastery"""
-    return query(get(ring, mastery)).where(lambda x: 'maho' in x.tags).to_list()
+    return query(get_spells(ring, mastery)).where(lambda x: 'maho' in tags(x.id)).to_list()
 
 
 def get_spells(ring, mastery, maho=True):
     """returns all the maho spells for the given ring and mastery, if maho include maho spells"""
     including_maho = query(all()).where(lambda x: x.element == ring and x.mastery == mastery)
     if not maho:
-        return query(including_maho).where(lambda x: 'maho' not in x.tags).to_list()
+        return query(including_maho).where(lambda x: 'maho' not in tags(x.id)).to_list()
     return including_maho.to_list()
