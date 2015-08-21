@@ -97,11 +97,6 @@ def special_affinity(spell):
         if api.data.spells.has_tag(spell.id, 'wards', school):
             ret += 1
 
-    #if api.character.has_tag_or_rule('phoenix_embrace_the_elements'):
-    #    affinity_, deficiencies_ = phoenix_embrace_the_elements()
-    #    if affinity_ == spell.element:
-    #        ret += 1
-
     return ret
 
 
@@ -114,10 +109,6 @@ def special_deficiency(spell):
         if (api.data.spells.has_tag(spell.id, 'travel', school) or
                 api.data.spells.has_tag(spell.id, 'craft', school)):
             ret += 1
-
-    #if api.character.has_tag_or_rule('phoenix_embrace_the_elements'):
-    #    affinity_, deficiencies_ = phoenix_embrace_the_elements()
-    #    ret += query(deficiencies_).where(lambda x: x == spell.element or x in spell.elements).count()
 
     return ret
 
