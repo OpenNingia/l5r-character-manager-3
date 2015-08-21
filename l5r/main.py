@@ -1881,8 +1881,8 @@ class L5RMain(L5RCMCore):
         if self.nicebar:
             return
 
-        print('check rank advancement. potential rank: {}, actual rank: {}',
-              self.pc.get_insight_rank(), self.last_rank)
+        log.rules.debug(u"check rank advancement. potential rank: %d, actual rank: %d",
+                        self.pc.get_insight_rank(), self.last_rank)
 
         if self.pc.get_insight_rank() > self.last_rank:
             # HEY, NEW RANK DUDE!
@@ -1901,9 +1901,6 @@ class L5RMain(L5RCMCore):
                              QtGui.QSizePolicy.Preferred)
             bt.clicked.connect(self.show_advance_rank_dlg)
             self.show_nicebar([lb, bt])
-
-            # debug
-            # dump_slots(self, 'after_a_while.txt')
 
     def check_school_new_tech(self):
         if self.nicebar:

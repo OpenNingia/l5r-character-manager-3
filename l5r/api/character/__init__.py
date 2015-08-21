@@ -57,25 +57,29 @@ def has_tag_or_rule(tag):
 
 def remove_advancement(adv):
     """remove an advancement, returns True on success"""
-    if not __api.pc or not adv in __api.pc.advans:
+    if not __api.pc or adv not in __api.pc.advans:
         return False
     __api.pc.advans.remove(adv)
+    log.api.info(u"removed advancement: %s", adv.desc)
     return True
 
 
 def xp():
+    """returns the spent experience"""
     if not __api.pc:
         return 0
     return __api.pc.get_px()
 
 
 def xp_limit():
+    """returns the experience limit"""
     if not __api.pc:
         return 0
     return __api.pc.exp_limit
 
 
 def xp_left():
+    """returns the experience left to spend"""
     return xp_limit() - xp()
 
 
@@ -100,6 +104,7 @@ def ring_rank(ring_id):
 
     return __api.pc.get_attrib_rank(ring_id)
 
+
 def void_rank():
     """returns the Void ring rank"""
     if not __api.pc:
@@ -109,6 +114,7 @@ def void_rank():
 
 def append_advancement(adv):
     if __api.pc:
+        log.api.info(u"add advancement: %s", adv.desc)
         __api.pc.add_advancement(adv)
 
 
@@ -167,6 +173,10 @@ def set_family(family_id):
         __api.pc.set_family(family_.id, family_.trait, 1, [family_.id, family_.clanid])
         __api.pc.clan = family_.clanid
 
+        log.api.info(u"set family: %s, clan: %s", family_.id, family_.clanid)
+    else:
+        log.api.warning(u"family not found: %s", family_id)
+
 
 def get_clan():
     """get PC clan"""
@@ -185,7 +195,7 @@ def is_monk():
     """return if pc is a Monk and if its a monk of the brotherhood of shinsei"""
     # is monk ?
     monk_schools = api.character.schools.get_schools_by_tag('monk')
-        #x for x in api.character.schools.get_all() if x.has_tag('monk')]
+
     is_monk = len(monk_schools) > 0
     # is brotherhood monk?
     brotherhood_schools = [
@@ -193,6 +203,7 @@ def is_monk():
     is_brotherhood = len(brotherhood_schools) > 0
 
     # a friend of the brotherhood pay the same as the brotherhood members
+    # fixme, this should be moved from here
     is_brotherhood = is_brotherhood or has_rule(
         'friend_brotherhood')
 
