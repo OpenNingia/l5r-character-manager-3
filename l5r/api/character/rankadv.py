@@ -19,9 +19,12 @@ __author__ = 'Daniele'
 from api import __api
 from models.advancements.rank import Rank
 from asq.initiators import query
+from asq.selectors import a_
 
 import api.character.schools
 import api.data.merits
+
+from util import log
 
 
 def all():
@@ -30,67 +33,111 @@ def all():
     return query(__api.pc.advans).where(lambda x: x.type == 'rank').to_list()
 
 
-def get_current():
-    """returns the current rank advancement"""
-    if not __api.current_rank_adv:
-        __api.current_rank_adv = Rank()
-    return __api.current_rank_adv
-
-
-def start(rank):
-    """start a new rank advancement for the given rank
-    :type rank: int
-    """
-    get_current().rank = rank
-
-
-def set_clan(cid):
-    """set rank advancement clan
-    :type cid: str
-    """
-    get_current().clan = cid
-
-
-def set_family(fid):
-    """set rank advancement family
-    :type fid: str
-    """
-    get_current().family = fid
-
-
-def set_school(sid):
-    """set rank advancement family
-    :type sid: str
+def can_advance_rank():
+    """returns True if the character is able to advance to the next rank
+       using the same path as the previous rank
     """
 
-    # get school rank
-    school_rank = api.character.schools.get_rank(sid)
+    # normally a character is able to advance in the same school
+    # unless the current school is a path
 
-    # check if alternate path
-    get_current().is_alternate_path = api.data.schools.is_path(sid)
-
-    # check if character has left a path
-    get_current().original_school = api.character.schools.get_current()
-    get_current().left_alternate_path = (get_current().original_school != sid and
-                                         api.data.schools.is_path(get_current().original_school))
-    get_current().school = sid
-
-    # set school rank
-    # if school rank was 0 the character has joined a school on rank 1
-    # if the school_rank was != 0 the character advanced in the previous school
-    get_current().school_rank = school_rank + 1
+    return not api.data.schools.is_path(
+        api.character.schools.get_current())
 
 
-def add_merit(mid, rank=1, free=False):
-    """adds a merit rank, increasing the advancement cost if free==False
-    :type mid: str
-    :type rank: int
+def can_abandon_path():
+    """returns True if the character can abandon the current path to
+       resume the former
     """
 
-    merit = api.data.merits.get_rank(mid, rank)
-    pair = (mid, rank)
-    if merit and pair not in get_current().merits:
-        get_current().merits.append(pair)
-        if not free:
-            get_current().cost += api.data.merits.get_rank_cost(mid, rank)
+    return api.data.schools.is_path(
+        api.character.schools.get_current())
 
+
+def advance_rank():
+    """advance the character in the same path as the previous rank
+       returns False if this option is not available
+    """
+
+    # this function assumes that the character is able to
+    # advance in the same path
+
+    from models.advancements.rank import Rank
+    adv = Rank()
+    # the insight rank
+    adv.rank = api.character.insight_rank()
+    # this is the current school for this rank
+    adv.school = api.character.schools.get_current()
+    # no cost advancing in the same rank
+    adv.cost = 0
+    # description
+    adv.desc = api.tr("Insight Rank {0}. School: {1} rank {2} ").format(
+        adv.rank,
+        api.data.schools.get(adv.school).name,
+        api.character.schools.get_school_rank(adv.school) + 1
+    )
+
+    api.character.append_advancement(adv)
+
+
+def leave_path():
+    """the character resume its former path"""
+
+    # this function assumes that the character is
+    # currently following an alternate path
+
+    former_school_ = query(all()).where(
+        lambda x: not api.data.schools.is_path(x)).order_by(a_('rank')).first_or_default(None)
+
+    if not former_school_:
+        log.api.error(u"former school not found. could not resume old path")
+        return False
+
+
+    from models.advancements.rank import Rank
+    adv = Rank()
+    # the insight rank
+    adv.rank = api.character.insight_rank()
+    # this is the current school for this rank
+    adv.school = former_school_.school
+    # no cost advancing in the same rank
+    adv.cost = 0
+    # description
+    adv.desc = api.tr("Insight Rank {0}. School: {1} rank {2} ").format(
+        adv.rank,
+        api.data.schools.get(adv.school).name,
+        api.character.schools.get_school_rank(adv.school) + 1
+    )
+
+    api.character.append_advancement(adv)
+
+
+def join_new(school_id):
+    """the character joins a new school"""
+
+    from models.advancements.rank import Rank
+    adv = Rank()
+    # the insight rank
+    adv.rank = api.character.insight_rank()
+    # this is the current school for this rank
+    adv.school = school_id
+    # no cost advancing in the same rank
+    adv.cost = 0
+    # description
+
+    school_rank = api.character.schools.get_school_rank(adv.school)
+
+    if api.data.schools.is_path(adv.school):
+        # replaces current school
+        adv.replaced = api.character.schools.get_current()
+    else:
+        school_rank += 1
+
+    adv.desc = api.tr("Insight Rank {0}. School: {1} rank {2} ").format(
+        adv.rank,
+        api.data.schools.get(adv.school).name,
+        school_rank
+    )
+
+
+    api.character.append_advancement(adv)

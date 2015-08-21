@@ -16,55 +16,38 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
 
-from models.advances import *
-#from ..models.advances import Advancement
+from models.advances import Advancement
 
 
 class Rank(Advancement):
     def __init__(self):
         super(Rank, self).__init__('rank', 0)
 
-        # the clan
-        self.clan = None
-        # the family
-        self.family = None
-        # the target school
-        self.school = None
         # the insight rank
         self.rank = 0
+        # this is the current school for this rank
+        self.school = None
         # the school rank
         self.school_rank = 0
-        # the learned tech
-        self.tech = None
-        # is 'school' an alternate path
-        self.is_alternate_path = False
-        # the original school
-        self.original_school = None
-        # the character left an alternate path
-        self.left_alternate_path = False
-        # skills
-        self.skills = []
-        # merits ( tuple merit_id, merit_rank )
-        self.merits = []
-        # flaws ( tuple flaw_id, flaw_rank )
-        self.flaws = []
+        # the school optionally replaced by this one
+        self.replaced = None
 
-    def to_dict(self):
-        out = {'clan': self.clan,
-               'family': self.family,
-               'school': self.school,
-               'rank': self.rank,
-               'school_rank': self.school_rank,
-               'tech': self.tech,
-               'is_alternate_path': self.is_alternate_path,
-               'original_school': self.original_school,
-               'left_alternate_path': self.left_alternate_path,
-               'skills': []}
-
-        for s in self.skills:
-            out['skills'].append(s.to_dict())
-
-        return out
+    #def to_dict(self):
+    #    out = {'clan': self.clan,
+    #           'family': self.family,
+    #           'school': self.school,
+    #           'rank': self.rank,
+    #           'school_rank': self.school_rank,
+    #           'tech': self.tech,
+    #           'is_alternate_path': self.is_alternate_path,
+    #           'original_school': self.original_school,
+    #           'left_alternate_path': self.left_alternate_path,
+    #           'skills': []}
+    #
+    #    for s in self.skills:
+    #        out['skills'].append(s.to_dict())
+    #
+    #    return out
 
 
 class StartingSkill(object):

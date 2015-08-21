@@ -138,10 +138,11 @@ class KihoDialog(QtGui.QDialog):
         self.item = kiho
 
         ring_name = dal.query.get_ring(self.dstore, kiho.element)
+        kiho_cost = api.rules.calculate_kiho_cost(kiho.id)
 
         self.tx_element.setText(ring_name.text)
         self.tx_mastery.setText(str(kiho.mastery))
-        self.tx_cost.setText(str(self.parent().calculate_kiho_cost(kiho)))
+        self.tx_cost.setText(str(kiho_cost))
 
         pc_status = None
         is_monk, is_brotherhood = self.parent().pc_is_monk()

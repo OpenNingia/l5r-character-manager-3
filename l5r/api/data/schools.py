@@ -18,7 +18,10 @@ __author__ = 'Daniele'
 
 import dal.query
 from asq.initiators import query
+from asq.selectors import a_
 from api import __api
+
+from util import log
 
 
 def get(c):
@@ -94,3 +97,38 @@ def get_emphasis_to_choose(sid):
 def get_technique(tech_id):
     """returns the school and the technique by tech_id"""
     return dal.query.get_tech(__api.ds, tech_id)
+
+
+def get_requirements(sid):
+    """returns the requirements to join the given school"""
+    school_ = get(sid)
+    if not school_:
+        log.api.error(u"school not found: %s", sid)
+        return []
+
+    requirements_by_data_ = school_.require
+
+    # fixme. since i can't rewrite all alternate path
+    # I decided to patch these requirement by code
+
+    import api.character.schools
+    from dal.requirements import Requirement
+    coded_requirements_ = []
+
+    if is_path(sid):
+        # An alternate path can only be joined
+        # on the same school rank that its technique replaces
+
+        path_rank_ = query(school_.techs).select(a_('rank')).first_or_default(1)
+        r = Requirement()
+
+        r.field = api.character.schools.get_current()
+        r.type = 'school'
+        r.min = path_rank_ - 1
+        r.max = path_rank_ - 1
+        r.trg = None
+        r.text = __api.tr("Replaces School Rank: {0}").format(path_rank_)
+
+        coded_requirements_.append(r)
+
+    return requirements_by_data_ + coded_requirements_

@@ -24,7 +24,6 @@ from asq.selectors import a_
 import api.data
 import api.data.families
 import api.data.clans
-import api.character.rankadv
 
 
 def green(text):
@@ -141,10 +140,6 @@ class FamilyChooserWidget(QtGui.QWidget):
     def load(self):
         if not self.current_clan_id:
             self.load_clans()
-
-    def apply_rank_advancement(self):
-        api.character.rankadv.set_clan(self.current_clan_id)
-        api.character.rankadv.set_family(self.current_family_id)
 
     def apply_to_creation(self):
         api.character.creation.set_clan(self.current_clan_id)

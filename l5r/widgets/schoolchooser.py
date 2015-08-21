@@ -20,7 +20,6 @@ from asq.selectors import a_
 
 import api.data
 import api.character
-import api.character.rankadv
 import api.character.merits
 import api.data.schools
 import api.data.clans
@@ -161,7 +160,8 @@ class SchoolChooserDialog(QtGui.QDialog):
         self.widget.statusChanged.connect(self.bt_ok.setEnabled)
 
         self.widget.load()
-        #self.widget.selected_clan = api.character.get_clan()
+        self.widget.enable()
+        self.widget.selected_clan = api.character.get_clan()
 
         self.header.setText(self.get_h1_text())
 
@@ -220,10 +220,14 @@ class SchoolChooserWidget(QtGui.QWidget):
         self._allow_advanced_schools = True
         self._allow_alternate_paths = True
 
-        self._old_status = False
+        self._old_status = None
 
         self.build_ui()
+
+    def enable(self):
+        self._old_status = None
         self.connect_signals()
+        self.update_status()
 
     def sizeHint(self):
         return QtCore.QSize(480, 480)
@@ -242,17 +246,7 @@ class SchoolChooserWidget(QtGui.QWidget):
             except:
                 pass
 
-        # if self.current_clan_id and self.current_school_id:
         self.update_status()
-            # choices were made, allow to proceed
-            # self.statusChanged.emit(True)
-
-    def apply_rank_advancement(self):
-        api.character.rankadv.set_school(self.current_school_id)
-        if self.ck_multiple_schools.isChecked():
-            api.character.rankadv.add_merit('multiple_schools', rank=1)
-        if self.ck_different_school.isChecked():
-            api.character.rankadv.add_merit('different_school', rank=1)
 
     def connect_signals(self):
         self.cb_clan.currentIndexChanged.connect(self.on_clan_changed)
@@ -329,14 +323,11 @@ class SchoolChooserWidget(QtGui.QWidget):
 
     def build_options_panel(self):
         fr = QtGui.QFrame(self)
-        #vb = QtGui.QVBoxLayout(fr)
         fl = QtGui.QFormLayout(fr)
 
         self.ck_different_school = QtGui.QCheckBox(self.tr("Buy 'Different School' advantage"), self)
         self.ck_multiple_schools = QtGui.QCheckBox(self.tr("Buy 'Multiple Schools' advantage"), self)
 
-        #vb.addWidget(self.ck_different_school)
-        #vb.addWidget(self.ck_multiple_schools)
         fl.addRow(self.ck_different_school, self.lb_different_school_err)
         fl.addRow(self.ck_multiple_schools, self.lb_multiple_schools_err)
 
@@ -610,12 +601,11 @@ class SchoolChooserWidget(QtGui.QWidget):
             self.update_book(school_dal)
 
             self.update_status()
-            #self.statusChanged.emit(self.req_list.match())
 
     def update_school_requirements(self, school_dal):
         self.req_list.set_requirements(api.character.model(),
                                        api.data.model(),
-                                       school_dal.require)
+                                       api.data.schools.get_requirements(school_dal.id))
         if self._show_school_requirements:
             self.set_row_visible(self.pl_requirements,
                                  len(school_dal.require) > 0)

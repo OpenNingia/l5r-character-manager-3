@@ -17,10 +17,8 @@
 
 from PySide import QtGui, QtCore
 
-import dal
-import dal.query
-import models
 import widgets
+import api.character.rankadv
 
 
 class NextRankDlg(QtGui.QDialog):
@@ -80,6 +78,10 @@ what would you want to do?
             for s in reversed(self.pc.schools):
                 if not s.is_path:
                     self.pc.set_current_school_id(s.school_id)
+
+            api.character.rankadv.leave_path()
+        else:
+            api.character.rankadv.advance_rank()
 
         self.pc.set_can_get_other_tech(True)
         self.accept()

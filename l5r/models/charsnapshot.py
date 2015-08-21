@@ -17,6 +17,8 @@
 
 from chmodel import ring_name_from_id, attrib_name_from_id
 from copy import copy
+import api.character
+import api.character.schools
 
 
 class CharacterSnapshot(object):
@@ -48,8 +50,11 @@ class CharacterSnapshot(object):
         for k, v in [(ring_name_from_id(i), pc.get_ring_rank(i)) for i in xrange(0, 5)]:
             self.rings[k] = v
 
-        for k, v in [(x.school_id, x.school_rank) for x in pc.schools]:
-            self.schools[k] = v
+        for s in api.character.schools.get_all():
+            self.schools[s] = api.character.schools.get_school_rank(s)
+
+        #for k, v in [(x.school_id, x.school_rank) for x in pc.schools]:
+        #    self.schools[k] = v
 
         self.tags += pc.tags
         self.tags += pc.step_1.tags
