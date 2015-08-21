@@ -322,6 +322,36 @@ def calculate_mod_skill_roll(pc, skill):
     return base_roll
 
 
+def calculate_kiho_cost(kiho_id):
+
+    kiho = api.data.powers.get_kiho(kiho_id)
+
+    if not kiho:
+        return 0
+
+    from math import ceil
+
+    # tattoos are free as long as you're eligible
+    if 'tattoo' in kiho.tags:
+        return 0
+
+    cost_mult = 1
+
+    is_monk, is_brotherhood = api.character.is_monk()
+    is_ninja = api.character.is_ninja()
+    is_shugenja = api.character.is_shugenja()
+
+    if is_brotherhood:
+        cost_mult = 1  # 1px / mastery
+    elif is_monk:
+        cost_mult = 1.5
+    elif is_shugenja:
+        cost_mult = 2
+    elif is_ninja:
+        cost_mult = 2
+
+    return int(ceil(kiho.mastery * cost_mult))
+
 class DicePool(object):
     """represents a dice pool"""
     def __init__(self):

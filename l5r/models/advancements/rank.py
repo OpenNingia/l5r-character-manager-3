@@ -29,6 +29,8 @@ class Rank(Advancement):
         self.school = None
         # the school rank
         self.school_rank = 0
+        # the school optionally replaced by this one
+        self.replaced = None
 
     #def to_dict(self):
     #    out = {'clan': self.clan,

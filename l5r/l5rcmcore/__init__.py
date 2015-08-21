@@ -18,7 +18,6 @@
 import sys
 import os
 import shutil
-from math import ceil
 from tempfile import mkstemp
 import subprocess
 
@@ -361,49 +360,6 @@ class L5RCMCore(QtGui.QMainWindow):
         self.pc.remove_spell(spell_id)
         self.update_from_model()
 
-    def buy_school_requirements(self):
-        for skill_uuid in self.get_missing_school_requirements():
-            log.app.info(u"buy requirement skill: %s", skill_uuid)
-            if self.buy_next_skill_rank(skill_uuid) != CMErrors.NO_ERROR:
-                return
-
-    def check_if_tech_available(self):
-        school_ = api.data.schools.get(
-            api.character.schools.get_current()
-        )
-        if not school_:
-            return False
-        count = len(school_.techs)
-        ret = count >= self.pc.get_school_rank()
-        log.app.debug(u"check if tech is available. techs acquired: %d, school rank: %d. available: %s",
-                      count, self.pc.get_school_rank(), "yes" if ret else "no")
-        return ret
-
-    def check_tech_school_requirements(self):
-        # one should have at least one rank in all school skills
-        # in order to gain a school techniques
-        return len(self.get_missing_school_requirements()) == 0
-
-    def get_missing_school_requirements(self):
-        school_ = api.data.schools.get(
-            api.character.schools.get_current()
-        )
-        if not school_:
-            return []
-
-        list_ = []
-
-        #log.app.info(u"check implicit requirements for school: %s", school_.id)
-        for sk in school_.skills:
-            skill_rank_ = api.character.skills.get_skill_rank(sk.id)
-            #log.app.debug(u"need 1 rank in skill %s, character has rank %d in that skill",
-            #             sk.id, skill_rank_)
-            if skill_rank_ < 1:
-                list_.append(sk.id)
-                log.app.warning(u"missing 1 skill rank in: %s, for school: %s", sk.id, school_.id)
-
-        return list_
-
     def set_pc_affinity(self, affinity):
         if self.pc.has_tag('chuda shugenja school'):
             self.pc.set_affinity('maho ' + affinity.lower())
@@ -484,64 +440,9 @@ class L5RCMCore(QtGui.QMainWindow):
     def pc_is_shugenja(self):
         return api.character.is_shugenja()
 
-    def calculate_kiho_cost(self, kiho):
-
-        # tattoos are free as long as you're eligible
-        if 'tattoo' in kiho.tags:
-            return 0
-
-        cost_mult = 1
-
-        is_monk, is_brotherhood = self.pc_is_monk()
-        is_ninja = self.pc_is_ninja()
-        is_shugenja = self.pc_is_shugenja()
-
-        if is_brotherhood:
-            cost_mult = 1  # 1px / mastery
-        elif is_monk:
-            cost_mult = 1.5
-        elif is_shugenja:
-            cost_mult = 2
-        elif is_ninja:
-            cost_mult = 2
-
-        return int(ceil(kiho.mastery * cost_mult))
-
-    def check_kiho_eligibility(self, kiho):
-        # check eligibility
-        against_mastery = 0
-
-        is_monk, is_brotherhood = self.pc_is_monk()
-        is_ninja = self.pc_is_ninja()
-        is_shugenja = self.pc_is_shugenja()
-
-        school_bonus = 0
-        relevant_ring = models.ring_from_name(kiho.element)
-        ring_rank = self.pc.get_ring_rank(relevant_ring)
-
-        if is_ninja:
-            ninja_schools = [x for x in self.pc.schools if x.has_tag('ninja')]
-            ninja_rank = sum([x.school_rank for x in ninja_schools])
-
-        if is_monk:
-            monk_schools = [x for x in self.pc.schools if x.has_tag('monk')]
-            school_bonus = sum([x.school_rank for x in monk_schools])
-
-        against_mastery = school_bonus + ring_rank
-
-        if is_brotherhood:
-            return against_mastery >= kiho.mastery
-        elif is_monk:
-            return against_mastery >= kiho.mastery
-        elif is_shugenja:
-            return ring_rank >= kiho.mastery
-        elif is_ninja:
-            return ninja_rank >= kiho.mastery
-
-        return False
-
     def buy_kiho(self, kiho):
-        adv = models.KihoAdv(kiho.id, kiho.id, self.calculate_kiho_cost(kiho))
+        kiho_cost = api.rules.calculate_kiho_cost(kiho.id)
+        adv = models.KihoAdv(kiho.id, kiho.id, kiho_cost)
         adv.desc = self.tr('{0}, Cost: {1} xp').format(kiho.name, adv.cost)
 
         # monks can get free kihos
@@ -567,27 +468,6 @@ class L5RCMCore(QtGui.QMainWindow):
 
         return CMErrors.NO_ERROR
 
-    def get_higher_tech(self):
-        mt = None
-        ms = None
-        for t in self.pc.get_techs():
-            school, tech = dal.query.get_tech(self.dstore, t)
-            if not mt or tech.rank > mt.rank:
-                ms, mt = school, tech
-        return ms, mt
-
-    def get_higher_tech_in_current_school(self):
-        mt = None
-        ms = None
-
-        for t in self.pc.get_techs():
-            school, tech = dal.query.get_tech(self.dstore, t)
-            if school.id != self.pc.get_school_id():
-                continue
-            if not mt or tech.rank > mt.rank:
-                ms, mt = school, tech
-        return ms, mt
-
     def get_character_full_name(self):
 
         # if the character has a family name
@@ -601,38 +481,3 @@ class L5RCMCore(QtGui.QMainWindow):
             family_name = family_obj.name
             return "{} {}".format(family_name, self.pc.name)
         return self.pc.name
-
-    def get_prev_and_next_school(self):
-
-        all_schools = [dal.query.get_school(self.dstore, x.school_id)
-                       for x in self.pc.schools]
-        print('character schools: ', [x.id for x in all_schools])
-
-        # if len(all_schools) == 0:
-        #    return None, None
-        # if len(all_schools) == 1:
-        #    return None, all_schools[0]
-        # return all_schools[-2], all_schools[-1]
-
-        if len(all_schools) == 0:
-            return None, None
-        # if len(all_schools) == 1:
-        #    return None, all_schools[0]
-
-        last_learned_tech = None
-        prev_school = None
-        if len(self.pc.get_techs()) > 0:
-            last_learned_tech = self.pc.get_techs()[-1]
-            prev_school, tech = dal.query.get_tech(
-                self.dstore, last_learned_tech)
-
-        return prev_school, all_schools[-1]
-
-    def get_next_rank_in_school(self, school):
-
-        out_tech = dal.query.get_school_tech(school, 1)
-
-        for t in sorted(school.techs, key=lambda x: x.rank):
-            if t.id not in self.pc.get_techs():
-                return t
-        return None

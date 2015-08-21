@@ -1812,71 +1812,6 @@ class L5RMain(L5RCMCore):
         # toggle remove
         self.del_spell_bt.setEnabled(not spell_itm.memo)
 
-    def learn_next_school_tech(self):
-        # first of all let's check if the pc has a path for
-        # that target rank
-        # otherwise proceed with the current school
-        path = [
-            x for x in self.pc.schools if x.is_path and x.path_rank == self.pc.get_insight_rank()]
-
-        if len(path):
-            path = path[0]
-            print('path', path.school_id)
-            # get last learned techs
-            last_tech_id = self.pc.get_techs()[-1]
-            last_school, last_tech = dal.query.get_tech(
-                self.dstore, last_tech_id)
-
-            school = dal.query.get_school(self.dstore, path.school_id)
-            for tech in [x for x in school.techs if x.rank == (last_tech.rank + 1)]:
-                path.techs.append(tech.id)
-                log.app.info(u"learned tech from alternate path: %s, tech: %s", school.id, tech.id)
-        else:
-
-            prev_school, next_school = self.get_prev_and_next_school()
-            same_school = next_school is None or prev_school == next_school
-            is_prev_school_path = False
-
-            if prev_school:
-                print('prev school', prev_school.id)
-                is_prev_school_path = 'alternate' in prev_school.tags
-
-            next_tech = None
-            next_rank = 1
-
-            if is_prev_school_path and same_school:
-
-                next_school = dal.query.get_school(
-                    self.dstore, self.pc.schools[-2].school_id)
-
-                # this is the tech he skipped
-                skipped_tech = self.get_next_rank_in_school(next_school)
-                next_tech = dal.query.get_school_tech(
-                    next_school, skipped_tech.rank + 1)
-
-                print('go back to old school', next_school.id)
-
-            elif same_school:
-                # seek the next rank in the same school
-                next_tech = self.get_next_rank_in_school(prev_school)
-                print(
-                    'character advancing in same school which is', prev_school.id)
-            else:
-                # new school, start from rank 1
-                print(
-                    'character advancing in new school which is', next_school.id)
-                next_tech = dal.query.get_school_tech(next_school, 1)
-
-            if next_tech:
-                print('character is going to learn',
-                      next_tech.id, 'rank', next_tech.rank)
-
-                self.pc.add_tech(next_tech.id, next_tech.id)
-
-        self.pc.recalc_ranks()
-        self.pc.set_can_get_other_tech(False)
-        self.update_from_model()
-
     def check_rank_advancement(self):
         if self.nicebar:
             return
@@ -1901,16 +1836,6 @@ class L5RMain(L5RCMCore):
                              QtGui.QSizePolicy.Preferred)
             bt.clicked.connect(self.show_advance_rank_dlg)
             self.show_nicebar([lb, bt])
-
-    def check_school_new_tech(self):
-        if self.nicebar:
-            return
-
-        # Show nicebar if can get another school tech
-        if (self.pc.can_get_other_techs() and
-                self.check_if_tech_available() and
-                self.check_tech_school_requirements()):
-            self.learn_next_school_tech()
 
     def check_school_new_spells(self):
         if self.nicebar:
@@ -1938,19 +1863,6 @@ class L5RMain(L5RCMCore):
             bt.setSizePolicy(QtGui.QSizePolicy.Maximum,
                              QtGui.QSizePolicy.Preferred)
             bt.clicked.connect(self.learn_next_free_kiho)
-            self.show_nicebar([lb, bt])
-
-    def check_missing_requirements(self):
-        if self.nicebar:
-            return
-
-        if not self.check_tech_school_requirements():
-            lb = QtGui.QLabel(self.tr("You need at least one rank in all school skills"
-                                      " to learn the next School Technique"), self)
-            bt = QtGui.QPushButton(self.tr("Buy Requirements"), self)
-            bt.setSizePolicy(QtGui.QSizePolicy.Maximum,
-                             QtGui.QSizePolicy.Preferred)
-            bt.clicked.connect(self.buy_school_requirements)
             self.show_nicebar([lb, bt])
 
     def check_rules(self):
@@ -2267,8 +2179,6 @@ class L5RMain(L5RCMCore):
         self.check_new_skills()
         self.check_affinity_wc()
         self.check_rank_advancement()
-        self.check_missing_requirements()
-        self.check_school_new_tech()
         self.check_school_new_spells()
         self.check_free_kihos()
 

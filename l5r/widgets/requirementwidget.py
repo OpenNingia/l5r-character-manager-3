@@ -17,6 +17,7 @@
 import sys
 import models
 import dal
+from copy import copy
 
 from PySide import QtCore, QtGui
 
@@ -27,6 +28,7 @@ def paintLayout(painter, item):
         for i in range(0, layout.count()):
             paintLayout(painter, layout.itemAt(i))
     painter.drawRect(item.geometry())
+
 
 def clearLayout(item):
     layout = item.layout()
@@ -43,9 +45,36 @@ class RequirementsWidget(QtGui.QWidget):
 
         self.vbox = QtGui.QVBoxLayout(self)
         self.vbox.setContentsMargins(0, 0, 0, 0)
-        self.fr = None  # disposable inner frame
+
         self.checks = []   # checkbox list
+        self.rpg_placeholders = []
         self.debug = False
+
+        fr = QtGui.QFrame()
+        ly = QtGui.QVBoxLayout(fr)
+
+        # max 10 checkboxes
+        for i in range(0, 10):
+            ck = QtGui.QCheckBox(self)
+            ck.setVisible(False)
+            ly.addWidget(ck)
+            self.checks.append(ck)
+
+        for i in range(0, 5):
+            lb = QtGui.QLabel(self)
+            ck = QtGui.QCheckBox(self)
+            ck.setVisible(False)
+            lb.setVisible(False)
+
+            lb.setWordWrap(True)
+            lb.setAlignment(QtCore.Qt.AlignJustify)
+            lb.setBuddy(ck)
+
+            ly.addWidget(ck)
+            ly.addWidget(lb)
+            self.rpg_placeholders.append((lb, ck))
+
+        self.vbox.addWidget(fr)
 
         self.setSizePolicy(
             QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
@@ -57,58 +86,57 @@ class RequirementsWidget(QtGui.QWidget):
         if self.layout():
             paintLayout(painter, self.layout())
 
-    def clear_current_layout(self):
-        if self.layout():
-            clearLayout(self.layout())
-        if self.fr:
-            self.fr.deleteLater()
-            self.fr = None
-        self.checks = []
-
     def set_requirements(self, pc, dstore, requirements):
 
-        self.clear_current_layout()
-        if not len(requirements):
-            return
+        self.setUpdatesEnabled(False)
+
+        for ck in self.checks:
+            ck.setVisible(False)
+        for ph in self.rpg_placeholders:
+            lb, ck = ph
+            lb.setVisible(False)
+            ck.setVisible(False)
 
         self.setUpdatesEnabled(False)
         snap = models.CharacterSnapshot(pc)
 
-        self.fr = QtGui.QFrame()
-        ly = QtGui.QVBoxLayout(self.fr)
+        checks_stack = copy(self.checks)
+        rpg_stack = copy(self.rpg_placeholders)
 
         for r in requirements:
-            ck = QtGui.QCheckBox(self)
+
+            ck = None
             lb = None
-            if type(r) is dal.requirements.RequirementOption:
-                ck.setEnabled(False)
-            else:
-                ck.setEnabled(r.type == 'more')
 
             if r.type == 'more':
-                # if type is more then it's likely the description is verbose
-                # better place it on a separated label
-                lb = QtGui.QLabel(
-                    unicode.format(u"<em>{0}</em>", r.text), self)
-                lb.setWordWrap(True)
-                lb.setAlignment(QtCore.Qt.AlignJustify)
-                lb.setBuddy(ck)
+                ph = rpg_stack.pop()
+                lb, ck = ph
+                lb.setText(u"<em>{0}</em>".format(r.text))
                 ck.setText(self.tr("Role play"))
+                ck.setEnabled(True)
             else:
+                ck = checks_stack.pop()
+                ck.setEnabled(False)
                 ck.setText(r.text)
-                # check if requirement match
                 ck.setChecked(r.match(snap, dstore))
 
-            self.checks.append(ck)
-            ly.addWidget(ck)
+            if ck:
+                ck.setVisible(True)
             if lb:
-                ly.addWidget(lb)
+                lb.setVisible(True)
 
-        self.vbox.addWidget(self.fr)
         self.setUpdatesEnabled(True)
 
     def match(self):
         for c in self.checks:
+            if not c.isVisible():
+                continue
+            if not c.isChecked():
+                return False
+        for p in self.rpg_placeholders:
+            l, c = p
+            if not c.isVisible():
+                continue
             if not c.isChecked():
                 return False
         return True

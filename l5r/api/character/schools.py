@@ -62,6 +62,9 @@ def set_first(sid):
     if not school_:
         return
 
+    # rank advancement
+    api.character.rankadv.join_new(school_.id)
+
     # set schools
     __api.pc.set_school(school_.id, school_.trait, 1, school_.honor, school_.tags + [school_.id])
 
@@ -105,9 +108,6 @@ def set_first(sid):
     if school_.kihos:
         __api.pc.set_free_kiho_count(school_.kihos.count)
 
-    # add advancement
-    api.character.rankadv.join_new(school_.id)
-
 
 def join_new(sid):
     """join a new school"""
@@ -115,6 +115,9 @@ def join_new(sid):
     school_ = api.data.schools.get(sid)
     if not school_:
         return
+
+    # add advancement
+    api.character.rankadv.join_new(school_.id)
 
     import models
 
@@ -140,9 +143,6 @@ def join_new(sid):
 
     __api.pc.set_current_school_id(school_.id)
     __api.pc.set_can_get_other_tech(True)
-
-    # add advancement
-    api.character.rankadv.join_new(school_.id)
 
 
 def get_schools_by_tag(tag):
@@ -173,12 +173,20 @@ def get_tech_by_rank(rank):
 
     school_id = rank_.school
     school_rank = query(api.character.rankadv.all()).where(
-        lambda x: x.school == school_id and x.rank <= rank).count()
+        lambda x: (x.school == school_id or
+                   x.replaced == school_id) and x.rank <= rank).count()
 
     school_ = api.data.schools.get(school_id)
 
     if not school_:
         return None
+
+    # for path use the school rank as a tech index
+    if api.data.schools.is_path(school_.id):
+        try:
+            return school_.techs[school_rank-1].id
+        except:
+            return None
 
     return query(school_.techs).where(
         lambda x: x.rank == school_rank).select(a_('id')).first_or_default(None)
@@ -186,5 +194,9 @@ def get_tech_by_rank(rank):
 
 def get_school_rank(sid):
     """return the school rank"""
-    return query(api.character.rankadv.all()).where(lambda x: x.school == sid).count()
+
+    if api.data.schools.is_path(sid):
+        return query(api.data.schools.get(sid).techs).select(a_('rank')).first_or_default(1)
+    return query(api.character.rankadv.all()).where(
+            lambda x: x.school == sid or x.replaced == sid).count()
 

@@ -87,7 +87,7 @@ def leave_path():
     # currently following an alternate path
 
     former_school_ = query(all()).where(
-        lambda x: not api.data.schools.is_path(x)).order_by(a_('rank')).first_or_default()
+        lambda x: not api.data.schools.is_path(x)).order_by(a_('rank')).first_or_default(None)
 
     if not former_school_:
         log.api.error(u"former school not found. could not resume old path")
@@ -124,10 +124,20 @@ def join_new(school_id):
     # no cost advancing in the same rank
     adv.cost = 0
     # description
+
+    school_rank = api.character.schools.get_school_rank(adv.school)
+
+    if api.data.schools.is_path(adv.school):
+        # replaces current school
+        adv.replaced = api.character.schools.get_current()
+    else:
+        school_rank += 1
+
     adv.desc = api.tr("Insight Rank {0}. School: {1} rank {2} ").format(
         adv.rank,
         api.data.schools.get(adv.school).name,
-        api.character.schools.get_school_rank(adv.school) + 1
+        school_rank
     )
+
 
     api.character.append_advancement(adv)
