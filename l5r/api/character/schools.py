@@ -22,6 +22,8 @@ import api.character.rankadv
 from asq.initiators import query
 from asq.selectors import a_
 
+from util import log
+
 
 def get_all():
     """return all the character schools"""
@@ -45,11 +47,6 @@ def get_rank(sid):
     return query(__api.pc.schools) \
         .where(lambda x: x.school_id == sid) \
         .select(a_('school_rank')).first_or_default(0)
-
-    #return query(api.character.rankadv.all()) \
-    #    .where(lambda x: x.school == sid) \
-    #    .order_by_descending(a_('school_rank')) \
-    #    .select(a_('school_rank')).first_or_default(0)
 
 
 def get_first():
@@ -108,6 +105,9 @@ def set_first(sid):
     if school_.kihos:
         __api.pc.set_free_kiho_count(school_.kihos.count)
 
+    # add advancement
+    api.character.rankadv.join_new(school_.id)
+
 
 def join_new(sid):
     """join a new school"""
@@ -141,8 +141,50 @@ def join_new(sid):
     __api.pc.set_current_school_id(school_.id)
     __api.pc.set_can_get_other_tech(True)
 
+    # add advancement
+    api.character.rankadv.join_new(school_.id)
+
 
 def get_schools_by_tag(tag):
     """returns character schools by tag"""
     return query(get_all()).where(
         lambda x: tag in api.data.schools.get(x).tags if api.data.schools.get(x) is not None else False).to_list()
+
+
+def get_school_by_rank(rank):
+    """returns the school joined at the given insight rank, considering alternate paths"""
+    rank_ = query(api.character.rankadv.all()).where(lambda x: x.rank == rank).first_or_default(None)
+    if not rank_:
+        log.api.error(u"rank advancement not found: %d", rank)
+        return None
+    return rank_.school
+
+
+def get_tech_by_rank(rank):
+    """returns the technique learned at the given insight rank, or None"""
+
+    # get the school rank at that insight rank
+    rank_ = query(api.character.rankadv.all()).where(
+        lambda x: x.rank == rank).first_or_default(None)
+
+    if not rank_:
+        log.api.error(u"rank advancement not found: %d", rank)
+        return None
+
+    school_id = rank_.school
+    school_rank = query(api.character.rankadv.all()).where(
+        lambda x: x.school == school_id and x.rank <= rank).count()
+
+    school_ = api.data.schools.get(school_id)
+
+    if not school_:
+        return None
+
+    return query(school_.techs).where(
+        lambda x: x.rank == school_rank).select(a_('id')).first_or_default(None)
+
+
+def get_school_rank(sid):
+    """return the school rank"""
+    return query(api.character.rankadv.all()).where(lambda x: x.school == sid).count()
+

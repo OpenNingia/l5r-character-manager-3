@@ -20,7 +20,6 @@ from asq.selectors import a_
 
 import api.data
 import api.character
-import api.character.rankadv
 import api.character.merits
 import api.data.schools
 import api.data.clans
@@ -242,17 +241,7 @@ class SchoolChooserWidget(QtGui.QWidget):
             except:
                 pass
 
-        # if self.current_clan_id and self.current_school_id:
         self.update_status()
-            # choices were made, allow to proceed
-            # self.statusChanged.emit(True)
-
-    def apply_rank_advancement(self):
-        api.character.rankadv.set_school(self.current_school_id)
-        if self.ck_multiple_schools.isChecked():
-            api.character.rankadv.add_merit('multiple_schools', rank=1)
-        if self.ck_different_school.isChecked():
-            api.character.rankadv.add_merit('different_school', rank=1)
 
     def connect_signals(self):
         self.cb_clan.currentIndexChanged.connect(self.on_clan_changed)
