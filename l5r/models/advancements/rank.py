@@ -31,6 +31,10 @@ class Rank(Advancement):
         self.school_rank = 0
         # the school optionally replaced by this one
         self.replaced = None
+        # skills obtained with the rank advancement
+        self.skills = []
+        # emphases to skills ( skill_id => [list] )
+        self.emphases = {}
 
     #def to_dict(self):
     #    out = {'clan': self.clan,

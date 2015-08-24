@@ -130,11 +130,9 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
         return itm
 
     def update_from_model(self, model):
-        skills_id_s = model.get_school_skills()
-        skills_id_a = model.get_skills()
 
         self.clean()
-        for s in skills_id_a:
+        for s in api.character.skills.get_all():
 
             sk = api.data.skills.get(s)
 
@@ -143,9 +141,9 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
                 continue
 
             itm = self.build_item_model(sk)
-            itm.rank = model.get_skill_rank(s)
-            itm.emph = model.get_skill_emphases(s)
+            itm.rank = api.character.skills.get_skill_rank(s)
+            itm.emph = api.character.skills.get_skill_emphases(s)
             itm.base_roll = api.rules.calculate_base_skill_roll(model, sk)
             itm.mod_roll = api.rules.calculate_mod_skill_roll(model, sk)
-            itm.is_school = (s in skills_id_s)
+            itm.is_school = api.character.skills.is_starter(s)
             self.add_item(itm)

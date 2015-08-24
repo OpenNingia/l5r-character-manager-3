@@ -70,7 +70,8 @@ def set_first(sid):
 
     # set starting skills
     for sk in school_.skills:
-        __api.pc.add_school_skill(sk.id, sk.rank, sk.emph)
+        api.character.skills.add_starting_skill(sk.id, sk.rank, sk.emph)
+        #__api.pc.add_school_skill(sk.id, sk.rank, sk.emph)
 
     # pending player choose skills
     for sk in school_.skills_pc:

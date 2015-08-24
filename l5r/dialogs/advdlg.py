@@ -341,7 +341,6 @@ class SelWcSkills(QtGui.QDialog):
         self.setWindowTitle(self.tr('Choose School Skills'))
 
         vb = QtGui.QVBoxLayout(self)
-        #grid = QtGui.QGridLayout(self)
 
         self.header = QtGui.QLabel(self.tr("<i>Your school has granted you \
                                              the right to choose some skills.</i> \
@@ -387,14 +386,11 @@ class SelWcSkills(QtGui.QDialog):
                     lb = self.tr(
                         'Any {0} skill (rank {1}):').format(sw1, ws.rank)
 
-            #grid.addWidget(QtGui.QLabel(lb, self), row_, 0)
             vb.addWidget(QtGui.QLabel(lb, self))
 
-            # cb = QtGui.QComboBox(self)
             cb = SkillSelectInformativeWidget(self)
             self.cbs.append(cb)
             vb.addWidget(cb)
-            #grid.addWidget(cb, row_, 1, 1, 2)
 
             row_ += 1
 
@@ -402,13 +398,11 @@ class SelWcSkills(QtGui.QDialog):
             lb = self.tr("{0}'s Emphases: ").format(
                 dal.query.get_skill(self.dstore, s).name)
 
-            #grid.addWidget(QtGui.QLabel(lb, self), row_, 0)
             vb.addWidget(QtGui.QLabel(lb, self))
 
             le = QtGui.QLineEdit(self)
             self.les.append(le)
             vb.addWidget(le)
-            #grid.addWidget(le, row_, 1, 1, 2)
 
             row_ += 1
 
@@ -416,7 +410,6 @@ class SelWcSkills(QtGui.QDialog):
         self.error_bar.setVisible(False)
 
         vb.addWidget(self.error_bar)
-        #grid.addWidget(self.error_bar, row_, 0, 1, 3)
 
         fr_bottom = QtGui.QFrame(self)
         hb = QtGui.QHBoxLayout(fr_bottom)
@@ -424,9 +417,6 @@ class SelWcSkills(QtGui.QDialog):
         hb.addWidget(self.bt_cancel)
 
         vb.addWidget(fr_bottom)
-
-        #grid.addWidget(self.bt_ok, row_ + 1, 1)
-        #grid.addWidget(self.bt_cancel, row_ + 1, 2)
 
     def cleanup(self):
         self.cbs = []
@@ -510,13 +500,16 @@ class SelWcSkills(QtGui.QDialog):
         for cb in self.cbs:
             idx = cb.currentIndex()
             uuid, rank = cb.itemData(idx)
-            self.pc.add_school_skill(uuid, rank)
+
+            api.character.skills.add_starting_skill(uuid, rank)
+
+            #self.pc.add_school_skill(uuid, rank)
 
         for i in xrange(0, len(self.les)):
             emph = self.les[i].text()
             s_id = self.pc.get_pending_wc_emphs()[i]
 
-            self.pc.add_school_skill(s_id, 0, emph)
+            api.character.skills.add_starting_skill(uuid, emph=emph)
 
         self.accept()
 

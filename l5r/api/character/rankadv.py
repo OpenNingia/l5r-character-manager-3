@@ -33,6 +33,11 @@ def all():
     return query(__api.pc.advans).where(lambda x: x.type == 'rank').to_list()
 
 
+def get(rank):
+    """returns the Rank advancement for the given insight rank"""
+    return query(all()).where(lambda x: x.rank == rank).first_or_default(None)
+
+
 def can_advance_rank():
     """returns True if the character is able to advance to the next rank
        using the same path as the previous rank

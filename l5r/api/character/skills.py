@@ -44,20 +44,53 @@ def get_learned():
 
 def get_starting():
     """get character starting skills"""
-    if not __api.pc:
+    # get first rank advancement
+    rank_ = api.character.rankadv.get(1)
+    if not rank_:
+        log.api.error(u"first rank advancement not found")
         return []
-    first_id = api.character.schools.get_first()
-    ch_school = query(__api.pc.schools).where(lambda x: x.school_id == first_id).first_or_default(None)
-    if not ch_school:
-        return []
-    return ch_school.skills.keys()
+
+    return query(rank_.skills).distinct().to_list()
+
+    #first_id = api.character.schools.get_first()
+    #ch_school = query(__api.pc.schools).where(lambda x: x.school_id == first_id).first_or_default(None)
+    #if not ch_school:
+    #    return []
+    #return ch_school.skills.keys()
+
+
+def is_starter(skill_id):
+    """returns True if the skill is from the starting ones"""
+    return skill_id in get_starting()
 
 
 def get_skill_rank(skill_id):
     """return the character skill rank"""
     if not __api.pc:
         return 0
-    return __api.pc.get_skill_rank(skill_id)
+
+    sk_rank_ = 0
+    for r in api.character.rankadv.all():
+        sk_rank_ += query(r.skills).where(lambda x: x == skill_id).count()
+
+    sk_rank_ += query(__api.pc.advans).where(
+        lambda x: x.type == 'skill' and x.skill == skill_id).count()
+
+    return sk_rank_
+
+
+def get_skill_emphases(skill_id):
+    """return the emphases for a skill"""
+    sk_emph_list = []
+    for r in api.character.rankadv.all():
+        if skill_id not in r.emphases:
+            continue
+        sk_emph_list += r.emphases[skill_id]
+
+    sk_emph_list += query(__api.pc.advans).where(
+        lambda x: x.type == 'emph' and x.skill == skill_id).to_list()
+
+    return sk_emph_list
 
 
 def purchase_skill_rank(skill_id):
@@ -84,3 +117,27 @@ def purchase_skill_rank(skill_id):
     return api.character.purchase_advancement(adv)
 
 
+def add_starting_skill(skill_id, rank=0, emph=None):
+    """add a starting skill"""
+
+    skill_ = api.data.skills.get(skill_id)
+    if not skill_:
+        log.api.error(u"skill not found: %s", skill_id)
+        return False
+
+    # get first rank advancement
+    rank_ = api.character.rankadv.get(1)
+
+    if not rank_:
+        log.api.error(u"add_starting_skill. first rank advancement not found")
+        return False
+
+    for i in range(0, rank):
+        rank_.skills.append(skill_id)
+
+    if emph:
+        skill_emphases = rank_.emphases[skill_id] if skill_id in rank_.emphases else []
+        skill_emphases.append(emph)
+        rank_.emphases[skill_id] = skill_emphases
+
+    return True
