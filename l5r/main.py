@@ -1925,7 +1925,6 @@ class L5RMain(L5RCMCore):
             self.show_nicebar([lb, bt])
 
     def learn_next_school_spells(self):
-        self.pc.recalc_ranks()
 
         dlg = dialogs.SpellAdvDialog(self.pc, 'bounded', self)
         dlg.setWindowTitle(self.tr('Choose School Spells'))

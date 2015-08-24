@@ -164,20 +164,20 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
         return itm
 
     def update_from_model(self, model):
-        spells = model.get_spells()
-        self.clean()
+        spells = api.character.spells.get_all()
+        memo_spells = api.character.spells.get_memorized_spells()
 
-        memo_spells = [x for x in model.get_memorized_spells()]
+        self.clean()
 
         for s in spells:
             itm = self.build_item_model(s)
             itm.memo = s in memo_spells
-            if itm.memo:
-                adv_ = filter(
-                    lambda x: x.type == 'memo_spell' and x.spell == s,
-                    model.advans)
+            #if itm.memo:
+            #    adv_ = filter(
+            #        lambda x: x.type == 'memo_spell' and x.spell == s,
+            #        model.advans)
 
-                if len(adv_):
-                    itm.adv = adv_[0]
+            #    if len(adv_):
+            #        itm.adv = adv_[0]
 
             self.add_item(itm)

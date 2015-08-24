@@ -18,14 +18,14 @@ __author__ = 'Daniele'
 import api
 from api import __api
 from asq.initiators import query
+from asq.selectors import a_
 from util import log
+import models
 
 
 def get_all():
     """return all character skills"""
-    if not __api.pc:
-        return []
-    return __api.pc.get_spells()
+    return get_school_spells() + get_learned_spells()
 
 
 def base_deficiencies():
@@ -152,7 +152,7 @@ def character_can_learn():
     return [x for x in get_all() if is_learnable(x)]
 
 
-def purchase_memo_spell(self, spell_id):
+def purchase_memo_spell(spell_id):
     """purchase a memorized spell"""
     log.api.info(u"purchase memorized spell: %s", spell_id)
 
@@ -167,6 +167,59 @@ def purchase_memo_spell(self, spell_id):
 
     adv = models.MemoSpellAdv(spell_id, cost)
     adv.desc = (api.tr('{0}, Mastery {1}. Cost: {2} xp')
-                .format(text, cost, adv.cost))
+                .format(text, spell_.mastery, adv.cost))
 
     return api.character.purchase_advancement(adv)
+
+
+def add_school_spell(spell_id):
+    """add a spell to the current rank advancement"""
+    rank_ = api.character.rankadv.get_last()
+    if not rank_:
+        log.api.error(u"add_school_spell. no rank advancement found")
+        return False
+
+    spell_ = api.data.spells.get(spell_id)
+    if not spell_:
+        log.api.error(u"add_school_spell. spell not found: %s", spell_id)
+        return False
+
+    if spell_id not in rank_.spells:
+        rank_.spells.append(spell_id)
+
+    return True
+
+
+def add_spell(spell_id):
+    """add a spell, not bound to a specific rank advancement"""
+    spell_ = api.data.spells.get(spell_id)
+    if not spell_:
+        log.api.error(u"add_school_spell. spell not found: %s", spell_id)
+        return False
+
+    adv = models.SpellAdv(spell_id)
+    adv.desc = (api.tr('{0}, Mastery {1}. Element: {2}')
+                .format(spell_.name, spell_.mastery, spell_.element))
+
+    api.character.append_advancement(adv)
+    return True
+
+
+def get_school_spells():
+    """return the spells bounded to a rank advancement"""
+    spells_ = []
+    for r in api.character.rankadv.all():
+        spells_ += r.spells
+    return spells_
+
+
+def get_learned_spells():
+    """return the spells not bounded to a rank advancement"""
+    return query(__api.pc.advans).where(
+        lambda x: x.type == 'spell').select(a_('spell')).distinct().to_list()
+
+
+def get_memorized_spells():
+    """return the memorized spels"""
+    return query(__api.pc.advans).where(
+        lambda x: x.type == 'memo_spell').select(a_('spell')).distinct().to_list()

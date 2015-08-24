@@ -115,7 +115,6 @@ class Sink1(QtCore.QObject):
         form = self.form
 
         form.pc.advans = []
-        form.pc.recalc_ranks()
         form.update_from_model()
 
     def refund_last_adv(self):
@@ -123,7 +122,6 @@ class Sink1(QtCore.QObject):
         '''pops last advancement and recalculate ranks'''
         if len(form.pc.advans) > 0:
             adv = form.pc.advans.pop()
-            form.pc.recalc_ranks()
             form.update_from_model()
 
     def act_buy_perk(self):
@@ -241,7 +239,6 @@ class Sink1(QtCore.QObject):
 
         if self.warn_about_refund():
             del form.pc.advans[adv_idx]
-            form.pc.recalc_ranks()
             form.update_from_model()
             return True
         return False

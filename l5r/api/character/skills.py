@@ -47,16 +47,9 @@ def get_starting():
     # get first rank advancement
     rank_ = api.character.rankadv.get(1)
     if not rank_:
-        log.api.error(u"first rank advancement not found")
         return []
 
     return query(rank_.skills).distinct().to_list()
-
-    #first_id = api.character.schools.get_first()
-    #ch_school = query(__api.pc.schools).where(lambda x: x.school_id == first_id).first_or_default(None)
-    #if not ch_school:
-    #    return []
-    #return ch_school.skills.keys()
 
 
 def is_starter(skill_id):

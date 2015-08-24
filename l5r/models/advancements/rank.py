@@ -35,6 +35,8 @@ class Rank(Advancement):
         self.skills = []
         # emphases to skills ( skill_id => [list] )
         self.emphases = {}
+        # spells
+        self.spells = []
 
     #def to_dict(self):
     #    out = {'clan': self.clan,

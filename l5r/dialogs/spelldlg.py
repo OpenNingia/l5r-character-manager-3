@@ -325,6 +325,10 @@ class SpellAdvDialog(QtGui.QDialog):
             if not s:
                 return False  # do not exit the form!!!
 
-            self.pc.add_spell(s.id)
+            if self.mode == 'bounded':
+                api.character.spells.add_school_spell(s.id)
+            else:
+                api.character.spells.add_spell(s.id)
+            # self.pc.add_spell(s.id)
 
         super(SpellAdvDialog, self).accept()

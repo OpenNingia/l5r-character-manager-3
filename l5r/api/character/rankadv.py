@@ -38,6 +38,11 @@ def get(rank):
     return query(all()).where(lambda x: x.rank == rank).first_or_default(None)
 
 
+def get_last():
+    """returns the last rank advancement"""
+    return query(all()).last_or_default(None)
+
+
 def can_advance_rank():
     """returns True if the character is able to advance to the next rank
        using the same path as the previous rank

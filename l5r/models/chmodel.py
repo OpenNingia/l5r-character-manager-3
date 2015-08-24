@@ -937,49 +937,6 @@ class AdvancedPcModel(BasePcModel):
         self.unlock_schools = not self.unlock_schools
         self.unsaved = True
 
-    def recalc_ranks(self):
-        insight_ = self.get_insight_rank()
-        schools_to_remove = []
-        print('I got {0} schools'.format(len(self.schools)))
-        for s in self.schools:
-            print('school {0}, rank {1}'.format(s.school_id, s.school_rank))
-        tot_rank = sum([x.school_rank for x in self.schools])
-
-        print('insight rank: {0}, tot_rank: {1}'.format(insight_, tot_rank))
-        if tot_rank > insight_:
-            diff_ = tot_rank - insight_
-            print('diff ranks: {0}'.format(diff_))
-            for s in reversed(self.schools):
-                while diff_ > 0 and s.school_rank > 0:
-                    if s.school_id == self.get_school_id(0) and s.school_rank == 1:
-                        break
-                    print('school {0} rank from {1} to {2}'.format(
-                        s.school_id, s.school_rank, s.school_rank - 1))
-
-                    if len(s.techs) > 0:
-                        s.techs.pop()
-                    if len(s.tech_rules) > 0:
-                        s.tech_rules.pop()
-
-                    self.pop_spells(self.spells_per_rank)
-
-                    diff_ -= 1
-                    s.school_rank -= 1
-
-                    if s.school_rank == 0:
-                        schools_to_remove.append(s)
-                if diff_ <= 0:
-                    break
-            for s in schools_to_remove:
-                print('remove school', s)
-                self.schools.remove(s)
-
-        elif tot_rank < insight_:
-            if self.get_school() is not None:
-                self.get_school().school_rank += (insight_ - tot_rank)
-                print('school {0} is now rank {1}'.format(
-                    self.get_school_id(), self.get_school_rank()))
-
     def set_insight_calc_method(self, func):
         self.insight_calculation = func
 
