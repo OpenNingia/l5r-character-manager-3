@@ -27,11 +27,11 @@ import widgets
 
 
 def green(text):
-    return '<span style="color: #0A0">' + text + '</span>'
+    return u'<span style="color: #0A0">{}</span>'.format(text)
 
 
 def red(text):
-    return '<span style="color: #A00">' + text + '</span>'
+    return u'<span style="color: #A00">{}</span>'.format(text)
 
 
 class FirstSchoolChooserDialog(QtGui.QDialog):
@@ -621,7 +621,7 @@ class SchoolChooserWidget(QtGui.QWidget):
         if not bonus_trait:
             self.lb_trait.setText(red(self.tr("None")))
         else:
-            self.lb_trait.setText(green("+1 {}").format(api.data.get_trait_or_ring(bonus_trait)))
+            self.lb_trait.setText(green(u"+1 {}").format(api.data.get_trait_or_ring(bonus_trait)))
 
     def update_book(self, school_dal):
         source_book = None

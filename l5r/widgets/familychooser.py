@@ -27,7 +27,11 @@ import api.data.clans
 
 
 def green(text):
-    return '<span style="color: #0A0">' + text + '</span>'
+    return u'<span style="color: #0A0">{}</span>'.format(text)
+
+
+def red(text):
+    return u'<span style="color: #A00">{}</span>'.format(text)
 
 
 class FamilyChooserDialog(QtGui.QDialog):
