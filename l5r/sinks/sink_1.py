@@ -49,7 +49,6 @@ class Sink1(QtCore.QObject):
         form.pc = api.character.model()
 
         form.tx_pc_notes.set_content('')
-        form.pc.set_insight_calc_method(form.ic_calc_method)
         form.update_from_model()
 
     def load_character(self):

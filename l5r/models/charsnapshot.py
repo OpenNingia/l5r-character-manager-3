@@ -65,7 +65,7 @@ class CharacterSnapshot(object):
             self.rules += s.techs
         self.rules += [x.rule for x in pc.advans if hasattr(x, 'rule')]
 
-        self.insight_rank = pc.get_insight_rank()
+        self.insight_rank = api.character.insight_rank()
         self.honor = pc.get_honor()
 
     def get_skills(self):

@@ -19,6 +19,7 @@ import dal
 import dal.query
 import models
 import api.rules
+import api.character
 from fdfexporter import FDFExporter, zigzag
 
 
@@ -66,6 +67,8 @@ class FDFExporterTwoNPC(FDFExporter):
 
     def export_npc(self, index, pc, fields):
 
+        api.character.set_model(pc)
+
         def _af(name, value, idx=index):
             fields['{}{}'.format(name, idx)] = str(value)
 
@@ -85,9 +88,9 @@ class FDFExporterTwoNPC(FDFExporter):
         if sobj:
             _af("School", sobj.name)
 
-        _af("Rank", pc.get_insight_rank())
-        _af("Insight", pc.get_insight())
-        _af("XP", pc.get_px())
+        _af("Rank", api.character.insight_rank())
+        _af("Insight", api.character.insight())
+        _af("XP", api.character.xp())
 
         # rings
         _af("Earth", pc.get_ring_rank(models.RINGS.EARTH))
@@ -106,7 +109,7 @@ class FDFExporterTwoNPC(FDFExporter):
         _af("Agility", pc.get_attrib_rank(models.ATTRIBS.AGILITY))
         _af("Intelligence", pc.get_attrib_rank(models.ATTRIBS.INTELLIGENCE))
 
-        _af("Initiative", api.rules.format_rtk_t(pc.get_tot_initiative()))
+        _af("Initiative", api.rules.format_rtk_t(api.rules.get_tot_initiative()))
         _af("Armor", pc.get_cur_tn())
         _af("Reduction", pc.get_full_rd())
 
@@ -118,9 +121,9 @@ class FDFExporterTwoNPC(FDFExporter):
         hl = [0] * 8
         for i in range(0, 8):
             if i == 0:
-                hl[i] = pc.get_health_rank(i)
+                hl[i] = api.rules.get_health_rank(i)
             else:
-                hl[i] = pc.get_health_rank(i) + hl[i - 1]
+                hl[i] = api.rules.get_health_rank(i) + hl[i - 1]
             _af(w_labels[i], hl[i])
 
         # WEAPONS

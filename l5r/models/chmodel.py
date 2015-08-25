@@ -224,7 +224,7 @@ class AdvancedPcModel(BasePcModel):
         self.void_points = self.get_void_rank()
         self.unlock_schools = False
         self.extra_notes = ''
-        self.insight_calculation = None
+        self.insight_calculation = 1
         self.free_kiho_count = 0
         self.can_get_another_tech = False
 
@@ -393,34 +393,6 @@ class AdvancedPcModel(BasePcModel):
         # return self.step_2.deficiency or 'None'
         return [x.deficiency for x in self.schools if x.deficiency is not None]
 
-    def get_insight(self):
-        if self.insight_calculation:
-            return self.insight_calculation(self)
-        return api.rules.insight_calculation_1(self)
-
-    def get_insight_rank(self):
-        value = self.get_insight()
-
-        if value > 349:
-            return int((value - 349) / 25 + 10)
-        if value > 324:
-            return 9
-        if value > 299:
-            return 8
-        if value > 274:
-            return 7
-        if value > 249:
-            return 6
-        if value > 224:
-            return 5
-        if value > 199:
-            return 4
-        if value > 174:
-            return 3
-        if value > 149:
-            return 2
-        return 1
-
     def get_base_tn(self):
         # reflexes * 5 + 5
         return self.get_mod_attrib_rank(ATTRIBS.REFLEXES) * 5 + 5
@@ -462,50 +434,6 @@ class AdvancedPcModel(BasePcModel):
 
     def get_cur_tn(self):
         return self.get_base_tn() + self.get_armor_tn() + self.get_armor_tn_mod()
-
-    def get_health_rank(self, idx):
-        if idx == 0:
-            return self.get_ring_rank(RINGS.EARTH) * 5 + self.get_health_rank_mod()
-        return self.get_ring_rank(RINGS.EARTH) * self.health_multiplier + self.get_health_rank_mod()
-
-    def get_health_rank_mod(self):
-        mod = 0
-        if self.has_rule('crane_the_force_of_honor'):
-            mod = max(1, int(self.get_honor() - 4))
-
-        for x in self.get_modifiers('hrnk'):
-            if x.active and len(x.value) > 2:
-                mod += x.value[2]
-        return mod
-
-    def get_max_wounds(self):
-        max_ = 0
-        for i in xrange(0, 8):
-            max_ += self.get_health_rank(i)
-        return max_
-
-    def get_base_initiative(self):
-        return (self.get_insight_rank() +
-                self.get_mod_attrib_rank(ATTRIBS.REFLEXES),
-                self.get_mod_attrib_rank(ATTRIBS.REFLEXES))
-
-    def get_init_modifiers(self):
-        r, k, b = 0, 0, 0
-        mods = [x for x in
-                self.get_modifiers('anyr') + self.get_modifiers('init')
-                if x.active]
-        for m in mods:
-            r += m.value[0]
-            k += m.value[1]
-            if len(m.value) > 2:
-                b += m.value[2]
-        return r, k, b
-
-    def get_tot_initiative(self):
-        r, k = self.get_base_initiative()
-        b = 0
-        r1, k1, b1 = self.get_init_modifiers()
-        return r + r1, k + k1, b + b1
 
     def get_px(self):
         count = 0
@@ -703,25 +631,6 @@ class AdvancedPcModel(BasePcModel):
         if not self.has_tag('monk'):
             return 0
         return self.get_pending_kiho_count()
-
-    def pop_spells(self, count):
-        print('pop {0} spells'.format(count))
-        spells_count = len(self.get_spells())
-        print('I got {0} spells'.format(spells_count))
-        if count >= spells_count:
-            for s in self.schools:
-                print('resetting school spells')
-                s.spells = []
-        else:
-            for s in reversed(self.schools):
-                if s.school_id == self.get_school_id(0) and s.school_rank == 1:
-                    break
-                while count > 0 and len(s.spells) > 0:
-                    s.spells.pop()
-                    count -= 1
-                if count <= 0:
-                    break
-            print('now i got {} spells'.format(len(self.get_spells())))
 
     def remove_spell(self, spell_id):
         for s in self.schools:
@@ -937,8 +846,6 @@ class AdvancedPcModel(BasePcModel):
         self.unlock_schools = not self.unlock_schools
         self.unsaved = True
 
-    def set_insight_calc_method(self, func):
-        self.insight_calculation = func
 
     # properties
     def has_property(self, name):

@@ -130,54 +130,58 @@ def format_rtk(r, k, bonus=0):
         return '%dk%d' % (r, abs(k))
 
 
-def insight_calculation_1(model):
-    '''Default insight calculation method = Rings*10+Skills+SpecialPerks'''
-    n = 0
-    for i in xrange(0, 5):
-        n += model.get_ring_rank(i) * 10
-    for s in model.get_skills():
-        n += model.get_skill_rank(s)
+def insight_calculation_1():
+    """Default insight calculation method = Rings*10+Skills+SpecialPerks"""
 
-    n += 3 * model.cnt_rule('ma_insight_plus_3')
-    n += 7 * model.cnt_rule('ma_insight_plus_7')
+    n = 0
+    for i in range(0, 5):
+        n += api.character.ring_rank(i) * 10
+
+    for s in api.character.skills.get_all():
+        n += api.character.skills.get_skill_rank(s)
+
+    n += 3 * api.character.cnt_rule('ma_insight_plus_3')
+    n += 7 * api.character.cnt_rule('ma_insight_plus_7')
 
     return n
 
 
-def insight_calculation_2(model):
+def insight_calculation_2():
     """Another insight calculation method. Similar to 1, but ignoring
        rank 1 skills
     """
+
     n = 0
-    for i in xrange(0, 5):
-        n += model.get_ring_rank(i) * 10
-    for s in model.get_skills():
-        sk = model.get_skill_rank(s)
+    for i in range(0, 5):
+        n += api.character.ring_rank(i) * 10
+
+    for s in api.character.skills.get_all():
+        sk = api.character.skills.get_skill_rank(s)
         if sk > 1:
             n += sk
 
-    n += 3 * model.cnt_rule('ma_insight_plus_3')
-    n += 7 * model.cnt_rule('ma_insight_plus_7')
+    n += 3 * api.character.cnt_rule('ma_insight_plus_3')
+    n += 7 * api.character.cnt_rule('ma_insight_plus_7')
 
     return n
 
 
-def insight_calculation_3(model):
+def insight_calculation_3():
     """Another insight calculation method. Similar to 2, but
        school skill are counted even if rank 1
     """
-    school_skills = model.get_school_skills()
 
     n = 0
-    for i in xrange(0, 5):
-        n += model.get_ring_rank(i) * 10
-    for s in model.get_skills():
-        sk = model.get_skill_rank(s)
-        if sk > 1 or s in school_skills:
+    for i in range(0, 5):
+        n += api.character.ring_rank(i) * 10
+
+    for s in api.character.skills.get_all():
+        sk = api.character.skills.get_skill_rank(s)
+        if sk > 1 or api.character.skills.is_starter(s):
             n += sk
 
-    n += 3 * model.cnt_rule('ma_insight_plus_3')
-    n += 7 * model.cnt_rule('ma_insight_plus_7')
+    n += 3 * api.character.cnt_rule('ma_insight_plus_3')
+    n += 7 * api.character.cnt_rule('ma_insight_plus_7')
 
     return n
 
@@ -409,5 +413,70 @@ class DicePool(object):
         return c
 
 
-def apply_tech_side_effects(tech_id):
-    pass
+def calculate_insight():
+    """calculate the insight value using the given method"""
+
+    method = api.character.insight_calculation_method()
+
+    if method == 3:
+        return insight_calculation_3()
+    if method == 2:
+        return insight_calculation_2()
+    return insight_calculation_1()
+
+
+def get_base_initiative():
+    """returns the base initiative"""
+    return (api.character.insight_rank() +
+            api.character.trait_rank('reflexes'),
+            api.character.trait_rank('reflexes'))
+
+
+def get_init_modifiers():
+    """returns initiative modifiers"""
+    r, k, b = 0, 0, 0
+    mods = [x for x in
+            __api.pc.get_modifiers('anyr') + __api.pc.get_modifiers('init')
+            if x.active]
+    for m in mods:
+        r += m.value[0]
+        k += m.value[1]
+        if len(m.value) > 2:
+            b += m.value[2]
+    return r, k, b
+
+
+def get_tot_initiative():
+    """returns total initiative"""
+    r, k = get_base_initiative()
+    b = 0
+    r1, k1, b1 = get_init_modifiers()
+    return r + r1, k + k1, b + b1
+
+
+def get_health_rank(idx):
+    """return the value for the given health rank"""
+    earth_rank = api.character.ring_rank('earth')
+    if idx == 0:
+        return earth_rank * 5 + get_health_rank_mod()
+    return earth_rank * __api.pc.health_multiplier + get_health_rank_mod()
+
+
+def get_health_rank_mod():
+    """return health rank modifiers"""
+    mod = 0
+    if api.character.has_rule('crane_the_force_of_honor'):
+        mod = max(1, int(api.character.honor() - 4))
+
+    for x in __api.pc.get_modifiers('hrnk'):
+        if x.active and len(x.value) > 2:
+            mod += x.value[2]
+    return mod
+
+
+def get_max_wounds():
+    """return total health"""
+    max_ = 0
+    for i in xrange(0, 8):
+        max_ += get_health_rank(i)
+    return max_

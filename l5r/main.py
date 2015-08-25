@@ -1416,9 +1416,9 @@ class L5RMain(L5RCMCore):
             self.tr("Ignore Rank 1 Skills"), self)
         ic_no_rank1_2 = QtGui.QAction(
             self.tr("Account Rank 1 School Skills"), self)
-        ic_default_act.setProperty('method', api.rules.insight_calculation_1)
-        ic_no_rank1_1 .setProperty('method', api.rules.insight_calculation_2)
-        ic_no_rank1_2 .setProperty('method', api.rules.insight_calculation_3)
+        ic_default_act.setProperty('method', 1)
+        ic_no_rank1_1 .setProperty('method', 2)
+        ic_no_rank1_2 .setProperty('method', 3)
         ic_list = [ic_default_act, ic_no_rank1_1, ic_no_rank1_2]
         for act in ic_list:
             self.ic_act_grp.addAction(act)
@@ -1817,9 +1817,9 @@ class L5RMain(L5RCMCore):
             return
 
         log.rules.debug(u"check rank advancement. potential rank: %d, actual rank: %d",
-                        self.pc.get_insight_rank(), self.last_rank)
+                        api.character.insight_rank(), self.last_rank)
 
-        if self.pc.get_insight_rank() > self.last_rank:
+        if api.character.insight_rank() > self.last_rank:
             # HEY, NEW RANK DUDE!
 
             # get 3 spells each rank
@@ -1944,7 +1944,7 @@ class L5RMain(L5RCMCore):
     def show_advance_rank_dlg(self):
         dlg = dialogs.NextRankDlg(self.pc, self.dstore, self)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
-            self.last_rank = self.pc.get_insight_rank()
+            self.last_rank = api.character.insight_rank()
             self.update_from_model()
 
     def show_buy_skill_dlg(self):
@@ -2022,13 +2022,13 @@ class L5RMain(L5RCMCore):
                 print('successfully loaded character from {0}'.format(self.save_path))
 
                 try:
-                    if self.pc.last_rank > self.pc.get_insight_rank():
+                    if self.pc.last_rank > api.character.insight_rank():
                         print(
                             "ERROR. last_rank should never be > insight rank. I'll try to fix this.")
-                        self.pc.last_rank = self.pc.get_insight_rank()
+                        self.pc.last_rank = api.character.insight_rank()
                     self.last_rank = self.pc.last_rank
                 except:
-                    self.last_rank = self.pc.get_insight_rank()
+                    self.last_rank = api.character.insight_rank()
 
                 def school_free_kiho_count():
                     school = dal.query.get_school(
@@ -2044,7 +2044,7 @@ class L5RMain(L5RCMCore):
                 # TODO: checks for books / data extensions
 
                 self.tx_pc_notes.set_content(self.pc.extra_notes)
-                self.pc.set_insight_calc_method(self.ic_calc_method)
+
                 self.check_rules()
                 self.update_from_model()
             else:
@@ -2127,8 +2127,8 @@ class L5RMain(L5RCMCore):
             self.attribs[i][1].setText(str(self.pc.get_mod_attrib_rank(i)))
 
         # pc rank
-        self.tx_pc_rank.setText(str(self.pc.get_insight_rank()))
-        self.tx_pc_ins .setText(str(self.pc.get_insight()))
+        self.tx_pc_rank.setText(str(api.character.insight_rank()))
+        self.tx_pc_ins .setText(str(api.character.insight()))
 
         # pc flags
         with QtSignalLock(self.pc_flags_points+self.pc_flags_rank+[self.void_points]):
@@ -2157,11 +2157,11 @@ class L5RMain(L5RCMCore):
 
         # initiative
         self.tx_base_init.setText(
-            api.rules.format_rtk_t(self.pc.get_base_initiative()))
+            api.rules.format_rtk_t(api.rules.get_base_initiative()))
         self.tx_mod_init.setText(
-            api.rules.format_rtk_t(self.pc.get_init_modifiers()))
+            api.rules.format_rtk_t(api.rules.get_init_modifiers()))
         self.tx_cur_init.setText(
-            api.rules.format_rtk_t(self.pc.get_tot_initiative()))
+            api.rules.format_rtk_t(api.rules.get_tot_initiative()))
 
         # affinity / deficiency
         self.lb_affin.setText(
@@ -2230,14 +2230,14 @@ class L5RMain(L5RCMCore):
     def display_health_default(self):
         # health
         for i in xrange(0, 8):
-            h = self.pc.get_health_rank(i)
+            h = api.rules.get_health_rank(i)
             self.wounds[i][1].setText(str(h))
             self.wounds[i][2].setText('')
         # wounds
         pc_wounds = self.pc.wounds
         hr = 0
         while pc_wounds and hr < 8:
-            w = min(pc_wounds, self.pc.get_health_rank(hr))
+            w = min(pc_wounds, api.rules.get_health_rank(hr))
             self.wounds[hr][2].setText(str(w))
             pc_wounds -= w
             hr += 1
@@ -2247,15 +2247,15 @@ class L5RMain(L5RCMCore):
         hl = [0] * 8
         for i in reversed(range(0, 8)):
             if i == 7:
-                hl[i] = self.pc.get_health_rank(i)
+                hl[i] = api.rules.get_health_rank(i)
             else:
-                hl[i] = self.pc.get_health_rank(i) + hl[i + 1]
+                hl[i] = api.rules.get_health_rank(i) + hl[i + 1]
             self.wounds[i][1].setText(str(hl[i]))
 
         wounds = self.pc.wounds
         # fill the health left for each wound level
         for i in range(0, 8):
-            h = self.pc.get_health_rank(i)
+            h = api.rules.get_health_rank(i)
             if h > wounds:
                 self.wounds[i][2].setText(str(h - wounds))
             else:
@@ -2269,16 +2269,16 @@ class L5RMain(L5RCMCore):
         hl = [0] * 8
         for i in range(0, 8):
             if i == 0:
-                hl[i] = self.pc.get_health_rank(i)
+                hl[i] = api.rules.get_health_rank(i)
             else:
-                hl[i] = self.pc.get_health_rank(i) + hl[i - 1]
+                hl[i] = api.rules.get_health_rank(i) + hl[i - 1]
             self.wounds[i][1].setText(str(hl[i]))
 
         wounds = self.pc.wounds
         h = 0
         # fill the health left for each wound level
         for i in range(0, 8):
-            h += self.pc.get_health_rank(i)
+            h += api.rules.get_health_rank(i)
             wound_rank = min(h, wounds)
             if wound_rank > 0:
                 self.wounds[i][2].setText(str(wound_rank))
@@ -2537,7 +2537,7 @@ class L5RMain(L5RCMCore):
 
     def on_change_insight_calculation(self):
         method = self.sender().checkedAction().property('method')
-        self.pc.set_insight_calc_method(method)
+        api.character.set_insight_calculation_method(method)
         self.update_from_model()
 
     def on_change_health_visualization(self):

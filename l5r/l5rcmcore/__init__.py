@@ -339,8 +339,8 @@ class L5RCMCore(QtGui.QMainWindow):
         self.pc.wounds += val
         if self.pc.wounds < 0:
             self.pc.wounds = 0
-        if self.pc.wounds > self.pc.get_max_wounds():
-            self.pc.wounds = self.pc.get_max_wounds()
+        if self.pc.wounds > api.rules.get_max_wounds():
+            self.pc.wounds = api.rules.get_max_wounds()
 
         self.update_from_model()
 

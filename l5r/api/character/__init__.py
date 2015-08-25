@@ -38,9 +38,9 @@ def new():
     __api.pc.load_default()
 
 
-def set_model(model):
+def set_model(value):
     """set character model"""
-    __api.pc = model
+    __api.pc = value
 
 
 def has_tag(tag):
@@ -49,6 +49,14 @@ def has_tag(tag):
 
 def has_rule(tag):
     return __api.pc.has_rule(tag)
+
+
+def cnt_tag(tag):
+    return __api.pc.cnt_tag(tag)
+
+
+def cnt_rule(tag):
+    return __api.pc.cnt_rule(tag)
 
 
 def has_tag_or_rule(tag):
@@ -83,6 +91,11 @@ def xp_left():
     return xp_limit() - xp()
 
 
+def honor():
+    """Return the honor value"""
+    return __api.pc.get_honor()
+
+
 def trait_rank(trait_id):
     """returns the rank of the given trait"""
     if not __api.pc:
@@ -102,7 +115,7 @@ def ring_rank(ring_id):
     if isinstance(ring_id, str):
         ring_id = models.ring_from_name(ring_id)
 
-    return __api.pc.get_attrib_rank(ring_id)
+    return __api.pc.get_ring_rank(ring_id)
 
 
 def void_rank():
@@ -160,9 +173,44 @@ def purchase_void_rank():
     return purchase_advancement(adv)
 
 
+def insight():
+    """return the calculated insight value"""
+    return api.rules.calculate_insight()
+
+
 def insight_rank():
     """returns PC's insight rank"""
-    return __api.pc.get_insight_rank()
+    value = insight()
+
+    if value > 349:
+        return int((value - 349) / 25 + 10)
+    if value > 324:
+        return 9
+    if value > 299:
+        return 8
+    if value > 274:
+        return 7
+    if value > 249:
+        return 6
+    if value > 224:
+        return 5
+    if value > 199:
+        return 4
+    if value > 174:
+        return 3
+    if value > 149:
+        return 2
+    return 1
+
+
+def insight_calculation_method():
+    """returns PC's insight calculation method"""
+    return __api.pc.insight_calculation
+
+
+def set_insight_calculation_method(value):
+    """set PC's insight calculation method"""
+    __api.pc.insight_calculation = value
 
 
 def set_family(family_id):

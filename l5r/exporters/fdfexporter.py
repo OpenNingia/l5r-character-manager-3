@@ -23,6 +23,7 @@ import dal
 import dal.query
 import api.rules
 import api.data.spells
+import api.character
 import api.character.schools
 
 
@@ -112,11 +113,11 @@ class FDFExporterAll(FDFExporter):
 
         fields = {'NAME': m.name,
                   'CLAN': self.get_clan_name(),
-                  'RANK': m.get_insight_rank(),
+                  'RANK': api.character.insight_rank(),
                   'FAMILY': self.get_family_name(),
                   'SCHOOL': self.get_school_name(),
                   'EXP': self.get_exp(),
-                  'INSIGHT': m.get_insight()}
+                  'INSIGHT': api.character.insight()}
 
         # TRAITS AND RINGS
         for i in xrange(0, 8):
@@ -170,10 +171,10 @@ class FDFExporterAll(FDFExporter):
                     'HURT', 'INJURED', 'CRIPPLED',
                     'DOWN', 'OUT']
         for i in xrange(0, len(w_labels)):
-            fields[w_labels[i]] = str(f.get_health_rank(i))
+            fields[w_labels[i]] = str(api.rules.get_health_rank(i))
 
         fields['WOUND_HEAL_BASE'] = (m.get_mod_attrib_rank(models.ATTRIBS.STAMINA) * 2
-                                     + m.get_insight_rank())
+                                     + api.character.insight_rank())
         fields['WOUND_HEAL_CUR'] = fields['WOUND_HEAL_BASE']
 
         # SKILLS, LEAVE THE FIRST PAGE EMPTY
