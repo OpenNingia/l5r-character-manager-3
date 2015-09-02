@@ -658,7 +658,7 @@ class L5RMain(L5RCMCore):
         vbox = QtGui.QVBoxLayout(mfr)
         views_ = []
 
-        for k, t, m, d, tb in models_:
+        for k, t, m, d, tb, on_double_click in models_:
             grp = QtGui.QGroupBox(k, self)
             hbox = QtGui.QHBoxLayout(grp)
             view = None
@@ -675,6 +675,8 @@ class L5RMain(L5RCMCore):
                     view.setItemDelegateForColumn(col_, obj_)
             elif t == 'list':
                 view = QtGui.QListView(self)
+            if on_double_click:
+                view.doubleClicked.connect(on_double_click)
             view.setModel(m)
             if d is not None:
                 view.setItemDelegate(d)
@@ -814,6 +816,7 @@ class L5RMain(L5RCMCore):
         view.horizontalHeader().setStretchLastSection(True)
         view.horizontalHeader().setCascadingSectionResizes(True)
         view.setModel(model)
+        view.doubleClicked.connect(self.sink4.on_kata_item_activate)
         self.ka_table_view = view
 
         vbox.addWidget(view)
@@ -869,6 +872,7 @@ class L5RMain(L5RCMCore):
         view.horizontalHeader().setStretchLastSection(True)
         view.horizontalHeader().setCascadingSectionResizes(True)
         view.setModel(model)
+        view.doubleClicked.connect(self.sink4.on_kiho_item_activate)
         self.ki_table_view = view
 
         vbox.addWidget(view)
@@ -900,10 +904,24 @@ class L5RMain(L5RCMCore):
                       self.tr("Buy another skill"), self.show_buy_skill_dlg)
         vtb.addStretch()
 
-        models_ = [("Skills", 'table', sk_sort_model, None, vtb),
-                   (self.tr("Mastery Abilities"), 'list', self.ma_view_model,
-                    models.MaItemDelegate(self), None)]
-
+        models_ = [
+            (
+                "Skills",
+                'table',
+                sk_sort_model,
+                None,
+                vtb,
+                self.sink4.on_skill_item_activate
+            ),
+            (
+                self.tr("Mastery Abilities"),
+                'list',
+                self.ma_view_model,
+                models.MaItemDelegate(self),
+                None,
+                None
+            )
+        ]
         frame_, views_ = self._build_generic_page(models_)
 
         if len(views_) > 0:
@@ -1075,14 +1093,11 @@ class L5RMain(L5RCMCore):
         ranged_vtb = _make_vertical_tb(True, True, False, 'ranged')
         arrow_vtb = _make_vertical_tb(False, False, True, 'arrow')
 
-        models_ = [(
-            self.tr("Melee Weapons"), 'table', _make_sortable(
-                self.melee_view_model),
-            None, melee_vtb),
-            (self.tr("Ranged Weapons"), 'table', _make_sortable(self.ranged_view_model),
-             None, ranged_vtb),
-            (self.tr("Arrows"), 'table', _make_sortable(self.arrow_view_model),
-             None, arrow_vtb)]
+        models_ = [
+            (self.tr("Melee Weapons"), 'table', _make_sortable(self.melee_view_model), None, melee_vtb, None),
+            (self.tr("Ranged Weapons"), 'table', _make_sortable(self.ranged_view_model), None, ranged_vtb, None),
+            (self.tr("Arrows"), 'table', _make_sortable(self.arrow_view_model), None, arrow_vtb, None)
+        ]
 
         frame_, views_ = self._build_generic_page(models_)
 
@@ -1120,10 +1135,9 @@ class L5RMain(L5RCMCore):
 
         vtb = _make_vertical_tb()
 
-        models_ = [(
-            self.tr("Modifiers"), 'table', _make_sortable(
-                self.mods_view_model),
-            None, vtb)]
+        models_ = [
+            (self.tr("Modifiers"), 'table', _make_sortable(self.mods_view_model), None, vtb, None)
+        ]
 
         frame_, views_ = self._build_generic_page(models_)
         self.mod_view = views_[0]
@@ -1243,10 +1257,9 @@ class L5RMain(L5RCMCore):
 
         vtb = _make_vertical_tb()
 
-        models_ = [(
-            self.tr("Equipment"), 'list', _make_sortable(
-                self.equip_view_model),
-            None, vtb)]
+        models_ = [
+            (self.tr("Equipment"), 'list', _make_sortable(self.equip_view_model), None, vtb, None)
+        ]
 
         frame_, views_ = self._build_generic_page(models_)
         self.equip_view = views_[0]
