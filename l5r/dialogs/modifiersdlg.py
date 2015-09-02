@@ -92,25 +92,27 @@ class ModifierDialog(QtGui.QDialog):
         '''))
 
         self.setWindowTitle(self.tr("L5RCM: Modifiers"))
-        self.load_modifier(None)
 
-    def load_modifier(self, item):
-
-        # modifier's types
-        cur_idx = -1
-        for mk in models.MOD_TYPES.iterkeys():
-            if mk == 'none':
+        for i_key, i_value in models.MOD_TYPES.iteritems():
+            if i_key == 'none':
                 continue
-            self.cb_modifier.addItem(models.MOD_TYPES[mk], mk)
-            if item and mk == item.type:
-                cur_idx = self.cb_modifier.count() - 1
-        self.cb_modifier.setCurrentIndex(cur_idx)
+            self.cb_modifier.addItem(i_value, i_key)
 
+    def set_modifier(self, item):
+        '''
+        :param ModifierModel item:
+        '''
         if item:
-            self.tx_reason .setText(item.reason)
-            self.tx_value  .setText(api.rules.format_rtk_t(item.value))
-            self.tx_detail .setText(
-                item.dtl or (models.MOD_DTLS[item.type][1] if item.type in models.MOD_DTLS else None))
+            for i in xrange(self.cb_modifier.count()):
+                key = self.cb_modifier.itemData(i)
+                if key == item.type:
+                    self.cb_modifier.setCurrentIndex(i)
+
+            self.tx_reason.setText(item.reason)
+            self.tx_value.setText(api.rules.format_rtk_t(item.value))
+            self.tx_detail.setText(item.dtl or (models.MOD_DTLS[item.type][1] if item.type in models.MOD_DTLS else None))
+        else:
+            assert False, 'We should clean-up everything if accepting item == None.'
 
         self.item = item
 
