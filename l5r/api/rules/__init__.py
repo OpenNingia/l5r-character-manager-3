@@ -458,7 +458,13 @@ def get_wound_penalties(index):
     result = WOUND_PENALTIES_VALUES[index]
 
     if api.character.has_rule('strength_of_earth'):
+        # Advantage: Strength of Earh (Core, pg154)
         result = max(0, result-3)
+
+    if api.character.has_rule('monkey_tokus_lesson'):
+        # Technique: Toku's Lesson (Core, pg222)
+        reduction = (api.character.insight_rank() * 2) + api.character.trait_rank('willpower')
+        result = max(0, result-reduction)
 
     for x in __api.pc.get_modifiers('wpen'):
         if x.active:
