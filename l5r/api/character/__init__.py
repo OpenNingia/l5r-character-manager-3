@@ -22,7 +22,6 @@ import api.rules
 import models
 
 from asq.initiators import query
-from asq.selectors import a_
 
 from util import log
 
@@ -106,16 +105,29 @@ def trait_rank(trait_id):
 
     return __api.pc.get_attrib_rank(trait_id)
 
+USAGE_KIHO = 'kiho'
 
-def ring_rank(ring_id):
+def ring_rank(ring_id, usage=None):
     """returns the rank of the given ring"""
+
+    RINK_RANK_BONUSES = {
+        ('monks_student_of_hitsudo', USAGE_KIHO, models.RINGS.FIRE) : 1,
+    }
+
     if not __api.pc:
         return 0
 
     if isinstance(ring_id, str):
         ring_id = models.ring_from_name(ring_id)
 
-    return __api.pc.get_ring_rank(ring_id)
+    result = __api.pc.get_ring_rank(ring_id)
+
+    for i_school in __api.pc.schools:
+        key = (i_school.school_id, usage, ring_id)
+        bonus = RINK_RANK_BONUSES.get(key, 0)
+        result += bonus
+
+    return result
 
 
 def void_rank():
