@@ -110,10 +110,6 @@ USAGE_KIHO = 'kiho'
 def ring_rank(ring_id, usage=None):
     """returns the rank of the given ring"""
 
-    RINK_RANK_BONUSES = {
-        ('monks_student_of_hitsudo', USAGE_KIHO, models.RINGS.FIRE) : 1,
-    }
-
     if not __api.pc:
         return 0
 
@@ -122,10 +118,13 @@ def ring_rank(ring_id, usage=None):
 
     result = __api.pc.get_ring_rank(ring_id)
 
-    for i_school in __api.pc.schools:
-        key = (i_school.school_id, usage, ring_id)
-        bonus = RINK_RANK_BONUSES.get(key, 0)
-        result += bonus
+    if usage is not None:
+        for i_school in __api.pc.schools:
+            school_ = api.data.schools.get(i_school.school_id)
+            for j_modifier in school_.modifiers:
+                modifier_ring_id = models.ring_from_name(j_modifier.field)
+                if j_modifier.usage == usage and j_modifier.type == 'ring' and modifier_ring_id == ring_id:
+                    result += j_modifier.value
 
     return result
 
