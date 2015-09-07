@@ -36,7 +36,7 @@ class Sink4(QtCore.QObject):
         item = models.ModifierModel()
         self.form.pc.add_modifier(item)
         dlg = dialogs.ModifierDialog(self.form.pc, self.form.dstore, self.form)
-        dlg.load_modifier(item)
+        dlg.set_modifier(item)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
             self.form.update_from_model()
 
@@ -47,7 +47,7 @@ class Sink4(QtCore.QObject):
         item = index.model().data(index, QtCore.Qt.UserRole)
         dlg = dialogs.ModifierDialog(
             self.form.pc, self.form.dstore, self.form)
-        dlg.load_modifier(item)
+        dlg.set_modifier(item)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
             self.form.update_from_model()
 

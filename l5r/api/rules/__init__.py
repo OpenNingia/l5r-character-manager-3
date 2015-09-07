@@ -453,6 +453,24 @@ def get_tot_initiative():
     r1, k1, b1 = get_init_modifiers()
     return r + r1, k + k1, b + b1
 
+def get_wound_penalties(index):
+    WOUND_PENALTIES_VALUES = [0, 3, 5, 10, 15, 20, 40]
+    result = WOUND_PENALTIES_VALUES[index]
+
+    if api.character.has_rule('strength_of_earth'):
+        # Advantage: Strength of Earh (Core, pg154)
+        result = max(0, result-3)
+
+    if api.character.has_rule('monkey_tokus_lesson'):
+        # Technique: Toku's Lesson (Core, pg222)
+        reduction = (api.character.insight_rank() * 2) + api.character.trait_rank('willpower')
+        result = max(0, result-reduction)
+
+    for x in __api.pc.get_modifiers('wpen'):
+        if x.active:
+            result = max(0, result - x.value[2])
+
+    return result
 
 def get_health_rank(idx):
     """return the value for the given health rank"""

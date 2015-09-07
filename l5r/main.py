@@ -2216,18 +2216,25 @@ class L5RMain(L5RCMCore):
         self.equip_view_model .update_from_model(self.pc)
 
     def update_wound_penalties(self):
-        penalties = [0, 3, 5, 10, 15, 20, 40]
-        wounds = [self.tr("Healthy"), self.tr("Nicked"), self.tr("Grazed"),
-                  self.tr("Hurt"), self.tr("Injured"), self.tr("Crippled"),
-                  self.tr("Down")]
-        if self.pc.has_rule('strength_of_earth'):
-            # penalties are reduced by 3
-            penalties = [max(0, x - 3) for x in penalties]
+        WOUND_PENALTIES_NAMES = [
+            self.tr("Healthy"),
+            self.tr("Nicked"),
+            self.tr("Grazed"),
+            self.tr("Hurt"),
+            self.tr("Injured"),
+            self.tr("Crippled"),
+            self.tr("Down"),
+        ]
 
-        for i in xrange(0, len(penalties)):
-            self.wounds[i][0].setText(
-                unicode.format(u'{0} (+{1})', wounds[i], penalties[i]))
+        for i in reversed(range(0, 7)):
+            if i < 7:
+                penalty = api.rules.get_wound_penalties(i)
+                text = '{0} (+{1})'.format(WOUND_PENALTIES_NAMES[i], penalty)
+            else:
+                text = WOUND_PENALTIES_NAMES[i]
+            self.wounds[i][0].setText(text)
 
+        # TODO Create a generate mechanism for data-pack defined bonus to penalties.
         # TODO toku bushi school removes some penalties
 
     def display_health(self):

@@ -30,7 +30,8 @@ MOD_TYPES = {
     "hrnk": "Health Rank",
     "artn": "Armor TN",
     "arrd": "Armor RD",
-    "init": "Initiative"
+    "init": "Initiative",
+    "wpen": "Wound Penalty",
 }
 
 MOD_DTLS = {
@@ -45,6 +46,7 @@ MOD_DTLS = {
     "artn": ("none", "N/A"),
     "arrd": ("none", "N/A"),
     "init": ("none", "N/A"),
+    "wpen": ("none", "N/A"),
 }
 
 
