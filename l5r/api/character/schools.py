@@ -102,12 +102,6 @@ def set_first(sid):
 
     __api.pc.set_school_spells_qty(count)
 
-    # affinity / deficiency
-    #__api.pc.set_affinity(school_.affinity)
-    #__api.pc.set_deficiency(school_.deficiency)
-    #__api.pc.get_school().affinity = school_.affinity
-    #__api.pc.get_school().deficiency = school_.deficiency
-
     # starting kiho
     if school_.kihos:
         __api.pc.set_free_kiho_count(school_.kihos.count)
@@ -144,9 +138,6 @@ def join_new(sid):
     if school_obj.has_tag('alternate'):
         school_obj.is_path = True
         school_obj.path_rank = api.character.insight_rank()
-
-    __api.pc.set_current_school_id(school_.id)
-    __api.pc.set_can_get_other_tech(True)
 
 
 def get_schools_by_tag(tag):

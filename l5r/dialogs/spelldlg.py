@@ -72,7 +72,7 @@ class SpellAdvDialog(QtGui.QDialog):
         self.mode = mode
 
         if mode == 'bounded':
-            self.page_count = self.pc.get_how_many_spell_i_miss()
+            self.page_count = api.character.get_pending_spells_count()
         self.properties = [None] * self.max_page_count
         self.build_ui()
         self.connect_signals()
@@ -226,7 +226,7 @@ class SpellAdvDialog(QtGui.QDialog):
     def setup(self):
         if self.mode == 'bounded':
             idx = 0
-            for wc in self.pc.get_pending_wc_spells():
+            for wc in api.character.spells.get_starting_spells_to_choose():
                 ring, qty, tag = (None, None, None)
 
                 if len(wc) == 3:

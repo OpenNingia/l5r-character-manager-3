@@ -18,6 +18,7 @@
 import sys
 import os
 import api.character
+import api.character.spells
 
 here = ''
 
@@ -1860,7 +1861,7 @@ class L5RMain(L5RCMCore):
             return
 
         # Show nicebar if can get other spells
-        if self.pc.can_get_other_spells():
+        if api.character.spells.has_granted_free_spells():
             lb = QtGui.QLabel(
                 self.tr("You now fit the requirements to learn other Spells"), self)
             bt = QtGui.QPushButton(self.tr("Learn Spells"), self)

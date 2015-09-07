@@ -87,12 +87,6 @@ def attrib_name_from_id(attrib_id):
         return None
 
 
-def get_ring_id_from_attrib_id(attrib_id):
-    if ATTRIBS.STAMINA <= attrib_id <= ATTRIBS.INTELLIGENCE:
-        return attrib_id // 2
-    return -1
-
-
 class MyJsonEncoder(json.JSONEncoder):
 
     def default(self, obj):
@@ -124,7 +118,6 @@ class BasePcModel(object):
         self.status = 0.0
         self.taint = 0.0
 
-        self.start_spell_count = 0
         self.school_tech = None
 
     def load_default(self):
@@ -213,7 +206,6 @@ class AdvancedPcModel(BasePcModel):
         self.money = (0, 0, 0)
 
         self.mastery_abilities = []
-        self.current_school_id = ''
 
         self.attrib_costs = [4, 4, 4, 4, 4, 4, 4, 4]
         self.void_cost = 6
@@ -227,7 +219,6 @@ class AdvancedPcModel(BasePcModel):
         self.extra_notes = ''
         self.insight_calculation = 1
         self.free_kiho_count = 0
-        self.can_get_another_tech = False
 
         self.pack_refs = []
         self.modifiers = []
@@ -245,12 +236,6 @@ class AdvancedPcModel(BasePcModel):
     def set_free_kiho_count(self, value):
         self.free_kiho_count = value
 
-    def set_current_school_id(self, school_id):
-        self.current_school_id = school_id
-
-    def get_current_school_id(self):
-        return self.current_school_id
-
     def get_attrib_cost(self, idx):
         return self.attrib_costs[idx]
 
@@ -263,25 +248,6 @@ class AdvancedPcModel(BasePcModel):
     def get_pending_wc_spells(self):
         return self.step_2.pending_wc_spell
 
-    def can_get_other_techs(self):
-        return self.can_get_another_tech
-
-    def set_can_get_other_tech(self, flag):
-        self.can_get_another_tech = flag
-
-    def get_school_spells_qty(self):
-        return self.step_2.start_spell_count
-
-    def can_get_other_spells(self):
-        if not self.has_tag('shugenja'):
-            return False
-        return self.get_pending_spells_count() > 0 or len(self.get_pending_wc_spells())
-
-    def get_how_many_spell_i_miss(self):
-        if not self.has_tag('shugenja'):
-            return 0
-        return self.get_pending_spells_count()
-
     def get_spells_per_rank(self):
         return self.spells_per_rank
 
@@ -293,22 +259,6 @@ class AdvancedPcModel(BasePcModel):
 
     def get_pending_spells_count(self):
         return self.pending_spells_count
-
-    def set_pending_kiho_count(self, value):
-        self.pending_kiho_count = value
-
-    def get_pending_kiho_count(self):
-        return self.pending_kiho_count
-
-    def can_get_other_kiho(self):
-        if not self.has_tag('monk'):
-            return False
-        return self.get_pending_kiho_count() > 0
-
-    def get_how_many_kiho_i_miss(self):
-        if not self.has_tag('monk'):
-            return 0
-        return self.get_pending_kiho_count()
 
     def get_weapons(self):
         return self.weapons
@@ -387,14 +337,9 @@ class AdvancedPcModel(BasePcModel):
 
         self.schools = [CharacterSchool(school_id)]
         self.step_2.honor = honor
-        self.set_current_school_id(school_id)
 
         for t in tags:
             self.schools[0].add_tag(t)
-
-
-    def set_school_spells_qty(self, qty):
-        self.step_2.start_spell_count = qty
 
     def set_void_points(self, value):
         self.void_points = value
@@ -500,13 +445,6 @@ class AdvancedPcModel(BasePcModel):
                     item = modifiers.ModifierModel()
                     _load_obj(deepcopy(m), item)
                     self.add_modifier(item)
-
-            try:
-                if self.get_current_school() is None and len(self.schools) > 0:
-                    print('missing current school. old save?')
-                    self.current_school_id = self.schools[-1].school_id
-            except:
-                print('cannot recover current school')
 
             self.unsaved = False
             return True
