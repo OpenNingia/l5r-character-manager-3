@@ -1765,7 +1765,7 @@ class L5RMain(L5RCMCore):
                                           QtGui.QItemSelectionModel.Rows))
 
     def act_choose_skills(self):
-        dlg = dialogs.SelWcSkills(self.pc, self.dstore, self)
+        dlg = dialogs.SelWcSkills(self.pc, self)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
             self.pc.clear_pending_wc_skills()
             self.pc.clear_pending_wc_emphs()
@@ -1961,8 +1961,7 @@ class L5RMain(L5RCMCore):
             self.update_from_model()
 
     def show_buy_skill_dlg(self):
-        dlg = dialogs.BuyAdvDialog(self.pc, 'skill',
-                                   self.dstore, self)
+        dlg = dialogs.BuyAdvDialog(self.pc, 'skill', self)
         dlg.exec_()
         self.update_from_model()
 
@@ -1973,8 +1972,7 @@ class L5RMain(L5RCMCore):
             model_ = self.skill_table_view.model()
             skill_id = model_.data(sm_.currentIndex(), QtCore.Qt.UserRole)
 
-            dlg = dialogs.BuyAdvDialog(self.pc, 'emph',
-                                       self.dstore, self)
+            dlg = dialogs.BuyAdvDialog(self.pc, 'emph', self)
             dlg.fix_skill_id(skill_id)
             dlg.exec_()
             self.update_from_model()

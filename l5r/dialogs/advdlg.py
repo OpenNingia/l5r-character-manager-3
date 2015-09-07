@@ -16,10 +16,8 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import models.advances as advances
-import dal
-import dal.query
-
 import api.data.skills
+from util import log
 
 from PySide import QtCore, QtGui
 
@@ -94,14 +92,14 @@ class SkillSelectInformativeWidget(QtGui.QWidget):
 
         self.currentIndexChanged.emit(item)
 
+
 class BuyAdvDialog(QtGui.QDialog):
 
-    def __init__(self, pc, tag, dstore, parent=None):
+    def __init__(self, pc, tag, parent=None):
         super(BuyAdvDialog, self).__init__(parent)
         self.tag = tag
         self.adv = None
         self.pc = pc
-        self.dstore = dstore
         self.quit_on_accept = True
         self.build_ui()
         self.load_data()
@@ -162,12 +160,12 @@ class BuyAdvDialog(QtGui.QDialog):
         print('load data')
         if self.tag == 'skill':
             cb = self.widgets[self.tag][0]
-            for t in self.dstore.skcategs:
+            for t in api.data.skills.categories():
                 cb.addItem(t.name, t.id)
         elif self.tag == 'emph':
             cb = self.widgets[self.tag][0]
             for id in self.pc.get_skills():
-                sk = dal.query.get_skill(self.dstore, id)
+                sk = api.data.skills.get(id)
                 cb.addItem(sk.name, sk.id)
 
             self.lb_cost.setText(self.tr('Cost: 2 exp'))
@@ -176,7 +174,7 @@ class BuyAdvDialog(QtGui.QDialog):
     def fix_skill_id(self, uuid):
         if self.tag == 'emph':
             cb = self.widgets[self.tag][0]
-            sk = dal.query.get_skill(self.dstore, uuid)
+            sk = api.data.skills.get(uuid)
             cb.addItem(sk.name, sk.id)
             cb.setCurrentIndex(cb.count() - 1)
             cb.setEnabled(False)
@@ -201,7 +199,8 @@ class BuyAdvDialog(QtGui.QDialog):
         idx = cb1.currentIndex()
         type_ = cb1.itemData(idx)
 
-        avail_skills = dal.query.get_skills(self.dstore, type_)
+        avail_skills = api.data.skills.get_by_category(type_)
+
         cb2.clear()
 
         can_buy_skill = [
@@ -252,8 +251,11 @@ class BuyAdvDialog(QtGui.QDialog):
         self.lb_cost.setText(self.tr('Cost: {0} exp').format(cost))
 
         self.adv = advances.SkillAdv(uuid, cost)
-        self.adv.rule = dal.query.get_mastery_ability_rule(
-            self.dstore, uuid, new_value)
+
+        mastery_ability_ = api.data.skills.get_mastery_ability(uuid, new_value)
+        if mastery_ability_:
+            self.adv.rule = mastery_ability_.rule
+
         self.adv.desc = (self.tr('{0}, Rank {1} to {2}. Cost: {3} xp')
                          .format(text, cur_value, new_value, self.adv.cost))
 
@@ -326,10 +328,9 @@ def check_already_got(list1, list2):
 
 class SelWcSkills(QtGui.QDialog):
 
-    def __init__(self, pc, dstore, parent=None):
+    def __init__(self, pc, parent=None):
         super(SelWcSkills, self).__init__(parent)
         self.pc = pc
-        self.dstore = dstore
         self.cbs = []
         self.les = []
         self.error_bar = None
@@ -346,14 +347,10 @@ class SelWcSkills(QtGui.QDialog):
                                              the right to choose some skills.</i> \
                                              <br/><b>Choose with care.</b>"), self)
 
-        # grid.addWidget(self.header, 0, 0, 1, 3)
-        # grid.setRowStretch(0, 2)
         vb.addWidget(self.header)
 
         self.bt_ok = QtGui.QPushButton(self.tr('Ok'), self)
         self.bt_cancel = QtGui.QPushButton(self.tr('Cancel'), self)
-
-        # TODO: translate skill category
 
         row_ = 2
         for ws in self.pc.get_pending_wc_skills():
@@ -395,8 +392,12 @@ class SelWcSkills(QtGui.QDialog):
             row_ += 1
 
         for s in self.pc.get_pending_wc_emphs():
-            lb = self.tr("{0}'s Emphases: ").format(
-                dal.query.get_skill(self.dstore, s).name)
+
+            skill_ = api.data.skills.get(s)
+            if not skill_:
+                continue
+
+            lb = self.tr("{0}'s Emphases: ").format(skill_.name)
 
             vb.addWidget(QtGui.QLabel(lb, self))
 
@@ -424,6 +425,9 @@ class SelWcSkills(QtGui.QDialog):
         self.error_bar = None
 
     def load_data(self):
+
+        log.ui.debug(u"User can choose some starting skills")
+
         i = 0
         for ws in self.pc.get_pending_wc_skills():
             outcome = []
@@ -431,11 +435,12 @@ class SelWcSkills(QtGui.QDialog):
 
             for w_ in wl:
                 if w_.value == 'any':
-                    outcome += self.dstore.skills
+                    outcome += api.data.skills.all()
                 else:
-                    print('search skills with tag {0}'.format(w_.value))
-                    skills_by_tag = [
-                        x for x in self.dstore.skills if w_.value in x.tags]
+                    log.ui.debug(u"query skills with tag: %s", w_.value)
+
+                    skills_by_tag = api.data.skills.get_by_tag(w_.value)
+
                     if not w_.modifier or w_.modifier == 'or':
                         outcome += skills_by_tag
                     elif w_.modifier == 'not':
