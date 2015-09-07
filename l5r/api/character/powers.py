@@ -24,8 +24,6 @@ def get_all_kata():
 
 def check_kiho_eligibility(kiho_id):
     """returns if the character can acquire the kiho and if not, also returns a reason string"""
-    # check eligibility
-    against_mastery = 0
 
     kiho_ = api.data.powers.get_kiho(kiho_id)
     if not kiho_:
@@ -38,7 +36,8 @@ def check_kiho_eligibility(kiho_id):
 
     school_bonus = 0
     ring_ = api.data.get_ring(kiho_.element)
-    ring_rank = api.character.ring_rank(kiho_.element)
+
+    ring_rank = api.character.ring_rank(kiho_.element, api.character.USAGE_KIHO)
 
     if is_ninja:
         ninja_schools = api.character.schools.get_schools_by_tag('ninja')

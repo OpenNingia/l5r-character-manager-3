@@ -22,7 +22,6 @@ import api.rules
 import models
 
 from asq.initiators import query
-from asq.selectors import a_
 
 from util import log
 
@@ -106,16 +105,28 @@ def trait_rank(trait_id):
 
     return __api.pc.get_attrib_rank(trait_id)
 
+USAGE_KIHO = 'kiho'
 
-def ring_rank(ring_id):
+def ring_rank(ring_id, usage=None):
     """returns the rank of the given ring"""
+
     if not __api.pc:
         return 0
 
     if isinstance(ring_id, str):
         ring_id = models.ring_from_name(ring_id)
 
-    return __api.pc.get_ring_rank(ring_id)
+    result = __api.pc.get_ring_rank(ring_id)
+
+    if usage is not None:
+        for i_school in __api.pc.schools:
+            school_ = api.data.schools.get(i_school.school_id)
+            for j_modifier in school_.modifiers:
+                modifier_ring_id = models.ring_from_name(j_modifier.field)
+                if j_modifier.usage == usage and j_modifier.type == 'ring' and modifier_ring_id == ring_id:
+                    result += j_modifier.value
+
+    return result
 
 
 def void_rank():

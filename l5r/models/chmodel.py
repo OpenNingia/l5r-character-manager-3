@@ -21,7 +21,6 @@ import modifiers
 import dal.school
 import json
 import os
-import api.rules
 
 from copy import deepcopy
 
