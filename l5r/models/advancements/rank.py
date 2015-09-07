@@ -48,23 +48,6 @@ class Rank(Advancement):
         self.deficiencies = []
         self.deficiencies_to_choose = []
 
-    #def to_dict(self):
-    #    out = {'clan': self.clan,
-    #           'family': self.family,
-    #           'school': self.school,
-    #           'rank': self.rank,
-    #           'school_rank': self.school_rank,
-    #           'tech': self.tech,
-    #           'is_alternate_path': self.is_alternate_path,
-    #           'original_school': self.original_school,
-    #           'left_alternate_path': self.left_alternate_path,
-    #           'skills': []}
-    #
-    #    for s in self.skills:
-    #        out['skills'].append(s.to_dict())
-    #
-    #    return out
-
 
 class StartingSkill(object):
     def __init__(self, skill_id, rank=1, emphasis=None):

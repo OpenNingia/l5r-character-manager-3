@@ -17,6 +17,7 @@
 
 import sys
 import os
+import api.character
 
 here = ''
 
@@ -1830,10 +1831,13 @@ class L5RMain(L5RCMCore):
         if self.nicebar:
             return
 
-        log.rules.debug(u"check rank advancement. potential rank: %d, actual rank: %d",
-                        api.character.insight_rank(), self.last_rank)
+        potential_insight_rank_ = api.character.insight_rank()
+        actual_insight_rank_ = api.character.insight_rank(strict=True)
 
-        if api.character.insight_rank() > self.last_rank:
+        log.rules.debug(u"check rank advancement. potential rank: %d, actual rank: %d",
+                        potential_insight_rank_, actual_insight_rank_)
+
+        if potential_insight_rank_ > actual_insight_rank_:
             # HEY, NEW RANK DUDE!
 
             # get 3 spells each rank
@@ -1945,7 +1949,6 @@ class L5RMain(L5RCMCore):
     def show_advance_rank_dlg(self):
         dlg = dialogs.NextRankDlg(self.pc, self.dstore, self)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
-            self.last_rank = api.character.insight_rank()
             self.update_from_model()
 
     def show_buy_skill_dlg(self):
@@ -2033,15 +2036,6 @@ class L5RMain(L5RCMCore):
                     return False
 
                 print('successfully loaded character from {0}'.format(self.save_path))
-
-                try:
-                    if self.pc.last_rank > api.character.insight_rank():
-                        print(
-                            "ERROR. last_rank should never be > insight rank. I'll try to fix this.")
-                        self.pc.last_rank = api.character.insight_rank()
-                    self.last_rank = self.pc.last_rank
-                except:
-                    self.last_rank = api.character.insight_rank()
 
                 self.tx_pc_notes.set_content(self.pc.extra_notes)
                 self.update_from_model()
@@ -2175,7 +2169,7 @@ class L5RMain(L5RCMCore):
 
         # money
         with QtSignalLock([self.money_widget]):
-            self.money_widget.set_value(self.pc.get_property('money', (0, 0, 0)))
+            self.money_widget.set_value(api.character.get_money())
 
         self.hide_nicebar()
 

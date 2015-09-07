@@ -272,7 +272,7 @@ class FDFExporterAll(FDFExporter):
                     c += 1
 
         # MONEY
-        money = m.get_property('money')
+        money = api.character.get_money()
         if money and len(money) == 3:
             fields['KOKU'] = str(money[0])
             fields['BU'] = str(money[1])

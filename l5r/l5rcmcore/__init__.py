@@ -115,11 +115,6 @@ class L5RCMCore(QtGui.QMainWindow):
         # print(repr(self))
         self.pc = None
 
-        # character stored insight rank
-        # used to knew if the character
-        # get new insight rank
-        self.last_rank = 1
-
         # Flag to lock advancement refunds in order
         self.lock_advancements = True
 

@@ -20,6 +20,7 @@ from api import __api
 import api.data
 import api.rules
 import models
+import operator
 
 from asq.initiators import query
 from asq.selectors import a_
@@ -401,8 +402,16 @@ def insight():
     return api.rules.calculate_insight()
 
 
-def insight_rank():
-    """returns PC's insight rank"""
+def insight_rank(strict=False):
+    """returns PC potential insight rank, if strict then return the last finalized rank advancement"""
+
+    if strict:
+        last_rank_ = api.character.rankadv.get_last()
+        if not last_rank_:
+            # todo, when the program will handle zero-ranked characters just return 0
+            return 1
+        return last_rank_.rank
+
     value = insight()
 
     if value > 349:
@@ -509,3 +518,34 @@ def is_courtier():
     # is shugenja?
     return query(api.character.schools.get_all()).where(lambda x: x.has_tag('courtier')).count() > 0
 
+
+def set_dirty_flag(value):
+    """set the character dirty flag"""
+    __api.pc.unsaved = value
+
+
+def get_starting_money():
+    """return PC starting money"""
+    first_rank_ = api.character.rankadv.get_first()
+    if not first_rank_:
+        return 0, 0, 0
+    return first_rank_.money
+
+
+def get_money():
+    """return PC total money"""
+    stored_money_ = __api.pc.get_property('money', (0, 0, 0))
+    starting_money_ = get_starting_money()
+
+    return tuple(map(operator.add, stored_money_, starting_money_))
+
+
+def set_money(value):
+    """store PC money as difference with starting money"""
+    starting_money_ = get_starting_money()
+    stored_money_ = tuple(map(operator.sub, value, starting_money_))
+
+    __api.pc.set_property('money', stored_money_)
+    set_dirty_flag(True)
+
+    log.api.info(u"set character money to: %s", str(value))

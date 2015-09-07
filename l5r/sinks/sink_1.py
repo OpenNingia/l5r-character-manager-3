@@ -38,9 +38,7 @@ class Sink1(QtCore.QObject):
     def new_character(self):
         form = self.form
 
-        form.last_rank = 1
         form.save_path = ''
-
 
         # create new character
         api.character.new()
@@ -67,8 +65,6 @@ class Sink1(QtCore.QObject):
         if form.save_path is not None and len(form.save_path) > 0:
             form.pc.version = DB_VERSION
             form.pc.extra_notes = form.tx_pc_notes.get_content()
-            # pending rank advancement?
-            form.pc.last_rank = form.last_rank
 
             # set book dependencies
             api.character.books.set_dependencies()

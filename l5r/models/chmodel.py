@@ -404,10 +404,6 @@ class AdvancedPcModel(BasePcModel):
         self.advans.append(adv)
         self.unsaved = True
 
-    def pop_advancement(self):
-        self.advans.pop()
-        self.unsaved = True
-
     # properties
     def has_property(self, name):
         return name not in self.properties

@@ -306,8 +306,8 @@ def calculate_base_skill_roll(pc, skill):
     # and y is trait
 
     trait = skill.trait
-    trait_value = pc.get_mod_attrib_rank(trait)
-    skill_value = pc.get_skill_rank(skill.id)
+    trait_value = api.character.modified_trait_rank(trait)
+    skill_value = api.character.skills.get_skill_rank(skill.id)
 
     return DicePool().from_values(roll=skill_value + trait_value,
                                   keep=trait_value)

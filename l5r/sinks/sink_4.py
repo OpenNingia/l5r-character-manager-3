@@ -25,6 +25,8 @@ import widgets
 import dal
 import dal.query
 
+import api.character
+
 
 class Sink4(QtCore.QObject):
 
@@ -93,7 +95,7 @@ class Sink4(QtCore.QObject):
         self.form.update_from_model()
 
     def on_money_value_changed(self, value):
-        self.form.pc.set_property('money', value)
+        api.character.set_money(value)
 
     # NPC EXPORT
     def show_npc_export_dialog(self):

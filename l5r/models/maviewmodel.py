@@ -16,8 +16,10 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PySide import QtGui, QtCore
+import api.character.skills
 import api.data.skills
 from util import log
+
 
 class MaItemModel(object):
 
@@ -61,9 +63,9 @@ class MaViewModel(QtCore.QAbstractListModel):
         self.items = []
         self.endResetModel()
 
-    def get_mastery_abilities(self, model):
+    def get_mastery_abilities(self):
         for sk_uuid in api.character.skills.get_all():
-            sk_rank = api.character.get_skill_rank(sk_uuid)
+            sk_rank = api.character.skills.get_skill_rank(sk_uuid)
             sk = api.data.skills.get(sk_uuid)
 
             if not sk:
@@ -77,7 +79,7 @@ class MaViewModel(QtCore.QAbstractListModel):
 
     def update_from_model(self, model):
         self.clean()
-        for sk_name, sk_rnk, ma_brief in self.get_mastery_abilities(model):
+        for sk_name, sk_rnk, ma_brief in self.get_mastery_abilities():
             self.add_item(sk_name, sk_rnk, ma_brief)
 
     def data(self, index, role):
