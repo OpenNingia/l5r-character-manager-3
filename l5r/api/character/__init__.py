@@ -43,20 +43,60 @@ def set_model(value):
     __api.pc = value
 
 
+def get_family_tags():
+    """return tags related to the choosen family"""
+    return [get_family(), get_clan()]
+
+
+def get_school_tags():
+    """return tags related to the character schools"""
+    tags_ = []
+    for s in api.character.schools.get_all():
+        school_ = api.data.schools.get(s)
+        if school_:
+            tags_ += [school_.id] + school_.tags
+    return tags_
+
+
+def get_tags():
+    """return all character tags"""
+    return __api.pc.tags + get_family_tags() + get_school_tags()
+
+
+def get_school_rules():
+    """returns school related rules"""
+    rules_ = []
+    for s in api.character.schools.get_all():
+        school_ = api.data.schools.get(s)
+        if school_:
+            rules_ += [x.id for x in school_.techs]
+    return rules_
+
+
+def get_perk_rules():
+    """return merit/flaw related rules"""
+    return [x.rule for x in __api.pc.advans if hasattr(x, 'rule')]
+
+
+def get_rules():
+    """return all character tags"""
+    return get_school_rules() + get_perk_rules()
+
+
 def has_tag(tag):
-    return tag in __api.pc.tags
+    return tag in get_tags()
 
 
 def has_rule(tag):
-    return __api.pc.has_rule(tag)
+    return tag in get_rules()
 
 
 def cnt_tag(tag):
-    return __api.pc.cnt_tag(tag)
+    return sum([1 for x in get_tags() if x == tag])
 
 
 def cnt_rule(tag):
-    return __api.pc.cnt_rule(tag)
+    return sum([1 for x in get_rules() if x == tag])
 
 
 def has_tag_or_rule(tag):
@@ -76,7 +116,7 @@ def xp():
     """returns the spent experience"""
     if not __api.pc:
         return 0
-    return __api.pc.get_px()
+    return sum([x.cost for x in __api.pc.advans])
 
 
 def xp_limit():
@@ -91,9 +131,90 @@ def xp_left():
     return xp_limit() - xp()
 
 
+def get_starting_honor():
+    """return the starting honor"""
+    school_ = api.data.schools.get(
+        api.character.schools.get_first())
+    if not school_:
+        return 0
+    return school_.honor
+
+
 def honor():
-    """Return the honor value"""
-    return __api.pc.get_honor()
+    """returns the honor value"""
+    return __api.pc.honor + get_starting_honor()
+
+
+def set_honor(value):
+    """store the character honor as difference with the starting value"""
+    __api.pc.honor = value - get_starting_honor()
+
+
+def get_starting_glory():
+    """returns the startin glory"""
+    value = 0.0
+    if has_rule('fame'):
+        value += 1.0
+    if not is_monk()[0]:
+        value += 1.0
+    return value
+
+
+def glory():
+    """returns the glory value"""
+    return __api.pc.glory + get_starting_glory()
+
+
+def set_glory(value):
+    """store the character glory as difference with the starting value"""
+    __api.pc.glory = value - get_starting_glory()
+
+
+def get_starting_status():
+    """returns the starting status"""
+    if has_rule('social_disadvantage'):
+        return 0.0
+    return 1.0
+
+
+def status():
+    """returns the status value"""
+    return __api.pc.status + get_starting_status()
+
+
+def set_status(value):
+    """store the character status as difference with the starting value"""
+    __api.pc.status = value - get_starting_status()
+
+
+def get_starting_infamy():
+    """returns the starting infamy"""
+    return 0.0
+
+
+def infamy():
+    """returns the infamy value"""
+    return __api.pc.infamy + get_starting_infamy()
+
+
+def set_infamy(value):
+    """store the character infamy as difference with the starting value"""
+    __api.pc.infamy = value - get_starting_infamy()
+
+
+def get_starting_taint():
+    """returns the starting taint"""
+    return 0.0
+
+
+def taint():
+    """returns the taint value"""
+    return __api.pc.taint + get_starting_taint()
+
+
+def set_taint(value):
+    """store the character taint as difference with the starting value"""
+    __api.pc.taint = value - get_starting_taint()
 
 
 def trait_rank(trait_id):
@@ -101,34 +222,136 @@ def trait_rank(trait_id):
     if not __api.pc:
         return 0
 
-    if isinstance(trait_id, str):
-        ring_id = models.attrib_from_name(trait_id)
+    trait_nm = trait_id
+    trait_idx = models.attrib_from_name(trait_id)
 
-    return __api.pc.get_attrib_rank(trait_id)
+    starting_value_ = __api.pc.step_0.attribs[trait_idx]
+    family_trait_ = api.data.families.get_family_trait(
+        get_family()
+    )
+    school_trait_ = api.data.schools.get_school_trait(
+        get_starting_school()
+    )
+
+    total_ = starting_value_ + sum([1 for x in __api.pc.advans if x.type == 'attrib' and x.attrib == trait_idx])
+    if family_trait_ == trait_nm:
+        total_ += 1
+    if school_trait_ == trait_nm:
+        total_ += 1
+
+    return total_
+
+
+def modified_trait_rank(trait_id):
+
+    trait_nm = trait_id
+    if trait_nm == 'void':
+        return void_rank()
+
+    base_value_ = trait_rank(trait_id)
+    weakness_flaw = 'weak_{0}'.format(trait_nm)
+
+    if has_rule(weakness_flaw):
+        return base_value_ - 1
+    return base_value_
 
 
 def ring_rank(ring_id):
     """returns the rank of the given ring"""
-    if not __api.pc:
-        return 0
 
-    if isinstance(ring_id, str):
-        ring_id = models.ring_from_name(ring_id)
+    ring_nm = ring_id
+    if ring_nm == 'void':
+        return void_rank()
 
-    return __api.pc.get_ring_rank(ring_id)
+    traits = api.data.get_traits_by_ring(ring_id)
+    trait_1 = trait_rank(traits[0])
+    trait_2 = trait_rank(traits[1])
+
+    return min(trait_1, trait_2)
 
 
 def void_rank():
     """returns the Void ring rank"""
-    if not __api.pc:
-        return 0
-    return __api.pc.get_void_rank()
+
+    trait_nm = 'void'
+
+    starting_value_ = __api.pc.step_0.void
+    family_trait_ = api.data.families.get_family_trait(
+        get_family()
+    )
+    school_trait_ = api.data.schools.get_school_trait(
+        get_starting_school()
+    )
+
+    total_ = starting_value_ + sum([1 for x in __api.pc.advans if x.type == trait_nm])
+    if family_trait_ == trait_nm:
+        total_ += 1
+    if school_trait_ == trait_nm:
+        total_ += 1
+
+    return total_
+
+
+def get_base_tn():
+    """returns the base TN"""
+    # reflexes * 5 + 5
+    return trait_rank('reflexes') * 5 + 5
+
+
+def get_armor_tn():
+    """returns the armor's TN"""
+    return __api.pc.armor.tn if __api.pc.armor is not None else 0
+
+
+def get_armor_tn_mod():
+    """return armor TN modifers"""
+    return sum(x.value[2] for x in __api.pc.get_modifiers('artn') if x.active and len(x.value) > 2)
+
+
+def get_base_rd():
+    """returns the base RD"""
+    if has_rule('crab_the_mountain_does_not_move'):
+        return ring_rank('earth')
+    return 0
+
+
+def get_armor_rd():
+    """returns the armor's RD"""
+    return __api.pc.armor.rd if __api.pc.armor is not None else 0
+
+
+def get_full_tn():
+    """return the full TN value"""
+    return get_base_tn() + get_armor_tn() + get_armor_tn_mod()
+
+
+def get_armor_rd_mod():
+    """return armor RD modifers"""
+    return sum(x.value[2] for x in __api.pc.get_modifiers('arrd') if x.active and len(x.value) > 2)
+
+
+def get_full_rd():
+    """return the full RD value"""
+    return get_armor_rd() + get_base_rd() + get_armor_rd_mod()
+
+
+def get_armor_name():
+    """return the armor name if any"""
+    return __api.pc.armor.name if __api.pc.armor is not None else api.tr("No Armor")
+
+
+def get_armor_desc():
+    """returns the armor description"""
+    return __api.pc.armor.desc if __api.pc.armor is not None else u""
 
 
 def append_advancement(adv):
+    """append an advancement to the advancement list"""
     if __api.pc:
         log.api.info(u"add advancement: %s", adv.desc)
         __api.pc.add_advancement(adv)
+        return adv
+    return None
 
 
 def purchase_advancement(adv):
@@ -239,12 +462,17 @@ def get_family():
     return __api.pc.family
 
 
+def get_starting_school():
+    """returns character starting school"""
+    return __api.pc.school
+
+
 def is_monk():
     """return if pc is a Monk and if its a monk of the brotherhood of shinsei"""
     # is monk ?
     monk_schools = api.character.schools.get_schools_by_tag('monk')
 
-    is_monk = len(monk_schools) > 0
+    is_monk_ = len(monk_schools) > 0
     # is brotherhood monk?
     brotherhood_schools = [
         x for x in monk_schools if 'brotherhood' in api.data.schools.get(x).tags]
@@ -255,7 +483,7 @@ def is_monk():
     is_brotherhood = is_brotherhood or has_rule(
         'friend_brotherhood')
 
-    return is_monk, is_brotherhood
+    return is_monk_, is_brotherhood
 
 
 def is_ninja():
@@ -280,3 +508,4 @@ def is_courtier():
     """returns True if the character is a shugenja"""
     # is shugenja?
     return query(api.character.schools.get_all()).where(lambda x: x.has_tag('courtier')).count() > 0
+

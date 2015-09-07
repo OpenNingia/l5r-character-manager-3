@@ -131,8 +131,8 @@ class BasePcModel(object):
         self.void = 2
         self.attribs = [2, 2, 2, 2, 2, 2, 2, 2]
         self.rank = 1
-        self.glory = 1.0
-        self.status = 1.0
+        #self.glory = 1.0
+        #self.status = 1.0
 
     def add_tag(self, tag):
         if tag not in self.tags:
@@ -209,6 +209,8 @@ class AdvancedPcModel(BasePcModel):
         self.armor = None
         self.weapons = []
         self.schools = []
+        self.outfit = []
+        self.money = (0, 0, 0)
 
         self.mastery_abilities = []
         self.current_school_id = ''
@@ -221,8 +223,7 @@ class AdvancedPcModel(BasePcModel):
         self.exp_limit = 40
         self.wounds = 0
         self.mod_init = (0, 0)
-        self.void_points = self.get_void_rank()
-        self.unlock_schools = False
+        self.void_points = 0
         self.extra_notes = ''
         self.insight_calculation = 1
         self.free_kiho_count = 0
@@ -238,208 +239,17 @@ class AdvancedPcModel(BasePcModel):
     def is_dirty(self):
         return self.unsaved
 
-    def get_ring_rank(self, idx):
-
-        if isinstance(idx, str):
-            idx = ring_from_name(idx)
-
-        if idx == RINGS.VOID:
-            return self.get_void_rank()
-
-        idx_1 = idx * 2
-        idx_2 = idx_1 + 1
-        a, b = self.get_attrib_rank(idx_1), self.get_attrib_rank(idx_2)
-
-        return min(a, b)
-
     def get_free_kiho_count(self):
         return self.free_kiho_count
 
     def set_free_kiho_count(self, value):
         self.free_kiho_count = value
 
-    def get_attrib_rank(self, attrib):
-
-        if isinstance(attrib, str):
-            attrib = attrib_from_name(attrib)
-
-        a = self.step_0.attribs[attrib]
-        b = self.step_1.attribs[attrib]
-        c = self.step_2.attribs[attrib]
-
-        d = a + b + c
-
-        for adv in self.advans:
-            if adv.type != 'attrib':
-                continue
-            if adv.attrib == attrib:
-                d += 1
-
-        return d
-
-    def get_mod_attrib_rank(self, attrib):
-
-        if isinstance(attrib, str):
-            if attrib == 'void':
-                return self.get_void_rank()
-            attrib = attrib_from_name(attrib)
-
-        if attrib < 0:
-            return 0
-
-
-        a = self.step_0.attribs[attrib]
-        b = self.step_1.attribs[attrib]
-        c = self.step_2.attribs[attrib]
-
-        d = a + b + c
-
-        for adv in self.advans:
-            if adv.type != 'attrib':
-                continue
-            if adv.attrib == attrib:
-                d += 1
-
-        weakness_flaw = 'weak_%s' % attrib_name_from_id(attrib)
-        if self.has_rule(weakness_flaw):
-            return d - 1
-        return d
-
-    def get_void_rank(self):
-        v = self.step_0.void + self.step_1.void + self.step_2.void
-
-        for adv in self.advans:
-            if adv.type != 'void':
-                continue
-            v += 1
-
-        return v
-
-    def get_family(self):
-        return self.family
-
     def set_current_school_id(self, school_id):
         self.current_school_id = school_id
 
     def get_current_school_id(self):
         return self.current_school_id
-
-    def get_current_school(self):
-        school = [
-            x for x in self.schools if x.school_id == self.current_school_id]
-        if len(school):
-            return school[0]
-        return None
-
-    def get_school(self, index=-1):
-        if len(self.schools) == 0 or index >= len(self.schools):
-            return None
-        if index < 0:
-            return self.get_current_school()
-        return self.schools[index]
-
-    def get_school_id(self, index=-1):
-        try:
-            return self.get_school(index).school_id
-        except Exception as e:
-            return None
-
-    def get_school_rank(self, index=-1):
-        try:
-            return self.get_school(index).school_rank
-        except:
-            return 0
-
-    def get_skill_rank(self, uuid):
-        if uuid in self.get_school_skills():
-            rank = self.get_school_skill_rank(uuid)
-        else:
-            rank = 0
-        for adv in self.advans:
-            if adv.type != 'skill' or adv.skill != uuid:
-                continue
-            rank += 1
-        return rank
-
-    def get_honor(self):
-        return self.step_2.honor + self.honor
-
-    def get_base_glory(self):
-        if self.has_tag('monk'):
-            return self.glory
-        return self.step_0.glory + self.glory
-
-    def get_glory(self):
-        if self.has_rule('fame'):
-            return self.get_base_glory() + 1
-        return self.get_base_glory()
-
-    def get_infamy(self):
-        return self.infamy
-
-    def get_status(self):
-        if self.has_rule('social_disadvantage'):
-            return self.status
-        return self.step_0.status + self.status
-
-    def get_taint(self):
-        return self.taint
-
-    def get_affinity(self):
-        # return self.step_2.affinity or 'None'
-        return [x.affinity for x in self.schools if x.affinity is not None]
-
-    def get_deficiency(self):
-        # return self.step_2.deficiency or 'None'
-        return [x.deficiency for x in self.schools if x.deficiency is not None]
-
-    def get_base_tn(self):
-        # reflexes * 5 + 5
-        return self.get_mod_attrib_rank(ATTRIBS.REFLEXES) * 5 + 5
-
-    def get_armor_tn(self):
-        if self.armor is not None:
-            return self.armor.tn
-        else:
-            return 0
-
-    def get_base_rd(self):
-        if self.has_rule('crab_the_mountain_does_not_move'):
-            return self.get_ring_rank(RINGS.EARTH)
-        return 0
-
-    def get_armor_rd(self):
-        return self.armor.rd if self.armor else 0
-
-    def get_full_rd(self):
-        return self.get_armor_rd() + self.get_base_rd() + self.get_armor_rd_mod()
-
-    def get_armor_tn_mod(self):
-        return sum(x.value[2] for x in self.get_modifiers('artn') if x.active and len(x.value) > 2)
-
-    def get_armor_rd_mod(self):
-        return sum(x.value[2] for x in self.get_modifiers('arrd') if x.active and len(x.value) > 2)
-
-    def get_armor_name(self):
-        if self.armor is not None:
-            return self.armor.name
-        else:
-            return 'No Armor'
-
-    def get_armor_desc(self):
-        if self.armor is not None:
-            return self.armor.desc
-        else:
-            return ''
-
-    def get_cur_tn(self):
-        return self.get_base_tn() + self.get_armor_tn() + self.get_armor_tn_mod()
-
-    def get_px(self):
-        count = 0
-        for a in self.advans:
-            count += a.cost
-        return count
 
     def get_attrib_cost(self, idx):
         return self.attrib_costs[idx]
@@ -452,138 +262,6 @@ class AdvancedPcModel(BasePcModel):
 
     def get_pending_wc_spells(self):
         return self.step_2.pending_wc_spell
-
-    def get_school_skills(self):
-        school_ = self.get_school(0)
-        if school_ is None:
-            return []
-        return school_.skills.keys()
-
-    def get_school_skill_rank(self, uuid):
-        s_id = str(uuid)
-        school_ = self.get_school(0)
-        if school_ is None or s_id not in school_.skills:
-            return 0
-        return school_.skills[s_id]
-
-    def get_skills(self, school=True):
-        l = []
-        if school:
-            l = self.get_school_skills()
-        for adv in self.advans:
-            if (adv.type != 'skill' or
-                    adv.skill in self.get_school_skills() or
-                    adv.skill in l):
-                continue
-            l.append(adv.skill)
-        return l
-
-    def get_skill_emphases(self, skill_id):
-        emph = []
-        s_id = str(skill_id)
-        # search school skills
-        school_ = self.get_school(0)
-        if school_ is not None and s_id in school_.emph:
-            emph += school_.emph[s_id]
-        for adv in self.advans:
-            if adv.type != 'emph' or adv.text in emph:
-                continue
-            if adv.skill == skill_id:
-                emph.append(adv.text)
-        return emph
-
-    def get_techs(self):
-        ls = []
-        for s in self.schools:
-            ls += s.techs
-        if (self.step_2.school_tech is not None and
-                self.step_2.school_tech not in ls):
-            ls.insert(0, self.step_2.school_tech)
-        return ls
-
-    def get_spells(self):
-        ls = []
-        for s in self.schools:
-            ls += s.spells
-        return ls
-
-    def get_memorized_spells(self):
-        for adv in self.advans:
-            if adv.type != 'memo_spell':
-                continue
-            yield adv.spell
-
-    def get_perks(self):
-        for adv in self.advans:
-            if adv.type != 'perk':
-                continue
-            yield adv.perk
-
-    def get_merits(self):
-        for adv in self.advans:
-            # cannot use != 'merit' for backward compatibility
-            if adv.type != 'perk' or adv.cost < 0 or adv.tag == 'flaw':
-                continue
-            yield adv
-
-    def get_flaws(self):
-        for adv in self.advans:
-            # cannot use != 'flaw' for backward compatibility
-            if adv.type != 'perk' or adv.cost > 0 or adv.tag == 'merit':
-                continue
-            yield adv
-
-    def get_kata(self):
-        for adv in self.advans:
-            if adv.type != 'kata':
-                continue
-            yield adv
-
-    def get_kiho(self):
-        for adv in self.advans:
-            if adv.type != 'kiho':
-                continue
-            yield adv
-
-    def has_kiho(self, kiho_id):
-        for adv in self.advans:
-            if adv.type == 'kiho' and kiho_id == adv.kiho:
-                return True
-        return False
-
-    def has_kata(self, kata_id):
-        for adv in self.advans:
-            if adv.type == 'kata' and kata_id == adv.kata:
-                return True
-        return False
-
-    def has_tag(self, tag):
-        school_tags = []
-        for s in self.schools:
-            school_tags += s.tags
-        return tag in self.tags or \
-            self.step_1.has_tag(tag) or \
-            tag in school_tags
-
-    def has_rule(self, rule):
-        school_rules = []
-        for s in self.schools:
-            school_rules += s.techs
-
-        for adv in self.advans:
-            if hasattr(adv, 'rule') and adv.rule == rule:
-                return True
-        return rule in school_rules
-
-    def cnt_rule(self, rule):
-        school_rules = []
-        for s in self.schools:
-            school_rules += s.techs
-        count = 0
-        for adv in (self.advans + school_rules):
-            if hasattr(adv, 'rule') and adv.rule == rule:
-                count += 1
-        return count
 
     def can_get_other_techs(self):
         return self.can_get_another_tech
@@ -632,46 +310,13 @@ class AdvancedPcModel(BasePcModel):
             return 0
         return self.get_pending_kiho_count()
 
-    def remove_spell(self, spell_id):
-        for s in self.schools:
-            try:
-                s.spells.remove(spell_id)
-            except:
-                pass
-
     def get_weapons(self):
         return self.weapons
-
-    def get_school_outfit(self):
-        if self.get_school(0):
-            return self.get_school(0).outfit
-        return []
 
     def get_modifiers(self, filter_type=None):
         if not filter_type:
             return self.modifiers
         return filter(lambda x: x.type == filter_type, self.modifiers)
-
-    def add_school_skill(self, skill_uid, skill_rank, emph=None):
-        s_id = str(skill_uid)
-        school_ = self.get_school(0)
-        if school_ is None:
-            return
-
-        if s_id in school_.skills:
-            school_.skills[s_id] += skill_rank
-        else:
-            school_.skills[s_id] = skill_rank
-        if emph is not None:
-            if s_id not in school_.emph:
-                school_.emph[s_id] = []
-
-            if emph.startswith('*'):
-                self.add_pending_wc_emph(s_id)
-            else:
-                school_.emph[s_id].append(emph)
-
-        self.unsaved = True
 
     def add_pending_wc_skill(self, wc):
         self.step_2.pending_wc.append(wc)
@@ -728,7 +373,7 @@ class AdvancedPcModel(BasePcModel):
 
     def set_school(self, school_id=0, perk=None, perkval=1,
                    honor=0.0, tags=[]):
-        if self.get_school_id() == school_id:
+        if self.school == school_id:
             return
         self.step_2 = BasePcModel()
         self.schools = []
@@ -745,93 +390,14 @@ class AdvancedPcModel(BasePcModel):
         self.set_current_school_id(school_id)
 
         for t in tags:
-            self.get_school().add_tag(t)
+            self.schools[0].add_tag(t)
 
-        # reset money
-        self.set_property('money', (0, 0, 0))
-
-        # void ?
-        # print('perk is: {0}'.format(perk))
-        if perk == 'void':
-            self.step_2.void += perkval
-            return True
-        else:
-            a = attrib_from_name(perk)
-            if a >= 0:
-                self.step_2.attribs[a] += perkval
-                return True
-        return False
-
-    def set_free_school_tech(self, tech_uuid, rule=None):
-        school_ = self.get_school(0)
-        if school_ is None:
-            return
-        self.step_2.school_tech = tech_uuid
-        school_.techs.append(tech_uuid)
-
-    def set_school_outfit(self, outfit, money):
-        self.get_school(0).outfit = outfit
-        self.set_property('money', money)
-
-    def add_tech(self, tech_uuid, rule=None):
-        school_ = self.get_school()
-        if school_ is None:
-            return
-        # print 'add tech %s, rule %s' % (repr(tech_uuid), rule)
-        if tech_uuid not in self.get_techs():
-            school_.techs.append(tech_uuid)
-        self.unsaved = True
 
     def set_school_spells_qty(self, qty):
         self.step_2.start_spell_count = qty
 
-    def add_free_spell(self, spell_uuid):
-        school_ = self.get_school(0)
-        if school_ is None or spell_uuid in self.get_spells():
-            return
-        school_.spells.append(spell_uuid)
-        self.unsaved = True
-
-    def add_spell(self, spell_uuid):
-        school_ = self.get_school()
-        if school_ is None or spell_uuid in self.get_spells():
-            return
-        school_.spells.append(spell_uuid)
-        self.unsaved = True
-
     def set_void_points(self, value):
         self.void_points = value
-        self.unsaved = True
-
-    def set_honor(self, value):
-        self.honor = value - self.step_2.honor
-        self.unsaved = True
-
-    def set_glory(self, value):
-        if self.has_tag('monk'):
-            self.glory = value
-        else:
-            self.glory = value - self.step_0.glory
-        self.unsaved = True
-
-    def set_infamy(self, value):
-        self.infamy = value
-        self.unsaved = True
-
-    def set_status(self, value):
-        self.status = value - self.step_0.status
-        self.unsaved = True
-
-    def set_taint(self, value):
-        self.taint = value
-        self.unsaved = True
-
-    def set_affinity(self, value):
-        self.get_school().affinity = value
-        self.unsaved = True
-
-    def set_deficiency(self, value):
-        self.get_school().deficiency = value
         self.unsaved = True
 
     def add_advancement(self, adv):
@@ -841,11 +407,6 @@ class AdvancedPcModel(BasePcModel):
     def pop_advancement(self):
         self.advans.pop()
         self.unsaved = True
-
-    def toggle_unlock_schools(self):
-        self.unlock_schools = not self.unlock_schools
-        self.unsaved = True
-
 
     # properties
     def has_property(self, name):

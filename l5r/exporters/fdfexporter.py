@@ -85,7 +85,7 @@ class FDFExporter(object):
         return self.form.lb_pc_school.text()
 
     def get_exp(self):
-        return u'%s / %s' % (self.model.get_px(), self.model.exp_limit)
+        return u'%s / %s' % (api.character.xp(), api.character.xp_limit())
 
 
 def zigzag(l1, l2):

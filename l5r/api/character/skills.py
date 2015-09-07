@@ -63,7 +63,7 @@ def get_skill_rank(skill_id):
         return 0
 
     sk_rank_ = 0
-    for r in api.character.rankadv.all():
+    for r in api.character.rankadv.get_all():
         sk_rank_ += query(r.skills).where(lambda x: x == skill_id).count()
 
     sk_rank_ += query(__api.pc.advans).where(
@@ -75,7 +75,7 @@ def get_skill_rank(skill_id):
 def get_skill_emphases(skill_id):
     """return the emphases for a skill"""
     sk_emph_list = []
-    for r in api.character.rankadv.all():
+    for r in api.character.rankadv.get_all():
         if skill_id not in r.emphases:
             continue
         sk_emph_list += r.emphases[skill_id]

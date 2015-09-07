@@ -1703,40 +1703,41 @@ class L5RMain(L5RCMCore):
     def on_flag_points_change(self):
         fl = self.sender()
         pt = fl.value
+
         if fl == self.pc_flags_points[0]:
             val = int(self.pc_flags_rank[0].text())
-            self.pc.set_honor(float(val + float(pt) / 10))
+            api.character.set_honor(float(val + float(pt) / 10))
         elif fl == self.pc_flags_points[1]:
             val = int(self.pc_flags_rank[1].text())
-            self.pc.set_glory(float(val + float(pt) / 10))
+            api.character.set_glory(float(val + float(pt) / 10))
         elif fl == self.pc_flags_points[2]:
             val = int(self.pc_flags_rank[2].text())
-            self.pc.set_status(float(val + float(pt) / 10))
+            api.character.set_status(float(val + float(pt) / 10))
         elif fl == self.pc_flags_points[3]:
             val = int(self.pc_flags_rank[3].text())
-            self.pc.set_taint(float(val + float(pt) / 10))
+            api.character.set_taint(float(val + float(pt) / 10))
         else:
             val = int(self.pc_flags_rank[4].text())
-            self.pc.set_infamy(float(val + float(pt) / 10))
+            api.character.set_infamy(float(val + float(pt) / 10))
 
     def on_flag_rank_change(self):
         fl = self.sender()
         val = int(fl.text())
         if fl == self.pc_flags_rank[0]:
             pt = self.pc_flags_points[0].value
-            self.pc.set_honor(float(val + float(pt) / 10))
+            api.character.set_honor(float(val + float(pt) / 10))
         elif fl == self.pc_flags_rank[1]:
             pt = self.pc_flags_points[1].value
-            self.pc.set_glory(float(val + float(pt) / 10))
+            api.character.set_glory(float(val + float(pt) / 10))
         elif fl == self.pc_flags_rank[2]:
             pt = self.pc_flags_points[2].value
-            self.pc.set_status(float(val + float(pt) / 10))
+            api.character.set_status(float(val + float(pt) / 10))
         elif fl == self.pc_flags_rank[3]:
             pt = self.pc_flags_points[3].value
-            self.pc.set_taint(float(val + float(pt) / 10))
+            api.character.set_taint(float(val + float(pt) / 10))
         else:
             pt = self.pc_flags_points[4].value
-            self.pc.set_infamy(float(val + float(pt) / 10))
+            api.character.set_infamy(float(val + float(pt) / 10))
 
     def on_void_points_change(self):
         val = self.void_points.value
@@ -1836,9 +1837,9 @@ class L5RMain(L5RCMCore):
             # HEY, NEW RANK DUDE!
 
             # get 3 spells each rank
-            if self.pc.has_tag('shugenja'):
+            if api.character.is_shugenja():
                 self.pc.set_pending_spells_count(self.pc.get_spells_per_rank())
-            elif self.pc.has_tag('brotherhood'):
+            elif api.character.is_monk()[1]:
                 # hey free kihos!
                 self.pc.set_free_kiho_count(2)
 
@@ -1878,21 +1879,6 @@ class L5RMain(L5RCMCore):
             bt.clicked.connect(self.learn_next_free_kiho)
             self.show_nicebar([lb, bt])
 
-    def check_rules(self):
-        for t in self.pc.get_techs():
-            school, tech = dal.query.get_tech(self.dstore, t)
-            if school is not None and tech is not None:
-                self.pc.add_tech(tech.id, tech.id)
-            else:
-                # TODO: alert
-                print('cannot load character technique')
-
-        for adv in self.pc.advans:
-            if adv.type == 'perk':
-                perk = dal.query.get_merit(
-                    self.dstore, adv.perk) or dal.query.get_flaw(self.dstore, adv.perk)
-                adv.rule = perk.rule
-
     def check_new_skills(self):
         if self.nicebar:
             return
@@ -1913,13 +1899,16 @@ class L5RMain(L5RCMCore):
         if self.nicebar:
             return
 
-        if len(self.pc.get_affinity()) == 0:
+        rank_ = api.character.rankadv.get_last()
+        if not rank_:
             return
 
-        print('check affinity wc: {0}'.format(self.pc.get_affinity()))
+        log.app.info(u"check if the player can choose his affinity/deficiency: [%s] / [%s] ",
+                     u", ".join(rank_.affinities_to_choose),
+                     u", ".join(rank_.deficiencies_to_choose))
 
-        if ('any' in self.pc.get_affinity() or
-           'nonvoid' in self.pc.get_affinity()):
+        #if 'any' in rank_.affinities or 'nonvoid' in rank_.affinities:
+        if len(rank_.affinities_to_choose):
             lb = QtGui.QLabel(
                 self.tr("You school grant you to choose an elemental affinity."), self)
             bt = QtGui.QPushButton(self.tr("Choose Affinity"), self)
@@ -1927,8 +1916,7 @@ class L5RMain(L5RCMCore):
                              QtGui.QSizePolicy.Preferred)
             bt.clicked.connect(self.show_select_affinity)
             self.show_nicebar([lb, bt])
-        elif ('any' in self.pc.get_deficiency() or
-              'nonvoid' in self.pc.get_deficiency()):
+        elif len(rank_.deficiencies_to_choose):
             lb = QtGui.QLabel(
                 self.tr("You school grant you to choose an elemental deficiency."), self)
             bt = QtGui.QPushButton(self.tr("Choose Deficiency"), self)
@@ -1978,13 +1966,18 @@ class L5RMain(L5RCMCore):
             self.update_from_model()
 
     def show_select_affinity(self):
+
+        rank_ = api.character.rankadv.get_last()
+        if not rank_:
+            return
+
+        to_choose = rank_.affinities_to_choose.pop()
+
         chooses = None
-        if 'nonvoid' in self.pc.get_affinity():
-            chooses = [models.ring_name_from_id(x).capitalize()
-                       for x in xrange(0, 4)]
+        if 'nonvoid' in to_choose:
+            chooses = [api.data.rings.get(x) for x in api.data.rings() if x != 'void']
         else:
-            chooses = [models.ring_name_from_id(x).capitalize()
-                       for x in xrange(0, 5)]
+            chooses = [api.data.rings.get(x) for x in api.data.rings()]
 
         affinity, is_ok = QtGui.QInputDialog.getItem(self,
                                                      "L5R: CM",
@@ -1992,16 +1985,23 @@ class L5RMain(L5RCMCore):
                                                          "Select your elemental affinity"),
                                                      chooses, 0, False)
         if is_ok:
-            self.set_pc_affinity(affinity)
+            rank_.affinities.append(affinity.id)
+        else:
+            rank_.affinities_to_choose.append(to_choose)
 
     def show_select_deficiency(self):
+
+        rank_ = api.character.rankadv.get_last()
+        if not rank_:
+            return
+
+        to_choose = rank_.deficiencies_to_choose.pop()
+
         chooses = None
-        if 'nonvoid' in self.pc.get_deficiency():
-            chooses = [models.ring_name_from_id(x).capitalize()
-                       for x in xrange(0, 4)]
+        if 'nonvoid' in to_choose:
+            chooses = [api.data.rings.get(x) for x in api.data.rings() if x != 'void']
         else:
-            chooses = [models.ring_name_from_id(x).capitalize()
-                       for x in xrange(0, 5)]
+            chooses = [api.data.rings.get(x) for x in api.data.rings()]
 
         deficiency, is_ok = QtGui.QInputDialog.getItem(self,
                                                        "L5R: CM",
@@ -2010,7 +2010,9 @@ class L5RMain(L5RCMCore):
                                                        chooses, 0, False)
 
         if is_ok:
-            self.set_pc_deficiency(deficiency)
+            rank_.deficiencies.append(deficiency.id)
+        else:
+            rank_.deficiencies.append(to_choose)
 
     def load_character_from(self, path):
 
@@ -2041,22 +2043,7 @@ class L5RMain(L5RCMCore):
                 except:
                     self.last_rank = api.character.insight_rank()
 
-                def school_free_kiho_count():
-                    school = dal.query.get_school(
-                        self.dstore, self.pc.get_school_id(0))
-                    if school.kihos is None:
-                        return 0
-                    return school.kihos.count
-
-                # HACK. Fix free kiho for old characters created with 3 free kihos
-                if self.pc.get_free_kiho_count() == 3 and school_free_kiho_count() != 3:
-                    self.pc.set_free_kiho_count(school_free_kiho_count())
-
-                # TODO: checks for books / data extensions
-
                 self.tx_pc_notes.set_content(self.pc.extra_notes)
-
-                self.check_rules()
                 self.update_from_model()
             else:
                 print('character load failure')
@@ -2119,23 +2106,23 @@ class L5RMain(L5RCMCore):
 
             self.tx_pc_name.setText(self.pc.name)
             self.set_clan(self.pc.clan)
-            self.set_family(self.pc.get_family())
-            self.set_school(self.pc.get_school_id())
+            self.set_family(api.character.get_family())
+            self.set_school(api.character.schools.get_current())
 
             for w in self.pers_info_widgets:
                 if hasattr(w, 'link'):
                     w.setText(self.pc.get_property(w.link))
 
-        pc_xp = self.pc.get_px()
+        pc_xp = api.character.xp()
         self.tx_pc_exp.setText('{0} / {1}'.format(pc_xp, self.pc.exp_limit))
 
         # rings
-        for i in xrange(0, 5):
-            self.rings[i][1].setText(str(self.pc.get_ring_rank(i)))
+        for i, r in enumerate(api.data.rings()):
+            self.rings[i][1].setText(str(api.character.ring_rank(r)))
 
-        # attributes
-        for i in xrange(0, 8):
-            self.attribs[i][1].setText(str(self.pc.get_mod_attrib_rank(i)))
+        # traits
+        for i, t in enumerate(api.data.traits()):
+            self.attribs[i][1].setText(str(api.character.trait_rank(t)))
 
         # pc rank
         self.tx_pc_rank.setText(str(api.character.insight_rank()))
@@ -2144,22 +2131,22 @@ class L5RMain(L5RCMCore):
         # pc flags
         with QtSignalLock(self.pc_flags_points+self.pc_flags_rank+[self.void_points]):
 
-            self.set_honor(self.pc.get_honor())
-            self.set_glory(self.pc.get_glory())
-            self.set_infamy(self.pc.get_infamy())
-            self.set_status(self.pc.get_status())
-            self.set_taint(self.pc.get_taint())
+            self.set_honor(api.character.honor())
+            self.set_glory(api.character.glory())
+            self.set_infamy(api.character.infamy())
+            self.set_status(api.character.status())
+            self.set_taint(api.character.taint())
 
             self.set_void_points(self.pc.void_points)
 
         # armor
-        self.tx_armor_nm .setText(str(self.pc.get_armor_name()))
-        self.tx_base_tn  .setText(str(self.pc.get_base_tn()))
-        self.tx_armor_tn .setText(str(self.pc.get_armor_tn()))
-        self.tx_armor_rd .setText(str(self.pc.get_full_rd()))
-        self.tx_cur_tn   .setText(str(self.pc.get_cur_tn()))
+        self.tx_armor_nm .setText(str(api.character.get_armor_name()))
+        self.tx_base_tn  .setText(str(api.character.get_base_tn()))
+        self.tx_armor_tn .setText(str(api.character.get_armor_tn()))
+        self.tx_armor_rd .setText(str(api.character.get_full_rd()))
+        self.tx_cur_tn   .setText(str(api.character.get_full_tn()))
         # armor description
-        self.tx_armor_nm.setToolTip(str(self.pc.get_armor_desc()))
+        self.tx_armor_nm.setToolTip(str(api.character.get_armor_desc()))
 
         self.display_health()
         self.update_wound_penalties()
@@ -2175,10 +2162,16 @@ class L5RMain(L5RCMCore):
             api.rules.format_rtk_t(api.rules.get_tot_initiative()))
 
         # affinity / deficiency
-        self.lb_affin.setText(
-            ', '.join([x.capitalize() for x in self.pc.get_affinity()]))
-        self.lb_defic.setText(
-            ', '.join([x.capitalize() for x in self.pc.get_deficiency()]))
+        affinities_ = [
+            (api.data.get_ring(x) or x) for x in api.character.spells.affinities()
+        ]
+
+        deficiencies_ = [
+            (api.data.get_ring(x) or x) for x in api.character.spells.deficiencies()
+        ]
+
+        self.lb_affin.setText(', '.join(affinities_))
+        self.lb_defic.setText(', '.join(deficiencies_))
 
         # money
         with QtSignalLock([self.money_widget]):

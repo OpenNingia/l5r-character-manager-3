@@ -18,6 +18,7 @@
 from PySide import QtGui, QtCore
 import api.data
 import api.data.powers
+import api.character.powers
 from util import log
 
 
@@ -119,7 +120,7 @@ class KataTableViewModel(QtCore.QAbstractTableModel):
         return itm
 
     def update_from_model(self, model):
-        kata = model.get_kata()
+        kata = api.character.powers.get_all_kata()
 
         self.clean()
         for s in kata:

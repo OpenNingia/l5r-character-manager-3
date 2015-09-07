@@ -233,11 +233,11 @@ class BuyAdvDialog(QtGui.QDialog):
 
         cost = new_value
 
-        print('pc is obtuse? {0}'.format(self.pc.has_rule('obtuse')))
+        print('pc is obtuse? {0}'.format(api.character.has_rule('obtuse')))
         print('skill type: {0}'.format(type_))
         print('skill uuid: {0}'.format(uuid))
 
-        if (self.pc.has_rule('obtuse') and
+        if (api.character.has_rule('obtuse') and
                 type_ == 'high' and
                 uuid != 'investigation' and  # investigation
                 uuid != 'medicine'):        # medicine
@@ -261,8 +261,7 @@ class BuyAdvDialog(QtGui.QDialog):
 
     def buy_advancement(self):
 
-        if self.adv and ((self.adv.cost + self.pc.get_px()) >
-                         self.pc.exp_limit):
+        if self.adv.cost > api.character.xp_left():
             QtGui.QMessageBox.warning(self, self.tr("Not enough XP"),
                                       self.tr("Cannot purchase.\nYou've reached the XP Limit."))
             self.close()

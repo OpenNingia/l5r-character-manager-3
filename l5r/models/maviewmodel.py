@@ -62,8 +62,8 @@ class MaViewModel(QtCore.QAbstractListModel):
         self.endResetModel()
 
     def get_mastery_abilities(self, model):
-        for sk_uuid in model.get_skills():
-            sk_rank = model.get_skill_rank(sk_uuid)
+        for sk_uuid in api.character.skills.get_all():
+            sk_rank = api.character.get_skill_rank(sk_uuid)
             sk = api.data.skills.get(sk_uuid)
 
             if not sk:

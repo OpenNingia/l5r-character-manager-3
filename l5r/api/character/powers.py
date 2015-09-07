@@ -14,12 +14,12 @@ from util import log
 
 def get_all_kiho():
     """returns all character kiho"""
-    return [x.kiho for x in __api.pc.get_kiho()]
+    return query(__api.pc.advans).where(lambda x: x.type == 'kiho').select(a_('kiho')).to_list()
 
 
 def get_all_kata():
     """returns all character kata"""
-    return [x.kata for x in __api.pc.get_kata()]
+    return query(__api.pc.advans).where(lambda x: x.type == 'kata').select(a_('kata')).to_list()
 
 
 def check_kiho_eligibility(kiho_id):

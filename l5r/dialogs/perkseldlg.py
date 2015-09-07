@@ -16,6 +16,9 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import models
+import api
+import api.character
+
 import dal
 import dal.query
 import widgets
@@ -197,7 +200,7 @@ class BuyPerkDialog(QtGui.QDialog):
                 t = discount.tag
                 discounted = discount.value
 
-                if self.pc.has_tag(t):
+                if api.character.has_tag(t):
                     cost = int(discounted)
                     tag = t
                     break
@@ -235,7 +238,7 @@ class BuyPerkDialog(QtGui.QDialog):
             self.item.desc = self.tr("%s Rank %d, XP Cost: %d") % (
                 self.perk_nm, self.item.rank, self.item.cost)
 
-            if (self.item.cost + self.pc.get_px()) > self.pc.exp_limit:
+            if self.item.cost > api.character.xp_left():
                 QtGui.QMessageBox.warning(self, self.tr("Not enough XP"),
                                           self.tr("Cannot purchase.\nYou've reached the XP Limit."))
                 return

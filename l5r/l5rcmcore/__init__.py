@@ -262,11 +262,11 @@ class L5RCMCore(QtGui.QMainWindow):
         self.temp_files.append(fpath)
 
         # SAMURAI MONKS ALSO FITS IN THE BUSHI CHARACTER SHEET
-        is_monk, is_brotherhood = self.pc_is_monk()
+        is_monk, is_brotherhood = api.character.is_monk()
         is_samurai_monk = is_monk and not is_brotherhood
-        is_shugenja = self.pc.has_tag('shugenja')
-        is_bushi = self.pc.has_tag('bushi')
-        is_courtier = self.pc.has_tag('courtier')
+        is_shugenja = api.character.is_shugenja()
+        is_bushi = api.character.is_bushi()
+        is_courtier = api.character.is_courtier()
         spell_offset = 0
         spell_count = len(self.pc.get_spells())
 
@@ -361,7 +361,7 @@ class L5RCMCore(QtGui.QMainWindow):
         self.update_from_model()
 
     def set_pc_affinity(self, affinity):
-        if self.pc.has_tag('chuda shugenja school'):
+        if api.character.has_tag('chuda shugenja school'):
             self.pc.set_affinity('maho ' + affinity.lower())
             self.pc.set_deficiency(affinity.lower())
         else:
@@ -423,7 +423,7 @@ class L5RCMCore(QtGui.QMainWindow):
         adv = models.KataAdv(kata.id, kata.id, kata.mastery)
         adv.desc = self.tr('{0}, Cost: {1} xp').format(kata.name, adv.cost)
 
-        if (adv.cost + self.pc.get_px()) > self.pc.exp_limit:
+        if adv.cost > api.character.xp_left():
             return CMErrors.NOT_ENOUGH_XP
 
         self.pc.add_advancement(adv)
@@ -449,9 +449,9 @@ class L5RCMCore(QtGui.QMainWindow):
         if self.pc.get_free_kiho_count() > 0:
             adv.cost = 0
             self.pc.set_free_kiho_count(self.pc.get_free_kiho_count() - 1)
-            print('remaing free kihos', self.pc.get_free_kiho_count())
+            print('remainig free kihos', self.pc.get_free_kiho_count())
 
-        if (adv.cost + self.pc.get_px()) > self.pc.exp_limit:
+        if adv.cost > api.character.xp_left():
             return CMErrors.NOT_ENOUGH_XP
 
         self.pc.add_advancement(adv)

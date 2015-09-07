@@ -41,35 +41,26 @@ class CharacterSnapshot(object):
     def __init__(self, pc):
         self.model = pc
 
-        for k, v in [(x, pc.get_skill_rank(x)) for x in pc.get_skills()]:
+        for k, v in [(x, api.character.skills.get_skill_rank(x)) for x in api.character.skills.get_all()]:
             self.skills[k] = v
 
-        for k, v in [(attrib_name_from_id(i), pc.get_attrib_rank(i)) for i in xrange(0, 8)]:
-            self.traits[k] = v
+        for t in api.data.traits():
+            self.traits[t] = api.character.trait_rank(t)
 
-        for k, v in [(ring_name_from_id(i), pc.get_ring_rank(i)) for i in xrange(0, 5)]:
-            self.rings[k] = v
+        for r in api.data.rings():
+            self.rings[r] = api.character.ring_rank(r)
 
         for s in api.character.schools.get_all():
             self.schools[s] = api.character.schools.get_school_rank(s)
 
-        #for k, v in [(x.school_id, x.school_rank) for x in pc.schools]:
-        #    self.schools[k] = v
-
-        self.tags += pc.tags
-        self.tags += pc.step_1.tags
-        for s in pc.schools:
-            self.tags += s.tags
-
-        for s in pc.schools:
-            self.rules += s.techs
-        self.rules += [x.rule for x in pc.advans if hasattr(x, 'rule')]
+        self.tags  += api.character.get_tags()
+        self.rules += api.character.get_rules()
 
         self.insight_rank = api.character.insight_rank()
-        self.honor = pc.get_honor()
+        self.honor = api.character.honor()
 
     def get_skills(self):
-        return self.model.get_skills()
+        return api.character.skills.get_all()
 
     def get_skill_rank(self, id_):
         if id_ in self.skills:

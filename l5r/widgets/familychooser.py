@@ -170,9 +170,9 @@ class FamilyChooserWidget(QtGui.QWidget):
         self.cb_family.clear()
 
         if clanid:
-            family_list = query(api.data.families.all()).where(lambda x: x.clanid == clanid).order_by(a_('name'))
+            family_list = query(api.data.families.get_all()).where(lambda x: x.clanid == clanid).order_by(a_('name'))
         else:
-            family_list = query(api.data.families.all()).order_by(a_('name'))
+            family_list = query(api.data.families.get_all()).order_by(a_('name'))
 
         for f in family_list:
             self.cb_family.addItem(f.name, f.id)

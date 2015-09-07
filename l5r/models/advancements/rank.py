@@ -37,6 +37,16 @@ class Rank(Advancement):
         self.emphases = {}
         # spells
         self.spells = []
+        # outfit
+        self.outfit = []
+        # money
+        self.money = (0, 0, 0)
+        # affinities
+        self.affinities = []
+        self.affinities_to_choose = []
+        # deficiencies
+        self.deficiencies = []
+        self.deficiencies_to_choose = []
 
     #def to_dict(self):
     #    out = {'clan': self.clan,

@@ -18,6 +18,7 @@
 from PySide import QtGui, QtCore
 import api.data
 import api.data.powers
+import api.character.powers
 from util import log
 
 
@@ -123,7 +124,7 @@ class KihoTableViewModel(QtCore.QAbstractTableModel):
         return itm
 
     def update_from_model(self, model):
-        kiho = model.get_kiho()
+        kiho = api.character.powers.get_all_kiho()
 
         self.clean()
         for s in kiho:

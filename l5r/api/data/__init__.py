@@ -31,6 +31,14 @@ __TRAITS = [
     'agility',
     'intelligence']
 
+__RINGS = [
+    'earth',
+    'air',
+    'water',
+    'fire',
+    'void'
+]
+
 
 def set_locale(loc):
     """set data locale"""
@@ -50,6 +58,16 @@ def get_blacklist():
 def reload():
     """reloads data from storage"""
     __api.reload()
+
+
+def rings():
+    """return all rings"""
+    return __RINGS
+
+
+def traits():
+    """return all traits"""
+    return __TRAITS
 
 
 def get_trait(trait_id):
@@ -74,18 +92,18 @@ def get_trait_or_ring(traitid):
             dal.query.get_ring(__api.ds, traitid))
 
 
-def rings():
-    """returns all the rings"""
-    if not __api.ds:
-        return []
-    return __api.ds.rings
+#def rings():
+#    """returns all the rings"""
+#    if not __api.ds:
+#        return []
+#    return __api.ds.rings
 
 
-def traits():
-    """returns all the traits"""
-    if not __api.ds:
-        return []
-    return __api.ds.traits
+#def traits():
+#    """returns all the traits"""
+#    if not __api.ds:
+#        return []
+#    return __api.ds.traits
 
 
 def get_trait_ring(trait_id):
@@ -114,6 +132,23 @@ def get_trait_ring(trait_id):
         return get_ring('water')
     if trait_id == 'agility' or trait_id == 'intelligence':
         return get_ring('fire')
+
+
+def get_traits_by_ring(ring_id):
+    """return the traits of the ring"""
+    if ring_id == 'void':
+        return 'void',
+
+    if ring_id == 'earth':
+        return 'stamina', 'willpower'
+    if ring_id == 'air':
+        return 'reflexes', 'awareness'
+    if ring_id == 'water':
+        return 'strength', 'perception'
+    if ring_id == 'fire':
+        return 'agility', 'intelligence'
+
+    return None, None
 
 
 def get_trait_by_index(trait_n):

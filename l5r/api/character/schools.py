@@ -63,7 +63,10 @@ def set_first(sid):
         return
 
     # rank advancement
-    api.character.rankadv.join_new(school_.id)
+    rank_ = api.character.rankadv.join_new(school_.id)
+
+    # reset character honor, glory and status
+    __api.pc.honor = __api.pc.glory = __api.pc.status = 0
 
     # set schools
     __api.pc.set_school(school_.id, school_.trait, 1, school_.honor, school_.tags + [school_.id])
@@ -71,19 +74,19 @@ def set_first(sid):
     # set starting skills
     for sk in school_.skills:
         api.character.skills.add_starting_skill(sk.id, sk.rank, sk.emph)
-        #__api.pc.add_school_skill(sk.id, sk.rank, sk.emph)
 
     # pending player choose skills
     for sk in school_.skills_pc:
         __api.pc.add_pending_wc_skill(sk)
 
     # get school tech rank 1
-    tech0 = query(school_.techs).where(lambda x: x.rank == 1).first_or_default(None)
-    if tech0:
-        __api.pc.set_free_school_tech(tech0.id, tech0.id)
+    #tech0 = query(school_.techs).where(lambda x: x.rank == 1).first_or_default(None)
+    #if tech0:
+    #    __api.pc.set_free_school_tech(tech0.id, tech0.id)
 
     # outfit and money
-    __api.pc.set_school_outfit(school_.outfit, tuple(school_.money))
+    rank_.outfit = school_.outfit
+    rank_.money = tuple(school_.money)
 
     # starting spells
     count = 0
@@ -100,10 +103,10 @@ def set_first(sid):
     __api.pc.set_school_spells_qty(count)
 
     # affinity / deficiency
-    __api.pc.set_affinity(school_.affinity)
-    __api.pc.set_deficiency(school_.deficiency)
-    __api.pc.get_school().affinity = school_.affinity
-    __api.pc.get_school().deficiency = school_.deficiency
+    #__api.pc.set_affinity(school_.affinity)
+    #__api.pc.set_deficiency(school_.deficiency)
+    #__api.pc.get_school().affinity = school_.affinity
+    #__api.pc.get_school().deficiency = school_.deficiency
 
     # starting kiho
     if school_.kihos:
@@ -154,7 +157,7 @@ def get_schools_by_tag(tag):
 
 def get_school_by_rank(rank):
     """returns the school joined at the given insight rank, considering alternate paths"""
-    rank_ = query(api.character.rankadv.all()).where(lambda x: x.rank == rank).first_or_default(None)
+    rank_ = query(api.character.rankadv.get_all()).where(lambda x: x.rank == rank).first_or_default(None)
     if not rank_:
         log.api.error(u"get_school_by_rank. rank advancement not found: %d", rank)
         return None
@@ -165,7 +168,7 @@ def get_tech_by_rank(rank):
     """returns the technique learned at the given insight rank, or None"""
 
     # get the school rank at that insight rank
-    rank_ = query(api.character.rankadv.all()).where(
+    rank_ = query(api.character.rankadv.get_all()).where(
         lambda x: x.rank == rank).first_or_default(None)
 
     if not rank_:
@@ -173,7 +176,7 @@ def get_tech_by_rank(rank):
         return None
 
     school_id = rank_.school
-    school_rank = query(api.character.rankadv.all()).where(
+    school_rank = query(api.character.rankadv.get_all()).where(
         lambda x: (x.school == school_id or
                    x.replaced == school_id) and x.rank <= rank).count()
 
@@ -198,6 +201,6 @@ def get_school_rank(sid):
 
     if api.data.schools.is_path(sid):
         return query(api.data.schools.get(sid).techs).select(a_('rank')).first_or_default(1)
-    return query(api.character.rankadv.all()).where(
+    return query(api.character.rankadv.get_all()).where(
             lambda x: x.school == sid or x.replaced == sid).count()
 

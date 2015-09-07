@@ -132,3 +132,11 @@ def get_requirements(sid):
         coded_requirements_.append(r)
 
     return requirements_by_data_ + coded_requirements_
+
+
+def get_school_trait(sid):
+    """return school trait"""
+    school_ = get(sid)
+    if not school_:
+        return None
+    return school_.trait

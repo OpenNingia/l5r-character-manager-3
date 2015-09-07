@@ -27,7 +27,7 @@ import api.data.merits
 from util import log
 
 
-def all():
+def get_all():
     if not __api.pc:
         return []
     return query(__api.pc.advans).where(lambda x: x.type == 'rank').to_list()
@@ -35,12 +35,17 @@ def all():
 
 def get(rank):
     """returns the Rank advancement for the given insight rank"""
-    return query(all()).where(lambda x: x.rank == rank).first_or_default(None)
+    return query(get_all()).where(lambda x: x.rank == rank).first_or_default(None)
 
 
 def get_last():
     """returns the last rank advancement"""
-    return query(all()).last_or_default(None)
+    return query(get_all()).last_or_default(None)
+
+
+def get_first():
+    """returns the last rank advancement"""
+    return query(get_all()).first_or_default(None)
 
 
 def can_advance_rank():
@@ -87,7 +92,7 @@ def advance_rank():
         api.character.schools.get_school_rank(adv.school) + 1
     )
 
-    api.character.append_advancement(adv)
+    return api.character.append_advancement(adv)
 
 
 def leave_path():
@@ -119,11 +124,16 @@ def leave_path():
         api.character.schools.get_school_rank(adv.school) + 1
     )
 
-    api.character.append_advancement(adv)
+    return api.character.append_advancement(adv)
 
 
 def join_new(school_id):
     """the character joins a new school"""
+
+    school_ = api.data.schools.get(school_id)
+    if not school_:
+        log.api.error(u"join_new, school not found: %s", school_id)
+        return
 
     from models.advancements.rank import Rank
     adv = Rank()
@@ -143,11 +153,22 @@ def join_new(school_id):
     else:
         school_rank += 1
 
+    if school_.affinity:
+        if 'any' in school_.affinity or 'nonvoid' in school_.affinity:
+            adv.affinities_to_choose.append(school_.affinity)
+        else:
+            adv.affinities.append(school_.affinity)
+
+    if school_.deficiency:
+        if 'any' in school_.deficiency or 'nonvoid' in school_.deficiency:
+            adv.deficiencies_to_choose.append(school_.deficiency)
+        else:
+            adv.deficiencies.append(school_.deficiency)
+
     adv.desc = api.tr("Insight Rank {0}. School: {1} rank {2} ").format(
         adv.rank,
-        api.data.schools.get(adv.school).name,
+        school_.name,
         school_rank
     )
 
-
-    api.character.append_advancement(adv)
+    return api.character.append_advancement(adv)

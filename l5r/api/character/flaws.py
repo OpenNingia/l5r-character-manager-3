@@ -25,7 +25,7 @@ from asq.initiators import query
 import api.data.merits
 
 
-def all():
+def get_all():
     """returns character flaws"""
     if not __api.pc:
         return []

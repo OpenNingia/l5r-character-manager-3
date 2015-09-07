@@ -134,8 +134,8 @@ def insight_calculation_1():
     """Default insight calculation method = Rings*10+Skills+SpecialPerks"""
 
     n = 0
-    for i in range(0, 5):
-        n += api.character.ring_rank(i) * 10
+    for r in api.data.rings():
+        n += api.character.ring_rank(r) * 10
 
     for s in api.character.skills.get_all():
         n += api.character.skills.get_skill_rank(s)
@@ -152,8 +152,8 @@ def insight_calculation_2():
     """
 
     n = 0
-    for i in range(0, 5):
-        n += api.character.ring_rank(i) * 10
+    for r in api.data.rings():
+        n += api.character.ring_rank(r) * 10
 
     for s in api.character.skills.get_all():
         sk = api.character.skills.get_skill_rank(s)
@@ -172,8 +172,8 @@ def insight_calculation_3():
     """
 
     n = 0
-    for i in range(0, 5):
-        n += api.character.ring_rank(i) * 10
+    for r in api.data.rings():
+        n += api.character.ring_rank(r) * 10
 
     for s in api.character.skills.get_all():
         sk = api.character.skills.get_skill_rank(s)

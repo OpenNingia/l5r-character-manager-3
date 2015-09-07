@@ -30,9 +30,14 @@ def get_all():
 
 def base_deficiencies():
     """returns character deficiencies"""
+    list_ = []
     if not __api.pc:
-        return []
-    return __api.pc.get_deficiency()
+        return list_
+
+    for r in api.character.rankadv.get_all():
+        list_ += r.deficiencies
+
+    return list_
 
 
 def deficiencies():
@@ -42,9 +47,14 @@ def deficiencies():
 
 def base_affinities():
     """returns character base affinities"""
+    list_ = []
     if not __api.pc:
-        return []
-    return __api.pc.get_affinity()
+        return list_
+
+    for r in api.character.rankadv.get_all():
+        list_ += r.affinities
+
+    return list_
 
 
 def affinities():
@@ -118,7 +128,7 @@ def phoenix_embrace_the_elements():
     if main_affinity_ is None:
         return None, []
 
-    deficiencies_ = [x.id for x in api.data.rings() if x.id != main_affinity_]
+    deficiencies_ = [x for x in api.data.rings() if x != main_affinity_]
     return main_affinity_, deficiencies_
 
 
@@ -208,7 +218,7 @@ def add_spell(spell_id):
 def get_school_spells():
     """return the spells bounded to a rank advancement"""
     spells_ = []
-    for r in api.character.rankadv.all():
+    for r in api.character.rankadv.get_all():
         spells_ += r.spells
     return spells_
 
