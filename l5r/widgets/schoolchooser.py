@@ -84,6 +84,7 @@ class FirstSchoolChooserDialog(QtGui.QDialog):
         self.widget.show_multiple_schools_option = False
 
         self.widget.load()
+        self.widget.enable()
         self.widget.selected_clan = api.character.get_clan()
 
         self.header.setText(self.get_h1_text())

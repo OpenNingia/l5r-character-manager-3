@@ -156,7 +156,7 @@ def get_school_by_rank(rank):
     """returns the school joined at the given insight rank, considering alternate paths"""
     rank_ = query(api.character.rankadv.all()).where(lambda x: x.rank == rank).first_or_default(None)
     if not rank_:
-        log.api.error(u"rank advancement not found: %d", rank)
+        log.api.error(u"get_school_by_rank. rank advancement not found: %d", rank)
         return None
     return rank_.school
 
@@ -169,7 +169,7 @@ def get_tech_by_rank(rank):
         lambda x: x.rank == rank).first_or_default(None)
 
     if not rank_:
-        log.api.error(u"rank advancement not found: %d", rank)
+        log.api.error(u"get_tech_by_rank. rank advancement not found: %d", rank)
         return None
 
     school_id = rank_.school
