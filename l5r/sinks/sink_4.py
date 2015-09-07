@@ -95,36 +95,6 @@ class Sink4(QtCore.QObject):
     def on_money_value_changed(self, value):
         self.form.pc.set_property('money', value)
 
-    def on_tech_item_activate(self, index):
-        form = self.form
-        item = form.th_view_model.data(index, QtCore.Qt.UserRole)
-        try:
-            school, tech = dal.query.get_tech(form.dstore, item.id)
-            dlg = widgets.SimpleDescriptionDialog(form)
-            dlg.description().set_title(tech.name)
-            dlg.description().set_subtitle(school.name)
-            dlg.description().set_content(tech.desc)
-            dlg.exec_()
-        except Exception as e:
-            print("cannot retrieve information from tech model.", e)
-
-    def on_spell_item_activate(self, index):
-        form = self.form
-        item = form.sp_view_model.data(index, QtCore.Qt.UserRole)
-        try:
-            spell = dal.query.get_spell(form.dstore, item.spell_id)
-            dlg = widgets.SimpleDescriptionDialog(form)
-            dlg.description().set_title(spell.name)
-            element_name = dal.query.get_ring(form.dstore, spell.element)
-            # if spell.element == 'all':
-            #    element_name = self.tr("Universal")
-            dlg.description().set_subtitle(self.tr("{element}, Mastery {mastery}")
-                                           .format(element=element_name, mastery=spell.mastery))
-            dlg.description().set_content(spell.desc)
-            dlg.exec_()
-        except Exception as e:
-            print("cannot retrieve information from spell model.", e)
-
     # NPC EXPORT
     def show_npc_export_dialog(self):
         form = self.form
@@ -147,3 +117,106 @@ class Sink4(QtCore.QObject):
         dlg = widgets.FirstSchoolChooserDialog(form)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
             form.update_from_model()
+
+    def on_tech_item_activate(self, index):
+        item = self.form.th_view_model.data(index, QtCore.Qt.UserRole)
+        try:
+            school, tech = dal.query.get_tech(self.form.dstore, item.id)
+        except Exception as e:
+            print("cannot retrieve information from tech model.", e)
+        else:
+            self._simple_description_dialog(
+                self.form,
+                tech.name,
+                school.name,
+                tech.desc
+            )
+
+    def on_spell_item_activate(self, index):
+        item = self.form.sp_view_model.data(index, QtCore.Qt.UserRole)
+        try:
+            spell = dal.query.get_spell(self.form.dstore, item.spell_id)
+        except Exception as e:
+            print("cannot retrieve information from spell model.", e)
+        else:
+            self._simple_description_dialog(
+                self.form,
+                spell.name,
+                self._subtitle(
+                    "{element}, Mastery {mastery}",
+                    element=self._get_element_ring(self.form.dstore, spell),
+                    mastery=spell.mastery
+                ),
+                spell.desc
+            )
+
+    def on_kata_item_activate(self, index):
+        item = self.form.ka_view_model.data(index, QtCore.Qt.UserRole)
+        try:
+            kata = dal.query.get_kata(self.form.dstore, item.id)
+        except Exception as e:
+            print("cannot retrieve information from kata model.", e)
+        else:
+            self._simple_description_dialog(
+                self.form,
+                kata.name,
+                self._subtitle(
+                    '{element}, Mastery {mastery}',
+                    element=self._get_element_ring(self.form.dstore, kata),
+                    mastery=kata.mastery
+                ),
+                kata.desc
+            )
+
+    def on_kiho_item_activate(self, index):
+        item = self.form.ki_view_model.data(index, QtCore.Qt.UserRole)
+        try:
+            kiho = dal.query.get_kiho(self.form.dstore, item.id)
+        except Exception as e:
+            print("cannot retrieve information from kiho model.", e)
+        else:
+            self._simple_description_dialog(
+                self.form,
+                kiho.name,
+                self._subtitle(
+                    '{type} - {element},  Mastery {mastery}',
+                    element=self._get_element_ring(self.form.dstore, kiho),
+                    mastery=kiho.mastery,
+                    type=kiho.type
+                ),
+                kiho.desc
+            )
+
+    def on_skill_item_activate(self, index):
+        item = self.form.sk_view_model.data(index, QtCore.Qt.UserRole)
+        try:
+            skill = dal.query.get_skill(self.form.dstore, item)
+        except Exception as e:
+            print("cannot retrieve information from skill model.", e)
+        else:
+            description = '<h3>Mastery Abilities:</h3>'
+            for i in skill.mastery_abilities:
+                description += '<B>{rank}</B>: {desc}<BR/>\n'.format(
+                    rank=i.rank,
+                    desc=i.desc,
+                )
+            self._simple_description_dialog(
+                self.form,
+                skill.name,
+                skill.type,
+                description
+            )
+
+    def _subtitle(self, format, **kwargs):
+        subtitle = self.tr(format)
+        return subtitle.format(**kwargs)
+
+    def _get_element_ring(self, dstore, item):
+        return dal.query.get_ring(dstore, item.element)
+
+    def _simple_description_dialog(self, parent, title, subtitle, desc):
+        dlg = widgets.SimpleDescriptionDialog(parent)
+        dlg.description().set_title(title)
+        dlg.description().set_subtitle(subtitle)
+        dlg.description().set_content(desc)
+        dlg.exec_()
