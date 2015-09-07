@@ -54,4 +54,4 @@ def add(merit_id, rank=None):
     adv_.desc = unicode.format(__api.tr("{0} Rank {1}, XP Cost: {2}"),
                                merit_.name, merit_rank_.id, cost_)
 
-    api.character.append_advancement(adv_)
+    return api.character.purchase_advancement(adv_)
