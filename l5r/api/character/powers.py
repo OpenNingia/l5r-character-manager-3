@@ -22,6 +22,16 @@ def get_all_kata():
     return query(__api.pc.advans).where(lambda x: x.type == 'kata').select(a_('kata')).to_list()
 
 
+def has_kata(kid):
+    """returns true if the character had already learned the given kata"""
+    return query(get_all_kata()).where(lambda x: x == kid).count() != 0
+
+
+def has_kiho(kid):
+    """returns true if the character had already learned the given kiho"""
+    return query(get_all_kiho()).where(lambda x: x == kid).count() != 0
+
+
 def check_kiho_eligibility(kiho_id):
     """returns if the character can acquire the kiho and if not, also returns a reason string"""
     # check eligibility
@@ -68,7 +78,7 @@ def check_kiho_eligibility(kiho_id):
     elif is_monk:
         return against_mastery >= kiho_.mastery, api.tr("Your {0} Ring or School Rank are not enough").format(ring_.text)
     elif is_shugenja:
-        return ring_rank >= kiho_.mastery, api.tr("Your {0} Ring Rank is not enough")
+        return ring_rank >= kiho_.mastery, api.tr("Your {0} Ring Rank is not enough").format(ring_.text)
     elif is_ninja:
         return ninja_rank >= kiho_.mastery, api.tr("Your School Rank is not enough")
 

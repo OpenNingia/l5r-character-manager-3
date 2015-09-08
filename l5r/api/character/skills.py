@@ -23,6 +23,7 @@ import api.data.schools
 import api.data.skills
 
 from asq.initiators import query
+from asq.selectors import a_
 
 
 def get_all():
@@ -112,10 +113,9 @@ def get_skill_emphases(skill_id):
         sk_emph_list += r.emphases[skill_id]
 
     sk_emph_list += query(__api.pc.advans).where(
-        lambda x: x.type == 'emph' and x.skill == skill_id).to_list()
+        lambda x: x.type == 'emph' and x.skill == skill_id).select(a_('text')).to_list()
 
     return sk_emph_list
-
 
 def purchase_skill_rank(skill_id):
     log.api.info(u"purchase skill rank: %s", skill_id)

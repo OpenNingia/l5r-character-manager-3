@@ -18,13 +18,13 @@
 import models
 import widgets
 import api.rules
+import api.data
+import api.data.skills
 from PySide import QtCore, QtGui
 
 
 class ModifierDialog(QtGui.QDialog):
 
-    # data storage
-    dstore = None
     # title bar
     header = None
     # frame layout
@@ -37,10 +37,9 @@ class ModifierDialog(QtGui.QDialog):
     tx_detail = None
     tx_reason = None
 
-    def __init__(self, pc, dstore, parent=None):
+    def __init__(self, pc, parent=None):
         super(ModifierDialog, self).__init__(parent)
         self.pc = pc
-        self.dstore = dstore
         self.item = None
 
         self.build_ui()
@@ -125,7 +124,7 @@ class ModifierDialog(QtGui.QDialog):
 
         def __skill_completer():
             all_skills = []
-            for t in self.dstore.skills:
+            for t in api.data.skills.all():
                 all_skills.append(t.name)
             cmp = QtGui.QCompleter(all_skills)
             # cmp.setCompletionMode(QtGui.QCompleter.InlineCompletion)
@@ -141,13 +140,13 @@ class ModifierDialog(QtGui.QDialog):
             return cmp
 
         def __trait_completer():
-            traits = [x.text for x in self.dstore.traits]
+            traits = [x.text for x in api.data.model().traits]
             cmp = QtGui.QCompleter(traits)
             # cmp.setCompletionMode(QtGui.QCompleter.InlineCompletion)
             return cmp
 
         def __ring_completer():
-            rings = [x.text for x in self.dstore.rings]
+            rings = [x.text for x in api.data.model().rings]
             cmp = QtGui.QCompleter(rings)
             # cmp.setCompletionMode(QtGui.QCompleter.InlineCompletion)
             return cmp

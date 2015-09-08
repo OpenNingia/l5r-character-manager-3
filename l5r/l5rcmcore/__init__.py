@@ -26,7 +26,6 @@ from PySide import QtCore, QtGui
 import models
 import exporters
 import dal
-import dal.query
 import dal.dataimport
 
 from util import log, osutil
@@ -241,7 +240,7 @@ class L5RCMCore(QtGui.QMainWindow):
                 pcs.append(c)
 
         self.write_pdf(
-            'sheet_npc.pdf', exporters.FDFExporterTwoNPC(self.dstore, pcs))
+            'sheet_npc.pdf', exporters.FDFExporterTwoNPC(pcs))
         self.commit_pdf_export(export_file)
 
     def export_as_pdf(self, export_file):
@@ -471,7 +470,7 @@ class L5RCMCore(QtGui.QMainWindow):
         # otherwise just 'Hiroshi' will do
 
         family_name = ""
-        family_obj = dal.query.get_family(self.dstore, self.pc.family)
+        family_obj = api.data.families.get(api.character.get_family())
         if family_obj:
             family_name = family_obj.name
             return "{} {}".format(family_name, self.pc.name)

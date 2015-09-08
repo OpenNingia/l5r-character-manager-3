@@ -23,6 +23,8 @@ import api.data
 import api.character
 import models.chmodel
 
+from util import log
+
 
 def get_trait_cost(trait_nm):
     """return the base multiplier to purchase the given trait"""
@@ -202,16 +204,16 @@ def calculate_base_attack_roll(pc, weap):
     # as xky where x is agility + weapon_skill_rank
     # and y is agility
 
-    attrib = models.ATTRIBS.AGILITY
+    attrib = 'agility'
     if weap.skill_nm == 'Kyujutsu':
-        attrib = models.ATTRIBS.REFLEXES
+        attrib = 'reflexes'
 
-    trait = pc.get_mod_attrib_rank(attrib)
+    trait = api.character.modified_trait_rank(attrib)
     skill = 0
     if weap.skill_id:
-        skill = pc.get_skill_rank(weap.skill_id)
-        print('calc base atk. trait: {0}, weap: {1}, skill: {2}, rank: {3}'
-              .format(trait, weap.name, weap.skill_nm, skill))
+        skill = api.character.skills.get_skill_rank(weap.skill_id)
+        log.rules.info(u"calc base atk. trait: {0}, weap: {1}, skill: {2}, rank: {3}"
+                       .format(trait, weap.name, weap.skill_nm, skill))
 
     return trait + skill, trait
 
@@ -254,8 +256,8 @@ def calculate_base_damage_roll(pc, weap):
     # as xky where x is strength + weapon_damage
     # and y is strength
 
-    attrib = models.ATTRIBS.STRENGTH
-    trait = pc.get_mod_attrib_rank(attrib)
+    attrib = 'strength'
+    trait = api.character.modified_trait_rank(attrib)
     weap_str = 0
     try:
         weap_str = int(weap.strength)
@@ -355,6 +357,7 @@ def calculate_kiho_cost(kiho_id):
         cost_mult = 2
 
     return int(ceil(kiho.mastery * cost_mult))
+
 
 class DicePool(object):
     """represents a dice pool"""

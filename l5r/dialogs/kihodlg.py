@@ -15,11 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import dal
-import dal.query
-import models
-import widgets
-
+import api.data.powers
 import api.character.powers
 
 from PySide import QtCore, QtGui
@@ -27,8 +23,6 @@ from PySide import QtCore, QtGui
 
 class KihoDialog(QtGui.QDialog):
 
-    # data storage
-    dstore = None
     # title bar
     header = None
     # frame layout
@@ -44,10 +38,9 @@ class KihoDialog(QtGui.QDialog):
     tx_eligibility = None
     tx_detail = None
 
-    def __init__(self, pc, dstore, parent=None):
+    def __init__(self, pc, parent=None):
         super(KihoDialog, self).__init__(parent)
         self.pc = pc
-        self.dstore = dstore
         self.item = None
 
         self.build_ui()
@@ -110,8 +103,8 @@ class KihoDialog(QtGui.QDialog):
         self.load_kiho()
 
     def load_kiho(self):
-        for kiho in self.dstore.kihos:
-            if kiho.type != 'tattoo' and not self.pc.has_kiho(kiho.id):
+        for kiho in api.data.powers.kiho():
+            if kiho.type != 'tattoo' and not api.character.powers.has_kiho(kiho.id):
                 self.cb_kiho.addItem(kiho.name, kiho.id)
 
     def set_header_text(self, text):
@@ -121,7 +114,7 @@ class KihoDialog(QtGui.QDialog):
         idx = self.cb_kiho.currentIndex()
         itm = self.cb_kiho.itemData(idx)
 
-        kiho = dal.query.get_kiho(self.dstore, itm)
+        kiho = api.data.powers.get_kiho(itm)
         if not kiho:
             return
 
@@ -137,10 +130,10 @@ class KihoDialog(QtGui.QDialog):
         # save for later
         self.item = kiho
 
-        ring_name = dal.query.get_ring(self.dstore, kiho.element)
+        ring_ = api.data.get_ring(kiho.element)
         kiho_cost = api.rules.calculate_kiho_cost(kiho.id)
 
-        self.tx_element.setText(ring_name.text)
+        self.tx_element.setText(ring_.text)
         self.tx_mastery.setText(str(kiho.mastery))
         self.tx_cost.setText(str(kiho_cost))
 
@@ -162,7 +155,6 @@ class KihoDialog(QtGui.QDialog):
 
         str_eligible = self.tr("You are eligible")
 
-
         if pc_status == status_ko:
             self.tx_pc_status.setText(
                 u"""<span style="color:#A00">{0}</span>""".format(pc_status))
@@ -174,7 +166,7 @@ class KihoDialog(QtGui.QDialog):
 
         if is_eligible:
             self.tx_eligibility.setText(
-                """<span style="color: #0A0">{0}</span>""".format(str_eligible))
+                u"""<span style="color: #0A0">{0}</span>""".format(str_eligible))
         else:
             self.tx_eligibility.setText(
                 u"""<span style="color: #A00">{0}</span>""".format(reason))
@@ -190,8 +182,6 @@ class KihoDialog(QtGui.QDialog):
 
 class TattooDialog(QtGui.QDialog):
 
-    # data storage
-    dstore = None
     # title bar
     header = None
     # frame layout
@@ -203,10 +193,9 @@ class TattooDialog(QtGui.QDialog):
     tx_pc_status = None
     tx_detail = None
 
-    def __init__(self, pc, dstore, parent=None):
+    def __init__(self, pc, parent=None):
         super(TattooDialog, self).__init__(parent)
         self.pc = pc
-        self.dstore = dstore
         self.item = None
 
         self.build_ui()
@@ -260,8 +249,8 @@ class TattooDialog(QtGui.QDialog):
         self.load_kiho()
 
     def load_kiho(self):
-        for kiho in self.dstore.kihos:
-            if kiho.type == 'tattoo' and not self.pc.has_kiho(kiho.id):
+        for kiho in api.data.powers.kiho():
+            if kiho.type == 'tattoo' and not api.character.powers.has_kiho(kiho.id):
                 self.cb_tattoo.addItem(kiho.name, kiho.id)
 
     def set_header_text(self, text):
@@ -271,7 +260,7 @@ class TattooDialog(QtGui.QDialog):
         idx = self.cb_tattoo.currentIndex()
         itm = self.cb_tattoo.itemData(idx)
 
-        kiho = dal.query.get_kiho(self.dstore, itm)
+        kiho = api.data.powers.get_kiho(itm)
         if not kiho:
             return
 

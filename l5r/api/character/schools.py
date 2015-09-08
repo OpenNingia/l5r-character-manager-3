@@ -34,9 +34,10 @@ def get_all():
 
 def get_current():
     """returns the id of the character current school"""
-    if not __api.pc:
+    rank_ = api.character.rankadv.get_last()
+    if not rank_:
         return None
-    return __api.pc.current_school_id
+    return rank_.school
 
 
 def get_rank(sid):
@@ -92,15 +93,13 @@ def set_first(sid):
     count = 0
 
     for spell in school_.spells:
-        __api.pc.add_free_spell(spell.id)
+        api.character.spells.add_school_spell(spell.id)
         count += 1
 
     for spell in school_.spells_pc:
         __api.pc.add_pending_wc_spell(
             (spell.element, spell.count, spell.tag))
         count += spell.count
-
-    __api.pc.set_school_spells_qty(count)
 
     # starting kiho
     if school_.kihos:
@@ -195,3 +194,12 @@ def get_school_rank(sid):
     return query(api.character.rankadv.get_all()).where(
             lambda x: x.school == sid or x.replaced == sid).count()
 
+
+def get_techs_by_school(sid):
+    """returns all the techniques learned in the given school"""
+
+    school_ = api.data.schools.get(sid)
+    if not school_:
+        return []
+
+    return query(school_.techs).where(lambda x: api.character.has_rule(x.id)).to_list()

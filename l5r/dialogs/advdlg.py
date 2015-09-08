@@ -164,7 +164,7 @@ class BuyAdvDialog(QtGui.QDialog):
                 cb.addItem(t.name, t.id)
         elif self.tag == 'emph':
             cb = self.widgets[self.tag][0]
-            for id in self.pc.get_skills():
+            for id in api.character.skills.get_all():
                 sk = api.data.skills.get(id)
                 cb.addItem(sk.name, sk.id)
 
@@ -204,7 +204,7 @@ class BuyAdvDialog(QtGui.QDialog):
         cb2.clear()
 
         can_buy_skill = [
-            x for x in avail_skills if x.id not in self.pc.get_skills()]
+            x for x in avail_skills if x.id not in api.character.skills.get_all()]
 
         # no more skills available for this category
         # player bought them all?
@@ -228,7 +228,7 @@ class BuyAdvDialog(QtGui.QDialog):
         cb1 = self.widgets['skill'][0]
         type_ = cb1.itemData(cb1.currentIndex())
 
-        cur_value = self.pc.get_skill_rank(uuid)
+        cur_value = api.character.skills.get_skill_rank(uuid)
         new_value = cur_value + 1
 
         cost = new_value

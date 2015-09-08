@@ -72,7 +72,7 @@ class SpellAdvDialog(QtGui.QDialog):
         self.mode = mode
 
         if mode == 'bounded':
-            self.page_count = api.character.get_pending_spells_count()
+            self.page_count = api.character.spells.get_pending_spells_count()
         self.properties = [None] * self.max_page_count
         self.build_ui()
         self.connect_signals()

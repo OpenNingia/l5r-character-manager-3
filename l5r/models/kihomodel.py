@@ -29,7 +29,6 @@ class KihoItemModel(object):
         self.mastery = ''
         self.element = ''
         self.id = False
-        self.adv = None
         self.text = []
 
     def __str__(self):
@@ -100,11 +99,10 @@ class KihoTableViewModel(QtCore.QAbstractTableModel):
 
     def build_item_model(self, ki_id):
         itm = KihoItemModel()
-        ki = api.data.powers.get_kiho(ki_id.kiho)
+        ki = api.data.powers.get_kiho(ki_id)
 
         if ki:
             itm.id = ki.id
-            itm.adv = ki_id
             itm.name = ki.name
             itm.mastery = ki.mastery
 
@@ -115,7 +113,7 @@ class KihoTableViewModel(QtCore.QAbstractTableModel):
 
             itm.text = ki.desc
         else:
-            log.model.error(u"kiho not found: %s", ki_id.kiho)
+            log.model.error(u"kiho not found: %s", ki_id)
 
         if ki.type == 'tattoo':
             itm.mastery = "N/A"

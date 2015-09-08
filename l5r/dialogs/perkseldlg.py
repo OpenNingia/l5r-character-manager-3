@@ -30,18 +30,16 @@ class BuyPerkDialog(QtGui.QDialog):
     tag = None
     adv = None
     pc = None
-    dstore = None
     perk_id = 0
     perk_nm = ''
     perk_rule = None
     item = None
     edit_mode = False
 
-    def __init__(self, pc, tag, dstore, parent=None):
+    def __init__(self, pc, tag, parent=None):
         super(BuyPerkDialog, self).__init__(parent)
         self.tag = tag
         self.pc = pc
-        self.dstore = dstore
         self.build_ui()
         self.load_data()
 
@@ -109,7 +107,7 @@ class BuyPerkDialog(QtGui.QDialog):
 
     def load_data(self):
         # load subtypes
-        for typ in self.dstore.perktypes:
+        for typ in api.data.model().perktypes:
             self.cb_subtype.addItem(typ.name, typ.id)
 
     def set_edit_mode(self, flag):
@@ -158,8 +156,8 @@ class BuyPerkDialog(QtGui.QDialog):
         type_ = self.cb_subtype.itemData(selected)
 
         # populate perks
-        perks = self.dstore.merits if (
-            self.tag == 'merit') else self.dstore.flaws
+        perks = api.data.merits.all() if (
+            self.tag == 'merit') else api.data.flaws.all()
         perks = [x for x in perks if x.type == type_]
 
         for p in perks:

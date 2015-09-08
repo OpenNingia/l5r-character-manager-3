@@ -30,7 +30,7 @@ class NpcExportTest(object):
              os.path.join(pack_data_dir, 'data')],
             [])
 
-        exporter = exporters.FDFExporterTwoNPC(dstore, pcs)
+        exporter = exporters.FDFExporterTwoNPC(pcs)
 
         with open(self.out, 'wb') as fobj:
             exporter.export(fobj)

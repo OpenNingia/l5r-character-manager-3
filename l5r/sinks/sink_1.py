@@ -122,8 +122,7 @@ class Sink1(QtCore.QObject):
     def act_buy_perk(self):
         form = self.form
 
-        dlg = dialogs.BuyPerkDialog(form.pc, self.sender().property('tag'),
-                                    form.dstore, form)
+        dlg = dialogs.BuyPerkDialog(form.pc, self.sender().property('tag'), form)
         dlg.exec_()
         form.update_from_model()
 
@@ -148,7 +147,7 @@ class Sink1(QtCore.QObject):
     def show_wear_armor(self):
         form = self.form
 
-        dlg = dialogs.ChooseItemDialog(form.pc, 'armor', form.dstore, form)
+        dlg = dialogs.ChooseItemDialog(form.pc, 'armor', form)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
             form.update_from_model()
 

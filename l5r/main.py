@@ -31,14 +31,10 @@ parent = os.path.abspath(os.path.dirname(here))
 sys.path.append(here)
 
 import mimetypes
-
-import models
 import widgets
 import dialogs
 import autoupdate
 import sinks
-import dal
-import dal.query
 import api.data.clans
 import api.data.families
 import api.data.schools
@@ -1943,12 +1939,12 @@ class L5RMain(L5RCMCore):
             self.update_from_model()
 
     def learn_next_free_kiho(self):
-        dlg = dialogs.KihoDialog(self.pc, self.dstore, self)
+        dlg = dialogs.KihoDialog(self.pc, self)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
             self.update_from_model()
 
     def show_advance_rank_dlg(self):
-        dlg = dialogs.NextRankDlg(self.pc, self.dstore, self)
+        dlg = dialogs.NextRankDlg(self.pc, self)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
             self.update_from_model()
 
@@ -2157,16 +2153,24 @@ class L5RMain(L5RCMCore):
             api.rules.format_rtk_t(api.rules.get_tot_initiative()))
 
         # affinity / deficiency
-        affinities_ = [
-            (api.data.get_ring(x) or x) for x in api.character.spells.affinities()
-        ]
+        affinities_ = []
+        for a in api.character.spells.affinities():
+            ring_ = api.data.get_ring(a)
+            if not ring_:
+                affinities_.append(a)
+            else:
+                affinities_.append(ring_.text)
 
-        deficiencies_ = [
-            (api.data.get_ring(x) or x) for x in api.character.spells.deficiencies()
-        ]
+        deficiencies_ = []
+        for a in api.character.spells.deficiencies():
+            ring_ = api.data.get_ring(a)
+            if not ring_:
+                deficiencies_.append(a)
+            else:
+                deficiencies_.append(ring_.text)
 
-        self.lb_affin.setText(', '.join(affinities_))
-        self.lb_defic.setText(', '.join(deficiencies_))
+        self.lb_affin.setText(u', '.join(affinities_))
+        self.lb_defic.setText(u', '.join(deficiencies_))
 
         # money
         with QtSignalLock([self.money_widget]):

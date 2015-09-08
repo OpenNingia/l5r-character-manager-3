@@ -19,10 +19,13 @@ from PySide import QtGui, QtCore
 from datetime import datetime
 import models
 import hashlib
-import dal
-import dal.query
 import api.rules
 import api.data.spells
+import api.data.skills
+import api.data.powers
+import api.data.schools
+import api.data.merits
+import api.data.flaws
 import api.character
 import api.character.schools
 
@@ -356,7 +359,7 @@ class FDFExporterShugenja(FDFExporter):
             if def_.startswith('*'):  # wildcard
                 def_ = m.get_affinity().capitalize()
 
-            school = dal.query.get_school(f.dstore, schools[i].school_id)
+            school = api.data.schools.get(schools[i].school_id)
             if school:
                 for tech in school.techs:
                     fields['SCHOOL_NM.%d' % (i + 1)] = school.name
@@ -400,31 +403,30 @@ class FDFExporterBushi(FDFExporter):
 
         fields = {}
 
-        # schools
-        # FIX FOR SAMURAI MONKS
-        schools = [x for x in m.schools if 'bushi' in x.tags or (
-            'monk' in x.tags and 'brotherhood' not in x.tags)]
-        techs = [x for x in m.get_techs()]
+        # schools, bushi and samurai monk
+        schools = []
+        for s in api.character.schools.get_all():
+            if api.data.schools.is_bushi(s) or api.data.schools.is_samurai_monk(s):
+                schools.append(s)
 
         count = min(2, len(schools))
-        for i in xrange(0, count):
-            school = dal.query.get_school(f.dstore, schools[i].school_id)
+        for i in range(0, count):
+            techs = api.character.schools.get_techs_by_school(schools[i].school_id)
+            school = api.data.schools.get(schools[i].school_id)
             fields['BUSHI_SCHOOL_NM.%d' % i] = school.name
 
             for t in techs:
-                thsc, tech = dal.query.get_tech(f.dstore, t)
+                thsc, tech = api.data.schools.get_technique(t)
                 if not tech:
                     break
-                if thsc != school:
-                    continue
                 rank = tech.rank - 1 if tech.rank > 0 else 0
                 fields['BUSHI_TECH.%d.%d' % (rank, i)] = tech.name
 
         # kata
-        katas = [x.kata for x in m.get_kata()]
+        katas = api.character.powers.get_all_kata()
         count = min(6, len(katas))
-        for i in xrange(0, count):
-            kata = dal.query.get_kata(f.dstore, katas[i])
+        for i in range(0, count):
+            kata = api.data.powers.get_kata(katas[i])
             if not kata:
                 break
             fields['KATA_NM.%d' % (i + 1)] = kata.name
@@ -449,35 +451,42 @@ class FDFExporterMonk(FDFExporter):
 
         # schools
         # ONLY BROTHERHOOD SCHOOLS
-        schools = [x for x in m.schools if 'brotherhood' in x.tags]
+
+        # schools, bushi and samurai monk
+        schools = []
+        for s in api.character.schools.get_all():
+            if api.data.schools.is_brotherhood_monk(s):
+                schools.append(s)
+
         count = min(3, len(schools))
-        for i in xrange(0, count):
-            school = dal.query.get_school(f.dstore, schools[i].school_id)
+        for i in range(0, count):
+            school = api.data.schools.get(schools[i].school_id)
             if school is None:
                 break
-            tech = dal.query.get_school_tech(school, 1)
-            if tech is None:
+            techs = api.character.schools.get_techs_by_school(schools[i].school_id)
+            if not len(techs):
                 break
 
             fields['MONK_SCHOOL.%d' % (i + 1)] = school.name
-            fields['MONK_TECH.%d' % (i + 1)] = tech.name
+            fields['MONK_TECH.%d' % (i + 1)] = techs[0].name
 
         # kiho
-        kihos = [x.kiho for x in m.get_kiho()]
+        kihos = api.character.powers.get_all_kiho()
         count = min(12, len(kihos))
 
-        for i in xrange(0, count):
-            kiho = dal.query.get_kiho(f.dstore, kihos[i])
+        for i in range(0, count):
+            kiho = api.data.powers.get_kiho(kihos[i])
             if not kiho:
                 break
+            ring = api.data.get_ring(kiho.element)
             fields['KIHO_NM.%d' % (i + 1)] = kiho.name
             fields['KIHO_MASTERY.%d' % (i + 1)] = str(kiho.mastery)
             fields['KIHO_ELEM.%d' %
-                   (i + 1)] = dal.query.get_ring(f.dstore, kiho.element)
+                   (i + 1)] = ring.text
             fields['KIHO_TYPE.%d' % (i + 1)] = kiho.type
             lines = self.split_in_parts(kiho.desc) or []
             lc = min(6, len(lines))
-            for j in xrange(0, lc):
+            for j in range(0, lc):
                 fields['KIHO_EFFECT.%d.%d' % (i + 1, j)] = lines[j]
 
         # EXPORT FIELDS
@@ -571,21 +580,23 @@ class FDFExporterCourtier(FDFExporter):
 
         fields = {}
 
-        # schools
-        schools = filter(lambda x: 'courtier' in x.tags, m.schools)
-        techs = [x for x in m.get_techs()]
+        # courtier schools
+        schools = []
+        for s in api.character.schools.get_all():
+            if api.data.schools.is_courtier(s):
+                schools.append(s)
 
         count = min(2, len(schools))
-        for i in xrange(0, count):
-            school = dal.query.get_school(f.dstore, schools[i].school_id)
+        for i in range(0, count):
+            school = api.data.schools.get(schools[i].school_id)
+            techs = api.character.schools.get_techs_by_school(schools[i].school_id)
+
             fields['COURTIER_SCHOOL_NM.%d' % i] = school.name
 
             for t in techs:
-                thsc, tech = dal.query.get_tech(f.dstore, t)
+                thsc, tech = api.data.schools.get_technique(t)
                 if not tech:
                     break
-                if thsc != school:
-                    continue
                 rank = tech.rank - 1 if tech.rank > 0 else 0
                 fields['COURTIER_SCHOOL_RANK.%d.%d' % (i, rank)] = tech.name
                 print('COURTIER_SCHOOL_RANK.%d.%d' % (i, rank), tech.name)

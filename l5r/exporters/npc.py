@@ -15,9 +15,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import dal
-import dal.query
 import models
+
+import api.data
+import api.data.skills
+import api.data.clans
+import api.data.families
+import api.data.schools
 import api.rules
 import api.character
 from fdfexporter import FDFExporter, zigzag
@@ -25,10 +29,8 @@ from fdfexporter import FDFExporter, zigzag
 
 class FDFExporterTwoNPC(FDFExporter):
 
-    def __init__(self, dstore, pcs):
+    def __init__(self, pcs):
         super(FDFExporterTwoNPC, self).__init__()
-
-        self.dstore = dstore
         self.pcs = pcs
 
     def export_body(self, io):
@@ -47,7 +49,7 @@ class FDFExporterTwoNPC(FDFExporter):
 
         skill_list = []
         for s in pc.get_skills():
-            sk_obj = dal.query.get_skill(self.dstore, s)
+            sk_obj = api.data.skills.get(s)
             if not sk_obj:
                 continue
             o = {
@@ -72,19 +74,19 @@ class FDFExporterTwoNPC(FDFExporter):
         def _af(name, value, idx=index):
             fields['{}{}'.format(name, idx)] = str(value)
 
-        clan_obj = dal.query.get_clan(self.dstore, pc.clan)
+        clan_obj = api.data.clans.get(pc.clan)
         if clan_obj:
             _af("Clan", clan_obj.name)
 
         name = ""
-        family_obj = dal.query.get_family(self.dstore, pc.family)
+        family_obj = api.data.families.get(pc.family)
         if family_obj:
             name = "{} {}".format(family_obj.name, pc.name)
         else:
             name = pc.name
         _af("Name", name)
 
-        sobj = dal.query.get_school(self.dstore, pc.get_school_id())
+        sobj = api.data.schools.get(pc.get_school_id())
         if sobj:
             _af("School", sobj.name)
 

@@ -23,10 +23,9 @@ import api.character.rankadv
 
 class NextRankDlg(QtGui.QDialog):
 
-    def __init__(self, pc, dstore, parent=None):
+    def __init__(self, pc, parent=None):
         super(NextRankDlg, self).__init__(parent)
         self.pc = pc
-        self.dstore = dstore
 
         self.build_ui()
         self.connect_signals()
