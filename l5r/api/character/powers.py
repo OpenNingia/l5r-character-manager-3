@@ -24,6 +24,7 @@ def get_all_kata():
 
 def check_kiho_eligibility(kiho_id):
     """returns if the character can acquire the kiho and if not, also returns a reason string"""
+
     # check eligibility
     against_mastery = 0
 
@@ -47,6 +48,9 @@ def check_kiho_eligibility(kiho_id):
     if is_monk:
         monk_schools = api.character.schools.get_schools_by_tag('monk')
         school_bonus = sum([api.character.schools.get_rank(x) for x in monk_schools])
+        if api.character.has_tag_or_rule('monks_the_way_of_fire'):
+            if kiho_.element == 'fire':
+                school_bonus += 1
 
     against_mastery = school_bonus + ring_rank
 
