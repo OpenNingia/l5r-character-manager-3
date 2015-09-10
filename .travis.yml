@@ -1,10 +1,13 @@
 language: python
+sudo: required
 python:
-  - "2.6"
   - "2.7"
 # command to install dependencies
 install:
-  - "pip install ./l5r"
-  - "pip install -r requirements.txt"
+  - "sudo apt-get install python-pyside"
+  - "pip install --upgrade pip"
+  - "pip install --upgrade lxml"
+  - "pip install --upgrade asq"
+  - "pip install --no-deps ./l5r"
 # command to run tests
 script: nosetests
