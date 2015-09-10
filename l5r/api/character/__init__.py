@@ -46,7 +46,9 @@ def set_model(value):
 
 def get_family_tags():
     """return tags related to the choosen family"""
-    return [get_family(), get_clan()]
+    if get_family():
+        return [get_family(), get_clan()]
+    return []
 
 
 def get_school_tags():
@@ -386,6 +388,8 @@ def purchase_trait_rank(trait_id):
 
 
 def purchase_void_rank():
+    """purchase a void rank"""
+
     cur_value = void_rank()
     new_value = cur_value + 1
 

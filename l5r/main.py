@@ -33,7 +33,6 @@ sys.path.append(here)
 import mimetypes
 import widgets
 import dialogs
-import autoupdate
 import sinks
 import api.data.clans
 import api.data.families
@@ -2509,28 +2508,6 @@ class L5RMain(L5RCMCore):
             # print 'save last_dir: %s' % last_dir
             settings.setValue('last_open_data_dir', last_data_dir)
         return files
-
-    def check_updates(self):
-        update_info = autoupdate.get_last_version()
-        need_update = False
-
-        if update_info is None:
-            return
-
-        version_str = ''
-        # check extended module version
-        if 'versionex' in update_info:
-            need_update = autoupdate.need_update(
-                APP_VERSION, update_info['versionex'])
-            version_str = update_info['versionex']
-        else:
-            need_update = autoupdate.need_update(
-                APP_VERSION, update_info['version'])
-            version_str = update_info['version']
-
-        if need_update and self.ask_to_upgrade(version_str) == QtGui.QMessageBox.Yes:
-            import util
-            util.portable_open(PROJECT_DOWNLOADS_LINK)
 
     def on_change_insight_calculation(self):
         method = self.sender().checkedAction().property('method')

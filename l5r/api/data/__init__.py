@@ -163,6 +163,11 @@ def model():
     return __api.ds
 
 
+def set_model(value):
+    """inject the data access model"""
+    __api.ds = value
+
+
 def packs():
     """returns loaded data packs"""
     if not __api.ds:
