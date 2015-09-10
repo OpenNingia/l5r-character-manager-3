@@ -1766,8 +1766,7 @@ class L5RMain(L5RCMCore):
     def act_choose_skills(self):
         dlg = dialogs.SelWcSkills(self.pc, self)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
-            self.pc.clear_pending_wc_skills()
-            self.pc.clear_pending_wc_emphs()
+            api.character.rankadv.clear_skills_to_choose()
             self.update_from_model()
 
     def act_memo_spell(self):
@@ -1836,14 +1835,6 @@ class L5RMain(L5RCMCore):
 
         if potential_insight_rank_ > actual_insight_rank_:
             # HEY, NEW RANK DUDE!
-
-            # get 3 spells each rank
-            if api.character.is_shugenja():
-                self.pc.set_pending_spells_count(self.pc.get_spells_per_rank())
-            elif api.character.is_monk()[1]:
-                # hey free kihos!
-                self.pc.set_free_kiho_count(2)
-
             lb = QtGui.QLabel(self.tr("You reached the next rank, you have an opportunity"
                                       " to decide your destiny."), self)
             bt = QtGui.QPushButton(self.tr("Advance rank"), self)
@@ -1857,7 +1848,7 @@ class L5RMain(L5RCMCore):
             return
 
         # Show nicebar if can get other spells
-        if api.character.spells.has_granted_free_spells():
+        if api.character.rankadv.has_granted_free_spells():
             lb = QtGui.QLabel(
                 self.tr("You now fit the requirements to learn other Spells"), self)
             bt = QtGui.QPushButton(self.tr("Learn Spells"), self)
@@ -1871,9 +1862,9 @@ class L5RMain(L5RCMCore):
             return
 
         # Show nicebar if can get free kihos
-        if self.pc.get_free_kiho_count():
+        if api.character.rankadv.get_gained_kiho_count() > 0:
             lb = QtGui.QLabel(
-                self.tr("You can learn {0} kihos for free").format(self.pc.get_free_kiho_count()), self)
+                self.tr("You can learn {0} kihos for free").format(api.character.rankadv.get_gained_kiho_count()), self)
             bt = QtGui.QPushButton(self.tr("Learn Kihos"), self)
             bt.setSizePolicy(QtGui.QSizePolicy.Maximum,
                              QtGui.QSizePolicy.Preferred)
@@ -1885,9 +1876,7 @@ class L5RMain(L5RCMCore):
             return
 
         # Show nicebar if pending wildcard skills
-        wcs = self.pc.get_pending_wc_skills()
-        wce = self.pc.get_pending_wc_emphs()
-        if len(wcs) > 0 or len(wce) > 0:
+        if api.character.rankadv.has_granted_skills_to_choose():
             lb = QtGui.QLabel(
                 self.tr("Your school gives you the choice of certain skills"), self)
             bt = QtGui.QPushButton(self.tr("Choose Skills"), self)
@@ -1908,8 +1897,7 @@ class L5RMain(L5RCMCore):
                      u", ".join(rank_.affinities_to_choose),
                      u", ".join(rank_.deficiencies_to_choose))
 
-        #if 'any' in rank_.affinities or 'nonvoid' in rank_.affinities:
-        if len(rank_.affinities_to_choose):
+        if api.character.rankadv.has_granted_affinities_to_choose():
             lb = QtGui.QLabel(
                 self.tr("You school grant you to choose an elemental affinity."), self)
             bt = QtGui.QPushButton(self.tr("Choose Affinity"), self)
@@ -1917,7 +1905,7 @@ class L5RMain(L5RCMCore):
                              QtGui.QSizePolicy.Preferred)
             bt.clicked.connect(self.show_select_affinity)
             self.show_nicebar([lb, bt])
-        elif len(rank_.deficiencies_to_choose):
+        elif api.character.rankadv.has_granted_deficiencies_to_choose():
             lb = QtGui.QLabel(
                 self.tr("You school grant you to choose an elemental deficiency."), self)
             bt = QtGui.QPushButton(self.tr("Choose Deficiency"), self)
@@ -1934,8 +1922,7 @@ class L5RMain(L5RCMCore):
                                      the right to choose some spells.</h2> \
                                      <h3><i>Choose with care.</i></h3></center>"))
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
-            self.pc.clear_pending_wc_spells()
-            self.pc.set_pending_spells_count(0)
+            api.character.rankadv.clear_spells_to_choose()
             self.update_from_model()
 
     def learn_next_free_kiho(self):

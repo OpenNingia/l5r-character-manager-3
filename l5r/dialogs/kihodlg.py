@@ -138,9 +138,9 @@ class KihoDialog(QtGui.QDialog):
         self.tx_cost.setText(str(kiho_cost))
 
         pc_status = None
-        is_monk, is_brotherhood = self.parent().pc_is_monk()
-        is_ninja, is_shugenja = self.parent(
-        ).pc_is_ninja(), self.parent().pc_is_shugenja()
+        is_monk, is_brotherhood = api.character.is_monk()
+        is_ninja = api.character.is_ninja()
+        is_shugenja = api.character.is_shugenja()
 
         if is_brotherhood:
             pc_status = status_ok[0]

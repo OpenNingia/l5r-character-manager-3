@@ -53,8 +53,12 @@ what would you want to do?
 
         vbox.setSpacing(12)
 
+        is_path = api.data.schools.is_path(
+            api.character.schools.get_current()
+        )
+
         # check if the PC is following an alternate path
-        if self.pc.get_school().is_path:
+        if is_path:
             # offer to going back
             self.bt_go_on.setText(self.tr("Go back to your old school"))
 
@@ -70,8 +74,14 @@ what would you want to do?
         self.accept()
 
     def simply_go_on(self):
+
+        is_path = api.data.schools.is_path(
+            api.character.schools.get_current()
+        )
+
+
         # check if the PC is following an alternate path
-        if self.pc.get_school().is_path:
+        if is_path:
             # the PC want to go back to the old school.
             # find the first school that is not a path
 

@@ -235,24 +235,3 @@ def get_memorized_spells():
         lambda x: x.type == 'memo_spell').select(a_('spell')).distinct().to_list()
 
 
-def get_pending_spells_count():
-    """returns the number of pending spells"""
-    return __api.pc.get_pending_spells_count()
-
-
-def get_starting_spells_to_choose():
-    """returns the number of spells that the user can choose"""
-    return __api.pc.get_pending_wc_spells()
-
-
-def has_granted_free_spells():
-    """returns True if the character is granted with more free spells"""
-
-    # only grant free spells to shugenja characters
-    if not api.character.is_shugenja():
-        return False
-
-    pending_spells_count_ = get_pending_spells_count()
-    spells_to_choose_count_ = len(get_starting_spells_to_choose())
-
-    return (pending_spells_count_ + spells_to_choose_count_) > 0

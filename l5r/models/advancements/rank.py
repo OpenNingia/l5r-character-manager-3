@@ -33,10 +33,14 @@ class Rank(Advancement):
         self.replaced = None
         # skills obtained with the rank advancement
         self.skills = []
+        self.skills_to_choose = []
         # emphases to skills ( skill_id => [list] )
         self.emphases = {}
+        self.emphases_to_choose = []
         # spells
         self.spells = []
+        self.spells_to_choose = []
+        self.gained_spells_count = 0
         # outfit
         self.outfit = []
         # money
@@ -47,6 +51,9 @@ class Rank(Advancement):
         # deficiencies
         self.deficiencies = []
         self.deficiencies_to_choose = []
+        # kiho gained with rank advancement
+        self.kiho = []
+        self.gained_kiho_count = 0
 
 
 class StartingSkill(object):

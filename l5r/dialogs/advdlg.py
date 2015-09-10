@@ -353,7 +353,7 @@ class SelWcSkills(QtGui.QDialog):
         self.bt_cancel = QtGui.QPushButton(self.tr('Cancel'), self)
 
         row_ = 2
-        for ws in self.pc.get_pending_wc_skills():
+        for ws in api.character.rankadv.get_starting_skills_to_choose():
             lb = ''
             wl = ws.wildcards
             if len(ws.wildcards):
@@ -391,7 +391,7 @@ class SelWcSkills(QtGui.QDialog):
 
             row_ += 1
 
-        for s in self.pc.get_pending_wc_emphs():
+        for s in api.character.rankadv.get_starting_emphases_to_choose():
 
             skill_ = api.data.skills.get(s)
             if not skill_:
@@ -429,7 +429,7 @@ class SelWcSkills(QtGui.QDialog):
         log.ui.debug(u"User can choose some starting skills")
 
         i = 0
-        for ws in self.pc.get_pending_wc_skills():
+        for ws in api.character.rankadv.get_starting_skills_to_choose():
             outcome = []
             wl = ws.wildcards
 
@@ -510,8 +510,6 @@ class SelWcSkills(QtGui.QDialog):
 
         for i in xrange(0, len(self.les)):
             emph = self.les[i].text()
-            s_id = self.pc.get_pending_wc_emphs()[i]
-
             api.character.skills.add_starting_skill(uuid, emph=emph)
 
         self.accept()

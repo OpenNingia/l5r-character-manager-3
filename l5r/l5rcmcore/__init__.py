@@ -425,25 +425,19 @@ class L5RCMCore(QtGui.QMainWindow):
 
         return CMErrors.NO_ERROR
 
-    def pc_is_monk(self):
-        return api.character.is_monk()
-
-    def pc_is_ninja(self):
-        return api.character.is_ninja()
-
-    def pc_is_shugenja(self):
-        return api.character.is_shugenja()
-
     def buy_kiho(self, kiho):
         kiho_cost = api.rules.calculate_kiho_cost(kiho.id)
         adv = models.KihoAdv(kiho.id, kiho.id, kiho_cost)
         adv.desc = self.tr('{0}, Cost: {1} xp').format(kiho.name, adv.cost)
 
         # monks can get free kihos
-        if self.pc.get_free_kiho_count() > 0:
+        free_kiho_ = api.character.rankadv.get_gained_kiho_count()
+
+        if free_kiho_ > 0:
             adv.cost = 0
-            self.pc.set_free_kiho_count(self.pc.get_free_kiho_count() - 1)
-            print('remainig free kihos', self.pc.get_free_kiho_count())
+            free_kiho_ -= 1
+            api.character.rankadv.set_gained_kiho_count(free_kiho_)
+            log.app.info(u"free kiho left: %d", free_kiho_)
 
         if adv.cost > api.character.xp_left():
             return CMErrors.NOT_ENOUGH_XP
@@ -469,9 +463,7 @@ class L5RCMCore(QtGui.QMainWindow):
         # e.g. Hida Hiroshi
         # otherwise just 'Hiroshi' will do
 
-        family_name = ""
         family_obj = api.data.families.get(api.character.get_family())
         if family_obj:
-            family_name = family_obj.name
-            return "{} {}".format(family_name, self.pc.name)
+            return "{} {}".format(family_obj.name, self.pc.name)
         return self.pc.name

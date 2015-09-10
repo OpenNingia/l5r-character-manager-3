@@ -218,7 +218,6 @@ class AdvancedPcModel(BasePcModel):
         self.void_points = 0
         self.extra_notes = ''
         self.insight_calculation = 1
-        self.free_kiho_count = 0
 
         self.pack_refs = []
         self.modifiers = []
@@ -229,12 +228,6 @@ class AdvancedPcModel(BasePcModel):
 
     def is_dirty(self):
         return self.unsaved
-
-    def get_free_kiho_count(self):
-        return self.free_kiho_count
-
-    def set_free_kiho_count(self, value):
-        self.free_kiho_count = value
 
     def get_attrib_cost(self, idx):
         return self.attrib_costs[idx]
@@ -253,12 +246,6 @@ class AdvancedPcModel(BasePcModel):
 
     def set_spells_per_rank(self, value):
         self.spells_per_rank = value
-
-    def set_pending_spells_count(self, value):
-        self.pending_spells_count = value
-
-    def get_pending_spells_count(self):
-        return self.pending_spells_count
 
     def get_weapons(self):
         return self.weapons

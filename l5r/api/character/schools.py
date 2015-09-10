@@ -78,32 +78,23 @@ def set_first(sid):
 
     # pending player choose skills
     for sk in school_.skills_pc:
-        __api.pc.add_pending_wc_skill(sk)
-
-    # get school tech rank 1
-    #tech0 = query(school_.techs).where(lambda x: x.rank == 1).first_or_default(None)
-    #if tech0:
-    #    __api.pc.set_free_school_tech(tech0.id, tech0.id)
+        rank_.skills_to_choose.append(sk)
 
     # outfit and money
     rank_.outfit = school_.outfit
     rank_.money = tuple(school_.money)
 
     # starting spells
-    count = 0
-
     for spell in school_.spells:
         api.character.spells.add_school_spell(spell.id)
-        count += 1
 
     for spell in school_.spells_pc:
-        __api.pc.add_pending_wc_spell(
+        rank_.spells_to_choose.append(
             (spell.element, spell.count, spell.tag))
-        count += spell.count
 
     # starting kiho
     if school_.kihos:
-        __api.pc.set_free_kiho_count(school_.kihos.count)
+        rank_.gained_kiho_count = school_.kihos.count
 
 
 def join_new(sid):
@@ -114,29 +105,29 @@ def join_new(sid):
         return
 
     # add advancement
-    api.character.rankadv.join_new(school_.id)
+    rank_ = api.character.rankadv.join_new(school_.id)
 
-    import models
+    #import models
 
-    school_nm = school_.name
+    #school_nm = school_.name
 
-    school_obj = models.CharacterSchool(school_.id)
-    school_obj.tags = school_.tags
-    school_obj.school_rank = 0
+    #school_obj = models.CharacterSchool(school_.id)
+    #school_obj.tags = school_.tags
+    #school_obj.school_rank = 0
 
-    school_obj.affinity = school_.affinity
-    school_obj.deficiency = school_.deficiency
+    #school_obj.affinity = school_.affinity
+    #school_obj.deficiency = school_.deficiency
 
-    __api.pc.schools.append(school_obj)
+    #__api.pc.schools.append(school_obj)
 
     # check free kihos
-    if school_.kihos:
-        __api.pc.set_free_kiho_count(school_.kihos.count)
+    #if school_.kihos:
+    #    __api.pc.set_free_kiho_count(school_.kihos.count)
 
     # check for alternate path
-    if school_obj.has_tag('alternate'):
-        school_obj.is_path = True
-        school_obj.path_rank = api.character.insight_rank()
+    #if school_obj.has_tag('alternate'):
+    #    school_obj.is_path = True
+    #    school_obj.path_rank = api.character.insight_rank()
 
 
 def get_schools_by_tag(tag):
