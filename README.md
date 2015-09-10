@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/OpenNingia/l5r-character-manager-3.svg)](https://travis-ci.org/OpenNingia/l5r-character-manager-3)
+
 # Run the program from sources
 
 ## Getting the sources
