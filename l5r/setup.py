@@ -21,7 +21,11 @@ from setuptools import setup, find_packages
 from codecs import open
 from os import path
 
-import py2exe
+try:
+    import py2exe
+    HAVE_PY2EXE=True
+except:
+    HAVE_PY2EXE=False
 
 import glob
 
@@ -33,7 +37,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='9.0.7',
+    version='3.10.0',
 
     description='L5R RPG character manager',
 
