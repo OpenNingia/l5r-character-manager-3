@@ -9,6 +9,8 @@
 ### Switch to develop branch
 master branch is often outdated, so you want to get the develop branch by running
 
+[![Build Status](https://travis-ci.org/OpenNingia/l5r-character-manager-3.svg)](https://travis-ci.org/OpenNingia/l5r-character-manager-3)
+
 `git checkout develop`
 
 ### Installing the dependencies
