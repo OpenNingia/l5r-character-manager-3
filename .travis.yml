@@ -7,7 +7,8 @@ before_install:
   - "sudo apt-get update -qq"
 # command to install dependencies
 install:
-  - "sudo apt-get install -y python-pyside"
+  - "sudo apt-get install -y python-pyside.qtcore"
+  - "sudo apt-get install -y python-pyside.qtgui"
   - "pip install --upgrade pip"
   - "pip install --upgrade lxml"
   - "pip install --upgrade asq"
