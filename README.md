@@ -1,8 +1,5 @@
 # Run the program from sources
 
-## develop branch build status
-[![Build Status](https://travis-ci.org/OpenNingia/l5r-character-manager-3.svg)](https://travis-ci.org/OpenNingia/l5r-character-manager-3)
-
 ## Getting the sources
 
 ### First of all, clone the repo
@@ -14,6 +11,9 @@ git submodule update
 ```
 
 ### (optionally) Switch to develop branch
+
+[![Build Status](https://travis-ci.org/OpenNingia/l5r-character-manager-3.svg)](https://travis-ci.org/OpenNingia/l5r-character-manager-3)
+
 master branch is often outdated, so you might want to get the develop branch by running
 
 `git checkout develop`
