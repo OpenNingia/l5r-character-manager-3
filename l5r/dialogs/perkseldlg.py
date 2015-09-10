@@ -16,9 +16,11 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import models
-import dal
-import dal.query
+import api
+import api.character
 import widgets
+
+from util import log
 
 from PySide import QtCore, QtGui
 
@@ -28,18 +30,16 @@ class BuyPerkDialog(QtGui.QDialog):
     tag = None
     adv = None
     pc = None
-    dstore = None
     perk_id = 0
     perk_nm = ''
     perk_rule = None
     item = None
     edit_mode = False
 
-    def __init__(self, pc, tag, dstore, parent=None):
+    def __init__(self, pc, tag, parent=None):
         super(BuyPerkDialog, self).__init__(parent)
         self.tag = tag
         self.pc = pc
-        self.dstore = dstore
         self.build_ui()
         self.load_data()
 
@@ -107,7 +107,7 @@ class BuyPerkDialog(QtGui.QDialog):
 
     def load_data(self):
         # load subtypes
-        for typ in self.dstore.perktypes:
+        for typ in api.data.model().perktypes:
             self.cb_subtype.addItem(typ.name, typ.id)
 
     def set_edit_mode(self, flag):
@@ -129,8 +129,11 @@ class BuyPerkDialog(QtGui.QDialog):
         self.cb_perk.clear()
 
         perk_id = perk.adv.perk
-        perk_itm = dal.query.get_merit(
-            self.dstore, perk_id) or dal.query.get_flaw(self.dstore, perk_id)
+        perk_itm = api.data.merits.get(perk_id) or api.data.flaws.get(perk_id)
+
+        if not perk_itm:
+            log.ui.error(u"BuyPerkDialog. perk not found: %s", perk)
+            return
 
         self.cb_perk.addItem(perk.name, perk_itm)
         self.cb_perk.setCurrentIndex(0)
@@ -153,8 +156,8 @@ class BuyPerkDialog(QtGui.QDialog):
         type_ = self.cb_subtype.itemData(selected)
 
         # populate perks
-        perks = self.dstore.merits if (
-            self.tag == 'merit') else self.dstore.flaws
+        perks = api.data.merits.all() if (
+            self.tag == 'merit') else api.data.flaws.all()
         perks = [x for x in perks if x.type == type_]
 
         for p in perks:
@@ -197,7 +200,7 @@ class BuyPerkDialog(QtGui.QDialog):
                 t = discount.tag
                 discounted = discount.value
 
-                if self.pc.has_tag(t):
+                if api.character.has_tag(t):
                     cost = int(discounted)
                     tag = t
                     break
@@ -235,7 +238,7 @@ class BuyPerkDialog(QtGui.QDialog):
             self.item.desc = self.tr("%s Rank %d, XP Cost: %d") % (
                 self.perk_nm, self.item.rank, self.item.cost)
 
-            if (self.item.cost + self.pc.get_px()) > self.pc.exp_limit:
+            if self.item.cost > api.character.xp_left():
                 QtGui.QMessageBox.warning(self, self.tr("Not enough XP"),
                                           self.tr("Cannot purchase.\nYou've reached the XP Limit."))
                 return
@@ -247,37 +250,7 @@ class BuyPerkDialog(QtGui.QDialog):
             self.item.cost *= -1
 
         self.item.tag = self.tag
-        self.pc.add_advancement(self.item)
-        self.process_special_effects(self.item)
+        api.character.append_advancement(self.item)
+
         self.accept()
 
-    def process_special_effects(self, item):
-        def _add_free_skill_rank(skill_id):
-            skill = dal.query.get_skill(self.dstore, skill_id)
-
-            cur_value = self.pc.get_skill_rank(skill_id)
-            new_value = cur_value + 1
-            cost = 0
-            adv = models.SkillAdv(skill_id, 0)
-            adv.rule = dal.query.get_mastery_ability_rule(
-                self.dstore, skill_id, new_value)
-            adv.desc = unicode.format(
-                self.tr("{0}, Rank {1} to {2}. Gained by {3}"),
-                skill.name, cur_value, new_value, self.perk_nm)
-            self.pc.add_advancement(adv)
-
-        if item.rule == 'fk_gaijin_pepper':
-            # add a rank in Craft (Explosives), zero cost :)
-            _add_free_skill_rank("craft_explosives")
-        elif item.rule == 'fk_gozoku':
-            # add a rank in Lore (Gozoku), zero cost :)
-            _add_free_skill_rank("lore_gozoku")
-        elif item.rule == 'fk_kolat':
-            # add a rank in Lore (Kolat), zero cost :)
-            _add_free_skill_rank("lore_kolat")
-        elif item.rule == 'fk_lying_darkness':
-            # add a rank in Lore (Lying Darkness), zero cost :)
-            _add_free_skill_rank("lore_lying_darkness")
-        elif item.rule == 'fk_maho':
-            # add a rank in Lore (Maho), zero cost :)
-            _add_free_skill_rank("lore_maho")

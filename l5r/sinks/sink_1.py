@@ -38,9 +38,7 @@ class Sink1(QtCore.QObject):
     def new_character(self):
         form = self.form
 
-        form.last_rank = 1
         form.save_path = ''
-
 
         # create new character
         api.character.new()
@@ -67,8 +65,6 @@ class Sink1(QtCore.QObject):
         if form.save_path is not None and len(form.save_path) > 0:
             form.pc.version = DB_VERSION
             form.pc.extra_notes = form.tx_pc_notes.get_content()
-            # pending rank advancement?
-            form.pc.last_rank = form.last_rank
 
             # set book dependencies
             api.character.books.set_dependencies()
@@ -126,8 +122,7 @@ class Sink1(QtCore.QObject):
     def act_buy_perk(self):
         form = self.form
 
-        dlg = dialogs.BuyPerkDialog(form.pc, self.sender().property('tag'),
-                                    form.dstore, form)
+        dlg = dialogs.BuyPerkDialog(form.pc, self.sender().property('tag'), form)
         dlg.exec_()
         form.update_from_model()
 
@@ -152,7 +147,7 @@ class Sink1(QtCore.QObject):
     def show_wear_armor(self):
         form = self.form
 
-        dlg = dialogs.ChooseItemDialog(form.pc, 'armor', form.dstore, form)
+        dlg = dialogs.ChooseItemDialog(form.pc, 'armor', form)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
             form.update_from_model()
 

@@ -29,7 +29,7 @@ class Sink3(QtCore.QObject):
     def show_add_weapon(self):
         form = self.form
 
-        dlg = dialogs.ChooseItemDialog(form.pc, 'weapon', form.dstore, form)
+        dlg = dialogs.ChooseItemDialog(form.pc, 'weapon', form)
         filter = self.sender().parent().property('filter')
         if filter is not None:
             dlg.set_filter(filter)
@@ -39,7 +39,7 @@ class Sink3(QtCore.QObject):
     def show_add_cust_weapon(self):
         form = self.form
 
-        dlg = dialogs.CustomWeaponDialog(form.pc, form.dstore, form)
+        dlg = dialogs.CustomWeaponDialog(form.pc, form)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
             form.update_from_model()
 
@@ -57,7 +57,7 @@ class Sink3(QtCore.QObject):
         if not sel_idx.isValid():
             return
         sel_itm = view_.model().data(sel_idx, QtCore.Qt.UserRole)
-        dlg = dialogs.CustomWeaponDialog(form.pc, form.dstore, form)
+        dlg = dialogs.CustomWeaponDialog(form.pc, form)
         dlg.edit_mode = True
         print('loading weap {0}, tags: {1}'.format(sel_itm.name, sel_itm.tags))
         dlg.load_item(sel_itm)

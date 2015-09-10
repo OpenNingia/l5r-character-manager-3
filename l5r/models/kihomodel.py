@@ -18,6 +18,7 @@
 from PySide import QtGui, QtCore
 import api.data
 import api.data.powers
+import api.character.powers
 from util import log
 
 
@@ -28,7 +29,6 @@ class KihoItemModel(object):
         self.mastery = ''
         self.element = ''
         self.id = False
-        self.adv = None
         self.text = []
 
     def __str__(self):
@@ -99,11 +99,10 @@ class KihoTableViewModel(QtCore.QAbstractTableModel):
 
     def build_item_model(self, ki_id):
         itm = KihoItemModel()
-        ki = api.data.powers.get_kiho(ki_id.kiho)
+        ki = api.data.powers.get_kiho(ki_id)
 
         if ki:
             itm.id = ki.id
-            itm.adv = ki_id
             itm.name = ki.name
             itm.mastery = ki.mastery
 
@@ -114,7 +113,7 @@ class KihoTableViewModel(QtCore.QAbstractTableModel):
 
             itm.text = ki.desc
         else:
-            log.model.error(u"kiho not found: %s", ki_id.kiho)
+            log.model.error(u"kiho not found: %s", ki_id)
 
         if ki.type == 'tattoo':
             itm.mastery = "N/A"
@@ -123,7 +122,7 @@ class KihoTableViewModel(QtCore.QAbstractTableModel):
         return itm
 
     def update_from_model(self, model):
-        kiho = model.get_kiho()
+        kiho = api.character.powers.get_all_kiho()
 
         self.clean()
         for s in kiho:

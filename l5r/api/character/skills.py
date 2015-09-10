@@ -23,6 +23,7 @@ import api.data.schools
 import api.data.skills
 
 from asq.initiators import query
+from asq.selectors import a_
 
 
 def get_all():
@@ -30,7 +31,7 @@ def get_all():
     if not __api.pc:
         return []
 
-    return get_starting() + get_learned()
+    return query(get_starting() + get_learned() + get_acquired()).distinct().to_list()
 
 
 def get_learned():
@@ -38,8 +39,36 @@ def get_learned():
     if not __api.pc:
         return []
     return query(__api.pc.advans).where(
-        lambda x: x.type == 'skill' and x.skill not in get_starting()).select(
+        lambda x: x.type == 'skill').select(
         lambda x: x.skill).distinct().to_list()
+
+
+def get_acquired():
+    """returns skills acquired in other ways"""
+
+    acquired_ = []
+
+    # add a rank in Craft (Explosives), for free
+    if api.character.has_rule('fk_gaijin_pepper'):
+        acquired_.append("craft_explosives")
+
+    # add a rank in Lore (Gozoku), for free
+    if api.character.has_rule('fk_gozoku'):
+        acquired_.append("lore_gozoku")
+
+    # add a rank in Lore (Kolat), for free
+    if api.character.has_rule('fk_kolat'):
+        acquired_.append("lore_kolat")
+
+    # add a rank in Lore (Lying Darkness), for free
+    if api.character.has_rule('fk_lying_darkness'):
+        acquired_.append("lore_lying_darkness")
+
+    # add a rank in Lore (Maho), for free
+    if api.character.has_rule('fk_maho'):
+        acquired_.append("lore_maho")
+
+    return acquired_
 
 
 def get_starting():
@@ -63,11 +92,14 @@ def get_skill_rank(skill_id):
         return 0
 
     sk_rank_ = 0
-    for r in api.character.rankadv.all():
+    for r in api.character.rankadv.get_all():
         sk_rank_ += query(r.skills).where(lambda x: x == skill_id).count()
 
     sk_rank_ += query(__api.pc.advans).where(
         lambda x: x.type == 'skill' and x.skill == skill_id).count()
+
+    if skill_id in get_acquired():
+        sk_rank_ += 1
 
     return sk_rank_
 
@@ -75,16 +107,15 @@ def get_skill_rank(skill_id):
 def get_skill_emphases(skill_id):
     """return the emphases for a skill"""
     sk_emph_list = []
-    for r in api.character.rankadv.all():
+    for r in api.character.rankadv.get_all():
         if skill_id not in r.emphases:
             continue
         sk_emph_list += r.emphases[skill_id]
 
     sk_emph_list += query(__api.pc.advans).where(
-        lambda x: x.type == 'emph' and x.skill == skill_id).to_list()
+        lambda x: x.type == 'emph' and x.skill == skill_id).select(a_('text')).to_list()
 
     return sk_emph_list
-
 
 def purchase_skill_rank(skill_id):
     log.api.info(u"purchase skill rank: %s", skill_id)

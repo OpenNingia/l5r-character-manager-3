@@ -23,6 +23,8 @@ import api.data
 import api.character
 import models.chmodel
 
+from util import log
+
 
 def get_trait_cost(trait_nm):
     """return the base multiplier to purchase the given trait"""
@@ -134,8 +136,8 @@ def insight_calculation_1():
     """Default insight calculation method = Rings*10+Skills+SpecialPerks"""
 
     n = 0
-    for i in range(0, 5):
-        n += api.character.ring_rank(i) * 10
+    for r in api.data.rings():
+        n += api.character.ring_rank(r) * 10
 
     for s in api.character.skills.get_all():
         n += api.character.skills.get_skill_rank(s)
@@ -152,8 +154,8 @@ def insight_calculation_2():
     """
 
     n = 0
-    for i in range(0, 5):
-        n += api.character.ring_rank(i) * 10
+    for r in api.data.rings():
+        n += api.character.ring_rank(r) * 10
 
     for s in api.character.skills.get_all():
         sk = api.character.skills.get_skill_rank(s)
@@ -172,8 +174,8 @@ def insight_calculation_3():
     """
 
     n = 0
-    for i in range(0, 5):
-        n += api.character.ring_rank(i) * 10
+    for r in api.data.rings():
+        n += api.character.ring_rank(r) * 10
 
     for s in api.character.skills.get_all():
         sk = api.character.skills.get_skill_rank(s)
@@ -202,16 +204,16 @@ def calculate_base_attack_roll(pc, weap):
     # as xky where x is agility + weapon_skill_rank
     # and y is agility
 
-    attrib = models.ATTRIBS.AGILITY
+    attrib = 'agility'
     if weap.skill_nm == 'Kyujutsu':
-        attrib = models.ATTRIBS.REFLEXES
+        attrib = 'reflexes'
 
-    trait = pc.get_mod_attrib_rank(attrib)
+    trait = api.character.modified_trait_rank(attrib)
     skill = 0
     if weap.skill_id:
-        skill = pc.get_skill_rank(weap.skill_id)
-        print('calc base atk. trait: {0}, weap: {1}, skill: {2}, rank: {3}'
-              .format(trait, weap.name, weap.skill_nm, skill))
+        skill = api.character.skills.get_skill_rank(weap.skill_id)
+        log.rules.info(u"calc base atk. trait: {0}, weap: {1}, skill: {2}, rank: {3}"
+                       .format(trait, weap.name, weap.skill_nm, skill))
 
     return trait + skill, trait
 
@@ -254,8 +256,8 @@ def calculate_base_damage_roll(pc, weap):
     # as xky where x is strength + weapon_damage
     # and y is strength
 
-    attrib = models.ATTRIBS.STRENGTH
-    trait = pc.get_mod_attrib_rank(attrib)
+    attrib = 'strength'
+    trait = api.character.modified_trait_rank(attrib)
     weap_str = 0
     try:
         weap_str = int(weap.strength)
@@ -306,8 +308,8 @@ def calculate_base_skill_roll(pc, skill):
     # and y is trait
 
     trait = skill.trait
-    trait_value = pc.get_mod_attrib_rank(trait)
-    skill_value = pc.get_skill_rank(skill.id)
+    trait_value = api.character.modified_trait_rank(trait)
+    skill_value = api.character.skills.get_skill_rank(skill.id)
 
     return DicePool().from_values(roll=skill_value + trait_value,
                                   keep=trait_value)
@@ -355,6 +357,7 @@ def calculate_kiho_cost(kiho_id):
         cost_mult = 2
 
     return int(ceil(kiho.mastery * cost_mult))
+
 
 class DicePool(object):
     """represents a dice pool"""
@@ -453,6 +456,7 @@ def get_tot_initiative():
     r1, k1, b1 = get_init_modifiers()
     return r + r1, k + k1, b + b1
 
+
 def get_wound_penalties(index):
     WOUND_PENALTIES_VALUES = [0, 3, 5, 10, 15, 20, 40]
     result = WOUND_PENALTIES_VALUES[index]
@@ -471,6 +475,7 @@ def get_wound_penalties(index):
             result = max(0, result - x.value[2])
 
     return result
+
 
 def get_health_rank(idx):
     """return the value for the given health rank"""
@@ -498,3 +503,8 @@ def get_max_wounds():
     for i in xrange(0, 8):
         max_ += get_health_rank(i)
     return max_
+
+
+def get_wound_heal_rate():
+    """return the wound heal rate"""
+    return api.character.modified_trait_rank('stamina') * 2 + api.character.insight_rank()

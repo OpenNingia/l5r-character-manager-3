@@ -27,7 +27,7 @@ import api.data.merits
 from util import log
 
 
-def all():
+def get_all():
     if not __api.pc:
         return []
     return query(__api.pc.advans).where(lambda x: x.type == 'rank').to_list()
@@ -35,12 +35,17 @@ def all():
 
 def get(rank):
     """returns the Rank advancement for the given insight rank"""
-    return query(all()).where(lambda x: x.rank == rank).first_or_default(None)
+    return query(get_all()).where(lambda x: x.rank == rank).first_or_default(None)
 
 
 def get_last():
     """returns the last rank advancement"""
-    return query(all()).last_or_default(None)
+    return query(get_all()).last_or_default(None)
+
+
+def get_first():
+    """returns the last rank advancement"""
+    return query(get_all()).first_or_default(None)
 
 
 def can_advance_rank():
@@ -87,7 +92,15 @@ def advance_rank():
         api.character.schools.get_school_rank(adv.school) + 1
     )
 
-    api.character.append_advancement(adv)
+    # get 3 spells each rank other than the first
+    if api.data.schools.is_shugenja(adv.school) and adv.rank > 1:
+        adv.gained_spells_count = __api.pc.get_spells_per_rank()
+
+    # get 2 kiho each rank
+    if api.data.schools.is_brotherhood_monk(adv.school) and adv.rank > 1:
+        adv.gained_kiho_count = 2
+
+    return api.character.append_advancement(adv)
 
 
 def leave_path():
@@ -119,11 +132,24 @@ def leave_path():
         api.character.schools.get_school_rank(adv.school) + 1
     )
 
-    api.character.append_advancement(adv)
+    # get 3 spells each rank other than the first
+    if api.data.schools.is_shugenja(adv.school) and adv.rank > 1:
+        adv.gained_spells_count = __api.pc.get_spells_per_rank()
+
+    # get 2 kiho each rank
+    if api.data.schools.is_brotherhood_monk(adv.school) and adv.rank > 1:
+        adv.gained_kiho_count = 2
+
+    return api.character.append_advancement(adv)
 
 
 def join_new(school_id):
     """the character joins a new school"""
+
+    school_ = api.data.schools.get(school_id)
+    if not school_:
+        log.api.error(u"join_new, school not found: %s", school_id)
+        return
 
     from models.advancements.rank import Rank
     adv = Rank()
@@ -137,17 +163,137 @@ def join_new(school_id):
 
     school_rank = api.character.schools.get_school_rank(adv.school)
 
+    # get 3 spells each rank other than the first
+    if api.data.schools.is_shugenja(school_id) and adv.rank > 1:
+        adv.gained_spells_count = __api.pc.get_spells_per_rank()
+
     if api.data.schools.is_path(adv.school):
         # replaces current school
         adv.replaced = api.character.schools.get_current()
     else:
         school_rank += 1
 
+        # get 2 kiho each rank
+        # alternate path doesn't get the bonus
+        if api.data.schools.is_brotherhood_monk(school_id) and adv.rank > 1:
+            adv.gained_kiho_count = 2
+
+    if school_.affinity:
+        if 'any' in school_.affinity or 'nonvoid' in school_.affinity:
+            adv.affinities_to_choose.append(school_.affinity)
+        else:
+            adv.affinities.append(school_.affinity)
+
+    if school_.deficiency:
+        if 'any' in school_.deficiency or 'nonvoid' in school_.deficiency:
+            adv.deficiencies_to_choose.append(school_.deficiency)
+        else:
+            adv.deficiencies.append(school_.deficiency)
+
     adv.desc = api.tr("Insight Rank {0}. School: {1} rank {2} ").format(
         adv.rank,
-        api.data.schools.get(adv.school).name,
+        school_.name,
         school_rank
     )
 
+    return api.character.append_advancement(adv)
 
-    api.character.append_advancement(adv)
+
+def clear_skills_to_choose():
+    """clear the list of skills and emphases to choose on the current rank advancement"""
+    rank_ = get_last()
+    if rank_:
+        rank_.skills_to_choose = []
+        rank_.emphases_to_choose = []
+
+
+def get_gained_kiho_count():
+    """returns available free kiho"""
+    rank_ = get_last()
+    if not rank_:
+        return 0
+    return rank_.gained_kiho_count
+
+
+def set_gained_kiho_count(value):
+    """set left free kiho"""
+    rank_ = get_last()
+    if rank_:
+        rank_.gained_kiho_count = value
+
+
+def get_pending_spells_count():
+    """returns the number of pending spells"""
+    rank_ = api.character.rankadv.get_last()
+    if not rank_:
+        return 0
+    return rank_.gained_spells_count
+
+
+def get_starting_spells_to_choose():
+    """returns the spells that the user can choose"""
+    rank_ = api.character.rankadv.get_last()
+    if not rank_:
+        return []
+    return rank_.spells_to_choose
+
+
+def get_starting_skills_to_choose():
+    """returns the skills that the user can choose"""
+    rank_ = api.character.rankadv.get_last()
+    if not rank_:
+        return []
+    return rank_.skills_to_choose
+
+
+def get_starting_emphases_to_choose():
+    """returns the emphases that the user can choose"""
+    rank_ = api.character.rankadv.get_last()
+    if not rank_:
+        return []
+    return rank_.emphases_to_choose
+
+
+def clear_spells_to_choose():
+    """clear the list of spells to choose on the current rank advancement"""
+    rank_ = get_last()
+    if rank_:
+        rank_.spells_to_choose = []
+        rank_.gained_spells_count = 0
+
+
+def has_granted_free_spells():
+    """returns True if the character is granted with more free spells"""
+
+    # only grant free spells to shugenja characters
+    if not api.character.is_shugenja():
+        return False
+
+    pending_spells_count_ = get_pending_spells_count()
+    spells_to_choose_count_ = len(get_starting_spells_to_choose())
+
+    return (pending_spells_count_ + spells_to_choose_count_) > 0
+
+
+def has_granted_skills_to_choose():
+    """return if the player can choose some skills or emphases"""
+    rank_ = get_last()
+    if rank_:
+        return (len(rank_.skills_to_choose) + len(rank_.emphases_to_choose)) > 0
+    return False
+
+
+def has_granted_affinities_to_choose():
+    """return if the player can choose some skills or emphases"""
+    rank_ = get_last()
+    if rank_:
+        return len(rank_.affinities_to_choose) > 0
+    return False
+
+
+def has_granted_deficiencies_to_choose():
+    """return if the player can choose some skills or emphases"""
+    rank_ = get_last()
+    if rank_:
+        return len(rank_.deficiencies_to_choose) > 0
+    return False

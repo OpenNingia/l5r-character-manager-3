@@ -60,6 +60,62 @@ def is_path(sid):
     return 'alternate' in school.tags
 
 
+def is_bushi(sid):
+    """returns true if the given school is a bushi school"""
+    school = get(sid)
+    if not school:
+        return False
+    return 'bushi' in school.tags
+
+
+def is_shugenja(sid):
+    """returns true if the given school is a shugenja school"""
+    school = get(sid)
+    if not school:
+        return False
+    return 'shugenja' in school.tags
+
+
+def is_courtier(sid):
+    """returns true if the given school is a courtier school"""
+    school = get(sid)
+    if not school:
+        return False
+    return 'courtier' in school.tags
+
+
+def is_monk(sid):
+    """returns true if the given school is a monk school"""
+    school = get(sid)
+    if not school:
+        return False
+    return 'monk' in school.tags
+
+
+def is_samurai_monk(sid):
+    """returns true if the given school is a samurai monk school"""
+    school = get(sid)
+    if not school:
+        return False
+    return 'monk' in school.tags and 'brotherhood' not in school.tags
+
+
+def is_brotherhood_monk(sid):
+    """returns true if the given school is a brotherhood monk school"""
+    school = get(sid)
+    if not school:
+        return False
+    return 'monk' in school.tags and 'brotherhood' in school.tags
+
+
+def is_ninja(sid):
+    """returns true if the given school is a monk school"""
+    school = get(sid)
+    if not school:
+        return False
+    return 'ninja' in school.tags
+
+
 def get_skills(sid):
     """return fixed school skills"""
     school = get(sid)
@@ -132,3 +188,11 @@ def get_requirements(sid):
         coded_requirements_.append(r)
 
     return requirements_by_data_ + coded_requirements_
+
+
+def get_school_trait(sid):
+    """return school trait"""
+    school_ = get(sid)
+    if not school_:
+        return None
+    return school_.trait

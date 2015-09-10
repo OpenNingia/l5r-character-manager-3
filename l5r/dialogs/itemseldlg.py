@@ -17,15 +17,16 @@
 
 from PySide import QtCore, QtGui
 import models
+import api.data.outfit
+
 
 class ChooseItemDialog(QtGui.QDialog):
 
-    def __init__(self, pc, tag, dstore, parent=None):
+    def __init__(self, pc, tag, parent=None):
         super(ChooseItemDialog, self).__init__(parent)
         self.tag = tag
         self.adv = None
         self.pc = pc
-        self.dstore = dstore
         self.item = None
         self.filter = None
         self.weap_by_skill = {}
@@ -98,12 +99,12 @@ class ChooseItemDialog(QtGui.QDialog):
         if self.tag == 'armor':
             self.cb.clear()
 
-            for armor in self.dstore.armors:
+            for armor in api.data.outfit.get_armors():
                 self.cb.addItem(armor.name, armor.name)
 
         elif self.tag == 'weapon':
             self.cb1.clear()
-            skills = [x for x in self.dstore.skills if 'weapon' in x.tags]
+            skills = api.data.skills.get_by_tag('weapon')
             for skill in skills:
                 weaps = self.get_weapons_by_skill(skill.id, self.filter)
                 if len(weaps) > 0:
@@ -114,10 +115,10 @@ class ChooseItemDialog(QtGui.QDialog):
         weapons = []
 
         if self.filter is None:
-            weapons = [x for x in self.dstore.weapons if x.skill == sk_uuid]
+            weapons = [x for x in api.data.outfit.get_weapons() if x.skill == sk_uuid]
         else:
             weapons = [
-                x for x in self.dstore.weapons if x.skill == sk_uuid and self.filter in x.tags]
+                x for x in api.data.outfit.get_weapons() if x.skill == sk_uuid and self.filter in x.tags]
 
         return weapons
 

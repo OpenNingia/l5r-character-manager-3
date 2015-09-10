@@ -29,16 +29,14 @@ class Sink2(QtCore.QObject):
     def act_buy_merit(self):
         form = self.form
 
-        dlg = dialogs.BuyPerkDialog(form.pc, 'merit',
-                                    form.dstore, form)
+        dlg = dialogs.BuyPerkDialog(form.pc, 'merit', form)
         dlg.exec_()
         form.update_from_model()
 
     def act_buy_flaw(self):
         form = self.form
 
-        dlg = dialogs.BuyPerkDialog(form.pc, 'flaw',
-                                    form.dstore, form)
+        dlg = dialogs.BuyPerkDialog(form.pc, 'flaw', form)
         dlg.exec_()
         form.update_from_model()
 
@@ -50,8 +48,7 @@ class Sink2(QtCore.QObject):
             return
         sel_itm = form.merit_view.model().data(sel_idx, QtCore.Qt.UserRole)
 
-        dlg = dialogs.BuyPerkDialog(form.pc, 'merit',
-                                    form.dstore, form)
+        dlg = dialogs.BuyPerkDialog(form.pc, 'merit', form)
 
         dlg.set_edit_mode(True)
         dlg.load_item(sel_itm)
@@ -66,8 +63,7 @@ class Sink2(QtCore.QObject):
             return
         sel_itm = form.flaw_view.model().data(sel_idx, QtCore.Qt.UserRole)
 
-        dlg = dialogs.BuyPerkDialog(form.pc, 'flaw',
-                                    form.dstore, form)
+        dlg = dialogs.BuyPerkDialog(form.pc, 'flaw', form)
 
         dlg.set_edit_mode(True)
         dlg.load_item(sel_itm)
@@ -95,19 +91,19 @@ class Sink2(QtCore.QObject):
     def act_buy_kata(self):
         form = self.form
 
-        dlg = dialogs.KataDialog(form.pc, form.dstore, form)
+        dlg = dialogs.KataDialog(form.pc, form)
         dlg.exec_()
         form.update_from_model()
 
     def act_buy_kiho(self):
         form = self.form
-        dlg = dialogs.KihoDialog(form.pc, form.dstore, form)
+        dlg = dialogs.KihoDialog(form.pc, form)
         dlg.exec_()
         form.update_from_model()
 
     def act_buy_tattoo(self):
         form = self.form
-        dlg = dialogs.TattooDialog(form.pc, form.dstore, form)
+        dlg = dialogs.TattooDialog(form.pc, form)
         dlg.exec_()
         form.update_from_model()
 
@@ -122,7 +118,7 @@ class Sink2(QtCore.QObject):
 
     def act_del_kiho(self):
         form = self.form
-        print('act_del_kiho')
+
         sel_idx = form.kiho_view.selectionModel().currentIndex()
         if not sel_idx.isValid():
             print('index not valid')

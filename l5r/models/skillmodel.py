@@ -84,7 +84,7 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
             if index.column() == 4:
                 return str(item.mod_roll)
             if index.column() == 5:
-                return ', '.join(item.emph)
+                return u', '.join(item.emph)
         elif role == QtCore.Qt.FontRole:
             if item.is_school and self.bold_font:
                 return self.bold_font

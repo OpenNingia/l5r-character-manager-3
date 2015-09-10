@@ -33,27 +33,27 @@ class Rank(Advancement):
         self.replaced = None
         # skills obtained with the rank advancement
         self.skills = []
+        self.skills_to_choose = []
         # emphases to skills ( skill_id => [list] )
         self.emphases = {}
+        self.emphases_to_choose = []
         # spells
         self.spells = []
-
-    #def to_dict(self):
-    #    out = {'clan': self.clan,
-    #           'family': self.family,
-    #           'school': self.school,
-    #           'rank': self.rank,
-    #           'school_rank': self.school_rank,
-    #           'tech': self.tech,
-    #           'is_alternate_path': self.is_alternate_path,
-    #           'original_school': self.original_school,
-    #           'left_alternate_path': self.left_alternate_path,
-    #           'skills': []}
-    #
-    #    for s in self.skills:
-    #        out['skills'].append(s.to_dict())
-    #
-    #    return out
+        self.spells_to_choose = []
+        self.gained_spells_count = 0
+        # outfit
+        self.outfit = []
+        # money
+        self.money = (0, 0, 0)
+        # affinities
+        self.affinities = []
+        self.affinities_to_choose = []
+        # deficiencies
+        self.deficiencies = []
+        self.deficiencies_to_choose = []
+        # kiho gained with rank advancement
+        self.kiho = []
+        self.gained_kiho_count = 0
 
 
 class StartingSkill(object):

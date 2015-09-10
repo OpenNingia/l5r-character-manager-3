@@ -19,10 +19,13 @@ from PySide import QtGui, QtCore
 from datetime import datetime
 import models
 import hashlib
-import dal
-import dal.query
 import api.rules
 import api.data.spells
+import api.data.skills
+import api.data.powers
+import api.data.schools
+import api.data.merits
+import api.data.flaws
 import api.character
 import api.character.schools
 
@@ -85,7 +88,7 @@ class FDFExporter(object):
         return self.form.lb_pc_school.text()
 
     def get_exp(self):
-        return u'%s / %s' % (self.model.get_px(), self.model.exp_limit)
+        return u'%s / %s' % (api.character.xp(), api.character.xp_limit())
 
 
 def zigzag(l1, l2):
@@ -120,33 +123,34 @@ class FDFExporterAll(FDFExporter):
                   'INSIGHT': api.character.insight()}
 
         # TRAITS AND RINGS
-        for i in xrange(0, 8):
-            fields[models.attrib_name_from_id(
-                i).upper()] = m.get_mod_attrib_rank(i)
-        for i in xrange(0, 5):
-            fields[models.ring_name_from_id(i).upper()] = m.get_ring_rank(i)
+        for i in range(0, 8):
+            trait_nm = models.attrib_name_from_id(i)
+            fields[trait_nm.upper()] = api.character.modified_trait_rank(trait_nm)
+        for i in range(0, 5):
+            ring_nm = models.ring_name_from_id(i)
+            fields[ring_nm.upper()] = api.character.ring_rank(ring_nm)
 
         # HONOR, GLORY, STATUS, TAINT
-        hvalue, hdots = api.rules.split_decimal(m.get_honor())
-        gvalue, gdots = api.rules.split_decimal(m.get_glory())
-        svalue, sdots = api.rules.split_decimal(m.get_status())
-        tvalue, tdots = api.rules.split_decimal(m.get_taint())
+        hvalue, hdots = api.rules.split_decimal(api.character.honor())
+        gvalue, gdots = api.rules.split_decimal(api.character.glory())
+        svalue, sdots = api.rules.split_decimal(api.character.status())
+        tvalue, tdots = api.rules.split_decimal(api.character.taint())
 
         fields['HONOR'] = hvalue
         fields['GLORY'] = gvalue
         fields['STATUS'] = svalue
         fields['TAINT'] = tvalue
 
-        for i in xrange(1, hdots * 10 + 1):
+        for i in range(1, hdots * 10 + 1):
             fields['HONOR_DOT.%d' % i] = True
 
-        for i in xrange(1, gdots * 10 + 1):
+        for i in range(1, gdots * 10 + 1):
             fields['GLORY_DOT.%d' % i] = True
 
-        for i in xrange(1, sdots * 10 + 1):
+        for i in range(1, sdots * 10 + 1):
             fields['STATUS_DOT.%d' % i] = True
 
-        for i in xrange(1, tdots * 10 + 1):
+        for i in range(1, tdots * 10 + 1):
             fields['TAINT_DOT.%d' % i] = True
 
         # INITIATIVE
@@ -155,57 +159,39 @@ class FDFExporterAll(FDFExporter):
         fields['INITIATIVE_CUR'] = f.tx_cur_init .text()
 
         # TN / RD
-        fields['TN_BASE'] = m.get_base_tn()
-        fields['TN_CUR'] = m.get_cur_tn()
-        fields['BASE_RD'] = m.get_base_rd()
-        fields['CUR_RD'] = m.get_full_rd()
+        fields['TN_BASE'] = api.character.get_base_tn()
+        fields['TN_CUR'] = api.character.get_full_tn()
+        fields['BASE_RD'] = api.character.get_base_rd()
+        fields['CUR_RD'] = api.character.get_full_rd()
 
         # ARMOR
-        fields['ARMOR_TYPE'] = m.get_armor_name()
-        fields['ARMOR_TN'] = m.get_armor_tn()
-        fields['ARMOR_RD'] = m.get_armor_rd()
-        fields['ARMOR_NOTES'] = m.get_armor_desc()
+        fields['ARMOR_TYPE'] = api.character.get_armor_name()
+        fields['ARMOR_TN'] = api.character.get_armor_tn()
+        fields['ARMOR_RD'] = api.character.get_armor_rd()
+        fields['ARMOR_NOTES'] = api.character.get_armor_desc()
 
         # WOUNDS
         w_labels = ['HEALTHY', 'NICKED', 'GRAZED',
                     'HURT', 'INJURED', 'CRIPPLED',
                     'DOWN', 'OUT']
-        for i in xrange(0, len(w_labels)):
+        for i in range(0, len(w_labels)):
             fields[w_labels[i]] = str(api.rules.get_health_rank(i))
 
-        fields['WOUND_HEAL_BASE'] = (m.get_mod_attrib_rank(models.ATTRIBS.STAMINA) * 2
-                                     + api.character.insight_rank())
+        fields['WOUND_HEAL_BASE'] = api.rules.get_wound_heal_rate()
         fields['WOUND_HEAL_CUR'] = fields['WOUND_HEAL_BASE']
-
-        # SKILLS, LEAVE THE FIRST PAGE EMPTY
-        '''
-        sorted_skills = sorted(
-            f.sk_view_model.items, key=lambda x: (not x.is_school, -x.rank, x.name))
-        for i, sk in enumerate(sorted_skills):
-            j = i + 1
-            if i >= 23:
-                break
-
-            fields['SKILL_IS_SCHOOL.%d' % j] = sk.is_school
-            fields['SKILL_NAME.%d' % j] = sk.name
-            fields['SKILL_RANK.%d' % j] = sk.rank
-            fields['SKILL_TRAIT.%d' % j] = sk.trait
-            fields['SKILL_ROLL.%d' % j] = sk.mod_roll
-            fields['SKILL_EMPH_MA.%d' % j] = ', '.join(sk.emph)
-        '''
 
         # MERITS AND FLAWS
         merits = f.merits_view_model.items
         flaws = f.flaws_view_model .items
 
         count = min(17, len(merits))
-        for i in xrange(1, count + 1):
+        for i in range(1, count + 1):
             merit = merits[i - 1]
             fields['ADVANTAGE_NM.%d' % i] = merit.name
             fields['ADVANTAGE_PT.%d' % i] = abs(merit.cost)
 
         count = min(17, len(flaws))
-        for i in xrange(1, count + 1):
+        for i in range(1, count + 1):
             flaw = flaws[i - 1]
             fields['DISADVANTAGE_NM.%d' % i] = flaw.name
             fields['DISADVANTAGE_PT.%d' % i] = abs(flaw.cost)
@@ -217,7 +203,7 @@ class FDFExporterAll(FDFExporter):
         wl = zigzag(melee_weapons, range_weapons)
 
         count = min(2, len(wl))
-        for i in xrange(1, count + 1):
+        for i in range(1, count + 1):
             weap = wl[i - 1]
             fields['WEAP_TYPE.%d' % i] = weap.name
             if weap.base_atk != weap.max_atk:
@@ -235,7 +221,7 @@ class FDFExporterAll(FDFExporter):
         # ARROWS
         arrows = f.arrow_view_model .items
         count = min(5, len(arrows))
-        for i in xrange(1, count + 1):
+        for i in range(1, count + 1):
             ar = arrows[i - 1]
             fields['ARROW_TYPE.%d' % i] = ar.name.replace('Arrow', '')
             fields['ARROW_DMG.%d' % i] = ar.dr
@@ -257,22 +243,27 @@ class FDFExporterAll(FDFExporter):
 
         if m.get_property('childr'):
             chrows = m.get_property('childr').split('\n\r')
-            for i in xrange(0, len(chrows)):
+            for i in range(0, len(chrows)):
                 fields['CHILDREN.%d' % (i + 1)] = chrows[i]
 
         # EQUIPMENT
-        equip_list = m.get_school_outfit() + m.get_property('equip', [])
+        starting_outfit_ = []
+        first_rank_ = api.character.rankadv.get_first()
+        if first_rank_:
+            starting_outfit_ = first_rank_.outfit
+
+        equip_list = starting_outfit_ + m.get_property('equip', [])
         equip_num = min(50, len(equip_list))
         equip_cols = [18, 18, 15]
         c = 0
-        for i in xrange(0, len(equip_cols)):
-            for j in xrange(0, equip_cols[i]):
+        for i in range(0, len(equip_cols)):
+            for j in range(0, equip_cols[i]):
                 if c < equip_num:
                     fields['EQUIP_LINE.{0}.{1}'.format(j, i)] = equip_list[c]
                     c += 1
 
         # MONEY
-        money = m.get_property('money')
+        money = api.character.get_money()
         if money and len(money) == 3:
             fields['KOKU'] = str(money[0])
             fields['BU'] = str(money[1])
@@ -344,7 +335,7 @@ class FDFExporterShugenja(FDFExporter):
         print('Starting Schools Export')
         schools = filter(lambda x: 'shugenja' in x.tags, m.schools)
         count = min(3, len(schools))
-        for i in xrange(0, count):
+        for i in range(0, count):
             def_ = schools[i].deficiency.capitalize() if schools[
                 i].deficiency else "None"
             aff_ = schools[i].affinity.capitalize() if schools[
@@ -356,7 +347,7 @@ class FDFExporterShugenja(FDFExporter):
             if def_.startswith('*'):  # wildcard
                 def_ = m.get_affinity().capitalize()
 
-            school = dal.query.get_school(f.dstore, schools[i].school_id)
+            school = api.data.schools.get(schools[i].school_id)
             if school:
                 for tech in school.techs:
                     fields['SCHOOL_NM.%d' % (i + 1)] = school.name
@@ -400,31 +391,30 @@ class FDFExporterBushi(FDFExporter):
 
         fields = {}
 
-        # schools
-        # FIX FOR SAMURAI MONKS
-        schools = [x for x in m.schools if 'bushi' in x.tags or (
-            'monk' in x.tags and 'brotherhood' not in x.tags)]
-        techs = [x for x in m.get_techs()]
+        # schools, bushi and samurai monk
+        schools = []
+        for s in api.character.schools.get_all():
+            if api.data.schools.is_bushi(s) or api.data.schools.is_samurai_monk(s):
+                schools.append(s)
 
         count = min(2, len(schools))
-        for i in xrange(0, count):
-            school = dal.query.get_school(f.dstore, schools[i].school_id)
+        for i in range(0, count):
+            techs = api.character.schools.get_techs_by_school(schools[i])
+            school = api.data.schools.get(schools[i])
             fields['BUSHI_SCHOOL_NM.%d' % i] = school.name
 
             for t in techs:
-                thsc, tech = dal.query.get_tech(f.dstore, t)
+                thsc, tech = api.data.schools.get_technique(t)
                 if not tech:
                     break
-                if thsc != school:
-                    continue
                 rank = tech.rank - 1 if tech.rank > 0 else 0
                 fields['BUSHI_TECH.%d.%d' % (rank, i)] = tech.name
 
         # kata
-        katas = [x.kata for x in m.get_kata()]
+        katas = api.character.powers.get_all_kata()
         count = min(6, len(katas))
-        for i in xrange(0, count):
-            kata = dal.query.get_kata(f.dstore, katas[i])
+        for i in range(0, count):
+            kata = api.data.powers.get_kata(katas[i])
             if not kata:
                 break
             fields['KATA_NM.%d' % (i + 1)] = kata.name
@@ -449,35 +439,42 @@ class FDFExporterMonk(FDFExporter):
 
         # schools
         # ONLY BROTHERHOOD SCHOOLS
-        schools = [x for x in m.schools if 'brotherhood' in x.tags]
+
+        # schools, bushi and samurai monk
+        schools = []
+        for s in api.character.schools.get_all():
+            if api.data.schools.is_brotherhood_monk(s):
+                schools.append(s)
+
         count = min(3, len(schools))
-        for i in xrange(0, count):
-            school = dal.query.get_school(f.dstore, schools[i].school_id)
+        for i in range(0, count):
+            school = api.data.schools.get(schools[i])
             if school is None:
                 break
-            tech = dal.query.get_school_tech(school, 1)
-            if tech is None:
+            techs = api.character.schools.get_techs_by_school(schools[i])
+            if not len(techs):
                 break
 
             fields['MONK_SCHOOL.%d' % (i + 1)] = school.name
-            fields['MONK_TECH.%d' % (i + 1)] = tech.name
+            fields['MONK_TECH.%d' % (i + 1)] = techs[0].name
 
         # kiho
-        kihos = [x.kiho for x in m.get_kiho()]
+        kihos = api.character.powers.get_all_kiho()
         count = min(12, len(kihos))
 
-        for i in xrange(0, count):
-            kiho = dal.query.get_kiho(f.dstore, kihos[i])
+        for i in range(0, count):
+            kiho = api.data.powers.get_kiho(kihos[i])
             if not kiho:
                 break
+            ring = api.data.get_ring(kiho.element)
             fields['KIHO_NM.%d' % (i + 1)] = kiho.name
             fields['KIHO_MASTERY.%d' % (i + 1)] = str(kiho.mastery)
             fields['KIHO_ELEM.%d' %
-                   (i + 1)] = dal.query.get_ring(f.dstore, kiho.element)
+                   (i + 1)] = ring.text
             fields['KIHO_TYPE.%d' % (i + 1)] = kiho.type
             lines = self.split_in_parts(kiho.desc) or []
             lc = min(6, len(lines))
-            for j in xrange(0, lc):
+            for j in range(0, lc):
                 fields['KIHO_EFFECT.%d.%d' % (i + 1, j)] = lines[j]
 
         # EXPORT FIELDS
@@ -571,21 +568,23 @@ class FDFExporterCourtier(FDFExporter):
 
         fields = {}
 
-        # schools
-        schools = filter(lambda x: 'courtier' in x.tags, m.schools)
-        techs = [x for x in m.get_techs()]
+        # courtier schools
+        schools = []
+        for s in api.character.schools.get_all():
+            if api.data.schools.is_courtier(s):
+                schools.append(s)
 
         count = min(2, len(schools))
-        for i in xrange(0, count):
-            school = dal.query.get_school(f.dstore, schools[i].school_id)
+        for i in range(0, count):
+            school = api.data.schools.get(schools[i])
+            techs = api.character.schools.get_techs_by_school(schools[i])
+
             fields['COURTIER_SCHOOL_NM.%d' % i] = school.name
 
             for t in techs:
-                thsc, tech = dal.query.get_tech(f.dstore, t)
+                thsc, tech = api.data.schools.get_technique(t)
                 if not tech:
                     break
-                if thsc != school:
-                    continue
                 rank = tech.rank - 1 if tech.rank > 0 else 0
                 fields['COURTIER_SCHOOL_RANK.%d.%d' % (i, rank)] = tech.name
                 print('COURTIER_SCHOOL_RANK.%d.%d' % (i, rank), tech.name)

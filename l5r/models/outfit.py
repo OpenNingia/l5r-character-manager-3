@@ -276,10 +276,16 @@ class EquipmentListModel(QtCore.QAbstractListModel):
     def update_from_model(self, model):
         self.clean()
         equip_list = model.get_property('equip', [])
-        for e in model.get_school_outfit() + equip_list:
+
+        starting_outfit_ = []
+        first_rank_ = api.character.rankadv.get_first()
+        if first_rank_:
+            starting_outfit_ = first_rank_.outfit
+
+        for e in starting_outfit_ + equip_list:
             self.add_item(e)
         self.items = equip_list
-        self.school_outfit = model.get_school_outfit()
+        self.school_outfit = starting_outfit_
 
     def data(self, index, role=QtCore.Qt.UserRole):
         # if not self.items or not index.isValid() or index.row() >= len(self.items):

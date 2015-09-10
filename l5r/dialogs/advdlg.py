@@ -164,7 +164,7 @@ class BuyAdvDialog(QtGui.QDialog):
                 cb.addItem(t.name, t.id)
         elif self.tag == 'emph':
             cb = self.widgets[self.tag][0]
-            for id in self.pc.get_skills():
+            for id in api.character.skills.get_all():
                 sk = api.data.skills.get(id)
                 cb.addItem(sk.name, sk.id)
 
@@ -204,7 +204,7 @@ class BuyAdvDialog(QtGui.QDialog):
         cb2.clear()
 
         can_buy_skill = [
-            x for x in avail_skills if x.id not in self.pc.get_skills()]
+            x for x in avail_skills if x.id not in api.character.skills.get_all()]
 
         # no more skills available for this category
         # player bought them all?
@@ -228,16 +228,16 @@ class BuyAdvDialog(QtGui.QDialog):
         cb1 = self.widgets['skill'][0]
         type_ = cb1.itemData(cb1.currentIndex())
 
-        cur_value = self.pc.get_skill_rank(uuid)
+        cur_value = api.character.skills.get_skill_rank(uuid)
         new_value = cur_value + 1
 
         cost = new_value
 
-        print('pc is obtuse? {0}'.format(self.pc.has_rule('obtuse')))
+        print('pc is obtuse? {0}'.format(api.character.has_rule('obtuse')))
         print('skill type: {0}'.format(type_))
         print('skill uuid: {0}'.format(uuid))
 
-        if (self.pc.has_rule('obtuse') and
+        if (api.character.has_rule('obtuse') and
                 type_ == 'high' and
                 uuid != 'investigation' and  # investigation
                 uuid != 'medicine'):        # medicine
@@ -261,26 +261,26 @@ class BuyAdvDialog(QtGui.QDialog):
 
     def buy_advancement(self):
 
-        if self.adv and ((self.adv.cost + self.pc.get_px()) >
-                         self.pc.exp_limit):
-            QtGui.QMessageBox.warning(self, self.tr("Not enough XP"),
-                                      self.tr("Cannot purchase.\nYou've reached the XP Limit."))
-            self.close()
-            return
-
+        adv = None
         if self.tag == 'skill':
-            self.pc.add_advancement(self.adv)
-            self.on_skill_select()
+            adv = self.adv
         elif self.tag == 'emph':
             cb = self.widgets[self.tag][0]
             tx = self.widgets[self.tag][1]
             sk_name = cb.itemText(cb.currentIndex())
             sk_uuid = cb.itemData(cb.currentIndex())
-            self.adv = advances.SkillEmph(sk_uuid, tx.text(), 2)
-            self.adv.desc = (self.tr('{0}, Skill {1}. Cost: {2} xp')
-                             .format(tx.text(), sk_name, self.adv.cost))
-            self.pc.add_advancement(self.adv)
-            tx.setText('')
+            adv = advances.SkillEmph(sk_uuid, tx.text(), 2)
+            adv.desc = (self.tr('{0}, Skill {1}. Cost: {2} xp')
+                        .format(tx.text(), sk_name, adv.cost))
+
+        if not adv:
+            return
+
+        if api.character.purchase_advancement(adv) == api.data.CMErrors.NOT_ENOUGH_XP:
+            QtGui.QMessageBox.warning(self, self.tr("Not enough XP"),
+                                      self.tr("Cannot purchase.\nYou've reached the XP Limit."))
+            self.close()
+            return
 
         if self.quit_on_accept:
             self.accept()
@@ -353,7 +353,7 @@ class SelWcSkills(QtGui.QDialog):
         self.bt_cancel = QtGui.QPushButton(self.tr('Cancel'), self)
 
         row_ = 2
-        for ws in self.pc.get_pending_wc_skills():
+        for ws in api.character.rankadv.get_starting_skills_to_choose():
             lb = ''
             wl = ws.wildcards
             if len(ws.wildcards):
@@ -391,7 +391,7 @@ class SelWcSkills(QtGui.QDialog):
 
             row_ += 1
 
-        for s in self.pc.get_pending_wc_emphs():
+        for s in api.character.rankadv.get_starting_emphases_to_choose():
 
             skill_ = api.data.skills.get(s)
             if not skill_:
@@ -429,7 +429,7 @@ class SelWcSkills(QtGui.QDialog):
         log.ui.debug(u"User can choose some starting skills")
 
         i = 0
-        for ws in self.pc.get_pending_wc_skills():
+        for ws in api.character.rankadv.get_starting_skills_to_choose():
             outcome = []
             wl = ws.wildcards
 
@@ -448,7 +448,7 @@ class SelWcSkills(QtGui.QDialog):
                             x for x in outcome if x not in skills_by_tag]
 
             for sk in outcome:
-                if sk.id not in self.pc.get_skills():
+                if sk.id not in api.character.skills.get_all():
                     self.cbs[i].addItem(sk.name, (sk.id, ws.rank))
 
             i += 1
@@ -488,7 +488,7 @@ class SelWcSkills(QtGui.QDialog):
 
         # check if already got
         already_got = check_already_got(
-            [x.itemData(x.currentIndex())[0] for x in self.cbs], self.pc.get_skills())
+            [x.itemData(x.currentIndex())[0] for x in self.cbs], api.character.skills.get_all())
 
         if already_got:
             self.error_bar.setText('''<p style='color:#FF0000'>
@@ -508,12 +508,8 @@ class SelWcSkills(QtGui.QDialog):
 
             api.character.skills.add_starting_skill(uuid, rank)
 
-            #self.pc.add_school_skill(uuid, rank)
-
         for i in xrange(0, len(self.les)):
             emph = self.les[i].text()
-            s_id = self.pc.get_pending_wc_emphs()[i]
-
             api.character.skills.add_starting_skill(uuid, emph=emph)
 
         self.accept()

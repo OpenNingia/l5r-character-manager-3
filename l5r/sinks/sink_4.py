@@ -25,6 +25,8 @@ import widgets
 import dal
 import dal.query
 
+import api.character
+
 
 class Sink4(QtCore.QObject):
 
@@ -35,7 +37,7 @@ class Sink4(QtCore.QObject):
     def add_new_modifier(self):
         item = models.ModifierModel()
         self.form.pc.add_modifier(item)
-        dlg = dialogs.ModifierDialog(self.form.pc, self.form.dstore, self.form)
+        dlg = dialogs.ModifierDialog(self.form.pc, self.form)
         dlg.set_modifier(item)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
             self.form.update_from_model()
@@ -46,7 +48,7 @@ class Sink4(QtCore.QObject):
             return
         item = index.model().data(index, QtCore.Qt.UserRole)
         dlg = dialogs.ModifierDialog(
-            self.form.pc, self.form.dstore, self.form)
+            self.form.pc, self.form)
         dlg.set_modifier(item)
         if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
             self.form.update_from_model()
@@ -93,7 +95,7 @@ class Sink4(QtCore.QObject):
         self.form.update_from_model()
 
     def on_money_value_changed(self, value):
-        self.form.pc.set_property('money', value)
+        api.character.set_money(value)
 
     # NPC EXPORT
     def show_npc_export_dialog(self):
@@ -121,7 +123,7 @@ class Sink4(QtCore.QObject):
     def on_tech_item_activate(self, index):
         item = self.form.th_view_model.data(index, QtCore.Qt.UserRole)
         try:
-            school, tech = dal.query.get_tech(self.form.dstore, item.id)
+            school, tech = api.data.schools.get_technique(item.id)
         except Exception as e:
             print("cannot retrieve information from tech model.", e)
         else:
@@ -135,7 +137,7 @@ class Sink4(QtCore.QObject):
     def on_spell_item_activate(self, index):
         item = self.form.sp_view_model.data(index, QtCore.Qt.UserRole)
         try:
-            spell = dal.query.get_spell(self.form.dstore, item.spell_id)
+            spell = api.data.spells.get(item.spell_id)
         except Exception as e:
             print("cannot retrieve information from spell model.", e)
         else:
@@ -144,7 +146,7 @@ class Sink4(QtCore.QObject):
                 spell.name,
                 self._subtitle(
                     "{element}, Mastery {mastery}",
-                    element=self._get_element_ring(self.form.dstore, spell),
+                    element=self._get_element_ring(spell),
                     mastery=spell.mastery
                 ),
                 spell.desc
@@ -153,7 +155,7 @@ class Sink4(QtCore.QObject):
     def on_kata_item_activate(self, index):
         item = self.form.ka_view_model.data(index, QtCore.Qt.UserRole)
         try:
-            kata = dal.query.get_kata(self.form.dstore, item.id)
+            kata = api.data.powers.get_kata(item.id)
         except Exception as e:
             print("cannot retrieve information from kata model.", e)
         else:
@@ -162,7 +164,7 @@ class Sink4(QtCore.QObject):
                 kata.name,
                 self._subtitle(
                     '{element}, Mastery {mastery}',
-                    element=self._get_element_ring(self.form.dstore, kata),
+                    element=self._get_element_ring(kata),
                     mastery=kata.mastery
                 ),
                 kata.desc
@@ -171,7 +173,7 @@ class Sink4(QtCore.QObject):
     def on_kiho_item_activate(self, index):
         item = self.form.ki_view_model.data(index, QtCore.Qt.UserRole)
         try:
-            kiho = dal.query.get_kiho(self.form.dstore, item.id)
+            kiho = api.data.powers.get_kiho(item.id)
         except Exception as e:
             print("cannot retrieve information from kiho model.", e)
         else:
@@ -180,7 +182,7 @@ class Sink4(QtCore.QObject):
                 kiho.name,
                 self._subtitle(
                     '{type} - {element},  Mastery {mastery}',
-                    element=self._get_element_ring(self.form.dstore, kiho),
+                    element=self._get_element_ring(kiho),
                     mastery=kiho.mastery,
                     type=kiho.type
                 ),
@@ -190,7 +192,7 @@ class Sink4(QtCore.QObject):
     def on_skill_item_activate(self, index):
         item = self.form.sk_view_model.data(index, QtCore.Qt.UserRole)
         try:
-            skill = dal.query.get_skill(self.form.dstore, item)
+            skill = api.data.skills.get(item)
         except Exception as e:
             print("cannot retrieve information from skill model.", e)
         else:
@@ -211,8 +213,11 @@ class Sink4(QtCore.QObject):
         subtitle = self.tr(format)
         return subtitle.format(**kwargs)
 
-    def _get_element_ring(self, dstore, item):
-        return dal.query.get_ring(dstore, item.element)
+    def _get_element_ring(self, item):
+        ring_ = api.data.get_ring(item.element)
+        if not ring_:
+            return item.element
+        return ring_.text
 
     def _simple_description_dialog(self, parent, title, subtitle, desc):
         dlg = widgets.SimpleDescriptionDialog(parent)

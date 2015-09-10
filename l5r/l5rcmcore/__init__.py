@@ -26,7 +26,6 @@ from PySide import QtCore, QtGui
 import models
 import exporters
 import dal
-import dal.query
 import dal.dataimport
 
 from util import log, osutil
@@ -36,8 +35,8 @@ from qtsignalsutils import *
 
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
-APP_VERSION = '3.9.7'
-DB_VERSION = '3.0'
+APP_VERSION = '3.10.0'
+DB_VERSION = '3.10'
 APP_ORG = 'openningia'
 
 PROJECT_PAGE_LINK = 'https://github.com/OpenNingia/l5r-character-manager-3'
@@ -114,11 +113,6 @@ class L5RCMCore(QtGui.QMainWindow):
         super(L5RCMCore, self).__init__(parent)
         # print(repr(self))
         self.pc = None
-
-        # character stored insight rank
-        # used to knew if the character
-        # get new insight rank
-        self.last_rank = 1
 
         # Flag to lock advancement refunds in order
         self.lock_advancements = True
@@ -246,7 +240,7 @@ class L5RCMCore(QtGui.QMainWindow):
                 pcs.append(c)
 
         self.write_pdf(
-            'sheet_npc.pdf', exporters.FDFExporterTwoNPC(self.dstore, pcs))
+            'sheet_npc.pdf', exporters.FDFExporterTwoNPC(pcs))
         self.commit_pdf_export(export_file)
 
     def export_as_pdf(self, export_file):
@@ -262,13 +256,13 @@ class L5RCMCore(QtGui.QMainWindow):
         self.temp_files.append(fpath)
 
         # SAMURAI MONKS ALSO FITS IN THE BUSHI CHARACTER SHEET
-        is_monk, is_brotherhood = self.pc_is_monk()
+        is_monk, is_brotherhood = api.character.is_monk()
         is_samurai_monk = is_monk and not is_brotherhood
-        is_shugenja = self.pc.has_tag('shugenja')
-        is_bushi = self.pc.has_tag('bushi')
-        is_courtier = self.pc.has_tag('courtier')
+        is_shugenja = api.character.is_shugenja()
+        is_bushi = api.character.is_bushi()
+        is_courtier = api.character.is_courtier()
         spell_offset = 0
-        spell_count = len(self.pc.get_spells())
+        spell_count = api.character.spells.get_all()
 
         # SHUGENJA/BUSHI/MONK SHEET
         if is_shugenja:
@@ -286,8 +280,8 @@ class L5RCMCore(QtGui.QMainWindow):
         # we use as many extra spells sheet as needed
 
         if is_shugenja:
-            spell_count = len(self.pc.get_spells())
-            spell_offset = 0
+            #spell_count = api.character.spells.get_all()
+            #spell_offset = 0
 
             while spell_count > 0:
                 _exporter = exporters.FDFExporterSpells(spell_offset)
@@ -296,7 +290,7 @@ class L5RCMCore(QtGui.QMainWindow):
                 spell_count -= _exporter.spell_per_page
 
         # DEDICATED SKILL SHEET
-        skill_count = len(self.pc.get_skills())
+        skill_count = len(api.character.skills.get_all())
         skill_offset = 0
 
         while skill_count > 0:
@@ -361,7 +355,7 @@ class L5RCMCore(QtGui.QMainWindow):
         self.update_from_model()
 
     def set_pc_affinity(self, affinity):
-        if self.pc.has_tag('chuda shugenja school'):
+        if api.character.has_tag('chuda shugenja school'):
             self.pc.set_affinity('maho ' + affinity.lower())
             self.pc.set_deficiency(affinity.lower())
         else:
@@ -423,7 +417,7 @@ class L5RCMCore(QtGui.QMainWindow):
         adv = models.KataAdv(kata.id, kata.id, kata.mastery)
         adv.desc = self.tr('{0}, Cost: {1} xp').format(kata.name, adv.cost)
 
-        if (adv.cost + self.pc.get_px()) > self.pc.exp_limit:
+        if adv.cost > api.character.xp_left():
             return CMErrors.NOT_ENOUGH_XP
 
         self.pc.add_advancement(adv)
@@ -431,27 +425,21 @@ class L5RCMCore(QtGui.QMainWindow):
 
         return CMErrors.NO_ERROR
 
-    def pc_is_monk(self):
-        return api.character.is_monk()
-
-    def pc_is_ninja(self):
-        return api.character.is_ninja()
-
-    def pc_is_shugenja(self):
-        return api.character.is_shugenja()
-
     def buy_kiho(self, kiho):
         kiho_cost = api.rules.calculate_kiho_cost(kiho.id)
         adv = models.KihoAdv(kiho.id, kiho.id, kiho_cost)
         adv.desc = self.tr('{0}, Cost: {1} xp').format(kiho.name, adv.cost)
 
         # monks can get free kihos
-        if self.pc.get_free_kiho_count() > 0:
-            adv.cost = 0
-            self.pc.set_free_kiho_count(self.pc.get_free_kiho_count() - 1)
-            print('remaing free kihos', self.pc.get_free_kiho_count())
+        free_kiho_ = api.character.rankadv.get_gained_kiho_count()
 
-        if (adv.cost + self.pc.get_px()) > self.pc.exp_limit:
+        if free_kiho_ > 0:
+            adv.cost = 0
+            free_kiho_ -= 1
+            api.character.rankadv.set_gained_kiho_count(free_kiho_)
+            log.app.info(u"free kiho left: %d", free_kiho_)
+
+        if adv.cost > api.character.xp_left():
             return CMErrors.NOT_ENOUGH_XP
 
         self.pc.add_advancement(adv)
@@ -475,9 +463,7 @@ class L5RCMCore(QtGui.QMainWindow):
         # e.g. Hida Hiroshi
         # otherwise just 'Hiroshi' will do
 
-        family_name = ""
-        family_obj = dal.query.get_family(self.dstore, self.pc.family)
+        family_obj = api.data.families.get(api.character.get_family())
         if family_obj:
-            family_name = family_obj.name
-            return "{} {}".format(family_name, self.pc.name)
+            return "{} {}".format(family_obj.name, self.pc.name)
         return self.pc.name

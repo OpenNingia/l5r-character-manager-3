@@ -14,12 +14,22 @@ from util import log
 
 def get_all_kiho():
     """returns all character kiho"""
-    return [x.kiho for x in __api.pc.get_kiho()]
+    return query(__api.pc.advans).where(lambda x: x.type == 'kiho').select(a_('kiho')).to_list()
 
 
 def get_all_kata():
     """returns all character kata"""
-    return [x.kata for x in __api.pc.get_kata()]
+    return query(__api.pc.advans).where(lambda x: x.type == 'kata').select(a_('kata')).to_list()
+
+
+def has_kata(kid):
+    """returns true if the character had already learned the given kata"""
+    return query(get_all_kata()).where(lambda x: x == kid).count() != 0
+
+
+def has_kiho(kid):
+    """returns true if the character had already learned the given kiho"""
+    return query(get_all_kiho()).where(lambda x: x == kid).count() != 0
 
 
 def check_kiho_eligibility(kiho_id):
@@ -72,7 +82,7 @@ def check_kiho_eligibility(kiho_id):
     elif is_monk:
         return against_mastery >= kiho_.mastery, api.tr("Your {0} Ring or School Rank are not enough").format(ring_.text)
     elif is_shugenja:
-        return ring_rank >= kiho_.mastery, api.tr("Your {0} Ring Rank is not enough")
+        return ring_rank >= kiho_.mastery, api.tr("Your {0} Ring Rank is not enough").format(ring_.text)
     elif is_ninja:
         return ninja_rank >= kiho_.mastery, api.tr("Your School Rank is not enough")
 
