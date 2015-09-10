@@ -1,15 +1,17 @@
 language: python
 sudo: required
-virtualenv: system_site_packages: true
+# use system packages in virtualenv
+virtualenv:
+  system_site_packages: true
 python:
   - "2.7"
 # set-up ubuntu
 before_install:
   - "sudo apt-get update -qq"
-# command to install dependencies
-install:
   - "sudo apt-get install -y python-pyside.qtcore"
   - "sudo apt-get install -y python-pyside.qtgui"
+# command to install dependencies
+install:
   - "pip install --upgrade pip"
   - "pip install --upgrade lxml"
   - "pip install --upgrade asq"

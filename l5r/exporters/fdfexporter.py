@@ -15,7 +15,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtGui, QtCore
 from datetime import datetime
 import models
 import hashlib
