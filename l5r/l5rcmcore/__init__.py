@@ -262,7 +262,7 @@ class L5RCMCore(QtGui.QMainWindow):
         is_bushi = api.character.is_bushi()
         is_courtier = api.character.is_courtier()
         spell_offset = 0
-        spell_count = api.character.spells.get_all()
+        spell_count = len(api.character.spells.get_all())
 
         # SHUGENJA/BUSHI/MONK SHEET
         if is_shugenja:

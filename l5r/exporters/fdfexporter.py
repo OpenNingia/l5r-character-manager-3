@@ -331,31 +331,38 @@ class FDFExporterShugenja(FDFExporter):
         fields = {}
         # self.export_spells(fields)
 
+        def get_affinity_text_(element_or_tag):
+            ring_ = api.data.get_ring(element_or_tag)
+            if not ring_:
+                return element_or_tag
+            return ring_.text
+
         # schools
         print('Starting Schools Export')
-        schools = filter(lambda x: 'shugenja' in x.tags, m.schools)
+        schools = api.character.schools.get_schools_by_tag('shugenja')
         count = min(3, len(schools))
         for i in range(0, count):
-            def_ = schools[i].deficiency.capitalize() if schools[
-                i].deficiency else "None"
-            aff_ = schools[i].affinity.capitalize() if schools[
-                i].affinity else "None"
 
-            if aff_.startswith('*'):  # wildcard
-                aff_ = m.get_affinity().capitalize()
+            affinities_ = api.character.spells.affinities_by_school(schools[i])
+            deficiencies_ = api.character.spells.deficiencies_by_school(schools[i])
 
-            if def_.startswith('*'):  # wildcard
-                def_ = m.get_affinity().capitalize()
+            affinities_str_ = ""
+            if len(affinities_):
+                affinities_str_ = u", ".join(map(get_affinity_text_, affinities_))
 
-            school = api.data.schools.get(schools[i].school_id)
+            deficiencies_str_ = ""
+            if len(deficiencies_):
+                deficiencies_str_ = u", ".join(map(get_affinity_text_, deficiencies_))
+
+            school = api.data.schools.get(schools[i])
             if school:
                 for tech in school.techs:
                     fields['SCHOOL_NM.%d' % (i + 1)] = school.name
-                    fields['AFFINITY.%d' % (i + 1)] = aff_
-                    fields['DEFICIENCY.%d' % (i + 1)] = def_
+                    fields['AFFINITY.%d' % (i + 1)] = affinities_str_
+                    fields['DEFICIENCY.%d' % (i + 1)] = deficiencies_str_
                     fields['SCHOOL_TECH.%d' % (i + 1)] = tech.desc
             else:
-                print('cannot export character school', schools[i].school_id)
+                print('cannot export character school', schools[i])
 
         # EXPORT FIELDS
         for k in fields.iterkeys():

@@ -146,6 +146,60 @@ def deficiency(spell):
         special_deficiency(spell))
 
 
+def affinities_by_school(school_id):
+    """return affinities got from that school"""
+    school_ = api.data.schools.get(school_id)
+    if not school_:
+        return []
+
+    ret_ = []
+    ranks_ = query(api.character.rankadv.get_all()).where(
+        lambda x: x.school == school_id and len(x.affinities) > 0).to_list()
+    for r in ranks_:
+        ret_ += r.affinities
+
+    # special affinities
+    if school_id == 'scorpion_yogo_wardmaster_school':
+        ret_.append('wards')
+
+    is_phoenix_embrace_the_elements = query(school_.techs).where(
+        lambda x: x.id == 'phoenix_embrace_the_elements').count() > 0
+    if is_phoenix_embrace_the_elements:
+        affinity_, deficiencies_ = phoenix_embrace_the_elements()
+        ret_.append(affinity_)
+
+    is_mantis_favor_of_the_sun = query(school_.techs).where(lambda x: x.id == 'mantis_favor_of_the_sun').count() > 0
+    if is_mantis_favor_of_the_sun:
+        ret_.append('fire')
+
+    return ret_
+
+
+def deficiencies_by_school(school_id):
+    """return deficiencies got from that school"""
+    school_ = api.data.schools.get(school_id)
+    if not school_:
+        return []
+
+    ret_ = []
+    ranks_ = query(api.character.rankadv.get_all()).where(
+        lambda x: x.school == school_id and len(x.deficiencies) > 0).to_list()
+    for r in ranks_:
+        ret_ += r.deficiencies
+
+    # special affinities
+    if school_id == 'scorpion_yogo_wardmaster_school':
+        ret_ += ['travel', 'craft']
+
+    is_phoenix_embrace_the_elements = query(school_.techs).where(
+        lambda x: x.id == 'phoenix_embrace_the_elements').count() > 0
+    if is_phoenix_embrace_the_elements:
+        affinity_, deficiencies_ = phoenix_embrace_the_elements()
+        ret_ += deficiencies_
+
+    return ret_
+
+
 def get_mastery_modifier(spell):
     """get mastery bonus or malus for a given spell"""
     if spell.element != 'multi':
