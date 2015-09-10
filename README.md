@@ -1,6 +1,7 @@
-[![Build Status](https://travis-ci.org/OpenNingia/l5r-character-manager-3.svg)](https://travis-ci.org/OpenNingia/l5r-character-manager-3)
-
 # Run the program from sources
+
+## develop branch build status
+[![Build Status](https://travis-ci.org/OpenNingia/l5r-character-manager-3.svg)](https://travis-ci.org/OpenNingia/l5r-character-manager-3)
 
 ## Getting the sources
 
@@ -12,8 +13,8 @@ git submodule init
 git submodule update
 ```
 
-### Switch to develop branch
-master branch is often outdated, so you want to get the develop branch by running
+### (optionally) Switch to develop branch
+master branch is often outdated, so you might want to get the develop branch by running
 
 `git checkout develop`
 
