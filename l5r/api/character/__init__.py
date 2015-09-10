@@ -61,7 +61,7 @@ def get_school_tags():
 
 def get_tags():
     """return all character tags"""
-    return __api.pc.tags + get_family_tags() + get_school_tags()
+    return get_family_tags() + get_school_tags()
 
 
 def get_school_rules():
@@ -226,7 +226,8 @@ def trait_rank(trait_id):
     trait_nm = trait_id
     trait_idx = models.attrib_from_name(trait_id)
 
-    starting_value_ = __api.pc.step_0.attribs[trait_idx]
+    starting_value_ = __api.pc.starting_traits[trait_idx]
+
     family_trait_ = api.data.families.get_family_trait(
         get_family()
     )
@@ -276,7 +277,7 @@ def void_rank():
 
     trait_nm = 'void'
 
-    starting_value_ = __api.pc.step_0.void
+    starting_value_ = __api.pc.starting_void
     family_trait_ = api.data.families.get_family_trait(
         get_family()
     )
@@ -450,7 +451,8 @@ def set_family(family_id):
 
     family_ = api.data.families.get(family_id)
     if family_:
-        __api.pc.set_family(family_.id, family_.trait, 1, [family_.id, family_.clanid])
+        #__api.pc.set_family(family_.id, family_.trait, 1, [family_.id, family_.clanid])
+        __api.pc.family = family_.id
         __api.pc.clan = family_.clanid
 
         log.api.info(u"set family: %s, clan: %s", family_.id, family_.clanid)
@@ -473,13 +475,14 @@ def get_family():
 
 def get_starting_school():
     """returns character starting school"""
-    return __api.pc.school
+    return api.character.schools.get_first()
 
 
 def is_monk():
     """return if pc is a Monk and if its a monk of the brotherhood of shinsei"""
     # is monk ?
-    monk_schools = api.character.schools.get_schools_by_tag('monk')
+    monk_schools = query(api.character.schools.get_all()).where(
+        lambda y: api.data.schools.is_monk(y)).to_list()
 
     is_monk_ = len(monk_schools) > 0
     # is brotherhood monk?
@@ -498,25 +501,29 @@ def is_monk():
 def is_ninja():
     """returns True if the character is a ninja"""
     # is ninja?
-    return len(api.character.schools.get_schools_by_tag('ninja')) > 0
+    return query(api.character.schools.get_all()).where(
+        lambda x: api.data.schools.is_ninja(x)).count() > 0
 
 
 def is_shugenja():
     """returns True if the character is a shugenja"""
     # is shugenja?
-    return len(api.character.schools.get_schools_by_tag('shugenja')) > 0
+    return query(api.character.schools.get_all()).where(
+        lambda x: api.data.schools.is_shugenja(x)).count() > 0
 
 
 def is_bushi():
     """returns True if the character is a shugenja"""
-    # is shugenja?
-    return query(api.character.schools.get_all()).where(lambda x: x.has_tag('bushi')).count() > 0
+    # is bushi?
+    return query(api.character.schools.get_all()).where(
+        lambda x: api.data.schools.is_bushi(x)).count() > 0
 
 
 def is_courtier():
     """returns True if the character is a shugenja"""
-    # is shugenja?
-    return query(api.character.schools.get_all()).where(lambda x: x.has_tag('courtier')).count() > 0
+    # is courtier?
+    return query(api.character.schools.get_all()).where(
+        lambda x: api.data.schools.is_courtier(x)).count() > 0
 
 
 def set_dirty_flag(value):

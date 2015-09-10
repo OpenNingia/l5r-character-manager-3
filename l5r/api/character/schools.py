@@ -27,9 +27,7 @@ from util import log
 
 def get_all():
     """return all the character schools"""
-    if not __api.pc:
-        return []
-    return [x.school_id for x in __api.pc.schools]
+    return query(api.character.rankadv.get_all()).select(a_('school')).distinct().to_list()
 
 
 def get_current():
@@ -42,19 +40,15 @@ def get_current():
 
 def get_rank(sid):
     """returns the character rank in the given school"""
-    if not __api.pc:
-        return 0
-
-    return query(__api.pc.schools) \
-        .where(lambda x: x.school_id == sid) \
-        .select(a_('school_rank')).first_or_default(0)
+    return get_school_rank(sid)
 
 
 def get_first():
     """returns character starting school"""
-    if not __api.pc:
+    rank_ = api.character.rankadv.get_first()
+    if not rank_:
         return None
-    return __api.pc.school
+    return rank_.school
 
 
 def set_first(sid):
@@ -106,28 +100,6 @@ def join_new(sid):
 
     # add advancement
     rank_ = api.character.rankadv.join_new(school_.id)
-
-    #import models
-
-    #school_nm = school_.name
-
-    #school_obj = models.CharacterSchool(school_.id)
-    #school_obj.tags = school_.tags
-    #school_obj.school_rank = 0
-
-    #school_obj.affinity = school_.affinity
-    #school_obj.deficiency = school_.deficiency
-
-    #__api.pc.schools.append(school_obj)
-
-    # check free kihos
-    #if school_.kihos:
-    #    __api.pc.set_free_kiho_count(school_.kihos.count)
-
-    # check for alternate path
-    #if school_obj.has_tag('alternate'):
-    #    school_obj.is_path = True
-    #    school_obj.path_rank = api.character.insight_rank()
 
 
 def get_schools_by_tag(tag):
@@ -193,4 +165,4 @@ def get_techs_by_school(sid):
     if not school_:
         return []
 
-    return query(school_.techs).where(lambda x: api.character.has_rule(x.id)).to_list()
+    return query(school_.techs).where(lambda x: api.character.has_rule(x.id)).select(a_('id')).to_list()

@@ -35,8 +35,8 @@ from qtsignalsutils import *
 
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
-APP_VERSION = '3.9.7'
-DB_VERSION = '3.0'
+APP_VERSION = '3.10.0'
+DB_VERSION = '3.10'
 APP_ORG = 'openningia'
 
 PROJECT_PAGE_LINK = 'https://github.com/OpenNingia/l5r-character-manager-3'
@@ -262,7 +262,7 @@ class L5RCMCore(QtGui.QMainWindow):
         is_bushi = api.character.is_bushi()
         is_courtier = api.character.is_courtier()
         spell_offset = 0
-        spell_count = len(self.pc.get_spells())
+        spell_count = api.character.spells.get_all()
 
         # SHUGENJA/BUSHI/MONK SHEET
         if is_shugenja:
@@ -280,8 +280,8 @@ class L5RCMCore(QtGui.QMainWindow):
         # we use as many extra spells sheet as needed
 
         if is_shugenja:
-            spell_count = len(self.pc.get_spells())
-            spell_offset = 0
+            #spell_count = api.character.spells.get_all()
+            #spell_offset = 0
 
             while spell_count > 0:
                 _exporter = exporters.FDFExporterSpells(spell_offset)
@@ -290,7 +290,7 @@ class L5RCMCore(QtGui.QMainWindow):
                 spell_count -= _exporter.spell_per_page
 
         # DEDICATED SKILL SHEET
-        skill_count = len(self.pc.get_skills())
+        skill_count = len(api.character.skills.get_all())
         skill_offset = 0
 
         while skill_count > 0:

@@ -95,105 +95,33 @@ class MyJsonEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
     def encode_pc_model(self, obj):
-        if isinstance(obj, BasePcModel) or \
-           isinstance(obj, AdvancedPcModel):
+        if isinstance(obj, AdvancedPcModel):
             return obj.__dict__
         return json.JSONEncoder.default(self, obj)
 
 
-class BasePcModel(object):
+class AdvancedPcModel(object):
 
     def __init__(self):
+        super(AdvancedPcModel, self).__init__()
+
+        self.starting_traits = [2, 2, 2, 2, 2, 2, 2, 2]
+        self.starting_void = 2
+
         self.void = 0
         self.attribs = [0, 0, 0, 0, 0, 0, 0, 0]
-        self.skills = {}
-        self.emph = {}
-        self.pending_wc = []
-        self.pending_wc_emph = []
-        self.pending_wc_spell = []
-        self.tags = []
+
         self.honor = 0.0
         self.glory = 0.0
         self.infamy = 0.0
         self.status = 0.0
         self.taint = 0.0
 
-        self.school_tech = None
-
-    def load_default(self):
-        self.void = 2
-        self.attribs = [2, 2, 2, 2, 2, 2, 2, 2]
-        self.rank = 1
-        #self.glory = 1.0
-        #self.status = 1.0
-
-    def add_tag(self, tag):
-        if tag not in self.tags:
-            self.tags.append(tag)
-
-    def has_tag(self, tag):
-        return tag in self.tags
-
-    def del_tag(self, tag):
-        if tag in self.tags:
-            self.tags.remove(tag)
-
-    def clear_tags(self):
-        self.tags = []
-
-
-class CharacterSchool(object):
-
-    def __init__(self, school_id=0):
-        self.school_id = school_id
-        self.school_rank = 1
-        self.techs = []
-        self.tech_rules = []
-        self.skills = {}
-        self.emph = {}
-        self.spells = []
-        self.tags = []
-        self.outfit = []
-        self.affinity = None
-        self.deficiency = None
-
-        # alternate path
-        self.is_path = False
-        self.path_rank = 0
-
-    def add_tag(self, tag):
-        if tag not in self.tags:
-            self.tags.append(tag)
-
-    def has_tag(self, tag):
-        return tag in self.tags
-
-    def del_tag(self, tag):
-        if tag in self.tags:
-            self.tags.remove(tag)
-
-    def clear_tags(self):
-        self.tags = []
-
-
-class AdvancedPcModel(BasePcModel):
-
-    def __init__(self):
-        super(AdvancedPcModel, self).__init__()
-
-        # clan selection
-        self.step_0 = BasePcModel()
-        # family selection
-        self.step_1 = BasePcModel()
-        # school selection
-        self.step_2 = BasePcModel()
-
         self.unsaved = False
         self.version = '0.0'
 
         self.name = ''
         self.clan = None
-        self.school = None
         self.family = None
 
         self.insight = 0
@@ -201,20 +129,15 @@ class AdvancedPcModel(BasePcModel):
 
         self.armor = None
         self.weapons = []
-        self.schools = []
         self.outfit = []
         self.money = (0, 0, 0)
-
-        self.mastery_abilities = []
 
         self.attrib_costs = [4, 4, 4, 4, 4, 4, 4, 4]
         self.void_cost = 6
         self.health_multiplier = 2
         self.spells_per_rank = 3
-        self.pending_spells_count = 0
         self.exp_limit = 40
         self.wounds = 0
-        self.mod_init = (0, 0)
         self.void_points = 0
         self.extra_notes = ''
         self.insight_calculation = 1
@@ -224,22 +147,13 @@ class AdvancedPcModel(BasePcModel):
         self.properties = {}
 
     def load_default(self):
-        self.step_0.load_default()
+        pass
 
     def is_dirty(self):
         return self.unsaved
 
     def get_attrib_cost(self, idx):
         return self.attrib_costs[idx]
-
-    def get_pending_wc_skills(self):
-        return self.step_2.pending_wc
-
-    def get_pending_wc_emphs(self):
-        return self.step_2.pending_wc_emph
-
-    def get_pending_wc_spells(self):
-        return self.step_2.pending_wc_spell
 
     def get_spells_per_rank(self):
         return self.spells_per_rank
@@ -255,30 +169,6 @@ class AdvancedPcModel(BasePcModel):
             return self.modifiers
         return filter(lambda x: x.type == filter_type, self.modifiers)
 
-    def add_pending_wc_skill(self, wc):
-        self.step_2.pending_wc.append(wc)
-        self.unsaved = True
-
-    def add_pending_wc_spell(self, wc):
-        self.step_2.pending_wc_spell.append(wc)
-        self.unsaved = True
-
-    def add_pending_wc_emph(self, wc):
-        self.step_2.pending_wc_emph.append(wc)
-        self.unsaved = True
-
-    def clear_pending_wc_skills(self):
-        self.step_2.pending_wc = []
-        self.unsaved = True
-
-    def clear_pending_wc_spells(self):
-        self.step_2.pending_wc_spell = []
-        self.unsaved = True
-
-    def clear_pending_wc_emphs(self):
-        self.step_2.pending_wc_emph = []
-        self.unsaved = True
-
     def add_weapon(self, item):
         self.weapons.append(item)
 
@@ -286,47 +176,10 @@ class AdvancedPcModel(BasePcModel):
         self.modifiers.append(item)
 
     def set_family(self, family_id=0, perk=None, perkval=1, tags=[]):
-        if self.family == family_id:
-            return
-        self.step_1 = BasePcModel()
-        self.unsaved = True
-        self.family = family_id
-        if family_id == 0:
-            return
+        pass
 
-        for t in tags:
-            self.step_1.add_tag(t)
-
-        # void ?
-        if perk == 'void':
-            self.step_1.void += perkval
-            return True
-        else:
-            a = attrib_from_name(perk)
-            if a >= 0:
-                self.step_1.attribs[a] += perkval
-                return True
-        return False
-
-    def set_school(self, school_id=0, perk=None, perkval=1,
-                   honor=0.0, tags=[]):
-        if self.school == school_id:
-            return
-        self.step_2 = BasePcModel()
-        self.schools = []
-        self.unsaved = True
-        self.school = school_id
-        self.clear_pending_wc_skills()
-        self.clear_pending_wc_spells()
-        self.clear_pending_wc_emphs()
-        if school_id == 0:
-            return
-
-        self.schools = [CharacterSchool(school_id)]
-        self.step_2.honor = honor
-
-        for t in tags:
-            self.schools[0].add_tag(t)
+    def set_school(self, school_id=0, perk=None, perkval=1, honor=0.0, tags=[]):
+        pass
 
     def set_void_points(self, value):
         self.void_points = value
@@ -377,35 +230,6 @@ class AdvancedPcModel(BasePcModel):
             fp.close()
 
             _load_obj(deepcopy(obj), self)
-
-            self.step_0 = BasePcModel()
-            self.step_1 = BasePcModel()
-            self.step_2 = BasePcModel()
-
-            _load_obj(deepcopy(obj['step_0']), self.step_0)
-            _load_obj(deepcopy(obj['step_1']), self.step_1)
-            _load_obj(deepcopy(obj['step_2']), self.step_2)
-
-            # pending wildcard object in step2
-            self.step_2.pending_wc = []
-            if 'pending_wc' in obj['step_2']:
-                for m in obj['step_2']['pending_wc']:
-                    item = dal.school.SchoolSkillWildcardSet()
-                    _load_obj(deepcopy(m), item)
-                    for i in xrange(0, len(item.wildcards)):
-                        s_item = dal.school.SchoolSkillWildcard()
-                        _load_obj(deepcopy(item.wildcards[i]), s_item)
-                        item.wildcards[i] = s_item
-
-                    self.add_pending_wc_skill(item)
-
-            # schools
-            self.schools = []
-            if 'schools' in obj:
-                for s in obj['schools']:
-                    item = CharacterSchool()
-                    _load_obj(deepcopy(s), item)
-                    self.schools.append(item)
 
             self.advans = []
             for ad in obj['advans']:

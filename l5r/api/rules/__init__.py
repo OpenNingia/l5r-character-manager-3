@@ -503,3 +503,8 @@ def get_max_wounds():
     for i in xrange(0, 8):
         max_ += get_health_rank(i)
     return max_
+
+
+def get_wound_heal_rate():
+    """return the wound heal rate"""
+    return api.character.modified_trait_rank('stamina') * 2 + api.character.insight_rank()
