@@ -175,17 +175,19 @@ def get_requirements(sid):
         # An alternate path can only be joined
         # on the same school rank that its technique replaces
 
-        path_rank_ = query(school_.techs).select(a_('rank')).first_or_default(1)
-        r = Requirement()
+        path_rank_ = query(school_.techs).select(a_('rank')).first_or_default(0)
 
-        r.field = api.character.schools.get_current()
-        r.type = 'school'
-        r.min = path_rank_ - 1
-        r.max = path_rank_ - 1
-        r.trg = None
-        r.text = __api.tr("Replaces School Rank: {0}").format(path_rank_)
+        if path_rank_ > 0:
 
-        coded_requirements_.append(r)
+            r = Requirement()
+            r.field = api.character.schools.get_current()
+            r.type = 'school'
+            r.min = path_rank_ - 1
+            r.max = path_rank_ - 1
+            r.trg = None
+            r.text = __api.tr("Replaces School Rank: {0}").format(path_rank_)
+
+            coded_requirements_.append(r)
 
     return requirements_by_data_ + coded_requirements_
 

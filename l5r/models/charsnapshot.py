@@ -37,6 +37,7 @@ class CharacterSnapshot(object):
     model = None
 
     honor = 0.0
+    glory = 0.0
 
     def __init__(self, pc):
         self.model = pc
@@ -58,6 +59,7 @@ class CharacterSnapshot(object):
 
         self.insight_rank = api.character.insight_rank()
         self.honor = api.character.honor()
+        self.glory = api.character.glory()
 
     def get_skills(self):
         return api.character.skills.get_all()
@@ -111,3 +113,6 @@ class CharacterSnapshot(object):
 
     def get_honor(self):
         return self.honor
+
+    def get_glory(self):
+        return self.glory
