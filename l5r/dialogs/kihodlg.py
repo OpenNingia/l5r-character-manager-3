@@ -18,7 +18,7 @@
 import api.data.powers
 import api.character.powers
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 
 class KihoDialog(QtGui.QDialog):

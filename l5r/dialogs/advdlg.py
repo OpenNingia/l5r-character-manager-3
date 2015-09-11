@@ -19,12 +19,12 @@ import models.advances as advances
 import api.data.skills
 from util import log
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 
 class SkillSelectInformativeWidget(QtGui.QWidget):
 
-    currentIndexChanged = QtCore.Signal(str)
+    currentIndexChanged = QtCore.pyqtSignal(int)
 
     def __init__(self, parent=None):
         super(SkillSelectInformativeWidget, self).__init__(parent)
@@ -40,6 +40,8 @@ class SkillSelectInformativeWidget(QtGui.QWidget):
         fr_desc = QtGui.QFrame(self)
         fly = QtGui.QFormLayout(fr_desc)
         fly.addRow(self.lb_book, self.lb_desc)
+
+        vb.setContentsMargins(0,0,0,0)
 
         vb.addWidget(fr_desc)
 
@@ -113,19 +115,24 @@ class BuyAdvDialog(QtGui.QDialog):
             skill=self.tr('Buy Skill rank'),
             emph=self.tr('Buy Skill emphasys'))
 
-        labels = dict(
+        self.labels = dict(
             skill=(
-                self.tr(
-                    'Choose Skill Type'), self.tr('Choose Skill')),
-            emph= (self.tr('Choose Skill'), self.tr('Choose Emphasis')))
+                QtGui.QLabel(self.tr('Choose Skill'), self),
+                QtGui.QLabel(self.tr(''), self)),
+            emph=(
+                QtGui.QLabel(self.tr('Choose Skill'), self),
+                QtGui.QLabel(self.tr('Choose Emphasis'), self)))
 
         self.setWindowTitle(titles[self.tag])
 
         self.widgets = dict(
             skill=(
-                #QtGui.QComboBox(self), QtGui.QComboBox(self)),
                 QtGui.QComboBox(self), SkillSelectInformativeWidget(self)),
-            emph =(QtGui.QComboBox(self), QtGui.QLineEdit(self)))
+            emph=(
+                QtGui.QComboBox(self), QtGui.QLineEdit(self)))
+
+        self.widgets['emph'][0].addItem('a', 'a')
+        self.widgets['skill'][0].addItem('a', 'a')
 
         for t in self.widgets.itervalues():
             if t[0]:
@@ -133,28 +140,36 @@ class BuyAdvDialog(QtGui.QDialog):
             if t[1]:
                 t[1].setVisible(False)
 
+        for t in self.labels.itervalues():
+            if t[0]:
+                t[0].setVisible(False)
+            if t[1]:
+                t[1].setVisible(False)
+
         if self.tag in self.widgets:
-            for i in xrange(0, 2):
-                if labels[self.tag][i] is not None:
-                    lb = QtGui.QLabel(labels[self.tag][i], self)
+            for i in range(0, 2):
+                if self.labels[self.tag][i] is not None:
+                    lb = self.labels[self.tag][i]
+                    lb.setVisible(True)
                     wd = self.widgets[self.tag][i]
                     wd.setVisible(True)
                     grid.addWidget(lb, i, 0)
                     grid.addWidget(wd, i, 1, 1, 3)
 
-        self.lb_from = QtGui.QLabel(self.tr('Make your choice'), self)
-        self.lb_cost = QtGui.QLabel(self.tr('Cost: 0'), self)
+        #self.lb_from = QtGui.QLabel(self.tr('Make your choice'), self)
+        #self.lb_cost = QtGui.QLabel(self.tr('Cost: 0'), self)
 
         self.bt_buy = QtGui.QPushButton(self.tr('Buy'), self)
         self.bt_close = QtGui.QPushButton(self.tr('Close'), self)
 
-        grid.addWidget(self.lb_from, 3, 0, 1, 3)
-        grid.addWidget(self.lb_cost, 4, 0, 1, 3)
+        #grid.addWidget(self.lb_from, 3, 0, 1, 3)
+        #grid.addWidget(self.lb_cost, 4, 0, 1, 3)
         grid.addWidget(self.bt_buy, 5, 2, 1, 1)
         grid.addWidget(self.bt_close, 5, 3, 1, 1)
 
     def cleanup(self):
         self.widgets = {}
+        self.labels = {}
 
     def load_data(self):
         print('load data')
@@ -168,8 +183,8 @@ class BuyAdvDialog(QtGui.QDialog):
                 sk = api.data.skills.get(id)
                 cb.addItem(sk.name, sk.id)
 
-            self.lb_cost.setText(self.tr('Cost: 2 exp'))
-            self.lb_from.setVisible(False)
+            #self.lb_cost.setText(self.tr('Cost: 2 exp'))
+            #self.lb_from.setVisible(False)
 
     def fix_skill_id(self, uuid):
         if self.tag == 'emph':
@@ -246,9 +261,9 @@ class BuyAdvDialog(QtGui.QDialog):
             # other than medicine and investigation
             cost *= 2
 
-        self.lb_from.setText(
-            self.tr('From {0} to {1}').format(cur_value, new_value))
-        self.lb_cost.setText(self.tr('Cost: {0} exp').format(cost))
+        #self.lb_from.setText(
+        #    self.tr('From {0} to {1}').format(cur_value, new_value))
+        #self.lb_cost.setText(self.tr('Cost: {0} exp').format(cost))
 
         self.adv = advances.SkillAdv(uuid, cost)
 

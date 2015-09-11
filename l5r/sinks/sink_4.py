@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 import os
 import models
@@ -39,7 +39,7 @@ class Sink4(QtCore.QObject):
         self.form.pc.add_modifier(item)
         dlg = dialogs.ModifierDialog(self.form.pc, self.form)
         dlg.set_modifier(item)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             self.form.update_from_model()
 
     def edit_selected_modifier(self):
@@ -50,7 +50,7 @@ class Sink4(QtCore.QObject):
         dlg = dialogs.ModifierDialog(
             self.form.pc, self.form)
         dlg.set_modifier(item)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             self.form.update_from_model()
 
     def remove_selected_modifier(self):
@@ -68,7 +68,7 @@ class Sink4(QtCore.QObject):
 
     def manage_data_act(self):
         dlg = dialogs.ManageDataPackDlg(self.form.dstore, self.form)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             self.form.update_data_blacklist()
             self.reload_data_act()
 
@@ -101,7 +101,7 @@ class Sink4(QtCore.QObject):
     def show_npc_export_dialog(self):
         form = self.form
         dlg = dialogs.NpcExportDialog(form)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             file_ = form.select_export_file(".pdf")
             if len(file_) > 0:
                 form.export_npc_characters(dlg.paths, file_)
@@ -110,14 +110,14 @@ class Sink4(QtCore.QObject):
     def on_edit_family(self):
         form = self.form
         dlg = widgets.FamilyChooserDialog(form)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             form.update_from_model()
 
     # EDIT FIRST SCHOOL
     def on_edit_first_school(self):
         form = self.form
         dlg = widgets.FirstSchoolChooserDialog(form)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             form.update_from_model()
 
     def on_tech_item_activate(self, index):

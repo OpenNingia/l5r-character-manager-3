@@ -19,7 +19,7 @@ import models
 import widgets
 import os
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 
 class NpcExportDialog(QtGui.QDialog):

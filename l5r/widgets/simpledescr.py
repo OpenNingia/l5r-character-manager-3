@@ -14,7 +14,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
+
 APP_NAME = u"L5R: CM"
 
 
@@ -22,7 +23,7 @@ def new_horiz_line(parent=None):
     line = QtGui.QFrame(parent)
     line.setObjectName("hline")
     line.setGeometry(QtCore.QRect(3, 3, 3, 3))
-    line.setFrameShape(QtGui.QFrame.Shape.HLine)
+    line.setFrameShape(QtGui.QFrame.HLine)
     line.setFrameShadow(QtGui.QFrame.Sunken)
     line.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
     return line

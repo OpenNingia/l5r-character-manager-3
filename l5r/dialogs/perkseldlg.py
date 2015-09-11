@@ -22,7 +22,7 @@ import widgets
 
 from util import log
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 
 class BuyPerkDialog(QtGui.QDialog):

@@ -20,7 +20,7 @@ import widgets
 import api.rules
 import api.data
 import api.data.skills
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 
 class ModifierDialog(QtGui.QDialog):

@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 import dialogs
 import models
@@ -148,14 +148,14 @@ class Sink1(QtCore.QObject):
         form = self.form
 
         dlg = dialogs.ChooseItemDialog(form.pc, 'armor', form)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             form.update_from_model()
 
     def show_wear_cust_armor(self):
         form = self.form
 
         dlg = dialogs.CustomArmorDialog(form.pc, form)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             form.update_from_model()
 
     def show_add_misc_item(self):

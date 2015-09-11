@@ -15,7 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtGui, QtCore
+from PyQt4 import QtCore, QtGui
+
 import api.data.schools
 
 
@@ -95,13 +96,13 @@ class TechViewModel(QtCore.QAbstractListModel):
 
         #for tech in api.character.schools.get_techs():
 
-        for rank in range(1, api.character.insight_rank()+1):
-
-            tech_ = api.character.schools.get_tech_by_rank(rank)
+        #for rank in range(1, api.character.insight_rank()+1):
+        for r in api.character.rankadv.get_all():
+            tech_ = api.character.schools.get_tech_by_rank(r.rank)
             #adjusted_rank = self.adjust_tech_rank(model, tech)
             ##self.add_item(tech, adjusted_rank)
             if tech_:
-                self.add_item(tech_, rank)
+                self.add_item(tech_, r.rank)
         # sort by rank
         self.items.sort()
 
@@ -146,7 +147,7 @@ class TechItemDelegate(QtGui.QStyledItemDelegate):
 
         painter.save()
 
-        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing, True)
+        painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
 
         # fill the background color
         if option.state & QtGui.QStyle.State_Selected == QtGui.QStyle.State_Selected:

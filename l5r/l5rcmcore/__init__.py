@@ -21,7 +21,7 @@ import shutil
 from tempfile import mkstemp
 import subprocess
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 import models
 import exporters

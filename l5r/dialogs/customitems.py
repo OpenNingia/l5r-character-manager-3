@@ -20,7 +20,7 @@ import models
 import api.data.outfit
 import api.rules
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 
 def grouped_widget(title, widget, parent=None):
