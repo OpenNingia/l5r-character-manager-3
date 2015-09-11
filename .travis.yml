@@ -9,9 +9,9 @@ addons:
   apt:
     packages:
     - python-qt4
+    - python-lxml
 install:
   - "pip install --upgrade pip"
-  - "pip install --upgrade lxml"
   - "pip install --upgrade asq"
   - "pip install --no-deps ./l5r"
 # command to run tests
