@@ -19,7 +19,7 @@ from subprocess import Popen
 import os
 import sys
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 
 def detect_desktop_environment():

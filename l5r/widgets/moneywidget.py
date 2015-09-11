@@ -15,7 +15,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 
 def new_small_le(parent=None, ro=False):
@@ -29,7 +29,7 @@ def new_small_le(parent=None, ro=False):
 
 class MoneyWidget(QtGui.QWidget):
 
-    valueChanged = QtCore.Signal(tuple)
+    valueChanged = QtCore.pyqtSignal(tuple)
 
     def __init__(self, parent=None):
         super(MoneyWidget, self).__init__(parent)

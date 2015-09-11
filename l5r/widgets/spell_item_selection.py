@@ -21,7 +21,7 @@ import dal.query
 import api.character.spells
 import api.data.spells
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 
 class SpellItemSelection(QtGui.QWidget):
@@ -49,7 +49,7 @@ class SpellItemSelection(QtGui.QWidget):
     tx_descr = None
 
     # spell changed
-    spell_changed = QtCore.Signal(int)
+    spell_changed = QtCore.pyqtSignal(int)
 
     def __init__(self, pc, parent=None):
         super(SpellItemSelection, self).__init__(parent)

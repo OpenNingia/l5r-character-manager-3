@@ -12,11 +12,11 @@
 
 # Authors: Federico Brega, Pierluigi Villani
 # Inspired from C++ code by Qt software qticonloader.cpp
-# Adapted to PySide by Daniele Simonetti
+# Adapted to PyQt4 by Daniele Simonetti
 
 import os
-from PySide.QtCore import *
-from PySide.QtGui import *
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 
 
 class QIconTheme:

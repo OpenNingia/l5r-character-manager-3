@@ -25,7 +25,7 @@ import api.data.schools
 import api.data.spells
 
 import widgets
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 
 def colored_span(col, text):

@@ -15,7 +15,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 
 class XpTextBox(QtGui.QLineEdit):

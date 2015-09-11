@@ -14,7 +14,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtGui, QtCore
+from PyQt4 import QtCore, QtGui
+
 from asq.initiators import query
 from asq.selectors import a_
 
@@ -188,7 +189,7 @@ If you choose an advanced school or alternative path be sure to check the requir
 
 
 class SchoolChooserWidget(QtGui.QWidget):
-    statusChanged = QtCore.Signal(bool)
+    statusChanged = QtCore.pyqtSignal(bool)
 
     def __init__(self, parent=None):
         super(SchoolChooserWidget, self).__init__(parent)

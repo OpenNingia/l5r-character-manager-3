@@ -19,7 +19,7 @@ import models
 import dal
 from copy import copy
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 
 def paintLayout(painter, item):

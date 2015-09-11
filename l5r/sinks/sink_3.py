@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 import dialogs
 
@@ -33,14 +33,14 @@ class Sink3(QtCore.QObject):
         filter = self.sender().parent().property('filter')
         if filter is not None:
             dlg.set_filter(filter)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             form.update_from_model()
 
     def show_add_cust_weapon(self):
         form = self.form
 
         dlg = dialogs.CustomWeaponDialog(form.pc, form)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             form.update_from_model()
 
     def edit_selected_weapon(self):
@@ -61,7 +61,7 @@ class Sink3(QtCore.QObject):
         dlg.edit_mode = True
         print('loading weap {0}, tags: {1}'.format(sel_itm.name, sel_itm.tags))
         dlg.load_item(sel_itm)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             form.update_from_model()
 
     def remove_selected_weapon(self):

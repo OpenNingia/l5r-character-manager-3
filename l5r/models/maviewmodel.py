@@ -15,7 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtGui, QtCore
+from PyQt4 import QtCore, QtGui
+
 import api.character.skills
 import api.data.skills
 from util import log
@@ -117,7 +118,7 @@ class MaItemDelegate(QtGui.QStyledItemDelegate):
 
         painter.save()
 
-        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing, True)
+        painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
 
         # fill the background color
         if option.state & QtGui.QStyle.State_Selected == QtGui.QStyle.State_Selected:
