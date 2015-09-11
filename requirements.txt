@@ -1,3 +1,2 @@
-pip install PyQt4
 pip install lxml
 pip install asq
