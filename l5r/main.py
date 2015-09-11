@@ -737,8 +737,6 @@ class L5RMain(L5RCMCore):
         view.horizontalHeader().setStretchLastSection(True)
         view.horizontalHeader().setCascadingSectionResizes(True)
         view.setModel(model)
-        # FIXME: this line segfaults on PySide 1.1.2
-        # view.selectionModel().currentRowChanged.connect(self.on_spell_selected)
         sm = view.selectionModel()
         sm.currentRowChanged.connect(self.on_spell_selected)
         self.spell_table_view = view

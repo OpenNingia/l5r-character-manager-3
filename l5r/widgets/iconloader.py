@@ -12,7 +12,7 @@
 
 # Authors: Federico Brega, Pierluigi Villani
 # Inspired from C++ code by Qt software qticonloader.cpp
-# Adapted to PySide by Daniele Simonetti
+# Adapted to PyQt4 by Daniele Simonetti
 
 import os
 from PyQt4.QtCore import *
