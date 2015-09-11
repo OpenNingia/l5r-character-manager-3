@@ -1679,7 +1679,7 @@ class L5RMain(L5RCMCore):
 
         trait_ = api.data.get_trait_by_index(int(tag))
         if not trait_:
-            log.ui.error(u"trait not found by index: %d", tag)
+            log.ui.error(u"trait not found by index: %s", tag)
             return
 
         if self.increase_trait(int(tag)) == CMErrors.NOT_ENOUGH_XP:
@@ -2457,13 +2457,11 @@ class L5RMain(L5RCMCore):
             self.tr("Load Character"),
             last_dir,
             self.tr("L5R Character files (*.l5r)"))
-        if len(fileName) != 2:
-            return ''
-        last_dir = os.path.dirname(fileName[0])
+
+        last_dir = os.path.dirname(fileName)
         if last_dir != '':
-            # print 'save last_dir: %s' % last_dir
             settings.setValue('last_open_dir', last_dir)
-        return fileName[0]
+        return fileName
 
     def select_export_file(self, file_ext='.txt'):
         supported_ext = ['.pdf']
@@ -2481,16 +2479,16 @@ class L5RMain(L5RCMCore):
             ";;".join(supported_filters))
 
         # user pressed cancel or didn't enter a name
-        if len(fileName) != 2 or fileName[0] == u'':
+        if fileName == u'':
             return None
 
         last_dir = os.path.dirname(fileName[0])
         if last_dir != '':
             settings.setValue('last_open_dir', last_dir)
 
-        if fileName[0].endswith(file_ext):
-            return fileName[0]
-        return fileName[0] + file_ext
+        if fileName.endswith(file_ext):
+            return fileName
+        return fileName + file_ext
 
     def select_import_data_pack(self):
         supported_ext = ['.zip', '.l5rcmpack']
@@ -2506,10 +2504,7 @@ class L5RMain(L5RCMCore):
             last_data_dir,
             ";;".join(supported_filters))
 
-        if len(ret) < 2:
-            return None
-
-        files = ret[0]
+        files = ret
 
         if not len(files):
             return None
