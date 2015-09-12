@@ -1972,9 +1972,9 @@ class L5RMain(L5RCMCore):
 
         chooses = None
         if 'nonvoid' in to_choose:
-            chooses = [api.data.rings.get(x) for x in api.data.rings() if x != 'void']
+            chooses = [api.data.get_ring(x).text for x in api.data.rings() if x != 'void']
         else:
-            chooses = [api.data.rings.get(x) for x in api.data.rings()]
+            chooses = [api.data.get_ring(x).text for x in api.data.rings()]
 
         affinity, is_ok = QtGui.QInputDialog.getItem(self,
                                                      "L5R: CM",
@@ -1982,9 +1982,13 @@ class L5RMain(L5RCMCore):
                                                          "Select your elemental affinity"),
                                                      chooses, 0, False)
         if is_ok:
-            rank_.affinities.append(affinity.id)
+            ring_ = [x for x in api.data.rings() if api.data.get_ring(x).text == affinity]
+            if len(ring_):
+                rank_.affinities.append(ring_[0])
         else:
             rank_.affinities_to_choose.append(to_choose)
+
+        self.update_from_model()
 
     def show_select_deficiency(self):
 
@@ -1996,9 +2000,9 @@ class L5RMain(L5RCMCore):
 
         chooses = None
         if 'nonvoid' in to_choose:
-            chooses = [api.data.rings.get(x) for x in api.data.rings() if x != 'void']
+            chooses = [api.data.rings.get(x).text for x in api.data.rings() if x != 'void']
         else:
-            chooses = [api.data.rings.get(x) for x in api.data.rings()]
+            chooses = [api.data.rings.get(x).text for x in api.data.rings()]
 
         deficiency, is_ok = QtGui.QInputDialog.getItem(self,
                                                        "L5R: CM",
@@ -2007,9 +2011,13 @@ class L5RMain(L5RCMCore):
                                                        chooses, 0, False)
 
         if is_ok:
-            rank_.deficiencies.append(deficiency.id)
+            ring_ = [x for x in api.data.rings() if api.data.get_ring(x).text == deficiency]
+            if len(ring_):
+                rank_.deficiencies.append(ring_[0])
         else:
             rank_.deficiencies.append(to_choose)
+
+        self.update_from_model()
 
     def load_character_from(self, path):
 
@@ -2437,17 +2445,17 @@ class L5RMain(L5RCMCore):
             self.tr("L5R Character files (*.l5r)"))
 
         # user pressed cancel or didn't enter a name
-        if len(fileName) != 2 or fileName[0] == u'':
-            return ''
+        if fileName == u'':
+            return None
 
-        last_dir = os.path.dirname(fileName[0])
+        last_dir = os.path.dirname(fileName)
         if last_dir != '':
             # print 'save last_dir: %s' % last_dir
             settings.setValue('last_open_dir', last_dir)
 
-        if fileName[0].endswith('.l5r'):
-            return fileName[0]
-        return fileName[0] + '.l5r'
+        if fileName.endswith('.l5r'):
+            return fileName
+        return fileName + '.l5r'
 
     def select_load_path(self):
         settings = QtCore.QSettings()

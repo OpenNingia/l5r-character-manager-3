@@ -140,6 +140,13 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
         self.endResetModel()
 
     def build_item_model(self, sp_id):
+
+        def get_element_(tag):
+            try:
+                return api.data.get_ring(tag).text
+            except:
+                return tag
+
         itm = SpellItemModel()
 
         spell = api.data.spells.get(sp_id)
@@ -147,10 +154,10 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
         itm.id = spell.id
         itm.name = spell.name
 
-        try:
-            itm.ring = api.data.get_ring(spell.element).text
-        except:
-            itm.ring = spell.element
+        if api.data.spells.is_multi_element(spell.id):
+            itm.ring = u", ".join([get_element_(x) for x in spell.elements])
+        else:
+            itm.ring = get_element_(spell.element)
 
         itm.mastery = spell.mastery
         itm.range = spell.range
