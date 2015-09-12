@@ -90,6 +90,14 @@ def set_first(sid):
     if school_.kihos:
         rank_.gained_kiho_count = school_.kihos.count
 
+    # starting perks
+    for p in school_.perks:
+        # is a merit or a flaw ?
+        if api.data.merits.get(p.id):
+            api.character.merits.add_starting(p.id, p.rank)
+        else:
+            api.character.flaws.add_starting(p.id, p.rank)
+
 
 def join_new(sid):
     """join a new school"""

@@ -54,6 +54,10 @@ class Rank(Advancement):
         # kiho gained with rank advancement
         self.kiho = []
         self.gained_kiho_count = 0
+        # merits gained along starting school
+        self.merits = []
+        # flaws gained along starting school
+        self.flaws = []
 
 
 class StartingSkill(object):

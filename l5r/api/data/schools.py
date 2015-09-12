@@ -198,3 +198,11 @@ def get_school_trait(sid):
     if not school_:
         return None
     return school_.trait
+
+
+def get_starting_perks(sid):
+    """return a school's starting perks"""
+    school_ = get(sid)
+    if not school_:
+        return []
+    return school_.perks

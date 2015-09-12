@@ -108,7 +108,7 @@ class SpellItemSelection(QtGui.QWidget):
         self.cb_element.addItem(self.tr('Fire'), 'fire')
         self.cb_element.addItem(self.tr('Void'), 'void')
         self.cb_element.addItem(self.tr('Multi-Element'), 'multi')
-        #self.cb_element.addItem(self.tr('Dragon Spells'), 'dragon')
+        self.cb_element.addItem(self.tr('Dragon Spells'), 'dragon')
 
         # Also masteries are fixed now
         for x in range(0, 6):
