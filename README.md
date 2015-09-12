@@ -4,35 +4,35 @@
 
 ### First of all, clone the repo
 
-```
-git clone https://github.com/OpenNingia/l5r-character-manager-3.git
-git submodule init
-git submodule update
-```
+`git clone https://github.com/OpenNingia/l5r-character-manager-3.git`
 
-### (optionally) Switch to develop branch
+### Switch to develop branch
+master branch is often outdated, so you want to get the develop branch by running
 
 [![Build Status](https://travis-ci.org/OpenNingia/l5r-character-manager-3.svg)](https://travis-ci.org/OpenNingia/l5r-character-manager-3)
-
-master branch is often outdated, so you might want to get the develop branch by running
 
 `git checkout develop`
 
 ### Installing the dependencies
-the simplest way is to run
+Before running the program you need to install the dependencies:
+Some of them can be installed using pip:
 
-`pip install -r requirements.txt`
-
-otherwise you can install them one by one
-
-```language-bash
-pip install -U PySide
+```bash
 pip install -U asq
 pip install -U lxml
 ```
 
+Then you need to install PyQt4. On a Debian system run:
+
+```bash
+apt-get install python-sip python-qt4
+```
+
+Windows users can download PyQt4 binaries from here:
+https://www.riverbankcomputing.com/software/pyqt/download
+
 ### Note for Windows users
-You will need a basic compiler in order to build some of the dependencies. I recommend getting this one:
+You will need a basic compiler in order to build some of the dependencies (mainly lxml). I recommend getting this one:
 
 http://www.microsoft.com/en-us/download/details.aspx?id=44266
 
