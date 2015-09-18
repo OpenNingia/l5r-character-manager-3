@@ -5,12 +5,10 @@ Maintainer: Daniele Simonetti <oppifjellet@gmail.com>
 Build-Depends: debhelper (>= 8.0.0), python (>= 2.7~)
 Standards-Version: 3.9.2
 Homepage: https://l5rcm.wordpress.com/
-#Vcs-Svn: https://github.com/OpenNingia/l5r-character-manager-3
-#Vcs-Browser: https://github.com/OpenNingia/l5r-character-manager-3
 Package: l5rcm
 Architecture: all
 Installed-Size: 10000
-Version: 3.10.0-1
+Version: 3.10.0-8
 Depends: python, python-qt4, pdftk
 Description: L5R 4th Edition Character Manager
  L5R: CM is a Character manager for

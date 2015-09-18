@@ -63,6 +63,7 @@ gzip -9 ${USR}/share/doc/l5rcm/changelog.Debian
 
 cp -r ./DEBIAN ./tmp
 rm -rf ./tmp/DEBIAN/.svn
+rm -rf ./tmp/DEBIAN/.git
 
 # change GID
 chown -R root:root ${USR}
