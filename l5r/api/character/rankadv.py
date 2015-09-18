@@ -109,7 +109,7 @@ def leave_path():
     # this function assumes that the character is
     # currently following an alternate path
 
-    former_school_ = query(all()).where(
+    former_school_ = query(get_all()).where(
         lambda x: not api.data.schools.is_path(x)).order_by(a_('rank')).first_or_default(None)
 
     if not former_school_:
