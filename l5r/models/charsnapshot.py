@@ -26,6 +26,7 @@ class CharacterSnapshot(object):
     skills = {}  # id ==> value
     traits = {}  # id ==> value
     rings = {}  # id ==> value
+    emphases = {} # skill_id => [emphases]
 
     tags = []  # tag list
     rules = []  # rules list
@@ -53,6 +54,10 @@ class CharacterSnapshot(object):
 
         for s in api.character.schools.get_all():
             self.schools[s] = api.character.schools.get_school_rank(s)
+
+        for s in api.character.skills.get_all():
+            self.emphases[s] = api.character.skills.get_skill_emphases(s)
+
 
         self.tags  += api.character.get_tags()
         self.rules += api.character.get_rules()
@@ -106,7 +111,9 @@ class CharacterSnapshot(object):
         self.schools[id_] = val
 
     def get_skill_emphases(self, skid):
-        return self.model.get_skill_emphases(skid)
+        if skid not in self.emphases:
+            return []
+        return self.emphases[skid]
 
     def get_insight_rank(self):
         return self.insight_rank
