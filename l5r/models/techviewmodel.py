@@ -15,7 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtGui, QtCore
+from PyQt4 import QtCore, QtGui
+
 import api.data.schools
 
 
@@ -24,6 +25,8 @@ class TechItemModel(object):
     def __init__(self):
         self.name = ''
         self.school_name = ''
+        self.school_id = ''
+        self.tech_rank = ''
         self.rank = ''
         self.desc = ''
         self.id = ''
@@ -58,7 +61,7 @@ class TechViewModel(QtCore.QAbstractListModel):
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
 
-    def build_item_model(self, tech_id, adjusted_rank=0):
+    def build_item_model(self, tech_id, rank):
         itm = TechItemModel()
 
         school_, tech_ = api.data.schools.get_technique(tech_id)
@@ -67,17 +70,20 @@ class TechViewModel(QtCore.QAbstractListModel):
             itm.name = tech_.name
             itm.id = tech_id
             itm.school_name = school_.name
+            itm.school_id = school_.id
 
-            if adjusted_rank == 0:
-                itm.rank = str(tech_.rank)
-            else:
-                itm.rank = str(adjusted_rank)
+            #if adjusted_rank == 0:
+            #    itm.rank = str(tech_.rank)
+            #else:
+
+            itm.tech_rank = str(tech_.rank)
+            itm.rank = str(rank)
         return itm
 
-    def add_item(self, item_id, adjusted_rank):
+    def add_item(self, item_id, rank):
         row = self.rowCount()
         self.beginInsertRows(QtCore.QModelIndex(), row, row)
-        self.items.append(self.build_item_model(item_id, adjusted_rank))
+        self.items.append(self.build_item_model(item_id, rank))
         self.endInsertRows()
 
     def clean(self):
@@ -87,9 +93,16 @@ class TechViewModel(QtCore.QAbstractListModel):
 
     def update_from_model(self, model):
         self.clean()
-        for tech in model.get_techs():
-            adjusted_rank = self.adjust_tech_rank(model, tech)
-            self.add_item(tech, adjusted_rank)
+
+        #for tech in api.character.schools.get_techs():
+
+        #for rank in range(1, api.character.insight_rank()+1):
+        for r in api.character.rankadv.get_all():
+            tech_ = api.character.schools.get_tech_by_rank(r.rank)
+            #adjusted_rank = self.adjust_tech_rank(model, tech)
+            ##self.add_item(tech, adjusted_rank)
+            if tech_:
+                self.add_item(tech_, r.rank)
         # sort by rank
         self.items.sort()
 
@@ -134,7 +147,7 @@ class TechItemDelegate(QtGui.QStyledItemDelegate):
 
         painter.save()
 
-        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing, True)
+        painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
 
         # fill the background color
         if option.state & QtGui.QStyle.State_Selected == QtGui.QStyle.State_Selected:

@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 import dialogs
 import models
@@ -38,9 +38,7 @@ class Sink1(QtCore.QObject):
     def new_character(self):
         form = self.form
 
-        form.last_rank = 1
         form.save_path = ''
-
 
         # create new character
         api.character.new()
@@ -49,7 +47,6 @@ class Sink1(QtCore.QObject):
         form.pc = api.character.model()
 
         form.tx_pc_notes.set_content('')
-        form.pc.set_insight_calc_method(form.ic_calc_method)
         form.update_from_model()
 
     def load_character(self):
@@ -68,8 +65,6 @@ class Sink1(QtCore.QObject):
         if form.save_path is not None and len(form.save_path) > 0:
             form.pc.version = DB_VERSION
             form.pc.extra_notes = form.tx_pc_notes.get_content()
-            # pending rank advancement?
-            form.pc.last_rank = form.last_rank
 
             # set book dependencies
             api.character.books.set_dependencies()
@@ -115,7 +110,6 @@ class Sink1(QtCore.QObject):
         form = self.form
 
         form.pc.advans = []
-        form.pc.recalc_ranks()
         form.update_from_model()
 
     def refund_last_adv(self):
@@ -123,14 +117,12 @@ class Sink1(QtCore.QObject):
         '''pops last advancement and recalculate ranks'''
         if len(form.pc.advans) > 0:
             adv = form.pc.advans.pop()
-            form.pc.recalc_ranks()
             form.update_from_model()
 
     def act_buy_perk(self):
         form = self.form
 
-        dlg = dialogs.BuyPerkDialog(form.pc, self.sender().property('tag'),
-                                    form.dstore, form)
+        dlg = dialogs.BuyPerkDialog(form.pc, self.sender().property('tag'), form)
         dlg.exec_()
         form.update_from_model()
 
@@ -155,15 +147,15 @@ class Sink1(QtCore.QObject):
     def show_wear_armor(self):
         form = self.form
 
-        dlg = dialogs.ChooseItemDialog(form.pc, 'armor', form.dstore, form)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        dlg = dialogs.ChooseItemDialog(form.pc, 'armor', form)
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             form.update_from_model()
 
     def show_wear_cust_armor(self):
         form = self.form
 
         dlg = dialogs.CustomArmorDialog(form.pc, form)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             form.update_from_model()
 
     def show_add_misc_item(self):
@@ -241,7 +233,6 @@ class Sink1(QtCore.QObject):
 
         if self.warn_about_refund():
             del form.pc.advans[adv_idx]
-            form.pc.recalc_ranks()
             form.update_from_model()
             return True
         return False

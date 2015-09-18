@@ -21,11 +21,19 @@ from asq.selectors import a_
 from api import __api
 
 
-def get(c):
-    """returns a family by its family id"""
-    return query(all()).where(lambda x: x.id == c).first_or_default(None)
-
-
-def all():
+def get_all():
     """returns all families"""
     return __api.ds.families
+
+
+def get(c):
+    """returns a family by its family id"""
+    return query(get_all()).where(lambda x: x.id == c).first_or_default(None)
+
+
+def get_family_trait(fam):
+    """return family trait"""
+    family_ = get(fam)
+    if not family_:
+        return None
+    return family_.trait

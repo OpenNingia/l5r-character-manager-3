@@ -8,7 +8,7 @@ REM GO TO SOURCE DIR
 cd ..\..\..\l5r
 
 REM BUILD EXECUTABLE
-python setup.py py2exe
+REM python setup.py py2exe
 
 REM COPY RESOURCES
 xcopy /Y /E /C /I /R share\* dist\share\

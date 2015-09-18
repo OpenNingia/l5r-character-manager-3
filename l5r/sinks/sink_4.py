@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 import os
 import models
@@ -24,6 +24,8 @@ from util import log, osutil
 import widgets
 import dal
 import dal.query
+
+import api.character
 
 
 class Sink4(QtCore.QObject):
@@ -35,9 +37,9 @@ class Sink4(QtCore.QObject):
     def add_new_modifier(self):
         item = models.ModifierModel()
         self.form.pc.add_modifier(item)
-        dlg = dialogs.ModifierDialog(self.form.pc, self.form.dstore, self.form)
-        dlg.load_modifier(item)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        dlg = dialogs.ModifierDialog(self.form.pc, self.form)
+        dlg.set_modifier(item)
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             self.form.update_from_model()
 
     def edit_selected_modifier(self):
@@ -46,9 +48,9 @@ class Sink4(QtCore.QObject):
             return
         item = index.model().data(index, QtCore.Qt.UserRole)
         dlg = dialogs.ModifierDialog(
-            self.form.pc, self.form.dstore, self.form)
-        dlg.load_modifier(item)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+            self.form.pc, self.form)
+        dlg.set_modifier(item)
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             self.form.update_from_model()
 
     def remove_selected_modifier(self):
@@ -66,7 +68,7 @@ class Sink4(QtCore.QObject):
 
     def manage_data_act(self):
         dlg = dialogs.ManageDataPackDlg(self.form.dstore, self.form)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             self.form.update_data_blacklist()
             self.reload_data_act()
 
@@ -93,43 +95,13 @@ class Sink4(QtCore.QObject):
         self.form.update_from_model()
 
     def on_money_value_changed(self, value):
-        self.form.pc.set_property('money', value)
-
-    def on_tech_item_activate(self, index):
-        form = self.form
-        item = form.th_view_model.data(index, QtCore.Qt.UserRole)
-        try:
-            school, tech = dal.query.get_tech(form.dstore, item.id)
-            dlg = widgets.SimpleDescriptionDialog(form)
-            dlg.description().set_title(tech.name)
-            dlg.description().set_subtitle(school.name)
-            dlg.description().set_content(tech.desc)
-            dlg.exec_()
-        except Exception as e:
-            print("cannot retrieve information from tech model.", e)
-
-    def on_spell_item_activate(self, index):
-        form = self.form
-        item = form.sp_view_model.data(index, QtCore.Qt.UserRole)
-        try:
-            spell = dal.query.get_spell(form.dstore, item.spell_id)
-            dlg = widgets.SimpleDescriptionDialog(form)
-            dlg.description().set_title(spell.name)
-            element_name = dal.query.get_ring(form.dstore, spell.element)
-            # if spell.element == 'all':
-            #    element_name = self.tr("Universal")
-            dlg.description().set_subtitle(self.tr("{element}, Mastery {mastery}")
-                                           .format(element=element_name, mastery=spell.mastery))
-            dlg.description().set_content(spell.desc)
-            dlg.exec_()
-        except Exception as e:
-            print("cannot retrieve information from spell model.", e)
+        api.character.set_money(value)
 
     # NPC EXPORT
     def show_npc_export_dialog(self):
         form = self.form
         dlg = dialogs.NpcExportDialog(form)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             file_ = form.select_export_file(".pdf")
             if len(file_) > 0:
                 form.export_npc_characters(dlg.paths, file_)
@@ -138,12 +110,118 @@ class Sink4(QtCore.QObject):
     def on_edit_family(self):
         form = self.form
         dlg = widgets.FamilyChooserDialog(form)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             form.update_from_model()
 
     # EDIT FIRST SCHOOL
     def on_edit_first_school(self):
         form = self.form
         dlg = widgets.FirstSchoolChooserDialog(form)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             form.update_from_model()
+
+    def on_tech_item_activate(self, index):
+        item = self.form.th_view_model.data(index, QtCore.Qt.UserRole)
+        try:
+            school, tech = api.data.schools.get_technique(item.id)
+        except Exception as e:
+            print("cannot retrieve information from tech model.", e)
+        else:
+            self._simple_description_dialog(
+                self.form,
+                tech.name,
+                school.name,
+                tech.desc
+            )
+
+    def on_spell_item_activate(self, index):
+        item = self.form.sp_view_model.data(index, QtCore.Qt.UserRole)
+        try:
+            spell = api.data.spells.get(item.spell_id)
+        except Exception as e:
+            print("cannot retrieve information from spell model.", e)
+        else:
+            self._simple_description_dialog(
+                self.form,
+                spell.name,
+                self._subtitle(
+                    "{element}, Mastery {mastery}",
+                    element=self._get_element_ring(spell),
+                    mastery=spell.mastery
+                ),
+                spell.desc
+            )
+
+    def on_kata_item_activate(self, index):
+        item = self.form.ka_view_model.data(index, QtCore.Qt.UserRole)
+        try:
+            kata = api.data.powers.get_kata(item.id)
+        except Exception as e:
+            print("cannot retrieve information from kata model.", e)
+        else:
+            self._simple_description_dialog(
+                self.form,
+                kata.name,
+                self._subtitle(
+                    '{element}, Mastery {mastery}',
+                    element=self._get_element_ring(kata),
+                    mastery=kata.mastery
+                ),
+                kata.desc
+            )
+
+    def on_kiho_item_activate(self, index):
+        item = self.form.ki_view_model.data(index, QtCore.Qt.UserRole)
+        try:
+            kiho = api.data.powers.get_kiho(item.id)
+        except Exception as e:
+            print("cannot retrieve information from kiho model.", e)
+        else:
+            self._simple_description_dialog(
+                self.form,
+                kiho.name,
+                self._subtitle(
+                    '{type} - {element},  Mastery {mastery}',
+                    element=self._get_element_ring(kiho),
+                    mastery=kiho.mastery,
+                    type=kiho.type
+                ),
+                kiho.desc
+            )
+
+    def on_skill_item_activate(self, index):
+        item = self.form.sk_view_model.data(index, QtCore.Qt.UserRole)
+        try:
+            skill = api.data.skills.get(item)
+        except Exception as e:
+            print("cannot retrieve information from skill model.", e)
+        else:
+            description = '<h3>Mastery Abilities:</h3>'
+            for i in skill.mastery_abilities:
+                description += '<B>{rank}</B>: {desc}<BR/>\n'.format(
+                    rank=i.rank,
+                    desc=i.desc,
+                )
+            self._simple_description_dialog(
+                self.form,
+                skill.name,
+                skill.type,
+                description
+            )
+
+    def _subtitle(self, format, **kwargs):
+        subtitle = self.tr(format)
+        return subtitle.format(**kwargs)
+
+    def _get_element_ring(self, item):
+        ring_ = api.data.get_ring(item.element)
+        if not ring_:
+            return item.element
+        return ring_.text
+
+    def _simple_description_dialog(self, parent, title, subtitle, desc):
+        dlg = widgets.SimpleDescriptionDialog(parent)
+        dlg.description().set_title(title)
+        dlg.description().set_subtitle(subtitle)
+        dlg.description().set_content(desc)
+        dlg.exec_()

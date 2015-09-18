@@ -15,8 +15,21 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+
+import sip
+sip.setapi('QDate', 2)
+sip.setapi('QDateTime', 2)
+sip.setapi('QString', 2)
+sip.setapi('QTextStream', 2)
+sip.setapi('QTime', 2)
+sip.setapi('QUrl', 2)
+sip.setapi('QVariant', 2)
+from PyQt4 import QtCore, QtGui
+
 import sys
 import os
+import api.character
+import api.character.spells
 
 here = ''
 
@@ -29,14 +42,9 @@ parent = os.path.abspath(os.path.dirname(here))
 sys.path.append(here)
 
 import mimetypes
-
-import models
 import widgets
 import dialogs
-import autoupdate
 import sinks
-import dal
-import dal.query
 import api.data.clans
 import api.data.families
 import api.data.schools
@@ -44,8 +52,6 @@ import api.character
 import api.character.spells
 import api.character.skills
 import api.rules
-
-from PySide import QtGui, QtCore
 
 from l5rcmcore import *
 from util import log
@@ -64,7 +70,7 @@ def new_horiz_line(parent=None):
     line = QtGui.QFrame(parent)
     line.setObjectName("hline")
     line.setGeometry(QtCore.QRect(3, 3, 3, 3))
-    line.setFrameShape(QtGui.QFrame.Shape.HLine)
+    line.setFrameShape(QtGui.QFrame.HLine)
     line.setFrameShadow(QtGui.QFrame.Sunken)
     line.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
     return line
@@ -74,7 +80,7 @@ def new_vert_line(parent=None):
     line = QtGui.QFrame(parent)
     line.setObjectName("vline")
     line.setGeometry(QtCore.QRect(320, 150, 118, 3))
-    line.setFrameShape(QtGui.QFrame.Shape.VLine)
+    line.setFrameShape(QtGui.QFrame.VLine)
     line.setFrameShadow(QtGui.QFrame.Sunken)
     return line
 
@@ -483,8 +489,8 @@ class L5RMain(L5RCMCore):
                 hbox.addWidget(attribs[i][1])
                 hbox.addWidget(bt)
                 self.trait_sig_mapper.setMapping(bt, tag)
-                bt.connect(QtCore.SIGNAL("clicked()"),
-                           self.trait_sig_mapper, QtCore.SLOT("map()"))
+
+                QtCore.QObject.connect(bt, QtCore.SIGNAL('clicked()'), self.trait_sig_mapper, QtCore.SLOT('map()'))
                 return fr
 
             for i in xrange(0, 8, 2):
@@ -658,7 +664,7 @@ class L5RMain(L5RCMCore):
         vbox = QtGui.QVBoxLayout(mfr)
         views_ = []
 
-        for k, t, m, d, tb in models_:
+        for k, t, m, d, tb, on_double_click in models_:
             grp = QtGui.QGroupBox(k, self)
             hbox = QtGui.QHBoxLayout(grp)
             view = None
@@ -675,6 +681,8 @@ class L5RMain(L5RCMCore):
                     view.setItemDelegateForColumn(col_, obj_)
             elif t == 'list':
                 view = QtGui.QListView(self)
+            if on_double_click:
+                view.doubleClicked.connect(on_double_click)
             view.setModel(m)
             if d is not None:
                 view.setItemDelegate(d)
@@ -729,8 +737,6 @@ class L5RMain(L5RCMCore):
         view.horizontalHeader().setStretchLastSection(True)
         view.horizontalHeader().setCascadingSectionResizes(True)
         view.setModel(model)
-        # FIXME: this line segfaults on PySide 1.1.2
-        # view.selectionModel().currentRowChanged.connect(self.on_spell_selected)
         sm = view.selectionModel()
         sm.currentRowChanged.connect(self.on_spell_selected)
         self.spell_table_view = view
@@ -814,6 +820,7 @@ class L5RMain(L5RCMCore):
         view.horizontalHeader().setStretchLastSection(True)
         view.horizontalHeader().setCascadingSectionResizes(True)
         view.setModel(model)
+        view.doubleClicked.connect(self.sink4.on_kata_item_activate)
         self.ka_table_view = view
 
         vbox.addWidget(view)
@@ -869,6 +876,7 @@ class L5RMain(L5RCMCore):
         view.horizontalHeader().setStretchLastSection(True)
         view.horizontalHeader().setCascadingSectionResizes(True)
         view.setModel(model)
+        view.doubleClicked.connect(self.sink4.on_kiho_item_activate)
         self.ki_table_view = view
 
         vbox.addWidget(view)
@@ -900,10 +908,24 @@ class L5RMain(L5RCMCore):
                       self.tr("Buy another skill"), self.show_buy_skill_dlg)
         vtb.addStretch()
 
-        models_ = [("Skills", 'table', sk_sort_model, None, vtb),
-                   (self.tr("Mastery Abilities"), 'list', self.ma_view_model,
-                    models.MaItemDelegate(self), None)]
-
+        models_ = [
+            (
+                "Skills",
+                'table',
+                sk_sort_model,
+                None,
+                vtb,
+                self.sink4.on_skill_item_activate
+            ),
+            (
+                self.tr("Mastery Abilities"),
+                'list',
+                self.ma_view_model,
+                models.MaItemDelegate(self),
+                None,
+                None
+            )
+        ]
         frame_, views_ = self._build_generic_page(models_)
 
         if len(views_) > 0:
@@ -1075,14 +1097,11 @@ class L5RMain(L5RCMCore):
         ranged_vtb = _make_vertical_tb(True, True, False, 'ranged')
         arrow_vtb = _make_vertical_tb(False, False, True, 'arrow')
 
-        models_ = [(
-            self.tr("Melee Weapons"), 'table', _make_sortable(
-                self.melee_view_model),
-            None, melee_vtb),
-            (self.tr("Ranged Weapons"), 'table', _make_sortable(self.ranged_view_model),
-             None, ranged_vtb),
-            (self.tr("Arrows"), 'table', _make_sortable(self.arrow_view_model),
-             None, arrow_vtb)]
+        models_ = [
+            (self.tr("Melee Weapons"), 'table', _make_sortable(self.melee_view_model), None, melee_vtb, None),
+            (self.tr("Ranged Weapons"), 'table', _make_sortable(self.ranged_view_model), None, ranged_vtb, None),
+            (self.tr("Arrows"), 'table', _make_sortable(self.arrow_view_model), None, arrow_vtb, None)
+        ]
 
         frame_, views_ = self._build_generic_page(models_)
 
@@ -1120,10 +1139,9 @@ class L5RMain(L5RCMCore):
 
         vtb = _make_vertical_tb()
 
-        models_ = [(
-            self.tr("Modifiers"), 'table', _make_sortable(
-                self.mods_view_model),
-            None, vtb)]
+        models_ = [
+            (self.tr("Modifiers"), 'table', _make_sortable(self.mods_view_model), None, vtb, None)
+        ]
 
         frame_, views_ = self._build_generic_page(models_)
         self.mod_view = views_[0]
@@ -1243,10 +1261,9 @@ class L5RMain(L5RCMCore):
 
         vtb = _make_vertical_tb()
 
-        models_ = [(
-            self.tr("Equipment"), 'list', _make_sortable(
-                self.equip_view_model),
-            None, vtb)]
+        models_ = [
+            (self.tr("Equipment"), 'list', _make_sortable(self.equip_view_model), None, vtb, None)
+        ]
 
         frame_, views_ = self._build_generic_page(models_)
         self.equip_view = views_[0]
@@ -1416,9 +1433,9 @@ class L5RMain(L5RCMCore):
             self.tr("Ignore Rank 1 Skills"), self)
         ic_no_rank1_2 = QtGui.QAction(
             self.tr("Account Rank 1 School Skills"), self)
-        ic_default_act.setProperty('method', api.rules.insight_calculation_1)
-        ic_no_rank1_1 .setProperty('method', api.rules.insight_calculation_2)
-        ic_no_rank1_2 .setProperty('method', api.rules.insight_calculation_3)
+        ic_default_act.setProperty('method', 1)
+        ic_no_rank1_1 .setProperty('method', 2)
+        ic_no_rank1_2 .setProperty('method', 3)
         ic_list = [ic_default_act, ic_no_rank1_1, ic_no_rank1_2]
         for act in ic_list:
             self.ic_act_grp.addAction(act)
@@ -1595,9 +1612,13 @@ class L5RMain(L5RCMCore):
 
         self.void_points.valueChanged.connect(self.on_void_points_change)
 
-        self.trait_sig_mapper.connect(QtCore.SIGNAL("mapped(const QString &)"),
-                                      self,
-                                      QtCore.SLOT("on_trait_increase(const QString &)"))
+        #self.trait_sig_mapper.mapped.connect(self.on_trait_increase)
+        QtCore.QObject.connect(self.trait_sig_mapper,
+                               QtCore.SIGNAL('mapped(const QString &)'),
+                               self.on_trait_increase)
+        #self.trait_sig_mapper.connect(QtCore.SIGNAL("mapped(const QString &)"),
+        #                              self,
+        #                              QtCore.SLOT("on_trait_increase(const QString &)"))
 
         self.ic_act_grp.triggered.connect(self.on_change_insight_calculation)
         self.hm_act_grp.triggered.connect(self.on_change_health_visualization)
@@ -1658,7 +1679,7 @@ class L5RMain(L5RCMCore):
 
         trait_ = api.data.get_trait_by_index(int(tag))
         if not trait_:
-            log.ui.error(u"trait not found by index: %d", tag)
+            log.ui.error(u"trait not found by index: %s", tag)
             return
 
         if self.increase_trait(int(tag)) == CMErrors.NOT_ENOUGH_XP:
@@ -1690,40 +1711,41 @@ class L5RMain(L5RCMCore):
     def on_flag_points_change(self):
         fl = self.sender()
         pt = fl.value
+
         if fl == self.pc_flags_points[0]:
             val = int(self.pc_flags_rank[0].text())
-            self.pc.set_honor(float(val + float(pt) / 10))
+            api.character.set_honor(float(val + float(pt) / 10))
         elif fl == self.pc_flags_points[1]:
             val = int(self.pc_flags_rank[1].text())
-            self.pc.set_glory(float(val + float(pt) / 10))
+            api.character.set_glory(float(val + float(pt) / 10))
         elif fl == self.pc_flags_points[2]:
             val = int(self.pc_flags_rank[2].text())
-            self.pc.set_status(float(val + float(pt) / 10))
+            api.character.set_status(float(val + float(pt) / 10))
         elif fl == self.pc_flags_points[3]:
             val = int(self.pc_flags_rank[3].text())
-            self.pc.set_taint(float(val + float(pt) / 10))
+            api.character.set_taint(float(val + float(pt) / 10))
         else:
             val = int(self.pc_flags_rank[4].text())
-            self.pc.set_infamy(float(val + float(pt) / 10))
+            api.character.set_infamy(float(val + float(pt) / 10))
 
     def on_flag_rank_change(self):
         fl = self.sender()
         val = int(fl.text())
         if fl == self.pc_flags_rank[0]:
             pt = self.pc_flags_points[0].value
-            self.pc.set_honor(float(val + float(pt) / 10))
+            api.character.set_honor(float(val + float(pt) / 10))
         elif fl == self.pc_flags_rank[1]:
             pt = self.pc_flags_points[1].value
-            self.pc.set_glory(float(val + float(pt) / 10))
+            api.character.set_glory(float(val + float(pt) / 10))
         elif fl == self.pc_flags_rank[2]:
             pt = self.pc_flags_points[2].value
-            self.pc.set_status(float(val + float(pt) / 10))
+            api.character.set_status(float(val + float(pt) / 10))
         elif fl == self.pc_flags_rank[3]:
             pt = self.pc_flags_points[3].value
-            self.pc.set_taint(float(val + float(pt) / 10))
+            api.character.set_taint(float(val + float(pt) / 10))
         else:
             pt = self.pc_flags_points[4].value
-            self.pc.set_infamy(float(val + float(pt) / 10))
+            api.character.set_infamy(float(val + float(pt) / 10))
 
     def on_void_points_change(self):
         val = self.void_points.value
@@ -1752,10 +1774,9 @@ class L5RMain(L5RCMCore):
                                           QtGui.QItemSelectionModel.Rows))
 
     def act_choose_skills(self):
-        dlg = dialogs.SelWcSkills(self.pc, self.dstore, self)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
-            self.pc.clear_pending_wc_skills()
-            self.pc.clear_pending_wc_emphs()
+        dlg = dialogs.SelWcSkills(self.pc, self)
+        if dlg.exec_() == QtGui.QDialog.Accepted:
+            api.character.rankadv.clear_skills_to_choose()
             self.update_from_model()
 
     def act_memo_spell(self):
@@ -1790,7 +1811,7 @@ class L5RMain(L5RCMCore):
         dlg.setWindowTitle(self.tr('Add New Spell'))
         dlg.set_header_text(
             self.tr("<center><h2>Select the spell to learn</h2></center>"))
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             self.update_from_model()
 
     def act_del_spell(self):
@@ -1812,88 +1833,18 @@ class L5RMain(L5RCMCore):
         # toggle remove
         self.del_spell_bt.setEnabled(not spell_itm.memo)
 
-    def learn_next_school_tech(self):
-        # first of all let's check if the pc has a path for
-        # that target rank
-        # otherwise proceed with the current school
-        path = [
-            x for x in self.pc.schools if x.is_path and x.path_rank == self.pc.get_insight_rank()]
-
-        if len(path):
-            path = path[0]
-            print('path', path.school_id)
-            # get last learned techs
-            last_tech_id = self.pc.get_techs()[-1]
-            last_school, last_tech = dal.query.get_tech(
-                self.dstore, last_tech_id)
-
-            school = dal.query.get_school(self.dstore, path.school_id)
-            for tech in [x for x in school.techs if x.rank == (last_tech.rank + 1)]:
-                path.techs.append(tech.id)
-                log.app.info(u"learned tech from alternate path: %s, tech: %s", school.id, tech.id)
-        else:
-
-            prev_school, next_school = self.get_prev_and_next_school()
-            same_school = next_school is None or prev_school == next_school
-            is_prev_school_path = False
-
-            if prev_school:
-                print('prev school', prev_school.id)
-                is_prev_school_path = 'alternate' in prev_school.tags
-
-            next_tech = None
-            next_rank = 1
-
-            if is_prev_school_path and same_school:
-
-                next_school = dal.query.get_school(
-                    self.dstore, self.pc.schools[-2].school_id)
-
-                # this is the tech he skipped
-                skipped_tech = self.get_next_rank_in_school(next_school)
-                next_tech = dal.query.get_school_tech(
-                    next_school, skipped_tech.rank + 1)
-
-                print('go back to old school', next_school.id)
-
-            elif same_school:
-                # seek the next rank in the same school
-                next_tech = self.get_next_rank_in_school(prev_school)
-                print(
-                    'character advancing in same school which is', prev_school.id)
-            else:
-                # new school, start from rank 1
-                print(
-                    'character advancing in new school which is', next_school.id)
-                next_tech = dal.query.get_school_tech(next_school, 1)
-
-            if next_tech:
-                print('character is going to learn',
-                      next_tech.id, 'rank', next_tech.rank)
-
-                self.pc.add_tech(next_tech.id, next_tech.id)
-
-        self.pc.recalc_ranks()
-        self.pc.set_can_get_other_tech(False)
-        self.update_from_model()
-
     def check_rank_advancement(self):
         if self.nicebar:
             return
 
-        print('check rank advancement. potential rank: {}, actual rank: {}',
-              self.pc.get_insight_rank(), self.last_rank)
+        potential_insight_rank_ = api.character.insight_rank()
+        actual_insight_rank_ = api.character.insight_rank(strict=True)
 
-        if self.pc.get_insight_rank() > self.last_rank:
+        log.rules.debug(u"check rank advancement. potential rank: %d, actual rank: %d",
+                        potential_insight_rank_, actual_insight_rank_)
+
+        if potential_insight_rank_ > actual_insight_rank_:
             # HEY, NEW RANK DUDE!
-
-            # get 3 spells each rank
-            if self.pc.has_tag('shugenja'):
-                self.pc.set_pending_spells_count(self.pc.get_spells_per_rank())
-            elif self.pc.has_tag('brotherhood'):
-                # hey free kihos!
-                self.pc.set_free_kiho_count(2)
-
             lb = QtGui.QLabel(self.tr("You reached the next rank, you have an opportunity"
                                       " to decide your destiny."), self)
             bt = QtGui.QPushButton(self.tr("Advance rank"), self)
@@ -1902,25 +1853,12 @@ class L5RMain(L5RCMCore):
             bt.clicked.connect(self.show_advance_rank_dlg)
             self.show_nicebar([lb, bt])
 
-            # debug
-            # dump_slots(self, 'after_a_while.txt')
-
-    def check_school_new_tech(self):
-        if self.nicebar:
-            return
-
-        # Show nicebar if can get another school tech
-        if (self.pc.can_get_other_techs() and
-                self.check_if_tech_available() and
-                self.check_tech_school_requirements()):
-            self.learn_next_school_tech()
-
     def check_school_new_spells(self):
         if self.nicebar:
             return
 
         # Show nicebar if can get other spells
-        if self.pc.can_get_other_spells():
+        if api.character.rankadv.has_granted_free_spells():
             lb = QtGui.QLabel(
                 self.tr("You now fit the requirements to learn other Spells"), self)
             bt = QtGui.QPushButton(self.tr("Learn Spells"), self)
@@ -1934,51 +1872,21 @@ class L5RMain(L5RCMCore):
             return
 
         # Show nicebar if can get free kihos
-        if self.pc.get_free_kiho_count():
+        if api.character.rankadv.get_gained_kiho_count() > 0:
             lb = QtGui.QLabel(
-                self.tr("You can learn {0} kihos for free").format(self.pc.get_free_kiho_count()), self)
+                self.tr("You can learn {0} kihos for free").format(api.character.rankadv.get_gained_kiho_count()), self)
             bt = QtGui.QPushButton(self.tr("Learn Kihos"), self)
             bt.setSizePolicy(QtGui.QSizePolicy.Maximum,
                              QtGui.QSizePolicy.Preferred)
             bt.clicked.connect(self.learn_next_free_kiho)
             self.show_nicebar([lb, bt])
 
-    def check_missing_requirements(self):
-        if self.nicebar:
-            return
-
-        if not self.check_tech_school_requirements():
-            lb = QtGui.QLabel(self.tr("You need at least one rank in all school skills"
-                                      " to learn the next School Technique"), self)
-            bt = QtGui.QPushButton(self.tr("Buy Requirements"), self)
-            bt.setSizePolicy(QtGui.QSizePolicy.Maximum,
-                             QtGui.QSizePolicy.Preferred)
-            bt.clicked.connect(self.buy_school_requirements)
-            self.show_nicebar([lb, bt])
-
-    def check_rules(self):
-        for t in self.pc.get_techs():
-            school, tech = dal.query.get_tech(self.dstore, t)
-            if school is not None and tech is not None:
-                self.pc.add_tech(tech.id, tech.id)
-            else:
-                # TODO: alert
-                print('cannot load character technique')
-
-        for adv in self.pc.advans:
-            if adv.type == 'perk':
-                perk = dal.query.get_merit(
-                    self.dstore, adv.perk) or dal.query.get_flaw(self.dstore, adv.perk)
-                adv.rule = perk.rule
-
     def check_new_skills(self):
         if self.nicebar:
             return
 
         # Show nicebar if pending wildcard skills
-        wcs = self.pc.get_pending_wc_skills()
-        wce = self.pc.get_pending_wc_emphs()
-        if len(wcs) > 0 or len(wce) > 0:
+        if api.character.rankadv.has_granted_skills_to_choose():
             lb = QtGui.QLabel(
                 self.tr("Your school gives you the choice of certain skills"), self)
             bt = QtGui.QPushButton(self.tr("Choose Skills"), self)
@@ -1991,13 +1899,15 @@ class L5RMain(L5RCMCore):
         if self.nicebar:
             return
 
-        if len(self.pc.get_affinity()) == 0:
+        rank_ = api.character.rankadv.get_last()
+        if not rank_:
             return
 
-        print('check affinity wc: {0}'.format(self.pc.get_affinity()))
+        log.app.info(u"check if the player can choose his affinity/deficiency: [%s] / [%s] ",
+                     u", ".join(rank_.affinities_to_choose),
+                     u", ".join(rank_.deficiencies_to_choose))
 
-        if ('any' in self.pc.get_affinity() or
-           'nonvoid' in self.pc.get_affinity()):
+        if api.character.rankadv.has_granted_affinities_to_choose():
             lb = QtGui.QLabel(
                 self.tr("You school grant you to choose an elemental affinity."), self)
             bt = QtGui.QPushButton(self.tr("Choose Affinity"), self)
@@ -2005,8 +1915,7 @@ class L5RMain(L5RCMCore):
                              QtGui.QSizePolicy.Preferred)
             bt.clicked.connect(self.show_select_affinity)
             self.show_nicebar([lb, bt])
-        elif ('any' in self.pc.get_deficiency() or
-              'nonvoid' in self.pc.get_deficiency()):
+        elif api.character.rankadv.has_granted_deficiencies_to_choose():
             lb = QtGui.QLabel(
                 self.tr("You school grant you to choose an elemental deficiency."), self)
             bt = QtGui.QPushButton(self.tr("Choose Deficiency"), self)
@@ -2016,32 +1925,28 @@ class L5RMain(L5RCMCore):
             self.show_nicebar([lb, bt])
 
     def learn_next_school_spells(self):
-        self.pc.recalc_ranks()
 
         dlg = dialogs.SpellAdvDialog(self.pc, 'bounded', self)
         dlg.setWindowTitle(self.tr('Choose School Spells'))
         dlg.set_header_text(self.tr("<center><h2>Your school has granted you \
                                      the right to choose some spells.</h2> \
                                      <h3><i>Choose with care.</i></h3></center>"))
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
-            self.pc.clear_pending_wc_spells()
-            self.pc.set_pending_spells_count(0)
+        if dlg.exec_() == QtGui.QDialog.Accepted:
+            api.character.rankadv.clear_spells_to_choose()
             self.update_from_model()
 
     def learn_next_free_kiho(self):
-        dlg = dialogs.KihoDialog(self.pc, self.dstore, self)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
+        dlg = dialogs.KihoDialog(self.pc, self)
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             self.update_from_model()
 
     def show_advance_rank_dlg(self):
-        dlg = dialogs.NextRankDlg(self.pc, self.dstore, self)
-        if dlg.exec_() == QtGui.QDialog.DialogCode.Accepted:
-            self.last_rank = self.pc.get_insight_rank()
+        dlg = dialogs.NextRankDlg(self.pc, self)
+        if dlg.exec_() == QtGui.QDialog.Accepted:
             self.update_from_model()
 
     def show_buy_skill_dlg(self):
-        dlg = dialogs.BuyAdvDialog(self.pc, 'skill',
-                                   self.dstore, self)
+        dlg = dialogs.BuyAdvDialog(self.pc, 'skill', self)
         dlg.exec_()
         self.update_from_model()
 
@@ -2052,20 +1957,24 @@ class L5RMain(L5RCMCore):
             model_ = self.skill_table_view.model()
             skill_id = model_.data(sm_.currentIndex(), QtCore.Qt.UserRole)
 
-            dlg = dialogs.BuyAdvDialog(self.pc, 'emph',
-                                       self.dstore, self)
+            dlg = dialogs.BuyAdvDialog(self.pc, 'emph', self)
             dlg.fix_skill_id(skill_id)
             dlg.exec_()
             self.update_from_model()
 
     def show_select_affinity(self):
+
+        rank_ = api.character.rankadv.get_last()
+        if not rank_:
+            return
+
+        to_choose = rank_.affinities_to_choose.pop()
+
         chooses = None
-        if 'nonvoid' in self.pc.get_affinity():
-            chooses = [models.ring_name_from_id(x).capitalize()
-                       for x in xrange(0, 4)]
+        if 'nonvoid' in to_choose:
+            chooses = [api.data.get_ring(x).text for x in api.data.rings() if x != 'void']
         else:
-            chooses = [models.ring_name_from_id(x).capitalize()
-                       for x in xrange(0, 5)]
+            chooses = [api.data.get_ring(x).text for x in api.data.rings()]
 
         affinity, is_ok = QtGui.QInputDialog.getItem(self,
                                                      "L5R: CM",
@@ -2073,16 +1982,27 @@ class L5RMain(L5RCMCore):
                                                          "Select your elemental affinity"),
                                                      chooses, 0, False)
         if is_ok:
-            self.set_pc_affinity(affinity)
+            ring_ = [x for x in api.data.rings() if api.data.get_ring(x).text == affinity]
+            if len(ring_):
+                rank_.affinities.append(ring_[0])
+        else:
+            rank_.affinities_to_choose.append(to_choose)
+
+        self.update_from_model()
 
     def show_select_deficiency(self):
+
+        rank_ = api.character.rankadv.get_last()
+        if not rank_:
+            return
+
+        to_choose = rank_.deficiencies_to_choose.pop()
+
         chooses = None
-        if 'nonvoid' in self.pc.get_deficiency():
-            chooses = [models.ring_name_from_id(x).capitalize()
-                       for x in xrange(0, 4)]
+        if 'nonvoid' in to_choose:
+            chooses = [api.data.rings.get(x).text for x in api.data.rings() if x != 'void']
         else:
-            chooses = [models.ring_name_from_id(x).capitalize()
-                       for x in xrange(0, 5)]
+            chooses = [api.data.rings.get(x).text for x in api.data.rings()]
 
         deficiency, is_ok = QtGui.QInputDialog.getItem(self,
                                                        "L5R: CM",
@@ -2091,7 +2011,13 @@ class L5RMain(L5RCMCore):
                                                        chooses, 0, False)
 
         if is_ok:
-            self.set_pc_deficiency(deficiency)
+            ring_ = [x for x in api.data.rings() if api.data.get_ring(x).text == deficiency]
+            if len(ring_):
+                rank_.deficiencies.append(ring_[0])
+        else:
+            rank_.deficiencies.append(to_choose)
+
+        self.update_from_model()
 
     def load_character_from(self, path):
 
@@ -2113,31 +2039,7 @@ class L5RMain(L5RCMCore):
 
                 print('successfully loaded character from {0}'.format(self.save_path))
 
-                try:
-                    if self.pc.last_rank > self.pc.get_insight_rank():
-                        print(
-                            "ERROR. last_rank should never be > insight rank. I'll try to fix this.")
-                        self.pc.last_rank = self.pc.get_insight_rank()
-                    self.last_rank = self.pc.last_rank
-                except:
-                    self.last_rank = self.pc.get_insight_rank()
-
-                def school_free_kiho_count():
-                    school = dal.query.get_school(
-                        self.dstore, self.pc.get_school_id(0))
-                    if school.kihos is None:
-                        return 0
-                    return school.kihos.count
-
-                # HACK. Fix free kiho for old characters created with 3 free kihos
-                if self.pc.get_free_kiho_count() == 3 and school_free_kiho_count() != 3:
-                    self.pc.set_free_kiho_count(school_free_kiho_count())
-
-                # TODO: checks for books / data extensions
-
                 self.tx_pc_notes.set_content(self.pc.extra_notes)
-                self.pc.set_insight_calc_method(self.ic_calc_method)
-                self.check_rules()
                 self.update_from_model()
             else:
                 print('character load failure')
@@ -2200,47 +2102,47 @@ class L5RMain(L5RCMCore):
 
             self.tx_pc_name.setText(self.pc.name)
             self.set_clan(self.pc.clan)
-            self.set_family(self.pc.get_family())
-            self.set_school(self.pc.get_school_id())
+            self.set_family(api.character.get_family())
+            self.set_school(api.character.schools.get_current())
 
             for w in self.pers_info_widgets:
                 if hasattr(w, 'link'):
                     w.setText(self.pc.get_property(w.link))
 
-        pc_xp = self.pc.get_px()
+        pc_xp = api.character.xp()
         self.tx_pc_exp.setText('{0} / {1}'.format(pc_xp, self.pc.exp_limit))
 
         # rings
-        for i in xrange(0, 5):
-            self.rings[i][1].setText(str(self.pc.get_ring_rank(i)))
+        for i, r in enumerate(api.data.rings()):
+            self.rings[i][1].setText(str(api.character.ring_rank(r)))
 
-        # attributes
-        for i in xrange(0, 8):
-            self.attribs[i][1].setText(str(self.pc.get_mod_attrib_rank(i)))
+        # traits
+        for i, t in enumerate(api.data.traits()):
+            self.attribs[i][1].setText(str(api.character.trait_rank(t)))
 
         # pc rank
-        self.tx_pc_rank.setText(str(self.pc.get_insight_rank()))
-        self.tx_pc_ins .setText(str(self.pc.get_insight()))
+        self.tx_pc_rank.setText(str(api.character.insight_rank()))
+        self.tx_pc_ins .setText(str(api.character.insight()))
 
         # pc flags
         with QtSignalLock(self.pc_flags_points+self.pc_flags_rank+[self.void_points]):
 
-            self.set_honor(self.pc.get_honor())
-            self.set_glory(self.pc.get_glory())
-            self.set_infamy(self.pc.get_infamy())
-            self.set_status(self.pc.get_status())
-            self.set_taint(self.pc.get_taint())
+            self.set_honor(api.character.honor())
+            self.set_glory(api.character.glory())
+            self.set_infamy(api.character.infamy())
+            self.set_status(api.character.status())
+            self.set_taint(api.character.taint())
 
             self.set_void_points(self.pc.void_points)
 
         # armor
-        self.tx_armor_nm .setText(str(self.pc.get_armor_name()))
-        self.tx_base_tn  .setText(str(self.pc.get_base_tn()))
-        self.tx_armor_tn .setText(str(self.pc.get_armor_tn()))
-        self.tx_armor_rd .setText(str(self.pc.get_full_rd()))
-        self.tx_cur_tn   .setText(str(self.pc.get_cur_tn()))
+        self.tx_armor_nm .setText(str(api.character.get_armor_name()))
+        self.tx_base_tn  .setText(str(api.character.get_base_tn()))
+        self.tx_armor_tn .setText(str(api.character.get_armor_tn()))
+        self.tx_armor_rd .setText(str(api.character.get_full_rd()))
+        self.tx_cur_tn   .setText(str(api.character.get_full_tn()))
         # armor description
-        self.tx_armor_nm.setToolTip(str(self.pc.get_armor_desc()))
+        self.tx_armor_nm.setToolTip(str(api.character.get_armor_desc()))
 
         self.display_health()
         self.update_wound_penalties()
@@ -2249,29 +2151,41 @@ class L5RMain(L5RCMCore):
 
         # initiative
         self.tx_base_init.setText(
-            api.rules.format_rtk_t(self.pc.get_base_initiative()))
+            api.rules.format_rtk_t(api.rules.get_base_initiative()))
         self.tx_mod_init.setText(
-            api.rules.format_rtk_t(self.pc.get_init_modifiers()))
+            api.rules.format_rtk_t(api.rules.get_init_modifiers()))
         self.tx_cur_init.setText(
-            api.rules.format_rtk_t(self.pc.get_tot_initiative()))
+            api.rules.format_rtk_t(api.rules.get_tot_initiative()))
 
         # affinity / deficiency
-        self.lb_affin.setText(
-            ', '.join([x.capitalize() for x in self.pc.get_affinity()]))
-        self.lb_defic.setText(
-            ', '.join([x.capitalize() for x in self.pc.get_deficiency()]))
+        affinities_ = []
+        for a in api.character.spells.affinities():
+            ring_ = api.data.get_ring(a)
+            if not ring_:
+                affinities_.append(a)
+            else:
+                affinities_.append(ring_.text)
+
+        deficiencies_ = []
+        for a in api.character.spells.deficiencies():
+            ring_ = api.data.get_ring(a)
+            if not ring_:
+                deficiencies_.append(a)
+            else:
+                deficiencies_.append(ring_.text)
+
+        self.lb_affin.setText(u', '.join(affinities_))
+        self.lb_defic.setText(u', '.join(deficiencies_))
 
         # money
         with QtSignalLock([self.money_widget]):
-            self.money_widget.set_value(self.pc.get_property('money', (0, 0, 0)))
+            self.money_widget.set_value(api.character.get_money())
 
         self.hide_nicebar()
 
         self.check_new_skills()
         self.check_affinity_wc()
         self.check_rank_advancement()
-        self.check_missing_requirements()
-        self.check_school_new_tech()
         self.check_school_new_spells()
         self.check_free_kihos()
 
@@ -2297,18 +2211,25 @@ class L5RMain(L5RCMCore):
         self.equip_view_model .update_from_model(self.pc)
 
     def update_wound_penalties(self):
-        penalties = [0, 3, 5, 10, 15, 20, 40]
-        wounds = [self.tr("Healthy"), self.tr("Nicked"), self.tr("Grazed"),
-                  self.tr("Hurt"), self.tr("Injured"), self.tr("Crippled"),
-                  self.tr("Down")]
-        if self.pc.has_rule('strength_of_earth'):
-            # penalties are reduced by 3
-            penalties = [max(0, x - 3) for x in penalties]
+        WOUND_PENALTIES_NAMES = [
+            self.tr("Healthy"),
+            self.tr("Nicked"),
+            self.tr("Grazed"),
+            self.tr("Hurt"),
+            self.tr("Injured"),
+            self.tr("Crippled"),
+            self.tr("Down"),
+        ]
 
-        for i in xrange(0, len(penalties)):
-            self.wounds[i][0].setText(
-                unicode.format(u'{0} (+{1})', wounds[i], penalties[i]))
+        for i in reversed(range(0, 7)):
+            if i < 7:
+                penalty = api.rules.get_wound_penalties(i)
+                text = '{0} (+{1})'.format(WOUND_PENALTIES_NAMES[i], penalty)
+            else:
+                text = WOUND_PENALTIES_NAMES[i]
+            self.wounds[i][0].setText(text)
 
+        # TODO Create a generate mechanism for data-pack defined bonus to penalties.
         # TODO toku bushi school removes some penalties
 
     def display_health(self):
@@ -2324,14 +2245,14 @@ class L5RMain(L5RCMCore):
     def display_health_default(self):
         # health
         for i in xrange(0, 8):
-            h = self.pc.get_health_rank(i)
+            h = api.rules.get_health_rank(i)
             self.wounds[i][1].setText(str(h))
             self.wounds[i][2].setText('')
         # wounds
         pc_wounds = self.pc.wounds
         hr = 0
         while pc_wounds and hr < 8:
-            w = min(pc_wounds, self.pc.get_health_rank(hr))
+            w = min(pc_wounds, api.rules.get_health_rank(hr))
             self.wounds[hr][2].setText(str(w))
             pc_wounds -= w
             hr += 1
@@ -2341,15 +2262,15 @@ class L5RMain(L5RCMCore):
         hl = [0] * 8
         for i in reversed(range(0, 8)):
             if i == 7:
-                hl[i] = self.pc.get_health_rank(i)
+                hl[i] = api.rules.get_health_rank(i)
             else:
-                hl[i] = self.pc.get_health_rank(i) + hl[i + 1]
+                hl[i] = api.rules.get_health_rank(i) + hl[i + 1]
             self.wounds[i][1].setText(str(hl[i]))
 
         wounds = self.pc.wounds
         # fill the health left for each wound level
         for i in range(0, 8):
-            h = self.pc.get_health_rank(i)
+            h = api.rules.get_health_rank(i)
             if h > wounds:
                 self.wounds[i][2].setText(str(h - wounds))
             else:
@@ -2363,16 +2284,16 @@ class L5RMain(L5RCMCore):
         hl = [0] * 8
         for i in range(0, 8):
             if i == 0:
-                hl[i] = self.pc.get_health_rank(i)
+                hl[i] = api.rules.get_health_rank(i)
             else:
-                hl[i] = self.pc.get_health_rank(i) + hl[i - 1]
+                hl[i] = api.rules.get_health_rank(i) + hl[i - 1]
             self.wounds[i][1].setText(str(hl[i]))
 
         wounds = self.pc.wounds
         h = 0
         # fill the health left for each wound level
         for i in range(0, 8):
-            h += self.pc.get_health_rank(i)
+            h += api.rules.get_health_rank(i)
             wound_rank = min(h, wounds)
             if wound_rank > 0:
                 self.wounds[i][2].setText(str(wound_rank))
@@ -2524,17 +2445,17 @@ class L5RMain(L5RCMCore):
             self.tr("L5R Character files (*.l5r)"))
 
         # user pressed cancel or didn't enter a name
-        if len(fileName) != 2 or fileName[0] == u'':
-            return ''
+        if fileName == u'':
+            return None
 
-        last_dir = os.path.dirname(fileName[0])
+        last_dir = os.path.dirname(fileName)
         if last_dir != '':
             # print 'save last_dir: %s' % last_dir
             settings.setValue('last_open_dir', last_dir)
 
-        if fileName[0].endswith('.l5r'):
-            return fileName[0]
-        return fileName[0] + '.l5r'
+        if fileName.endswith('.l5r'):
+            return fileName
+        return fileName + '.l5r'
 
     def select_load_path(self):
         settings = QtCore.QSettings()
@@ -2544,13 +2465,11 @@ class L5RMain(L5RCMCore):
             self.tr("Load Character"),
             last_dir,
             self.tr("L5R Character files (*.l5r)"))
-        if len(fileName) != 2:
-            return ''
-        last_dir = os.path.dirname(fileName[0])
+
+        last_dir = os.path.dirname(fileName)
         if last_dir != '':
-            # print 'save last_dir: %s' % last_dir
             settings.setValue('last_open_dir', last_dir)
-        return fileName[0]
+        return fileName
 
     def select_export_file(self, file_ext='.txt'):
         supported_ext = ['.pdf']
@@ -2568,16 +2487,16 @@ class L5RMain(L5RCMCore):
             ";;".join(supported_filters))
 
         # user pressed cancel or didn't enter a name
-        if len(fileName) != 2 or fileName[0] == u'':
+        if fileName == u'':
             return None
 
         last_dir = os.path.dirname(fileName[0])
         if last_dir != '':
             settings.setValue('last_open_dir', last_dir)
 
-        if fileName[0].endswith(file_ext):
-            return fileName[0]
-        return fileName[0] + file_ext
+        if fileName.endswith(file_ext):
+            return fileName
+        return fileName + file_ext
 
     def select_import_data_pack(self):
         supported_ext = ['.zip', '.l5rcmpack']
@@ -2593,10 +2512,7 @@ class L5RMain(L5RCMCore):
             last_data_dir,
             ";;".join(supported_filters))
 
-        if len(ret) < 2:
-            return None
-
-        files = ret[0]
+        files = ret
 
         if not len(files):
             return None
@@ -2607,31 +2523,9 @@ class L5RMain(L5RCMCore):
             settings.setValue('last_open_data_dir', last_data_dir)
         return files
 
-    def check_updates(self):
-        update_info = autoupdate.get_last_version()
-        need_update = False
-
-        if update_info is None:
-            return
-
-        version_str = ''
-        # check extended module version
-        if 'versionex' in update_info:
-            need_update = autoupdate.need_update(
-                APP_VERSION, update_info['versionex'])
-            version_str = update_info['versionex']
-        else:
-            need_update = autoupdate.need_update(
-                APP_VERSION, update_info['version'])
-            version_str = update_info['version']
-
-        if need_update and self.ask_to_upgrade(version_str) == QtGui.QMessageBox.Yes:
-            import util
-            util.portable_open(PROJECT_DOWNLOADS_LINK)
-
     def on_change_insight_calculation(self):
         method = self.sender().checkedAction().property('method')
-        self.pc.set_insight_calc_method(method)
+        api.character.set_insight_calculation_method(method)
         self.update_from_model()
 
     def on_change_health_visualization(self):
@@ -2663,13 +2557,13 @@ class L5RMain(L5RCMCore):
 # MAIN ###
 
 
-def dump_slots(obj, out_file):
-    with open(out_file, 'wt') as fobj:
-        mobj = obj.metaObject()
-        for i in xrange(mobj.methodOffset(), mobj.methodCount()):
-            if mobj.method(i).methodType() == QtCore.QMetaMethod.Slot:
-                fobj.write(
-                    mobj.method(i).signature() + ' ' + mobj.method(i).tag() + '\n')
+#def dump_slots(obj, out_file):
+#    with open(out_file, 'wt') as fobj:
+#        mobj = obj.metaObject()
+#        for i in xrange(mobj.methodOffset(), mobj.methodCount()):
+#            if mobj.method(i).methodType() == QtCore.QMetaMethod.Slot:
+#                fobj.write(
+#                    mobj.method(i).signature() + ' ' + mobj.method(i).tag() + '\n')
 
 OPEN_CMD_SWITCH = '--open'
 IMPORT_CMD_SWITCH = '--import'

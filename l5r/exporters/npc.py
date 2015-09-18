@@ -15,19 +15,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import dal
-import dal.query
 import models
+
+import api.data
+import api.data.skills
+import api.data.clans
+import api.data.families
+import api.data.schools
 import api.rules
+import api.character
 from fdfexporter import FDFExporter, zigzag
 
 
 class FDFExporterTwoNPC(FDFExporter):
 
-    def __init__(self, dstore, pcs):
+    def __init__(self, pcs):
         super(FDFExporterTwoNPC, self).__init__()
-
-        self.dstore = dstore
         self.pcs = pcs
 
     def export_body(self, io):
@@ -45,15 +48,15 @@ class FDFExporterTwoNPC(FDFExporter):
     def get_skills_sorted(self, pc, key):
 
         skill_list = []
-        for s in pc.get_skills():
-            sk_obj = dal.query.get_skill(self.dstore, s)
+        for s in api.character.skills.get_all():
+            sk_obj = api.data.skills.get(s)
             if not sk_obj:
                 continue
             o = {
                 'id': s,
-                'rank': pc.get_skill_rank(s),
+                'rank': api.character.skills.get_skill_rank(s),
                 'name': sk_obj.name,
-                'emph': ', '.join(pc.get_skill_emphases(s))}
+                'emph': ', '.join(api.character.skills.get_skill_emphases(s))}
 
             skill_list.append(o)
 
@@ -66,49 +69,51 @@ class FDFExporterTwoNPC(FDFExporter):
 
     def export_npc(self, index, pc, fields):
 
-        def _af(name, value, idx=index):
-            fields['{}{}'.format(name, idx)] = str(value)
+        api.character.set_model(pc)
 
-        clan_obj = dal.query.get_clan(self.dstore, pc.clan)
+        def _af(key, value, idx=index):
+            fields['{}{}'.format(key, idx)] = str(value)
+
+        clan_obj = api.data.clans.get(api.character.get_clan())
         if clan_obj:
             _af("Clan", clan_obj.name)
 
         name = ""
-        family_obj = dal.query.get_family(self.dstore, pc.family)
+        family_obj = api.data.families.get(api.character.get_family())
         if family_obj:
             name = "{} {}".format(family_obj.name, pc.name)
         else:
             name = pc.name
         _af("Name", name)
 
-        sobj = dal.query.get_school(self.dstore, pc.get_school_id())
+        sobj = api.data.schools.get(api.character.schools.get_current())
         if sobj:
             _af("School", sobj.name)
 
-        _af("Rank", pc.get_insight_rank())
-        _af("Insight", pc.get_insight())
-        _af("XP", pc.get_px())
+        _af("Rank", api.character.insight_rank())
+        _af("Insight", api.character.insight())
+        _af("XP", api.character.xp())
 
         # rings
-        _af("Earth", pc.get_ring_rank(models.RINGS.EARTH))
-        _af("Air", pc.get_ring_rank(models.RINGS.AIR))
-        _af("Water", pc.get_ring_rank(models.RINGS.WATER))
-        _af("Fire", pc.get_ring_rank(models.RINGS.FIRE))
-        _af("Void", pc.get_ring_rank(models.RINGS.VOID))
+        _af("Earth", api.character.ring_rank('earth'))
+        _af("Air", api.character.ring_rank('air'))
+        _af("Water", api.character.ring_rank('water'))
+        _af("Fire", api.character.ring_rank('fire'))
+        _af("Void", api.character.ring_rank('void'))
 
         # traits
-        _af("Stamina", pc.get_attrib_rank(models.ATTRIBS.STAMINA))
-        _af("Willpower", pc.get_attrib_rank(models.ATTRIBS.WILLPOWER))
-        _af("Reflexes", pc.get_attrib_rank(models.ATTRIBS.REFLEXES))
-        _af("Awareness", pc.get_attrib_rank(models.ATTRIBS.AWARENESS))
-        _af("Strength", pc.get_attrib_rank(models.ATTRIBS.STRENGTH))
-        _af("Perception", pc.get_attrib_rank(models.ATTRIBS.PERCEPTION))
-        _af("Agility", pc.get_attrib_rank(models.ATTRIBS.AGILITY))
-        _af("Intelligence", pc.get_attrib_rank(models.ATTRIBS.INTELLIGENCE))
+        _af("Stamina", api.character.trait_rank('stamina'))
+        _af("Willpower", api.character.trait_rank('willpower'))
+        _af("Reflexes", api.character.trait_rank('reflexes'))
+        _af("Awareness", api.character.trait_rank('awareness'))
+        _af("Strength", api.character.trait_rank('strength'))
+        _af("Perception", api.character.trait_rank('perception'))
+        _af("Agility", api.character.trait_rank('agility'))
+        _af("Intelligence", api.character.trait_rank('intelligence'))
 
-        _af("Initiative", api.rules.format_rtk_t(pc.get_tot_initiative()))
-        _af("Armor", pc.get_cur_tn())
-        _af("Reduction", pc.get_full_rd())
+        _af("Initiative", api.rules.format_rtk_t(api.rules.get_tot_initiative()))
+        _af("Armor", api.character.get_full_tn())
+        _af("Reduction", api.character.get_full_rd())
 
         # HEALTH
         w_labels = ['Healthy', 'Nicked', 'Grazed',
@@ -118,9 +123,9 @@ class FDFExporterTwoNPC(FDFExporter):
         hl = [0] * 8
         for i in range(0, 8):
             if i == 0:
-                hl[i] = pc.get_health_rank(i)
+                hl[i] = api.rules.get_health_rank(i)
             else:
-                hl[i] = pc.get_health_rank(i) + hl[i - 1]
+                hl[i] = api.rules.get_health_rank(i) + hl[i - 1]
             _af(w_labels[i], hl[i])
 
         # WEAPONS
@@ -144,10 +149,10 @@ class FDFExporterTwoNPC(FDFExporter):
             _af("Notes", weapon.desc, j)
 
         # OTHER TRAITS
-        _af("Status", pc.get_status())
-        _af("Honor", pc.get_honor())
-        _af("Glory", pc.get_glory())
-        _af("GloryTN", int(50 - pc.get_glory() * 5))
+        _af("Status", api.character.status())
+        _af("Honor", api.character.honor())
+        _af("Glory", api.character.glory())
+        _af("GloryTN", int(50 - api.character.glory() * 5))
 
         # SKILLS
         skills = self.get_skills_sorted(pc, lambda x: x['rank'])

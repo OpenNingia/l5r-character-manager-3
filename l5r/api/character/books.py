@@ -20,6 +20,7 @@ from api import __api
 import api.data
 
 from collections import namedtuple
+from util import log
 
 from asq.initiators import query
 from asq.selectors import a_
@@ -56,9 +57,12 @@ def set_dependencies():
 
     book_list = []
 
+    log.api.debug(u"set book dependencies")
+
     for p in deps:
         # for each package we store the 'id' and the 'version'
         book_list.append(dict(id=p.id, name=p.display_name, version=p.version))
+        log.api.debug(u"pack: %s %s", p.id, p.version)
 
     __api.pc.pack_refs = book_list
 
@@ -80,10 +84,13 @@ def get_missing_dependencies():
         loaded_pack = api.data.pack_by_id(br.id)
 
         if not loaded_pack:
+            log.api.warning(u"referenced pack %s is not loaded", br.id)
             yield br
         elif not loaded_pack.active:
+            log.api.warning(u"referenced pack %s is not active", br.id)
             yield br
         elif api.ver_cmp(loaded_pack.version, br.version):
+            log.api.warning(u"referenced pack %s is outdated. referenced %s, loaded %s", br.id, br.version, loaded_pack.version)
             yield br
 
 

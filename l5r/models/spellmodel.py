@@ -15,7 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtGui, QtCore
+from PyQt4 import QtCore, QtGui
+
 from l5rcmcore import get_icon_path
 
 import api.data.spells
@@ -67,8 +68,8 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
     def columnCount(self, parent=QtCore.QModelIndex()):
         return len(self.headers)
 
-    def headerData(self, section, orientation, role=QtCore.Qt.ItemDataRole.DisplayRole):
-        if orientation != QtCore.Qt.Orientation.Horizontal:
+    def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
+        if orientation != QtCore.Qt.Horizontal:
             return None
         if role == QtCore.Qt.DisplayRole:
             return self.headers[section]
@@ -139,17 +140,24 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
         self.endResetModel()
 
     def build_item_model(self, sp_id):
+
+        def get_element_(tag):
+            try:
+                return api.data.get_ring(tag).text
+            except:
+                return tag
+
         itm = SpellItemModel()
 
-        spell = api.data.spells.get(sp_ip)
+        spell = api.data.spells.get(sp_id)
 
         itm.id = spell.id
         itm.name = spell.name
 
-        try:
-            itm.ring = api.data.get_ring(spell.element).text
-        except:
-            itm.ring = spell.element
+        if api.data.spells.is_multi_element(spell.id):
+            itm.ring = u", ".join([get_element_(x) for x in spell.elements])
+        else:
+            itm.ring = get_element_(spell.element)
 
         itm.mastery = spell.mastery
         itm.range = spell.range
@@ -164,20 +172,20 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
         return itm
 
     def update_from_model(self, model):
-        spells = model.get_spells()
-        self.clean()
+        spells = api.character.spells.get_all()
+        memo_spells = api.character.spells.get_memorized_spells()
 
-        memo_spells = [x for x in model.get_memorized_spells()]
+        self.clean()
 
         for s in spells:
             itm = self.build_item_model(s)
             itm.memo = s in memo_spells
-            if itm.memo:
-                adv_ = filter(
-                    lambda x: x.type == 'memo_spell' and x.spell == s,
-                    model.advans)
+            #if itm.memo:
+            #    adv_ = filter(
+            #        lambda x: x.type == 'memo_spell' and x.spell == s,
+            #        model.advans)
 
-                if len(adv_):
-                    itm.adv = adv_[0]
+            #    if len(adv_):
+            #        itm.adv = adv_[0]
 
             self.add_item(itm)

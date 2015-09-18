@@ -23,6 +23,8 @@ import api.data
 import api.character
 import models.chmodel
 
+from util import log
+
 
 def get_trait_cost(trait_nm):
     """return the base multiplier to purchase the given trait"""
@@ -130,54 +132,58 @@ def format_rtk(r, k, bonus=0):
         return '%dk%d' % (r, abs(k))
 
 
-def insight_calculation_1(model):
-    '''Default insight calculation method = Rings*10+Skills+SpecialPerks'''
-    n = 0
-    for i in xrange(0, 5):
-        n += model.get_ring_rank(i) * 10
-    for s in model.get_skills():
-        n += model.get_skill_rank(s)
+def insight_calculation_1():
+    """Default insight calculation method = Rings*10+Skills+SpecialPerks"""
 
-    n += 3 * model.cnt_rule('ma_insight_plus_3')
-    n += 7 * model.cnt_rule('ma_insight_plus_7')
+    n = 0
+    for r in api.data.rings():
+        n += api.character.ring_rank(r) * 10
+
+    for s in api.character.skills.get_all():
+        n += api.character.skills.get_skill_rank(s)
+
+    n += 3 * api.character.cnt_rule('ma_insight_plus_3')
+    n += 7 * api.character.cnt_rule('ma_insight_plus_7')
 
     return n
 
 
-def insight_calculation_2(model):
+def insight_calculation_2():
     """Another insight calculation method. Similar to 1, but ignoring
        rank 1 skills
     """
+
     n = 0
-    for i in xrange(0, 5):
-        n += model.get_ring_rank(i) * 10
-    for s in model.get_skills():
-        sk = model.get_skill_rank(s)
+    for r in api.data.rings():
+        n += api.character.ring_rank(r) * 10
+
+    for s in api.character.skills.get_all():
+        sk = api.character.skills.get_skill_rank(s)
         if sk > 1:
             n += sk
 
-    n += 3 * model.cnt_rule('ma_insight_plus_3')
-    n += 7 * model.cnt_rule('ma_insight_plus_7')
+    n += 3 * api.character.cnt_rule('ma_insight_plus_3')
+    n += 7 * api.character.cnt_rule('ma_insight_plus_7')
 
     return n
 
 
-def insight_calculation_3(model):
+def insight_calculation_3():
     """Another insight calculation method. Similar to 2, but
        school skill are counted even if rank 1
     """
-    school_skills = model.get_school_skills()
 
     n = 0
-    for i in xrange(0, 5):
-        n += model.get_ring_rank(i) * 10
-    for s in model.get_skills():
-        sk = model.get_skill_rank(s)
-        if sk > 1 or s in school_skills:
+    for r in api.data.rings():
+        n += api.character.ring_rank(r) * 10
+
+    for s in api.character.skills.get_all():
+        sk = api.character.skills.get_skill_rank(s)
+        if sk > 1 or api.character.skills.is_starter(s):
             n += sk
 
-    n += 3 * model.cnt_rule('ma_insight_plus_3')
-    n += 7 * model.cnt_rule('ma_insight_plus_7')
+    n += 3 * api.character.cnt_rule('ma_insight_plus_3')
+    n += 7 * api.character.cnt_rule('ma_insight_plus_7')
 
     return n
 
@@ -198,16 +204,16 @@ def calculate_base_attack_roll(pc, weap):
     # as xky where x is agility + weapon_skill_rank
     # and y is agility
 
-    attrib = models.ATTRIBS.AGILITY
+    attrib = 'agility'
     if weap.skill_nm == 'Kyujutsu':
-        attrib = models.ATTRIBS.REFLEXES
+        attrib = 'reflexes'
 
-    trait = pc.get_mod_attrib_rank(attrib)
+    trait = api.character.modified_trait_rank(attrib)
     skill = 0
     if weap.skill_id:
-        skill = pc.get_skill_rank(weap.skill_id)
-        print('calc base atk. trait: {0}, weap: {1}, skill: {2}, rank: {3}'
-              .format(trait, weap.name, weap.skill_nm, skill))
+        skill = api.character.skills.get_skill_rank(weap.skill_id)
+        log.rules.info(u"calc base atk. trait: {0}, weap: {1}, skill: {2}, rank: {3}"
+                       .format(trait, weap.name, weap.skill_nm, skill))
 
     return trait + skill, trait
 
@@ -250,8 +256,8 @@ def calculate_base_damage_roll(pc, weap):
     # as xky where x is strength + weapon_damage
     # and y is strength
 
-    attrib = models.ATTRIBS.STRENGTH
-    trait = pc.get_mod_attrib_rank(attrib)
+    attrib = 'strength'
+    trait = api.character.modified_trait_rank(attrib)
     weap_str = 0
     try:
         weap_str = int(weap.strength)
@@ -302,8 +308,8 @@ def calculate_base_skill_roll(pc, skill):
     # and y is trait
 
     trait = skill.trait
-    trait_value = pc.get_mod_attrib_rank(trait)
-    skill_value = pc.get_skill_rank(skill.id)
+    trait_value = api.character.modified_trait_rank(trait)
+    skill_value = api.character.skills.get_skill_rank(skill.id)
 
     return DicePool().from_values(roll=skill_value + trait_value,
                                   keep=trait_value)
@@ -320,6 +326,37 @@ def calculate_mod_skill_roll(pc, skill):
             m = DicePool().from_tuple(x.value)
             base_roll += m
     return base_roll
+
+
+def calculate_kiho_cost(kiho_id):
+
+    kiho = api.data.powers.get_kiho(kiho_id)
+
+    if not kiho:
+        return 0
+
+    from math import ceil
+
+    # tattoos are free as long as you're eligible
+    if 'tattoo' in kiho.tags:
+        return 0
+
+    cost_mult = 1
+
+    is_monk, is_brotherhood = api.character.is_monk()
+    is_ninja = api.character.is_ninja()
+    is_shugenja = api.character.is_shugenja()
+
+    if is_brotherhood:
+        cost_mult = 1  # 1px / mastery
+    elif is_monk:
+        cost_mult = 1.5
+    elif is_shugenja:
+        cost_mult = 2
+    elif is_ninja:
+        cost_mult = 2
+
+    return int(ceil(kiho.mastery * cost_mult))
 
 
 class DicePool(object):
@@ -379,5 +416,95 @@ class DicePool(object):
         return c
 
 
-def apply_tech_side_effects(tech_id):
-    pass
+def calculate_insight():
+    """calculate the insight value using the given method"""
+
+    method = api.character.insight_calculation_method()
+
+    if method == 3:
+        return insight_calculation_3()
+    if method == 2:
+        return insight_calculation_2()
+    return insight_calculation_1()
+
+
+def get_base_initiative():
+    """returns the base initiative"""
+    return (api.character.insight_rank() +
+            api.character.trait_rank('reflexes'),
+            api.character.trait_rank('reflexes'))
+
+
+def get_init_modifiers():
+    """returns initiative modifiers"""
+    r, k, b = 0, 0, 0
+    mods = [x for x in
+            __api.pc.get_modifiers('anyr') + __api.pc.get_modifiers('init')
+            if x.active]
+    for m in mods:
+        r += m.value[0]
+        k += m.value[1]
+        if len(m.value) > 2:
+            b += m.value[2]
+    return r, k, b
+
+
+def get_tot_initiative():
+    """returns total initiative"""
+    r, k = get_base_initiative()
+    b = 0
+    r1, k1, b1 = get_init_modifiers()
+    return r + r1, k + k1, b + b1
+
+
+def get_wound_penalties(index):
+    WOUND_PENALTIES_VALUES = [0, 3, 5, 10, 15, 20, 40]
+    result = WOUND_PENALTIES_VALUES[index]
+
+    if api.character.has_rule('strength_of_earth'):
+        # Advantage: Strength of Earh (Core, pg154)
+        result = max(0, result-3)
+
+    if api.character.has_rule('monkey_tokus_lesson'):
+        # Technique: Toku's Lesson (Core, pg222)
+        reduction = (api.character.insight_rank() * 2) + api.character.trait_rank('willpower')
+        result = max(0, result-reduction)
+
+    for x in __api.pc.get_modifiers('wpen'):
+        if x.active:
+            result = max(0, result - x.value[2])
+
+    return result
+
+
+def get_health_rank(idx):
+    """return the value for the given health rank"""
+    earth_rank = api.character.ring_rank('earth')
+    if idx == 0:
+        return earth_rank * 5 + get_health_rank_mod()
+    return earth_rank * __api.pc.health_multiplier + get_health_rank_mod()
+
+
+def get_health_rank_mod():
+    """return health rank modifiers"""
+    mod = 0
+    if api.character.has_rule('crane_the_force_of_honor'):
+        mod = max(1, int(api.character.honor() - 4))
+
+    for x in __api.pc.get_modifiers('hrnk'):
+        if x.active and len(x.value) > 2:
+            mod += x.value[2]
+    return mod
+
+
+def get_max_wounds():
+    """return total health"""
+    max_ = 0
+    for i in xrange(0, 8):
+        max_ += get_health_rank(i)
+    return max_
+
+
+def get_wound_heal_rate():
+    """return the wound heal rate"""
+    return api.character.modified_trait_rank('stamina') * 2 + api.character.insight_rank()

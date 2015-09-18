@@ -15,18 +15,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import dal
-import dal.query
-import models
-import widgets
+import api.data.powers
+import api.character.powers
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 
 class KihoDialog(QtGui.QDialog):
 
-    # data storage
-    dstore = None
     # title bar
     header = None
     # frame layout
@@ -42,10 +38,9 @@ class KihoDialog(QtGui.QDialog):
     tx_eligibility = None
     tx_detail = None
 
-    def __init__(self, pc, dstore, parent=None):
+    def __init__(self, pc, parent=None):
         super(KihoDialog, self).__init__(parent)
         self.pc = pc
-        self.dstore = dstore
         self.item = None
 
         self.build_ui()
@@ -108,8 +103,8 @@ class KihoDialog(QtGui.QDialog):
         self.load_kiho()
 
     def load_kiho(self):
-        for kiho in self.dstore.kihos:
-            if kiho.type != 'tattoo' and not self.pc.has_kiho(kiho.id):
+        for kiho in api.data.powers.kiho():
+            if kiho.type != 'tattoo' and not api.character.powers.has_kiho(kiho.id):
                 self.cb_kiho.addItem(kiho.name, kiho.id)
 
     def set_header_text(self, text):
@@ -119,7 +114,7 @@ class KihoDialog(QtGui.QDialog):
         idx = self.cb_kiho.currentIndex()
         itm = self.cb_kiho.itemData(idx)
 
-        kiho = dal.query.get_kiho(self.dstore, itm)
+        kiho = api.data.powers.get_kiho(itm)
         if not kiho:
             return
 
@@ -135,16 +130,17 @@ class KihoDialog(QtGui.QDialog):
         # save for later
         self.item = kiho
 
-        ring_name = dal.query.get_ring(self.dstore, kiho.element)
+        ring_ = api.data.get_ring(kiho.element)
+        kiho_cost = api.rules.calculate_kiho_cost(kiho.id)
 
-        self.tx_element.setText(ring_name.text)
+        self.tx_element.setText(ring_.text)
         self.tx_mastery.setText(str(kiho.mastery))
-        self.tx_cost.setText(str(self.parent().calculate_kiho_cost(kiho)))
+        self.tx_cost.setText(str(kiho_cost))
 
         pc_status = None
-        is_monk, is_brotherhood = self.parent().pc_is_monk()
-        is_ninja, is_shugenja = self.parent(
-        ).pc_is_ninja(), self.parent().pc_is_shugenja()
+        is_monk, is_brotherhood = api.character.is_monk()
+        is_ninja = api.character.is_ninja()
+        is_shugenja = api.character.is_shugenja()
 
         if is_brotherhood:
             pc_status = status_ok[0]
@@ -158,12 +154,6 @@ class KihoDialog(QtGui.QDialog):
             pc_status = status_ko
 
         str_eligible = self.tr("You are eligible")
-        str_no_eligible = [
-            self.tr("Your {0} Ring or School Rank are not enough"),  # monk
-            self.tr("Your {0} Ring Rank is not enough"),  # shugenja
-            self.tr("Your School Rank is not enough"),  # ninja
-            self.tr("You are not eligible"),  # n/a
-        ]
 
         if pc_status == status_ko:
             self.tx_pc_status.setText(
@@ -172,23 +162,14 @@ class KihoDialog(QtGui.QDialog):
             self.tx_pc_status.setText(
                 u"""<span style="color:#0A0">{0}</span>""".format(pc_status))
 
-        is_eligible = self.parent().check_kiho_eligibility(kiho)
+        is_eligible, reason = api.character.powers.check_kiho_eligibility(kiho.id)
+
         if is_eligible:
             self.tx_eligibility.setText(
-                """<span style="color: #0A0">{0}</span>""".format(str_eligible))
+                u"""<span style="color: #0A0">{0}</span>""".format(str_eligible))
         else:
-            tmp = "N/A"
-            if is_monk:
-                tmp = str_no_eligible[0].format(ring_name.text)
-            elif is_shugenja:
-                tmp = str_no_eligible[1].format(ring_name.text)
-            elif is_ninja:
-                tmp = str_no_eligible[2]
-            else:
-                tmp = str_no_eligible[3]
-
             self.tx_eligibility.setText(
-                u"""<span style="color: #A00">{0}</span>""".format(tmp))
+                u"""<span style="color: #A00">{0}</span>""".format(reason))
 
         self.tx_detail.setText(u"<p><em>{0}</em></p>".format(kiho.desc))
         self.bt_ok.setEnabled(is_eligible)
@@ -201,8 +182,6 @@ class KihoDialog(QtGui.QDialog):
 
 class TattooDialog(QtGui.QDialog):
 
-    # data storage
-    dstore = None
     # title bar
     header = None
     # frame layout
@@ -214,10 +193,9 @@ class TattooDialog(QtGui.QDialog):
     tx_pc_status = None
     tx_detail = None
 
-    def __init__(self, pc, dstore, parent=None):
+    def __init__(self, pc, parent=None):
         super(TattooDialog, self).__init__(parent)
         self.pc = pc
-        self.dstore = dstore
         self.item = None
 
         self.build_ui()
@@ -271,8 +249,8 @@ class TattooDialog(QtGui.QDialog):
         self.load_kiho()
 
     def load_kiho(self):
-        for kiho in self.dstore.kihos:
-            if kiho.type == 'tattoo' and not self.pc.has_kiho(kiho.id):
+        for kiho in api.data.powers.kiho():
+            if kiho.type == 'tattoo' and not api.character.powers.has_kiho(kiho.id):
                 self.cb_tattoo.addItem(kiho.name, kiho.id)
 
     def set_header_text(self, text):
@@ -282,7 +260,7 @@ class TattooDialog(QtGui.QDialog):
         idx = self.cb_tattoo.currentIndex()
         itm = self.cb_tattoo.itemData(idx)
 
-        kiho = dal.query.get_kiho(self.dstore, itm)
+        kiho = api.data.powers.get_kiho(itm)
         if not kiho:
             return
 
@@ -292,9 +270,9 @@ class TattooDialog(QtGui.QDialog):
         # save for later
         self.item = kiho
 
-        is_eligible = (self.pc.has_tag('dragon_togashi_tattooed_order') or
-                       self.pc.has_tag('dragon_ob_hoshi_tsurui_zumi') or
-                       self.pc.has_tag('dragon_ob_hitomi_kikage_zumi'))
+        is_eligible = (api.character.has_tag('dragon_togashi_tattooed_order') or
+                       api.character.has_tag('dragon_ob_hoshi_tsurui_zumi') or
+                       api.character.has_tag('dragon_ob_hitomi_kikage_zumi'))
         if not is_eligible:
             self.tx_pc_status.setText(
                 u"""<span style="color:#A00">{0}</span>""".format(status_ko))

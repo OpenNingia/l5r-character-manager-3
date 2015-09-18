@@ -18,13 +18,13 @@
 import models
 import widgets
 import api.rules
-from PySide import QtCore, QtGui
+import api.data
+import api.data.skills
+from PyQt4 import QtCore, QtGui
 
 
 class ModifierDialog(QtGui.QDialog):
 
-    # data storage
-    dstore = None
     # title bar
     header = None
     # frame layout
@@ -37,10 +37,9 @@ class ModifierDialog(QtGui.QDialog):
     tx_detail = None
     tx_reason = None
 
-    def __init__(self, pc, dstore, parent=None):
+    def __init__(self, pc, parent=None):
         super(ModifierDialog, self).__init__(parent)
         self.pc = pc
-        self.dstore = dstore
         self.item = None
 
         self.build_ui()
@@ -92,25 +91,27 @@ class ModifierDialog(QtGui.QDialog):
         '''))
 
         self.setWindowTitle(self.tr("L5RCM: Modifiers"))
-        self.load_modifier(None)
 
-    def load_modifier(self, item):
-
-        # modifier's types
-        cur_idx = -1
-        for mk in models.MOD_TYPES.iterkeys():
-            if mk == 'none':
+        for i_key, i_value in models.MOD_TYPES.iteritems():
+            if i_key == 'none':
                 continue
-            self.cb_modifier.addItem(models.MOD_TYPES[mk], mk)
-            if item and mk == item.type:
-                cur_idx = self.cb_modifier.count() - 1
-        self.cb_modifier.setCurrentIndex(cur_idx)
+            self.cb_modifier.addItem(i_value, i_key)
 
+    def set_modifier(self, item):
+        '''
+        :param ModifierModel item:
+        '''
         if item:
-            self.tx_reason .setText(item.reason)
-            self.tx_value  .setText(api.rules.format_rtk_t(item.value))
-            self.tx_detail .setText(
-                item.dtl or (models.MOD_DTLS[item.type][1] if item.type in models.MOD_DTLS else None))
+            for i in xrange(self.cb_modifier.count()):
+                key = self.cb_modifier.itemData(i)
+                if key == item.type:
+                    self.cb_modifier.setCurrentIndex(i)
+
+            self.tx_reason.setText(item.reason)
+            self.tx_value.setText(api.rules.format_rtk_t(item.value))
+            self.tx_detail.setText(item.dtl or (models.MOD_DTLS[item.type][1] if item.type in models.MOD_DTLS else None))
+        else:
+            assert False, 'We should clean-up everything if accepting item == None.'
 
         self.item = item
 
@@ -123,7 +124,7 @@ class ModifierDialog(QtGui.QDialog):
 
         def __skill_completer():
             all_skills = []
-            for t in self.dstore.skills:
+            for t in api.data.skills.all():
                 all_skills.append(t.name)
             cmp = QtGui.QCompleter(all_skills)
             # cmp.setCompletionMode(QtGui.QCompleter.InlineCompletion)
@@ -139,13 +140,13 @@ class ModifierDialog(QtGui.QDialog):
             return cmp
 
         def __trait_completer():
-            traits = [x.text for x in self.dstore.traits]
+            traits = [x.text for x in api.data.model().traits]
             cmp = QtGui.QCompleter(traits)
             # cmp.setCompletionMode(QtGui.QCompleter.InlineCompletion)
             return cmp
 
         def __ring_completer():
-            rings = [x.text for x in self.dstore.rings]
+            rings = [x.text for x in api.data.model().rings]
             cmp = QtGui.QCompleter(rings)
             # cmp.setCompletionMode(QtGui.QCompleter.InlineCompletion)
             return cmp

@@ -15,9 +15,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtGui, QtCore
+from PyQt4 import QtCore, QtGui
+
 import api.data
 import api.data.powers
+import api.character.powers
 from util import log
 
 
@@ -28,7 +30,6 @@ class KataItemModel(object):
         self.mastery = ''
         self.element = ''
         self.id = False
-        self.adv = None
         self.text = []
 
     def __str__(self):
@@ -52,8 +53,8 @@ class KataTableViewModel(QtCore.QAbstractTableModel):
     def columnCount(self, parent=QtCore.QModelIndex()):
         return len(self.headers)
 
-    def headerData(self, section, orientation, role=QtCore.Qt.ItemDataRole.DisplayRole):
-        if orientation != QtCore.Qt.Orientation.Horizontal:
+    def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
+        if orientation != QtCore.Qt.Horizontal:
             return None
         if role == QtCore.Qt.DisplayRole:
             return self.headers[section]
@@ -99,11 +100,10 @@ class KataTableViewModel(QtCore.QAbstractTableModel):
 
     def build_item_model(self, ka_id):
         itm = KataItemModel()
-        ka = api.data.powers.get_kata(ka_id.kata)
+        ka = api.data.powers.get_kata(ka_id)
 
         if ka:
             itm.id = ka.id
-            itm.adv = ka_id
             itm.name = ka.name
             itm.mastery = ka.mastery
 
@@ -114,12 +114,12 @@ class KataTableViewModel(QtCore.QAbstractTableModel):
 
             itm.text = ka.desc
         else:
-            log.model.error(u"kata not found: %s", ka_id.kata)
+            log.model.error(u"kata not found: %s", ka_id)
 
         return itm
 
     def update_from_model(self, model):
-        kata = model.get_kata()
+        kata = api.character.powers.get_all_kata()
 
         self.clean()
         for s in kata:

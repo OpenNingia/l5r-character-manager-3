@@ -15,18 +15,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import dal
-import dal.query
+import api.data
+import api.data.powers
+
 import models
 import widgets
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 
 class KataDialog(QtGui.QDialog):
 
-    # data storage
-    dstore = None
     # title bar
     header = None
     # frame layout
@@ -42,10 +41,9 @@ class KataDialog(QtGui.QDialog):
     tx_detail = None
     tx_ring_need = None
 
-    def __init__(self, pc, dstore, parent=None):
+    def __init__(self, pc, parent=None):
         super(KataDialog, self).__init__(parent)
         self.pc = pc
-        self.dstore = dstore
         self.item = None
 
         self.build_ui()
@@ -116,8 +114,8 @@ class KataDialog(QtGui.QDialog):
         self.load_kata()
 
     def load_kata(self):
-        for kata in self.dstore.katas:
-            if not self.pc.has_kata(kata.id):
+        for kata in api.data.powers.kata():
+            if not api.character.powers.has_kata(kata.id):
                 self.cb_kata.addItem(kata.name, kata.id)
 
     def set_header_text(self, text):
@@ -127,28 +125,27 @@ class KataDialog(QtGui.QDialog):
         idx = self.cb_kata.currentIndex()
         itm = self.cb_kata.itemData(idx)
 
-        kata = dal.query.get_kata(self.dstore, itm)
+        kata = api.data.powers.get_kata(itm)
         if not kata:
             return
 
         # save for later
         self.item = kata
 
-        ring_name = dal.query.get_ring(self.dstore, kata.element)
+        ring_ = api.data.get_ring(kata.element)
 
-        self.tx_element.setText(ring_name.text)
+        self.tx_element.setText(ring_.text)
         self.tx_mastery.setText(str(kata.mastery))
         self.tx_cost.setText(str(kata.mastery))
-        self.tx_detail.setText("<p><em>{0}</em></p>".format(kata.desc))
-        self.req_list.set_requirements(self.pc, self.dstore, kata.require)
+        self.tx_detail.setText(u"<p><em>{0}</em></p>".format(kata.desc))
+        self.req_list.set_requirements(self.pc, api.data.model(), kata.require)
 
         self.tx_ring_need.setText(
-            """<span style="color: #A00">You need at value of {0} in your {1} ring.</span>"""
-            .format(kata.mastery, ring_name.text))
+            self.tr("""<span style="color: #A00">You need at value of {0} in your {1} ring.</span>""")
+            .format(kata.mastery, ring_.text))
 
         def check_ring_value():
-            ring_id = models.ring_from_name(kata.element)
-            ring_val = self.pc.get_ring_rank(ring_id)
+            ring_val = api.character.ring_rank(kata.element)
             return ring_val >= kata.mastery
 
         def check_eligibility():

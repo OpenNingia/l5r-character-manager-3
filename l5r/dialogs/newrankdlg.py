@@ -15,20 +15,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtGui, QtCore
+from PyQt4 import QtCore, QtGui
 
-import dal
-import dal.query
-import models
 import widgets
+import api.character.rankadv
 
 
 class NextRankDlg(QtGui.QDialog):
 
-    def __init__(self, pc, dstore, parent=None):
+    def __init__(self, pc, parent=None):
         super(NextRankDlg, self).__init__(parent)
         self.pc = pc
-        self.dstore = dstore
 
         self.build_ui()
         self.connect_signals()
@@ -56,8 +53,12 @@ what would you want to do?
 
         vbox.setSpacing(12)
 
+        is_path = api.data.schools.is_path(
+            api.character.schools.get_current()
+        )
+
         # check if the PC is following an alternate path
-        if self.pc.get_school().is_path:
+        if is_path:
             # offer to going back
             self.bt_go_on.setText(self.tr("Go back to your old school"))
 
@@ -73,15 +74,21 @@ what would you want to do?
         self.accept()
 
     def simply_go_on(self):
+
+        is_path = api.data.schools.is_path(
+            api.character.schools.get_current()
+        )
+
+
         # check if the PC is following an alternate path
-        if self.pc.get_school().is_path:
+        if is_path:
             # the PC want to go back to the old school.
             # find the first school that is not a path
-            for s in reversed(self.pc.schools):
-                if not s.is_path:
-                    self.pc.set_current_school_id(s.school_id)
 
-        self.pc.set_can_get_other_tech(True)
+            api.character.rankadv.leave_path()
+        else:
+            api.character.rankadv.advance_rank()
+
         self.accept()
 
 

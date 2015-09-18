@@ -15,7 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
+
 from datetime import datetime
 import time
 
@@ -101,6 +102,13 @@ class KihoAdv(Advancement):
         super(KihoAdv, self).__init__('kiho', cost)
         self.kiho = kiho_id
         self.rule = rule
+
+
+class SpellAdv(Advancement):
+
+    def __init__(self, spell_id):
+        super(SpellAdv, self).__init__('spell', 0)
+        self.spell = spell_id
 
 
 class MemoSpellAdv(Advancement):

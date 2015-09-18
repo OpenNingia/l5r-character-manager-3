@@ -15,8 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtGui, QtCore
-
+from PyQt4 import QtCore, QtGui
 
 import api.rules
 import api.data
@@ -61,8 +60,8 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
     def columnCount(self, parent=QtCore.QModelIndex()):
         return len(self.headers)
 
-    def headerData(self, section, orientation, role=QtCore.Qt.ItemDataRole.DisplayRole):
-        if orientation != QtCore.Qt.Orientation.Horizontal:
+    def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
+        if orientation != QtCore.Qt.Horizontal:
             return None
         if role == QtCore.Qt.DisplayRole:
             return self.headers[section]
@@ -84,7 +83,7 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
             if index.column() == 4:
                 return str(item.mod_roll)
             if index.column() == 5:
-                return ', '.join(item.emph)
+                return u', '.join(item.emph)
         elif role == QtCore.Qt.FontRole:
             if item.is_school and self.bold_font:
                 return self.bold_font
@@ -130,11 +129,9 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
         return itm
 
     def update_from_model(self, model):
-        skills_id_s = model.get_school_skills()
-        skills_id_a = model.get_skills()
 
         self.clean()
-        for s in skills_id_a:
+        for s in api.character.skills.get_all():
 
             sk = api.data.skills.get(s)
 
@@ -143,9 +140,9 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
                 continue
 
             itm = self.build_item_model(sk)
-            itm.rank = model.get_skill_rank(s)
-            itm.emph = model.get_skill_emphases(s)
+            itm.rank = api.character.skills.get_skill_rank(s)
+            itm.emph = api.character.skills.get_skill_emphases(s)
             itm.base_roll = api.rules.calculate_base_skill_roll(model, sk)
             itm.mod_roll = api.rules.calculate_mod_skill_roll(model, sk)
-            itm.is_school = (s in skills_id_s)
+            itm.is_school = api.character.skills.is_starter(s)
             self.add_item(itm)

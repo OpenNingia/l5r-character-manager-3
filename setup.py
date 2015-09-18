@@ -21,7 +21,11 @@ from setuptools import setup, find_packages
 from codecs import open
 from os import path
 
-import py2exe
+try:
+    import py2exe
+    HAVE_PY2EXE=True
+except:
+    HAVE_PY2EXE=False
 
 import glob
 
@@ -33,7 +37,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='9.0.22',
+    version='3.10.0',
 
     description='L5R RPG character manager',
 
@@ -69,7 +73,6 @@ setup(
         # that you indicate whether you support Python 2, Python 3 or both.
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2 :: Only',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
     ],
 
@@ -84,7 +87,7 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['PySide', 'lxml', 'asq'],
+    install_requires=['PyQt4', 'lxml', 'asq'],
 
     # If there are data files included in your packages that need to be
     # installed, specify them here.  If using Python 2.6 or less, then these
@@ -145,5 +148,5 @@ setup(
         }
     ],
     options={
-        "py2exe": {"includes": ["PySide.QtGui", 'lxml.etree', 'lxml._elementpath']}},
+        "py2exe": {"includes": ["PyQt4.QtGui", 'lxml.etree', 'lxml._elementpath', 'sip']}},
 )

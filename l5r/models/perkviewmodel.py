@@ -15,7 +15,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtGui, QtCore
+from PyQt4 import QtCore, QtGui
+
+import api.character.merits
+import api.character.flaws
+
 import api.data.merits
 import api.data.flaws
 from util import log
@@ -79,10 +83,10 @@ class PerkViewModel(QtCore.QAbstractListModel):
     def update_from_model(self, model):
         self.clean()
         if self.type == 'merit':
-            for perk in model.get_merits():
+            for perk in api.character.merits.get_all():
                 self.add_item(model, perk)
         else:
-            for perk in model.get_flaws():
+            for perk in api.character.flaws.get_all():
                 self.add_item(model, perk)
 
     def data(self, index, role):
@@ -122,7 +126,7 @@ class PerkItemDelegate(QtGui.QStyledItemDelegate):
 
         painter.save()
 
-        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing, True)
+        painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
 
         # fill the background color
         if option.state & QtGui.QStyle.State_Selected == QtGui.QStyle.State_Selected:

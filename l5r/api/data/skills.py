@@ -46,14 +46,14 @@ def get(sid):
     return query(all()).where(lambda x: x.id == sid).first_or_default(None)
 
 
-def get_inclusive_tags(filter):
+def get_inclusive_tags(filter_):
     """return the list of inclusive skill wildcards"""
-    return [x.value for x in filter if not x.modifier or x.modifier == 'or']
+    return [x.value for x in filter_ if not x.modifier or x.modifier == 'or']
 
 
-def get_exclusive_tags(filter):
+def get_exclusive_tags(filter_):
     """return the list of exclusive skill wildcards"""
-    return [x.value for x in filter if x.modifier and x.modifier == 'not']
+    return [x.value for x in filter_ if x.modifier and x.modifier == 'not']
 
 
 def search_skill_by_text(tx):
@@ -68,3 +68,21 @@ def search_categ_by_text(tx):
     return query(categories()) \
         .where(lambda x: tx in x.name.lower()) \
         .to_list()
+
+
+def get_by_tag(tag):
+    """return all the skills that matches the given tag"""
+    return query(all()).where(lambda x: tag in x.tags).to_list()
+
+
+def get_by_category(categ):
+    """return all the skills that matches the given category"""
+    return query(all()).where(lambda x: x.type == categ).to_list()
+
+
+def get_mastery_ability(skill_id, rank):
+    """returns the mastery ability for a given rank"""
+    skill_ = get(skill_id)
+    if not skill_:
+        return None
+    return query(skill_.mastery_abilities).where(lambda x: x.rank == rank).first_or_default(None)

@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 import api.rules
 import api.data.outfit
@@ -125,8 +125,8 @@ class WeaponTableViewModel(QtCore.QAbstractTableModel):
     def columnCount(self, parent=QtCore.QModelIndex()):
         return len(self.headers)
 
-    def headerData(self, section, orientation, role=QtCore.Qt.ItemDataRole.DisplayRole):
-        if orientation != QtCore.Qt.Orientation.Horizontal:
+    def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
+        if orientation != QtCore.Qt.Horizontal:
             return None
         if role == QtCore.Qt.DisplayRole:
             return self.headers[section]
@@ -276,10 +276,16 @@ class EquipmentListModel(QtCore.QAbstractListModel):
     def update_from_model(self, model):
         self.clean()
         equip_list = model.get_property('equip', [])
-        for e in model.get_school_outfit() + equip_list:
+
+        starting_outfit_ = []
+        first_rank_ = api.character.rankadv.get_first()
+        if first_rank_:
+            starting_outfit_ = first_rank_.outfit
+
+        for e in starting_outfit_ + equip_list:
             self.add_item(e)
         self.items = equip_list
-        self.school_outfit = model.get_school_outfit()
+        self.school_outfit = starting_outfit_
 
     def data(self, index, role=QtCore.Qt.UserRole):
         # if not self.items or not index.isValid() or index.row() >= len(self.items):

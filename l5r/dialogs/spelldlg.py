@@ -19,12 +19,13 @@ import api
 import api.character
 import api.character.schools
 import api.character.spells
+import api.character.rankadv
 import api.data
 import api.data.schools
 import api.data.spells
 
 import widgets
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 
 def colored_span(col, text):
@@ -72,7 +73,7 @@ class SpellAdvDialog(QtGui.QDialog):
         self.mode = mode
 
         if mode == 'bounded':
-            self.page_count = self.pc.get_how_many_spell_i_miss()
+            self.page_count = api.character.rankadv.get_pending_spells_count()
         self.properties = [None] * self.max_page_count
         self.build_ui()
         self.connect_signals()
@@ -226,7 +227,7 @@ class SpellAdvDialog(QtGui.QDialog):
     def setup(self):
         if self.mode == 'bounded':
             idx = 0
-            for wc in self.pc.get_pending_wc_spells():
+            for wc in api.character.rankadv.get_starting_spells_to_choose():
                 ring, qty, tag = (None, None, None)
 
                 if len(wc) == 3:
@@ -275,6 +276,9 @@ class SpellAdvDialog(QtGui.QDialog):
         self.load_data()
 
     def on_maho_toggled(self):
+        sender_ = self.sender()
+        if not sender_.isChecked():
+            return
         self.spell_wdg.set_maho_filter(self.sender().property('tag'))
 
     def on_spell_changed(self, spell):
@@ -322,6 +326,10 @@ class SpellAdvDialog(QtGui.QDialog):
             if not s:
                 return False  # do not exit the form!!!
 
-            self.pc.add_spell(s.id)
+            if self.mode == 'bounded':
+                api.character.spells.add_school_spell(s.id)
+            else:
+                api.character.spells.add_spell(s.id)
+            # self.pc.add_spell(s.id)
 
         super(SpellAdvDialog, self).accept()

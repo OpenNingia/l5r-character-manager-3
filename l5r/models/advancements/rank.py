@@ -16,55 +16,48 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
 
-from models.advances import *
-#from ..models.advances import Advancement
+from models.advances import Advancement
 
 
 class Rank(Advancement):
     def __init__(self):
         super(Rank, self).__init__('rank', 0)
 
-        # the clan
-        self.clan = None
-        # the family
-        self.family = None
-        # the target school
-        self.school = None
         # the insight rank
         self.rank = 0
+        # this is the current school for this rank
+        self.school = None
         # the school rank
         self.school_rank = 0
-        # the learned tech
-        self.tech = None
-        # is 'school' an alternate path
-        self.is_alternate_path = False
-        # the original school
-        self.original_school = None
-        # the character left an alternate path
-        self.left_alternate_path = False
-        # skills
+        # the school optionally replaced by this one
+        self.replaced = None
+        # skills obtained with the rank advancement
         self.skills = []
-        # merits ( tuple merit_id, merit_rank )
+        self.skills_to_choose = []
+        # emphases to skills ( skill_id => [list] )
+        self.emphases = {}
+        self.emphases_to_choose = []
+        # spells
+        self.spells = []
+        self.spells_to_choose = []
+        self.gained_spells_count = 0
+        # outfit
+        self.outfit = []
+        # money
+        self.money = (0, 0, 0)
+        # affinities
+        self.affinities = []
+        self.affinities_to_choose = []
+        # deficiencies
+        self.deficiencies = []
+        self.deficiencies_to_choose = []
+        # kiho gained with rank advancement
+        self.kiho = []
+        self.gained_kiho_count = 0
+        # merits gained along starting school
         self.merits = []
-        # flaws ( tuple flaw_id, flaw_rank )
+        # flaws gained along starting school
         self.flaws = []
-
-    def to_dict(self):
-        out = {'clan': self.clan,
-               'family': self.family,
-               'school': self.school,
-               'rank': self.rank,
-               'school_rank': self.school_rank,
-               'tech': self.tech,
-               'is_alternate_path': self.is_alternate_path,
-               'original_school': self.original_school,
-               'left_alternate_path': self.left_alternate_path,
-               'skills': []}
-
-        for s in self.skills:
-            out['skills'].append(s.to_dict())
-
-        return out
 
 
 class StartingSkill(object):

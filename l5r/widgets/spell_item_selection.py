@@ -21,7 +21,7 @@ import dal.query
 import api.character.spells
 import api.data.spells
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 
 class SpellItemSelection(QtGui.QWidget):
@@ -49,7 +49,7 @@ class SpellItemSelection(QtGui.QWidget):
     tx_descr = None
 
     # spell changed
-    spell_changed = QtCore.Signal(int)
+    spell_changed = QtCore.pyqtSignal(int)
 
     def __init__(self, pc, parent=None):
         super(SpellItemSelection, self).__init__(parent)
@@ -108,7 +108,7 @@ class SpellItemSelection(QtGui.QWidget):
         self.cb_element.addItem(self.tr('Fire'), 'fire')
         self.cb_element.addItem(self.tr('Void'), 'void')
         self.cb_element.addItem(self.tr('Multi-Element'), 'multi')
-        #self.cb_element.addItem(self.tr('Dragon Spells'), 'dragon')
+        self.cb_element.addItem(self.tr('Dragon Spells'), 'dragon')
 
         # Also masteries are fixed now
         for x in range(0, 6):
@@ -175,11 +175,11 @@ class SpellItemSelection(QtGui.QWidget):
                 return []
 
             if self.maho_flt == 'only_maho':
-                return api.data.spells.get_maho(ring, mastery)
+                return api.data.spells.get_maho_spells(ring, mastery)
             elif self.maho_flt == 'no_maho':
-                return api.data.spells.get(ring, mastery, maho=False)
+                return api.data.spells.get_spells(ring, mastery, maho=False)
             else:
-                return api.data.spells.get(ring, mastery, maho=True)
+                return api.data.spells.get_spells(ring, mastery, maho=True)
 
         avail_spells = get_avail_spells()
 

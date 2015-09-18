@@ -18,16 +18,14 @@
 import sys
 import os
 import shutil
-from math import ceil
 from tempfile import mkstemp
 import subprocess
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 import models
 import exporters
 import dal
-import dal.query
 import dal.dataimport
 
 from util import log, osutil
@@ -37,8 +35,8 @@ from qtsignalsutils import *
 
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
-APP_VERSION = '3.9.7'
-DB_VERSION = '3.0'
+APP_VERSION = '3.10.0'
+DB_VERSION = '3.10'
 APP_ORG = 'openningia'
 
 PROJECT_PAGE_LINK = 'https://github.com/OpenNingia/l5r-character-manager-3'
@@ -115,11 +113,6 @@ class L5RCMCore(QtGui.QMainWindow):
         super(L5RCMCore, self).__init__(parent)
         # print(repr(self))
         self.pc = None
-
-        # character stored insight rank
-        # used to knew if the character
-        # get new insight rank
-        self.last_rank = 1
 
         # Flag to lock advancement refunds in order
         self.lock_advancements = True
@@ -247,7 +240,7 @@ class L5RCMCore(QtGui.QMainWindow):
                 pcs.append(c)
 
         self.write_pdf(
-            'sheet_npc.pdf', exporters.FDFExporterTwoNPC(self.dstore, pcs))
+            'sheet_npc.pdf', exporters.FDFExporterTwoNPC(pcs))
         self.commit_pdf_export(export_file)
 
     def export_as_pdf(self, export_file):
@@ -263,13 +256,13 @@ class L5RCMCore(QtGui.QMainWindow):
         self.temp_files.append(fpath)
 
         # SAMURAI MONKS ALSO FITS IN THE BUSHI CHARACTER SHEET
-        is_monk, is_brotherhood = self.pc_is_monk()
+        is_monk, is_brotherhood = api.character.is_monk()
         is_samurai_monk = is_monk and not is_brotherhood
-        is_shugenja = self.pc.has_tag('shugenja')
-        is_bushi = self.pc.has_tag('bushi')
-        is_courtier = self.pc.has_tag('courtier')
+        is_shugenja = api.character.is_shugenja()
+        is_bushi = api.character.is_bushi()
+        is_courtier = api.character.is_courtier()
         spell_offset = 0
-        spell_count = len(self.pc.get_spells())
+        spell_count = len(api.character.spells.get_all())
 
         # SHUGENJA/BUSHI/MONK SHEET
         if is_shugenja:
@@ -287,8 +280,8 @@ class L5RCMCore(QtGui.QMainWindow):
         # we use as many extra spells sheet as needed
 
         if is_shugenja:
-            spell_count = len(self.pc.get_spells())
-            spell_offset = 0
+            #spell_count = api.character.spells.get_all()
+            #spell_offset = 0
 
             while spell_count > 0:
                 _exporter = exporters.FDFExporterSpells(spell_offset)
@@ -297,7 +290,7 @@ class L5RCMCore(QtGui.QMainWindow):
                 spell_count -= _exporter.spell_per_page
 
         # DEDICATED SKILL SHEET
-        skill_count = len(self.pc.get_skills())
+        skill_count = len(api.character.skills.get_all())
         skill_offset = 0
 
         while skill_count > 0:
@@ -340,8 +333,8 @@ class L5RCMCore(QtGui.QMainWindow):
         self.pc.wounds += val
         if self.pc.wounds < 0:
             self.pc.wounds = 0
-        if self.pc.wounds > self.pc.get_max_wounds():
-            self.pc.wounds = self.pc.get_max_wounds()
+        if self.pc.wounds > api.rules.get_max_wounds():
+            self.pc.wounds = api.rules.get_max_wounds()
 
         self.update_from_model()
 
@@ -352,7 +345,7 @@ class L5RCMCore(QtGui.QMainWindow):
         return res
 
     def memo_spell(self, spell_id):
-        res = api.character.skills.purchase_memo_spell(spell_id)
+        res = api.character.spells.purchase_memo_spell(spell_id)
         if res == CMErrors.NO_ERROR:
             self.update_from_model()
         return res
@@ -361,51 +354,8 @@ class L5RCMCore(QtGui.QMainWindow):
         self.pc.remove_spell(spell_id)
         self.update_from_model()
 
-    def buy_school_requirements(self):
-        for skill_uuid in self.get_missing_school_requirements():
-            log.app.info(u"buy requirement skill: %s", skill_uuid)
-            if self.buy_next_skill_rank(skill_uuid) != CMErrors.NO_ERROR:
-                return
-
-    def check_if_tech_available(self):
-        school_ = api.data.schools.get(
-            api.character.schools.get_current()
-        )
-        if not school_:
-            return False
-        count = len(school_.techs)
-        ret = count >= self.pc.get_school_rank()
-        log.app.debug(u"check if tech is available. techs acquired: %d, school rank: %d. available: %s",
-                      count, self.pc.get_school_rank(), "yes" if ret else "no")
-        return ret
-
-    def check_tech_school_requirements(self):
-        # one should have at least one rank in all school skills
-        # in order to gain a school techniques
-        return len(self.get_missing_school_requirements()) == 0
-
-    def get_missing_school_requirements(self):
-        school_ = api.data.schools.get(
-            api.character.schools.get_current()
-        )
-        if not school_:
-            return []
-
-        list_ = []
-
-        #log.app.info(u"check implicit requirements for school: %s", school_.id)
-        for sk in school_.skills:
-            skill_rank_ = api.character.skills.get_skill_rank(sk.id)
-            #log.app.debug(u"need 1 rank in skill %s, character has rank %d in that skill",
-            #             sk.id, skill_rank_)
-            if skill_rank_ < 1:
-                list_.append(sk.id)
-                log.app.warning(u"missing 1 skill rank in: %s, for school: %s", sk.id, school_.id)
-
-        return list_
-
     def set_pc_affinity(self, affinity):
-        if self.pc.has_tag('chuda shugenja school'):
+        if api.character.has_tag('chuda shugenja school'):
             self.pc.set_affinity('maho ' + affinity.lower())
             self.pc.set_deficiency(affinity.lower())
         else:
@@ -467,7 +417,7 @@ class L5RCMCore(QtGui.QMainWindow):
         adv = models.KataAdv(kata.id, kata.id, kata.mastery)
         adv.desc = self.tr('{0}, Cost: {1} xp').format(kata.name, adv.cost)
 
-        if (adv.cost + self.pc.get_px()) > self.pc.exp_limit:
+        if adv.cost > api.character.xp_left():
             return CMErrors.NOT_ENOUGH_XP
 
         self.pc.add_advancement(adv)
@@ -475,103 +425,21 @@ class L5RCMCore(QtGui.QMainWindow):
 
         return CMErrors.NO_ERROR
 
-    def pc_is_monk(self):
-        # is monk ?
-        monk_schools = [
-            x for x in self.pc.schools if x.has_tag('monk')]
-        is_monk = len(monk_schools) > 0
-        # is brotherhood monk?
-        brotherhood_schools = [
-            x for x in monk_schools if x.has_tag('brotherhood')]
-        is_brotherhood = len(brotherhood_schools) > 0
-
-        # a friend of the brotherhood pay the same as the brotherhood members
-        is_brotherhood = is_brotherhood or self.pc.has_rule(
-            'friend_brotherhood')
-
-        return is_monk, is_brotherhood
-
-    def pc_is_ninja(self):
-        # is ninja?
-        ninja_schools = [
-            x for x in self.pc.schools if x.has_tag('ninja')]
-        is_ninja = len(ninja_schools) > 0
-        return is_ninja
-
-    def pc_is_shugenja(self):
-        # is shugenja?
-        shugenja_schools = [
-            x for x in self.pc.schools if x.has_tag('shugenja')]
-        is_shugenja = len(shugenja_schools) > 0
-        return is_shugenja
-
-    def calculate_kiho_cost(self, kiho):
-
-        # tattoos are free as long as you're eligible
-        if 'tattoo' in kiho.tags:
-            return 0
-
-        cost_mult = 1
-
-        is_monk, is_brotherhood = self.pc_is_monk()
-        is_ninja = self.pc_is_ninja()
-        is_shugenja = self.pc_is_shugenja()
-
-        if is_brotherhood:
-            cost_mult = 1  # 1px / mastery
-        elif is_monk:
-            cost_mult = 1.5
-        elif is_shugenja:
-            cost_mult = 2
-        elif is_ninja:
-            cost_mult = 2
-
-        return int(ceil(kiho.mastery * cost_mult))
-
-    def check_kiho_eligibility(self, kiho):
-        # check eligibility
-        against_mastery = 0
-
-        is_monk, is_brotherhood = self.pc_is_monk()
-        is_ninja = self.pc_is_ninja()
-        is_shugenja = self.pc_is_shugenja()
-
-        school_bonus = 0
-        relevant_ring = models.ring_from_name(kiho.element)
-        ring_rank = self.pc.get_ring_rank(relevant_ring)
-
-        if is_ninja:
-            ninja_schools = [x for x in self.pc.schools if x.has_tag('ninja')]
-            ninja_rank = sum([x.school_rank for x in ninja_schools])
-
-        if is_monk:
-            monk_schools = [x for x in self.pc.schools if x.has_tag('monk')]
-            school_bonus = sum([x.school_rank for x in monk_schools])
-
-        against_mastery = school_bonus + ring_rank
-
-        if is_brotherhood:
-            return against_mastery >= kiho.mastery
-        elif is_monk:
-            return against_mastery >= kiho.mastery
-        elif is_shugenja:
-            return ring_rank >= kiho.mastery
-        elif is_ninja:
-            return ninja_rank >= kiho.mastery
-
-        return False
-
     def buy_kiho(self, kiho):
-        adv = models.KihoAdv(kiho.id, kiho.id, self.calculate_kiho_cost(kiho))
+        kiho_cost = api.rules.calculate_kiho_cost(kiho.id)
+        adv = models.KihoAdv(kiho.id, kiho.id, kiho_cost)
         adv.desc = self.tr('{0}, Cost: {1} xp').format(kiho.name, adv.cost)
 
         # monks can get free kihos
-        if self.pc.get_free_kiho_count() > 0:
-            adv.cost = 0
-            self.pc.set_free_kiho_count(self.pc.get_free_kiho_count() - 1)
-            print('remaing free kihos', self.pc.get_free_kiho_count())
+        free_kiho_ = api.character.rankadv.get_gained_kiho_count()
 
-        if (adv.cost + self.pc.get_px()) > self.pc.exp_limit:
+        if free_kiho_ > 0:
+            adv.cost = 0
+            free_kiho_ -= 1
+            api.character.rankadv.set_gained_kiho_count(free_kiho_)
+            log.app.info(u"free kiho left: %d", free_kiho_)
+
+        if adv.cost > api.character.xp_left():
             return CMErrors.NOT_ENOUGH_XP
 
         self.pc.add_advancement(adv)
@@ -588,27 +456,6 @@ class L5RCMCore(QtGui.QMainWindow):
 
         return CMErrors.NO_ERROR
 
-    def get_higher_tech(self):
-        mt = None
-        ms = None
-        for t in self.pc.get_techs():
-            school, tech = dal.query.get_tech(self.dstore, t)
-            if not mt or tech.rank > mt.rank:
-                ms, mt = school, tech
-        return ms, mt
-
-    def get_higher_tech_in_current_school(self):
-        mt = None
-        ms = None
-
-        for t in self.pc.get_techs():
-            school, tech = dal.query.get_tech(self.dstore, t)
-            if school.id != self.pc.get_school_id():
-                continue
-            if not mt or tech.rank > mt.rank:
-                ms, mt = school, tech
-        return ms, mt
-
     def get_character_full_name(self):
 
         # if the character has a family name
@@ -616,44 +463,7 @@ class L5RCMCore(QtGui.QMainWindow):
         # e.g. Hida Hiroshi
         # otherwise just 'Hiroshi' will do
 
-        family_name = ""
-        family_obj = dal.query.get_family(self.dstore, self.pc.family)
+        family_obj = api.data.families.get(api.character.get_family())
         if family_obj:
-            family_name = family_obj.name
-            return "{} {}".format(family_name, self.pc.name)
+            return "{} {}".format(family_obj.name, self.pc.name)
         return self.pc.name
-
-    def get_prev_and_next_school(self):
-
-        all_schools = [dal.query.get_school(self.dstore, x.school_id)
-                       for x in self.pc.schools]
-        print('character schools: ', [x.id for x in all_schools])
-
-        # if len(all_schools) == 0:
-        #    return None, None
-        # if len(all_schools) == 1:
-        #    return None, all_schools[0]
-        # return all_schools[-2], all_schools[-1]
-
-        if len(all_schools) == 0:
-            return None, None
-        # if len(all_schools) == 1:
-        #    return None, all_schools[0]
-
-        last_learned_tech = None
-        prev_school = None
-        if len(self.pc.get_techs()) > 0:
-            last_learned_tech = self.pc.get_techs()[-1]
-            prev_school, tech = dal.query.get_tech(
-                self.dstore, last_learned_tech)
-
-        return prev_school, all_schools[-1]
-
-    def get_next_rank_in_school(self, school):
-
-        out_tech = dal.query.get_school_tech(school, 1)
-
-        for t in sorted(school.techs, key=lambda x: x.rank):
-            if t.id not in self.pc.get_techs():
-                return t
-        return None

@@ -14,7 +14,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PySide import QtGui
+from PyQt4 import QtCore, QtGui
 
 # ASQ ( data query )
 from asq.initiators import query
@@ -24,11 +24,14 @@ from asq.selectors import a_
 import api.data
 import api.data.families
 import api.data.clans
-import api.character.rankadv
 
 
 def green(text):
-    return '<span style="color: #0A0">' + text + '</span>'
+    return u'<span style="color: #0A0">{}</span>'.format(text)
+
+
+def red(text):
+    return u'<span style="color: #A00">{}</span>'.format(text)
 
 
 class FamilyChooserDialog(QtGui.QDialog):
@@ -142,10 +145,6 @@ class FamilyChooserWidget(QtGui.QWidget):
         if not self.current_clan_id:
             self.load_clans()
 
-    def apply_rank_advancement(self):
-        api.character.rankadv.set_clan(self.current_clan_id)
-        api.character.rankadv.set_family(self.current_family_id)
-
     def apply_to_creation(self):
         api.character.creation.set_clan(self.current_clan_id)
         api.character.creation.set_family(self.current_family_id)
@@ -171,9 +170,9 @@ class FamilyChooserWidget(QtGui.QWidget):
         self.cb_family.clear()
 
         if clanid:
-            family_list = query(api.data.families.all()).where(lambda x: x.clanid == clanid).order_by(a_('name'))
+            family_list = query(api.data.families.get_all()).where(lambda x: x.clanid == clanid).order_by(a_('name'))
         else:
-            family_list = query(api.data.families.all()).order_by(a_('name'))
+            family_list = query(api.data.families.get_all()).order_by(a_('name'))
 
         for f in family_list:
             self.cb_family.addItem(f.name, f.id)
