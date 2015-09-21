@@ -91,6 +91,8 @@ class L5RCMAPI(object):
             self.ds.rebuild(locations, self.blacklist)
 
     def tr(self, *args, **kwargs):
+        if not self.translation_provider:
+            return args[0]
         return self.translation_provider.tr(*args, **kwargs)
 
 __api = L5RCMAPI()

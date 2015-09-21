@@ -2,35 +2,13 @@
 __author__ = 'Daniele Simonetti'
 
 import unittest
-from collections import namedtuple
 import api
 import api.character
 import api.data
 
 import dal
 
-TestClanMock = namedtuple('Clan', ['id', 'name'])
-TestFamilyMock = namedtuple('Family', ['id', 'name', 'clanid', 'trait'])
-TestSchoolMock = namedtuple(
-    'School',
-    ['id', 'name', 'clanid', 'trait', 'tags'])
-
-
-def test_clan():
-    return TestClanMock(id='test_clan', name='Test Clan')
-
-
-def test_family():
-    return TestFamilyMock(id='test_family', clanid='test_clan', name='Test Family', trait='test_trait')
-
-
-def test_school():
-    return TestSchoolMock(
-        id='test_school',
-        clanid='test_clan',
-        name='Test School',
-        trait='test_trait',
-        tags=['tag1', 'tag2'])
+from tests.fakedata import *
 
 
 class TestCharacterBll(unittest.TestCase):
@@ -41,11 +19,11 @@ class TestCharacterBll(unittest.TestCase):
         api.data.set_model(data_)
 
         # a clan
-        data_.clans.append(test_clan())
+        data_.clans.append(test_clan_1)
         # a family
-        data_.families.append(test_family())
+        data_.families.append(test_family_1)
         # a school
-        data_.schools.append(test_school())
+        data_.schools.append(test_school_1)
 
         # create new character
         api.character.new()
@@ -58,16 +36,16 @@ class TestCharacterBll(unittest.TestCase):
         test the set_family method
         :return:
         """
-        api.character.set_family('test_family')
-        self.assertEqual('test_family', api.character.model().family)
+        api.character.set_family('test_family_1')
+        self.assertEqual('test_family_1', api.character.model().family)
 
     def test_get_family(self):
         """
         get_family should return 'test_family'
         :return:
         """
-        api.character.model().family = 'test_family'
-        self.assertEqual('test_family', api.character.get_family())
+        api.character.model().family = 'test_family_2'
+        self.assertEqual('test_family_2', api.character.get_family())
 
     def test_get_family_no_family(self):
         """
@@ -89,8 +67,8 @@ class TestCharacterBll(unittest.TestCase):
         :return:
         """
 
-        api.character.set_family('test_family')
-        self.assertEqual('test_clan', api.character.get_clan())
+        api.character.set_family('test_family_1')
+        self.assertEqual('test_clan_1', api.character.get_clan())
 
     def test_get_family_tags(self):
         """
@@ -98,8 +76,8 @@ class TestCharacterBll(unittest.TestCase):
         :return:
         """
 
-        api.character.set_family('test_family')
-        self.assertEqual(['test_family', 'test_clan'], api.character.get_family_tags())
+        api.character.set_family('test_family_1')
+        self.assertEqual(['test_family_1', 'test_clan_1'], api.character.get_family_tags())
 
     def test_get_family_tags_no_family(self):
         """
@@ -109,8 +87,41 @@ class TestCharacterBll(unittest.TestCase):
 
         self.assertEqual([], api.character.get_family_tags())
 
-    def test_set_school(self):
+    def test_family_trait_bonus(self):
         """
-
+        check that the family trait bonus is applied
         :return:
         """
+
+        # this family has trait bonus: strength
+        api.character.set_family('test_family_1')
+        self.assertEqual(3, api.character.trait_rank('strength'))
+
+    def test_starting_trait_value(self):
+        """
+        check that the family trait bonus is applied
+        :return:
+        """
+
+        self.assertEqual(2, api.character.trait_rank('strength'))
+
+    def test_school_trait_bonus(self):
+        """
+        check that the school trait bonus is applied
+        :return:
+        """
+
+        # this family has trait bonus: willpower
+        api.character.schools.set_first('test_school_1')
+        self.assertEqual(3, api.character.trait_rank('willpower'))
+
+    def test_school_tags(self):
+        """
+        check that the school tags are applied
+        :return:
+        """
+
+        test_school_1.tags = ['tag1', 'tag2']
+
+        api.character.schools.set_first('test_school_1')
+        self.assertEqual(['test_school_1', 'tag1', 'tag2'], api.character.get_school_tags())
