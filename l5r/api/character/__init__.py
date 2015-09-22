@@ -38,6 +38,8 @@ def new():
     __api.pc = models.AdvancedPcModel()
     __api.pc.load_default()
 
+    log.api.info("Created new character")
+
 
 def set_model(value):
     """set character model"""

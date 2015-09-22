@@ -52,3 +52,31 @@ test_school_1.outfit = []
 test_school_1.money = [0]*3 # koku, bu, zeni
 test_school_1.require = []
 test_school_1.perks = []
+
+# fake skills
+from dal.skill import Skill, SkillCateg
+test_skill_categ_1 = SkillCateg()
+test_skill_categ_1.id = 'test_skill_categ_1'
+test_skill_categ_1.name = u'test_skill_categ_1'
+
+test_skill_categ_2 = SkillCateg()
+test_skill_categ_2.id = 'test_skill_categ_2'
+test_skill_categ_2.name = u'test_skill_categ_2'
+
+test_skill_1 = Skill()
+test_skill_1.id = 'test_skill_1'
+test_skill_1.name = u'test_skill_1'
+test_skill_1.trait = 'agility'
+test_skill_1.type = test_skill_categ_1
+test_skill_1.tags = []
+test_skill_1.mastery_abilities = []
+test_skill_1.desc = u""
+
+test_skill_2 = Skill()
+test_skill_2.id = 'test_skill_2'
+test_skill_2.name = u'test_skill_2'
+test_skill_2.trait = 'intelligence'
+test_skill_2.type = test_skill_categ_2
+test_skill_2.tags = []
+test_skill_2.mastery_abilities = []
+test_skill_2.desc = u""

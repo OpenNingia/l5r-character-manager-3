@@ -18,12 +18,19 @@ class TestCharacterBll(unittest.TestCase):
         data_ = dal.Data([], [])
         api.data.set_model(data_)
 
-        # a clan
+        # clans
         data_.clans.append(test_clan_1)
-        # a family
+        data_.clans.append(test_clan_2)
+        # families
         data_.families.append(test_family_1)
-        # a school
+        data_.families.append(test_family_2)
+        # schools
         data_.schools.append(test_school_1)
+        # skills
+        data_.skcategs.append(test_skill_categ_1)
+        data_.skcategs.append(test_skill_categ_2)
+        data_.skills.append(test_skill_1)
+        data_.skills.append(test_skill_2)
 
         # create new character
         api.character.new()

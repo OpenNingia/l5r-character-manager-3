@@ -117,6 +117,7 @@ def get_skill_emphases(skill_id):
 
     return sk_emph_list
 
+
 def purchase_skill_rank(skill_id):
     log.api.info(u"purchase skill rank: %s", skill_id)
 

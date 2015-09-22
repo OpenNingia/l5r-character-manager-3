@@ -23,28 +23,29 @@ import api.character.schools
 
 class CharacterSnapshot(object):
 
-    skills = {}  # id ==> value
-    traits = {}  # id ==> value
-    rings = {}  # id ==> value
-    emphases = {} # skill_id => [emphases]
-
-    tags = []  # tag list
-    rules = []  # rules list
-
-    schools = {}  # id ==> rank
-
-    insight_rank = 0
-
-    model = None
-
-    honor = 0.0
-    glory = 0.0
-
     def __init__(self, pc):
         self.model = pc
 
-        for k, v in [(x, api.character.skills.get_skill_rank(x)) for x in api.character.skills.get_all()]:
-            self.skills[k] = v
+        self.skills = {}  # id ==> value
+        self.traits = {}  # id ==> value
+        self.rings = {}  # id ==> value
+        self.emphases = {} # skill_id => [emphases]
+
+        self.tags = []  # tag list
+        self.rules = []  # rules list
+
+        self.schools = {}  # id ==> rank
+
+        self.insight_rank = 0
+
+        self.model = None
+
+        self.honor = 0.0
+        self.glory = 0.0
+
+        for k in api.character.skills.get_all():
+            self.skills[k] = api.character.skills.get_skill_rank(k)
+            self.emphases[k] = api.character.skills.get_skill_emphases(k)
 
         for t in api.data.traits():
             self.traits[t] = api.character.trait_rank(t)
@@ -55,10 +56,6 @@ class CharacterSnapshot(object):
         for s in api.character.schools.get_all():
             self.schools[s] = api.character.schools.get_school_rank(s)
 
-        for s in api.character.skills.get_all():
-            self.emphases[s] = api.character.skills.get_skill_emphases(s)
-
-
         self.tags  += api.character.get_tags()
         self.rules += api.character.get_rules()
 
@@ -67,7 +64,7 @@ class CharacterSnapshot(object):
         self.glory = api.character.glory()
 
     def get_skills(self):
-        return api.character.skills.get_all()
+        return self.skills.keys()
 
     def get_skill_rank(self, id_):
         if id_ in self.skills:
