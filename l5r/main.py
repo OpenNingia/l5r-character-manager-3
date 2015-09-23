@@ -2632,7 +2632,7 @@ def main():
             elif IMPORT_CMD_SWITCH in sys.argv:
                 log.app.debug(u"import datapack from command line")
                 imf = sys.argv.index(IMPORT_CMD_SWITCH)
-                l5rcm.import_data_pack(sys.argv[imf + 1])
+                return l5rcm.import_data_pack(sys.argv[imf + 1])
             else:
                 # check mimetype
                 log.app.debug(u"import file from command line ( should guess mimetype )")
@@ -2649,11 +2649,11 @@ def main():
         # REMOVE CHECK FOR UPDATES UNTIL BETTER IMPLEMENTED
         # l5rcm.check_updates()
 
-        sys.exit(app.exec_())
+        return app.exec_()
     except Exception as e:
         log.app.exception(e)
     finally:
         log.app.info("KTHXBYE")
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
