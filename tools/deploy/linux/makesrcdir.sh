@@ -13,7 +13,7 @@ rm $1.deb
 find ./ | grep '~' | xargs rm
 
 # make source tarball
-tar -vzcf $1.tar.gz --exclude-vcs -X exclude_from_tarball --exclude-backups --exclude-caches ../../../src/
+tar -vzcf $1.tar.gz --exclude-vcs -X exclude_from_tarball --exclude-backups --exclude-caches ../../../l5r/
 
 # remove old directory
 # should ask for root password
@@ -63,6 +63,7 @@ gzip -9 ${USR}/share/doc/l5rcm/changelog.Debian
 
 cp -r ./DEBIAN ./tmp
 rm -rf ./tmp/DEBIAN/.svn
+rm -rf ./tmp/DEBIAN/.git
 
 # change GID
 chown -R root:root ${USR}

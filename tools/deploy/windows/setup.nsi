@@ -1,12 +1,12 @@
 ; L5RCM INSTALL ROUTINE
 
-!define EXE_NAME "l5rcm.exe"
+!define EXE_NAME "main.exe"
 
 !define PRODUCT_DESC "The greatest tool for GM and Players of L5R RPG :)"
-!define PRODUCT_NAME "Legend of the Five Rings: Character Manager"
-!define PRODUCT_VERSION "3.9.5"
+!define PRODUCT_NAME "L5R 4E: Character Manager"
+!define PRODUCT_VERSION "3.10.0"
 !define PRODUCT_PUBLISHER "openningia"
-!define PRODUCT_WEB_SITE "http://code.google.com/p/l5rcm/"
+!define PRODUCT_WEB_SITE "https://l5rcm.wordpress.com/"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${EXE_NAME}"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
@@ -17,8 +17,8 @@
 !include "LogicLib.nsh"
 
 ; FONT INSTALLER
-!include FontReg.nsh
 !include FontName.nsh
+!include FontRegAdv.nsh
 !include WinMessages.nsh
 
 ; MUI Settings
@@ -45,8 +45,8 @@
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "l5rcm-${PRODUCT_VERSION}.exe"
-InstallDir "$PROGRAMFILES\OpenNingia\L5RCM"
+OutFile "l5rcm-${PRODUCT_VERSION}_x64.exe"
+InstallDir "$PROGRAMFILES64\OpenNingia\L5RCM"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
 ShowUnInstDetails show
@@ -103,11 +103,15 @@ SectionEnd
 
 Section "Fonts"
   StrCpy $FONT_DIR $FONTS
-  #StrCpy $FONT_DIR "$WINDIR\Fonts"
 
-  !insertmacro InstallTTFFont "fonts\OLDSH___.TTF"
-  !insertmacro InstallTTFFont "fonts\OLDSIH__.TTF"
-  !insertmacro InstallTTFFont "fonts\OLDSSCH_.TTF"
+  !insertmacro InstallTTF "fonts\OLDSH___.TTF"
+  !insertmacro InstallTTF "fonts\OLDSIH__.TTF"
+  !insertmacro InstallTTF "fonts\OLDSSCH_.TTF"
+
+  !insertmacro InstallTTF "fonts\LiberationSans-Bold.ttf"
+  !insertmacro InstallTTF "fonts\LiberationSans-BoldItalic.ttf"
+  !insertmacro InstallTTF "fonts\LiberationSans-Italic.ttf"
+  !insertmacro InstallTTF "fonts\LiberationSans-Regular.ttf"
 
   SendMessage ${HWND_BROADCAST} ${WM_FONTCHANGE} 0 0 /TIMEOUT=5000
 SectionEnd

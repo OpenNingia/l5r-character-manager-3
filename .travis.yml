@@ -1,0 +1,18 @@
+language: python
+python:
+  - "2.7"
+# use system packages in virtualenv
+virtualenv:
+  system_site_packages: true
+# apt packages
+addons:
+  apt:
+    packages:
+    - python-qt4
+    - python-lxml
+install:
+  - "pip install --upgrade pip"
+  - "pip install --upgrade asq"
+  - "pip install --no-deps ./l5r"
+# command to run tests
+script: nosetests
