@@ -4,14 +4,9 @@
 
 ### First of all, clone the repo
 
-`git clone https://github.com/OpenNingia/l5r-character-manager-3.git`
-
-### Switch to develop branch
-master branch is often outdated, so you want to get the develop branch by running
-
 [![Build Status](https://travis-ci.org/OpenNingia/l5r-character-manager-3.svg)](https://travis-ci.org/OpenNingia/l5r-character-manager-3)
 
-`git checkout develop`
+`git clone https://github.com/OpenNingia/l5r-character-manager-3.git`
 
 ### Installing the dependencies
 Before running the program you need to install the dependencies:

@@ -124,5 +124,5 @@ setup(
         }
     ],
     options={
-        "py2exe": {"includes": ["PyQt4.QtGui", 'lxml.etree', 'lxml._elementpath', 'sip']}},
+        "py2exe": {"includes": ["PyQt4.QtGui", 'lxml.etree', 'lxml._elementpath', 'sip', 'asq']}},
 )
