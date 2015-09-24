@@ -113,10 +113,11 @@ class Sink1(QtCore.QObject):
         form.update_from_model()
 
     def refund_last_adv(self):
+        """pops last advancement"""
         form = self.form
-        '''pops last advancement and recalculate ranks'''
         if len(form.pc.advans) > 0:
             adv = form.pc.advans.pop()
+            log.ui.info(u"removed advancement: %s", adv.desc)
             form.update_from_model()
 
     def act_buy_perk(self):
@@ -221,19 +222,24 @@ class Sink1(QtCore.QObject):
             return True
         return False
 
-    def refund_advancement(self, adv_idx=-1):
-        '''refund the specified advancement and recalculate ranks'''
+    def refund_advancement(self):
+        """refund the specified advancement"""
         form = self.form
 
-        if adv_idx < 0:
-            adv_idx = (len(form.pc.advans) -
-                       form.adv_view.selectionModel().currentIndex().row() - 1)
+        adv_idx = (len(form.pc.advans) -
+                   form.adv_view.selectionModel().currentIndex().row() - 1)
+
+        log.ui.debug(u"refund_advancement at index: %d", adv_idx)
+
         if adv_idx >= len(form.pc.advans) or adv_idx < 0:
             return self.refund_last_adv()
 
         if self.warn_about_refund():
-            del form.pc.advans[adv_idx]
-            form.update_from_model()
+            adv = form.pc.advans[adv_idx]
+            if adv is not None:
+                log.ui.info(u"removed advancement: %s", adv.desc)
+                del form.pc.advans[adv_idx]
+                form.update_from_model()
             return True
         return False
 
