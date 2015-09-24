@@ -893,9 +893,9 @@ class L5RMain(L5RCMCore):
         self.ma_view_model = models.MaViewModel(self)
 
         # enable sorting through a proxy model
-        sk_sort_model = models.ColorFriendlySortProxyModel(self)
-        sk_sort_model.setDynamicSortFilter(True)
-        sk_sort_model.setSourceModel(self.sk_view_model)
+        self.sk_sort_model = models.ColorFriendlySortProxyModel(self)
+        self.sk_sort_model.setDynamicSortFilter(True)
+        self.sk_sort_model.setSourceModel(self.sk_view_model)
 
         # skills vertical toolbar
         vtb = widgets.VerticalToolBar(self)
@@ -912,7 +912,7 @@ class L5RMain(L5RCMCore):
             (
                 "Skills",
                 'table',
-                sk_sort_model,
+                self.sk_sort_model,
                 None,
                 vtb,
                 self.sink4.on_skill_item_activate
@@ -938,14 +938,14 @@ class L5RMain(L5RCMCore):
         self.th_view_model = models.TechViewModel(self)
 
         # enable sorting through a proxy model
-        sp_sort_model = models.ColorFriendlySortProxyModel(self)
-        sp_sort_model.setDynamicSortFilter(True)
-        sp_sort_model.setSourceModel(self.sp_view_model)
+        self.sp_sort_model = models.ColorFriendlySortProxyModel(self)
+        self.sp_sort_model.setDynamicSortFilter(True)
+        self.sp_sort_model.setSourceModel(self.sp_view_model)
 
         frame_ = QtGui.QFrame(self)
         vbox = QtGui.QVBoxLayout(frame_)
 
-        self._build_spell_frame(sp_sort_model, vbox)
+        self._build_spell_frame(self.sp_sort_model, vbox)
         self._build_tech_frame(self.th_view_model, vbox)
 
         self.tabs.addTab(frame_, self.tr("Techniques"))
@@ -955,19 +955,19 @@ class L5RMain(L5RCMCore):
         self.ki_view_model = models.KihoTableViewModel(self)
 
         # enable sorting through a proxy model
-        ka_sort_model = models.ColorFriendlySortProxyModel(self)
-        ka_sort_model.setDynamicSortFilter(True)
-        ka_sort_model.setSourceModel(self.ka_view_model)
+        self.ka_sort_model = models.ColorFriendlySortProxyModel(self)
+        self.ka_sort_model.setDynamicSortFilter(True)
+        self.ka_sort_model.setSourceModel(self.ka_view_model)
 
-        ki_sort_model = models.ColorFriendlySortProxyModel(self)
-        ki_sort_model.setDynamicSortFilter(True)
-        ki_sort_model.setSourceModel(self.ki_view_model)
+        self.ki_sort_model = models.ColorFriendlySortProxyModel(self)
+        self.ki_sort_model.setDynamicSortFilter(True)
+        self.ki_sort_model.setSourceModel(self.ki_view_model)
 
         frame_ = QtGui.QFrame(self)
         vbox = QtGui.QVBoxLayout(frame_)
 
-        self.kata_view = self._build_kata_frame(ka_sort_model, vbox)
-        self.kiho_view = self._build_kiho_frame(ki_sort_model, vbox)
+        self.kata_view = self._build_kata_frame(self.ka_sort_model, vbox)
+        self.kiho_view = self._build_kiho_frame(self.ki_sort_model, vbox)
 
         self.tabs.addTab(frame_, self.tr("Powers"))
 
