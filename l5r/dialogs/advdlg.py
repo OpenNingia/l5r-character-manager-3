@@ -101,6 +101,8 @@ class BuyAdvDialog(QtGui.QDialog):
         super(BuyAdvDialog, self).__init__(parent)
         self.tag = tag
         self.adv = None
+        self.widgets = []
+        self.labels = []
         self.pc = pc
         self.quit_on_accept = True
         self.build_ui()
@@ -115,55 +117,39 @@ class BuyAdvDialog(QtGui.QDialog):
             skill=self.tr('Buy Skill rank'),
             emph=self.tr('Buy Skill emphasys'))
 
-        self.labels = dict(
-            skill=(
-                QtGui.QLabel(self.tr('Choose Skill'), self),
-                QtGui.QLabel(self.tr(''), self)),
-            emph=(
-                QtGui.QLabel(self.tr('Choose Skill'), self),
-                QtGui.QLabel(self.tr('Choose Emphasis'), self)))
-
         self.setWindowTitle(titles[self.tag])
 
-        self.widgets = dict(
-            skill=(
-                QtGui.QComboBox(self), SkillSelectInformativeWidget(self)),
-            emph=(
-                QtGui.QComboBox(self), QtGui.QLineEdit(self)))
+        if self.tag == 'skill':
+            self.widgets = (QtGui.QComboBox(self), SkillSelectInformativeWidget(self))
+            self.labels = (
+                QtGui.QLabel(self.tr('Choose Skill'), self),
+                QtGui.QLabel(self.tr(''), self))
+        elif self.tag == 'emph':
+            self.widgets = (QtGui.QComboBox(self), QtGui.QLineEdit(self))
+            self.labels = (
+                QtGui.QLabel(self.tr('Choose Skill'), self),
+                QtGui.QLabel(self.tr('Choose Emphasis'), self))
 
-        self.widgets['emph'][0].addItem('a', 'a')
-        self.widgets['skill'][0].addItem('a', 'a')
+        for t in self.widgets:
+            if t is not None:
+                t.setVisible(False)
 
-        for t in self.widgets.itervalues():
-            if t[0]:
-                t[0].setVisible(False)
-            if t[1]:
-                t[1].setVisible(False)
+        for t in self.labels:
+            if t is not None:
+                t.setVisible(False)
 
-        for t in self.labels.itervalues():
-            if t[0]:
-                t[0].setVisible(False)
-            if t[1]:
-                t[1].setVisible(False)
-
-        if self.tag in self.widgets:
-            for i in range(0, 2):
-                if self.labels[self.tag][i] is not None:
-                    lb = self.labels[self.tag][i]
-                    lb.setVisible(True)
-                    wd = self.widgets[self.tag][i]
-                    wd.setVisible(True)
-                    grid.addWidget(lb, i, 0)
-                    grid.addWidget(wd, i, 1, 1, 3)
-
-        #self.lb_from = QtGui.QLabel(self.tr('Make your choice'), self)
-        #self.lb_cost = QtGui.QLabel(self.tr('Cost: 0'), self)
+        for i in range(0, 2):
+            if self.labels[i] is not None:
+                lb = self.labels[i]
+                lb.setVisible(True)
+                wd = self.widgets[i]
+                wd.setVisible(True)
+                grid.addWidget(lb, i, 0)
+                grid.addWidget(wd, i, 1, 1, 3)
 
         self.bt_buy = QtGui.QPushButton(self.tr('Buy'), self)
         self.bt_close = QtGui.QPushButton(self.tr('Close'), self)
 
-        #grid.addWidget(self.lb_from, 3, 0, 1, 3)
-        #grid.addWidget(self.lb_cost, 4, 0, 1, 3)
         grid.addWidget(self.bt_buy, 5, 2, 1, 1)
         grid.addWidget(self.bt_close, 5, 3, 1, 1)
 
@@ -174,31 +160,27 @@ class BuyAdvDialog(QtGui.QDialog):
     def load_data(self):
         print('load data')
         if self.tag == 'skill':
-            cb = self.widgets[self.tag][0]
+            cb = self.widgets[0]
             for t in api.data.skills.categories():
                 cb.addItem(t.name, t.id)
         elif self.tag == 'emph':
-            cb = self.widgets[self.tag][0]
+            cb = self.widgets[0]
             for id in api.character.skills.get_all():
                 sk = api.data.skills.get(id)
                 cb.addItem(sk.name, sk.id)
 
-            #self.lb_cost.setText(self.tr('Cost: 2 exp'))
-            #self.lb_from.setVisible(False)
-
     def fix_skill_id(self, uuid):
         if self.tag == 'emph':
-            cb = self.widgets[self.tag][0]
+            cb = self.widgets[0]
             sk = api.data.skills.get(uuid)
             cb.addItem(sk.name, sk.id)
             cb.setCurrentIndex(cb.count() - 1)
             cb.setEnabled(False)
 
     def connect_signals(self):
-        print('connect_signals')
         if self.tag == 'skill':
-            cb1 = self.widgets[self.tag][0]
-            cb2 = self.widgets[self.tag][1]
+            cb1 = self.widgets[0]
+            cb2 = self.widgets[1]
 
             cb1.setCurrentIndex(-1)
             cb1.currentIndexChanged.connect(self.on_skill_type_select)
@@ -209,8 +191,8 @@ class BuyAdvDialog(QtGui.QDialog):
         self.bt_close.clicked.connect(self.close)
 
     def on_skill_type_select(self, text=''):
-        cb1 = self.widgets['skill'][0]
-        cb2 = self.widgets['skill'][1]
+        cb1 = self.widgets[0]
+        cb2 = self.widgets[1]
         idx = cb1.currentIndex()
         type_ = cb1.itemData(idx)
 
@@ -234,13 +216,13 @@ class BuyAdvDialog(QtGui.QDialog):
                 cb2.addItem(sk.name, sk.id)
 
     def on_skill_select(self, text=''):
-        cb2 = self.widgets['skill'][1]
+        cb2 = self.widgets[1]
         idx = cb2.currentIndex()
 
         uuid = cb2.itemData(idx)
         text = cb2.itemText(idx)
 
-        cb1 = self.widgets['skill'][0]
+        cb1 = self.widgets[0]
         type_ = cb1.itemData(cb1.currentIndex())
 
         cur_value = api.character.skills.get_skill_rank(uuid)
@@ -248,9 +230,9 @@ class BuyAdvDialog(QtGui.QDialog):
 
         cost = new_value
 
-        print('pc is obtuse? {0}'.format(api.character.has_rule('obtuse')))
-        print('skill type: {0}'.format(type_))
-        print('skill uuid: {0}'.format(uuid))
+        log.ui.info(u"check cost for skill: %s (%s)", uuid, type_)
+        log.ui.info(u"is pc obtuse?: %s",
+                    u"yes" if api.character.has_rule('obtuse') else u"no")
 
         if (api.character.has_rule('obtuse') and
                 type_ == 'high' and
@@ -261,9 +243,7 @@ class BuyAdvDialog(QtGui.QDialog):
             # other than medicine and investigation
             cost *= 2
 
-        #self.lb_from.setText(
-        #    self.tr('From {0} to {1}').format(cur_value, new_value))
-        #self.lb_cost.setText(self.tr('Cost: {0} exp').format(cost))
+            log.ui.info(u"double the cost for high skill other than medicine and investigation. new cost: %d", cost)
 
         self.adv = advances.SkillAdv(uuid, cost)
 
@@ -280,8 +260,8 @@ class BuyAdvDialog(QtGui.QDialog):
         if self.tag == 'skill':
             adv = self.adv
         elif self.tag == 'emph':
-            cb = self.widgets[self.tag][0]
-            tx = self.widgets[self.tag][1]
+            cb = self.widgets[0]
+            tx = self.widgets[1]
             sk_name = cb.itemText(cb.currentIndex())
             sk_uuid = cb.itemData(cb.currentIndex())
             adv = advances.SkillEmph(sk_uuid, tx.text(), 2)
