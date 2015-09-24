@@ -2224,7 +2224,7 @@ class L5RMain(L5RCMCore):
         for i in reversed(range(0, 7)):
             if i < 7:
                 penalty = api.rules.get_wound_penalties(i)
-                text = '{0} (+{1})'.format(WOUND_PENALTIES_NAMES[i], penalty)
+                text = u"{0} (+{1})".format(WOUND_PENALTIES_NAMES[i], penalty)
             else:
                 text = WOUND_PENALTIES_NAMES[i]
             self.wounds[i][0].setText(text)
