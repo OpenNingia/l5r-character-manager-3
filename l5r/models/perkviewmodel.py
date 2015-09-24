@@ -172,7 +172,6 @@ class PerkItemDelegate(QtGui.QStyledItemDelegate):
                          option.rect.top() + perk_nm_rect.height(), perk_nm)
 
         if item.tag:
-            # paint adv type & cost
             painter.setFont(sub_font)
             font_metric = painter.fontMetrics()
             tag_nm = item.tag
@@ -181,5 +180,24 @@ class PerkItemDelegate(QtGui.QStyledItemDelegate):
                              option.rect.top() + perk_nm_rect.height() +
                              tag_nm_rect.height(),
                              tag_nm)
+
+        if item.cost:
+            if item.cost < 0:
+                text = api.tr('XP Gain')
+                value = - item.cost
+            else:
+                text = api.tr('XP Cost')
+                value = item.cost
+            text = text + ' {}'.format(value)
+
+            main_font.setBold(False)
+            painter.setFont(main_font)
+            font_metric = painter.fontMetrics()
+            text_rect = font_metric.boundingRect(text)
+            painter.drawText(
+                option.rect.right() - text_rect.width() - 15,
+                option.rect.bottom() - 5,
+                text
+            )
 
         painter.restore()
