@@ -38,13 +38,13 @@ Source: "bin_x86/*"; DestDir: "{app}"; Check: not Is64BitInstallMode; Flags: sol
 Source: "common/*";  DestDir: "{app}"; Flags: solidbreak recursesubdirs
 ; Source: "MyProg.chm"; DestDir: "{app}"; Flags: solidbreak
 ; Source: "Readme.txt"; DestDir: "{app}"; Flags: isreadme
-Source: "fonts/OLDSSCH_.TTF"; DestDir: "{fonts}"; FontInstall: "Oldstyle Small Caps"; Flags: uninsneveruninstall; Tasks: fontOldStyle 
-Source: "fonts/OLDSIH__.TTF"; DestDir: "{fonts}"; FontInstall: "Oldstyle Italic"; Flags: uninsneveruninstall; Tasks: fontOldStyle 
-Source: "fonts/OLDSH___.TTF"; DestDir: "{fonts}"; FontInstall: "Oldstyle 1"; Flags: uninsneveruninstall; Tasks: fontOldStyle 
-Source: "fonts/LiberationSans-Regular.ttf"; DestDir: "{fonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations 
-Source: "fonts/LiberationSans-Italic.ttf"; DestDir: "{fonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations 
-Source: "fonts/LiberationSans-BoldItalic.ttf"; DestDir: "{fonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations 
-Source: "fonts/LiberationSans-Bold.ttf"; DestDir: "{fonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations 
+Source: "fonts/OLDSSCH_.TTF"; DestDir: "{fonts}"; FontInstall: "Oldstyle Small Caps"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontOldStyle
+Source: "fonts/OLDSIH__.TTF"; DestDir: "{fonts}"; FontInstall: "Oldstyle Italic"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontOldStyle
+Source: "fonts/OLDSH___.TTF"; DestDir: "{fonts}"; FontInstall: "Oldstyle 1"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontOldStyle
+Source: "fonts/LiberationSans-Regular.ttf"; DestDir: "{fonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
+Source: "fonts/LiberationSans-Italic.ttf"; DestDir: "{fonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
+Source: "fonts/LiberationSans-BoldItalic.ttf"; DestDir: "{fonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
+Source: "fonts/LiberationSans-Bold.ttf"; DestDir: "{fonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
 ; core pack
 Source: "core.l5rcmpack"; DestDir: "{app}";
 
@@ -63,17 +63,17 @@ Name: importCorePack; Description: "Install Core Datapack"; GroupDescription: Da
 
 [Registry]
 ; extensions
-Root: HKCR; Subkey: ".l5r"; ValueType: string; ValueName: ""; ValueData: "L5Rcm.Character"; Flags: uninsdeletevalue; Tasks: l5rAssociation 
-Root: HKCR; Subkey: ".l5rcmpack"; ValueType: string; ValueName: ""; ValueData: "L5Rcm.Pack"; Flags: uninsdeletevalue; Tasks: l5rpackAssociation 
-; names
-Root: HKCR; Subkey: "L5Rcm.Character"; ValueType: string; ValueName: ""; ValueData: "{app}\main.exe,0"; Flags: uninsdeletevalue; Tasks: l5rAssociation 
-Root: HKCR; Subkey: "L5Rcm.Pack"; ValueType: string; ValueName: ""; ValueData: "{app}\main.exe,1"; Flags: uninsdeletevalue; Tasks: l5rpackAssociation 
+Root: HKCR; Subkey: ".l5r"; ValueType: string; ValueName: ""; ValueData: "L5Rcm.Character"; Flags: uninsdeletevalue; Tasks: l5rAssociation
+Root: HKCR; Subkey: ".l5rcmpack"; ValueType: string; ValueName: ""; ValueData: "L5Rcm.Pack"; Flags: uninsdeletevalue; Tasks: l5rpackAssociation
 ; icons
-Root: HKCR; Subkey: "L5Rcm.Character\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "L5R: CM - Character File"; Flags: uninsdeletevalue; Tasks: l5rAssociation 
-Root: HKCR; Subkey: "L5Rcm.Pack\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "L5R: CM - Data Pack File"; Flags: uninsdeletevalue; Tasks: l5rpackAssociation 
+Root: HKCR; Subkey: "L5Rcm.Character\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{code:GetShortName|{app}}\main.exe,0"; Flags: uninsdeletevalue; Tasks: l5rAssociation
+Root: HKCR; Subkey: "L5Rcm.Pack\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{code:GetShortName|{app}}\main.exe,1"; Flags: uninsdeletevalue; Tasks: l5rpackAssociation
+; names
+Root: HKCR; Subkey: "L5Rcm.Character"; ValueType: string; ValueName: ""; ValueData: "L5R: CM - Character File"; Flags: uninsdeletevalue; Tasks: l5rAssociation
+Root: HKCR; Subkey: "L5Rcm.Pack"; ValueType: string; ValueName: ""; ValueData: "L5R: CM - Data Pack File"; Flags: uninsdeletevalue; Tasks: l5rpackAssociation
 ; verbs
-Root: HKCR; Subkey: "L5Rcm.Character\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "\""{app}\main.exe\"" --open \""%1\"""; Flags: uninsdeletevalue; Tasks: l5rAssociation 
-Root: HKCR; Subkey: "L5Rcm.Pack\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "\""{app}\main.exe\"" --import \""%1\"""; Flags: uninsdeletevalue; Tasks: l5rpackAssociation 
+Root: HKCR; Subkey: "L5Rcm.Character\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\main.exe"" --open ""%1"""; Flags: uninsdeletevalue; Tasks: l5rAssociation
+Root: HKCR; Subkey: "L5Rcm.Pack\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\main.exe"" --import ""%1"""; Flags: uninsdeletevalue; Tasks: l5rpackAssociation
 
 [Run]
-Filename: "{app}\main.exe"; Parameters: "--import ""{app}""\core.l5rcmpack"; Tasks: importCorePack 
+Filename: "{app}\main.exe"; Parameters: "--import ""{app}""\core.l5rcmpack"; Tasks: importCorePack

@@ -51,6 +51,10 @@ L5RCM_GPLUS_PAGE = "https://plus.google.com/114911686277310621574"
 L5RCM_GPLUS_COMM = "https://plus.google.com/communities/107752342280671357654"
 
 HERE = os.path.abspath(os.path.dirname(__file__))
+
+if hasattr(sys, "frozen"):
+    HERE = os.path.dirname(HERE)
+
 MY_CWD = os.getcwd()
 
 if not os.path.exists(os.path.join(MY_CWD, 'share/l5rcm')):
