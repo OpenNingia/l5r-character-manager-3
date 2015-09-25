@@ -2618,7 +2618,6 @@ def main():
         # start main form
         l5rcm = L5RMain(use_locale)
         l5rcm.setWindowTitle(APP_DESC + ' v' + APP_VERSION)
-        l5rcm.show()
         l5rcm.init()
 
         # initialize new character
@@ -2630,18 +2629,24 @@ def main():
                 of = sys.argv.index(OPEN_CMD_SWITCH)
                 l5rcm.load_character_from(sys.argv[of + 1])
             elif IMPORT_CMD_SWITCH in sys.argv:
-                log.app.debug(u"import datapack from command line")
                 imf = sys.argv.index(IMPORT_CMD_SWITCH)
-                return l5rcm.import_data_pack(sys.argv[imf + 1])
+                pack_path = sys.argv[imf + 1]
+                log.app.debug(u"import datapack from command line: %s", pack_path)
+                app.quit()
+                return l5rcm.import_data_pack(pack_path)
             else:
                 # check mimetype
                 log.app.debug(u"import file from command line ( should guess mimetype )")
-                mime = mimetypes.guess_type(sys.argv[1])
-                log.app.info(u"open file: %s, mime type: %s", sys.argv[1], mime)
+                file_path = sys.argv[1]
+                mime = mimetypes.guess_type(file_path)
+                log.app.info(u"open file: %s, mime type: %s", file_path, mime)
                 if mime[0] == MIME_L5R_CHAR:
-                    l5rcm.load_character_from(sys.argv[1])
+                    l5rcm.load_character_from(file_path)
                 elif mime[0] == MIME_L5R_PACK:
-                    l5rcm.import_data_pack(sys.argv[1])
+                    app.quit()
+                    return l5rcm.import_data_pack(file_path)
+
+        l5rcm.show()
 
         # alert if not datapacks are installed
         l5rcm.check_datapacks()
