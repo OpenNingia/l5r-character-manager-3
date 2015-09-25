@@ -135,7 +135,7 @@ class Sink4(QtCore.QObject):
             )
 
     def on_spell_item_activate(self, index):
-        item = self.form.sp_view_model.data(index, QtCore.Qt.UserRole)
+        item = self.form.sp_sort_model.data(index, QtCore.Qt.UserRole)
         try:
             spell = api.data.spells.get(item.spell_id)
         except Exception as e:
@@ -153,7 +153,7 @@ class Sink4(QtCore.QObject):
             )
 
     def on_kata_item_activate(self, index):
-        item = self.form.ka_view_model.data(index, QtCore.Qt.UserRole)
+        item = self.form.ka_sort_model.data(index, QtCore.Qt.UserRole)
         try:
             kata = api.data.powers.get_kata(item.id)
         except Exception as e:
@@ -171,7 +171,7 @@ class Sink4(QtCore.QObject):
             )
 
     def on_kiho_item_activate(self, index):
-        item = self.form.ki_view_model.data(index, QtCore.Qt.UserRole)
+        item = self.form.ki_sort_model.data(index, QtCore.Qt.UserRole)
         try:
             kiho = api.data.powers.get_kiho(item.id)
         except Exception as e:
@@ -190,7 +190,7 @@ class Sink4(QtCore.QObject):
             )
 
     def on_skill_item_activate(self, index):
-        item = self.form.sk_view_model.data(index, QtCore.Qt.UserRole)
+        item = self.form.sk_sort_model.data(index, QtCore.Qt.UserRole)
         try:
             skill = api.data.skills.get(item)
         except Exception as e:

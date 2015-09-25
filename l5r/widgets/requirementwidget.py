@@ -142,7 +142,7 @@ class RequirementsWidget(QtGui.QWidget):
         return True
 
     def match_at_least_one(self):
-        if len(self.checks) == 0:
+        if not self.checks[0].isVisible():
             return True
         for c in self.checks:
             if c.isChecked():
