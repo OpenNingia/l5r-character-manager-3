@@ -374,10 +374,12 @@ def purchase_advancement(adv):
 
 def purchase_trait_rank(trait_id):
     """purchase the next rank in a trait"""
-    cur_value = trait_rank(trait_id)
-    new_value = cur_value + 1
 
     trait_nm = models.chmodel.attrib_name_from_id(trait_id)
+
+    cur_value = trait_rank(trait_nm)
+    new_value = cur_value + 1
+
     cost = api.rules.get_trait_rank_cost(trait_nm, new_value)
 
     # build advancement model
