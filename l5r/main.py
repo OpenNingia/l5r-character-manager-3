@@ -2242,63 +2242,27 @@ class L5RMain(L5RCMCore):
         else:
             self.display_health_stacked()
 
+
     def display_health_default(self):
-        # health
-        for i in xrange(0, 8):
-            h = api.rules.get_health_rank(i)
-            self.wounds[i][1].setText(str(h))
-            self.wounds[i][2].setText('')
-        # wounds
-        pc_wounds = self.pc.wounds
-        hr = 0
-        while pc_wounds and hr < 8:
-            w = min(pc_wounds, api.rules.get_health_rank(hr))
-            self.wounds[hr][2].setText(str(w))
-            pc_wounds -= w
-            hr += 1
+        wounds_table = api.rules.get_wounds_table()
+        for i, (i_inc, i_total, i_stacked, i_inc_wounds, i_total_wounds, i_stacked_wounds) in enumerate(wounds_table):
+            self.wounds[i][1].setText(str(i_inc))
+            self.wounds[i][2].setText(str(i_inc_wounds) if i_inc_wounds else '')
+
 
     def display_health_stacked(self):
-        # fill health level list
-        hl = [0] * 8
-        for i in reversed(range(0, 8)):
-            if i == 7:
-                hl[i] = api.rules.get_health_rank(i)
-            else:
-                hl[i] = api.rules.get_health_rank(i) + hl[i + 1]
-            self.wounds[i][1].setText(str(hl[i]))
+        wounds_table = api.rules.get_wounds_table()
+        for i, (i_inc, i_total, i_stacked, i_inc_wounds, i_total_wounds, i_stacked_wounds) in enumerate(wounds_table):
+            self.wounds[i][1].setText(str(i_total))
+            self.wounds[i][2].setText(str(i_total_wounds) if i_total_wounds else '')
 
-        wounds = self.pc.wounds
-        # fill the health left for each wound level
-        for i in range(0, 8):
-            h = api.rules.get_health_rank(i)
-            if h > wounds:
-                self.wounds[i][2].setText(str(h - wounds))
-            else:
-                self.wounds[i][2].setText("")
-            wounds -= h
-            if wounds < 0:
-                wounds = 0
 
     def display_total_wounds(self):
-        # fill health level list
-        hl = [0] * 8
-        for i in range(0, 8):
-            if i == 0:
-                hl[i] = api.rules.get_health_rank(i)
-            else:
-                hl[i] = api.rules.get_health_rank(i) + hl[i - 1]
-            self.wounds[i][1].setText(str(hl[i]))
+        wounds_table = api.rules.get_wounds_table()
+        for i, (i_inc, i_total, i_stacked, i_inc_wounds, i_total_wounds, i_stacked_wounds) in enumerate(wounds_table):
+            self.wounds[i][1].setText(str(i_stacked))
+            self.wounds[i][2].setText(str(i_stacked_wounds) if i_stacked_wounds else '')
 
-        wounds = self.pc.wounds
-        h = 0
-        # fill the health left for each wound level
-        for i in range(0, 8):
-            h += api.rules.get_health_rank(i)
-            wound_rank = min(h, wounds)
-            if wound_rank > 0:
-                self.wounds[i][2].setText(str(wound_rank))
-            if wounds <= h:
-                break
 
     def advise_conversion(self, *args):
         settings = QtCore.QSettings()

@@ -16,6 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from datetime import datetime
+from PyQt4.QtCore import QSettings
 import models
 import hashlib
 import api.rules
@@ -173,11 +174,16 @@ class FDFExporterAll(FDFExporter):
         w_labels = ['HEALTHY', 'NICKED', 'GRAZED',
                     'HURT', 'INJURED', 'CRIPPLED',
                     'DOWN', 'OUT']
-
-        wounds_total = 0
-        for i in range(0, len(w_labels)):
-            wounds_total += api.rules.get_health_rank(i)
-            fields[w_labels[i]] = str(wounds_total)
+        method = QSettings().value('health_method', 'wounds')
+        wounds_table = api.rules.get_wounds_table()
+        for i, (i_inc, i_total, i_stacked, _inc_wounds, _total_wounds, _stacked_wounds) in enumerate(wounds_table):
+            if method == 'default':
+                value = i_inc
+            elif method == 'wounds':
+                value = i_total
+            else:
+                value = i_stacked
+            fields[w_labels[i]] = str(value) if value else ''
 
         fields['WOUND_HEAL_BASE'] = api.rules.get_wound_heal_rate()
         fields['WOUND_HEAL_CUR'] = fields['WOUND_HEAL_BASE']
