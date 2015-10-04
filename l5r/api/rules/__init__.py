@@ -508,3 +508,54 @@ def get_max_wounds():
 def get_wound_heal_rate():
     """return the wound heal rate"""
     return api.character.modified_trait_rank('stamina') * 2 + api.character.insight_rank()
+
+
+def get_wounds_table():
+    """
+    Returns the wounds table with three possible variants:
+        * increment
+        * total
+        * stacked
+
+    :return list(tuple(int, int, int)):
+        Return a list with 8 elements, each element containing thrree values for wounds: the increments, the total
+        and the stacked value.
+    """
+    tot_wounds = __api.pc.wounds
+    cur_wounds = tot_wounds
+    increments = [get_health_rank(i) for i in xrange(0, 8)]
+    total = sum(increments)
+
+    result = []
+    stacked = 0
+    empty = cur_wounds == 0
+    for i in increments:
+        stacked += i
+
+        # inc_wounds
+        inc_wounds = min(cur_wounds, i)
+
+        # total_wounds
+        total_wounds = max(0, i - cur_wounds)
+
+        # stacked_wounds
+        if empty:
+            stacked_wounds = 0
+        else:
+            stacked_wounds = min(stacked, tot_wounds)
+        empty = empty or tot_wounds <= stacked
+
+        cur_wounds -= inc_wounds
+
+        result.append(
+            (
+                i,
+                total,
+                stacked,
+                inc_wounds,
+                total_wounds,
+                stacked_wounds,
+            )
+        )
+        total -= i
+    return result
