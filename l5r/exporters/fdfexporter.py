@@ -108,6 +108,8 @@ class FDFExporterAll(FDFExporter):
 
     def __init__(self):
         super(FDFExporterAll, self).__init__()
+        self.skill_offset = 0
+        self.skills_per_page = 37
 
     def export_body(self, io):
         m = self.model
@@ -271,6 +273,25 @@ class FDFExporterAll(FDFExporter):
         # MISC
         misc = f.tx_pc_notes.get_plain_text()
         fields['MISCELLANEOUS'] = misc
+
+        # SKILLS
+        skills = f.sk_view_model.items
+        if self.skill_offset > 0:
+            skills = skills[self.skill_offset:]
+
+        sorted_skills = sorted(
+            skills, key=lambda x: (not x.is_school, -x.rank, x.name))
+        for i, sk in enumerate(sorted_skills):
+            j = i + 1
+            if i >= self.skills_per_page:
+                break
+
+            fields['SKILL_IS_SCHOOL.%d' % j] = sk.is_school
+            fields['SKILL_NAME.%d' % j] = sk.name
+            fields['SKILL_RANK.%d' % j] = sk.rank
+            fields['SKILL_TRAIT.%d' % j] = sk.trait
+            fields['SKILL_ROLL.%d' % j] = sk.mod_roll
+            fields['SKILL_EMPH_MA.%d' % j] = ', '.join(sk.emph)
 
         # EXPORT FIELDS
         for k in fields.iterkeys():
