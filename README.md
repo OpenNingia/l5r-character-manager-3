@@ -6,7 +6,12 @@
 
 [![Build Status](https://travis-ci.org/OpenNingia/l5r-character-manager-3.svg)](https://travis-ci.org/OpenNingia/l5r-character-manager-3)
 
-`git clone https://github.com/OpenNingia/l5r-character-manager-3.git`
+```bash
+git clone https://github.com/OpenNingia/l5r-character-manager-3.git
+cd ./l5r-character-manager-3/
+git submodule init 
+git submodule update
+```
 
 ### Installing the dependencies
 Before running the program you need to install the dependencies:
