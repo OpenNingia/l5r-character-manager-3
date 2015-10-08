@@ -132,3 +132,17 @@ class TestCharacterBll(unittest.TestCase):
 
         api.character.schools.set_first('test_school_1')
         self.assertEqual(['test_school_1', 'tag1', 'tag2'], api.character.get_school_tags())
+
+
+    def test_get_school_rules(self):
+        self.assertEqual(
+            api.character.get_school_rules(),
+            []
+        )
+        api.character.schools.set_first('test_school_1')
+        self.assertEqual(
+            api.character.get_school_rules(),
+            [
+                'test_tech_1',
+            ]
+        )
