@@ -180,9 +180,9 @@ class FDFExporterAll(FDFExporter):
             if method == 'default':
                 value = i_inc
             elif method == 'wounds':
-                value = i_total
-            else:
                 value = i_stacked
+            else:
+                value = i_total
             fields[w_labels[i]] = str(value) if value else ''
 
         fields['WOUND_HEAL_BASE'] = api.rules.get_wound_heal_rate()
