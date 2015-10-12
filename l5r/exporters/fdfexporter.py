@@ -16,6 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from datetime import datetime
+from PyQt4.QtCore import QSettings
 import models
 import hashlib
 import api.rules
@@ -173,8 +174,16 @@ class FDFExporterAll(FDFExporter):
         w_labels = ['HEALTHY', 'NICKED', 'GRAZED',
                     'HURT', 'INJURED', 'CRIPPLED',
                     'DOWN', 'OUT']
-        for i in range(0, len(w_labels)):
-            fields[w_labels[i]] = str(api.rules.get_health_rank(i))
+        method = QSettings().value('health_method', 'wounds')
+        wounds_table = api.rules.get_wounds_table()
+        for i, (i_inc, i_total, i_stacked, _inc_wounds, _total_wounds, _stacked_wounds) in enumerate(wounds_table):
+            if method == 'default':
+                value = i_inc
+            elif method == 'wounds':
+                value = i_stacked
+            else:
+                value = i_total
+            fields[w_labels[i]] = str(value) if value else ''
 
         fields['WOUND_HEAL_BASE'] = api.rules.get_wound_heal_rate()
         fields['WOUND_HEAL_CUR'] = fields['WOUND_HEAL_BASE']
@@ -461,8 +470,16 @@ class FDFExporterMonk(FDFExporter):
             if not len(techs):
                 break
 
-            fields['MONK_SCHOOL.%d' % (i + 1)] = school.name
-            fields['MONK_TECH.%d' % (i + 1)] = techs[0].name
+            for t in techs:
+                thsc, tech = api.data.schools.get_technique(t)
+                if not tech:
+                    break
+                rank = tech.rank - 1 if tech.rank > 0 else 0
+                fields['MONK_SCHOOL.%d' % (i + 1)] = school.name
+                fields['MONK_TECH.%d.%d' % (rank, i)] = tech.name
+
+#            fields['MONK_SCHOOL.%d' % (i + 1)] = school.name
+#            fields['MONK_TECH.%d' % (i + 1)] = techs[0].name
 
         # kiho
         kihos = api.character.powers.get_all_kiho()

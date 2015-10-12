@@ -70,17 +70,20 @@ def get_tags():
 
 def get_school_rules():
     """returns school related rules"""
+
     rules_ = []
-    for s in api.character.schools.get_all():
-        school_ = api.data.schools.get(s)
-        if school_:
-            rules_ += [x.id for x in school_.techs]
+
+    for r in api.character.rankadv.get_all():
+        tech_ = api.character.schools.get_tech_by_rank(r.rank)
+        if tech_:
+            rules_.append(tech_)
+
     return rules_
 
 
 def get_perk_rules():
     """return merit/flaw related rules"""
-    return [x.rule for x in __api.pc.advans if hasattr(x, 'rule')]
+    return [x.rule for x in __api.pc.advans if getattr(x, 'rule', None) is not None]
 
 
 def get_rules():
