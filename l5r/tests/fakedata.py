@@ -28,7 +28,7 @@ test_family_2.clanid = 'test_clan_2'
 test_family_2.trait = 'reflexes'
 
 # fake schools
-from dal.school import School, SchoolKiho, SchoolTattoo
+from dal.school import School, SchoolKiho, SchoolTattoo, SchoolTech
 
 test_school_1 = School()
 test_school_1.id = 'test_school_1'
@@ -42,10 +42,20 @@ test_school_1.honor = 0.0
 test_school_1.kihos = SchoolKiho()
 test_school_1.tattoos = SchoolTattoo()
 
+test_tech_1 = SchoolTech()
+test_tech_1.id = 'test_tech_1'
+test_tech_1.rank = 1
+test_tech_2 = SchoolTech()
+test_tech_2.id = 'test_tech_2'
+test_tech_2.rank = 2
+test_tech_3 = SchoolTech()
+test_tech_3.id = 'test_tech_3'
+test_tech_3.rank = 3
+
 test_school_1.tags = ['test_tag_1']
 test_school_1.skills = []
 test_school_1.skills_pc = []
-test_school_1.techs = []
+test_school_1.techs = [test_tech_1, test_tech_2, test_tech_3]
 test_school_1.spells = []
 test_school_1.spells_pc = []
 test_school_1.outfit = []
