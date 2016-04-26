@@ -28,8 +28,6 @@ from PyQt4 import QtCore, QtGui
 
 import sys
 import os
-import api.character
-import api.character.spells
 
 here = ''
 
