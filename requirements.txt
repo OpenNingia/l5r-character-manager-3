@@ -1,1 +1,1 @@
-pip install asq
+pip install asq==1.0
