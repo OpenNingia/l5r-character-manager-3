@@ -16,3 +16,15 @@ install:
   - "pip install --no-deps ./l5r"
 # command to run tests
 script: nosetests
+
+before_deploy:
+  - "cd tools/deploy/linux"
+  - "./makedeb.sh"
+
+deploy:
+  provider: releases
+  api_key: "e5ebc2ddf8d3d2645afa708ccb9e828846d1e932"
+  file: "tools/deploy/linux/*.deb"
+  skip_cleanup: true
+  on:
+    tags: true  
