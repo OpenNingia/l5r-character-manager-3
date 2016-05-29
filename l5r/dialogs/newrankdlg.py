@@ -15,13 +15,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
-import widgets
-import api.character.rankadv
+import l5r.widgets as widgets
+import l5r.api as api
+import l5r.api.character.rankadv
 
 
-class NextRankDlg(QtGui.QDialog):
+class NextRankDlg(QtWidgets.QDialog):
 
     def __init__(self, pc, parent=None):
         super(NextRankDlg, self).__init__(parent)
@@ -34,15 +35,15 @@ class NextRankDlg(QtGui.QDialog):
         self.setWindowTitle(self.tr("L5R: CM - Advance Rank"))
 
     def build_ui(self):
-        vbox = QtGui.QVBoxLayout(self)
-        vbox.addWidget(QtGui.QLabel(self.tr("""\
+        vbox = QtWidgets.QVBoxLayout(self)
+        vbox.addWidget(QtWidgets.QLabel(self.tr("""\
 You can now advance your Rank,
 what would you want to do?
                                     """)))
-        self.bt_go_on = QtGui.QPushButton(
+        self.bt_go_on = QtWidgets.QPushButton(
             self.tr("Advance in my current school")
         )
-        self.bt_new_school = QtGui.QPushButton(
+        self.bt_new_school = QtWidgets.QPushButton(
             self.tr("Join a new school"))
 
         for bt in [self.bt_go_on, self.bt_new_school]:
@@ -68,7 +69,7 @@ what would you want to do?
 
     def join_new_school(self):
         dlg = widgets.SchoolChooserDialog(self)
-        if dlg.exec_() == QtGui.QDialog.Rejected:
+        if dlg.exec_() == QtWidgets.QDialog.Rejected:
             return
 
         self.accept()
@@ -94,7 +95,7 @@ what would you want to do?
 
 def test():
     import sys
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
 
     dlg = NextRankDlg(None, None)
     dlg.show()

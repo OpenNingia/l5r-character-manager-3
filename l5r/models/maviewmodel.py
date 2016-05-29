@@ -15,11 +15,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 
-import api.character.skills
-import api.data.skills
-from util import log
+import l5r.api as api
+import l5r.api.character.skills
+import l5r.api.data.skills
+from l5r.util import log
 
 
 class MaItemModel(object):
@@ -88,7 +89,7 @@ class MaViewModel(QtCore.QAbstractListModel):
             return None
         item = self.items[index.row()]
         if role == QtCore.Qt.DisplayRole:
-            return item.name
+            return item.desc
         elif role == QtCore.Qt.ForegroundRole:
             return self.text_color
         elif role == QtCore.Qt.BackgroundRole:
@@ -100,78 +101,3 @@ class MaViewModel(QtCore.QAbstractListModel):
         return None
 
 
-class MaItemDelegate(QtGui.QStyledItemDelegate):
-
-    def __init__(self, parent=None):
-        super(MaItemDelegate, self).__init__(parent)
-
-    def paint(self, painter, option, index):
-        if not index.isValid():
-            super(MaItemDelegate, self).paint(painter, option, index)
-            return
-
-        item = index.data(QtCore.Qt.UserRole)
-        text_color = index.data(QtCore.Qt.ForegroundRole)
-        bg_color = index.data(QtCore.Qt.BackgroundRole)
-        hg_color = QtGui.QBrush(bg_color)
-        hg_color.setStyle(QtCore.Qt.Dense3Pattern)
-
-        painter.save()
-
-        painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
-
-        # fill the background color
-        if option.state & QtGui.QStyle.State_Selected == QtGui.QStyle.State_Selected:
-            painter.fillRect(option.rect, option.palette.highlight())
-            text_color = option.palette.highlightedText()
-        else:
-            painter.fillRect(option.rect, bg_color)
-
-        grid_pen = QtGui.QPen(QtCore.Qt.lightGray, 1)
-        painter.setPen(grid_pen)
-        painter.drawLine(option.rect.bottomLeft(), option.rect.bottomRight())
-
-        main_font = painter.font()
-        sub_font = QtGui.QFont().resolve(main_font)
-        sub_font.setPointSize(7)
-
-        margin = 15
-
-        # paint the airdate with a smaller font over the item name
-        # suppose to have 24 pixels in vertical
-        main_font.setBold(True)
-        painter.setFont(main_font)
-
-        rank = item.skill_rank
-
-        rank_pen = QtGui.QPen(text_color, 2)
-        painter.setPen(rank_pen)
-        rank_rect = QtCore.QRectF(float(option.rect.left() + margin),
-                                  float(option.rect.top() + 5),
-                                  float(option.rect.height() - 10), float(option.rect.height() - 10))
-        painter.drawRect(rank_rect)
-        painter.drawText(rank_rect.adjusted(8, 3.5, 0, 0), rank)
-
-        margin += rank_rect.width() + margin
-
-        font_metric = painter.fontMetrics()
-        sk_nm = item.skill_name
-        sk_nm_rect = font_metric.boundingRect(sk_nm)
-
-        text_pen = QtGui.QPen(text_color, 1)
-
-        painter.setPen(text_pen)
-        painter.drawText(margin + option.rect.left(),
-                         option.rect.top() + sk_nm_rect.height(), sk_nm)
-
-        # paint adv type & cost
-        painter.setFont(sub_font)
-        font_metric = painter.fontMetrics()
-        ma_brief = item.desc
-        ma_brief_rect = font_metric.boundingRect(ma_brief)
-        painter.drawText(margin + option.rect.left(),
-                         option.rect.top() + sk_nm_rect.height() +
-                         ma_brief_rect.height(),
-                         ma_brief)
-
-        painter.restore()

@@ -15,13 +15,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import advances as adv
-import outfit
-import modifiers
-import dal.school
+from . import advances as adv
+from . import outfit as outfit
+from . import modifiers as modifiers
+
+import l5r.api.rules
+import l5rdal.school
+
 import json
 import os
-import api.rules
+
 
 from copy import deepcopy
 
@@ -167,7 +170,7 @@ class AdvancedPcModel(object):
     def get_modifiers(self, filter_type=None):
         if not filter_type:
             return self.modifiers
-        return filter(lambda x: x.type == filter_type, self.modifiers)
+        return [x for x in self.modifiers if x.type == filter_type]
 
     def add_weapon(self, item):
         self.weapons.append(item)
@@ -207,8 +210,6 @@ class AdvancedPcModel(object):
     def save_to(self, file):
         self.unsaved = False
 
-        print('saving to', file)
-
         fp = open(file, 'wt')
         if fp:
             json.dump(self, fp, cls=MyJsonEncoder, indent=2)
@@ -221,7 +222,7 @@ class AdvancedPcModel(object):
             return False
 
         def _load_obj(in_dict, out_obj):
-            for k in in_dict.iterkeys():
+            for k in in_dict:
                 out_obj.__dict__[k] = in_dict[k]
 
         fp = open(file_, 'rt')

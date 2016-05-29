@@ -15,12 +15,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 
-from l5rcmcore import get_icon_path
+from l5r.util.fsutil import get_icon_path
 
-import api.data.spells
-import api.character.schools
+import l5r.api as api
+import l5r.api.data.spells
+import l5r.api.character.schools
 
 
 class SpellItemModel(object):

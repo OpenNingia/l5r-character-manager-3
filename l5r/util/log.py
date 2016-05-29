@@ -21,7 +21,7 @@ import sys
 import logging
 import logging.handlers
 
-import api
+import l5r.api as api
 
 def log_setup(base_path, base_name):
     # check base path

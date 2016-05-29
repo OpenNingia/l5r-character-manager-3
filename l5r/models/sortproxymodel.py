@@ -15,10 +15,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore
 
 
-class ColorFriendlySortProxyModel(QtGui.QSortFilterProxyModel):
+class ColorFriendlySortProxyModel(QtCore.QSortFilterProxyModel):
 
     def __init__(self, parent=None):
         super(ColorFriendlySortProxyModel, self).__init__(parent)

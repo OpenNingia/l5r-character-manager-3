@@ -15,7 +15,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 def find(f, seq):
@@ -25,7 +25,7 @@ def find(f, seq):
             return item
 
 
-class CkNumWidget(QtGui.QWidget):
+class CkNumWidget(QtWidgets.QWidget):
 
     valueChanged = QtCore.pyqtSignal(int, int)
 
@@ -35,11 +35,11 @@ class CkNumWidget(QtGui.QWidget):
         self.count = count
         self.checks = []
         self.value = 0
-        hbox = QtGui.QHBoxLayout(self)
-        hbox.setSpacing(0)
+        hbox = QtWidgets.QHBoxLayout(self)
+        hbox.setSpacing(2)
         hbox.setContentsMargins(0, 0, 0, 0)
-        for i in xrange(0, count):
-            ck = QtGui.QCheckBox(self)
+        for i in range(0, count):
+            ck = QtWidgets.QCheckBox(self)
             self.checks.append(ck)
             hbox.addWidget(ck)
             ck.clicked.connect(self.on_ck_toggled)
@@ -55,7 +55,7 @@ class CkNumWidget(QtGui.QWidget):
         else:
             self.value = int(fred.objectName())
 
-        for i in xrange(0, self.count):
+        for i in range(0, self.count):
             ck = self.checks[i]
             if flag:
                 if int(ck.objectName()) <= self.value:
@@ -73,7 +73,7 @@ class CkNumWidget(QtGui.QWidget):
     def set_value(self, value):
         if value == self.value:
             return
-        for i in xrange(0, self.count):
+        for i in range(0, self.count):
             ck = self.checks[i]
             if int(ck.objectName()) <= value:
                 self.checks[i].setChecked(True)
@@ -91,10 +91,10 @@ class CkNumWidget(QtGui.QWidget):
 
 
 def main():
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
 
-    dlg = QtGui.QDialog()
-    vbox = QtGui.QVBoxLayout(dlg)
+    dlg = QtWidgets.QDialog()
+    vbox = QtWidgets.QVBoxLayout(dlg)
     vbox.addWidget(CkNumWidget(dlg))
     dlg.show()
     sys.exit(app.exec_())

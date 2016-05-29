@@ -15,19 +15,21 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from datetime import datetime
-from PyQt4.QtCore import QSettings
-import models
 import hashlib
-import api.rules
-import api.data.spells
-import api.data.skills
-import api.data.powers
-import api.data.schools
-import api.data.merits
-import api.data.flaws
-import api.character
-import api.character.schools
+from datetime import datetime
+from PyQt5.QtCore import QSettings
+
+import l5r.models as models
+import l5r.api as api
+import l5r.api.rules
+import l5r.api.data.spells
+import l5r.api.data.skills
+import l5r.api.data.powers
+import l5r.api.data.schools
+import l5r.api.data.merits
+import l5r.api.data.flaws
+import l5r.api.character
+import l5r.api.character.schools
 
 
 class FDFExporter(object):
@@ -65,11 +67,11 @@ class FDFExporter(object):
 
     def export_field(self, key, value, io):
 
-        string_value = None
+        string_value = value
         if isinstance(value, bool):
             string_value = u"Yes" if value else u"No"
-        else:
-            string_value = unicode(value)
+        #else:
+        #    string_value = unicode(value)
 
         tx = u"""<field name="{n}"><value>{v}</value></field>\n""".format(
             n=key, v=string_value)
@@ -282,7 +284,7 @@ class FDFExporterAll(FDFExporter):
         fields['MISCELLANEOUS'] = misc
 
         # EXPORT FIELDS
-        for k in fields.iterkeys():
+        for k in fields:
             self.export_field(k, fields[k], io)
 
 
@@ -373,7 +375,7 @@ class FDFExporterShugenja(FDFExporter):
                 print('cannot export character school', schools[i])
 
         # EXPORT FIELDS
-        for k in fields.iterkeys():
+        for k in fields:
             self.export_field(k, fields[k], io)
 
 
@@ -391,7 +393,7 @@ class FDFExporterSpells(FDFExporterShugenja):
         self.export_spells(fields=fields, pg=2, off=self.spell_offset)
 
         # EXPORT FIELDS
-        for k in fields.iterkeys():
+        for k in fields:
             self.export_field(k, fields[k], io)
 
 
@@ -437,7 +439,7 @@ class FDFExporterBushi(FDFExporter):
                    (i + 1)] = '{0} ({1})'.format(kata.element, kata.mastery)
 
         # EXPORT FIELDS
-        for k in fields.iterkeys():
+        for k in fields:
             self.export_field(k, fields[k], io)
 
 
@@ -501,7 +503,7 @@ class FDFExporterMonk(FDFExporter):
                 fields['KIHO_EFFECT.%d.%d' % (i + 1, j)] = lines[j]
 
         # EXPORT FIELDS
-        for k in fields.iterkeys():
+        for k in fields:
             self.export_field(k, fields[k], io)
 
     def split_in_parts(self, text, max_lines=6):
@@ -576,7 +578,7 @@ class FDFExporterWeapons(FDFExporter):
             j += 1
 
         # EXPORT FIELDS
-        for k in fields.iterkeys():
+        for k in fields:
             self.export_field(k, fields[k], io)
 
 
@@ -613,7 +615,7 @@ class FDFExporterCourtier(FDFExporter):
                 print('COURTIER_SCHOOL_RANK.%d.%d' % (i, rank), tech.name)
 
         # EXPORT FIELDS
-        for k in fields.iterkeys():
+        for k in fields:
             self.export_field(k, fields[k], io)
 
 
@@ -651,5 +653,5 @@ class FDFExporterSkills(FDFExporter):
             fields['SKILL_EMPH_MA.%d' % j] = ', '.join(sk.emph)
 
         # EXPORT FIELDS
-        for k in fields.iterkeys():
+        for k in fields:
             self.export_field(k, fields[k], io)

@@ -19,7 +19,7 @@ from subprocess import Popen
 import os
 import sys
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 def detect_desktop_environment():
@@ -58,29 +58,6 @@ def portable_open(what):
     else:
         raise Exception('Platform not supported')
 
-
-def download_image(url, path, name):
-    import urllib2
-    filename = name + url[-4:]
-    filepath = os.path.join(path, filename)
-    # print 'download image %s -> %s' % (url, filepath)
-    if os.path.exists(filepath):
-        return filepath
-
-    try:
-        opener = urllib2.build_opener()
-        page = opener.open(url)
-        pic = page.read()
-        fout = open(filepath, "wb")
-        fout.write(pic)
-        fout.close()
-    except:
-        print 'image download failed %s' % (url)
-        return None
-
-    return filepath
-
-
 def get_system_font():
     if sys.platform == 'linux2':
         de = detect_desktop_environment()
@@ -95,8 +72,8 @@ def get_system_font():
                 font_size = t[1]
                 return QtGui.QFont(font_name, int(font_size))
             except:
-                return QtGui.QApplication.font()
-    return QtGui.QApplication.font()
+                return QtWidgets.QApplication.font()
+    return QtWidgets.QApplication.font()
 
 
 def get_user_data_path(rel_path=''):

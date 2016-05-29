@@ -16,13 +16,15 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
 
-from api import __api
-import api.character.rankadv
+import l5r.api as api
+import l5r.api.character.rankadv
+
+from l5r.api import __api
 
 from asq.initiators import query
 from asq.selectors import a_
 
-from util import log
+from l5r.util import log
 
 
 def get_all():

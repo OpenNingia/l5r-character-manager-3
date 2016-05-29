@@ -16,16 +16,19 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
 
-from api import __api
-import api.data
-import api.rules
-import models
 import operator
+
+import l5r.api as api
+import l5r.api.data
+import l5r.api.rules
+import l5r.models
+
+from l5r.api import __api
 
 from asq.initiators import query
 from asq.selectors import a_
 
-from util import log
+from l5r.util import log
 
 
 def model():
@@ -35,7 +38,7 @@ def model():
 
 def new():
     """creates new player character model"""
-    __api.pc = models.AdvancedPcModel()
+    __api.pc = l5r.models.AdvancedPcModel()
     __api.pc.load_default()
 
     log.api.info("Created new character")
@@ -231,7 +234,7 @@ def trait_rank(trait_id):
         return 0
 
     trait_nm = trait_id
-    trait_idx = models.attrib_from_name(trait_id)
+    trait_idx = l5r.models.attrib_from_name(trait_id)
 
     starting_value_ = __api.pc.starting_traits[trait_idx]
 
@@ -378,7 +381,7 @@ def purchase_advancement(adv):
 def purchase_trait_rank(trait_id):
     """purchase the next rank in a trait"""
 
-    trait_nm = models.chmodel.attrib_name_from_id(trait_id)
+    trait_nm = l5r.models.chmodel.attrib_name_from_id(trait_id)
 
     cur_value = trait_rank(trait_nm)
     new_value = cur_value + 1
@@ -386,7 +389,7 @@ def purchase_trait_rank(trait_id):
     cost = api.rules.get_trait_rank_cost(trait_nm, new_value)
 
     # build advancement model
-    adv = models.advances.AttribAdv(trait_id, cost)
+    adv = l5r.models.advances.AttribAdv(trait_id, cost)
 
     adv.desc = (api.tr('{0}, Rank {1} to {2}. Cost: {3} xp')
                 .format(trait_nm, cur_value, new_value, adv.cost))
@@ -402,7 +405,7 @@ def purchase_void_rank():
 
     cost = api.rules.get_void_rank_cost(new_value)
 
-    adv = models.VoidAdv(cost)
+    adv = l5r.models.VoidAdv(cost)
     adv.desc = (api.tr('Void Ring, Rank {0} to {1}. Cost: {2} xp')
                 .format(cur_value, new_value, adv.cost))
 

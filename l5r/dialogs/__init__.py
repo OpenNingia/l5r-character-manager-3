@@ -15,14 +15,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from dialogs.advdlg import *
-from dialogs.itemseldlg import *
-from dialogs.perkseldlg import *
-from dialogs.customitems import *
-from dialogs.newrankdlg import *
-from dialogs.managedatapack import *
-from dialogs.spelldlg import *
-from dialogs.modifiersdlg import *
-from dialogs.katadlg import *
-from dialogs.kihodlg import *
-from dialogs.npcexport import *
+from l5r.dialogs.advdlg import *
+from l5r.dialogs.itemseldlg import *
+from l5r.dialogs.perkseldlg import *
+from l5r.dialogs.customitems import *
+from l5r.dialogs.newrankdlg import *
+from l5r.dialogs.managedatapack import *
+from l5r.dialogs.spelldlg import *
+from l5r.dialogs.modifiersdlg import *
+from l5r.dialogs.katadlg import *
+from l5r.dialogs.kihodlg import *
+from l5r.dialogs.npcexport import *
