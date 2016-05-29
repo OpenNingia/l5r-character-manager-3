@@ -1,6 +1,6 @@
 language: python
 python:
-  - "2.7"
+  - "3.5"
 # use system packages in virtualenv
 virtualenv:
   system_site_packages: true
@@ -8,11 +8,12 @@ virtualenv:
 addons:
   apt:
     packages:
-    - python-qt4
-    - python-lxml
+    - python3-pyqt5
+    - python3-lxml
 install:
   - "pip install --upgrade pip"
   - "pip install --upgrade asq"
+  - "pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@feature/python3"
   - "pip install --no-deps ./l5r"
 # command to run tests
 script: nosetests
