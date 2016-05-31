@@ -26,7 +26,7 @@ ArchitecturesInstallIn64BitMode=x64
 ; since it's capable of running 32-bit code too).
 
 [Files]
-Source: "dist/*"; DestDir: "{app}";
+Source: "dist/*"; DestDir: "{app}"; Flags: recursesubdirs;
 ; Place all common files here, first one should be marked 'solidbreak'
 Source: "common/*";  DestDir: "{app}"; Flags: solidbreak recursesubdirs
 Source: "fonts/OLDSSCH_.TTF"; DestDir: "{fonts}"; FontInstall: "Oldstyle Small Caps"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontOldStyle
