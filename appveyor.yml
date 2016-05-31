@@ -32,7 +32,8 @@ install:
   - python -m pip install --upgrade pip
   - pip install %LXMLWHEEL%
   - pip install --upgrade asq  
-  - pip3 install --upgrade PyQt5 
+  - pip3 install --upgrade PyQt5
+  - pip3 install --upgrade nose 
   - pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@feature/python3
 
 build_script:
