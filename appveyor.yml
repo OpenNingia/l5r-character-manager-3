@@ -24,7 +24,7 @@ install:
   - if %ARCH%==x86 (set LXMLWHEEL=%LXML32%) else set LXMLWHEEL=%LXML64%
   - set LXMLDOWNLOAD=%LXMLBASEURI%%LXMLWHEEL%
   - set PATH=%PYTHONDIR%;%PYTHONDIR%\scripts;%PATH%    
-  - ps: Start-FileDownload '%LXMLDOWNLOAD%'
+  - ps: Start-FileDownload '$env:LXMLDOWNLOAD'
   - pip3 install %LXMLWHEEL%
   - pip3 install --upgrade asq  
   - pip3 install --upgrade PyQt5 
