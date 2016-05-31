@@ -9,18 +9,23 @@ init:
 
 environment:
   PYTHONVER: 3.5
+  PYQTBASEURI: http://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-5.6/
   matrix:
     - PYTHONDIR: C:\Python35
     - PYTHONDIR: C:\Python35-x64
 
 install:
-  - if %PYTHONDIR:-x64=%==%PYTHONDIR% ( set ARCH=x86 ) else set ARCH=x64
-  - set PATH=%PYTHONDIR%;%PYTHONDIR%\scripts;%PATH%
-  - choco install pyqt5
+  - if %PYTHONDIR:-x64=%==%PYTHONDIR% (set ARCH=x86) else set ARCH=x64
+  - if %ARCH%==x86 (set PYQTINSTFILE=PyQt5-5.6-gpl-Py3.5-Qt5.6.0-x32-2.exe) else set PYQTINSTFILE=PyQt5-5.6-gpl-Py3.5-Qt5.6.0-x64-2.exe
+  - set PYQTDOWNLOAD=%PYQTBASEURI%%PYQTINSTFILE%
+  - set PATH=%PYTHONDIR%;%PYTHONDIR%\scripts;%PATH%  
   - pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@feature/python3
-  - pip install --upgrade asq
-  - pip install --upgrade lxml
-  
+  - pip3 install --upgrade asq
+  - pip3 install --upgrade lxml
+  - pip3 install --upgrade PyQt5 
+
+before_build:
+  - echo %PYQTDOWNLOAD%
 
 build_script:
   - pip install --no-deps .\l5r
