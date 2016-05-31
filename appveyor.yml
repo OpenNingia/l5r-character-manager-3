@@ -43,6 +43,8 @@ after_build:
   - mkdir tools\deploy\windows\dist
   - python %PYTHONDIR%\Scripts\cxfreeze  main.py --target-dir tools\deploy\windows\dist --include-modules=lxml._elementpath
   - cd tools\deploy\windows\
+  - deploy_common.bat
+  - dir common
   - dir dist
   - ISCC setup_appveyor.iss
   
