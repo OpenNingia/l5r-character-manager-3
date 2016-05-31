@@ -23,12 +23,12 @@ install:
   - set PYQTDOWNLOAD=%PYQTBASEURI%%PYQTINSTFILE%
   - if %ARCH%==x86 (set LXMLWHEEL=%LXML32%) else set LXMLWHEEL=%LXML64%
   - set LXMLDOWNLOAD=%LXMLBASEURI%%LXMLWHEEL%
-  - set PATH=%PYTHONDIR%;%PYTHONDIR%\scripts;%PATH%  
-  - pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@feature/python3
+  - set PATH=%PYTHONDIR%;%PYTHONDIR%\scripts;%PATH%    
   - ps: Start-FileDownload '%LXMLDOWNLOAD%'
   - pip3 install %LXMLWHEEL%
   - pip3 install --upgrade asq  
   - pip3 install --upgrade PyQt5 
+  - pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@feature/python3
 
 build_script:
   - pip install --no-deps .\l5r
