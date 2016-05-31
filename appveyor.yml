@@ -41,7 +41,7 @@ build_script:
   
 after_build:
   - mkdir tools\deploy\windows\dist
-  - python %PYTHONDIR%\Scripts\cxfreeze  main.py --target-dir tools\deploy\windows\dist --include-modules=lxml._elementpath
+  - python cxfreeze.py build
   - cd tools\deploy\windows\
   - deploy_common.bat
   - dir common

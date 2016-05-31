@@ -8,7 +8,7 @@ AppVerName={#MyAppName} {%APPVEYOR_BUILD_VERSION|3.11.1}
 AppPublisher={#MyAppPublisher}
 DefaultDirName={pf}\openningia\l5rcm
 DefaultGroupName=OpenNingia\L5RCM
-UninstallDisplayIcon={app}\main.exe
+UninstallDisplayIcon={app}\l5rcm.exe
 SetupIconFile=l5rcm.ico
 Compression=lzma2
 SolidCompression=yes
@@ -40,7 +40,7 @@ Source: "fonts/LiberationSans-Bold.ttf"; DestDir: "{fonts}"; FontInstall: "Liber
 Source: "core.l5rcmpack"; DestDir: "{app}";
 
 [Icons]
-Name: "{group}\L5RCM"; Filename: "{app}\main.exe"
+Name: "{group}\L5RCM"; Filename: "{app}\l5rcm.exe"
 
 
 [Tasks]
@@ -57,14 +57,14 @@ Name: importCorePack; Description: "Install Core Datapack"; GroupDescription: Da
 Root: HKCR; Subkey: ".l5r"; ValueType: string; ValueName: ""; ValueData: "L5Rcm.Character"; Flags: uninsdeletevalue; Tasks: l5rAssociation
 Root: HKCR; Subkey: ".l5rcmpack"; ValueType: string; ValueName: ""; ValueData: "L5Rcm.Pack"; Flags: uninsdeletevalue; Tasks: l5rpackAssociation
 ; icons
-Root: HKCR; Subkey: "L5Rcm.Character\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{code:GetShortName|{app}}\main.exe,0"; Flags: uninsdeletevalue; Tasks: l5rAssociation
-Root: HKCR; Subkey: "L5Rcm.Pack\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{code:GetShortName|{app}}\main.exe,1"; Flags: uninsdeletevalue; Tasks: l5rpackAssociation
+Root: HKCR; Subkey: "L5Rcm.Character\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{code:GetShortName|{app}}\l5rcm.exe,0"; Flags: uninsdeletevalue; Tasks: l5rAssociation
+Root: HKCR; Subkey: "L5Rcm.Pack\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{code:GetShortName|{app}}\l5rcm.exe,1"; Flags: uninsdeletevalue; Tasks: l5rpackAssociation
 ; names
 Root: HKCR; Subkey: "L5Rcm.Character"; ValueType: string; ValueName: ""; ValueData: "L5R: CM - Character File"; Flags: uninsdeletevalue; Tasks: l5rAssociation
 Root: HKCR; Subkey: "L5Rcm.Pack"; ValueType: string; ValueName: ""; ValueData: "L5R: CM - Data Pack File"; Flags: uninsdeletevalue; Tasks: l5rpackAssociation
 ; verbs
-Root: HKCR; Subkey: "L5Rcm.Character\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\main.exe"" --open ""%1"""; Flags: uninsdeletevalue; Tasks: l5rAssociation
-Root: HKCR; Subkey: "L5Rcm.Pack\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\main.exe"" --import ""%1"""; Flags: uninsdeletevalue; Tasks: l5rpackAssociation
+Root: HKCR; Subkey: "L5Rcm.Character\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\l5rcm.exe"" --open ""%1"""; Flags: uninsdeletevalue; Tasks: l5rAssociation
+Root: HKCR; Subkey: "L5Rcm.Pack\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\l5rcm.exe"" --import ""%1"""; Flags: uninsdeletevalue; Tasks: l5rpackAssociation
 
 [Run]
-Filename: "{app}\main.exe"; Parameters: "--import ""{app}""\core.l5rcmpack"; Tasks: importCorePack
+Filename: "{app}\l5rcm.exe"; Parameters: "--import ""{app}""\core.l5rcmpack"; Tasks: importCorePack
