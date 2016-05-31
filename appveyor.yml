@@ -1,0 +1,30 @@
+version: 3.11.{build}
+
+image:
+- Visual Studio 2015
+
+init:
+  # Gather some basic build environment details.
+  - rem set
+
+environment:
+  PYTHONVER: 3.5
+  matrix:
+    - PYTHONDIR: C:\Python35
+    - PYTHONDIR: C:\Python35-x64
+
+install:
+  - if %PYTHONDIR:-x64=%==%PYTHONDIR% ( set ARCH=x86 ) else set ARCH=x64
+  - set PATH=%PYTHONDIR%;%PYTHONDIR%\scripts;%PATH%
+  - choco install pyqt5
+  - pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@feature/python3
+  - pip install --upgrade asq
+  - pip install --upgrade lxml
+  
+
+build_script:
+  - pip install --no-deps .\l5r
+  - nosetests
+
+# fetch repository as zip archive
+shallow_clone: true
