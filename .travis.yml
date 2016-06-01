@@ -47,4 +47,4 @@ deploy:
   file: "${RELEASE_PKG_FILE}"
   skip_cleanup: true
   on:
-    branch: feature/python3_pyqt5  
+    tags: true  
