@@ -146,7 +146,7 @@ class FDFExporterTwoNPC(FDFExporter):
             _af("Attack", atk_roll, j)
             dmg_roll = api.rules.format_rtk_t(
                 api.rules.calculate_mod_damage_roll(pc, weapon))
-            _af("Damage", atk_roll, j)
+            _af("Damage", dmg_roll, j)
             _af("Notes", weapon.desc, j)
 
         # OTHER TRAITS

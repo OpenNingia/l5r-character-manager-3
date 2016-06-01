@@ -2306,12 +2306,13 @@ class L5RMain(L5RCMCore):
             proposed,
             self.tr("L5R Character files (*.l5r)"))
 
+        # user pressed cancel or didn't enter a name
+        if not fileName:
+            return None
+
+        # on pyqt5 it returns a tuple (fname, filter)
         if type(fileName) is tuple:
             fileName = fileName[0]
-
-        # user pressed cancel or didn't enter a name
-        if fileName == u'':
-            return None
 
         last_dir = os.path.dirname(fileName)
         if last_dir != '':
@@ -2331,6 +2332,11 @@ class L5RMain(L5RCMCore):
             last_dir,
             self.tr("L5R Character files (*.l5r)"))
 
+        # user pressed cancel or didn't enter a name
+        if not fileName:
+            return None
+
+        # on pyqt5 it returns a tuple (fname, filter)
         if type(fileName) is tuple:
             fileName = fileName[0]
 
@@ -2355,8 +2361,12 @@ class L5RMain(L5RCMCore):
             ";;".join(supported_filters))
 
         # user pressed cancel or didn't enter a name
-        if fileName == u'':
+        if not fileName:
             return None
+
+        # on pyqt5 it returns a tuple (fname, filter)
+        if type(fileName) is tuple:
+            fileName = fileName[0]
 
         last_dir = os.path.dirname(fileName[0])
         if last_dir != '':
@@ -2374,15 +2384,16 @@ class L5RMain(L5RCMCore):
         settings = QtCore.QSettings()
         last_data_dir = settings.value(
             'last_open_data_dir', QtCore.QDir.homePath())
-        ret = QtWidgets.QFileDialog.getOpenFileNames(
+        files = QtWidgets.QFileDialog.getOpenFileNames(
             self,
             self.tr("Load data pack"),
             last_data_dir,
             ";;".join(supported_filters))
 
-        files = ret
+        if type(files) is tuple:
+            files = files[0]
 
-        if not len(files):
+        if not files:
             return None
 
         last_data_dir = os.path.dirname(files[0])

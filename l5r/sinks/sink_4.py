@@ -67,7 +67,8 @@ class Sink4(QtCore.QObject):
     # DATA MENU
     def import_data_act(self):
         data_pack_files = self.form.select_import_data_pack()
-        self.form.import_data_packs(data_pack_files)
+        if data_pack_files:
+            self.form.import_data_packs(data_pack_files)
 
     def manage_data_act(self):
         dlg = dialogs.ManageDataPackDlg(self.form.dstore, self.form)
