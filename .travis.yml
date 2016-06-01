@@ -30,7 +30,7 @@ before_deploy:
   - "export APP_VER_LN=$(grep -n '^APP_VERSION\\s*=\\s*' l5r/l5rcmcore/__init__.py | cut -d\\: -f1)"
   - "export APP_VER_BS=$(grep '^APP_VERSION\\s*=\\s*' l5r/l5rcmcore/__init__.py | cut -d\\. -f1,2)"
   - "export APP_VER_NW=$APP_VER_BS.$TRAVIS_BUILD_NUMBER"
-  - "sed -i $APP_VER_LN's/.*/APP_VERSION = '$APP_VER_NW'/' l5r/l5rcmcore/__init__.py"  
+  - sed -i '$APP_VER_LNs/.*/APP_VERSION = $APP_VER_NW/' l5r/l5rcmcore/__init__.py  
   - "grep -n '^APP_VERSION\\s*=\\s*' l5r/l5rcmcore/__init__.py"
   - "cd tools/deploy/linux"
   - "./makedeb.sh"
