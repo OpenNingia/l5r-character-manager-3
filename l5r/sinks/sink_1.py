@@ -60,10 +60,10 @@ class Sink1(QtCore.QObject):
 
     def save_character(self):
         form = self.form
-        if form.save_path == '' or not os.path.exists(form.save_path):
+        if not form.save_path or not os.path.exists(form.save_path):
             form.save_path = form.select_save_path()
 
-        if form.save_path is not None and len(form.save_path) > 0:
+        if form.save_path:
             form.pc.version = DB_VERSION
             form.pc.extra_notes = form.tx_pc_notes.get_content()
 
