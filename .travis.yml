@@ -26,12 +26,15 @@ script: nosetests
 before_deploy:
   - "cd tools/deploy/linux"
   - "./makedeb.sh"
+  - export RELEASE_PKG_FILE=$(ls tools/deploy/linux/*.deb)
+  - echo "deploying $RELEASE_PKG_FILE to GitHub releases"
 
 deploy:
   provider: releases
   api_key:
     secure: "B6I+84oUCo2Hpr2OZue0JugwfTJeNCinrV90rHiGbDyzSr/tPxTa93DPXrrbn2eDW4uu8SG7pjyU2QpF/XP+F5Gzv2KhKMAJcXA+r9yhNCbbuey8E72ksBjNFruqXkCgT6FkNMtMGjeSo4mgiBnI1Tt7L46oiKLxFJvMbBYE9YAersUPZG1X1kcWbd/c65lO3E2jAuTuNoAejtBSKbvXo4y9kJYgcfx+a+/m2RVEqA7oL16WyO5BIsUxKNLQx398ekUS8Z5XM4/awsNhDNM6D5FIZdBm5by37UrKYNJxSqnK4nPJy3TlLxkXb7ILipbzo0yS3V5Byhl/GBBMH08QEjiS9keQuY6zH4dlVpDRyo55IGrSTXmmkLl0iHi8oH1qezr48AiQS+0HA9cyYsK9DL6XNAByo4cDj6UqwLyOFaMLqrIK1fIZE1fgrvbRrKX2zgWb1fSgAPPtlD9JPtrdl/kuMJ9JWeZ5nfsrCXHt5RjfTWWXl2UpVK2M9uOmsqBAOHEUKTaIBH0uEX+ZegVaNCRhnD2Ylk9O446b6bn/755DXyuwU4ghTGnSQnPKg45mIm/tUmlA6keP3hpw7nU43+brKzO/INS1k6lJTPxau399Mw8moy8s+WmiN2kKTum/mooBU8w0ZkAirLd+ruNreeZKdmSwtIVa5lT61HzOZ6g="
-  file: "tools/deploy/linux/*.deb"
+  file_glob: true
+  file: "${RELEASE_PKG_FILE}"
   skip_cleanup: true
   on:
     branch: feature/python3_pyqt5  
