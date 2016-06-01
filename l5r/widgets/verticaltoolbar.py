@@ -14,19 +14,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class VerticalToolBar(QtGui.QFrame):
+class VerticalToolBar(QtWidgets.QFrame):
 
     def __init__(self, parent=None):
         super(VerticalToolBar, self).__init__(parent)
-        self.vbox = QtGui.QVBoxLayout(self)
+        self.vbox = QtWidgets.QVBoxLayout(self)
         self.vbox.setContentsMargins(0, 6, 0, 6)
         self.bt_size = QtCore.QSize(16, 16)
 
     def addButton(self, icon, text, target_slot):
-        tb = QtGui.QToolButton(self)
+        tb = QtWidgets.QToolButton(self)
         tb.setIconSize(self.bt_size)
         tb.setToolButtonStyle(QtCore.Qt.ToolButtonFollowStyle)
         tb.setIcon(icon)

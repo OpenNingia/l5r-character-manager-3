@@ -14,30 +14,30 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 APP_NAME = u"L5R: CM"
 
 
 def new_horiz_line(parent=None):
-    line = QtGui.QFrame(parent)
+    line = QtWidgets.QFrame(parent)
     line.setObjectName("hline")
     line.setGeometry(QtCore.QRect(3, 3, 3, 3))
-    line.setFrameShape(QtGui.QFrame.HLine)
-    line.setFrameShadow(QtGui.QFrame.Sunken)
-    line.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
+    line.setFrameShape(QtWidgets.QFrame.HLine)
+    line.setFrameShadow(QtWidgets.QFrame.Sunken)
+    line.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
     return line
 
 
-class SimpleDescriptionView(QtGui.QWidget):
+class SimpleDescriptionView(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
         super(SimpleDescriptionView, self).__init__(parent)
 
-        self.lb_title = QtGui.QLabel(self)
-        self.lb_subtitle = QtGui.QLabel(self)
-        #self.lb_content  = QtGui.QLabel(self)
-        self.tx_content = QtGui.QTextEdit(self)
+        self.lb_title = QtWidgets.QLabel(self)
+        self.lb_subtitle = QtWidgets.QLabel(self)
+        #self.lb_content  = QtWidgets.QLabel(self)
+        self.tx_content = QtWidgets.QTextEdit(self)
 
         text_align = QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter
 
@@ -48,9 +48,9 @@ class SimpleDescriptionView(QtGui.QWidget):
         #self.lb_content .setWordWrap (True)
 
         self.tx_content.setSizePolicy(
-            QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
 
-        vbox = QtGui.QVBoxLayout(self)
+        vbox = QtWidgets.QVBoxLayout(self)
         vbox.addWidget(self.lb_title)
         vbox.addWidget(self.lb_subtitle)
         vbox.addWidget(new_horiz_line(self))
@@ -70,16 +70,16 @@ class SimpleDescriptionView(QtGui.QWidget):
         return QtCore.QSize(400, 300)
 
 
-class SimpleDescriptionDialog(QtGui.QDialog):
+class SimpleDescriptionDialog(QtWidgets.QDialog):
 
     def __init__(self, parent=None):
         super(SimpleDescriptionDialog, self).__init__(parent)
 
         self.descr = SimpleDescriptionView(self)
-        self.bt = QtGui.QPushButton(self.tr("Close"), self)
+        self.bt = QtWidgets.QPushButton(self.tr("Close"), self)
 
-        self.vbox = QtGui.QVBoxLayout(self)
-        self.hbox = QtGui.QHBoxLayout()
+        self.vbox = QtWidgets.QVBoxLayout(self)
+        self.hbox = QtWidgets.QHBoxLayout()
         self.hbox.addStretch()
         self.hbox.addWidget(self.bt)
         self.hbox.addStretch()

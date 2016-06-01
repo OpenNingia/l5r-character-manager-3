@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class DataPackModel(QtCore.QAbstractTableModel):
@@ -112,7 +112,7 @@ class DataPackModel(QtCore.QAbstractTableModel):
         self.endResetModel()
 
 
-class ManageDataPackDlg(QtGui.QDialog):
+class ManageDataPackDlg(QtWidgets.QDialog):
 
     def __init__(self, dstore, parent=None):
         super(ManageDataPackDlg, self).__init__(parent)
@@ -125,17 +125,17 @@ class ManageDataPackDlg(QtGui.QDialog):
     def build_ui(self):
         self.setWindowTitle(self.tr("Data Pack Manager"))
 
-        vbox = QtGui.QVBoxLayout(self)
+        vbox = QtWidgets.QVBoxLayout(self)
 
-        grp = QtGui.QGroupBox(self.tr("Available data packs"))
-        self.view = QtGui.QTableView(self)
-        vbox2 = QtGui.QVBoxLayout(grp)
+        grp = QtWidgets.QGroupBox(self.tr("Available data packs"))
+        self.view = QtWidgets.QTableView(self)
+        vbox2 = QtWidgets.QVBoxLayout(grp)
         vbox2.addWidget(self.view)
 
-        bts = QtGui.QDialogButtonBox()
+        bts = QtWidgets.QDialogButtonBox()
 
-        bts.addButton(self.tr("Discard"), QtGui.QDialogButtonBox.RejectRole)
-        bts.addButton(self.tr("Save"), QtGui.QDialogButtonBox.AcceptRole)
+        bts.addButton(self.tr("Discard"), QtWidgets.QDialogButtonBox.RejectRole)
+        bts.addButton(self.tr("Save"), QtWidgets.QDialogButtonBox.AcceptRole)
 
         vbox.addWidget(grp)
         vbox.addWidget(bts)

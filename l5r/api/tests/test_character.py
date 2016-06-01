@@ -2,13 +2,14 @@
 __author__ = 'Daniele Simonetti'
 
 import unittest
-import api
-import api.character
-import api.data
 
-import dal
+import l5r.api as api
+import l5r.api.character
+import l5r.api.data
 
-from tests.fakedata import *
+import l5rdal as dal
+
+from l5r.tests.fakedata import *
 
 
 class TestCharacterBll(unittest.TestCase):

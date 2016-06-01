@@ -15,10 +15,10 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class XpTextBox(QtGui.QLineEdit):
+class XpTextBox(QtWidgets.QLineEdit):
 
     sub_text = None
 
@@ -47,7 +47,7 @@ class XpTextBox(QtGui.QLineEdit):
         painter.restore()
 
 
-class CostSelection(QtGui.QWidget):
+class CostSelection(QtWidgets.QWidget):
 
     rb_suggested = None
     rb_manual = None
@@ -64,14 +64,14 @@ class CostSelection(QtGui.QWidget):
     def __init__(self, parent=None):
         super(CostSelection, self).__init__(parent)
 
-        self.rb_suggested = QtGui.QRadioButton(
+        self.rb_suggested = QtWidgets.QRadioButton(
             self.tr('Suggested Value'), self)
-        self.rb_manual = QtGui.QRadioButton(self.tr('Manual Value'), self)
+        self.rb_manual = QtWidgets.QRadioButton(self.tr('Manual Value'), self)
 
         self.tx_suggested = XpTextBox(self)
         self.tx_manual = XpTextBox(self)
 
-        vbox = QtGui.QVBoxLayout(self)
+        vbox = QtWidgets.QVBoxLayout(self)
         vbox.addStretch()
         vbox.addWidget(self.rb_suggested)
         vbox.addWidget(self.tx_suggested)
@@ -143,9 +143,9 @@ class CostSelection(QtGui.QWidget):
 
 
 def utest():
-    app = QtGui.QApplication(sys.argv)
-    dlg = QtGui.QDialog()
-    vbox = QtGui.QVBoxLayout(dlg)
+    app = QtWidgets.QApplication(sys.argv)
+    dlg = QtWidgets.QDialog()
+    vbox = QtWidgets.QVBoxLayout(dlg)
     csel = CostSelection(dlg)
     csel.set_suggested_cost(3)
     csel.set_discount_reason('crab')

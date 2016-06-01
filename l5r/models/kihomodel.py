@@ -15,12 +15,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 
-import api.data
-import api.data.powers
-import api.character.powers
-from util import log
+import l5r.api as api
+import l5r.api.data
+import l5r.api.data.powers
+import l5r.api.character.powers
+from l5r.util import log
 
 
 class KihoItemModel(object):

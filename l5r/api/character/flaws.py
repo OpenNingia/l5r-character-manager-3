@@ -17,13 +17,12 @@
 __author__ = 'Daniele'
 
 # for rank advancement models
-import models
-
-from api import __api
+import l5r.api as api
+import l5r.api.data.merits
+from l5r.models import PerkAdv
+from l5r.api import __api
 from asq.initiators import query
 from asq.selectors import a_
-
-import api.data.merits
 
 
 def get_all():
@@ -63,9 +62,9 @@ def add(flaw_id, rank=None):
 
     gain_ = api.data.flaws.get_rank_gain(flaw_id, rank)
 
-    adv_ = models.PerkAdv(flaw_id, flaw_rank_.id, -gain_, "flaw")
+    adv_ = PerkAdv(flaw_id, flaw_rank_.id, -gain_, "flaw")
     adv_.rule = flaw_id
-    adv_.desc = unicode.format(__api.tr("{0} Rank {1}, XP Gain: {2}"),
+    adv_.desc = __api.tr("{0} Rank {1}, XP Gain: {2}").format(
                                flaw_.name, flaw_rank_.id, gain_)
 
     api.character.append_advancement(adv_)
@@ -92,9 +91,9 @@ def add_starting(flaw_id, rank=None):
 
     gain_ = 0
 
-    adv_ = models.PerkAdv(flaw_id, flaw_rank_.id, -gain_, "flaw")
+    adv_ = PerkAdv(flaw_id, flaw_rank_.id, -gain_, "flaw")
     adv_.rule = flaw_id
-    adv_.desc = unicode.format(__api.tr("{0} Rank {1}, XP Gain: {2}"),
+    adv_.desc = __api.tr("{0} Rank {1}, XP Gain: {2}").format(
                                flaw_.name, flaw_rank_.id, gain_)
 
     first_rank_.flaws.append(adv_)

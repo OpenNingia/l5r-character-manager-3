@@ -12,11 +12,11 @@
 
 # Authors: Federico Brega, Pierluigi Villani
 # Inspired from C++ code by Qt software qticonloader.cpp
-# Adapted to PyQt4 by Daniele Simonetti
+# Adapted to PyQt5 by Daniele Simonetti
 
 import os
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 
 
 class QIconTheme:
@@ -90,11 +90,13 @@ class QtIconLoaderImplementation():
         # endif
 
     def findIcon(self, size, name):
-        pixmap = QPixmap()
+
         pixmapName = "$qt" + name + str(size)
-        if QPixmapCache.find(pixmapName, pixmap):
-            return pixmap
-        if self._themeName:
+        #if QPixmapCache.find(pixmapName, pixmap):
+        #    return pixmap
+        pixmap = QPixmapCache.find(pixmapName)
+
+        if not pixmap and self._themeName:
             visited = []
             pixmap = self.findIconHelper(size, self._themeName, name, visited)
             QPixmapCache.insert(pixmapName, pixmap)

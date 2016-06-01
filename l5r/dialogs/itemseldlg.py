@@ -15,13 +15,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
-import models
-import api.data.outfit
+import l5r.models as models
+import l5r.api as api
+import l5r.api.data.outfit
 
 
-class ChooseItemDialog(QtGui.QDialog):
+class ChooseItemDialog(QtWidgets.QDialog):
 
     def __init__(self, pc, tag, parent=None):
         super(ChooseItemDialog, self).__init__(parent)
@@ -38,27 +39,27 @@ class ChooseItemDialog(QtGui.QDialog):
         # depending on the tag (armor or weapon)
         # we build a different interface
 
-        self.bt_accept = QtGui.QPushButton(self.tr("Ok"), self)
-        self.bt_cancel = QtGui.QPushButton(self.tr("Cancel"), self)
+        self.bt_accept = QtWidgets.QPushButton(self.tr("Ok"), self)
+        self.bt_cancel = QtWidgets.QPushButton(self.tr("Cancel"), self)
 
         self.bt_cancel.clicked.connect(self.close)
         self.bt_accept.clicked.connect(self.on_accept)
 
-        grid = QtGui.QGridLayout(self)
+        grid = QtWidgets.QGridLayout(self)
         grid.setColumnStretch(0, 2)
 
         if self.tag == 'armor':
             self.setWindowTitle(self.tr("Wear Armor"))
-            grp = QtGui.QGroupBox(self.tr("Select Armor"), self)
-            vbox = QtGui.QVBoxLayout(grp)
-            self.cb = QtGui.QComboBox(self)
+            grp = QtWidgets.QGroupBox(self.tr("Select Armor"), self)
+            vbox = QtWidgets.QVBoxLayout(grp)
+            self.cb = QtWidgets.QComboBox(self)
             self.cb.currentIndexChanged.connect(self.on_armor_select)
             vbox.addWidget(self.cb)
             grid.addWidget(grp, 0, 0)
 
-            grp = QtGui.QGroupBox(self.tr("Stats"), self)
-            vbox = QtGui.QVBoxLayout(grp)
-            self.stats = QtGui.QLabel(self)
+            grp = QtWidgets.QGroupBox(self.tr("Stats"), self)
+            vbox = QtWidgets.QVBoxLayout(grp)
+            self.stats = QtWidgets.QLabel(self)
             self.stats.setWordWrap(True)
             vbox.addWidget(self.stats)
 
@@ -68,23 +69,23 @@ class ChooseItemDialog(QtGui.QDialog):
             grid.addWidget(self.bt_cancel, 2, 3)
         elif self.tag == 'weapon':
             self.setWindowTitle(self.tr("Add Weapon"))
-            grp = QtGui.QGroupBox(self.tr("Weapon Skill"), self)
-            vbox = QtGui.QVBoxLayout(grp)
-            self.cb1 = QtGui.QComboBox(self)
+            grp = QtWidgets.QGroupBox(self.tr("Weapon Skill"), self)
+            vbox = QtWidgets.QVBoxLayout(grp)
+            self.cb1 = QtWidgets.QComboBox(self)
             self.cb1.currentIndexChanged.connect(self.on_weap_skill_select)
             vbox.addWidget(self.cb1)
             grid.addWidget(grp, 0, 0, 1, 2)
 
-            grp = QtGui.QGroupBox(self.tr("Weapon"), self)
-            vbox = QtGui.QVBoxLayout(grp)
-            self.cb2 = QtGui.QComboBox(self)
+            grp = QtWidgets.QGroupBox(self.tr("Weapon"), self)
+            vbox = QtWidgets.QVBoxLayout(grp)
+            self.cb2 = QtWidgets.QComboBox(self)
             self.cb2.currentIndexChanged.connect(self.on_weap_select)
             vbox.addWidget(self.cb2)
             grid.addWidget(grp, 1, 0, 1, 2)
 
-            grp = QtGui.QGroupBox(self.tr("Stats"), self)
-            vbox = QtGui.QVBoxLayout(grp)
-            self.stats = QtGui.QLabel(self)
+            grp = QtWidgets.QGroupBox(self.tr("Stats"), self)
+            vbox = QtWidgets.QVBoxLayout(grp)
+            self.stats = QtWidgets.QLabel(self)
             self.stats.setWordWrap(True)
             vbox.addWidget(self.stats)
 
@@ -141,8 +142,8 @@ class ChooseItemDialog(QtGui.QDialog):
              self.item.rule)
         self.stats.setText(stats_text)
 
-        self.stats.setSizePolicy(QtGui.QSizePolicy.Minimum,
-                                 QtGui.QSizePolicy.Minimum)
+        self.stats.setSizePolicy(QtWidgets.QSizePolicy.Minimum,
+                                 QtWidgets.QSizePolicy.Minimum)
 
     def on_weap_skill_select(self, text=''):
         self.cb2.clear()
@@ -191,8 +192,8 @@ class ChooseItemDialog(QtGui.QDialog):
 
         self.stats.setText('<p>' + '\n'.join(lines) + '</p>')
 
-        self.stats.setSizePolicy(QtGui.QSizePolicy.Minimum,
-                                 QtGui.QSizePolicy.Minimum)
+        self.stats.setSizePolicy(QtWidgets.QSizePolicy.Minimum,
+                                 QtWidgets.QSizePolicy.Minimum)
 
     def on_accept(self):
         done = True

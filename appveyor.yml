@@ -1,0 +1,55 @@
+version: 3.11.{build}
+
+image:
+- Visual Studio 2015
+
+init:
+  # Gather some basic build environment details.
+  - rem set
+
+environment:
+  PYTHONVER: 3.5
+  CXF32: https://github.com/sekrause/cx_Freeze-Wheels/raw/master/cx_Freeze-5.0-cp35-cp35m-win32.whl
+  CXF64: https://github.com/sekrause/cx_Freeze-Wheels/raw/master/cx_Freeze-5.0-cp35-cp35m-win_amd64.whl
+  LXMLBASEURI: http://www.edna-site.org/pub/wheelhouse/
+  LXML64: lxml-3.6.0-cp35-cp35m-win_amd64.whl
+  LXML32: lxml-3.6.0-cp35-cp35m-win32.whl
+  matrix:
+    - PYTHONDIR: C:\Python35
+    - PYTHONDIR: C:\Python35-x64
+
+install:
+  - if %PYTHONDIR:-x64=%==%PYTHONDIR% (set ARCH=x86) else set ARCH=x64  
+  - if %ARCH%==x86 (set LXMLWHEEL=%LXML32%) else set LXMLWHEEL=%LXML64%
+  - if %ARCH%==x86 (set CXFWHEEL=%CXF32%) else set CXFWHEEL=%CXF64%
+  - set LXMLDOWNLOAD=%LXMLBASEURI%%LXMLWHEEL%
+  - choco install -y InnoSetup
+  - set PATH=%PYTHONDIR%;%PYTHONDIR%\scripts;C:\Program Files (x86)\Inno Setup 5;%PATH%
+  - python --version
+  - echo %PATH%
+  - python -m pip install --upgrade pip
+  - pip install %LXMLDOWNLOAD%
+  - pip install %CXFWHEEL%
+  - pip install --upgrade asq  
+  - pip3 install --upgrade PyQt5
+  - pip3 install --upgrade nose   
+  - pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@develop  
+
+build_script:
+  - pip install --no-deps .\l5r
+  - nosetests
+  
+after_build:
+  - mkdir tools\deploy\windows\dist
+  - python cxfreeze.py build
+  - cd tools\deploy\windows\
+  - deploy_common.bat
+  - dir common
+  - dir dist
+  - ISCC setup_appveyor.iss
+  
+artifacts:
+  - path: tools\deploy\windows\Output\l5rcm-setup.exe    
+
+# fetch repository as zip archive
+shallow_clone: true

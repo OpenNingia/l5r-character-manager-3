@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
 
-from models.advances import Advancement
+from l5r.models.advances import Advancement
 
 
 class Rank(Advancement):

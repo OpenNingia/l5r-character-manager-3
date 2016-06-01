@@ -1,30 +1,50 @@
 language: python
 python:
-  - "2.7"
+  - "3.5"
+
+cache: pip
+  
 # use system packages in virtualenv
 virtualenv:
-  system_site_packages: true
+  system_site_packages: false
 # apt packages
 addons:
   apt:
     packages:
-    - python-qt4
-    - python-lxml
+    - libxml2-dev
+    - libxslt1-dev
+    - python-dev
+    - librsvg2-bin
+    - python-docutils
 install:
   - "pip install --upgrade pip"
   - "pip install --upgrade asq"
+  - "pip install --upgrade lxml"
+  - "pip install --upgrade PyQt5"
+  - "pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@develop"
   - "pip install --no-deps ./l5r"
 # command to run tests
 script: nosetests
 
 before_deploy:
+  - "export APP_VER_LN=$(grep -n '^APP_VERSION\\s*=\\s*' l5r/l5rcmcore/__init__.py | cut -d\\: -f1)"  
+  - "export APP_VER_BS=$(grep '^APP_VERSION\\s*=\\s*' l5r/l5rcmcore/__init__.py | cut -d\\. -f1,2)"
+  - echo $APP_VER_BS
+  - "export APP_VER_NW=$APP_VER_BS.$TRAVIS_BUILD_NUMBER"
+  - echo $APP_VER_NW
+  - sed -i "${APP_VER_LN}s/.*/${APP_VER_NW}'/" l5r/l5rcmcore/__init__.py  
+  - "grep -n '^APP_VERSION\\s*=\\s*' l5r/l5rcmcore/__init__.py"
   - "cd tools/deploy/linux"
   - "./makedeb.sh"
+  - "export RELEASE_PKG_FILE=$(ls *.deb)"
+  - "echo deploying $RELEASE_PKG_FILE to GitHub releases"
 
 deploy:
   provider: releases
-  api_key: "e5ebc2ddf8d3d2645afa708ccb9e828846d1e932"
-  file: "tools/deploy/linux/*.deb"
+  api_key:
+    secure: "B6I+84oUCo2Hpr2OZue0JugwfTJeNCinrV90rHiGbDyzSr/tPxTa93DPXrrbn2eDW4uu8SG7pjyU2QpF/XP+F5Gzv2KhKMAJcXA+r9yhNCbbuey8E72ksBjNFruqXkCgT6FkNMtMGjeSo4mgiBnI1Tt7L46oiKLxFJvMbBYE9YAersUPZG1X1kcWbd/c65lO3E2jAuTuNoAejtBSKbvXo4y9kJYgcfx+a+/m2RVEqA7oL16WyO5BIsUxKNLQx398ekUS8Z5XM4/awsNhDNM6D5FIZdBm5by37UrKYNJxSqnK4nPJy3TlLxkXb7ILipbzo0yS3V5Byhl/GBBMH08QEjiS9keQuY6zH4dlVpDRyo55IGrSTXmmkLl0iHi8oH1qezr48AiQS+0HA9cyYsK9DL6XNAByo4cDj6UqwLyOFaMLqrIK1fIZE1fgrvbRrKX2zgWb1fSgAPPtlD9JPtrdl/kuMJ9JWeZ5nfsrCXHt5RjfTWWXl2UpVK2M9uOmsqBAOHEUKTaIBH0uEX+ZegVaNCRhnD2Ylk9O446b6bn/755DXyuwU4ghTGnSQnPKg45mIm/tUmlA6keP3hpw7nU43+brKzO/INS1k6lJTPxau399Mw8moy8s+WmiN2kKTum/mooBU8w0ZkAirLd+ruNreeZKdmSwtIVa5lT61HzOZ6g="
+  file_glob: true
+  file: "${RELEASE_PKG_FILE}"
   skip_cleanup: true
   on:
     tags: true  

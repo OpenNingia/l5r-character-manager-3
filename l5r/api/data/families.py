@@ -18,7 +18,7 @@ __author__ = 'Daniele'
 
 from asq.initiators import query
 from asq.selectors import a_
-from api import __api
+from l5r.api import __api
 
 
 def get_all():

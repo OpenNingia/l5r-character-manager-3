@@ -15,12 +15,13 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
 
-import api
-from api import __api
+import l5r.api as api
+
+from l5r.models import MemoSpellAdv, SpellAdv
+from l5r.api import __api
 from asq.initiators import query
 from asq.selectors import a_
-from util import log
-import models
+from l5r.util import log
 
 
 def get_all():
@@ -229,7 +230,7 @@ def purchase_memo_spell(spell_id):
     cost = spell_.mastery
     text = spell_.name
 
-    adv = models.MemoSpellAdv(spell_id, cost)
+    adv = MemoSpellAdv(spell_id, cost)
     adv.desc = (api.tr('{0}, Mastery {1}. Cost: {2} xp')
                 .format(text, spell_.mastery, adv.cost))
 
@@ -261,7 +262,7 @@ def add_spell(spell_id):
         log.api.error(u"add_school_spell. spell not found: %s", spell_id)
         return False
 
-    adv = models.SpellAdv(spell_id)
+    adv = SpellAdv(spell_id)
     adv.desc = (api.tr('{0}, Mastery {1}. Element: {2}')
                 .format(spell_.name, spell_.mastery, spell_.element))
 

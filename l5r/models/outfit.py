@@ -15,12 +15,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 
-import api.rules
-import api.data.outfit
-import api.data.skills
-from util import log
+import l5r.api as api
+import l5r.api.rules
+import l5r.api.data.outfit
+import l5r.api.data.skills
+
+from l5r.util import log
 
 
 class ArmorOutfit(object):

@@ -14,18 +14,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 from asq.initiators import query
 from asq.selectors import a_
 
-import api.data
-import api.character
-import api.character.merits
-import api.data.schools
-import api.data.clans
-import widgets
+import l5r.api as api
+import l5r.api.data
+import l5r.api.character
+import l5r.api.character.merits
+import l5r.api.data.schools
+import l5r.api.data.clans
 
+from .requirementwidget import RequirementsWidget
 
 def green(text):
     return u'<span style="color: #0A0">{}</span>'.format(text)
@@ -35,7 +36,7 @@ def red(text):
     return u'<span style="color: #A00">{}</span>'.format(text)
 
 
-class FirstSchoolChooserDialog(QtGui.QDialog):
+class FirstSchoolChooserDialog(QtWidgets.QDialog):
 
     def __init__(self, parent=None):
         super(FirstSchoolChooserDialog, self).__init__(parent)
@@ -45,21 +46,21 @@ class FirstSchoolChooserDialog(QtGui.QDialog):
         self.setup()
 
     def build_ui(self):
-        self.vbox_lo = QtGui.QVBoxLayout(self)
-        self.bt_ok = QtGui.QPushButton(self.tr('Ok'), self)
-        self.bt_cancel = QtGui.QPushButton(self.tr('Cancel'), self)
+        self.vbox_lo = QtWidgets.QVBoxLayout(self)
+        self.bt_ok = QtWidgets.QPushButton(self.tr('Ok'), self)
+        self.bt_cancel = QtWidgets.QPushButton(self.tr('Cancel'), self)
 
-        self.header = QtGui.QLabel(self)
+        self.header = QtWidgets.QLabel(self)
 
         # bottom bar
-        bottom_bar = QtGui.QFrame(self)
-        hbox = QtGui.QHBoxLayout(bottom_bar)
+        bottom_bar = QtWidgets.QFrame(self)
+        hbox = QtWidgets.QHBoxLayout(bottom_bar)
         hbox.addStretch()
         hbox.addWidget(self.bt_ok)
         hbox.addWidget(self.bt_cancel)
 
-        fr_central = QtGui.QFrame(self)
-        vb = QtGui.QVBoxLayout(fr_central)
+        fr_central = QtWidgets.QFrame(self)
+        vb = QtWidgets.QVBoxLayout(fr_central)
         vb.setContentsMargins(40, 20, 40, 20)
         vb.addWidget(self.widget)
 
@@ -109,7 +110,7 @@ class FirstSchoolChooserDialog(QtGui.QDialog):
             api.character.merits.add('different_school')
 
 
-class SchoolChooserDialog(QtGui.QDialog):
+class SchoolChooserDialog(QtWidgets.QDialog):
 
     def __init__(self, parent=None):
         super(SchoolChooserDialog, self).__init__(parent)
@@ -119,21 +120,21 @@ class SchoolChooserDialog(QtGui.QDialog):
         self.setup()
 
     def build_ui(self):
-        self.vbox_lo = QtGui.QVBoxLayout(self)
-        self.bt_ok = QtGui.QPushButton(self.tr('Ok'), self)
-        self.bt_cancel = QtGui.QPushButton(self.tr('Cancel'), self)
+        self.vbox_lo = QtWidgets.QVBoxLayout(self)
+        self.bt_ok = QtWidgets.QPushButton(self.tr('Ok'), self)
+        self.bt_cancel = QtWidgets.QPushButton(self.tr('Cancel'), self)
 
-        self.header = QtGui.QLabel(self)
+        self.header = QtWidgets.QLabel(self)
 
         # bottom bar
-        bottom_bar = QtGui.QFrame(self)
-        hbox = QtGui.QHBoxLayout(bottom_bar)
+        bottom_bar = QtWidgets.QFrame(self)
+        hbox = QtWidgets.QHBoxLayout(bottom_bar)
         hbox.addStretch()
         hbox.addWidget(self.bt_ok)
         hbox.addWidget(self.bt_cancel)
 
-        fr_central = QtGui.QFrame(self)
-        vb = QtGui.QVBoxLayout(fr_central)
+        fr_central = QtWidgets.QFrame(self)
+        vb = QtWidgets.QVBoxLayout(fr_central)
         vb.setContentsMargins(40, 20, 40, 20)
         vb.addWidget(self.widget)
 
@@ -188,20 +189,20 @@ If you choose an advanced school or alternative path be sure to check the requir
             api.character.merits.add('multiple_schools')
 
 
-class SchoolChooserWidget(QtGui.QWidget):
+class SchoolChooserWidget(QtWidgets.QWidget):
     statusChanged = QtCore.pyqtSignal(bool)
 
     def __init__(self, parent=None):
         super(SchoolChooserWidget, self).__init__(parent)
 
-        self.cb_clan = QtGui.QComboBox(self)
-        self.cb_school = QtGui.QComboBox(self)
-        self.lb_trait = QtGui.QLabel(self)
-        self.lb_book = QtGui.QLabel(self)
-        self.lb_desc = QtGui.QLabel(self)
+        self.cb_clan = QtWidgets.QComboBox(self)
+        self.cb_school = QtWidgets.QComboBox(self)
+        self.lb_trait = QtWidgets.QLabel(self)
+        self.lb_book = QtWidgets.QLabel(self)
+        self.lb_desc = QtWidgets.QLabel(self)
 
-        self.lb_different_school_err = QtGui.QLabel(red(self.tr("Not enough XP")), self)
-        self.lb_multiple_schools_err = QtGui.QLabel(red(self.tr("Not enough XP")), self)
+        self.lb_different_school_err = QtWidgets.QLabel(red(self.tr("Not enough XP")), self)
+        self.lb_multiple_schools_err = QtWidgets.QLabel(red(self.tr("Not enough XP")), self)
 
         self.lb_different_school_err.setVisible(False)
         self.lb_multiple_schools_err.setVisible(False)
@@ -243,7 +244,7 @@ class SchoolChooserWidget(QtGui.QWidget):
             self.load_clans()
 
             try:
-                char_clan_id = api.character.rankadv.get_current().clan
+                char_clan_id = api.character.rankadv.get_last().clan
                 self.update_ui_with_clan(char_clan_id)
             except:
                 pass
@@ -283,12 +284,12 @@ class SchoolChooserWidget(QtGui.QWidget):
         # Options:
         #        [ ] Buy 'Different School' advantage
         #        [ ] Buy 'Multiple Schools' advantage
-        form = QtGui.QFormLayout(self)
+        form = QtWidgets.QFormLayout(self)
         form.addRow(self.tr("Clan:"), self.cb_clan)
         form.addRow(self.tr("School:"), self.cb_school)
         form.addRow(self.lb_book, self.lb_desc)
 
-        form.addRow(" ", QtGui.QWidget(self))  # empty row
+        form.addRow(" ", QtWidgets.QWidget(self))  # empty row
         form.addRow(self.tr("Bonus:"), self.lb_trait)
 
         self.pl_filter = self.build_filter_panel()
@@ -303,11 +304,11 @@ class SchoolChooserWidget(QtGui.QWidget):
         self.form_layout = form
 
     def build_filter_panel(self):
-        fr = QtGui.QFrame(self)
-        vb = QtGui.QVBoxLayout(fr)
-        self.cx_base_schools = QtGui.QCheckBox(self.tr("Base schools"), self)
-        self.cx_advc_schools = QtGui.QCheckBox(self.tr("Advanced schools"), self)
-        self.cx_path_schools = QtGui.QCheckBox(self.tr("Alternate paths"), self)
+        fr = QtWidgets.QFrame(self)
+        vb = QtWidgets.QVBoxLayout(fr)
+        self.cx_base_schools = QtWidgets.QCheckBox(self.tr("Base schools"), self)
+        self.cx_advc_schools = QtWidgets.QCheckBox(self.tr("Advanced schools"), self)
+        self.cx_path_schools = QtWidgets.QCheckBox(self.tr("Alternate paths"), self)
         vb.addWidget(self.cx_base_schools)
         vb.addWidget(self.cx_advc_schools)
         vb.addWidget(self.cx_path_schools)
@@ -320,15 +321,15 @@ class SchoolChooserWidget(QtGui.QWidget):
         return fr
 
     def build_requirements_panel(self):
-        self.req_list = widgets.RequirementsWidget(self)
+        self.req_list = RequirementsWidget(self)
         return self.req_list
 
     def build_options_panel(self):
-        fr = QtGui.QFrame(self)
-        fl = QtGui.QFormLayout(fr)
+        fr = QtWidgets.QFrame(self)
+        fl = QtWidgets.QFormLayout(fr)
 
-        self.ck_different_school = QtGui.QCheckBox(self.tr("Buy 'Different School' advantage"), self)
-        self.ck_multiple_schools = QtGui.QCheckBox(self.tr("Buy 'Multiple Schools' advantage"), self)
+        self.ck_different_school = QtWidgets.QCheckBox(self.tr("Buy 'Different School' advantage"), self)
+        self.ck_multiple_schools = QtWidgets.QCheckBox(self.tr("Buy 'Multiple Schools' advantage"), self)
 
         fl.addRow(self.ck_different_school, self.lb_different_school_err)
         fl.addRow(self.ck_multiple_schools, self.lb_multiple_schools_err)
@@ -674,14 +675,14 @@ class SchoolChooserWidget(QtGui.QWidget):
 
 def main():
     import sys
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
 
-    dlg = QtGui.QDialog()
+    dlg = QtWidgets.QDialog()
     fam = SchoolChooserWidget(dlg)
 
     # fam.selected_school = 'hida_bushi_school'
     fam.selected_clan = 'mantis'
-    vbox = QtGui.QVBoxLayout(dlg)
+    vbox = QtWidgets.QVBoxLayout(dlg)
     vbox.addWidget(fam)
     dlg.exec_()
 

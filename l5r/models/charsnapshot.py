@@ -15,10 +15,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from chmodel import ring_name_from_id, attrib_name_from_id
+from l5r.models.chmodel import ring_name_from_id, attrib_name_from_id
 from copy import copy
-import api.character
-import api.character.schools
+import l5r.api as api
+import l5r.api.character
+import l5r.api.character.schools
 
 
 class CharacterSnapshot(object):

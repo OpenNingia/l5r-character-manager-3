@@ -16,15 +16,17 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
 
-from api import __api
-from models.advancements.rank import Rank
+import l5r.api as api
+import l5r.api.character.schools
+import l5r.api.data.merits
+
+from l5r.models.advancements.rank import Rank
+from l5r.api import __api
+
 from asq.initiators import query
 from asq.selectors import a_
 
-import api.character.schools
-import api.data.merits
-
-from util import log
+from l5r.util import log
 
 
 def get_all():
@@ -77,7 +79,7 @@ def advance_rank():
     # this function assumes that the character is able to
     # advance in the same path
 
-    from models.advancements.rank import Rank
+    from l5r.models.advancements.rank import Rank
     adv = Rank()
     # the insight rank
     adv.rank = api.character.insight_rank()
@@ -117,7 +119,7 @@ def leave_path():
         return False
 
 
-    from models.advancements.rank import Rank
+    from l5r.models.advancements.rank import Rank
     adv = Rank()
     # the insight rank
     adv.rank = api.character.insight_rank()
@@ -151,7 +153,7 @@ def join_new(school_id):
         log.api.error(u"join_new, school not found: %s", school_id)
         return
 
-    from models.advancements.rank import Rank
+    from l5r.models.advancements.rank import Rank
     adv = Rank()
     # the insight rank
     adv.rank = api.character.insight_rank()

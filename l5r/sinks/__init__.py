@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from sinks.sink_1 import *
-from sinks.sink_2 import *
-from sinks.sink_3 import *
-from sinks.sink_4 import *
+from l5r.sinks.sink_1 import *
+from l5r.sinks.sink_2 import *
+from l5r.sinks.sink_3 import *
+from l5r.sinks.sink_4 import *

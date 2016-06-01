@@ -15,16 +15,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import api.data
-import api.data.powers
 
-import models
-import widgets
+import l5r.models as models
+import l5r.api as api
+import l5r.api.data
+import l5r.api.data.powers
+import l5r.widgets as widgets
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class KataDialog(QtGui.QDialog):
+class KataDialog(QtWidgets.QDialog):
 
     # title bar
     header = None
@@ -51,33 +52,33 @@ class KataDialog(QtGui.QDialog):
         self.setup()
 
     def build_ui(self):
-        self.vbox_lo = QtGui.QVBoxLayout(self)
-        self.bt_ok = QtGui.QPushButton(self.tr('Buy'), self)
-        self.header = QtGui.QLabel(self)
-        center_fr = QtGui.QFrame(self)
-        center_fr.setFrameStyle(QtGui.QFrame.Sunken)
-        cfr_fbox = QtGui.QFormLayout(center_fr)
+        self.vbox_lo = QtWidgets.QVBoxLayout(self)
+        self.bt_ok = QtWidgets.QPushButton(self.tr('Buy'), self)
+        self.header = QtWidgets.QLabel(self)
+        center_fr = QtWidgets.QFrame(self)
+        center_fr.setFrameStyle(QtWidgets.QFrame.Sunken)
+        cfr_fbox = QtWidgets.QFormLayout(center_fr)
 
         # bottom bar
-        bottom_bar = QtGui.QFrame(self)
-        hbox = QtGui.QHBoxLayout(bottom_bar)
+        bottom_bar = QtWidgets.QFrame(self)
+        hbox = QtWidgets.QHBoxLayout(bottom_bar)
         hbox.addStretch()
         hbox.addWidget(self.bt_ok)
 
-        self.cb_kata = QtGui.QComboBox(self)
+        self.cb_kata = QtWidgets.QComboBox(self)
         self.req_list = widgets.RequirementsWidget(self)
-        self.tx_element = QtGui.QLabel(self)
-        self.tx_mastery = QtGui.QLabel(self)
-        self.tx_ring_need = QtGui.QLabel(self)
-        self.tx_cost = QtGui.QLabel(self)
-        self.tx_detail = QtGui.QTextEdit(self)
+        self.tx_element = QtWidgets.QLabel(self)
+        self.tx_mastery = QtWidgets.QLabel(self)
+        self.tx_ring_need = QtWidgets.QLabel(self)
+        self.tx_cost = QtWidgets.QLabel(self)
+        self.tx_detail = QtWidgets.QTextEdit(self)
         self.tx_detail.setReadOnly(True)
         # self.tx_detail.setWordWrap(True)
 
         # this should display as "Mastery 3 - you need at least 3 in your Air
         # Ring"
-        fr_mastery = QtGui.QFrame(self)
-        fr_hbox = QtGui.QHBoxLayout(fr_mastery)
+        fr_mastery = QtWidgets.QFrame(self)
+        fr_hbox = QtWidgets.QHBoxLayout(fr_mastery)
         fr_hbox.setContentsMargins(0, 0, 0, 0)
         fr_hbox.addWidget(self.tx_mastery)
         fr_hbox.addWidget(self.tx_ring_need)

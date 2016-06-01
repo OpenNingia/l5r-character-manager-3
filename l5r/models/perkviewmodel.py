@@ -15,14 +15,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 
-import api.character.merits
-import api.character.flaws
+import l5r.api as api
+import l5r.api.character.merits
+import l5r.api.character.flaws
 
-import api.data.merits
-import api.data.flaws
-from util import log
+import l5r.api.data.merits
+import l5r.api.data.flaws
+from l5r.util import log
 
 class PerkItemModel(object):
 
@@ -108,96 +109,3 @@ class PerkViewModel(QtCore.QAbstractListModel):
         return None
 
 
-class PerkItemDelegate(QtGui.QStyledItemDelegate):
-
-    def __init__(self, parent=None):
-        super(PerkItemDelegate, self).__init__(parent)
-
-    def paint(self, painter, option, index):
-        if not index.isValid():
-            super(PerkItemDelegate, self).paint(painter, option, index)
-            return
-
-        item = index.data(QtCore.Qt.UserRole)
-        text_color = index.data(QtCore.Qt.ForegroundRole)
-        bg_color = index.data(QtCore.Qt.BackgroundRole)
-        hg_color = QtGui.QBrush(bg_color)
-        hg_color.setStyle(QtCore.Qt.Dense3Pattern)
-
-        painter.save()
-
-        painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
-
-        # fill the background color
-        if option.state & QtGui.QStyle.State_Selected == QtGui.QStyle.State_Selected:
-            painter.fillRect(option.rect, option.palette.highlight())
-            text_color = option.palette.highlightedText()
-        else:
-            painter.fillRect(option.rect, bg_color)
-
-        grid_pen = QtGui.QPen(QtCore.Qt.lightGray, 1)
-        painter.setPen(grid_pen)
-        painter.drawLine(option.rect.bottomLeft(), option.rect.bottomRight())
-
-        main_font = painter.font()
-        sub_font = QtGui.QFont().resolve(main_font)
-        sub_font.setPointSize(7)
-
-        margin = 15
-
-        # paint the airdate with a smaller font over the item name
-        # suppose to have 24 pixels in vertical
-        main_font.setBold(True)
-        painter.setFont(main_font)
-        font_metric = painter.fontMetrics()
-        perk_nm = item.name
-        perk_nm_rect = font_metric.boundingRect(perk_nm)
-
-        rank = str(item.rank)
-
-        rank_pen = QtGui.QPen(text_color, 2)
-        painter.setPen(rank_pen)
-        rank_rect = QtCore.QRectF(float(option.rect.left() + margin),
-                                  float(option.rect.top() + 5),
-                                  float(option.rect.height() - 10), float(option.rect.height() - 10))
-        painter.drawRect(rank_rect)
-        painter.drawText(rank_rect.adjusted(8, 3.5, 0, 0), rank)
-
-        margin += rank_rect.width() + margin
-
-        text_pen = QtGui.QPen(text_color, 1)
-
-        painter.setPen(text_pen)
-        painter.drawText(margin + option.rect.left(),
-                         option.rect.top() + perk_nm_rect.height(), perk_nm)
-
-        if item.tag:
-            painter.setFont(sub_font)
-            font_metric = painter.fontMetrics()
-            tag_nm = item.tag
-            tag_nm_rect = font_metric.boundingRect(tag_nm)
-            painter.drawText(margin + option.rect.left(),
-                             option.rect.top() + perk_nm_rect.height() +
-                             tag_nm_rect.height(),
-                             tag_nm)
-
-        if item.cost:
-            if item.cost < 0:
-                text = api.tr('XP Gain')
-                value = - item.cost
-            else:
-                text = api.tr('XP Cost')
-                value = item.cost
-            text = text + ' {}'.format(value)
-
-            main_font.setBold(False)
-            painter.setFont(main_font)
-            font_metric = painter.fontMetrics()
-            text_rect = font_metric.boundingRect(text)
-            painter.drawText(
-                option.rect.right() - text_rect.width() - 15,
-                option.rect.bottom() - 5,
-                text
-            )
-
-        painter.restore()

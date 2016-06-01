@@ -15,16 +15,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from advances import *
-from chmodel import *
-from skillmodel import *
-from outfit import *
-from techviewmodel import *
-from perkviewmodel import *
-from maviewmodel import *
-from spellmodel import *
-from sortproxymodel import *
-from modifiers import *
-from katamodel import *
-from kihomodel import *
-from charsnapshot import *
+from l5r.models.advances import *
+from l5r.models.chmodel import *
+from l5r.models.skillmodel import *
+from l5r.models.outfit import *
+from l5r.models.techviewmodel import *
+from l5r.models.perkviewmodel import *
+from l5r.models.maviewmodel import *
+from l5r.models.spellmodel import *
+from l5r.models.sortproxymodel import *
+from l5r.models.modifiers import *
+from l5r.models.katamodel import *
+from l5r.models.kihomodel import *
+from l5r.models.charsnapshot import *

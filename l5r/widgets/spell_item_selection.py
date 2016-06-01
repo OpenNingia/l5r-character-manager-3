@@ -15,16 +15,15 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys
-import dal
-import dal.query
 
-import api.character.spells
-import api.data.spells
+import l5r.api as api
+import l5r.api.character.spells
+import l5r.api.data.spells
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class SpellItemSelection(QtGui.QWidget):
+class SpellItemSelection(QtWidgets.QWidget):
 
     cb_element = None
     cb_mastery = None
@@ -59,19 +58,19 @@ class SpellItemSelection(QtGui.QWidget):
         self.tag = None
         self.element = None
 
-        self.cb_element = QtGui.QComboBox(self)
-        self.cb_mastery = QtGui.QComboBox(self)
-        self.cb_spell = QtGui.QComboBox(self)
+        self.cb_element = QtWidgets.QComboBox(self)
+        self.cb_mastery = QtWidgets.QComboBox(self)
+        self.cb_spell = QtWidgets.QComboBox(self)
 
-        self.lb_ring = QtGui.QLabel(self.tr('Ring'), self)
-        self.lb_mastery = QtGui.QLabel(self.tr('Mastery'), self)
-        self.lb_spell = QtGui.QLabel(self.tr('Spell'), self)
-        self.lb_tags = QtGui.QLabel(self.tr('Tags'), self)
-        self.lb_mastery_mod = QtGui.QLabel(self.tr('Mastery modifier:'), self)
+        self.lb_ring = QtWidgets.QLabel(self.tr('Ring'), self)
+        self.lb_mastery = QtWidgets.QLabel(self.tr('Mastery'), self)
+        self.lb_spell = QtWidgets.QLabel(self.tr('Spell'), self)
+        self.lb_tags = QtWidgets.QLabel(self.tr('Tags'), self)
+        self.lb_mastery_mod = QtWidgets.QLabel(self.tr('Mastery modifier:'), self)
 
-        self.tx_descr = QtGui.QTextEdit(self)
-        self.tx_tags = QtGui.QLabel(self)
-        self.tx_mastery_mod = QtGui.QLabel(self)
+        self.tx_descr = QtWidgets.QTextEdit(self)
+        self.tx_tags = QtWidgets.QLabel(self)
+        self.tx_mastery_mod = QtWidgets.QLabel(self)
 
         self.cb_element.setEditable(False)
         self.cb_mastery.setEditable(False)
@@ -81,10 +80,10 @@ class SpellItemSelection(QtGui.QWidget):
 
         self.tx_descr.setReadOnly(True)
         self.tx_descr.setFont(monos_)
-        self.tx_descr.setLineWrapMode(QtGui.QTextEdit.WidgetWidth)
+        self.tx_descr.setLineWrapMode(QtWidgets.QTextEdit.WidgetWidth)
         self.tx_descr.setWordWrapMode(QtGui.QTextOption.WordWrap)
 
-        form_lo = QtGui.QFormLayout()
+        form_lo = QtWidgets.QFormLayout()
         form_lo.setVerticalSpacing(9)
         form_lo.setHorizontalSpacing(9)
         form_lo.addRow(self.lb_ring, self.cb_element)
@@ -93,7 +92,7 @@ class SpellItemSelection(QtGui.QWidget):
         form_lo.addRow(self.lb_tags, self.tx_tags)
         form_lo.addRow(self.lb_mastery_mod, self.tx_mastery_mod)
 
-        vbox = QtGui.QVBoxLayout(self)
+        vbox = QtWidgets.QVBoxLayout(self)
         vbox.addItem(form_lo)
         vbox.addWidget(self.tx_descr)
 
@@ -208,7 +207,7 @@ class SpellItemSelection(QtGui.QWidget):
                     self.on_ring_change(i)
                     break
 
-            for i in xrange(0, self.cb_mastery.count()):
+            for i in range(0, self.cb_mastery.count()):
                 if self.cb_mastery.itemData(i) == spell.mastery:
                     self.cb_mastery.setCurrentIndex(i)
                     self.on_mastery_change(i)
@@ -216,7 +215,7 @@ class SpellItemSelection(QtGui.QWidget):
 
             self.update_spell_list()
 
-            for i in xrange(0, self.cb_spell.count()):
+            for i in range(0, self.cb_spell.count()):
                 if self.cb_spell.itemData(i) == spell:
                     self.cb_spell.setCurrentIndex(i)
                     break

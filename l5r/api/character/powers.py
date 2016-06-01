@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Daniele'
 
-from api import __api
-import api.data
+import l5r.api as api
+import l5r.api.data
+
+from l5r.api import __api
 
 from collections import namedtuple
 
 from asq.initiators import query
 from asq.selectors import a_
 
-from util import log
+from l5r.util import log
 
 
 def get_all_kiho():

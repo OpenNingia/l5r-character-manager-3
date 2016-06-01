@@ -21,22 +21,25 @@ import shutil
 from tempfile import mkstemp
 import subprocess
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
-import models
-import exporters
-import dal
-import dal.dataimport
+import l5r.models as models
+import l5r.exporters as exporters
 
-from util import log, osutil
-import api.data
-from api.data import CMErrors
-from qtsignalsutils import *
+import l5rdal as dal
+import l5rdal.dataimport
+
+from l5r.util import log, osutil
+from l5r.util.fsutil import *
+import l5r.api as api
+import l5r.api.data
+from l5r.api.data import CMErrors
+from l5r.l5rcmcore.qtsignalsutils import *
 
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
-APP_VERSION = '3.10.0'
-DB_VERSION = '3.10'
+APP_VERSION = '3.11.0'
+DB_VERSION = '3.11'
 APP_ORG = 'openningia'
 
 PROJECT_PAGE_LINK = 'https://github.com/OpenNingia/l5r-character-manager-3'
@@ -50,67 +53,8 @@ PROJECT_DOWNLOADS_LINK = 'https://sourceforge.net/projects/l5rcm/'
 L5RCM_GPLUS_PAGE = "https://plus.google.com/114911686277310621574"
 L5RCM_GPLUS_COMM = "https://plus.google.com/communities/107752342280671357654"
 
-HERE = os.path.abspath(os.path.dirname(__file__))
 
-if hasattr(sys, "frozen"):
-    HERE = os.path.dirname(HERE)
-
-MY_CWD = os.getcwd()
-
-if not os.path.exists(os.path.join(MY_CWD, 'share/l5rcm')):
-    MY_CWD = HERE
-    if not os.path.exists(os.path.join(MY_CWD, 'share/l5rcm')):
-        MY_CWD = os.path.dirname(HERE)
-
-log.app.info(u"l5rcm base dir: %s", MY_CWD)
-
-
-def get_app_file(rel_path):
-    if os.name == 'nt':
-        return os.path.join(MY_CWD, 'share/l5rcm', rel_path)
-    else:
-        sys_path = '/usr/share/l5rcm'
-        if os.path.exists(sys_path):
-            return os.path.join(sys_path, rel_path)
-        return os.path.join(MY_CWD, 'share/l5rcm', rel_path)
-
-
-def get_app_icon_path(size=(48, 48)):
-    size_str = '%dx%d' % size
-    if os.name == 'nt':
-        return os.path.join(MY_CWD, 'share/icons/l5rcm/%s' % size_str, APP_NAME + '.png')
-    else:
-        sys_path = '/usr/share/icons/l5rcm/%s' % size_str
-        if os.path.exists(sys_path):
-            return os.path.join(sys_path, APP_NAME + '.png')
-        return os.path.join(MY_CWD, 'share/icons/l5rcm/%s' % size_str, APP_NAME + '.png')
-
-
-def get_tab_icon(name):
-    if os.name == 'nt':
-        return os.path.join(MY_CWD, 'share/icons/l5rcm/tabs/', name + '.png')
-    else:
-        sys_path = '/usr/share/icons/l5rcm/tabs/'
-        if os.path.exists(sys_path):
-            return os.path.join(sys_path, name + '.png')
-        return os.path.join(MY_CWD, 'share/icons/l5rcm/tabs/', name + '.png')
-
-
-def get_icon_path(name, size=(48, 48)):
-    base = "share/icons/l5rcm/"
-    if size is not None:
-        base += '%dx%d' % size
-
-    if os.name == 'nt':
-        return os.path.join(MY_CWD, base, name + '.png')
-    else:
-        sys_path = '/usr/' + base
-        if os.path.exists(sys_path):
-            return os.path.join(sys_path, name + '.png')
-        return os.path.join(MY_CWD, base, name + '.png')
-
-
-class L5RCMCore(QtGui.QMainWindow):
+class L5RCMCore(QtWidgets.QMainWindow):
     dstore = None
 
     def __init__(self, locale, parent=None):
@@ -153,14 +97,15 @@ class L5RCMCore(QtGui.QMainWindow):
         pass
 
     def export_as_text(self, export_file):
-        exporter = exporters.TextExporter()
-        exporter.set_form(self)
-        exporter.set_model(self.pc)
+        pass
+        #exporter = exporters.TextExporter()
+        #exporter.set_form(self)
+        #exporter.set_model(self.pc)
 
-        f = open(export_file, 'wt')
-        if f is not None:
-            exporter.export(f)
-        f.close()
+        #f = open(export_file, 'wt')
+        #if f is not None:
+        #    exporter.export(f)
+        #f.close()
 
     def create_fdf(self, exporter):
 
@@ -239,7 +184,7 @@ class L5RCMCore(QtGui.QMainWindow):
 
         pcs = []
         for f in npc_files:
-            c = models.AdvancedPcModel()
+            c = l5r.models.AdvancedPcModel()
             if c.load_from(f):
                 pcs.append(c)
 

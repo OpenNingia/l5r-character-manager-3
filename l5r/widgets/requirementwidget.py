@@ -15,11 +15,11 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys
-import models
-import dal
+import l5r.models as models
+
 from copy import copy
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 def paintLayout(painter, item):
@@ -38,31 +38,31 @@ def clearLayout(item):
             clearLayout(sub_item)
             layout.removeItem(sub_item)
 
-class RequirementsWidget(QtGui.QWidget):
+class RequirementsWidget(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
         super(RequirementsWidget, self).__init__(parent)
 
-        self.vbox = QtGui.QVBoxLayout(self)
+        self.vbox = QtWidgets.QVBoxLayout(self)
         self.vbox.setContentsMargins(0, 0, 0, 0)
 
         self.checks = []   # checkbox list
         self.rpg_placeholders = []
         self.debug = False
 
-        fr = QtGui.QFrame()
-        ly = QtGui.QVBoxLayout(fr)
+        fr = QtWidgets.QFrame()
+        ly = QtWidgets.QVBoxLayout(fr)
 
         # max 10 checkboxes
         for i in range(0, 10):
-            ck = QtGui.QCheckBox(self)
+            ck = QtWidgets.QCheckBox(self)
             ck.setVisible(False)
             ly.addWidget(ck)
             self.checks.append(ck)
 
         for i in range(0, 5):
-            lb = QtGui.QLabel(self)
-            ck = QtGui.QCheckBox(self)
+            lb = QtWidgets.QLabel(self)
+            ck = QtWidgets.QCheckBox(self)
             ck.setVisible(False)
             lb.setVisible(False)
 
@@ -77,7 +77,7 @@ class RequirementsWidget(QtGui.QWidget):
         self.vbox.addWidget(fr)
 
         self.setSizePolicy(
-            QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
 
     def paintEvent(self, ev):
         if not self.debug:

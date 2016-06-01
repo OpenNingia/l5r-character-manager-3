@@ -15,17 +15,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import api
-import api.character
-import api.character.schools
-import api.character.spells
-import api.character.rankadv
-import api.data
-import api.data.schools
-import api.data.spells
+import l5r.api as api
+import l5r.api.character
+import l5r.api.character.schools
+import l5r.api.character.spells
+import l5r.api.character.rankadv
+import l5r.api.data
+import l5r.api.data.schools
+import l5r.api.data.spells
 
-import widgets
-from PyQt4 import QtCore, QtGui
+import l5r.widgets as widgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 def colored_span(col, text):
@@ -33,7 +33,7 @@ def colored_span(col, text):
     return "<span style='color:{0}'>{1}</span>".format(col, text)
 
 
-class SpellAdvDialog(QtGui.QDialog):
+class SpellAdvDialog(QtWidgets.QDialog):
 
     # character model
     pc = None
@@ -81,16 +81,16 @@ class SpellAdvDialog(QtGui.QDialog):
         self.load_data()
 
     def build_ui(self):
-        self.vbox_lo = QtGui.QVBoxLayout(self)
-        self.bt_next = QtGui.QPushButton(self.tr('Next'), self)
-        self.bt_back = QtGui.QPushButton(self.tr('Back'), self)
-        self.lb_pgcnt = QtGui.QLabel(self)
+        self.vbox_lo = QtWidgets.QVBoxLayout(self)
+        self.bt_next = QtWidgets.QPushButton(self.tr('Next'), self)
+        self.bt_back = QtWidgets.QPushButton(self.tr('Back'), self)
+        self.lb_pgcnt = QtWidgets.QLabel(self)
         self.spell_wdg = widgets.SpellItemSelection(self.pc, self)
-        self.header = QtGui.QLabel(self)
-        self.error_bar = QtGui.QLabel(self)
+        self.header = QtWidgets.QLabel(self)
+        self.error_bar = QtWidgets.QLabel(self)
 
-        center_fr = QtGui.QFrame(self)
-        cfr_vbox = QtGui.QVBoxLayout(center_fr)
+        center_fr = QtWidgets.QFrame(self)
+        cfr_vbox = QtWidgets.QVBoxLayout(center_fr)
 
         # player school
         player_school_id = api.character.schools.get_current()
@@ -99,21 +99,21 @@ class SpellAdvDialog(QtGui.QDialog):
             player_school_ob.name if player_school_ob is not None
             else "" )
 
-        lb_school_txt = QtGui.QLabel(self.tr("School:"), self)
-        lb_school_val = QtGui.QLabel(player_school_nm, self)
+        lb_school_txt = QtWidgets.QLabel(self.tr("School:"), self)
+        lb_school_val = QtWidgets.QLabel(player_school_nm, self)
 
         # player affinities
         player_affinities_lst = api.character.spells.affinities()
         player_affinities_str = ', '.join(player_affinities_lst)
 
-        lb_aff_txt = QtGui.QLabel(self.tr("Affinities:"), self)
-        lb_aff_val = QtGui.QLabel(player_affinities_str, self)
+        lb_aff_txt = QtWidgets.QLabel(self.tr("Affinities:"), self)
+        lb_aff_val = QtWidgets.QLabel(player_affinities_str, self)
 
         player_deficiencies_lst = api.character.spells.deficiencies()
         player_deficiencies_str = ', '.join(player_deficiencies_lst)
 
-        lb_def_txt = QtGui.QLabel(self.tr("Deficiencies:"), self)
-        lb_def_val = QtGui.QLabel(player_deficiencies_str, self)
+        lb_def_txt = QtWidgets.QLabel(self.tr("Deficiencies:"), self)
+        lb_def_val = QtWidgets.QLabel(player_deficiencies_str, self)
 
         if player_deficiencies_str == 'special':
             lb_aff_val.setText(self.tr('See school description'))
@@ -121,30 +121,30 @@ class SpellAdvDialog(QtGui.QDialog):
             lb_def_val.setText(self.tr('See school description'))
 
         # spell selection
-        lb_restrictions = QtGui.QLabel(self.tr('Restrictions'), self)
-        self.tx_restrictions = QtGui.QLabel(self)
+        lb_restrictions = QtWidgets.QLabel(self.tr('Restrictions'), self)
+        self.tx_restrictions = QtWidgets.QLabel(self)
 
         # form layout
-        player_info_fr = QtGui.QFrame(self)
-        player_info_ly = QtGui.QFormLayout(player_info_fr)
+        player_info_fr = QtWidgets.QFrame(self)
+        player_info_ly = QtWidgets.QFormLayout(player_info_fr)
         player_info_ly.addRow(lb_school_txt, lb_school_val)
         player_info_ly.addRow(lb_aff_txt, lb_aff_val)
         player_info_ly.addRow(lb_def_txt, lb_def_val)
         player_info_ly.addRow(lb_restrictions, self.tx_restrictions)
 
-        self.grp_maho = QtGui.QGroupBox(self.tr('Maho'), self)
-        bottom_bar = QtGui.QFrame(self)
+        self.grp_maho = QtWidgets.QGroupBox(self.tr('Maho'), self)
+        bottom_bar = QtWidgets.QFrame(self)
 
-        self.rb_amaho = QtGui.QRadioButton(self.tr('Allow Maho'), self)
-        self.rb_nmaho = QtGui.QRadioButton(self.tr('No Maho'), self)
-        self.rb_omaho = QtGui.QRadioButton(self.tr('Only Maho'), self)
+        self.rb_amaho = QtWidgets.QRadioButton(self.tr('Allow Maho'), self)
+        self.rb_nmaho = QtWidgets.QRadioButton(self.tr('No Maho'), self)
+        self.rb_omaho = QtWidgets.QRadioButton(self.tr('Only Maho'), self)
 
         self.rb_amaho.setProperty('tag', 'allow_maho')
         self.rb_nmaho.setProperty('tag', 'no_maho')
         self.rb_omaho.setProperty('tag', 'only_maho')
 
         # maho groupbox
-        maho_hbox = QtGui.QHBoxLayout(self.grp_maho)
+        maho_hbox = QtWidgets.QHBoxLayout(self.grp_maho)
         maho_hbox.addWidget(self.rb_amaho)
         maho_hbox.addWidget(self.rb_nmaho)
         maho_hbox.addWidget(self.rb_omaho)
@@ -152,7 +152,7 @@ class SpellAdvDialog(QtGui.QDialog):
         self.rb_amaho.setChecked(True)
 
         # bottom bar
-        hbox = QtGui.QHBoxLayout(bottom_bar)
+        hbox = QtWidgets.QHBoxLayout(bottom_bar)
         hbox.addWidget(self.lb_pgcnt)
         hbox.addStretch()
         hbox.addWidget(self.bt_back)
@@ -237,7 +237,7 @@ class SpellAdvDialog(QtGui.QDialog):
 
                 print(
                     'wildcard, ring: {0}, qty: {1}, tag: {2}'.format(ring, qty, tag))
-                for i in xrange(idx, qty + idx):
+                for i in range(idx, qty + idx):
                     self.properties[i] = {}
                     self.properties[i]['tag'] = tag
                     if 'maho' in ring:
