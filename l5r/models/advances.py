@@ -20,6 +20,7 @@ from datetime import datetime
 import time
 
 from l5r.util import log
+from l5r.util.settings import L5RCMSettings
 
 
 class Advancement(object):
@@ -123,10 +124,7 @@ class AdvancementViewModel(QtCore.QAbstractListModel):
         super(AdvancementViewModel, self).__init__(parent)
 
         self.items = []
-        self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
-        self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
-                         QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
-        self.item_size = QtCore.QSize(32, 32)
+        self.settings = L5RCMSettings()
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
@@ -154,11 +152,15 @@ class AdvancementViewModel(QtCore.QAbstractListModel):
         if role == QtCore.Qt.DisplayRole:
             return item.type
         elif role == QtCore.Qt.ForegroundRole:
-            return self.text_color
+            if index.row() % 2:
+                return self.settings.ui._table_row_color_alt_fg
+            return self.settings.ui._table_row_color_fg
         elif role == QtCore.Qt.BackgroundRole:
-            return self.bg_color[index.row() % 2]
+            if index.row() % 2:
+                return self.settings.ui._table_row_color_alt_bg
+            return self.settings.ui._table_row_color_bg
         elif role == QtCore.Qt.SizeHintRole:
-            return self.item_size
+            return self.settings.ui.table_row_size
         elif role == QtCore.Qt.UserRole:
             return item
         return None

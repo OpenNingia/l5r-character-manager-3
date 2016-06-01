@@ -2161,28 +2161,6 @@ class L5RMain(L5RCMCore):
             self.wounds[i][1].setText(str(i_stacked))
             self.wounds[i][2].setText(str(i_stacked_wounds) if i_stacked_wounds else '')
 
-
-    def advise_conversion(self, *args):
-        settings = QtCore.QSettings()
-        if settings.value('advise_conversion', 'true') == 'false':
-            return
-        msgBox = QtWidgets.QMessageBox(self)
-        msgBox.setWindowTitle('L5R: CM')
-        msgBox.setText(self.tr("The character has been updated."))
-        msgBox.setInformativeText(self.tr("This character was created with an older version of the program.\n"
-                                          "I've done my best to convert and update your character, hope you don't mind :).\n"
-                                          "I also created a backup of your character file in\n\n%s.") % args)
-        do_not_prompt_again = QtWidgets.QCheckBox(
-            self.tr("Do not prompt again"), msgBox)
-        # PREVENT MSGBOX TO CLOSE ON CLICK
-        do_not_prompt_again.blockSignals(True)
-        msgBox.addButton(QtWidgets.QMessageBox.Ok)
-        msgBox.addButton(do_not_prompt_again, QtWidgets.QMessageBox.ActionRole)
-        msgBox.setDefaultButton(QtWidgets.QMessageBox.Ok)
-        msgBox.exec_()
-        if do_not_prompt_again.checkState() == QtCore.Qt.Checked:
-            settings.setValue('advise_conversion', 'false')
-
     def advise_successfull_import(self, count):
         settings = QtCore.QSettings()
         if settings.value('advise_successfull_import', 'true') == 'false':
