@@ -11,6 +11,8 @@ addons:
     - libxml2-dev
     - libxslt1-dev
     - python-dev
+    - librsvg2-bin
+    - python-docutils
 install:
   - "pip install --upgrade pip"
   - "pip install --upgrade asq"

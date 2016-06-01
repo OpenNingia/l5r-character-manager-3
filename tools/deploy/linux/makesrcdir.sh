@@ -66,18 +66,18 @@ rm -rf ./tmp/DEBIAN/.svn
 rm -rf ./tmp/DEBIAN/.git
 
 # change GID
-chown -R root:root ${USR}
-chown -R root:root ${OPT}
+fakeroot chown -R root:root ${USR}
+fakeroot chown -R root:root ${OPT}
 
 # fix permission
-find ./tmp -type d | xargs chmod 755
-find ${OPT} -type f | xargs chmod 644
-find ${USR} -type f | xargs chmod 644
+fakeroot find ./tmp -type d | xargs chmod 755
+fakeroot find ${OPT} -type f | xargs chmod 644
+fakeroot find ${USR} -type f | xargs chmod 644
 
-chmod +x ${USR}/bin/l5rcm
+fakeroot chmod +x ${USR}/bin/l5rcm
 
-dpkg-deb -b ./tmp $1.deb
+fakeroot dpkg-deb -b ./tmp $1.deb
 
 # give my debs!
-chown $(whoami):$(whoami) $1*
+fakeroot chown $(whoami):$(whoami) $1*
 cd $cwd
