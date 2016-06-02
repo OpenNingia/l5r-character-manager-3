@@ -35,7 +35,6 @@ class FDFExporterTwoNPC(FDFExporter):
         self.pcs = pcs
 
     def export_body(self, io):
-        f = self.form
 
         fields = {}
 

@@ -153,12 +153,12 @@ class AdvancementViewModel(QtCore.QAbstractListModel):
             return item.type
         elif role == QtCore.Qt.ForegroundRole:
             if index.row() % 2:
-                return self.settings.ui._table_row_color_alt_fg
-            return self.settings.ui._table_row_color_fg
+                return self.settings.ui.table_row_color_alt_fg
+            return self.settings.ui.table_row_color_fg
         elif role == QtCore.Qt.BackgroundRole:
             if index.row() % 2:
-                return self.settings.ui._table_row_color_alt_bg
-            return self.settings.ui._table_row_color_bg
+                return self.settings.ui.table_row_color_alt_bg
+            return self.settings.ui.table_row_color_bg
         elif role == QtCore.Qt.SizeHintRole:
             return self.settings.ui.table_row_size
         elif role == QtCore.Qt.UserRole:

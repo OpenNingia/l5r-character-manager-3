@@ -24,7 +24,6 @@ sip.setapi('QTextStream', 2)
 sip.setapi('QTime', 2)
 sip.setapi('QUrl', 2)
 sip.setapi('QVariant', 2)
-from PyQt5 import QtCore, QtGui, QtWidgets
 
 import sys
 import os
@@ -41,7 +40,6 @@ sys.path.append(here)
 
 import mimetypes
 import l5r.sinks
-import l5r.api as api
 import l5r.api.character
 import l5r.api.character.spells
 import l5r.api.data.clans
@@ -52,7 +50,6 @@ import l5r.api.character.spells
 import l5r.api.character.skills
 import l5r.api.rules
 
-import l5r.models as models
 import l5r.widgets as widgets
 import l5r.dialogs as dialogs
 
@@ -405,8 +402,6 @@ class L5RMain(L5RCMCore):
                 hbox.addWidget(bt)
                 self.trait_sig_mapper.setMapping(bt, tag)
                 bt.clicked.connect( self.trait_sig_mapper.map )
-
-                #QtCore.connect(bt, QtCore.SIGNAL('clicked()'), self.trait_sig_mapper, QtCore.SLOT('map()'))
                 return fr
 
             for i in range(0, 8, 2):

@@ -181,12 +181,5 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
         for s in spells:
             itm = self.build_item_model(s)
             itm.memo = s in memo_spells
-            #if itm.memo:
-            #    adv_ = filter(
-            #        lambda x: x.type == 'memo_spell' and x.spell == s,
-            #        model.advans)
-
-            #    if len(adv_):
-            #        itm.adv = adv_[0]
 
             self.add_item(itm)

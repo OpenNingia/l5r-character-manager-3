@@ -30,7 +30,7 @@ class CharacterSnapshot(object):
         self.skills = {}  # id ==> value
         self.traits = {}  # id ==> value
         self.rings = {}  # id ==> value
-        self.emphases = {} # skill_id => [emphases]
+        self.emphases = {}  # skill_id => [emphases]
 
         self.tags = []  # tag list
         self.rules = []  # rules list
@@ -57,7 +57,7 @@ class CharacterSnapshot(object):
         for s in api.character.schools.get_all():
             self.schools[s] = api.character.schools.get_school_rank(s)
 
-        self.tags  += api.character.get_tags()
+        self.tags += api.character.get_tags()
         self.rules += api.character.get_rules()
 
         self.insight_rank = api.character.insight_rank()

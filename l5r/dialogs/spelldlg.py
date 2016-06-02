@@ -97,7 +97,7 @@ class SpellAdvDialog(QtWidgets.QDialog):
         player_school_ob = api.data.schools.get(player_school_id)
         player_school_nm = (
             player_school_ob.name if player_school_ob is not None
-            else "" )
+            else "")
 
         lb_school_txt = QtWidgets.QLabel(self.tr("School:"), self)
         lb_school_val = QtWidgets.QLabel(player_school_nm, self)

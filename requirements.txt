@@ -1,2 +1,4 @@
-pip install lxml
-pip install asq
+lxml
+asq
+sip
+PyQt5

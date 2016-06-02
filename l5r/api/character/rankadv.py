@@ -118,7 +118,6 @@ def leave_path():
         log.api.error(u"former school not found. could not resume old path")
         return False
 
-
     from l5r.models.advancements.rank import Rank
     adv = Rank()
     # the insight rank

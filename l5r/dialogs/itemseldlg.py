@@ -114,15 +114,11 @@ class ChooseItemDialog(QtWidgets.QDialog):
                     self.cb1.addItem(skill.name, skill.id)
 
     def get_weapons_by_skill(self, sk_uuid, filter):
-        weapons = []
-
         if self.filter is None:
-            weapons = [x for x in api.data.outfit.get_weapons() if x.skill == sk_uuid]
+            return [x for x in api.data.outfit.get_weapons() if x.skill == sk_uuid]
         else:
-            weapons = [
+            return [
                 x for x in api.data.outfit.get_weapons() if x.skill == sk_uuid and self.filter in x.tags]
-
-        return weapons
 
     def on_armor_select(self, text=''):
         # list stats

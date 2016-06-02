@@ -80,7 +80,6 @@ what would you want to do?
             api.character.schools.get_current()
         )
 
-
         # check if the PC is following an alternate path
         if is_path:
             # the PC want to go back to the old school.

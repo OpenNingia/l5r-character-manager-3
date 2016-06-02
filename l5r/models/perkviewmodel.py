@@ -25,6 +25,7 @@ import l5r.api.data.merits
 import l5r.api.data.flaws
 from l5r.util import log
 
+
 class PerkItemModel(object):
 
     def __init__(self):

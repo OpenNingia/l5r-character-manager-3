@@ -178,10 +178,10 @@ class AdvancedPcModel(object):
     def add_modifier(self, item):
         self.modifiers.append(item)
 
-    def set_family(self, family_id=0, perk=None, perkval=1, tags=[]):
+    def set_family(self, family_id=0, perk=None, perkval=1, tags=()):
         pass
 
-    def set_school(self, school_id=0, perk=None, perkval=1, honor=0.0, tags=[]):
+    def set_school(self, school_id=0, perk=None, perkval=1, honor=0.0, tags=()):
         pass
 
     def set_void_points(self, value):

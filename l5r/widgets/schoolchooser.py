@@ -344,7 +344,7 @@ class SchoolChooserWidget(QtWidgets.QWidget):
 
     @selected_school.setter
     def selected_school(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self.update_ui_with_school(value)
 
     @property
@@ -353,7 +353,7 @@ class SchoolChooserWidget(QtWidgets.QWidget):
 
     @selected_clan.setter
     def selected_clan(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self.update_ui_with_clan(value)
 
     @property
@@ -362,7 +362,7 @@ class SchoolChooserWidget(QtWidgets.QWidget):
 
     @character_clan.setter
     def character_clan(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self.character_clan_id = value
 
     @property
@@ -371,7 +371,7 @@ class SchoolChooserWidget(QtWidgets.QWidget):
 
     @show_filter_selection.setter
     def show_filter_selection(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self._show_filter_selection = value
         self.set_row_visible(self.pl_filter, value)
 
@@ -381,7 +381,7 @@ class SchoolChooserWidget(QtWidgets.QWidget):
 
     @show_bonus_trait.setter
     def show_bonus_trait(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self._show_filter_selection = value
         self.set_row_visible(self.lb_trait, value)
 
@@ -391,7 +391,7 @@ class SchoolChooserWidget(QtWidgets.QWidget):
 
     @show_school_requirements.setter
     def show_school_requirements(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self._show_school_requirements = value
         if not value:
             self.set_row_visible(self.pl_requirements, value)
@@ -402,7 +402,7 @@ class SchoolChooserWidget(QtWidgets.QWidget):
 
     @show_different_school_option.setter
     def show_different_school_option(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self._show_different_school_check = value
         self.show_or_hide_option_panel()
 
@@ -412,7 +412,7 @@ class SchoolChooserWidget(QtWidgets.QWidget):
 
     @show_multiple_schools_option.setter
     def show_multiple_schools_option(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self._show_multiple_school_check = value
         self.show_or_hide_option_panel()
 
@@ -422,7 +422,7 @@ class SchoolChooserWidget(QtWidgets.QWidget):
 
     @allow_basic_schools.setter
     def allow_basic_schools(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self._allow_basic_schools = value
         self.cx_base_schools.setChecked(value)
         self.load_clans()
@@ -433,7 +433,7 @@ class SchoolChooserWidget(QtWidgets.QWidget):
 
     @allow_advanced_schools.setter
     def allow_advanced_schools(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self._allow_advanced_schools = value
         self.cx_advc_schools.setChecked(value)
         self.load_clans()
@@ -444,7 +444,7 @@ class SchoolChooserWidget(QtWidgets.QWidget):
 
     @allow_alternate_paths.setter
     def allow_alternate_paths(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self._allow_alternate_paths = value
         self.cx_path_schools.setChecked(value)
         self.load_clans()

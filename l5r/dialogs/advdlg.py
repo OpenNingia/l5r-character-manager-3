@@ -166,8 +166,8 @@ class BuyAdvDialog(QtWidgets.QDialog):
                 cb.addItem(t.name, t.id)
         elif self.tag == 'emph':
             cb = self.widgets[0]
-            for id in api.character.skills.get_all():
-                sk = api.data.skills.get(id)
+            for iid in api.character.skills.get_all():
+                sk = api.data.skills.get(iid)
                 cb.addItem(sk.name, sk.id)
 
     def fix_skill_id(self, uuid):
@@ -304,20 +304,20 @@ def check_all_different(cb_list):
     # check that all the choices are different
     for i in range(0, len(cb_list) - 1):
         cb = cb_list[i]
-        id = cb.itemData(cb.currentIndex())
+        iid = cb.itemData(cb.currentIndex())
         for j in range(i + 1, len(cb_list)):
             cb2 = cb_list[j]
             id2 = cb2.itemData(cb2.currentIndex())
 
-            if id2 == id:
+            if id2 == iid:
                 return False
     return True
 
 
 def check_already_got(list1, list2):
     # check if you already got this item
-    for id in list1:
-        if id in list2:
+    for iid in list1:
+        if iid in list2:
             return True
     return False
 
@@ -497,6 +497,8 @@ class SelWcSkills(QtWidgets.QDialog):
             return
 
         self.error_bar.setVisible(False)
+
+        uuid = 0
 
         for cb in self.cbs:
             idx = cb.currentIndex()

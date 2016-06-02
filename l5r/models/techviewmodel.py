@@ -73,10 +73,6 @@ class TechViewModel(QtCore.QAbstractListModel):
             itm.school_name = school_.name
             itm.school_id = school_.id
 
-            #if adjusted_rank == 0:
-            #    itm.rank = str(tech_.rank)
-            #else:
-
             itm.tech_rank = str(tech_.rank)
             itm.rank = str(rank)
         return itm

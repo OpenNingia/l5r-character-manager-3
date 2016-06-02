@@ -38,8 +38,6 @@ def check_kiho_eligibility(kiho_id):
     """returns if the character can acquire the kiho and if not, also returns a reason string"""
 
     # check eligibility
-    against_mastery = 0
-
     kiho_ = api.data.powers.get_kiho(kiho_id)
     if not kiho_:
         log.api.error(u"kiho not found: %s", kiho_id)
@@ -49,7 +47,9 @@ def check_kiho_eligibility(kiho_id):
     is_ninja = api.character.is_ninja()
     is_shugenja = api.character.is_shugenja()
 
+    ninja_rank = 0
     school_bonus = 0
+
     ring_ = api.data.get_ring(kiho_.element)
     ring_rank = api.character.ring_rank(kiho_.element)
 

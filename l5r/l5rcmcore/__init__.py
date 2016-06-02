@@ -15,13 +15,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys
-import os
 import shutil
 from tempfile import mkstemp
 import subprocess
-
-from PyQt5 import QtCore, QtGui, QtWidgets
 
 import l5r.models as models
 import l5r.exporters as exporters
@@ -33,6 +29,9 @@ from l5r.util import log, osutil
 from l5r.util.fsutil import *
 import l5r.api as api
 import l5r.api.data
+import l5r.api.data.families
+import l5r.api.character
+import l5r.api.rules
 from l5r.api.data import CMErrors
 from l5r.l5rcmcore.qtsignalsutils import *
 from l5r.util.settings import L5RCMSettings
@@ -236,8 +235,8 @@ class L5RCMCore(QtWidgets.QMainWindow):
         # we use as many extra spells sheet as needed
 
         if is_shugenja:
-            #spell_count = api.character.spells.get_all()
-            #spell_offset = 0
+            # spell_count = api.character.spells.get_all()
+            # spell_offset = 0
 
             while spell_count > 0:
                 _exporter = exporters.FDFExporterSpells(spell_offset)
@@ -358,8 +357,8 @@ class L5RCMCore(QtWidgets.QMainWindow):
 
     def update_data_blacklist(self):
 
-        api.data.set_blacklist( [
-            x.id for x in self.dstore.packs if not x.active] )
+        api.data.set_blacklist([
+            x.id for x in self.dstore.packs if not x.active])
 
         settings = L5RCMSettings
         settings.data_pack_blacklist = api.data.get_blacklist()

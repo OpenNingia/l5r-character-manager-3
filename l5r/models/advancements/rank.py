@@ -76,8 +76,6 @@ class CustomStartingSkill(object):
     def __init__(self, options, rank=1):
         self.rank = rank
         self.options = options  # ( value, modifier )
-        # self.value    = value
-        #self.modifier = modifier
 
     def to_dict(self):
         out = {'rank': self.rank, 'options': self.options}
@@ -92,9 +90,4 @@ class CustomStartingSpells(object):
         self.count = count
 
     def to_dict(self):
-        out = {}
-        out['element'] = self.element
-        out['tag'] = self.tag
-        out['count'] = self.count
-
-        return out
+        return {'element': self.element, 'tag': self.tag, 'count': self.count}

@@ -169,7 +169,7 @@ def roll_l5r_pool(pool, keep):
     for i in range(0, pool):
         roll = 0
         tot_roll = 0
-        while (roll == 0 or roll >= explode):
+        while roll == 0 or roll >= explode:
             old_roll = roll
             roll = random.randint(1, 10)
             tot_roll += roll

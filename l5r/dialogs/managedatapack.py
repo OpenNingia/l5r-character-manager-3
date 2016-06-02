@@ -18,6 +18,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from l5r.util.settings import L5RCMSettings
 
+
 class DataPackModel(QtCore.QAbstractTableModel):
 
     def __init__(self, parent=None):
@@ -27,7 +28,7 @@ class DataPackModel(QtCore.QAbstractTableModel):
                         self.tr('Language'),
                         self.tr('Version'),
                         self.tr('Authors')]
-                        
+
         self.settings = L5RCMSettings()
 
     def rowCount(self, parent=QtCore.QModelIndex()):
@@ -58,12 +59,12 @@ class DataPackModel(QtCore.QAbstractTableModel):
                 return ", ".join(item.authors) if (item.authors is not None) else ""
         elif role == QtCore.Qt.ForegroundRole:
             if index.row() % 2:
-                return self.settings.ui._table_row_color_alt_fg
-            return self.settings.ui._table_row_color_fg
+                return self.settings.ui.table_row_color_alt_fg
+            return self.settings.ui.table_row_color_fg
         elif role == QtCore.Qt.BackgroundRole:
             if index.row() % 2:
-                return self.settings.ui._table_row_color_alt_bg
-            return self.settings.ui._table_row_color_bg
+                return self.settings.ui.table_row_color_alt_bg
+            return self.settings.ui.table_row_color_bg
         elif role == QtCore.Qt.SizeHintRole:
             return self.settings.ui.table_row_size
         elif role == QtCore.Qt.UserRole:

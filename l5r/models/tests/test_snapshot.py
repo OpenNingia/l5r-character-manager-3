@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
-__author__ = 'Daniele Simonetti'
 
 import unittest
 import l5rdal as dal
 import l5r.api as api
 import l5r.api.data
 import l5r.api.character
-import l5r.models as models
 from l5r.models import CharacterSnapshot
-
 from l5r.tests.fakedata import *
+
+__author__ = 'Daniele Simonetti'
 
 
 class TestCharacterSnapshot(unittest.TestCase):

@@ -131,7 +131,7 @@ class Sink1(QtCore.QObject):
         form.update_from_model()
 
     def generate_name(self):
-        '''generate a random name for the character'''
+        """generate a random name for the character"""
         form = self.form
 
         gender = self.sender().property('gender')
@@ -258,8 +258,8 @@ class Sink1(QtCore.QObject):
 
         for i in range(0, form.mvbox.count()):
             logo = form.mvbox.itemAt(i).widget()
-            if (logo.objectName() == 'BANNER'):
-                if settings.ui.banner_enabled :
+            if logo.objectName() == 'BANNER':
+                if settings.ui.banner_enabled:
                     logo.show()
                 else:
                     logo.hide()

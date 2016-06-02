@@ -36,7 +36,7 @@ class QIconTheme:
         return self.valid
 
 
-class QtIconLoaderImplementation():
+class QtIconLoaderImplementation:
 
     def __init__(self):
         self._themeName = None

@@ -99,9 +99,9 @@ class ModifierDialog(QtWidgets.QDialog):
             self.cb_modifier.addItem(i_value, i_key)
 
     def set_modifier(self, item):
-        '''
+        """
         :param ModifierModel item:
-        '''
+        """
         if item:
             for i in range(self.cb_modifier.count()):
                 key = self.cb_modifier.itemData(i)

@@ -24,9 +24,9 @@ ORG = 'openningia'
 APP = 'l5rcm'
 
 
-def get_user_data_path(rel_path = None):
+def get_user_data_path(rel_path=None):
     user_data = '.'
-    if os.name == 'posix': # Linux is ok but Macosx ???
+    if os.name == 'posix':  # Linux is ok but Macosx ???
         user_data = '%s/.config' % (os.environ['HOME'])
     elif os.name == 'nt':
         user_data = os.environ['APPDATA']
@@ -38,8 +38,10 @@ def get_user_data_path(rel_path = None):
 def set_translation_context(obj):
     __api.translation_provider = obj
 
+
 def cmp(a, b):
-    return (a>b)-(a<b)
+    return (a > b) - (a < b)
+
 
 def ver_cmp(version1, version2):
     def normalize(v):
@@ -73,7 +75,7 @@ class L5RCMAPI(object):
     translation_provider = None
 
     def __init__(self, app=None):
-        '''initialize api'''
+        """initialize api"""
 
         # load data
         # self.reload()
