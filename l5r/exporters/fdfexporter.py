@@ -17,7 +17,6 @@
 
 import hashlib
 from datetime import datetime
-from PyQt5.QtCore import QSettings
 
 import l5r.models as models
 import l5r.api as api
@@ -31,6 +30,7 @@ import l5r.api.data.flaws
 import l5r.api.character
 import l5r.api.character.schools
 
+from l5r.util.settings import L5RCMSettings
 
 class FDFExporter(object):
 
@@ -111,6 +111,8 @@ class FDFExporterAll(FDFExporter):
 
     def __init__(self):
         super(FDFExporterAll, self).__init__()
+        self.skill_offset = 0
+        self.skills_per_page = 37
 
     def export_body(self, io):
         m = self.model
@@ -143,16 +145,16 @@ class FDFExporterAll(FDFExporter):
         fields['STATUS'] = svalue
         fields['TAINT'] = tvalue
 
-        for i in range(1, hdots * 10 + 1):
+        for i in range(1, int(hdots) * 10 + 1):
             fields['HONOR_DOT.%d' % i] = True
 
-        for i in range(1, gdots * 10 + 1):
+        for i in range(1, int(gdots) * 10 + 1):
             fields['GLORY_DOT.%d' % i] = True
 
-        for i in range(1, sdots * 10 + 1):
+        for i in range(1, int(sdots) * 10 + 1):
             fields['STATUS_DOT.%d' % i] = True
 
-        for i in range(1, tdots * 10 + 1):
+        for i in range(1, int(tdots) * 10 + 1):
             fields['TAINT_DOT.%d' % i] = True
 
         # INITIATIVE
@@ -176,7 +178,10 @@ class FDFExporterAll(FDFExporter):
         w_labels = ['HEALTHY', 'NICKED', 'GRAZED',
                     'HURT', 'INJURED', 'CRIPPLED',
                     'DOWN', 'OUT']
-        method = QSettings().value('health_method', 'wounds')
+
+        settings = L5RCMSettings()
+        method = settings.app.health_method
+
         wounds_table = api.rules.get_wounds_table()
         for i, (i_inc, i_total, i_stacked, _inc_wounds, _total_wounds, _stacked_wounds) in enumerate(wounds_table):
             if method == 'default':
@@ -282,6 +287,26 @@ class FDFExporterAll(FDFExporter):
         # MISC
         misc = f.tx_pc_notes.get_plain_text()
         fields['MISCELLANEOUS'] = misc
+
+        # SKILLS
+        if settings.pc_export.first_page_skills:
+            skills = f.sk_view_model.items
+            if self.skill_offset > 0:
+                skills = skills[self.skill_offset:]
+
+            sorted_skills = sorted(
+                skills, key=lambda x: (not x.is_school, -x.rank, x.name))
+            for i, sk in enumerate(sorted_skills):
+                j = i + 1
+                if i >= self.skills_per_page:
+                    break
+
+                fields['SKILL_IS_SCHOOL.%d' % j] = sk.is_school
+                fields['SKILL_NAME.%d' % j] = sk.name
+                fields['SKILL_RANK.%d' % j] = sk.rank
+                fields['SKILL_TRAIT.%d' % j] = sk.trait
+                fields['SKILL_ROLL.%d' % j] = sk.mod_roll
+                fields['SKILL_EMPH_MA.%d' % j] = ', '.join(sk.emph)
 
         # EXPORT FIELDS
         for k in fields:

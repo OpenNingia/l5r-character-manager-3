@@ -84,7 +84,7 @@ class QtIconLoaderImplementation():
             else:
                 defaultTheme = "crystalsvg"
         configpath = kdeHome() + "/share/config/kdeglobals"
-        settings = QSettings(configpath, QSettings.IniFormat)
+        settings = QSettings()
         settings.beginGroup("Icons")
         self._themeName = str(settings.value("Theme", defaultTheme))
         # endif

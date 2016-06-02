@@ -35,6 +35,7 @@ import l5r.api as api
 import l5r.api.data
 from l5r.api.data import CMErrors
 from l5r.l5rcmcore.qtsignalsutils import *
+from l5r.util.settings import L5RCMSettings
 
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
@@ -75,12 +76,12 @@ class L5RCMCore(QtWidgets.QMainWindow):
         self.reload_data()
 
     def reload_data(self):
-        settings = QtCore.QSettings()
+        settings = L5RCMSettings()
 
         # self.data_pack_blacklist = settings.value('data_pack_blacklist', [])
 
         api.data.set_locale(self.locale)
-        api.data.set_blacklist(settings.value('data_pack_blacklist', []))
+        api.data.set_blacklist(settings.app.data_pack_blacklist)
         api.data.reload()
 
         # assign Data storage reference, for backward compatibility
@@ -130,13 +131,19 @@ class L5RCMCore(QtWidgets.QMainWindow):
         # call pdftk
         args_ = [self.get_pdftk(), source_pdf, 'fill_form',
                  fdf_file, 'output', target_pdf, 'flatten']
+
+        log.app.debug('call %s', args_)
+
         subprocess.call(args_)
         self.try_remove(fdf_file)
-        print('created pdf {0}'.format(target_pdf))
+
+        log.app.info('created pdf %s', target_pdf)
 
     def merge_pdf(self, input_files, output_file):
         # call pdftk
         args_ = [self.get_pdftk()] + input_files + ['output', output_file]
+
+        log.app.debug('call %s', args_)
         subprocess.call(args_)
         for f in input_files:
             self.try_remove(f)
@@ -354,8 +361,8 @@ class L5RCMCore(QtWidgets.QMainWindow):
         api.data.set_blacklist( [
             x.id for x in self.dstore.packs if not x.active] )
 
-        settings = QtCore.QSettings()
-        settings.setValue('data_pack_blacklist', api.data.get_blacklist())
+        settings = L5RCMSettings
+        settings.data_pack_blacklist = api.data.get_blacklist()
 
     def please_donate(self):
         donate_url = QtCore.QUrl(

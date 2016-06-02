@@ -58,6 +58,7 @@ import l5r.dialogs as dialogs
 
 from l5r.l5rcmcore import *
 from l5r.util import log
+from l5r.util.settings import L5RCMSettings
 
 
 def new_small_le(parent=None, ro=True):
@@ -166,7 +167,7 @@ class L5RMain(L5RCMCore):
 
         # Main interface widgets
         # self.view = ZoomableView(self)
-        settings = QtCore.QSettings()
+        settings = L5RCMSettings()
 
         self.widgets = QtWidgets.QFrame(self)
         self.widgets.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -178,34 +179,32 @@ class L5RMain(L5RCMCore):
         logo = QtWidgets.QLabel(self)
 
         # Set Banner
-        lIsBannerEnabled = settings.value('isbannerenabled')
-        if lIsBannerEnabled is None:
-            lIsBannerEnabled = 1
-        settings.setValue('isbannerenabled', lIsBannerEnabled)
         logo.setScaledContents(True)
         logo.setPixmap(QtGui.QPixmap(get_app_file('banner_s.png')))
         logo.setObjectName('BANNER')
-        if lIsBannerEnabled == 0:
+
+        if not settings.ui.banner_enabled:
             logo.hide()
+
         mvbox.addWidget(logo)
         mvbox.addWidget(self.tabs)
 
-        log.ui.debug(u"show banner: %s", u"yes" if lIsBannerEnabled else u"no" )
+        log.ui.debug(u"show banner: %s", u"yes" if settings.ui.banner_enabled else u"no" )
 
         self.mvbox = mvbox
         self.setCentralWidget(self.widgets)
 
         # LOAD SETTINGS
-        geo = settings.value('geometry')
+        geo = settings.app.geometry
 
-        #if geo is not None:
-        #    self.restoreGeometry(geo)
-        #    log.ui.info(u"restore geometry from settings")
-        #else:
-        #    log.ui.info(u"using default geometry")
-        #    self.reset_geometry()
+        if geo is not None:
+            self.restoreGeometry(geo)
+            log.ui.info(u"restore geometry from settings")
+        else:
+            log.ui.info(u"using default geometry")
+            self.reset_geometry()
 
-        self.ic_idx = int(settings.value('insight_calculation', 1)) - 1
+        self.ic_idx = int(settings.app.insight_calculation) - 1
         ic_calcs = [api.rules.insight_calculation_1,
                     api.rules.insight_calculation_2,
                     api.rules.insight_calculation_3]
@@ -1276,7 +1275,7 @@ class L5RMain(L5RCMCore):
 
     def build_menu(self):
 
-        settings = QtCore.QSettings()
+        settings = L5RCMSettings()
 
         self.app_menu_tb = QtWidgets.QToolButton(self.widgets)
         self.app_menu = QtWidgets.QMenu("AppMenu", self.app_menu_tb)
@@ -1363,7 +1362,7 @@ class L5RMain(L5RCMCore):
         hm_cumulative_act.setProperty('method', 'stacked')
         hm_totwounds_act .setProperty('method', 'wounds')
         hm_list = [hm_default_act, hm_cumulative_act, hm_totwounds_act]
-        hm_mode = settings.value('health_method', 'wounds')
+        hm_mode = settings.app.health_method
         for act in hm_list:
             self.hm_act_grp.addAction(act)
             act.setCheckable(True)
@@ -1408,9 +1407,9 @@ class L5RMain(L5RCMCore):
         options_buy_for_free_act.setCheckable(True)
         options_buy_for_free_act.setChecked(False)
 
-        settings = QtCore.QSettings()
+        settings = L5RCMSettings()
         options_banner_act.setCheckable(True)
-        options_banner_act.setChecked(settings.value('isbannerenabled') == 1)
+        options_banner_act.setChecked(settings.ui.banner_enabled)
 
         options_banner_act.triggered.connect(
             self.sink1.on_toggle_display_banner)
@@ -2131,8 +2130,8 @@ class L5RMain(L5RCMCore):
         # TODO toku bushi school removes some penalties
 
     def display_health(self):
-        settings = QtCore.QSettings()
-        method = settings.value('health_method', 'wounds')
+        settings = L5RCMSettings()
+        method = settings.app.health_method
         if method == 'default':
             self.display_health_default()
         elif method == 'wounds':
@@ -2162,8 +2161,8 @@ class L5RMain(L5RCMCore):
             self.wounds[i][2].setText(str(i_stacked_wounds) if i_stacked_wounds else '')
 
     def advise_successfull_import(self, count):
-        settings = QtCore.QSettings()
-        if settings.value('advise_successfull_import', 'true') == 'false':
+        settings = L5RCMSettings()
+        if not settings.advise_successful_import:
             return
         msgBox = QtWidgets.QMessageBox(self)
         msgBox.setWindowTitle('L5R: CM')
@@ -2179,7 +2178,7 @@ class L5RMain(L5RCMCore):
         msgBox.setIcon(QtWidgets.QMessageBox.Information)
         msgBox.exec_()
         if do_not_prompt_again.checkState() == QtCore.Qt.Checked:
-            settings.setValue('advise_successfull_import', 'false')
+            settings.advise_successful_import = False
 
     def advise_error(self, message, dtl=None):
         msgBox = QtWidgets.QMessageBox(self)
@@ -2251,15 +2250,15 @@ class L5RMain(L5RCMCore):
         self.update_from_model()
 
         # SAVE GEOMETRY
-        settings = QtCore.QSettings()
-        settings.setValue('geometry', self.saveGeometry())
+        settings = L5RCMSettings()
+        settings.app.geometry = self.saveGeometry()
 
         if self.pc.insight_calculation == api.rules.insight_calculation_2:
-            settings.setValue('insight_calculation', 2)
+            settings.app.insight_calculation = 2
         elif self.pc.insight_calculation == api.rules.insight_calculation_3:
-            settings.setValue('insight_calculation', 3)
+            settings.app.insight_calculation = 3
         else:
-            settings.setValue('insight_calculation', 1)
+            settings.app.insight_calculation = 1
 
         if self.pc.is_dirty():
             resp = self.ask_to_save()
@@ -2273,8 +2272,8 @@ class L5RMain(L5RCMCore):
             super(L5RMain, self).closeEvent(ev)
 
     def select_save_path(self):
-        settings = QtCore.QSettings()
-        last_dir = settings.value('last_open_dir', QtCore.QDir.homePath())
+        settings = L5RCMSettings()
+        last_dir = settings.app.last_open_dir
         char_name = self.get_character_full_name()
         proposed = os.path.join(last_dir, char_name)
 
@@ -2292,18 +2291,16 @@ class L5RMain(L5RCMCore):
         if type(fileName) is tuple:
             fileName = fileName[0]
 
-        last_dir = os.path.dirname(fileName)
-        if last_dir != '':
-            # print 'save last_dir: %s' % last_dir
-            settings.setValue('last_open_dir', last_dir)
+        if fileName:
+            settings.app.last_open_dir = os.path.dirname(fileName)
 
         if fileName.endswith('.l5r'):
             return fileName
         return fileName + '.l5r'
 
     def select_load_path(self):
-        settings = QtCore.QSettings()
-        last_dir = settings.value('last_open_dir', QtCore.QDir.homePath())
+        settings = L5RCMSettings()
+        last_dir = settings.app.last_open_dir
         fileName = QtWidgets.QFileDialog.getOpenFileName(
             self,
             self.tr("Load Character"),
@@ -2318,17 +2315,16 @@ class L5RMain(L5RCMCore):
         if type(fileName) is tuple:
             fileName = fileName[0]
 
-        last_dir = os.path.dirname(fileName)
-        if last_dir != '':
-            settings.setValue('last_open_dir', last_dir)
+        if fileName:
+            settings.app.last_open_dir = os.path.dirname(fileName)
         return fileName
 
     def select_export_file(self, file_ext='.txt'):
         supported_ext = ['.pdf']
         supported_filters = [self.tr("PDF Files(*.pdf)")]
 
-        settings = QtCore.QSettings()
-        last_dir = settings.value('last_open_dir', QtCore.QDir.homePath())
+        settings = L5RCMSettings()
+        last_dir = settings.app.last_open_dir
         char_name = self.get_character_full_name()
         proposed = os.path.join(last_dir, char_name)
 
@@ -2346,9 +2342,8 @@ class L5RMain(L5RCMCore):
         if type(fileName) is tuple:
             fileName = fileName[0]
 
-        last_dir = os.path.dirname(fileName[0])
-        if last_dir != '':
-            settings.setValue('last_open_dir', last_dir)
+        if fileName:
+            settings.app.last_open_dir = os.path.dirname(fileName)
 
         if fileName.endswith(file_ext):
             return fileName
@@ -2359,9 +2354,9 @@ class L5RMain(L5RCMCore):
         supported_filters = [self.tr("L5R:CM Data Pack(*.l5rcmpack *.zip)"),
                              self.tr("Zip Archive(*.zip)")]
 
-        settings = QtCore.QSettings()
-        last_data_dir = settings.value(
-            'last_open_data_dir', QtCore.QDir.homePath())
+        settings = L5RCMSettings()
+        last_data_dir = settings.app.last_open_data_dir
+
         files = QtWidgets.QFileDialog.getOpenFileNames(
             self,
             self.tr("Load data pack"),
@@ -2374,10 +2369,9 @@ class L5RMain(L5RCMCore):
         if not files:
             return None
 
-        last_data_dir = os.path.dirname(files[0])
-        if last_data_dir != '':
-            # print 'save last_dir: %s' % last_dir
-            settings.setValue('last_open_data_dir', last_data_dir)
+        if files[0]:
+            settings.app.last_open_data_dir = os.path.dirname(files[0])
+
         return files
 
     def on_change_insight_calculation(self):
@@ -2387,8 +2381,8 @@ class L5RMain(L5RCMCore):
 
     def on_change_health_visualization(self):
         method = self.sender().checkedAction().property('method')
-        settings = QtCore.QSettings()
-        settings.setValue('health_method', method)
+        settings = L5RCMSettings()
+        settings.app.health_method = method
         self.update_from_model()
 
     def create_new_character(self):
@@ -2447,33 +2441,37 @@ def main():
         app.setWindowIcon(QtGui.QIcon(get_app_icon_path()))
 
         # Setup translation
-        settings = QtCore.QSettings()
-        use_machine_locale = settings.value('use_machine_locale', 1)
+        settings = L5RCMSettings()
+
         app_translator = QtCore.QTranslator(app)
         qt_translator = QtCore.QTranslator(app)
 
         log.app.debug(u"use machine locale: %s, machine locale: %s",
-                      "yes" if use_machine_locale else "no", QtCore.QLocale.system().name())
+                      "yes" if settings.app.use_system_locale else "no", QtCore.QLocale.system().name())
 
-        if use_machine_locale == 1:
-            use_locale = QtCore.QLocale.system().name()
+        if settings.app.use_system_locale:
+            app_locale = QtCore.QLocale.system().name()
         else:
-            use_locale = settings.value('use_locale')
+            app_locale = settings.app.user_locale
 
-        qt_loc = 'qt_{0}'.format(use_locale[:2])
-        app_loc = get_app_file('i18n/{0}'.format(use_locale))
+        if '_' in app_locale:
+            qt_loc = 'qt_{0}'.format(app_locale[:2])
+        else:
+            qt_loc = 'qt_{0}'.format(app_locale)
 
-        log.app.debug(u"current locale: %s, qt locale: %s, app locale file: %s", use_locale, qt_loc, app_loc)
+        app_loc_file = get_app_file('i18n/{0}'.format(app_locale))
+
+        log.app.debug(u"current locale: %s, qt locale: %s, app locale file: %s", app_locale, qt_loc, app_loc_file)
         log.app.debug(u"qt translation path: %s", QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.TranslationsPath))
 
         qt_translator .load(
             qt_loc, QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.TranslationsPath))
         app.installTranslator(qt_translator)
-        app_translator.load(app_loc)
+        app_translator.load(app_loc_file)
         app.installTranslator(app_translator)
 
         # start main form
-        l5rcm = L5RMain(use_locale)
+        l5rcm = L5RMain(app_locale)
         l5rcm.setWindowTitle(APP_DESC + ' v' + APP_VERSION)
         l5rcm.init()
 
@@ -2507,9 +2505,6 @@ def main():
 
         # alert if not datapacks are installed
         l5rcm.check_datapacks()
-
-        # REMOVE CHECK FOR UPDATES UNTIL BETTER IMPLEMENTED
-        # l5rcm.check_updates()
 
         return app.exec_()
     except Exception as e:
