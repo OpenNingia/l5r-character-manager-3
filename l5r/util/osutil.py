@@ -58,6 +58,7 @@ def portable_open(what):
     else:
         raise Exception('Platform not supported')
 
+
 def get_system_font():
     if sys.platform == 'linux2':
         de = detect_desktop_environment()

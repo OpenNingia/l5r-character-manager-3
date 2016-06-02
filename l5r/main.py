@@ -125,6 +125,8 @@ class L5RMain(L5RCMCore):
         self.sink3 = l5r.sinks.Sink3(self)  # Weapons Sink
         self.sink4 = l5r.sinks.Sink4(self)  # Weapons Sink
 
+        self.table_views = []
+
         # Build interface and menus
         self.build_ui()
         self.build_menu()
@@ -589,6 +591,7 @@ class L5RMain(L5RCMCore):
                 if d is not None and len(d) == 2:
                     col_ = d[0]
                     obj_ = d[1]
+                self.table_views.append(view)
             elif t == 'list':
                 view = QtWidgets.QListView(self)
             if on_double_click:
@@ -645,6 +648,7 @@ class L5RMain(L5RCMCore):
         view.horizontalHeader().setStretchLastSection(True)
         view.horizontalHeader().setCascadingSectionResizes(True)
         view.setModel(model)
+        self.table_views.append(view)
         sm = view.selectionModel()
         sm.currentRowChanged.connect(self.on_spell_selected)
         self.spell_table_view = view
@@ -679,8 +683,15 @@ class L5RMain(L5RCMCore):
         vbox = QtWidgets.QVBoxLayout(grp)
 
         # View
-        view = QtWidgets.QListView(self)
+        view = QtWidgets.QTableView(self)
+        view.setSortingEnabled(False)
+        view.horizontalHeader().setSectionResizeMode(
+            QtWidgets.QHeaderView.Interactive)
+        view.horizontalHeader().setStretchLastSection(True)
+        view.horizontalHeader().setCascadingSectionResizes(True)
+
         view.setModel(model)
+        self.table_views.append(view)
         vbox.addWidget(view)
         layout.addWidget(grp)
 
@@ -729,6 +740,7 @@ class L5RMain(L5RCMCore):
         view.setModel(model)
         view.doubleClicked.connect(self.sink4.on_kata_item_activate)
         self.ka_table_view = view
+        self.table_views.append(view)
 
         vbox.addWidget(view)
 
@@ -785,6 +797,7 @@ class L5RMain(L5RCMCore):
         view.setModel(model)
         view.doubleClicked.connect(self.sink4.on_kiho_item_activate)
         self.ki_table_view = view
+        self.table_views.append(view)
 
         vbox.addWidget(view)
 
@@ -953,11 +966,18 @@ class L5RMain(L5RCMCore):
         vbox.addWidget(fr_)
 
         self.adv_view_model = l5r.models.AdvancementViewModel(self)
-        lview = QtWidgets.QListView(self)
-        lview.setModel(self.adv_view_model)
-        vbox.addWidget(lview)
+        view = QtWidgets.QTableView(self)
+        view.setSortingEnabled(False)
+        view.horizontalHeader().setSectionResizeMode(
+            QtWidgets.QHeaderView.Interactive)
+        view.horizontalHeader().setStretchLastSection(True)
+        view.horizontalHeader().setCascadingSectionResizes(True)
 
-        self.adv_view = lview
+        self.table_views.append(view)
+        view.setModel(self.adv_view_model)
+        vbox.addWidget(view)
+
+        self.adv_view = view
 
         self.tabs.addTab(mfr, self.tr("Advancements"))
 
@@ -2102,6 +2122,12 @@ class L5RMain(L5RCMCore):
         self.ki_view_model    .update_from_model(self.pc)
         self.equip_view_model .update_from_model(self.pc)
 
+        # update table views to fit new contents
+        for v in self.table_views:
+            v.setVisible(False)
+            v.resizeColumnsToContents()
+            v.setVisible(True)
+
     def update_wound_penalties(self):
         WOUND_PENALTIES_NAMES = [
             self.tr("Healthy"),
@@ -2464,6 +2490,11 @@ def main():
         app.installTranslator(qt_translator)
         app_translator.load(app_loc_file)
         app.installTranslator(app_translator)
+
+        # application font
+        if settings.ui.font_family and settings.ui.font_size:
+            app_font = QtGui.QFont(settings.ui.font_family, float(settings.ui.font_size))
+            QtWidgets.QApplication.setFont(app_font)
 
         # start main form
         l5rcm = L5RMain(app_locale)

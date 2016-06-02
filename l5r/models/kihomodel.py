@@ -42,8 +42,13 @@ class KihoTableViewModel(QtCore.QAbstractTableModel):
 
     def __init__(self, parent=None):
         super(KihoTableViewModel, self).__init__(parent)
+
         self.items = []
-        self.headers = ['Name', 'Mastery', 'Element']
+        self.headers = [
+            self.tr('Name'),
+            self.tr('Mastery'),
+            self.tr('Element')]
+
         self.settings = L5RCMSettings()
 
     def rowCount(self, parent=QtCore.QModelIndex()):

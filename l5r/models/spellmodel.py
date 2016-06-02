@@ -18,6 +18,7 @@
 from PyQt5 import QtCore, QtGui
 
 from l5r.util.fsutil import get_icon_path
+from l5r.util.settings import L5RCMSettings
 
 import l5r.api as api
 import l5r.api.data.spells
@@ -50,13 +51,18 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
 
     def __init__(self, parent=None):
         super(SpellTableViewModel, self).__init__(parent)
+
         self.items = []
-        self.headers = ['Name', 'Ring', 'Mastery', 'Range', 'Area of Effect',
-                        'Duration', 'Raises']
-        self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
-        self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
-                         QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
-        self.item_size = QtCore.QSize(28, 28)
+        self.headers = [
+            self.tr('Name'),
+            self.tr('Ring'),
+            self.tr('Mastery'),
+            self.tr('Range'),
+            self.tr('Area of Effect'),
+            self.tr('Duration'),
+            self.tr('Raises')]
+
+        self.settings = L5RCMSettings()
         if parent:
             self.bold_font = parent.font()
             self.bold_font.setBold(True)
@@ -101,11 +107,15 @@ class SpellTableViewModel(QtCore.QAbstractTableModel):
             if item.is_school and self.bold_font:
                 return self.bold_font
         elif role == QtCore.Qt.ForegroundRole:
-            return self.text_color
+            if index.row() % 2:
+                return self.settings.ui.table_row_color_alt_fg
+            return self.settings.ui.table_row_color_fg
         elif role == QtCore.Qt.BackgroundRole:
-            return self.bg_color[index.row() % 2]
+            if index.row() % 2:
+                return self.settings.ui.table_row_color_alt_bg
+            return self.settings.ui.table_row_color_bg
         elif role == QtCore.Qt.SizeHintRole:
-            return self.item_size
+            return self.settings.ui.table_row_size
         elif role == QtCore.Qt.ToolTipRole:
             if index.column() == 1:
                 if len(item.tags) > 0:

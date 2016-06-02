@@ -16,15 +16,22 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PyQt5 import QtCore
-
+from l5r.util.settings import L5RCMSettings
 
 class ColorFriendlySortProxyModel(QtCore.QSortFilterProxyModel):
 
     def __init__(self, parent=None):
         super(ColorFriendlySortProxyModel, self).__init__(parent)
+        self.settings = L5RCMSettings()
 
     def data(self, index, role):
         # respect alternate row color
-        if role == QtCore.Qt.BackgroundRole:
-            return self.sourceModel().bg_color[index.row() % 2]
+        if role == QtCore.Qt.ForegroundRole:
+            if index.row() % 2:
+                return self.settings.ui.table_row_color_alt_fg
+            return self.settings.ui.table_row_color_fg
+        elif role == QtCore.Qt.BackgroundRole:
+            if index.row() % 2:
+                return self.settings.ui.table_row_color_alt_bg
+            return self.settings.ui.table_row_color_bg
         return super(ColorFriendlySortProxyModel, self).data(index, role)

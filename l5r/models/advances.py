@@ -118,16 +118,32 @@ class MemoSpellAdv(Advancement):
         self.spell = spell_id
 
 
-class AdvancementViewModel(QtCore.QAbstractListModel):
+class AdvancementViewModel(QtCore.QAbstractTableModel):
 
     def __init__(self, parent=None):
         super(AdvancementViewModel, self).__init__(parent)
 
         self.items = []
+        self.headers = [
+            self.tr('Tag'),
+            self.tr('Cost'),
+            self.tr('Text'),
+            self.tr('Timestamp')]
+
         self.settings = L5RCMSettings()
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
+
+    def columnCount(self, parent=QtCore.QModelIndex()):
+        return len(self.headers)
+
+    def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
+        if orientation != QtCore.Qt.Horizontal:
+            return None
+        if role == QtCore.Qt.DisplayRole:
+            return self.headers[section]
+        return None
 
     def add_item(self, item):
         row = self.rowCount()
@@ -150,7 +166,14 @@ class AdvancementViewModel(QtCore.QAbstractListModel):
             return None
         item = self.items[index.row()]
         if role == QtCore.Qt.DisplayRole:
-            return item.type
+            if index.column() == 0:
+                return item.type
+            if index.column() == 1:
+                return item.cost
+            if index.column() == 2:
+                return item.desc
+            if index.column() == 3:
+                return datetime.fromtimestamp(item.timestamp).strftime('%Y-%m-%d %H:%M:%S.%f')
         elif role == QtCore.Qt.ForegroundRole:
             if index.row() % 2:
                 return self.settings.ui.table_row_color_alt_fg

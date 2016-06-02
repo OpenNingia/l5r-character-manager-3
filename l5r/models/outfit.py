@@ -23,6 +23,7 @@ import l5r.api.data.outfit
 import l5r.api.data.skills
 
 from l5r.util import log
+from l5r.util.settings import L5RCMSettings
 
 
 class ArmorOutfit(object):
@@ -108,18 +109,29 @@ class WeaponTableViewModel(QtCore.QAbstractTableModel):
         self.type = type_
         self.items = []
         if type_ == 'melee':
-            self.headers = ['Name', 'DR', 'Sec. DR', 'ATK Roll',
-                            'Mod. ATK Roll', 'DMG Roll', 'Mod. DMG Roll']
+            self.headers = [
+                self.tr('Name'),
+                self.tr('DR'),
+                self.tr('Sec. DR'),
+                self.tr('ATK Roll'),
+                self.tr('Mod. ATK Roll'),
+                self.tr('DMG Roll'),
+                self.tr('Mod. DMG Roll')]
         elif type_ == 'ranged':
             self.headers = [
-                'Name', 'Range', 'Strength', 'Min. Str.', 'ATK Roll', 'Mod. ATK Roll']
+                self.tr('Name'),
+                self.tr('Range'),
+                self.tr('Strength'),
+                self.tr('Min. Str.'),
+                self.tr('ATK Roll'),
+                self.tr('Mod. ATK Roll')]
         elif type_ == 'arrow':
-            self.headers = ['Name', 'DR', 'Quantity']
+            self.headers = [
+                self.tr('Name'),
+                self.tr('DR'),
+                self.tr('Quantity')]
 
-        self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
-        self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
-                         QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
-        self.item_size = QtCore.QSize(28, 28)
+        self.settings = L5RCMSettings()
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
@@ -146,11 +158,15 @@ class WeaponTableViewModel(QtCore.QAbstractTableModel):
             elif self.type == 'arrow':
                 return self.arrow_display_role(item, index.column())
         elif role == QtCore.Qt.ForegroundRole:
-            return self.text_color
+            if index.row() % 2:
+                return self.settings.ui.table_row_color_alt_fg
+            return self.settings.ui.table_row_color_fg
         elif role == QtCore.Qt.BackgroundRole:
-            return self.bg_color[index.row() % 2]
+            if index.row() % 2:
+                return self.settings.ui.table_row_color_alt_bg
+            return self.settings.ui.table_row_color_bg
         elif role == QtCore.Qt.SizeHintRole:
-            return self.item_size
+            return self.settings.ui.table_row_size
         elif role == QtCore.Qt.UserRole:
             return item
         return None
@@ -236,11 +252,7 @@ class EquipmentListModel(QtCore.QAbstractListModel):
 
         self.school_outfit = []
         self.items = []
-
-        self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
-        self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
-                         QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
-        self.item_size = QtCore.QSize(28, 28)
+        self.settings = L5RCMSettings()
 
         self.bold_font = None
         if self.parent:
@@ -311,11 +323,15 @@ class EquipmentListModel(QtCore.QAbstractListModel):
         if role == QtCore.Qt.EditRole:
             return item
         elif role == QtCore.Qt.ForegroundRole:
-            return self.text_color
+            if index.row() % 2:
+                return self.settings.ui.table_row_color_alt_fg
+            return self.settings.ui.table_row_color_fg
         elif role == QtCore.Qt.BackgroundRole:
-            return self.bg_color[index.row() % 2]
+            if index.row() % 2:
+                return self.settings.ui.table_row_color_alt_bg
+            return self.settings.ui.table_row_color_bg
         elif role == QtCore.Qt.SizeHintRole:
-            return self.item_size
+            return self.settings.ui.table_row_size
         elif role == QtCore.Qt.FontRole:
             if self.is_school_item(index):
                 return self.bold_font

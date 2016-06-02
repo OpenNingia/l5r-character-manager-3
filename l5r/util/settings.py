@@ -76,7 +76,7 @@ class L5RCMSettings_UI(object):
 
     @property
     def table_row_color_alt_bg(self):
-        return self._qsettings.value('ui/table-row-color-alt-bg')
+        return self._qsettings.value('ui/table-row-color-alt-bg', QBrush(QColor("#eeeeee")))
 
     @property
     def table_row_color_alt_fg(self):

@@ -19,6 +19,7 @@ from PyQt5 import QtCore, QtGui
 
 import l5r.api as api
 import l5r.api.data.schools
+from l5r.util.settings import L5RCMSettings
 
 
 class TechItemModel(object):
@@ -48,19 +49,32 @@ class TechItemModel(object):
         return self.rank.__hash__()
 
 
-class TechViewModel(QtCore.QAbstractListModel):
+class TechViewModel(QtCore.QAbstractTableModel):
 
     def __init__(self, parent=None):
         super(TechViewModel, self).__init__(parent)
 
         self.items = []
-        self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
-        self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
-                         QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
-        self.item_size = QtCore.QSize(32, 32)
+        self.headers = [
+            self.tr('Rank'),
+            self.tr('School'),
+            self.tr('School Rank'),
+            self.tr('Name')]
+
+        self.settings = L5RCMSettings()
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
+
+    def columnCount(self, parent=QtCore.QModelIndex()):
+        return len(self.headers)
+
+    def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
+        if orientation != QtCore.Qt.Horizontal:
+            return None
+        if role == QtCore.Qt.DisplayRole:
+            return self.headers[section]
+        return None
 
     def build_item_model(self, tech_id, rank):
         itm = TechItemModel()
@@ -91,13 +105,8 @@ class TechViewModel(QtCore.QAbstractListModel):
     def update_from_model(self, model):
         self.clean()
 
-        #for tech in api.character.schools.get_techs():
-
-        #for rank in range(1, api.character.insight_rank()+1):
         for r in api.character.rankadv.get_all():
             tech_ = api.character.schools.get_tech_by_rank(r.rank)
-            #adjusted_rank = self.adjust_tech_rank(model, tech)
-            ##self.add_item(tech, adjusted_rank)
             if tech_:
                 self.add_item(tech_, r.rank)
         # sort by rank
@@ -114,13 +123,24 @@ class TechViewModel(QtCore.QAbstractListModel):
             return None
         item = self.items[index.row()]
         if role == QtCore.Qt.DisplayRole:
-            return item.name
+            if index.column() == 0:
+                return item.rank
+            if index.column() == 1:
+                return item.school_name
+            if index.column() == 2:
+                return item.tech_rank
+            if index.column() == 3:
+                return item.name
         elif role == QtCore.Qt.ForegroundRole:
-            return self.text_color
+            if index.row() % 2:
+                return self.settings.ui.table_row_color_alt_fg
+            return self.settings.ui.table_row_color_fg
         elif role == QtCore.Qt.BackgroundRole:
-            return self.bg_color[index.row() % 2]
+            if index.row() % 2:
+                return self.settings.ui.table_row_color_alt_bg
+            return self.settings.ui.table_row_color_bg
         elif role == QtCore.Qt.SizeHintRole:
-            return self.item_size
+            return self.settings.ui.table_row_size
         elif role == QtCore.Qt.UserRole:
             return item
         return None
