@@ -35,16 +35,31 @@ class MaItemModel(object):
         return self.desc
 
 
-class MaViewModel(QtCore.QAbstractListModel):
+class MaViewModel(QtCore.QAbstractTableModel):
 
     def __init__(self, parent=None):
         super(MaViewModel, self).__init__(parent)
 
         self.items = []
+        self.headers = [
+            self.tr('Skill'),
+            self.tr('Rank'),
+            self.tr('Effect')]
+
         self.settings = L5RCMSettings()
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
+
+    def columnCount(self, parent=QtCore.QModelIndex()):
+        return len(self.headers)
+
+    def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
+        if orientation != QtCore.Qt.Horizontal:
+            return None
+        if role == QtCore.Qt.DisplayRole:
+            return self.headers[section]
+        return None
 
     def add_item(self, sk_name, sk_rnk, ma_brief):
         row = self.rowCount()
@@ -87,7 +102,12 @@ class MaViewModel(QtCore.QAbstractListModel):
             return None
         item = self.items[index.row()]
         if role == QtCore.Qt.DisplayRole:
-            return item.desc
+            if index.column() == 0:
+                return item.skill_name
+            if index.column() == 1:
+                return item.skill_rank
+            if index.column() == 2:
+                return item.desc
         elif role == QtCore.Qt.ForegroundRole:
             if index.row() % 2:
                 return self.settings.ui.table_row_color_alt_fg

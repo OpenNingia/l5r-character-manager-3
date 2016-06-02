@@ -817,6 +817,11 @@ class L5RMain(L5RCMCore):
         self.sk_sort_model.setDynamicSortFilter(True)
         self.sk_sort_model.setSourceModel(self.sk_view_model)
 
+        # enable sorting through a proxy model
+        self.ma_sort_model = models.ColorFriendlySortProxyModel(self)
+        self.ma_sort_model.setDynamicSortFilter(True)
+        self.ma_sort_model.setSourceModel(self.ma_view_model)
+
         # skills vertical toolbar
         vtb = widgets.VerticalToolBar(self)
         vtb.addStretch()
@@ -839,8 +844,8 @@ class L5RMain(L5RCMCore):
             ),
             (
                 self.tr("Mastery Abilities"),
-                'list',
-                self.ma_view_model,
+                'table',
+                self.ma_sort_model,
                 None,
                 None,
                 None

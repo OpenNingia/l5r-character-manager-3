@@ -40,8 +40,6 @@ build_script:
   - nosetests
 
 after_build:
-  - rem versioning
-  - ps: (Get-Content l5r\l5rcmcore\__init__.py) | ForEach-Object { $_ -replace "APP_VERSION\s?=\s?.+" , "APP_VERSION = '$APPVEYOR_BUILD_VERSION'" } | Set-Content l5r\l5rcmcore\__init__.py
   - mkdir tools\deploy\windows\dist
   - python cxfreeze.py build
   - cd tools\deploy\windows\
