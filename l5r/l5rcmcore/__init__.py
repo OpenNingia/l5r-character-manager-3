@@ -38,7 +38,7 @@ from l5r.util.settings import L5RCMSettings
 
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
-APP_VERSION = '3.11.123'
+APP_VERSION = '3.11.0'
 DB_VERSION = '3.11'
 APP_ORG = 'openningia'
 
