@@ -40,17 +40,33 @@ class PerkItemModel(object):
         return self.name
 
 
-class PerkViewModel(QtCore.QAbstractListModel):
+class PerkViewModel(QtCore.QAbstractTableModel):
 
     def __init__(self, type_, parent=None):
         super(PerkViewModel, self).__init__(parent)
 
         self.items = []
+
+        self.headers = [
+            self.tr('Name'),
+            self.tr('Rank'),
+            self.tr('Value')]
+
         self.type = type_
         self.settings = L5RCMSettings()
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
+
+    def columnCount(self, parent=QtCore.QModelIndex()):
+        return len(self.headers)
+
+    def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
+        if orientation != QtCore.Qt.Horizontal:
+            return None
+        if role == QtCore.Qt.DisplayRole:
+            return self.headers[section]
+        return None
 
     def build_item_model(self, model, perk_adv):
         itm = PerkItemModel()
@@ -93,7 +109,12 @@ class PerkViewModel(QtCore.QAbstractListModel):
             return None
         item = self.items[index.row()]
         if role == QtCore.Qt.DisplayRole:
-            return item.name
+            if index.column() == 0:
+                return item.name
+            if index.column() == 1:
+                return item.rank
+            if index.column() == 2:
+                return abs(item.cost)
         elif role == QtCore.Qt.ForegroundRole:
             if index.row() % 2:
                 return self.settings.ui.table_row_color_alt_fg

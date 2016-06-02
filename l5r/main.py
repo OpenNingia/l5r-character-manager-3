@@ -929,8 +929,22 @@ class L5RMain(L5RCMCore):
         self.merits_view_model = models.PerkViewModel('merit')
         self.flaws_view_model = models.PerkViewModel('flaws')
 
-        merit_view = QtWidgets.QListView(self)
-        merit_view.setModel(self.merits_view_model)
+        self.merits_sort_model = models.ColorFriendlySortProxyModel(self)
+        self.merits_sort_model.setDynamicSortFilter(True)
+        self.merits_sort_model.setSourceModel(self.merits_view_model)
+
+        self.flaws_sort_model = models.ColorFriendlySortProxyModel(self)
+        self.flaws_sort_model.setDynamicSortFilter(True)
+        self.flaws_sort_model.setSourceModel(self.flaws_view_model)
+
+        merit_view = QtWidgets.QTableView(self)
+        merit_view.setSortingEnabled(True)
+        merit_view.horizontalHeader().setSectionResizeMode(
+            QtWidgets.QHeaderView.Interactive)
+        merit_view.horizontalHeader().setStretchLastSection(True)
+        merit_view.horizontalHeader().setCascadingSectionResizes(True)
+
+        merit_view.setModel(self.merits_sort_model)
         merit_vtb = _make_vertical_tb('merit', True, True)
         fr_ = QtWidgets.QFrame(self)
         hb_ = QtWidgets.QHBoxLayout(fr_)
@@ -939,8 +953,14 @@ class L5RMain(L5RCMCore):
         hb_.addWidget(merit_view)
         vbox.addWidget(new_item_groupbox(self.tr("Advantages"), fr_))
 
-        flaw_view = QtWidgets.QListView(self)
-        flaw_view.setModel(self.flaws_view_model)
+        flaw_view = QtWidgets.QTableView(self)
+        flaw_view.setSortingEnabled(True)
+        flaw_view.horizontalHeader().setSectionResizeMode(
+            QtWidgets.QHeaderView.Interactive)
+        flaw_view.horizontalHeader().setStretchLastSection(True)
+        flaw_view.horizontalHeader().setCascadingSectionResizes(True)
+
+        flaw_view.setModel(self.flaws_sort_model)
         flaw_vtb = _make_vertical_tb('flaw', True, True)
         fr_ = QtWidgets.QFrame(self)
         hb_ = QtWidgets.QHBoxLayout(fr_)
@@ -951,6 +971,8 @@ class L5RMain(L5RCMCore):
 
         self.merit_view = merit_view
         self.flaw_view = flaw_view
+        self.table_views.append(self.merit_view)
+        self.table_views.append(self.flaw_view)
 
         self.tabs.addTab(mfr, self.tr("Perks"))
 
