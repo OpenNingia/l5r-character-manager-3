@@ -15,7 +15,46 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt5 import QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
+    
+
+class QWidgetSettingsBinder(QtCore.QObject):
+    """Bind qwidgets to qsettings"""
+    def __init__(self, parent, signal, prop, setting, value_type):
+        super(QWidgetSettingsBinder, self).__init__(parent)
+        
+        self.signal = signal
+        self.prop = prop
+        self.setting = setting
+        self.value_type = value_type
+
+        self.settings = QtCore.QSettings()
+    
+        print("set property {} to {}".format(self.prop, self.settings.value(setting)))
+        parent.setProperty(self.prop, self.settings.value(setting))
+        signal.connect(self.on_notify)
+
+
+    def on_notify(self, *args, **kwargs):
+        print("property {} = {}".format(self.prop, self.parent().property(self.prop)))
+        self.settings.setValue(self.setting, self.parent().property(self.prop)) 
+        
+class QComboBoxSettingsBinder(QWidgetSettingsBinder):
+    def __init__(self, parent, setting):
+        super(QComboBoxSettingsBinder, self).__init__(parent, parent.activated, 'currentData', setting, None)
+        
+        # workaround for combobox
+        idx = parent.findData(self.settings.value(setting))
+        parent.setCurrentIndex(idx) 
+
+class QFontComboBoxSettingsBinder(QWidgetSettingsBinder):
+    def __init__(self, parent, setting):
+        super(QComboBoxSettingsBinder, self).__init__(parent, parent.activated, 'currentFont', setting, None)
+        
+        # workaround for combobox
+        tmp = QFont(self.settings.value(setting))
+        parent.setCurrentFont(tmp) 
+
 
 class SettingsDialog(QtWidgets.QDialog):
     """Application settings dialog"""
@@ -65,11 +104,40 @@ class SettingsDialog(QtWidgets.QDialog):
         self.area.viewport().setAutoFillBackground(True);
 
         self.setLayout(layout)
-        print('layout', self.layout())
 
+    def setup(self):
+        
+        # fill data
+        languages = [
+            ('en_US', self.tr("US English")),
+            ('en_GB', self.tr("UK English")),
+            ('it_IT', self.tr("Italian")),
+            ('es_ES', self.tr("Spanish")),
+            ('fr_FR', self.tr("French")),
+            ('pr_BR', self.tr("Portoguese (Brasil)")),
+            ('ru_RU', self.tr("Russian"))  
+        ]      
+        
+        for t in languages:
+            self.cb_select_lang.addItem(t[1], t[0])
+
+        # system language
+        QWidgetSettingsBinder(
+            self.ck_use_system_lang, 
+            self.ck_use_system_lang.stateChanged, 
+            "checked", "use_machine_language", type(bool))
+    
+        QComboBoxSettingsBinder(
+            self.cb_select_lang, 
+            "use_locale")
+
+        QComboBoxSettingsBinder(
+            self.cb_select_font, 
+            "font-family")
 def test():
     a = QtWidgets.QApplication([])
     d = SettingsDialog()
+    d.setup()
     d.show()
     a.exec_()
 
