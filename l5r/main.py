@@ -2519,9 +2519,13 @@ def main():
         app.installTranslator(app_translator)
 
         # application font
-        if settings.ui.font_family and settings.ui.font_size:
-            app_font = QtGui.QFont(settings.ui.font_family, float(settings.ui.font_size))
-            QtWidgets.QApplication.setFont(app_font)
+        if not settings.ui.use_system_font:
+            try:
+                font_family, font_size = settings.ui.user_font.split(",")
+                app_font = QtGui.QFont(font_family, float(font_size))
+                QtWidgets.QApplication.setFont(app_font)
+            except:
+                log.app.error("Could not parse user font: %s", settings.ui.user_font)
 
         # start main form
         l5rcm = L5RMain(app_locale)

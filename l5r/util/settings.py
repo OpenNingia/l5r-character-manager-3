@@ -87,12 +87,12 @@ class L5RCMSettings_UI(object):
         return self._qsettings.value('ui/table-row-size')
 
     @property
-    def font_family(self):
-        return self._qsettings.value('ui/font-family')
+    def use_system_font(self):
+        return self._qsettings.value('ui/use-system-font')
 
     @property
-    def font_size(self):
-        return self._qsettings.value('ui/font-size')
+    def user_font(self):
+        return self._qsettings.value('ui/user-font')
 
     @property
     def banner_enabled(self):
@@ -119,13 +119,13 @@ class L5RCMSettings_UI(object):
     def table_row_size(self, value):
         self._qsettings.setValue('ui/table-row-size', value)
 
-    @font_family.setter
-    def font_family(self, value):
-        self._qsettings.setValue('ui/font-family', value)
+    @use_system_font.setter
+    def use_system_font(self, value):
+        self._qsettings.setValue('ui/use-system-font', value)
 
-    @font_size.setter
+    @user_font.setter
     def font_size(self, value):
-        self._qsettings.setValue('ui/font-size', value)
+        self._qsettings.setValue('ui/user-font', value)
 
     @banner_enabled.setter
     def banner_enabled(self, value):
