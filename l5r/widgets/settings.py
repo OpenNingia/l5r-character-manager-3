@@ -16,7 +16,77 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QObject, pyqtProperty
+import api
 
+class QExampleListModel(QtCore.QAbstractListModel):
+    def __init__(self, parent=None):
+        super(QExampleListModel, self).__init__(parent)
+        self.items = [
+            self.tr("An odd row"),
+            self.tr("An even row"),
+            self.tr("Another odd row"),
+        ]
+
+        self._alt_bg = QtGui.QBrush()
+        self._alt_fg = QtGui.QBrush()
+        self._bg = QtGui.QBrush()
+        self._fg = QtGui.QBrush()
+
+    @pyqtProperty(QtGui.QBrush)
+    def odd_bg(self):
+        print('get odd bg')
+        return self._bg
+
+    @odd_bg.setter
+    def odd_bg(self, value):
+        print('set odd bg')
+        self._bg = value
+
+    @pyqtProperty(QtGui.QBrush)
+    def odd_fg(self):
+        return self._fg
+
+    @odd_fg.setter
+    def odd_fg(self, value):
+        self._fg = value
+
+    @pyqtProperty(QtGui.QBrush)
+    def evn_bg(self):
+        return self._alt_bg
+
+    @evn_bg.setter
+    def evn_bg(self, value):
+        self._alt_bg = value
+
+    @pyqtProperty(QtGui.QBrush)
+    def evn_fg(self):
+        return self._alt_fg
+
+    @evn_fg.setter
+    def evn_fg(self, value):
+        self._alt_fg = value
+
+    def rowCount(self, parent=QtCore.QModelIndex()):
+        return len(self.items)
+
+    def data(self, index, role=QtCore.Qt.UserRole):
+        if not index.isValid() or index.row() >= len(self.items):
+            return None
+        item = self.items[index.row()]
+        if role == QtCore.Qt.DisplayRole:
+            return item
+        elif role == QtCore.Qt.ForegroundRole:
+            if index.row() % 2:
+                return self._alt_fg
+            return self._fg
+        elif role == QtCore.Qt.BackgroundRole:
+            if index.row() % 2:
+                return self._alt_bg
+            return self._bg
+        #elif role == QtCore.Qt.SizeHintRole:
+        #    return self.settings.ui.table_row_size
+        return None
 
 class QDataConverter(QtCore.QObject):
     def __init__(self, parent=None):
@@ -46,15 +116,48 @@ class QFontSelectorDataConverter(QDataConverter):
         return value
 
 
+class QColorPaletteDataConverter(QDataConverter):
+    """Select a color, convert to QBrush for settings"""
+
+    def __init__(self, role=None, parent=None):
+        super(QColorPaletteDataConverter, self).__init__(parent)
+        self.color_role = role
+
+    def convert_from(self, value):
+        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(), self.parent())
+        return QtGui.QBrush(color)
+
+    def convert_to(self, value):
+        print('convert_to', value)
+        palette = self.parent().palette()
+        if value:
+            palette.setBrush(self.color_role, value)
+        return palette
+
+class QBrushSelectorDataConverter(QDataConverter):
+    """Select a color, convert to QBrush for settings"""
+
+    def __init__(self, parent=None):
+        super(QBrushSelectorDataConverter, self).__init__(parent)
+
+    def convert_from(self, value):
+        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(), self.parent())
+        return QtGui.QBrush(color)
+
+    def convert_to(self, value):
+        print('convert_to', value)
+        return value
+
 class QPropertySettingsBinder(QtCore.QObject):
     """Bind Qt Properties to QSettings' values"""
-    def __init__(self, parent, signal, prop, setting, data_converter=None):
+    def __init__(self, parent, signal, prop, setting, data_converter=None, callback=None):
         super(QPropertySettingsBinder, self).__init__(parent)
 
         self.signal = signal
         self.prop = prop
         self.setting = setting
         self.converter = data_converter
+        self.callback = callback
 
         self.settings = QtCore.QSettings()
 
@@ -76,26 +179,32 @@ class QPropertySettingsBinder(QtCore.QObject):
             nv = self.converter.convert_to(self.settings.value(self.setting))
         else:
             nv = self.settings.value(self.setting)
-        print("set property {} to {}".format(self.prop, nv))
+
+        #if self.parent().property(self.prop) == nv:
+        #    return
+
+        print("set property {} from {} to {}".format(self.prop, self.parent().property(self.prop), nv))
         self.parent().blockSignals(True)
         self.parent().setProperty(self.prop, nv)
         self.parent().blockSignals(False)
-
+        
+        if self.callback:
+            self.callback(nv)
 
 class QComboBoxSettingsBinder(QPropertySettingsBinder):
-    def __init__(self, parent, setting, data_converter=None):
-        super(QComboBoxSettingsBinder, self).__init__(parent, parent.activated, 'currentData', setting, data_converter)
+    def __init__(self, parent, setting, data_converter=None, callback=None):
+        super(QComboBoxSettingsBinder, self).__init__(parent, parent.activated, 'currentData', setting, data_converter, callback)
 
         # workaround for combobox
         idx = parent.findData(self.settings.value(setting))
         parent.setCurrentIndex(idx)
 
 
-class SettingsDialog(QtWidgets.QDialog):
-    """Application settings dialog"""
+class SettingsWidget(QtWidgets.QWidget):
+    """Application settings widget"""
 
     def __init__(self, parent=None):
-        super(SettingsDialog, self).__init__(parent)
+        super(SettingsWidget, self).__init__(parent)
 
         # build interface
         self.area = QtWidgets.QScrollArea(self)
@@ -106,7 +215,7 @@ class SettingsDialog(QtWidgets.QDialog):
         fr = QtWidgets.QFrame()
         vb = QtWidgets.QVBoxLayout(fr)
         vb.setContentsMargins(32, 32, 32, 32)
-        vb.addStrut(232)
+        vb.addStrut(300)
 
         # Generic
         vb.addWidget(QtWidgets.QLabel(self.tr("<h2>Settings</h2>")))
@@ -136,6 +245,36 @@ class SettingsDialog(QtWidgets.QDialog):
         self.cb_insight_method = QtWidgets.QComboBox(self)
         vb.addWidget(self.cb_insight_method)
 
+        vb.addSpacing(12)
+        vb.addWidget(QtWidgets.QLabel(self.tr("<h3>Table Colors</h3>")))
+        self.lv_example = QtWidgets.QListView(self)
+        #self.lv_example.setAlternatingRowColors(True)
+        self.lv_example_model = QExampleListModel(self)
+        self.lv_example.setModel(self.lv_example_model)
+
+        self.bt_odd_bg = QtWidgets.QPushButton(self.tr("Odd row background"), self)
+        self.bt_odd_fg = QtWidgets.QPushButton(self.tr("Odd row foreground"), self)
+        self.bt_evn_bg = QtWidgets.QPushButton(self.tr("Even row background"), self)
+        self.bt_evn_fg = QtWidgets.QPushButton(self.tr("Even row foreground"), self)
+
+        hb_odd = QtWidgets.QHBoxLayout()
+        hb_evn = QtWidgets.QHBoxLayout()
+        hb_odd.addWidget(self.bt_odd_bg)
+        hb_odd.addWidget(self.bt_odd_fg)
+        hb_evn.addWidget(self.bt_evn_bg)
+        hb_evn.addWidget(self.bt_evn_fg)
+
+        vb.addWidget(self.lv_example)
+        vb.addLayout(hb_odd)
+        vb.addLayout(hb_evn)
+
+        # PC EXPORT
+        vb.addSpacing(20)
+        vb.addWidget(QtWidgets.QLabel(self.tr("<h2>Character sheet</h2>")))
+        self.ck_skills_on_first_page = QtWidgets.QCheckBox(
+            self.tr("Print skills on first page"), self)
+        vb.addWidget(self.ck_skills_on_first_page)        
+
         fr.setLayout(vb)
 
         self.area.setWidget(fr)
@@ -144,7 +283,7 @@ class SettingsDialog(QtWidgets.QDialog):
 
         self.setLayout(layout)
 
-    def setup(self):
+    def setup(self, app):
 
         # fill data
         languages = [
@@ -164,17 +303,17 @@ class SettingsDialog(QtWidgets.QDialog):
         QPropertySettingsBinder(
             self.ck_use_system_lang,
             self.ck_use_system_lang.stateChanged,
-            "checked", "use_machine_language")
+            "checked", "use_machine_locale")
 
         QComboBoxSettingsBinder(
             self.cb_select_lang,
             "use_locale")
 
         self.ck_use_system_lang.toggled.connect(
-            self.cb_select_lang.setEnabled
+            lambda x: self.cb_select_lang.setEnabled(not x)
         )
         self.cb_select_lang.setEnabled(
-            self.ck_use_system_lang.isChecked()
+            not self.ck_use_system_lang.isChecked()
         )
 
 
@@ -192,12 +331,19 @@ class SettingsDialog(QtWidgets.QDialog):
             QFontSelectorDataConverter(self))
 
         self.ck_use_system_font.toggled.connect(
-            self.bt_select_font.setEnabled
+            lambda x: self.bt_select_font.setEnabled(not x)
         )
 
         self.bt_select_font.setEnabled(
-            self.ck_use_system_font.isChecked()
+            not self.ck_use_system_font.isChecked()
         )
+
+        # banner
+        QPropertySettingsBinder(
+            self.ck_show_banner,
+            self.ck_show_banner.stateChanged,
+            "checked", "isbannerenabled", 
+            callback=lambda x: app.sink1.set_banner_visibility(x == 'true'))
 
         # health display
         hmethods = [
@@ -211,7 +357,7 @@ class SettingsDialog(QtWidgets.QDialog):
 
         QComboBoxSettingsBinder(
             self.cb_health_method,
-            "health_method")
+            "health_method", callback=lambda x: app.display_health())
 
         # insight calculation
         imethods = [
@@ -227,6 +373,40 @@ class SettingsDialog(QtWidgets.QDialog):
             self.cb_insight_method,
             "insight_calculation")
 
+        QPropertySettingsBinder(
+            self.lv_example_model,
+            self.bt_odd_bg.clicked,
+            "odd_bg",
+            "ui/table-row-color-bg",
+            QBrushSelectorDataConverter(self))
+
+        QPropertySettingsBinder(
+            self.lv_example_model,
+            self.bt_evn_bg.clicked,
+            "evn_bg",
+            "ui/table-row-color-alt-bg",
+            QBrushSelectorDataConverter(self))
+
+        QPropertySettingsBinder(
+            self.lv_example_model,
+            self.bt_odd_fg.clicked,
+            "odd_fg",
+            "ui/table-row-color-fg",
+            QBrushSelectorDataConverter(self))
+
+        QPropertySettingsBinder(
+            self.lv_example_model,
+            self.bt_evn_fg.clicked,
+            "evn_fg",
+            "ui/table-row-color-alt-fg",
+            QBrushSelectorDataConverter(self))
+
+        # pdf sheet
+        QPropertySettingsBinder(
+            self.ck_skills_on_first_page,
+            self.ck_skills_on_first_page.stateChanged,
+            "checked", "pcexport/first-page-skills")
+
 
 def test():
     a = QtWidgets.QApplication([])
@@ -239,9 +419,12 @@ def test():
     QtCore.QCoreApplication.setApplicationVersion(APP_VERSION)
     QtCore.QCoreApplication.setOrganizationName(APP_ORG)
 
-    d = SettingsDialog()
-    d.resize(300, 640)
-    d.setup()
+    d = QtWidgets.QDialog()
+    s = SettingsWidget(d)
+    vb = QtWidgets.QVBoxLayout(d)
+    vb.addWidget(s)
+    d.resize(366, 640)
+    s.setup(None)
     d.show()
     a.exec_()
 

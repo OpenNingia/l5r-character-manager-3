@@ -521,6 +521,10 @@ def get_wounds_table():
         Return a list with 8 elements, each element containing thrree values for wounds: the increments, the total
         and the stacked value.
     """
+
+    if not __api.pc:
+        return
+
     tot_wounds = __api.pc.wounds
     cur_wounds = tot_wounds
     increments = [get_health_rank(i) for i in range(0, 8)]

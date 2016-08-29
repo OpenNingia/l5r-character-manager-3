@@ -23,6 +23,10 @@ tmp/
 .installed.cfg
 *.egg
 
+# Project packaging
+tools/deploy/windows/dist
+tools/deploy/windows/common
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
@@ -35,23 +39,17 @@ htmlcov/
 nosetests.xml
 coverage.xml
 
-# Translations
-*.mo
-
 # Mr Developer
 .mr.developer.cfg
 .project
 .pydevproject
 
-# Rope
-.ropeproject
-
-# Django stuff:
-*.log
-*.pot
-
 # Sphinx documentation
 docs/_build/
 
+# PyCharm
 .idea/
+
+# Virtualenv
 /.venv/
+

@@ -25,3 +25,4 @@ from l5r.widgets.simpledescr import *
 from l5r.widgets.fileedit import *
 from l5r.widgets.familychooser import *
 from l5r.widgets.schoolchooser import *
+from l5r.widgets.settings import *

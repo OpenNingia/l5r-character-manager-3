@@ -23,6 +23,9 @@ import l5rdal as dal
 ORG = 'openningia'
 APP = 'l5rcm'
 
+def is_ready():
+    print('is api ready?', __api, __api is not None)
+    return __api is not None
 
 def get_user_data_path(rel_path=None):
     user_data = '.'

@@ -251,15 +251,19 @@ class Sink1(QtCore.QObject):
         l5r.models.Advancement.set_buy_for_free(flag)
 
     def on_toggle_display_banner(self):
-        form = self.form
-
         settings = L5RCMSettings()
         settings.ui.banner_enabled = not settings.ui.banner_enabled
 
+        self.set_banner_visibility(settings.ui.banner_enabled)
+
+
+    def set_banner_visibility(self, value):
+        form = self.form
+        
         for i in range(0, form.mvbox.count()):
             logo = form.mvbox.itemAt(i).widget()
             if logo.objectName() == 'BANNER':
-                if settings.ui.banner_enabled:
+                if value:
                     logo.show()
                 else:
                     logo.hide()
@@ -267,7 +271,6 @@ class Sink1(QtCore.QObject):
                     form.widgets.resize(1, 1)
                     form.widgets.setGeometry(QtCore.QRect(0, 0, 727, 573))
                 break
-        # form.widgets.adjustSize()
 
     def open_image_dialog(self):
         supported_ext = ['.png']

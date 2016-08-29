@@ -109,7 +109,7 @@ class L5RMain(L5RCMCore):
 
     default_size = QtCore.QSize(820, 720)
     default_point_size = 8.25
-    num_tabs = 10
+    num_tabs = 11
 
     def __init__(self, locale=None, parent=None):
         super(L5RMain, self).__init__(locale, parent)
@@ -142,11 +142,12 @@ class L5RMain(L5RCMCore):
         self.build_ui_page_8()
         self.build_ui_page_9()
         self.build_ui_page_10()
+        self.build_ui_page_settings()
         self.build_ui_page_about()
 
         self.tabs.setIconSize(QtCore.QSize(24, 24))
         tabs_icons = ['samurai', 'music', 'burn', 'powers', 'userinfo', 'book',
-                      'katana', 'disk', 'text', 'bag']
+                      'katana', 'disk', 'text', 'bag', 'dragonball']
         for i in range(0, self.num_tabs):
             self.tabs.setTabIcon(i, QtGui.QIcon(get_tab_icon(tabs_icons[i])))
             self.tabs.setTabText(i, '')
@@ -1233,6 +1234,11 @@ class L5RMain(L5RCMCore):
         vtb .setProperty('source', self.equip_view)
         self.tabs.addTab(frame_, self.tr("Equipment"))
 
+    def build_ui_page_settings(self):
+        self.settings_widgets = widgets.SettingsWidget(self)
+        self.tabs.addTab(self.settings_widgets, self.tr("Settings"))
+        self.settings_widgets.setup(self)
+
     def build_ui_page_about(self):
         mfr = QtWidgets.QFrame(self)
         hbox = QtWidgets.QHBoxLayout()
@@ -2204,6 +2210,8 @@ class L5RMain(L5RCMCore):
 
     def display_total_wounds(self):
         wounds_table = api.rules.get_wounds_table()
+        if not wounds_table:
+            return
         for i, (i_inc, i_total, i_stacked, i_inc_wounds, i_total_wounds, i_stacked_wounds) in enumerate(wounds_table):
             self.wounds[i][1].setText(str(i_stacked))
             self.wounds[i][2].setText(str(i_stacked_wounds) if i_stacked_wounds else '')
