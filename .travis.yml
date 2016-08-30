@@ -12,7 +12,7 @@ addons:
   artifacts:
     debug: true
     paths:
-      - $(ls tools/deploy/linux/*.deb | tr "\n" ":")
+      - $(ls *.deb | tr "\n" ":")
   apt:
     packages:
     - libxml2-dev
