@@ -2196,6 +2196,8 @@ class L5RMain(L5RCMCore):
 
     def display_health_default(self):
         wounds_table = api.rules.get_wounds_table()
+        if not wounds_table:
+            return        
         for i, (i_inc, i_total, i_stacked, i_inc_wounds, i_total_wounds, i_stacked_wounds) in enumerate(wounds_table):
             self.wounds[i][1].setText(str(i_inc))
             self.wounds[i][2].setText(str(i_inc_wounds) if i_inc_wounds else '')
@@ -2203,6 +2205,8 @@ class L5RMain(L5RCMCore):
 
     def display_health_stacked(self):
         wounds_table = api.rules.get_wounds_table()
+        if not wounds_table:
+            return
         for i, (i_inc, i_total, i_stacked, i_inc_wounds, i_total_wounds, i_stacked_wounds) in enumerate(wounds_table):
             self.wounds[i][1].setText(str(i_total))
             self.wounds[i][2].setText(str(i_total_wounds) if i_total_wounds else '')
