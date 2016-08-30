@@ -207,6 +207,7 @@ class L5RCMSettings_App(object):
 
     @data_pack_blacklist.setter
     def data_pack_blacklist(self, value):
+        print('set data_pack_blacklist', value)
         self._qsettings.setValue('data_pack_blacklist', value)
 
     @warn_about_refund.setter

@@ -77,8 +77,6 @@ class L5RCMCore(QtWidgets.QMainWindow):
     def reload_data(self):
         settings = L5RCMSettings()
 
-        # self.data_pack_blacklist = settings.value('data_pack_blacklist', [])
-
         api.data.set_locale(self.locale)
         api.data.set_blacklist(settings.app.data_pack_blacklist)
         api.data.reload()
@@ -360,8 +358,8 @@ class L5RCMCore(QtWidgets.QMainWindow):
         api.data.set_blacklist([
             x.id for x in self.dstore.packs if not x.active])
 
-        settings = L5RCMSettings
-        settings.data_pack_blacklist = api.data.get_blacklist()
+        settings = L5RCMSettings()
+        settings.app.data_pack_blacklist = api.data.get_blacklist()
 
     def please_donate(self):
         donate_url = QtCore.QUrl(

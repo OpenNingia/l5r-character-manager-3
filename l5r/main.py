@@ -2222,7 +2222,7 @@ class L5RMain(L5RCMCore):
 
     def advise_successfull_import(self, count):
         settings = L5RCMSettings()
-        if not settings.advise_successful_import:
+        if not settings.app.advise_successful_import:
             return
         msgBox = QtWidgets.QMessageBox(self)
         msgBox.setWindowTitle('L5R: CM')
@@ -2238,7 +2238,7 @@ class L5RMain(L5RCMCore):
         msgBox.setIcon(QtWidgets.QMessageBox.Information)
         msgBox.exec_()
         if do_not_prompt_again.checkState() == QtCore.Qt.Checked:
-            settings.advise_successful_import = False
+            settings.app.advise_successful_import = False
 
     def advise_error(self, message, dtl=None):
         msgBox = QtWidgets.QMessageBox(self)
