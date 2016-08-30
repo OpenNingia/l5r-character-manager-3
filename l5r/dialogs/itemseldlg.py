@@ -128,10 +128,10 @@ class ChooseItemDialog(QtWidgets.QDialog):
         armor_uuid = self.cb.itemData(selected)
         self.item = models.armor_outfit_from_db(armor_uuid)
 
-        stats_text = '''<p><pre>%-20s %s</pre></p>
+        stats_text = """<p><pre>%-20s %s</pre></p>
                         <p><pre>%-20s %s</pre></p>
                         <p><pre>%-20s %s</pre></p>
-                        <p><i>%s</i></p>''' % \
+                        <p><i>%s</i></p>""" % \
             (self.tr("Armor TN"), self.item.tn,
              self.tr("Reduction"), self.item.rd,
              self.tr("Cost"), self.item.cost,

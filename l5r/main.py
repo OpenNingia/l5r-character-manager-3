@@ -1575,7 +1575,7 @@ class L5RMain(L5RCMCore):
 
     def show_nicebar(self, wdgs):
         self.nicebar = QtWidgets.QFrame(self)
-        self.nicebar.setStyleSheet('''
+        self.nicebar.setStyleSheet("""
         QWidget { background: beige;}
         QPushButton {
             color: #333;
@@ -1599,7 +1599,7 @@ class L5RMain(L5RCMCore):
             fx: 0.4, fy: -0.1, radius: 1.35, stop: 0 #fff,
             stop: 1 rgb(255,200,50));
         }
-        ''')
+        """)
         self.nicebar.setMinimumSize(0, 32)
 
         # nicebar layout

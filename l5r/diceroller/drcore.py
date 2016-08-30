@@ -28,7 +28,7 @@ global print_cb
 global reroll_1
 global explode_once
 
-''' Algorithms '''
+""" Algorithms """
 
 
 def set_reroll_1(flag):
@@ -72,13 +72,13 @@ def math_to_rpn(ex_string):
             my_rpn += ch
         # se infine e' un operatore le cose si complicano....
         elif ch in '+-*/dk':
-            ''' se lo stack e' vuoto oppure il l'operatore che viene prima e'
-                una parentesi o ha precedenza minore, impilo quello attuale sullo stack '''
+            """ se lo stack e' vuoto oppure il l'operatore che viene prima e'
+                una parentesi o ha precedenza minore, impilo quello attuale sullo stack """
             if len(my_opers) == 0 or peek(my_opers) == '(' or get_op_val(peek(my_opers)) < get_op_val(ch):
                 my_opers.append(ch)
             else:
-                ''' altrimenti riversa lo stack degli operatori sulla sequenza rpn fino a che non troviamo
-                    una parentesi aperta o un operatore con precedenza minore a quello attuale '''
+                """ altrimenti riversa lo stack degli operatori sulla sequenza rpn fino a che non troviamo
+                    una parentesi aperta o un operatore con precedenza minore a quello attuale """
                 while True:
                     my_rpn += ' '
                     my_rpn += my_opers.pop()

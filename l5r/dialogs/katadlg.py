@@ -104,12 +104,12 @@ class KataDialog(QtWidgets.QDialog):
         self.cb_kata.currentIndexChanged.connect(self.on_kata_change)
 
     def setup(self):
-        self.set_header_text(self.tr('''
+        self.set_header_text(self.tr("""
         <center>
         <h1>Buy a Kata</h1>
         <p style="color: #666">You can only buy Kata if you match at least one requirement</p>
         </center>
-        '''))
+        """))
 
         self.setWindowTitle(self.tr("L5RCM: Kata"))
         self.load_kata()

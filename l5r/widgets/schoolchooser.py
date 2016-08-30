@@ -92,12 +92,12 @@ class FirstSchoolChooserDialog(QtWidgets.QDialog):
         self.header.setText(self.get_h1_text())
 
     def get_h1_text(self):
-        return self.tr('''
+        return self.tr("""
 <center>
 <h1>Join your First School</h1>
 <p style="color: #666">In this phase you're limited to base schools</p>
 </center>
-        ''')
+        """)
 
     def accept(self):
 
@@ -169,14 +169,14 @@ class SchoolChooserDialog(QtWidgets.QDialog):
         self.header.setText(self.get_h1_text())
 
     def get_h1_text(self):
-        return self.tr('''
+        return self.tr("""
 <center>
 <h1>Choose the school to join</h1>
 <p style="color: #666">You can choose between normal schools, advanced schools and alternative paths<br/>
 If you choose an advanced school or alternative path be sure to check the requirements
 </p>
 </center>
-        ''')
+        """)
 
     def accept(self):
 
@@ -263,7 +263,7 @@ class SchoolChooserWidget(QtWidgets.QWidget):
         self.ck_different_school.stateChanged.connect(self.update_status)
 
     def build_ui(self):
-        # self.setStyleSheet('''QWidget { border: 1px solid red; }''')
+        # self.setStyleSheet("""QWidget { border: 1px solid red; }""")
         #
         # [ clan:   ____ ]
         # [ school: ____ ]

@@ -459,13 +459,13 @@ class SelWcSkills(QtWidgets.QDialog):
         done = check_all_done(self.cbs) and check_all_done_2(self.les)
 
         if not done:
-            self.error_bar.setText('''<p style='color:#FF0000'>
+            self.error_bar.setText("""<p style='color:#FF0000'>
                                       <b>
                                       You need to choose all the skills
                                       e/o emphases
                                       </b>
                                       </p>
-                                      ''')
+                                      """)
             self.error_bar.setVisible(True)
             return
 
@@ -473,12 +473,12 @@ class SelWcSkills(QtWidgets.QDialog):
         all_different = check_all_different(self.cbs)
 
         if not all_different:
-            self.error_bar.setText('''<p style='color:#FF0000'>
+            self.error_bar.setText("""<p style='color:#FF0000'>
                                       <b>
                                       You can't select the same skill more than once
                                       </b>
                                       </p>
-                                      ''')
+                                      """)
             self.error_bar.setVisible(True)
             return
 
@@ -487,12 +487,12 @@ class SelWcSkills(QtWidgets.QDialog):
             [x.itemData(x.currentIndex())[0] for x in self.cbs], api.character.skills.get_all())
 
         if already_got:
-            self.error_bar.setText('''<p style='color:#FF0000'>
+            self.error_bar.setText("""<p style='color:#FF0000'>
                                       <b>
                                       You already possess some of these skills
                                       </b>
                                       </p>
-                                      ''')
+                                      """)
             self.error_bar.setVisible(True)
             return
 

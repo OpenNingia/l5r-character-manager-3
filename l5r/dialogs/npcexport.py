@@ -100,12 +100,12 @@ class NpcExportDialog(QtWidgets.QDialog):
         self.a_tx_files[index].setText(path)
 
     def setup(self):
-        self.set_header_text(self.tr('''
+        self.set_header_text(self.tr("""
         <center>
         <h1>Export up to two NPC in a single PDF</h1>
         <p style="color: #666">Select up to two character files and click the "Export" button.</p>
         </center>
-        '''))
+        """))
 
         self.setWindowTitle(self.tr("L5RCM: NPC Sheet"))
 

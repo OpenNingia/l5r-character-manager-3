@@ -82,12 +82,12 @@ class FamilyChooserDialog(QtWidgets.QDialog):
         self.header.setText(self.get_h1_text())
 
     def get_h1_text(self):
-        return self.tr('''
+        return self.tr("""
 <center>
 <h1>Select Clan and Family</h1>
 <p style="color: #666">a Samurai should serve its clan first and foremost</p>
 </center>
-        ''')
+        """)
 
     def accept(self):
 

@@ -84,12 +84,12 @@ class ModifierDialog(QtWidgets.QDialog):
         self.cb_modifier.currentIndexChanged.connect(self.on_modifier_change)
 
     def setup(self):
-        self.set_header_text(self.tr('''
+        self.set_header_text(self.tr("""
         <center>
         <h1>Add or Edit a modifier</h1>
         <p style="color: #666">Modifiers represent the way your character performs better in some contexts</p>
         </center>
-        '''))
+        """))
 
         self.setWindowTitle(self.tr("L5RCM: Modifiers"))
 

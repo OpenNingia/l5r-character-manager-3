@@ -93,12 +93,12 @@ class KihoDialog(QtWidgets.QDialog):
         self.cb_kiho.currentIndexChanged.connect(self.on_kiho_change)
 
     def setup(self):
-        self.set_header_text(self.tr('''
+        self.set_header_text(self.tr("""
         <center>
         <h1>Buy a kiho</h1>
         <p style="color: #666">Only certain classes are able to learn Kiho and at a different XP cost</p>
         </center>
-        '''))
+        """))
 
         self.setWindowTitle(self.tr("L5RCM: Kiho"))
         self.load_kiho()
@@ -239,12 +239,12 @@ class TattooDialog(QtWidgets.QDialog):
         self.cb_tattoo.currentIndexChanged.connect(self.on_tattoo_change)
 
     def setup(self):
-        self.set_header_text(self.tr('''
+        self.set_header_text(self.tr("""
         <center>
         <h1>Acquire a Tattoo</h1>
         <p style="color: #666">Only members of the Togashi Order can acquire tattoos</p>
         </center>
-        '''))
+        """))
 
         self.setWindowTitle(self.tr("L5RCM: Tattoo"))
         self.load_kiho()
