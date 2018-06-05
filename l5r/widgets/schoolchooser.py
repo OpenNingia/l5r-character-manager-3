@@ -79,6 +79,7 @@ class FirstSchoolChooserDialog(QtWidgets.QDialog):
 
         self.widget.allow_advanced_schools = False
         self.widget.allow_alternate_paths = False
+        self.widget.allow_rank1_alternate_paths = True
         self.widget.allow_basic_schools = True
         self.widget.show_filter_selection = False
         self.widget.show_bonus_trait = True
@@ -104,8 +105,14 @@ class FirstSchoolChooserDialog(QtWidgets.QDialog):
         self.apply_to_first_school()
         super(FirstSchoolChooserDialog, self).accept()
 
-    def apply_to_first_school(self):
-        api.character.schools.set_first(self.widget.selected_school)
+    def apply_to_first_school(self):        
+        import logging
+        logging.getLogger().debug("selected rank 1 path: %s", self.widget.selected_rank1_path)
+        if self.widget.selected_rank1_path:
+            api.character.schools.set_first_with_path(self.widget.selected_school, self.widget.selected_rank1_path)
+        else:
+            api.character.schools.set_first(self.widget.selected_school)
+
         if self.widget.different_school_merit:
             api.character.merits.add('different_school')
 
@@ -153,6 +160,7 @@ class SchoolChooserDialog(QtWidgets.QDialog):
 
         self.widget.allow_advanced_schools = True
         self.widget.allow_alternate_paths = True
+        self.widget.allow_rank1_alternate_paths = False
         self.widget.allow_basic_schools = True
         self.widget.show_filter_selection = True
         self.widget.show_bonus_trait = False
@@ -197,6 +205,7 @@ class SchoolChooserWidget(QtWidgets.QWidget):
 
         self.cb_clan = QtWidgets.QComboBox(self)
         self.cb_school = QtWidgets.QComboBox(self)
+        self.cb_rank1_path = QtWidgets.QComboBox(self)
         self.lb_trait = QtWidgets.QLabel(self)
         self.lb_book = QtWidgets.QLabel(self)
         self.lb_desc = QtWidgets.QLabel(self)
@@ -207,9 +216,12 @@ class SchoolChooserWidget(QtWidgets.QWidget):
         self.lb_different_school_err.setVisible(False)
         self.lb_multiple_schools_err.setVisible(False)
 
+        self.cb_rank1_path.setVisible(False)
+
         self.req_list = None
         self.current_clan_id = None
         self.current_school_id = None
+        self.current_rank1_path_id = None
         self.character_clan_id = None
 
         self._show_filter_selection = True
@@ -222,6 +234,7 @@ class SchoolChooserWidget(QtWidgets.QWidget):
         self._allow_basic_schools = True
         self._allow_advanced_schools = True
         self._allow_alternate_paths = True
+        self._allow_rank1_alternate_paths = True
 
         self._old_status = None
 
@@ -238,6 +251,7 @@ class SchoolChooserWidget(QtWidgets.QWidget):
     def clear(self):
         self.current_clan_id = None
         self.current_school_id = None
+        self.current_rank1_path_id = None
 
     def load(self):
         if not self.current_clan_id:
@@ -254,6 +268,7 @@ class SchoolChooserWidget(QtWidgets.QWidget):
     def connect_signals(self):
         self.cb_clan.currentIndexChanged.connect(self.on_clan_changed)
         self.cb_school.currentIndexChanged.connect(self.on_school_changed)
+        self.cb_rank1_path.currentIndexChanged.connect(self.on_rank1_path_changed)
 
         self.cx_base_schools.stateChanged.connect(self.on_base_filter_change)
         self.cx_advc_schools.stateChanged.connect(self.on_advc_filter_change)
@@ -286,7 +301,8 @@ class SchoolChooserWidget(QtWidgets.QWidget):
         #        [ ] Buy 'Multiple Schools' advantage
         form = QtWidgets.QFormLayout(self)
         form.addRow(self.tr("Clan:"), self.cb_clan)
-        form.addRow(self.tr("School:"), self.cb_school)
+        form.addRow(self.tr("School:"), self.cb_school)                
+        form.addRow(self.tr("Path:"), self.cb_rank1_path)
         form.addRow(self.lb_book, self.lb_desc)
 
         form.addRow(" ", QtWidgets.QWidget(self))  # empty row
@@ -346,6 +362,15 @@ class SchoolChooserWidget(QtWidgets.QWidget):
     def selected_school(self, value):
         """setting this property will also update the ui"""
         self.update_ui_with_school(value)
+
+    @property
+    def selected_rank1_path(self):
+        return self.current_rank1_path_id
+
+    @selected_rank1_path.setter
+    def selected_rank1_path(self, value):
+        """setting this property will also update the ui"""
+        self.current_rank1_path_id = value
 
     @property
     def selected_clan(self):
@@ -450,6 +475,16 @@ class SchoolChooserWidget(QtWidgets.QWidget):
         self.load_clans()
 
     @property
+    def allow_rank1_alternate_paths(self):
+        return self._allow_rank1_alternate_paths
+
+    @allow_rank1_alternate_paths.setter
+    def allow_rank1_alternate_paths(self, value):
+        """setting this property will also update the ui"""
+        self._allow_rank1_alternate_paths = value
+        self.set_row_visible(self.cb_rank1_path, value)
+
+    @property
     def different_school_merit(self):
         """return True if different school merit should be purchased"""
         return self.ck_different_school.isChecked()
@@ -519,6 +554,21 @@ class SchoolChooserWidget(QtWidgets.QWidget):
         # load first school
         self.on_school_changed(0)
 
+        if self.allow_rank1_alternate_paths:
+            self.cb_rank1_path.blockSignals(True)
+            self.cb_rank1_path.clear()
+
+            path_list = api.data.schools.get_paths_with_rank(1)
+            if clanid:
+                path_list = [x for x in path_list if x.clanid == clanid]
+
+            self.cb_rank1_path.addItem(self.tr("None"), None)
+            for f in sorted(path_list, key=lambda x: x.name):
+                self.cb_rank1_path.addItem(f.name, f.id)
+
+            self.cb_rank1_path.blockSignals(False)
+
+
     def hide_row(self, fld):
         fld.hide()
         self.form_layout.labelForField(fld).hide()
@@ -585,6 +635,9 @@ class SchoolChooserWidget(QtWidgets.QWidget):
     def on_school_changed(self, index_or_text):
         self.current_school_id = self.cb_school.itemData(self.cb_school.currentIndex())
         self.update_school_properties()
+
+    def on_rank1_path_changed(self, index_or_text):
+        self.current_rank1_path_id = self.cb_rank1_path.itemData(self.cb_rank1_path.currentIndex())
 
     def on_base_filter_change(self, state):
         self.allow_basic_schools = self.sender().isChecked()

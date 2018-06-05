@@ -199,6 +199,36 @@ def join_new(school_id):
 
     return api.character.append_advancement(adv)
 
+def join_rank1_path(school_id):
+    """the character replaces its first technique with a rank1 path"""
+
+    school_ = api.data.schools.get(school_id)
+    if not school_:
+        log.api.error(u"join_rank1_path, school not found: %s", school_id)
+        return
+
+    from l5r.models.advancements.rank import Rank
+    adv = Rank()
+    # the insight rank
+    adv.rank = 1
+    # this is the current school for this rank
+    adv.school = school_id
+    # no cost advancing in the same rank
+    adv.cost = 0
+    # description
+
+    school_rank = 1
+    adv.replaced = api.character.schools.get_current()
+
+    replaced_school = api.data.schools.get(adv.replaced)
+
+    adv.desc = api.tr("Replaced {0} with {1} (Rank1)").format(
+        replaced_school.name,
+        school_.name,
+    )
+
+    return api.character.append_advancement(adv)
+
 
 def clear_skills_to_choose():
     """clear the list of skills and emphases to choose on the current rank advancement"""

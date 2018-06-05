@@ -49,11 +49,18 @@ def get_advanced():
 
 
 def get_paths():
-    """returns advanced schools list"""
+    """returns alternate path schools list"""
     return query(__api.ds.schools) \
         .where(lambda x: 'alternate' in x.tags) \
         .to_list()
 
+def get_paths_with_rank(rank):
+    """returns alternate schools list with rank equal to `rank`"""
+
+    return query(__api.ds.schools) \
+        .where(lambda x: 'alternate' in x.tags) \
+        .where(lambda x: query(x.techs).select(a_('rank')).first_or_default(0) == rank) \
+        .to_list()
 
 def is_path(sid):
     """returns true if the given school is an alternate path"""
