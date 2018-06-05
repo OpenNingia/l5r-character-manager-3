@@ -2,7 +2,7 @@ import sys
 from cx_Freeze import setup, Executable
 
 # Dependencies are automatically detected, but it might need fine tuning.
-build_exe_options = {"packages": ["lxml._elementpath"], "excludes": ["tests"], "build_exe": "tools/deploy/windows/dist"}
+build_exe_options = {"packages": ["lxml._elementpath"], "excludes": ["tests"], "includes": ["l5r.widgets.iconloader"], "build_exe": "tools/deploy/windows/dist"}
 
 # GUI applications require a different base on Windows (the default is for a
 # console application).
