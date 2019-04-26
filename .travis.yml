@@ -1,18 +1,10 @@
 language: python
 python:
-  - "3.5"
-
+- '3.6'
 cache: pip
-  
-# use system packages in virtualenv
 virtualenv:
   system_site_packages: false
-# apt packages
 addons:
-  artifacts:
-    debug: true
-    paths:
-      - $(ls *.deb | tr "\n" ":")
   apt:
     packages:
     - libxml2-dev
@@ -20,34 +12,36 @@ addons:
     - python-dev
     - librsvg2-bin
     - python-docutils
+    - fakeroot
+
 install:
-  - "pip install --upgrade pip"
-  - "pip install --upgrade asq"
-  - "pip install --upgrade lxml"
-  - "pip install --upgrade PyQt5"
-  - "pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@develop"
-  - "pip install --no-deps ./l5r"
-# command to run tests
+- pip install --upgrade pip
+- pip install --upgrade asq
+- pip install --upgrade lxml
+- pip install --upgrade PyQt5
+- pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@develop
+- pip install --no-deps ./l5r
 script: nosetests
-
 after_success:
-  - "export APP_VER_LN=$(grep -n '^APP_VERSION\\s*=\\s*' l5r/l5rcmcore/__init__.py | cut -d\\: -f1)"  
-  - "export APP_VER_BS=$(grep '^APP_VERSION\\s*=\\s*' l5r/l5rcmcore/__init__.py | cut -d\\. -f1,2)"
-  - echo $APP_VER_BS
-  - "export APP_VER_NW=$APP_VER_BS.$TRAVIS_BUILD_NUMBER"
-  - echo $APP_VER_NW
-  - sed -i "${APP_VER_LN}s/.*/${APP_VER_NW}/" l5r/l5rcmcore/__init__.py  
-  - "grep -n '^APP_VERSION\\s*=\\s*' l5r/l5rcmcore/__init__.py"
-  - "cd tools/deploy/linux"
-  - "./makedeb.sh"
-  - "export RELEASE_PKG_FILE=$(ls *.deb)"
-
+- 'export APP_VER_LN=$(grep -n ''^APP_VERSION\s*=\s*'' l5r/l5rcmcore/__init__.py |
+  cut -d\: -f1)'
+- export APP_VER_BS=$(grep '^APP_VERSION\s*=\s*' l5r/l5rcmcore/__init__.py | cut -d\.
+  -f1,2)
+- echo $APP_VER_BS
+- export APP_VER_NW=$APP_VER_BS.$TRAVIS_BUILD_NUMBER
+- echo $APP_VER_NW
+- sed -i "${APP_VER_LN}s/.*/${APP_VER_NW}/" l5r/l5rcmcore/__init__.py
+- grep -n '^APP_VERSION\s*=\s*' l5r/l5rcmcore/__init__.py
+- cd tools/deploy/linux
+- "./makedeb.sh"
+- export RELEASE_PKG_FILE=$(ls *.deb)
+- echo $RELEASE_PKG_FILE
 deploy:
   provider: releases
   api_key:
-    secure: "B6I+84oUCo2Hpr2OZue0JugwfTJeNCinrV90rHiGbDyzSr/tPxTa93DPXrrbn2eDW4uu8SG7pjyU2QpF/XP+F5Gzv2KhKMAJcXA+r9yhNCbbuey8E72ksBjNFruqXkCgT6FkNMtMGjeSo4mgiBnI1Tt7L46oiKLxFJvMbBYE9YAersUPZG1X1kcWbd/c65lO3E2jAuTuNoAejtBSKbvXo4y9kJYgcfx+a+/m2RVEqA7oL16WyO5BIsUxKNLQx398ekUS8Z5XM4/awsNhDNM6D5FIZdBm5by37UrKYNJxSqnK4nPJy3TlLxkXb7ILipbzo0yS3V5Byhl/GBBMH08QEjiS9keQuY6zH4dlVpDRyo55IGrSTXmmkLl0iHi8oH1qezr48AiQS+0HA9cyYsK9DL6XNAByo4cDj6UqwLyOFaMLqrIK1fIZE1fgrvbRrKX2zgWb1fSgAPPtlD9JPtrdl/kuMJ9JWeZ5nfsrCXHt5RjfTWWXl2UpVK2M9uOmsqBAOHEUKTaIBH0uEX+ZegVaNCRhnD2Ylk9O446b6bn/755DXyuwU4ghTGnSQnPKg45mIm/tUmlA6keP3hpw7nU43+brKzO/INS1k6lJTPxau399Mw8moy8s+WmiN2kKTum/mooBU8w0ZkAirLd+ruNreeZKdmSwtIVa5lT61HzOZ6g="
-  file_glob: true
-  file: "${RELEASE_PKG_FILE}"
+    secure: FJUNN0u/Tiu/0agZ911B/VjbIzRkLgmbfpF+9SW9db/1CgrVMZLp4X9ExT3uHTIpl/fVyONsW8RE9MEcE2e/1CCQXAzxEdkJTtOqH2zQ8+S9LgtmBRH3nP1AYV5Ep1H/52u2hs6Y3mNeXus0lyBhyuZbOoZMsMusXzeZY8kFgQg5Ylwo+4yveBn56rMOJeueani0KxlY5EzIWtrdt+xZZIl8xLFRgmTZvnunBnDAbMV2BqL+44+CLBeWaVJ02tZ+KDO1EH6xPRoaV9AXStPUUUAamQLkxnqwlLSB7I+ujIMiR75zKXdr4Fm2qDqitvy14YhqWn5Vufd3dixH4F6JYDe96F9Pk9H7GEZsw32BpFs2d0hqdWSLRESMQNVQTPiXh8h6AJW+oofMMbCw0WLaqcotBYOS1rGvfUsNwlAAFaMASpMEPu+77tHQCF8S0IAC4jC808Oq0Vbvr4qQL1viziU7fLKwi0pB1bXiJsYNGCQAArIuKpoUauUrLZN5F1IYJaTeZmOqyyBI5aD110t4QikZ+7qluL5SkeKAgYablrSF9/WKiFEDvYpVY5IgUhHPfN2881jRKJx6p3ohBKnITOX0hUxV0ZsNJ26h50mCQquayzJATP+OVOvsF3T1yO064Q+QrYn3OT/4EwhMSCYqqliOyXWYSEF6RT2BKi9naSE=
   skip_cleanup: true
+  file: "${TRAVIS_BUILD_DIR}/tools/deploy/linux/${RELEASE_PKG_FILE}"
   on:
-    tags: true  
+    repo: OpenNingia/l5r-character-manager-3
+    tags: true
