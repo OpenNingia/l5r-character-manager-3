@@ -1,0 +1,4 @@
+lxml
+asq
+sip
+PyQt5

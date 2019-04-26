@@ -4,6 +4,8 @@ cwd=${PWD}
 USR=./tmp/usr
 OPT=./tmp/opt
 INST=${OPT}/l5rcm
+SRC=./src
+TMPSRC=./tmpsrc
 
 # remove old files
 rm $1.tar.gz
@@ -12,12 +14,27 @@ rm $1.deb
 # remove backups
 find ./ | grep '~' | xargs rm
 
-# make source tarball
-tar -vzcf $1.tar.gz --exclude-vcs -X exclude_from_tarball --exclude-backups --exclude-caches ../../../l5r/
-
 # remove old directory
 # should ask for root password
 rm -rf ./tmp
+rm -rf ./src
+rm -rf ./tmpsrc
+
+# make source dir
+mkdir -p ${SRC}
+mkdir -p ${TMPSRC}
+
+# get l5rdal
+wget https://github.com/OpenNingia/l5rcm-data-access/archive/develop.zip -O ${TMPSRC}/l5rdal.zip
+unzip ${TMPSRC}/l5rdal.zip -d ${TMPSRC}/
+cp -r ${TMPSRC}/l5rcm-data-access-develop/l5rdal ${SRC}/
+# copy app source
+cp -r ../../../l5r/ ${SRC}
+
+# make source tarball
+cd ${SRC}
+tar -vzcf ../$1.tar.gz --exclude-vcs -X ../exclude_from_tarball --exclude-backups --exclude-caches ./
+cd ..
 
 # make working dir
 mkdir -p ${INST}
@@ -60,6 +77,9 @@ cp ./copyright ${USR}/share/doc/l5rcm/
 # changelog
 cp ./changelog ${USR}/share/doc/l5rcm/changelog.Debian
 gzip -9 ${USR}/share/doc/l5rcm/changelog.Debian
+
+# requirements
+cp ./requirements.txt ${INST}/
 
 cp -r ./DEBIAN ./tmp
 rm -rf ./tmp/DEBIAN/.svn
