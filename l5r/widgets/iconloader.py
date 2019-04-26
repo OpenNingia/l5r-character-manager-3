@@ -56,10 +56,13 @@ class QtIconLoaderImplementation:
         # If we are running gnome use gconftool runtime to get theme name
         if os.getenv("DESKTOP_SESSION") == "gnome" or os.getenv("GNOME_DESKTOP_SESSION_ID"):
             if not self._themeName:
-                import subprocess
-                subpr = subprocess.Popen(
-                    ["gconftool", "--get", "/desktop/gnome/interface/icon_theme"], stdout=subprocess.PIPE)
-                self._themeName = subpr.communicate()[0].strip()
+                try:
+                    import subprocess
+                    subpr = subprocess.Popen(
+                        ["gconftool", "--get", "/desktop/gnome/interface/icon_theme"], stdout=subprocess.PIPE)
+                    self._themeName = subpr.communicate()[0].strip()
+                except:
+                    self._themeName = None
             if not self._themeName:
                 self._themeName = "gnome"
             return

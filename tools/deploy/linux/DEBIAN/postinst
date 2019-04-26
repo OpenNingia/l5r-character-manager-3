@@ -26,5 +26,13 @@ if type xdg-desktop-menu > /dev/null; then
 	xdg-desktop-menu install --novendor /usr/share/applications/l5rcm.desktop || true
 fi
 
+# create virtualenv
+cd /opt/l5rcm
+python3 -m venv .venv
+source .venv/bin/activate
+
+# install requirements
+pip install -r requirements.txt
+
 # compile python files
-python -m compileall -f /opt/l5rcm/
+python3 -m compileall -f /opt/l5rcm/

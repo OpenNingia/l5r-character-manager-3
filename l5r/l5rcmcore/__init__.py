@@ -148,7 +148,7 @@ class L5RCMCore(QtWidgets.QMainWindow):
     def get_pdftk(self):
         if sys.platform == 'win32':
             return os.path.join(MY_CWD, 'tools', 'pdftk.exe')
-        elif sys.platform == 'linux2':
+        elif sys.platform == 'linux' or sys.platform == 'linux2':
             sys_path = '/usr/bin/pdftk'
             loc_path = os.path.join(MY_CWD, 'tools', 'pdftk')
             if os.path.exists(sys_path):
