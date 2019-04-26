@@ -44,4 +44,4 @@ deploy:
   file: "${TRAVIS_BUILD_DIR}/tools/deploy/linux/${RELEASE_PKG_FILE}"
   on:
     repo: OpenNingia/l5r-character-manager-3
-    branch: update_travis_ci
+    tags: true
