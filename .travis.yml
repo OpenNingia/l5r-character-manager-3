@@ -7,8 +7,6 @@ virtualenv:
 addons:
   artifacts:
     debug: true
-    paths:
-    - $(ls *.deb | tr "\n" ":")
   apt:
     packages:
     - libxml2-dev
