@@ -30,7 +30,7 @@ after_success:
 - echo $APP_VER_BS
 - export APP_VER_NW=$APP_VER_BS.$TRAVIS_BUILD_NUMBER
 - echo $APP_VER_NW
-- sed -i "${APP_VER_LN}s/.*/${APP_VER_NW}/" l5r/l5rcmcore/__init__.py
+- sed -i "${APP_VER_LN}s/.*/${APP_VER_NW}'/" l5r/l5rcmcore/__init__.py
 - grep -n '^APP_VERSION\s*=\s*' l5r/l5rcmcore/__init__.py
 - cd tools/deploy/linux
 - "./makedeb.sh"
