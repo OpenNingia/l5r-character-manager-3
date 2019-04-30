@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2014 Daniele Simonetti
+# Copyright (C) 2019 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,22 +15,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import hashlib
-from datetime import datetime
-
-import l5r.models as models
 import l5r.api as api
-import l5r.api.rules
-import l5r.api.data.spells
-import l5r.api.data.skills
-import l5r.api.data.powers
-import l5r.api.data.schools
-import l5r.api.data.merits
-import l5r.api.data.flaws
 import l5r.api.character
 import l5r.api.character.schools
-
+import l5r.api.data.powers
+import l5r.api.data.schools
+import l5r.api.data.spells
+import l5r.api.rules
+import l5r.models as models
 from l5r.util.settings import L5RCMSettings
+
 
 class FDFExporter(object):
 
@@ -329,12 +323,14 @@ class FDFExporterShugenja(FDFExporter):
             spells = spells[off: off + self.spell_per_page]
 
         # spells
-        print('Starting Spells Export')
         lPageNumber, lControlNumber = pg, ctrl
-        lShortDescription = ''
+
+        # memo marker
+        memo_marker = "(m)"
+
         for spell in spells:
             fields['SPELL_NM.%d.%d' %
-                   (lPageNumber, lControlNumber)] = spell.name
+                   (lPageNumber, lControlNumber)] = f'{spell.name} {memo_marker}' if spell.memo else spell.name
             fields['SPELL_MASTERY.%d.%d' %
                    (lPageNumber, lControlNumber)] = spell.mastery
             fields['SPELL_RANGE.%d.%d' %
