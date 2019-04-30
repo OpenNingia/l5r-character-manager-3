@@ -64,8 +64,6 @@ class FDFExporter(object):
         string_value = value
         if isinstance(value, bool):
             string_value = u"Yes" if value else u"No"
-        #else:
-        #    string_value = unicode(value)
 
         tx = u"""<field name="{n}"><value>{v}</value></field>\n""".format(
             n=key, v=string_value)
