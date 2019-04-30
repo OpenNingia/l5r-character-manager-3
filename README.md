@@ -57,7 +57,8 @@ then place the executable in the system path.
 ### Finally you launch the program
 
 ```
-python3 main.py
+cd l5r
+python main.py
 ```
 
 ## Getting the Datapacks
