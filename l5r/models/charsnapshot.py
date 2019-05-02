@@ -15,10 +15,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from chmodel import ring_name_from_id, attrib_name_from_id
+from l5r.models.chmodel import ring_name_from_id, attrib_name_from_id
 from copy import copy
-import api.character
-import api.character.schools
+import l5r.api as api
+import l5r.api.character
+import l5r.api.character.schools
 
 
 class CharacterSnapshot(object):
@@ -29,7 +30,7 @@ class CharacterSnapshot(object):
         self.skills = {}  # id ==> value
         self.traits = {}  # id ==> value
         self.rings = {}  # id ==> value
-        self.emphases = {} # skill_id => [emphases]
+        self.emphases = {}  # skill_id => [emphases]
 
         self.tags = []  # tag list
         self.rules = []  # rules list
@@ -56,7 +57,7 @@ class CharacterSnapshot(object):
         for s in api.character.schools.get_all():
             self.schools[s] = api.character.schools.get_school_rank(s)
 
-        self.tags  += api.character.get_tags()
+        self.tags += api.character.get_tags()
         self.rules += api.character.get_rules()
 
         self.insight_rank = api.character.insight_rank()

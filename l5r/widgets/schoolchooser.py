@@ -14,18 +14,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 from asq.initiators import query
 from asq.selectors import a_
 
-import api.data
-import api.character
-import api.character.merits
-import api.data.schools
-import api.data.clans
-import widgets
+import l5r.api as api
+import l5r.api.data
+import l5r.api.character
+import l5r.api.character.merits
+import l5r.api.data.schools
+import l5r.api.data.clans
 
+from .requirementwidget import RequirementsWidget
 
 def green(text):
     return u'<span style="color: #0A0">{}</span>'.format(text)
@@ -35,7 +36,7 @@ def red(text):
     return u'<span style="color: #A00">{}</span>'.format(text)
 
 
-class FirstSchoolChooserDialog(QtGui.QDialog):
+class FirstSchoolChooserDialog(QtWidgets.QDialog):
 
     def __init__(self, parent=None):
         super(FirstSchoolChooserDialog, self).__init__(parent)
@@ -45,21 +46,21 @@ class FirstSchoolChooserDialog(QtGui.QDialog):
         self.setup()
 
     def build_ui(self):
-        self.vbox_lo = QtGui.QVBoxLayout(self)
-        self.bt_ok = QtGui.QPushButton(self.tr('Ok'), self)
-        self.bt_cancel = QtGui.QPushButton(self.tr('Cancel'), self)
+        self.vbox_lo = QtWidgets.QVBoxLayout(self)
+        self.bt_ok = QtWidgets.QPushButton(self.tr('Ok'), self)
+        self.bt_cancel = QtWidgets.QPushButton(self.tr('Cancel'), self)
 
-        self.header = QtGui.QLabel(self)
+        self.header = QtWidgets.QLabel(self)
 
         # bottom bar
-        bottom_bar = QtGui.QFrame(self)
-        hbox = QtGui.QHBoxLayout(bottom_bar)
+        bottom_bar = QtWidgets.QFrame(self)
+        hbox = QtWidgets.QHBoxLayout(bottom_bar)
         hbox.addStretch()
         hbox.addWidget(self.bt_ok)
         hbox.addWidget(self.bt_cancel)
 
-        fr_central = QtGui.QFrame(self)
-        vb = QtGui.QVBoxLayout(fr_central)
+        fr_central = QtWidgets.QFrame(self)
+        vb = QtWidgets.QVBoxLayout(fr_central)
         vb.setContentsMargins(40, 20, 40, 20)
         vb.addWidget(self.widget)
 
@@ -78,6 +79,7 @@ class FirstSchoolChooserDialog(QtGui.QDialog):
 
         self.widget.allow_advanced_schools = False
         self.widget.allow_alternate_paths = False
+        self.widget.allow_rank1_alternate_paths = True
         self.widget.allow_basic_schools = True
         self.widget.show_filter_selection = False
         self.widget.show_bonus_trait = True
@@ -91,25 +93,31 @@ class FirstSchoolChooserDialog(QtGui.QDialog):
         self.header.setText(self.get_h1_text())
 
     def get_h1_text(self):
-        return self.tr('''
+        return self.tr("""
 <center>
 <h1>Join your First School</h1>
 <p style="color: #666">In this phase you're limited to base schools</p>
 </center>
-        ''')
+        """)
 
     def accept(self):
 
         self.apply_to_first_school()
         super(FirstSchoolChooserDialog, self).accept()
 
-    def apply_to_first_school(self):
-        api.character.schools.set_first(self.widget.selected_school)
+    def apply_to_first_school(self):        
+        import logging
+        logging.getLogger().debug("selected rank 1 path: %s", self.widget.selected_rank1_path)
+        if self.widget.selected_rank1_path:
+            api.character.schools.set_first_with_path(self.widget.selected_school, self.widget.selected_rank1_path)
+        else:
+            api.character.schools.set_first(self.widget.selected_school)
+
         if self.widget.different_school_merit:
             api.character.merits.add('different_school')
 
 
-class SchoolChooserDialog(QtGui.QDialog):
+class SchoolChooserDialog(QtWidgets.QDialog):
 
     def __init__(self, parent=None):
         super(SchoolChooserDialog, self).__init__(parent)
@@ -119,21 +127,21 @@ class SchoolChooserDialog(QtGui.QDialog):
         self.setup()
 
     def build_ui(self):
-        self.vbox_lo = QtGui.QVBoxLayout(self)
-        self.bt_ok = QtGui.QPushButton(self.tr('Ok'), self)
-        self.bt_cancel = QtGui.QPushButton(self.tr('Cancel'), self)
+        self.vbox_lo = QtWidgets.QVBoxLayout(self)
+        self.bt_ok = QtWidgets.QPushButton(self.tr('Ok'), self)
+        self.bt_cancel = QtWidgets.QPushButton(self.tr('Cancel'), self)
 
-        self.header = QtGui.QLabel(self)
+        self.header = QtWidgets.QLabel(self)
 
         # bottom bar
-        bottom_bar = QtGui.QFrame(self)
-        hbox = QtGui.QHBoxLayout(bottom_bar)
+        bottom_bar = QtWidgets.QFrame(self)
+        hbox = QtWidgets.QHBoxLayout(bottom_bar)
         hbox.addStretch()
         hbox.addWidget(self.bt_ok)
         hbox.addWidget(self.bt_cancel)
 
-        fr_central = QtGui.QFrame(self)
-        vb = QtGui.QVBoxLayout(fr_central)
+        fr_central = QtWidgets.QFrame(self)
+        vb = QtWidgets.QVBoxLayout(fr_central)
         vb.setContentsMargins(40, 20, 40, 20)
         vb.addWidget(self.widget)
 
@@ -152,6 +160,7 @@ class SchoolChooserDialog(QtGui.QDialog):
 
         self.widget.allow_advanced_schools = True
         self.widget.allow_alternate_paths = True
+        self.widget.allow_rank1_alternate_paths = False
         self.widget.allow_basic_schools = True
         self.widget.show_filter_selection = True
         self.widget.show_bonus_trait = False
@@ -168,14 +177,14 @@ class SchoolChooserDialog(QtGui.QDialog):
         self.header.setText(self.get_h1_text())
 
     def get_h1_text(self):
-        return self.tr('''
+        return self.tr("""
 <center>
 <h1>Choose the school to join</h1>
 <p style="color: #666">You can choose between normal schools, advanced schools and alternative paths<br/>
 If you choose an advanced school or alternative path be sure to check the requirements
 </p>
 </center>
-        ''')
+        """)
 
     def accept(self):
 
@@ -188,27 +197,31 @@ If you choose an advanced school or alternative path be sure to check the requir
             api.character.merits.add('multiple_schools')
 
 
-class SchoolChooserWidget(QtGui.QWidget):
+class SchoolChooserWidget(QtWidgets.QWidget):
     statusChanged = QtCore.pyqtSignal(bool)
 
     def __init__(self, parent=None):
         super(SchoolChooserWidget, self).__init__(parent)
 
-        self.cb_clan = QtGui.QComboBox(self)
-        self.cb_school = QtGui.QComboBox(self)
-        self.lb_trait = QtGui.QLabel(self)
-        self.lb_book = QtGui.QLabel(self)
-        self.lb_desc = QtGui.QLabel(self)
+        self.cb_clan = QtWidgets.QComboBox(self)
+        self.cb_school = QtWidgets.QComboBox(self)
+        self.cb_rank1_path = QtWidgets.QComboBox(self)
+        self.lb_trait = QtWidgets.QLabel(self)
+        self.lb_book = QtWidgets.QLabel(self)
+        self.lb_desc = QtWidgets.QLabel(self)
 
-        self.lb_different_school_err = QtGui.QLabel(red(self.tr("Not enough XP")), self)
-        self.lb_multiple_schools_err = QtGui.QLabel(red(self.tr("Not enough XP")), self)
+        self.lb_different_school_err = QtWidgets.QLabel(red(self.tr("Not enough XP")), self)
+        self.lb_multiple_schools_err = QtWidgets.QLabel(red(self.tr("Not enough XP")), self)
 
         self.lb_different_school_err.setVisible(False)
         self.lb_multiple_schools_err.setVisible(False)
 
+        self.cb_rank1_path.setVisible(False)
+
         self.req_list = None
         self.current_clan_id = None
         self.current_school_id = None
+        self.current_rank1_path_id = None
         self.character_clan_id = None
 
         self._show_filter_selection = True
@@ -221,6 +234,7 @@ class SchoolChooserWidget(QtGui.QWidget):
         self._allow_basic_schools = True
         self._allow_advanced_schools = True
         self._allow_alternate_paths = True
+        self._allow_rank1_alternate_paths = True
 
         self._old_status = None
 
@@ -237,13 +251,14 @@ class SchoolChooserWidget(QtGui.QWidget):
     def clear(self):
         self.current_clan_id = None
         self.current_school_id = None
+        self.current_rank1_path_id = None
 
     def load(self):
         if not self.current_clan_id:
             self.load_clans()
 
             try:
-                char_clan_id = api.character.rankadv.get_current().clan
+                char_clan_id = api.character.rankadv.get_last().clan
                 self.update_ui_with_clan(char_clan_id)
             except:
                 pass
@@ -253,6 +268,7 @@ class SchoolChooserWidget(QtGui.QWidget):
     def connect_signals(self):
         self.cb_clan.currentIndexChanged.connect(self.on_clan_changed)
         self.cb_school.currentIndexChanged.connect(self.on_school_changed)
+        self.cb_rank1_path.currentIndexChanged.connect(self.on_rank1_path_changed)
 
         self.cx_base_schools.stateChanged.connect(self.on_base_filter_change)
         self.cx_advc_schools.stateChanged.connect(self.on_advc_filter_change)
@@ -262,7 +278,7 @@ class SchoolChooserWidget(QtGui.QWidget):
         self.ck_different_school.stateChanged.connect(self.update_status)
 
     def build_ui(self):
-        # self.setStyleSheet('''QWidget { border: 1px solid red; }''')
+        # self.setStyleSheet("""QWidget { border: 1px solid red; }""")
         #
         # [ clan:   ____ ]
         # [ school: ____ ]
@@ -283,12 +299,13 @@ class SchoolChooserWidget(QtGui.QWidget):
         # Options:
         #        [ ] Buy 'Different School' advantage
         #        [ ] Buy 'Multiple Schools' advantage
-        form = QtGui.QFormLayout(self)
+        form = QtWidgets.QFormLayout(self)
         form.addRow(self.tr("Clan:"), self.cb_clan)
-        form.addRow(self.tr("School:"), self.cb_school)
+        form.addRow(self.tr("School:"), self.cb_school)                
+        form.addRow(self.tr("Path:"), self.cb_rank1_path)
         form.addRow(self.lb_book, self.lb_desc)
 
-        form.addRow(" ", QtGui.QWidget(self))  # empty row
+        form.addRow(" ", QtWidgets.QWidget(self))  # empty row
         form.addRow(self.tr("Bonus:"), self.lb_trait)
 
         self.pl_filter = self.build_filter_panel()
@@ -303,11 +320,11 @@ class SchoolChooserWidget(QtGui.QWidget):
         self.form_layout = form
 
     def build_filter_panel(self):
-        fr = QtGui.QFrame(self)
-        vb = QtGui.QVBoxLayout(fr)
-        self.cx_base_schools = QtGui.QCheckBox(self.tr("Base schools"), self)
-        self.cx_advc_schools = QtGui.QCheckBox(self.tr("Advanced schools"), self)
-        self.cx_path_schools = QtGui.QCheckBox(self.tr("Alternate paths"), self)
+        fr = QtWidgets.QFrame(self)
+        vb = QtWidgets.QVBoxLayout(fr)
+        self.cx_base_schools = QtWidgets.QCheckBox(self.tr("Base schools"), self)
+        self.cx_advc_schools = QtWidgets.QCheckBox(self.tr("Advanced schools"), self)
+        self.cx_path_schools = QtWidgets.QCheckBox(self.tr("Alternate paths"), self)
         vb.addWidget(self.cx_base_schools)
         vb.addWidget(self.cx_advc_schools)
         vb.addWidget(self.cx_path_schools)
@@ -320,15 +337,15 @@ class SchoolChooserWidget(QtGui.QWidget):
         return fr
 
     def build_requirements_panel(self):
-        self.req_list = widgets.RequirementsWidget(self)
+        self.req_list = RequirementsWidget(self)
         return self.req_list
 
     def build_options_panel(self):
-        fr = QtGui.QFrame(self)
-        fl = QtGui.QFormLayout(fr)
+        fr = QtWidgets.QFrame(self)
+        fl = QtWidgets.QFormLayout(fr)
 
-        self.ck_different_school = QtGui.QCheckBox(self.tr("Buy 'Different School' advantage"), self)
-        self.ck_multiple_schools = QtGui.QCheckBox(self.tr("Buy 'Multiple Schools' advantage"), self)
+        self.ck_different_school = QtWidgets.QCheckBox(self.tr("Buy 'Different School' advantage"), self)
+        self.ck_multiple_schools = QtWidgets.QCheckBox(self.tr("Buy 'Multiple Schools' advantage"), self)
 
         fl.addRow(self.ck_different_school, self.lb_different_school_err)
         fl.addRow(self.ck_multiple_schools, self.lb_multiple_schools_err)
@@ -343,8 +360,17 @@ class SchoolChooserWidget(QtGui.QWidget):
 
     @selected_school.setter
     def selected_school(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self.update_ui_with_school(value)
+
+    @property
+    def selected_rank1_path(self):
+        return self.current_rank1_path_id
+
+    @selected_rank1_path.setter
+    def selected_rank1_path(self, value):
+        """setting this property will also update the ui"""
+        self.current_rank1_path_id = value
 
     @property
     def selected_clan(self):
@@ -352,7 +378,7 @@ class SchoolChooserWidget(QtGui.QWidget):
 
     @selected_clan.setter
     def selected_clan(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self.update_ui_with_clan(value)
 
     @property
@@ -361,7 +387,7 @@ class SchoolChooserWidget(QtGui.QWidget):
 
     @character_clan.setter
     def character_clan(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self.character_clan_id = value
 
     @property
@@ -370,7 +396,7 @@ class SchoolChooserWidget(QtGui.QWidget):
 
     @show_filter_selection.setter
     def show_filter_selection(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self._show_filter_selection = value
         self.set_row_visible(self.pl_filter, value)
 
@@ -380,7 +406,7 @@ class SchoolChooserWidget(QtGui.QWidget):
 
     @show_bonus_trait.setter
     def show_bonus_trait(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self._show_filter_selection = value
         self.set_row_visible(self.lb_trait, value)
 
@@ -390,7 +416,7 @@ class SchoolChooserWidget(QtGui.QWidget):
 
     @show_school_requirements.setter
     def show_school_requirements(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self._show_school_requirements = value
         if not value:
             self.set_row_visible(self.pl_requirements, value)
@@ -401,7 +427,7 @@ class SchoolChooserWidget(QtGui.QWidget):
 
     @show_different_school_option.setter
     def show_different_school_option(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self._show_different_school_check = value
         self.show_or_hide_option_panel()
 
@@ -411,7 +437,7 @@ class SchoolChooserWidget(QtGui.QWidget):
 
     @show_multiple_schools_option.setter
     def show_multiple_schools_option(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self._show_multiple_school_check = value
         self.show_or_hide_option_panel()
 
@@ -421,7 +447,7 @@ class SchoolChooserWidget(QtGui.QWidget):
 
     @allow_basic_schools.setter
     def allow_basic_schools(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self._allow_basic_schools = value
         self.cx_base_schools.setChecked(value)
         self.load_clans()
@@ -432,7 +458,7 @@ class SchoolChooserWidget(QtGui.QWidget):
 
     @allow_advanced_schools.setter
     def allow_advanced_schools(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self._allow_advanced_schools = value
         self.cx_advc_schools.setChecked(value)
         self.load_clans()
@@ -443,10 +469,20 @@ class SchoolChooserWidget(QtGui.QWidget):
 
     @allow_alternate_paths.setter
     def allow_alternate_paths(self, value):
-        '''setting this property will also update the ui'''
+        """setting this property will also update the ui"""
         self._allow_alternate_paths = value
         self.cx_path_schools.setChecked(value)
         self.load_clans()
+
+    @property
+    def allow_rank1_alternate_paths(self):
+        return self._allow_rank1_alternate_paths
+
+    @allow_rank1_alternate_paths.setter
+    def allow_rank1_alternate_paths(self, value):
+        """setting this property will also update the ui"""
+        self._allow_rank1_alternate_paths = value
+        self.set_row_visible(self.cb_rank1_path, value)
 
     @property
     def different_school_merit(self):
@@ -518,6 +554,21 @@ class SchoolChooserWidget(QtGui.QWidget):
         # load first school
         self.on_school_changed(0)
 
+        if self.allow_rank1_alternate_paths:
+            self.cb_rank1_path.blockSignals(True)
+            self.cb_rank1_path.clear()
+
+            path_list = api.data.schools.get_paths_with_rank(1)
+            if clanid:
+                path_list = [x for x in path_list if x.clanid == clanid]
+
+            self.cb_rank1_path.addItem(self.tr("None"), None)
+            for f in sorted(path_list, key=lambda x: x.name):
+                self.cb_rank1_path.addItem(f.name, f.id)
+
+            self.cb_rank1_path.blockSignals(False)
+
+
     def hide_row(self, fld):
         fld.hide()
         self.form_layout.labelForField(fld).hide()
@@ -584,6 +635,9 @@ class SchoolChooserWidget(QtGui.QWidget):
     def on_school_changed(self, index_or_text):
         self.current_school_id = self.cb_school.itemData(self.cb_school.currentIndex())
         self.update_school_properties()
+
+    def on_rank1_path_changed(self, index_or_text):
+        self.current_rank1_path_id = self.cb_rank1_path.itemData(self.cb_rank1_path.currentIndex())
 
     def on_base_filter_change(self, state):
         self.allow_basic_schools = self.sender().isChecked()
@@ -674,14 +728,14 @@ class SchoolChooserWidget(QtGui.QWidget):
 
 def main():
     import sys
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
 
-    dlg = QtGui.QDialog()
+    dlg = QtWidgets.QDialog()
     fam = SchoolChooserWidget(dlg)
 
     # fam.selected_school = 'hida_bushi_school'
     fam.selected_clan = 'mantis'
-    vbox = QtGui.QVBoxLayout(dlg)
+    vbox = QtWidgets.QVBoxLayout(dlg)
     vbox.addWidget(fam)
     dlg.exec_()
 

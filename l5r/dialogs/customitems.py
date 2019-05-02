@@ -15,23 +15,24 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import models
+import l5r.models as models
 
-import api.data.outfit
-import api.rules
+import l5r.api as api
+import l5r.api.data.outfit
+import l5r.api.rules
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 def grouped_widget(title, widget, parent=None):
-    grp = QtGui.QGroupBox(title, parent)
-    vbox = QtGui.QVBoxLayout(grp)
+    grp = QtWidgets.QGroupBox(title, parent)
+    vbox = QtWidgets.QVBoxLayout(grp)
     vbox.addWidget(widget)
 
     return grp
 
 
-class CustomArmorDialog(QtGui.QDialog):
+class CustomArmorDialog(QtWidgets.QDialog):
 
     def __init__(self, pc, parent=None):
         super(CustomArmorDialog, self).__init__(parent)
@@ -45,27 +46,27 @@ class CustomArmorDialog(QtGui.QDialog):
 
         self.setMinimumSize(400, 0)
 
-        self.bt_accept = QtGui.QPushButton(self.tr("Ok"), self)
-        self.bt_cancel = QtGui.QPushButton(self.tr("Cancel"), self)
+        self.bt_accept = QtWidgets.QPushButton(self.tr("Ok"), self)
+        self.bt_cancel = QtWidgets.QPushButton(self.tr("Cancel"), self)
 
-        lvbox = QtGui.QVBoxLayout(self)
-        self.tx_name = QtGui.QLineEdit(self)
+        lvbox = QtWidgets.QVBoxLayout(self)
+        self.tx_name = QtWidgets.QLineEdit(self)
         lvbox.addWidget(grouped_widget(self.tr("Name"), self.tx_name, self))
 
-        self.tx_tn = QtGui.QLineEdit(self)
-        self.tx_rd = QtGui.QLineEdit(self)
-        fr = QtGui.QFrame(self)
-        hbox = QtGui.QHBoxLayout(fr)
+        self.tx_tn = QtWidgets.QLineEdit(self)
+        self.tx_rd = QtWidgets.QLineEdit(self)
+        fr = QtWidgets.QFrame(self)
+        hbox = QtWidgets.QHBoxLayout(fr)
         hbox.addWidget(grouped_widget(self.tr("Armor TN"), self.tx_tn, self))
         hbox.addWidget(grouped_widget(self.tr("Reduction"), self.tx_rd, self))
         lvbox.addWidget(fr)
 
-        self.tx_notes = QtGui.QTextEdit(self)
+        self.tx_notes = QtWidgets.QTextEdit(self)
         lvbox.addWidget(grouped_widget(self.tr("Notes"), self.tx_notes, self))
 
-        self.btbox = QtGui.QDialogButtonBox(QtCore.Qt.Horizontal)
-        self.btbox.addButton(self.bt_accept, QtGui.QDialogButtonBox.AcceptRole)
-        self.btbox.addButton(self.bt_cancel, QtGui.QDialogButtonBox.RejectRole)
+        self.btbox = QtWidgets.QDialogButtonBox(QtCore.Qt.Horizontal)
+        self.btbox.addButton(self.bt_accept, QtWidgets.QDialogButtonBox.AcceptRole)
+        self.btbox.addButton(self.bt_cancel, QtWidgets.QDialogButtonBox.RejectRole)
 
         self.btbox.accepted.connect(self.on_accept)
         self.btbox.rejected.connect(self.close)
@@ -93,7 +94,7 @@ class CustomArmorDialog(QtGui.QDialog):
         self.item.desc = self.tx_notes.toPlainText()
 
         if self.item.name == '':
-            QtGui.QMessageBox.warning(self, self.tr("Custom Armor"),
+            QtWidgets.QMessageBox.warning(self, self.tr("Custom Armor"),
                                       self.tr("Please enter a name."))
             return
 
@@ -101,7 +102,7 @@ class CustomArmorDialog(QtGui.QDialog):
         self.accept()
 
 
-class CustomWeaponDialog(QtGui.QDialog):
+class CustomWeaponDialog(QtWidgets.QDialog):
 
     def __init__(self, pc, parent=None):
         super(CustomWeaponDialog, self).__init__(parent)
@@ -116,29 +117,29 @@ class CustomWeaponDialog(QtGui.QDialog):
 
         self.setMinimumSize(400, 0)
 
-        self.bt_accept = QtGui.QPushButton(self.tr("Ok"), self)
-        self.bt_cancel = QtGui.QPushButton(self.tr("Cancel"), self)
+        self.bt_accept = QtWidgets.QPushButton(self.tr("Ok"), self)
+        self.bt_cancel = QtWidgets.QPushButton(self.tr("Cancel"), self)
 
         # Weapon Name
-        lvbox = QtGui.QVBoxLayout(self)
-        self.tx_name = QtGui.QLineEdit(self)
+        lvbox = QtWidgets.QVBoxLayout(self)
+        self.tx_name = QtWidgets.QLineEdit(self)
         lvbox.addWidget(grouped_widget(self.tr("Name"), self.tx_name, self))
 
         # Base Weapon
-        self.cb_base_weap = QtGui.QComboBox(self)
+        self.cb_base_weap = QtWidgets.QComboBox(self)
         lvbox.addWidget(
             grouped_widget(self.tr("Base Weapon"), self.cb_base_weap, self))
         self.cb_base_weap.currentIndexChanged.connect(self.on_base_weap_change)
 
         # Stats
-        stats_fr = QtGui.QFrame(self)
-        form_lo = QtGui.QFormLayout(stats_fr)
+        stats_fr = QtWidgets.QFrame(self)
+        form_lo = QtWidgets.QFormLayout(stats_fr)
 
-        self.tx_dr = QtGui.QLineEdit(self)
-        self.tx_dr_alt = QtGui.QLineEdit(self)
-        self.tx_rng = QtGui.QLineEdit(self)
-        self.tx_str = QtGui.QLineEdit(self)
-        self.tx_min_str = QtGui.QLineEdit(self)
+        self.tx_dr = QtWidgets.QLineEdit(self)
+        self.tx_dr_alt = QtWidgets.QLineEdit(self)
+        self.tx_rng = QtWidgets.QLineEdit(self)
+        self.tx_str = QtWidgets.QLineEdit(self)
+        self.tx_min_str = QtWidgets.QLineEdit(self)
 
         form_lo.addRow(self.tr("Primary DR"), self.tx_dr)
         form_lo.addRow(self.tr("Secondary DR"), self.tx_dr_alt)
@@ -148,12 +149,12 @@ class CustomWeaponDialog(QtGui.QDialog):
 
         lvbox.addWidget(grouped_widget(self.tr("Stats"), stats_fr, self))
 
-        self.tx_notes = QtGui.QTextEdit(self)
+        self.tx_notes = QtWidgets.QTextEdit(self)
         lvbox.addWidget(grouped_widget(self.tr("Notes"), self.tx_notes, self))
 
-        self.btbox = QtGui.QDialogButtonBox(QtCore.Qt.Horizontal)
-        self.btbox.addButton(self.bt_accept, QtGui.QDialogButtonBox.AcceptRole)
-        self.btbox.addButton(self.bt_cancel, QtGui.QDialogButtonBox.RejectRole)
+        self.btbox = QtWidgets.QDialogButtonBox(QtCore.Qt.Horizontal)
+        self.btbox.addButton(self.bt_accept, QtWidgets.QDialogButtonBox.AcceptRole)
+        self.btbox.addButton(self.bt_cancel, QtWidgets.QDialogButtonBox.RejectRole)
 
         self.btbox.accepted.connect(self.on_accept)
         self.btbox.rejected.connect(self.close)
@@ -217,7 +218,7 @@ class CustomWeaponDialog(QtGui.QDialog):
         self.item.desc = self.tx_notes.toPlainText()
 
         if self.item.name == '':
-            QtGui.QMessageBox.warning(self, self.tr("Custom Weapon"),
+            QtWidgets.QMessageBox.warning(self, self.tr("Custom Weapon"),
                                       self.tr("Please enter a name."))
             return
         if not self.edit_mode:

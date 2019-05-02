@@ -15,17 +15,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 import os
-import models
-import dialogs
-from util import log, osutil
-import widgets
-import dal
-import dal.query
+import l5r.models as models
+import l5r.dialogs as dialogs
 
-import api.character
+import l5r.widgets as widgets
+import l5rdal as dal
+import l5rdal.query
+
+import l5r.api as api
+import l5r.api.character
+
+from l5r.util import log, osutil
 
 
 class Sink4(QtCore.QObject):
@@ -39,7 +42,7 @@ class Sink4(QtCore.QObject):
         self.form.pc.add_modifier(item)
         dlg = dialogs.ModifierDialog(self.form.pc, self.form)
         dlg.set_modifier(item)
-        if dlg.exec_() == QtGui.QDialog.Accepted:
+        if dlg.exec_() == QtWidgets.QDialog.Accepted:
             self.form.update_from_model()
 
     def edit_selected_modifier(self):
@@ -50,7 +53,7 @@ class Sink4(QtCore.QObject):
         dlg = dialogs.ModifierDialog(
             self.form.pc, self.form)
         dlg.set_modifier(item)
-        if dlg.exec_() == QtGui.QDialog.Accepted:
+        if dlg.exec_() == QtWidgets.QDialog.Accepted:
             self.form.update_from_model()
 
     def remove_selected_modifier(self):
@@ -64,11 +67,12 @@ class Sink4(QtCore.QObject):
     # DATA MENU
     def import_data_act(self):
         data_pack_files = self.form.select_import_data_pack()
-        self.form.import_data_packs(data_pack_files)
+        if data_pack_files:
+            self.form.import_data_packs(data_pack_files)
 
     def manage_data_act(self):
         dlg = dialogs.ManageDataPackDlg(self.form.dstore, self.form)
-        if dlg.exec_() == QtGui.QDialog.Accepted:
+        if dlg.exec_() == QtWidgets.QDialog.Accepted:
             self.form.update_data_blacklist()
             self.reload_data_act()
 
@@ -101,7 +105,7 @@ class Sink4(QtCore.QObject):
     def show_npc_export_dialog(self):
         form = self.form
         dlg = dialogs.NpcExportDialog(form)
-        if dlg.exec_() == QtGui.QDialog.Accepted:
+        if dlg.exec_() == QtWidgets.QDialog.Accepted:
             file_ = form.select_export_file(".pdf")
             if len(file_) > 0:
                 form.export_npc_characters(dlg.paths, file_)
@@ -110,14 +114,14 @@ class Sink4(QtCore.QObject):
     def on_edit_family(self):
         form = self.form
         dlg = widgets.FamilyChooserDialog(form)
-        if dlg.exec_() == QtGui.QDialog.Accepted:
+        if dlg.exec_() == QtWidgets.QDialog.Accepted:
             form.update_from_model()
 
     # EDIT FIRST SCHOOL
     def on_edit_first_school(self):
         form = self.form
         dlg = widgets.FirstSchoolChooserDialog(form)
-        if dlg.exec_() == QtGui.QDialog.Accepted:
+        if dlg.exec_() == QtWidgets.QDialog.Accepted:
             form.update_from_model()
 
     def on_tech_item_activate(self, index):

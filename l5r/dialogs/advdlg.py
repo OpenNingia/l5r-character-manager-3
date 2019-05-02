@@ -15,33 +15,34 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import models.advances as advances
-import api.data.skills
-from util import log
+import l5r.api as api
+import l5r.models.advances as advances
+import l5r.api.data.skills
+from l5r.util import log
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class SkillSelectInformativeWidget(QtGui.QWidget):
+class SkillSelectInformativeWidget(QtWidgets.QWidget):
 
     currentIndexChanged = QtCore.pyqtSignal(int)
 
     def __init__(self, parent=None):
         super(SkillSelectInformativeWidget, self).__init__(parent)
 
-        self.cb_skills = QtGui.QComboBox(self)
-        self.lb_book = QtGui.QLabel(self)
-        self.lb_desc = QtGui.QLabel(self)
+        self.cb_skills = QtWidgets.QComboBox(self)
+        self.lb_book = QtWidgets.QLabel(self)
+        self.lb_desc = QtWidgets.QLabel(self)
 
         # build UI
-        vb = QtGui.QVBoxLayout(self)
+        vb = QtWidgets.QVBoxLayout(self)
         vb.addWidget(self.cb_skills)
 
-        fr_desc = QtGui.QFrame(self)
-        fly = QtGui.QFormLayout(fr_desc)
+        fr_desc = QtWidgets.QFrame(self)
+        fly = QtWidgets.QFormLayout(fr_desc)
         fly.addRow(self.lb_book, self.lb_desc)
 
-        vb.setContentsMargins(0,0,0,0)
+        vb.setContentsMargins(0, 0, 0, 0)
 
         vb.addWidget(fr_desc)
 
@@ -95,7 +96,7 @@ class SkillSelectInformativeWidget(QtGui.QWidget):
         self.currentIndexChanged.emit(item)
 
 
-class BuyAdvDialog(QtGui.QDialog):
+class BuyAdvDialog(QtWidgets.QDialog):
 
     def __init__(self, pc, tag, parent=None):
         super(BuyAdvDialog, self).__init__(parent)
@@ -111,7 +112,7 @@ class BuyAdvDialog(QtGui.QDialog):
         self.connect_signals()
 
     def build_ui(self):
-        grid = QtGui.QGridLayout(self)
+        grid = QtWidgets.QGridLayout(self)
 
         titles = dict(
             skill=self.tr('Buy Skill rank'),
@@ -120,15 +121,15 @@ class BuyAdvDialog(QtGui.QDialog):
         self.setWindowTitle(titles[self.tag])
 
         if self.tag == 'skill':
-            self.widgets = (QtGui.QComboBox(self), SkillSelectInformativeWidget(self))
+            self.widgets = (QtWidgets.QComboBox(self), SkillSelectInformativeWidget(self))
             self.labels = (
-                QtGui.QLabel(self.tr('Choose Skill'), self),
-                QtGui.QLabel(self.tr(''), self))
+                QtWidgets.QLabel(self.tr('Choose Skill'), self),
+                QtWidgets.QLabel(self.tr(''), self))
         elif self.tag == 'emph':
-            self.widgets = (QtGui.QComboBox(self), QtGui.QLineEdit(self))
+            self.widgets = (QtWidgets.QComboBox(self), QtWidgets.QLineEdit(self))
             self.labels = (
-                QtGui.QLabel(self.tr('Choose Skill'), self),
-                QtGui.QLabel(self.tr('Choose Emphasis'), self))
+                QtWidgets.QLabel(self.tr('Choose Skill'), self),
+                QtWidgets.QLabel(self.tr('Choose Emphasis'), self))
 
         for t in self.widgets:
             if t is not None:
@@ -147,8 +148,8 @@ class BuyAdvDialog(QtGui.QDialog):
                 grid.addWidget(lb, i, 0)
                 grid.addWidget(wd, i, 1, 1, 3)
 
-        self.bt_buy = QtGui.QPushButton(self.tr('Buy'), self)
-        self.bt_close = QtGui.QPushButton(self.tr('Close'), self)
+        self.bt_buy = QtWidgets.QPushButton(self.tr('Buy'), self)
+        self.bt_close = QtWidgets.QPushButton(self.tr('Close'), self)
 
         grid.addWidget(self.bt_buy, 5, 2, 1, 1)
         grid.addWidget(self.bt_close, 5, 3, 1, 1)
@@ -165,8 +166,8 @@ class BuyAdvDialog(QtGui.QDialog):
                 cb.addItem(t.name, t.id)
         elif self.tag == 'emph':
             cb = self.widgets[0]
-            for id in api.character.skills.get_all():
-                sk = api.data.skills.get(id)
+            for iid in api.character.skills.get_all():
+                sk = api.data.skills.get(iid)
                 cb.addItem(sk.name, sk.id)
 
     def fix_skill_id(self, uuid):
@@ -272,7 +273,7 @@ class BuyAdvDialog(QtGui.QDialog):
             return
 
         if api.character.purchase_advancement(adv) == api.data.CMErrors.NOT_ENOUGH_XP:
-            QtGui.QMessageBox.warning(self, self.tr("Not enough XP"),
+            QtWidgets.QMessageBox.warning(self, self.tr("Not enough XP"),
                                       self.tr("Cannot purchase.\nYou've reached the XP Limit."))
             self.close()
             return
@@ -301,27 +302,27 @@ def check_all_done_2(le_list):
 
 def check_all_different(cb_list):
     # check that all the choices are different
-    for i in xrange(0, len(cb_list) - 1):
+    for i in range(0, len(cb_list) - 1):
         cb = cb_list[i]
-        id = cb.itemData(cb.currentIndex())
-        for j in xrange(i + 1, len(cb_list)):
+        iid = cb.itemData(cb.currentIndex())
+        for j in range(i + 1, len(cb_list)):
             cb2 = cb_list[j]
             id2 = cb2.itemData(cb2.currentIndex())
 
-            if id2 == id:
+            if id2 == iid:
                 return False
     return True
 
 
 def check_already_got(list1, list2):
     # check if you already got this item
-    for id in list1:
-        if id in list2:
+    for iid in list1:
+        if iid in list2:
             return True
     return False
 
 
-class SelWcSkills(QtGui.QDialog):
+class SelWcSkills(QtWidgets.QDialog):
 
     def __init__(self, pc, parent=None):
         super(SelWcSkills, self).__init__(parent)
@@ -336,16 +337,16 @@ class SelWcSkills(QtGui.QDialog):
     def build_ui(self):
         self.setWindowTitle(self.tr('Choose School Skills'))
 
-        vb = QtGui.QVBoxLayout(self)
+        vb = QtWidgets.QVBoxLayout(self)
 
-        self.header = QtGui.QLabel(self.tr("<i>Your school has granted you \
+        self.header = QtWidgets.QLabel(self.tr("<i>Your school has granted you \
                                              the right to choose some skills.</i> \
                                              <br/><b>Choose with care.</b>"), self)
 
         vb.addWidget(self.header)
 
-        self.bt_ok = QtGui.QPushButton(self.tr('Ok'), self)
-        self.bt_cancel = QtGui.QPushButton(self.tr('Cancel'), self)
+        self.bt_ok = QtWidgets.QPushButton(self.tr('Ok'), self)
+        self.bt_cancel = QtWidgets.QPushButton(self.tr('Cancel'), self)
 
         row_ = 2
         for ws in api.character.rankadv.get_starting_skills_to_choose():
@@ -378,7 +379,7 @@ class SelWcSkills(QtGui.QDialog):
                     lb = self.tr(
                         'Any {0} skill (rank {1}):').format(sw1, ws.rank)
 
-            vb.addWidget(QtGui.QLabel(lb, self))
+            vb.addWidget(QtWidgets.QLabel(lb, self))
 
             cb = SkillSelectInformativeWidget(self)
             self.cbs.append(cb)
@@ -394,21 +395,21 @@ class SelWcSkills(QtGui.QDialog):
 
             lb = self.tr("{0}'s Emphases: ").format(skill_.name)
 
-            vb.addWidget(QtGui.QLabel(lb, self))
+            vb.addWidget(QtWidgets.QLabel(lb, self))
 
-            le = QtGui.QLineEdit(self)
+            le = QtWidgets.QLineEdit(self)
             self.les.append(le)
             vb.addWidget(le)
 
             row_ += 1
 
-        self.error_bar = QtGui.QLabel(self)
+        self.error_bar = QtWidgets.QLabel(self)
         self.error_bar.setVisible(False)
 
         vb.addWidget(self.error_bar)
 
-        fr_bottom = QtGui.QFrame(self)
-        hb = QtGui.QHBoxLayout(fr_bottom)
+        fr_bottom = QtWidgets.QFrame(self)
+        hb = QtWidgets.QHBoxLayout(fr_bottom)
         hb.addWidget(self.bt_ok)
         hb.addWidget(self.bt_cancel)
 
@@ -458,13 +459,13 @@ class SelWcSkills(QtGui.QDialog):
         done = check_all_done(self.cbs) and check_all_done_2(self.les)
 
         if not done:
-            self.error_bar.setText('''<p style='color:#FF0000'>
+            self.error_bar.setText("""<p style='color:#FF0000'>
                                       <b>
                                       You need to choose all the skills
                                       e/o emphases
                                       </b>
                                       </p>
-                                      ''')
+                                      """)
             self.error_bar.setVisible(True)
             return
 
@@ -472,12 +473,12 @@ class SelWcSkills(QtGui.QDialog):
         all_different = check_all_different(self.cbs)
 
         if not all_different:
-            self.error_bar.setText('''<p style='color:#FF0000'>
+            self.error_bar.setText("""<p style='color:#FF0000'>
                                       <b>
                                       You can't select the same skill more than once
                                       </b>
                                       </p>
-                                      ''')
+                                      """)
             self.error_bar.setVisible(True)
             return
 
@@ -486,16 +487,18 @@ class SelWcSkills(QtGui.QDialog):
             [x.itemData(x.currentIndex())[0] for x in self.cbs], api.character.skills.get_all())
 
         if already_got:
-            self.error_bar.setText('''<p style='color:#FF0000'>
+            self.error_bar.setText("""<p style='color:#FF0000'>
                                       <b>
                                       You already possess some of these skills
                                       </b>
                                       </p>
-                                      ''')
+                                      """)
             self.error_bar.setVisible(True)
             return
 
         self.error_bar.setVisible(False)
+
+        uuid = 0
 
         for cb in self.cbs:
             idx = cb.currentIndex()
@@ -503,7 +506,7 @@ class SelWcSkills(QtGui.QDialog):
 
             api.character.skills.add_starting_skill(uuid, rank)
 
-        for i in xrange(0, len(self.les)):
+        for i in range(0, len(self.les)):
             emph = self.les[i].text()
             api.character.skills.add_starting_skill(uuid, emph=emph)
 

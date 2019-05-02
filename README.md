@@ -9,8 +9,16 @@
 ```bash
 git clone https://github.com/OpenNingia/l5r-character-manager-3.git
 cd ./l5r-character-manager-3/
-git submodule init 
-git submodule update
+git checkout develop
+```
+
+### Create a virtual environment
+Install python3-venv and create a new virtual environment for python.
+
+```bash
+apt install python3-venv
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
 ### Installing the dependencies
@@ -18,47 +26,31 @@ Before running the program you need to install the dependencies:
 Some of them can be installed using pip:
 
 ```bash
-pip install -U asq
-pip install -U lxml
+pip install -r requirements.txt
+pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@develop
 ```
 
-Then you need to install PyQt4. On a Debian system run:
-
-```bash
-apt-get install python-sip python-qt4
-```
-
-Windows users can download PyQt4 binaries from here:
+Windows users can download PyQt5 binaries from here:
 https://www.riverbankcomputing.com/software/pyqt/download
 
 ### Note for Windows users
-You will need a basic compiler in order to build some of the dependencies (mainly lxml). I recommend getting this one:
+You will need a basic compiler in order to build some of the dependencies (mainly lxml). 
 
-http://www.microsoft.com/en-us/download/details.aspx?id=44266
-
-You will also need to install Python 2.7.x from here:
+You will also need to install Python 3.6.x from here:
 
 https://www.python.org/downloads/
 
 ### Note for Linux users
 You will need to download one more dependency, the pdf toolkit, needed to export the character sheets.
-Use you package manager to install the `pdftk` package. On debian systems run:
+Use you package manager to install the `pdftk` package. I recommend this version:
 
-`apt-get install pdftk` or `aptitude install pdftk`
-
-### Note for MacOSX users
-I don't actually own a Mac, so I cannot test it, however these instruction should work also on OSX.
-You might need to manually download the pdf toolkit from here:
-
-https://www.pdflabs.com/tools/pdftk-server/
-
-then place the executable in the system path.
+https://gitlab.com/pdftk-java/pdftk
 
 ### Finally you launch the program
 
 ```
 cd l5r
-python main.py
+python3 main.py
 ```
 
 ## Getting the Datapacks

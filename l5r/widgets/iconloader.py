@@ -12,11 +12,11 @@
 
 # Authors: Federico Brega, Pierluigi Villani
 # Inspired from C++ code by Qt software qticonloader.cpp
-# Adapted to PyQt4 by Daniele Simonetti
+# Adapted to PyQt5 by Daniele Simonetti
 
 import os
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 
 
 class QIconTheme:
@@ -36,7 +36,7 @@ class QIconTheme:
         return self.valid
 
 
-class QtIconLoaderImplementation():
+class QtIconLoaderImplementation:
 
     def __init__(self):
         self._themeName = None
@@ -56,10 +56,13 @@ class QtIconLoaderImplementation():
         # If we are running gnome use gconftool runtime to get theme name
         if os.getenv("DESKTOP_SESSION") == "gnome" or os.getenv("GNOME_DESKTOP_SESSION_ID"):
             if not self._themeName:
-                import subprocess
-                subpr = subprocess.Popen(
-                    ["gconftool", "--get", "/desktop/gnome/interface/icon_theme"], stdout=subprocess.PIPE)
-                self._themeName = subpr.communicate()[0].strip()
+                try:
+                    import subprocess
+                    subpr = subprocess.Popen(
+                        ["gconftool", "--get", "/desktop/gnome/interface/icon_theme"], stdout=subprocess.PIPE)
+                    self._themeName = subpr.communicate()[0].strip()
+                except:
+                    self._themeName = None
             if not self._themeName:
                 self._themeName = "gnome"
             return
@@ -84,17 +87,19 @@ class QtIconLoaderImplementation():
             else:
                 defaultTheme = "crystalsvg"
         configpath = kdeHome() + "/share/config/kdeglobals"
-        settings = QSettings(configpath, QSettings.IniFormat)
+        settings = QSettings()
         settings.beginGroup("Icons")
         self._themeName = str(settings.value("Theme", defaultTheme))
         # endif
 
     def findIcon(self, size, name):
-        pixmap = QPixmap()
+
         pixmapName = "$qt" + name + str(size)
-        if QPixmapCache.find(pixmapName, pixmap):
-            return pixmap
-        if self._themeName:
+        #if QPixmapCache.find(pixmapName, pixmap):
+        #    return pixmap
+        pixmap = QPixmapCache.find(pixmapName)
+
+        if not pixmap and self._themeName:
             visited = []
             pixmap = self.findIconHelper(size, self._themeName, name, visited)
             QPixmapCache.insert(pixmapName, pixmap)

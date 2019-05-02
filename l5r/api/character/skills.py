@@ -15,12 +15,15 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
 
-import models
-from api import __api
-from util import log
+import l5r.api as api
+import l5r.models
+from l5r.models import SkillAdv
 
-import api.data.schools
-import api.data.skills
+import l5r.api.data.schools
+import l5r.api.data.skills
+
+from l5r.api import __api
+from l5r.util import log
 
 from asq.initiators import query
 from asq.selectors import a_
@@ -133,7 +136,7 @@ def purchase_skill_rank(skill_id):
 
     mastery_ability_rank = api.data.skills.get_mastery_ability(skill_id, new_value)
 
-    adv = models.SkillAdv(skill_id, cost)
+    adv = SkillAdv(skill_id, cost)
     if mastery_ability_rank:
         adv.rule = mastery_ability_rank.rule
     adv.desc = (api.tr('{0}, Rank {1} to {2}. Cost: {3} xp')

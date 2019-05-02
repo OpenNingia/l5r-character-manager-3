@@ -15,19 +15,19 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 def new_small_le(parent=None, ro=False):
-    le = QtGui.QLineEdit(parent)
-    le.setSizePolicy(QtGui.QSizePolicy.Maximum,
-                     QtGui.QSizePolicy.Maximum)
+    le = QtWidgets.QLineEdit(parent)
+    le.setSizePolicy(QtWidgets.QSizePolicy.Maximum,
+                     QtWidgets.QSizePolicy.Maximum)
     le.setMaximumSize(QtCore.QSize(32, 24))
     le.setReadOnly(ro)
     return le
 
 
-class MoneyWidget(QtGui.QWidget):
+class MoneyWidget(QtWidgets.QWidget):
 
     valueChanged = QtCore.pyqtSignal(tuple)
 
@@ -36,15 +36,15 @@ class MoneyWidget(QtGui.QWidget):
 
         self.value = (0, 0, 0)
 
-        hbox = QtGui.QHBoxLayout(self)
+        hbox = QtWidgets.QHBoxLayout(self)
         hbox.setContentsMargins(0, 0, 0, 0)
 
         self.tkoku = le_koku, lb_koku = new_small_le(
-            self), QtGui.QLabel(self.tr('Koku'), self)
+            self), QtWidgets.QLabel(self.tr('Koku'), self)
         self.tbu = le_bu, lb_bu = new_small_le(
-            self), QtGui.QLabel(self.tr('Bu'), self)
+            self), QtWidgets.QLabel(self.tr('Bu'), self)
         self.tzeni = le_zeni, lb_zeni = new_small_le(
-            self), QtGui.QLabel(self.tr('Zeni'), self)
+            self), QtWidgets.QLabel(self.tr('Zeni'), self)
 
         for ed in [le_koku, le_bu, le_zeni]:
             ed.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
@@ -99,10 +99,10 @@ class MoneyWidget(QtGui.QWidget):
 
 
 def main():
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
 
-    dlg = QtGui.QDialog()
-    vbox = QtGui.QVBoxLayout(dlg)
+    dlg = QtWidgets.QDialog()
+    vbox = QtWidgets.QVBoxLayout(dlg)
     vbox.addWidget(MoneyWidget(dlg))
     dlg.show()
     sys.exit(app.exec_())

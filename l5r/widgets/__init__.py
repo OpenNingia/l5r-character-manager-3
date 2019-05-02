@@ -14,14 +14,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from widgets.cknumwidget import *
-from widgets.verticaltoolbar import *
-from widgets.simplericheditor import *
-from widgets.spell_item_selection import *
-from widgets.cost_selection import *
-from widgets.moneywidget import *
-from widgets.requirementwidget import *
-from widgets.simpledescr import *
-from widgets.fileedit import *
-from widgets.familychooser import *
-from widgets.schoolchooser import *
+from l5r.widgets.cknumwidget import *
+from l5r.widgets.verticaltoolbar import *
+from l5r.widgets.simplericheditor import *
+from l5r.widgets.spell_item_selection import *
+from l5r.widgets.cost_selection import *
+from l5r.widgets.moneywidget import *
+from l5r.widgets.requirementwidget import *
+from l5r.widgets.simpledescr import *
+from l5r.widgets.fileedit import *
+from l5r.widgets.familychooser import *
+from l5r.widgets.schoolchooser import *
+from l5r.widgets.settings import *

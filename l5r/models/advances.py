@@ -15,12 +15,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
-
+from PyQt5 import QtCore, QtGui
 from datetime import datetime
 import time
 
-from util import log
+from l5r.util import log
+from l5r.util.settings import L5RCMSettings
 
 
 class Advancement(object):
@@ -118,19 +118,32 @@ class MemoSpellAdv(Advancement):
         self.spell = spell_id
 
 
-class AdvancementViewModel(QtCore.QAbstractListModel):
+class AdvancementViewModel(QtCore.QAbstractTableModel):
 
     def __init__(self, parent=None):
         super(AdvancementViewModel, self).__init__(parent)
 
         self.items = []
-        self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
-        self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
-                         QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
-        self.item_size = QtCore.QSize(32, 32)
+        self.headers = [
+            self.tr('Tag'),
+            self.tr('Cost'),
+            self.tr('Text'),
+            self.tr('Timestamp')]
+
+        self.settings = L5RCMSettings()
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
+
+    def columnCount(self, parent=QtCore.QModelIndex()):
+        return len(self.headers)
+
+    def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
+        if orientation != QtCore.Qt.Horizontal:
+            return None
+        if role == QtCore.Qt.DisplayRole:
+            return self.headers[section]
+        return None
 
     def add_item(self, item):
         row = self.rowCount()
@@ -153,111 +166,24 @@ class AdvancementViewModel(QtCore.QAbstractListModel):
             return None
         item = self.items[index.row()]
         if role == QtCore.Qt.DisplayRole:
-            return item.type
+            if index.column() == 0:
+                return item.type
+            if index.column() == 1:
+                return item.cost
+            if index.column() == 2:
+                return item.desc
+            if index.column() == 3:
+                return datetime.fromtimestamp(item.timestamp).strftime('%Y-%m-%d %H:%M:%S.%f')
         elif role == QtCore.Qt.ForegroundRole:
-            return self.text_color
+            if index.row() % 2:
+                return self.settings.ui.table_row_color_alt_fg
+            return self.settings.ui.table_row_color_fg
         elif role == QtCore.Qt.BackgroundRole:
-            return self.bg_color[index.row() % 2]
+            if index.row() % 2:
+                return self.settings.ui.table_row_color_alt_bg
+            return self.settings.ui.table_row_color_bg
         elif role == QtCore.Qt.SizeHintRole:
-            return self.item_size
+            return self.settings.ui.table_row_size
         elif role == QtCore.Qt.UserRole:
             return item
         return None
-
-
-class AdvancementItemDelegate(QtGui.QStyledItemDelegate):
-
-    def __init__(self, parent=None):
-        super(AdvancementItemDelegate, self).__init__(parent)
-
-    def paint(self, painter, option, index):
-        if not index.isValid():
-            super(AdvancementItemDelegate, self).paint(painter, option, index)
-            return
-
-        item = index.data(QtCore.Qt.UserRole)
-        text_color = index.data(QtCore.Qt.ForegroundRole)
-        bg_color = index.data(QtCore.Qt.BackgroundRole)
-        hg_color = QtGui.QBrush(bg_color)
-        hg_color.setStyle(QtCore.Qt.Dense3Pattern)
-
-        painter.save()
-
-        # fill the background color
-        if option.state & QtGui.QStyle.State_Selected == QtGui.QStyle.State_Selected:
-            painter.fillRect(option.rect, option.palette.highlight())
-            text_color = option.palette.highlightedText()
-        else:
-            painter.fillRect(option.rect, bg_color)
-
-        grid_pen = QtGui.QPen(QtCore.Qt.lightGray, 1)
-        painter.setPen(grid_pen)
-        painter.drawLine(option.rect.bottomLeft(), option.rect.bottomRight())
-
-        main_font = painter.font()
-        sub_font = QtGui.QFont().resolve(main_font)
-        sub_font.setPointSize(7)
-
-        left_margin = 15
-        right_margin = 15
-
-        # paint the airdate with a smaller font over the item name
-        # suppose to have 24 pixels in vertical
-        painter.setFont(sub_font)
-        font_metric = painter.fontMetrics()
-        adv_tp = item.type
-        adv_tp_rect = font_metric.boundingRect(adv_tp)
-
-        text_pen = QtGui.QPen(text_color, 1)
-
-        painter.setPen(text_pen)
-        painter.drawText(left_margin + option.rect.left(),
-                         option.rect.top() + adv_tp_rect.height(), adv_tp)
-
-        # paint adv type & cost
-        # main_font.setBold(True)
-        painter.setFont(main_font)
-        font_metric = painter.fontMetrics()
-
-        adv_time = None
-        if hasattr(item, 'timestamp') and item.timestamp is not None:
-            adv_time = "{0:%Y}-{0:%m}-{0:%d} {0:%H}:{0:%M}:{0:%S}".format(
-                datetime.fromtimestamp(item.timestamp))
-
-        if adv_time:
-            adv_time_rect = font_metric.boundingRect(adv_time)
-            painter.drawText(left_margin + option.rect.left(),
-                             option.rect.top() + adv_tp_rect.height() +
-                             adv_time_rect.height(),
-                             adv_time)
-            left_margin += adv_time_rect.width() + left_margin
-
-        main_font.setBold(True)
-        painter.setFont(main_font)
-
-        try:
-            tmp = unicode(item).split(u',')
-        except:
-            tmp = str(item).split(',')
-
-        if len(tmp) > 0:
-
-            adv_nm = tmp[0]
-            adv_nm_rect = font_metric.boundingRect(adv_nm)
-            painter.drawText(left_margin + option.rect.left(),
-                             option.rect.top() + adv_tp_rect.height() +
-                             adv_nm_rect.height(),
-                             adv_nm)
-
-        if len(tmp) > 1:
-            main_font.setBold(False)
-            painter.setFont(main_font)
-            adv_nm = tmp[1]
-            adv_nm_rect = font_metric.boundingRect(adv_nm)
-            painter.drawText(
-                option.rect.right() - adv_nm_rect.width() - right_margin,
-                option.rect.top() + adv_tp_rect.height(
-                ) + adv_nm_rect.height(),
-                adv_nm)
-
-        painter.restore()

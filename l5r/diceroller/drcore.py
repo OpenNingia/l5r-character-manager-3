@@ -21,14 +21,14 @@ import random
 
 import string
 import operator
-ops = [operator.add, operator.sub, operator.mul, operator.div]
+ops = [operator.add, operator.sub, operator.mul, operator.floordiv]
 
 global explode
 global print_cb
 global reroll_1
 global explode_once
 
-''' Algorithms '''
+""" Algorithms """
 
 
 def set_reroll_1(flag):
@@ -53,7 +53,7 @@ def set_output_cb(cb):
 
 def out_print(str_):
     if print_cb is None:
-        print str_
+        print(str_)
     else:
         print_cb(str_)
 
@@ -71,14 +71,14 @@ def math_to_rpn(ex_string):
         elif ch.isdigit() or ch == '.':
             my_rpn += ch
         # se infine e' un operatore le cose si complicano....
-        elif string.find('+-*/dk', ch) >= 0:
-            ''' se lo stack e' vuoto oppure il l'operatore che viene prima e'
-                una parentesi o ha precedenza minore, impilo quello attuale sullo stack '''
+        elif ch in '+-*/dk':
+            """ se lo stack e' vuoto oppure il l'operatore che viene prima e'
+                una parentesi o ha precedenza minore, impilo quello attuale sullo stack """
             if len(my_opers) == 0 or peek(my_opers) == '(' or get_op_val(peek(my_opers)) < get_op_val(ch):
                 my_opers.append(ch)
             else:
-                ''' altrimenti riversa lo stack degli operatori sulla sequenza rpn fino a che non troviamo
-                    una parentesi aperta o un operatore con precedenza minore a quello attuale '''
+                """ altrimenti riversa lo stack degli operatori sulla sequenza rpn fino a che non troviamo
+                    una parentesi aperta o un operatore con precedenza minore a quello attuale """
                 while True:
                     my_rpn += ' '
                     my_rpn += my_opers.pop()
@@ -110,8 +110,12 @@ def rpn_solve(ex_string):
     # print 'parsing: ' + ex_string
     try:
         st = []
-        for tk in string.split(ex_string):
-            oi = string.find('+-*/', tk)
+        for tk in ex_string.split():
+            oi = -1
+            try:
+                oi = '+-*/'.index(tk)
+            except: pass
+
             if len(tk) == 1 and oi >= 0:
                 y, x = st.pop(), st.pop()
                 z = ops[oi](x, y)
@@ -132,8 +136,8 @@ def rpn_solve(ex_string):
         assert len(st) <= 1
         if len(st) == 1:
             value = st.pop()
-    except Exception, reason:
-        print reason
+    except Exception as reason:
+        print('Exception', reason)
     return value
 
 
@@ -152,7 +156,7 @@ def get_op_val(ch_oper):
 
 def roll_dices(dices, face):
     value = 0
-    print 'rolling ' + str(dices) + ' with ' + str(face) + ' faces'
+    print('rolling ' + str(dices) + ' with ' + str(face) + ' faces')
     for i in range(0, dices):
         roll = random.randint(1, face)
         value += roll
@@ -161,11 +165,11 @@ def roll_dices(dices, face):
 
 def roll_l5r_pool(pool, keep):
     rolls = []
-    print 'rolling ' + str(pool) + ' and keep ' + str(keep) + ' dices'
+    print('rolling ' + str(pool) + ' and keep ' + str(keep) + ' dices')
     for i in range(0, pool):
         roll = 0
         tot_roll = 0
-        while (roll == 0 or roll >= explode):
+        while roll == 0 or roll >= explode:
             old_roll = roll
             roll = random.randint(1, 10)
             tot_roll += roll
@@ -185,10 +189,10 @@ def roll_l5r_pool(pool, keep):
         rolls.append(tot_roll)
 
     rolls.sort()
-    print 'rolls: %s' % rolls
+    print('rolls: %s' % rolls)
     value = sum(rolls[-keep:])
     out_print('from %dk%d %s kept %s' % (pool, keep, rolls, rolls[-keep:]))
-    print 'total value = %d' % value
+    print('total value = %d' % value)
     return value
 
 
@@ -199,9 +203,9 @@ def peek(stack):
 def test():
     expr = '4k2'
     rpn = math_to_rpn(expr)
-    print rpn
+    print(rpn)
     val = rpn_solve(rpn)
-    print val
+    print(val)
 
 if __name__ == '__main__':
     test()

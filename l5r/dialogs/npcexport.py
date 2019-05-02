@@ -15,14 +15,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import models
-import widgets
+import l5r.widgets as widgets
 import os
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class NpcExportDialog(QtGui.QDialog):
+class NpcExportDialog(QtWidgets.QDialog):
 
     # title bar
     header = None
@@ -43,21 +42,21 @@ class NpcExportDialog(QtGui.QDialog):
         self.setup()
 
     def build_ui(self):
-        self.vbox_lo = QtGui.QVBoxLayout(self)
-        self.bt_ok = QtGui.QPushButton(self.tr('Export'), self)
-        self.header = QtGui.QLabel(self)
-        center_fr = QtGui.QFrame(self)
-        # center_fr.setFrameStyle(QtGui.QFrame.Sunken)
+        self.vbox_lo = QtWidgets.QVBoxLayout(self)
+        self.bt_ok = QtWidgets.QPushButton(self.tr('Export'), self)
+        self.header = QtWidgets.QLabel(self)
+        center_fr = QtWidgets.QFrame(self)
+        # center_fr.setFrameStyle(QtWidgets.QFrame.Sunken)
 
         # bottom bar
-        bottom_bar = QtGui.QFrame(self)
-        hbox = QtGui.QHBoxLayout(bottom_bar)
+        bottom_bar = QtWidgets.QFrame(self)
+        hbox = QtWidgets.QHBoxLayout(bottom_bar)
         hbox.addStretch()
         hbox.addWidget(self.bt_ok)
 
-        vb = QtGui.QVBoxLayout(center_fr)
+        vb = QtWidgets.QVBoxLayout(center_fr)
         self.a_tx_files = [widgets.FileEdit(self), widgets.FileEdit(self)]
-        self.a_bt_browse = [QtGui.QToolButton(self), QtGui.QToolButton(self)]
+        self.a_bt_browse = [QtWidgets.QToolButton(self), QtWidgets.QToolButton(self)]
 
         fnt = QtGui.QFont()
         fnt.setPointSize(12.0)
@@ -72,8 +71,8 @@ class NpcExportDialog(QtGui.QDialog):
             tx.setPlaceholderText(self.tr("Path to a .l5r character file"))
             tx.setFont(fnt)
 
-            fr = QtGui.QFrame(self)
-            hb = QtGui.QHBoxLayout(fr)
+            fr = QtWidgets.QFrame(self)
+            hb = QtWidgets.QHBoxLayout(fr)
             hb.addWidget(tx)
             hb.addWidget(self.a_bt_browse[i])
             vb.addWidget(fr)
@@ -101,12 +100,12 @@ class NpcExportDialog(QtGui.QDialog):
         self.a_tx_files[index].setText(path)
 
     def setup(self):
-        self.set_header_text(self.tr('''
+        self.set_header_text(self.tr("""
         <center>
         <h1>Export up to two NPC in a single PDF</h1>
         <p style="color: #666">Select up to two character files and click the "Export" button.</p>
         </center>
-        '''))
+        """))
 
         self.setWindowTitle(self.tr("L5RCM: NPC Sheet"))
 

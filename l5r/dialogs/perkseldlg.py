@@ -15,17 +15,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import models
-import api
-import api.character
-import widgets
+import l5r.api as api
+import l5r.models as models
+import l5r.widgets as widgets
+import l5r.api.character
 
-from util import log
+from l5r.util import log
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class BuyPerkDialog(QtGui.QDialog):
+class BuyPerkDialog(QtWidgets.QDialog):
 
     tag = None
     adv = None
@@ -51,54 +51,54 @@ class BuyPerkDialog(QtGui.QDialog):
 
         self.setMinimumSize(400, 0)
 
-        self.bt_accept = QtGui.QPushButton(self.tr("Ok"), self)
-        self.bt_cancel = QtGui.QPushButton(self.tr("Cancel"), self)
+        self.bt_accept = QtWidgets.QPushButton(self.tr("Ok"), self)
+        self.bt_cancel = QtWidgets.QPushButton(self.tr("Cancel"), self)
 
-        lvbox = QtGui.QVBoxLayout(self)
+        lvbox = QtWidgets.QVBoxLayout(self)
 
-        grp = QtGui.QGroupBox(self.tr("SubType"), self)
-        vbox = QtGui.QVBoxLayout(grp)
-        self.cb_subtype = QtGui.QComboBox(self)
+        grp = QtWidgets.QGroupBox(self.tr("SubType"), self)
+        vbox = QtWidgets.QVBoxLayout(grp)
+        self.cb_subtype = QtWidgets.QComboBox(self)
         self.cb_subtype.currentIndexChanged.connect(self.on_subtype_select)
         vbox.addWidget(self.cb_subtype)
         lvbox.addWidget(grp)
 
         grp = None
         if self.tag == 'merit':
-            grp = QtGui.QGroupBox(self.tr("Advantage"), self)
+            grp = QtWidgets.QGroupBox(self.tr("Advantage"), self)
         else:
-            grp = QtGui.QGroupBox(self.tr("Disadvantage"), self)
-        vbox = QtGui.QVBoxLayout(grp)
-        self.cb_perk = QtGui.QComboBox(self)
+            grp = QtWidgets.QGroupBox(self.tr("Disadvantage"), self)
+        vbox = QtWidgets.QVBoxLayout(grp)
+        self.cb_perk = QtWidgets.QComboBox(self)
         self.cb_perk.currentIndexChanged.connect(self.on_perk_select)
         vbox.addWidget(self.cb_perk)
         lvbox.addWidget(grp)
 
-        grp = QtGui.QGroupBox(self.tr("Rank"), self)
-        vbox = QtGui.QVBoxLayout(grp)
-        self.cb_rank = QtGui.QComboBox(self)
+        grp = QtWidgets.QGroupBox(self.tr("Rank"), self)
+        vbox = QtWidgets.QVBoxLayout(grp)
+        self.cb_rank = QtWidgets.QComboBox(self)
         self.cb_rank.currentIndexChanged.connect(self.on_rank_select)
         vbox.addWidget(self.cb_rank)
         lvbox.addWidget(grp)
 
-        grp = QtGui.QGroupBox(self.tr("Notes"), self)
-        vbox = QtGui.QVBoxLayout(grp)
-        self.tx_notes = QtGui.QTextEdit(self)
+        grp = QtWidgets.QGroupBox(self.tr("Notes"), self)
+        vbox = QtWidgets.QVBoxLayout(grp)
+        self.tx_notes = QtWidgets.QTextEdit(self)
         vbox.addWidget(self.tx_notes)
         lvbox.addWidget(grp)
 
         if self.tag == 'merit':
-            grp = QtGui.QGroupBox(self.tr("XP Cost"), self)
+            grp = QtWidgets.QGroupBox(self.tr("XP Cost"), self)
         else:
-            grp = QtGui.QGroupBox(self.tr("XP Gain"), self)
-        vbox = QtGui.QVBoxLayout(grp)
+            grp = QtWidgets.QGroupBox(self.tr("XP Gain"), self)
+        vbox = QtWidgets.QVBoxLayout(grp)
         self.cost_widget = widgets.CostSelection(self)
         vbox.addWidget(self.cost_widget)
         lvbox.addWidget(grp)
 
-        self.btbox = QtGui.QDialogButtonBox(QtCore.Qt.Horizontal)
-        self.btbox.addButton(self.bt_accept, QtGui.QDialogButtonBox.AcceptRole)
-        self.btbox.addButton(self.bt_cancel, QtGui.QDialogButtonBox.RejectRole)
+        self.btbox = QtWidgets.QDialogButtonBox(QtCore.Qt.Horizontal)
+        self.btbox.addButton(self.bt_accept, QtWidgets.QDialogButtonBox.AcceptRole)
+        self.btbox.addButton(self.bt_cancel, QtWidgets.QDialogButtonBox.RejectRole)
 
         self.btbox.accepted.connect(self.on_accept)
         self.btbox.rejected.connect(self.close)
@@ -226,7 +226,7 @@ class BuyPerkDialog(QtGui.QDialog):
             return
 
         if not self.item:
-            QtGui.QMessageBox.warning(self, self.tr("Perk not found"),
+            QtWidgets.QMessageBox.warning(self, self.tr("Perk not found"),
                                       self.tr("Please select a perk."))
             return
 
@@ -239,7 +239,7 @@ class BuyPerkDialog(QtGui.QDialog):
                 self.perk_nm, self.item.rank, self.item.cost)
 
             if self.item.cost > api.character.xp_left():
-                QtGui.QMessageBox.warning(self, self.tr("Not enough XP"),
+                QtWidgets.QMessageBox.warning(self, self.tr("Not enough XP"),
                                           self.tr("Cannot purchase.\nYou've reached the XP Limit."))
                 return
         else:

@@ -14,20 +14,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
-import iconloader
+from . import iconloader
 
-from toolbar_rc import *
+from .toolbar_rc import *
 
 
-class SimpleRichEditor(QtGui.QWidget):
+class SimpleRichEditor(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
         super(SimpleRichEditor, self).__init__(parent)
-        self.text_area = QtGui.QTextEdit(self)
-        self.text_area.setFrameShadow(QtGui.QFrame.Plain)
-        self.text_area.setAutoFormatting(QtGui.QTextEdit.AutoAll)
+        self.text_area = QtWidgets.QTextEdit(self)
+        self.text_area.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.text_area.setAutoFormatting(QtWidgets.QTextEdit.AutoAll)
         self.text_area.setUndoRedoEnabled(True)
         self.text_area.setReadOnly(False)
         self.text_area.setTextInteractionFlags(
@@ -37,7 +37,7 @@ class SimpleRichEditor(QtGui.QWidget):
             QtCore.Qt.TextEditable |
             QtCore.Qt.TextEditorInteraction |
             QtCore.Qt.TextSelectableByMouse)
-        vbox = QtGui.QVBoxLayout(self)
+        vbox = QtWidgets.QVBoxLayout(self)
         vbox.addWidget(self.create_toolbar())
         vbox.addWidget(self.text_area)
 
@@ -47,8 +47,8 @@ class SimpleRichEditor(QtGui.QWidget):
 
     def create_toolbar(self):
         bts = []
-        tb_frame = QtGui.QFrame(self)
-        tb_hbox = QtGui.QHBoxLayout(tb_frame)
+        tb_frame = QtWidgets.QFrame(self)
+        tb_hbox = QtWidgets.QHBoxLayout(tb_frame)
 
         # EDIT
         bts.append(self.create_tb_button("edit-clear", self.text_area.clear))
@@ -100,15 +100,15 @@ class SimpleRichEditor(QtGui.QWidget):
         tb_hbox.addSpacing(20)
 
         # FONT COMBOBOX
-        self.cb_fonts = QtGui.QFontComboBox(self)
+        self.cb_fonts = QtWidgets.QFontComboBox(self)
         self.cb_fonts.activated.connect(self.text_area.setFontFamily)
         tb_hbox.addWidget(self.cb_fonts)
 
         # FONT SIZES
-        self.cb_font_size = QtGui.QComboBox(self)
-        for i in xrange(6, 17):
+        self.cb_font_size = QtWidgets.QComboBox(self)
+        for i in range(6, 17):
             self.cb_font_size.addItem(str(i))
-        for i in xrange(18, 96, 2):
+        for i in range(18, 96, 2):
             self.cb_font_size.addItem(str(i))
         self.cb_font_size.activated.connect(self.set_font_size)
         tb_hbox.addWidget(self.cb_font_size)
@@ -118,7 +118,7 @@ class SimpleRichEditor(QtGui.QWidget):
         return tb_frame
 
     def create_tb_button(self, icon_text, actv_slot, is_toggle=False):
-        tb = QtGui.QToolButton(self)
+        tb = QtWidgets.QToolButton(self)
         tb.setIcon(iconloader.icon(icon_text,
                                    QtGui.QIcon(
                                    ':/icons/%s.png' % icon_text)
@@ -289,10 +289,10 @@ class SimpleRichEditor(QtGui.QWidget):
 
 def test():
     import sys
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
 
-    dlg = QtGui.QDialog()
-    vbox = QtGui.QVBoxLayout(dlg)
+    dlg = QtWidgets.QDialog()
+    vbox = QtWidgets.QVBoxLayout(dlg)
     vbox.addWidget(SimpleRichEditor())
     dlg.show()
 

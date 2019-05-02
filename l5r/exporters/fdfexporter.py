@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2014 Daniele Simonetti
+# Copyright (C) 2019 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,19 +15,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from datetime import datetime
-from PyQt4.QtCore import QSettings
-import models
-import hashlib
-import api.rules
-import api.data.spells
-import api.data.skills
-import api.data.powers
-import api.data.schools
-import api.data.merits
-import api.data.flaws
-import api.character
-import api.character.schools
+import l5r.api as api
+import l5r.api.character
+import l5r.api.character.schools
+import l5r.api.data.powers
+import l5r.api.data.schools
+import l5r.api.data.spells
+import l5r.api.rules
+import l5r.models as models
+from l5r.util.settings import L5RCMSettings
 
 
 class FDFExporter(object):
@@ -65,11 +61,9 @@ class FDFExporter(object):
 
     def export_field(self, key, value, io):
 
-        string_value = None
+        string_value = value
         if isinstance(value, bool):
             string_value = u"Yes" if value else u"No"
-        else:
-            string_value = unicode(value)
 
         tx = u"""<field name="{n}"><value>{v}</value></field>\n""".format(
             n=key, v=string_value)
@@ -143,16 +137,16 @@ class FDFExporterAll(FDFExporter):
         fields['STATUS'] = svalue
         fields['TAINT'] = tvalue
 
-        for i in range(1, hdots * 10 + 1):
+        for i in range(1, int(hdots) * 10 + 1):
             fields['HONOR_DOT.%d' % i] = True
 
-        for i in range(1, gdots * 10 + 1):
+        for i in range(1, int(gdots) * 10 + 1):
             fields['GLORY_DOT.%d' % i] = True
 
-        for i in range(1, sdots * 10 + 1):
+        for i in range(1, int(sdots) * 10 + 1):
             fields['STATUS_DOT.%d' % i] = True
 
-        for i in range(1, tdots * 10 + 1):
+        for i in range(1, int(tdots) * 10 + 1):
             fields['TAINT_DOT.%d' % i] = True
 
         # INITIATIVE
@@ -176,7 +170,10 @@ class FDFExporterAll(FDFExporter):
         w_labels = ['HEALTHY', 'NICKED', 'GRAZED',
                     'HURT', 'INJURED', 'CRIPPLED',
                     'DOWN', 'OUT']
-        method = QSettings().value('health_method', 'wounds')
+
+        settings = L5RCMSettings()
+        method = settings.app.health_method
+
         wounds_table = api.rules.get_wounds_table()
         for i, (i_inc, i_total, i_stacked, _inc_wounds, _total_wounds, _stacked_wounds) in enumerate(wounds_table):
             if method == 'default':
@@ -284,26 +281,27 @@ class FDFExporterAll(FDFExporter):
         fields['MISCELLANEOUS'] = misc
 
         # SKILLS
-        skills = f.sk_view_model.items
-        if self.skill_offset > 0:
-            skills = skills[self.skill_offset:]
+        if settings.pc_export.first_page_skills:
+            skills = f.sk_view_model.items
+            if self.skill_offset > 0:
+                skills = skills[self.skill_offset:]
 
-        sorted_skills = sorted(
-            skills, key=lambda x: (not x.is_school, -x.rank, x.name))
-        for i, sk in enumerate(sorted_skills):
-            j = i + 1
-            if i >= self.skills_per_page:
-                break
+            sorted_skills = sorted(
+                skills, key=lambda x: (not x.is_school, -x.rank, x.name))
+            for i, sk in enumerate(sorted_skills):
+                j = i + 1
+                if i >= self.skills_per_page:
+                    break
 
-            fields['SKILL_IS_SCHOOL.%d' % j] = sk.is_school
-            fields['SKILL_NAME.%d' % j] = sk.name
-            fields['SKILL_RANK.%d' % j] = sk.rank
-            fields['SKILL_TRAIT.%d' % j] = sk.trait
-            fields['SKILL_ROLL.%d' % j] = sk.mod_roll
-            fields['SKILL_EMPH_MA.%d' % j] = ', '.join(sk.emph)
+                fields['SKILL_IS_SCHOOL.%d' % j] = sk.is_school
+                fields['SKILL_NAME.%d' % j] = sk.name
+                fields['SKILL_RANK.%d' % j] = sk.rank
+                fields['SKILL_TRAIT.%d' % j] = sk.trait
+                fields['SKILL_ROLL.%d' % j] = sk.mod_roll
+                fields['SKILL_EMPH_MA.%d' % j] = ', '.join(sk.emph)
 
         # EXPORT FIELDS
-        for k in fields.iterkeys():
+        for k in fields:
             self.export_field(k, fields[k], io)
 
 
@@ -323,12 +321,14 @@ class FDFExporterShugenja(FDFExporter):
             spells = spells[off: off + self.spell_per_page]
 
         # spells
-        print('Starting Spells Export')
         lPageNumber, lControlNumber = pg, ctrl
-        lShortDescription = ''
+
+        # memo marker
+        memo_marker = "(m)"
+
         for spell in spells:
             fields['SPELL_NM.%d.%d' %
-                   (lPageNumber, lControlNumber)] = spell.name
+                   (lPageNumber, lControlNumber)] = f'{spell.name} {memo_marker}' if spell.memo else spell.name
             fields['SPELL_MASTERY.%d.%d' %
                    (lPageNumber, lControlNumber)] = spell.mastery
             fields['SPELL_RANGE.%d.%d' %
@@ -394,7 +394,7 @@ class FDFExporterShugenja(FDFExporter):
                 print('cannot export character school', schools[i])
 
         # EXPORT FIELDS
-        for k in fields.iterkeys():
+        for k in fields:
             self.export_field(k, fields[k], io)
 
 
@@ -412,7 +412,7 @@ class FDFExporterSpells(FDFExporterShugenja):
         self.export_spells(fields=fields, pg=2, off=self.spell_offset)
 
         # EXPORT FIELDS
-        for k in fields.iterkeys():
+        for k in fields:
             self.export_field(k, fields[k], io)
 
 
@@ -458,7 +458,7 @@ class FDFExporterBushi(FDFExporter):
                    (i + 1)] = '{0} ({1})'.format(kata.element, kata.mastery)
 
         # EXPORT FIELDS
-        for k in fields.iterkeys():
+        for k in fields:
             self.export_field(k, fields[k], io)
 
 
@@ -522,7 +522,7 @@ class FDFExporterMonk(FDFExporter):
                 fields['KIHO_EFFECT.%d.%d' % (i + 1, j)] = lines[j]
 
         # EXPORT FIELDS
-        for k in fields.iterkeys():
+        for k in fields:
             self.export_field(k, fields[k], io)
 
     def split_in_parts(self, text, max_lines=6):
@@ -597,7 +597,7 @@ class FDFExporterWeapons(FDFExporter):
             j += 1
 
         # EXPORT FIELDS
-        for k in fields.iterkeys():
+        for k in fields:
             self.export_field(k, fields[k], io)
 
 
@@ -634,7 +634,7 @@ class FDFExporterCourtier(FDFExporter):
                 print('COURTIER_SCHOOL_RANK.%d.%d' % (i, rank), tech.name)
 
         # EXPORT FIELDS
-        for k in fields.iterkeys():
+        for k in fields:
             self.export_field(k, fields[k], io)
 
 
@@ -672,5 +672,5 @@ class FDFExporterSkills(FDFExporter):
             fields['SKILL_EMPH_MA.%d' % j] = ', '.join(sk.emph)
 
         # EXPORT FIELDS
-        for k in fields.iterkeys():
+        for k in fields:
             self.export_field(k, fields[k], io)

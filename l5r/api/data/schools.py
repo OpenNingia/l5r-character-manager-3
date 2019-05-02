@@ -16,12 +16,16 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
 
-import dal.query
 from asq.initiators import query
 from asq.selectors import a_
-from api import __api
 
-from util import log
+import l5rdal as dal
+import l5rdal.query
+
+import l5r.api as api
+
+from l5r.api import __api
+from l5r.util import log
 
 
 def get(c):
@@ -45,11 +49,18 @@ def get_advanced():
 
 
 def get_paths():
-    """returns advanced schools list"""
+    """returns alternate path schools list"""
     return query(__api.ds.schools) \
         .where(lambda x: 'alternate' in x.tags) \
         .to_list()
 
+def get_paths_with_rank(rank):
+    """returns alternate schools list with rank equal to `rank`"""
+
+    return query(__api.ds.schools) \
+        .where(lambda x: 'alternate' in x.tags) \
+        .where(lambda x: query(x.techs).select(a_('rank')).first_or_default(0) == rank) \
+        .to_list()
 
 def is_path(sid):
     """returns true if the given school is an alternate path"""
@@ -167,8 +178,8 @@ def get_requirements(sid):
     # fixme. since i can't rewrite all alternate path
     # I decided to patch these requirement by code
 
-    import api.character.schools
-    from dal.requirements import Requirement
+    import l5r.api.character.schools
+    from l5rdal.requirements import Requirement
     coded_requirements_ = []
 
     if is_path(sid):

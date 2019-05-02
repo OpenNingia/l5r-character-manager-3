@@ -16,13 +16,15 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
 
-from api import __api
-import api.character.rankadv
+import l5r.api as api
+import l5r.api.character.rankadv
+
+from l5r.api import __api
 
 from asq.initiators import query
 from asq.selectors import a_
 
-from util import log
+from l5r.util import log
 
 
 def get_all():
@@ -50,13 +52,15 @@ def get_first():
         return None
     return rank_.school
 
-
 def set_first(sid):
+    return set_first_with_path(sid, None)
+
+def set_first_with_path(sid, pid):
     """set first school to PC"""
     school_ = api.data.schools.get(sid)
     if not school_:
         return
-
+          
     # rank advancement
     rank_ = api.character.rankadv.join_new(school_.id)
 
@@ -98,6 +102,9 @@ def set_first(sid):
         else:
             api.character.flaws.add_starting(p.id, p.rank)
 
+    # rank 1 path special case
+    if pid:
+        api.character.rankadv.join_rank1_path(pid)
 
 def join_new(sid):
     """join a new school"""
@@ -130,31 +137,26 @@ def get_tech_by_rank(rank):
 
     # get the school rank at that insight rank
     rank_ = query(api.character.rankadv.get_all()).where(
-        lambda x: x.rank == rank).first_or_default(None)
+        lambda x: x.rank == rank).to_list()
 
     if not rank_:
-        log.api.error(u"get_tech_by_rank. rank advancement not found: %d", rank)
+        #log.api.error(u"get_tech_by_rank. rank advancement not found: %d", rank)
         return None
 
-    school_id = rank_.school
-    school_rank = query(api.character.rankadv.get_all()).where(
-        lambda x: (x.school == school_id or
-                   x.replaced == school_id) and x.rank <= rank).count()
+
+    school_id = rank_[0].school
+    if len(rank_) > 1:        
+        # find a replacement
+        replacement_ = query(rank_).where(lambda x: x.replaced == school_id).first_or_default(None)
+        if replacement_:
+            school_id = replacement_.school
 
     school_ = api.data.schools.get(school_id)
 
     if not school_:
         return None
 
-    # for path use the school rank as a tech index
-    if api.data.schools.is_path(school_.id):
-        try:
-            return school_.techs[school_rank-1].id
-        except:
-            return None
-
-    return query(school_.techs).where(
-        lambda x: x.rank == school_rank).select(a_('id')).first_or_default(None)
+    return query(school_.techs).where(lambda x: x.rank == rank).select(a_('id')).first_or_default(None)
 
 
 def get_school_rank(sid):

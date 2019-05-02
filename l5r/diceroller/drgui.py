@@ -15,14 +15,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
-from drcore import *
+from .drcore import *
 import random
 import os
 
 
-class DiceRoller(QtGui.QDialog):
+class DiceRoller(QtWidgets.QDialog):
 
     def __init__(self, parent=None):
         super(DiceRoller, self).__init__(parent)
@@ -39,27 +39,27 @@ class DiceRoller(QtGui.QDialog):
         random.seed()
 
     def build_ui(self):
-        layout_ = QtGui.QHBoxLayout(self)
+        layout_ = QtWidgets.QHBoxLayout(self)
         layout_.setContentsMargins(0, 0, 0, 0)
         layout_.setSpacing(0)
 
         # EXCLUSIVE BUTTON GROUP
-        saved_bt_grp = QtGui.QButtonGroup(self)
+        saved_bt_grp = QtWidgets.QButtonGroup(self)
         saved_bt_grp.setExclusive(True)
 
-        saved_roll_frame = QtGui.QFrame(self)
-        sr_vbox = QtGui.QVBoxLayout(saved_roll_frame)
+        saved_roll_frame = QtWidgets.QFrame(self)
+        sr_vbox = QtWidgets.QVBoxLayout(saved_roll_frame)
         sr_vbox.setAlignment(QtCore.Qt.AlignTop)
 
-        dr_frame = QtGui.QFrame(self)
-        vbox = QtGui.QVBoxLayout(dr_frame)
+        dr_frame = QtWidgets.QFrame(self)
+        vbox = QtWidgets.QVBoxLayout(dr_frame)
 
-        grp_expr = QtGui.QGroupBox("Expression (e.g. (4k2+5)*2)", self)
-        h_ = QtGui.QHBoxLayout(grp_expr)
-        le_expr = QtGui.QLineEdit(self)
-        bt_roll = QtGui.QPushButton("Roll", self)
-        bt_save = QtGui.QPushButton("Save", self)
-        bt_del = QtGui.QPushButton("Delete", self)
+        grp_expr = QtWidgets.QGroupBox("Expression (e.g. (4k2+5)*2)", self)
+        h_ = QtWidgets.QHBoxLayout(grp_expr)
+        le_expr = QtWidgets.QLineEdit(self)
+        bt_roll = QtWidgets.QPushButton("Roll", self)
+        bt_save = QtWidgets.QPushButton("Save", self)
+        bt_del = QtWidgets.QPushButton("Delete", self)
 
         bt_del.setEnabled(False)
 
@@ -68,34 +68,34 @@ class DiceRoller(QtGui.QDialog):
         h_.addWidget(bt_save)
         h_.addWidget(bt_del)
 
-        grp_rules = QtGui.QGroupBox("Rules", self)
-        v_ = QtGui.QVBoxLayout(grp_rules)
-        rb_none = QtGui.QRadioButton("Explode None", self)
-        rb_10 = QtGui.QRadioButton("Explode 10", self)
-        rb_9 = QtGui.QRadioButton("Explode 9", self)
-        rb_8 = QtGui.QRadioButton("Explode 8", self)
+        grp_rules = QtWidgets.QGroupBox("Rules", self)
+        v_ = QtWidgets.QVBoxLayout(grp_rules)
+        rb_none = QtWidgets.QRadioButton("Explode None", self)
+        rb_10 = QtWidgets.QRadioButton("Explode 10", self)
+        rb_9 = QtWidgets.QRadioButton("Explode 9", self)
+        rb_8 = QtWidgets.QRadioButton("Explode 8", self)
         for w in [rb_none, rb_10, rb_9, rb_8]:
             v_.addWidget(w)
 
-        ck_1 = QtGui.QCheckBox("Reroll 1", self)
+        ck_1 = QtWidgets.QCheckBox("Reroll 1", self)
         ck_1.setChecked(False)
-        ck_2 = QtGui.QCheckBox("Only Explode Once", self)
+        ck_2 = QtWidgets.QCheckBox("Only Explode Once", self)
         ck_2.setChecked(False)
         v_.addWidget(ck_1)
         v_.addWidget(ck_2)
 
         rb_10.setChecked(True)
 
-        grp_dtl = QtGui.QGroupBox("Details", self)
-        v_ = QtGui.QVBoxLayout(grp_dtl)
-        lv_dtl = QtGui.QListView(self)
-        mod_dtl = QtGui.QStringListModel(self)
+        grp_dtl = QtWidgets.QGroupBox("Details", self)
+        v_ = QtWidgets.QVBoxLayout(grp_dtl)
+        lv_dtl = QtWidgets.QListView(self)
+        mod_dtl = QtCore.QStringListModel(self)
         lv_dtl.setModel(mod_dtl)
         v_.addWidget(lv_dtl)
 
-        grp_tot = QtGui.QGroupBox("Total", self)
-        v_ = QtGui.QVBoxLayout(grp_tot)
-        le_tot = QtGui.QLineEdit(self)
+        grp_tot = QtWidgets.QGroupBox("Total", self)
+        v_ = QtWidgets.QVBoxLayout(grp_tot)
+        le_tot = QtWidgets.QLineEdit(self)
         le_tot.setReadOnly(True)
         v_.addWidget(le_tot)
 
@@ -108,9 +108,11 @@ class DiceRoller(QtGui.QDialog):
         bt_save.clicked.connect(self.save_expr)
         bt_del .clicked.connect(self.del_expr)
 
-        QtCore.QObject.connect(saved_bt_grp,
-                               QtCore.SIGNAL("buttonPressed(int)"),
-                               self.on_expr_bt_pressed)
+        #QtCore.connect(saved_bt_grp,
+        #                       QtCore.SIGNAL("buttonPressed(int)"),
+        #                       self.on_expr_bt_pressed)
+        #
+        saved_bt_grp.buttonPressed[int].connect(self.on_expr_bt_pressed)
 
         self.saved_bt_grp = saved_bt_grp
         self.sr_vbox = sr_vbox
@@ -157,7 +159,7 @@ class DiceRoller(QtGui.QDialog):
 
     def add_save_expr_bt(self, expr_id, expr_nm=None):
         # add button
-        bt = QtGui.QPushButton(expr_nm or str(expr_id), self)
+        bt = QtWidgets.QPushButton(expr_nm or str(expr_id), self)
         bt.setCheckable(True)
         bt.setChecked(True)
         self.saved_bt_grp.addButton(bt, expr_id)
@@ -206,7 +208,7 @@ class DiceRoller(QtGui.QDialog):
         try:
             rpn = math_to_rpn(expr)
         except:
-            print 'failed math_to_rpn, expr: %s' % expr
+            print('failed math_to_rpn, expr', expr)
 
         if self.rb_none.isChecked():
             set_explode(999)
@@ -225,7 +227,7 @@ class DiceRoller(QtGui.QDialog):
         try:
             val = rpn_solve(rpn)
         except:
-            print 'failed rpn_solve, rpn: %s' % repr(rpn)
+            print('failed rpn_solve, rpn', rpn)
 
         self.le_tot.setText(str(val))
 

@@ -15,22 +15,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from api import __api
-
 import re
 
-import api.data
-import api.character
-import models.chmodel
+import l5r.api as api
+import l5r.api.data
+import l5r.api.character
 
-from util import log
+from l5r.models import chmodel
+from l5r.api import __api
+from l5r.util import log
 
 
 def get_trait_cost(trait_nm):
     """return the base multiplier to purchase the given trait"""
     if not __api.pc:
         return 0
-    trait_id = models.chmodel.attrib_from_name(trait_nm)
+    trait_id = chmodel.attrib_from_name(trait_nm)
     return __api.pc.get_attrib_cost(trait_id)
 
 
@@ -500,7 +500,7 @@ def get_health_rank_mod():
 def get_max_wounds():
     """return total health"""
     max_ = 0
-    for i in xrange(0, 8):
+    for i in range(0, 8):
         max_ += get_health_rank(i)
     return max_
 
@@ -521,9 +521,13 @@ def get_wounds_table():
         Return a list with 8 elements, each element containing thrree values for wounds: the increments, the total
         and the stacked value.
     """
+
+    if not __api.pc:
+        return
+
     tot_wounds = __api.pc.wounds
     cur_wounds = tot_wounds
-    increments = [get_health_rank(i) for i in xrange(0, 8)]
+    increments = [get_health_rank(i) for i in range(0, 8)]
     total = sum(increments)
 
     result = []

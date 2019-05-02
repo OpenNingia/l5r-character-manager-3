@@ -11,6 +11,7 @@
 		  dialogs/katadlg.py \
 		  dialogs/kihodlg.py \
 		  dialogs/npcexport.py \
+		  dialogs/settings.py \
 		  widgets/cost_selection.py \
 		  widgets/moneywidget.py \
 		  widgets/spell_item_selection.py \

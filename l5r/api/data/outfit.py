@@ -16,9 +16,12 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
 
-from api import __api
+from l5r.api import __api
+
+import l5rdal as dal
+import l5rdal.query
+
 from asq.initiators import query
-import dal.query
 
 
 def get_weapons():

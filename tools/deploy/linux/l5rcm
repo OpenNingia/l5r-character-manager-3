@@ -1,2 +1,4 @@
 #!/bin/bash
-python /opt/l5rcm/l5r/main.pyc "$1" "$2" "$3" "$4" "$5"
+source /opt/l5rcm/.venv/bin/activate
+export PYTHONPATH=/opt/l5rcm/:$PYTHONPATH
+python3 /opt/l5rcm/l5r/main.py "$1" "$2" "$3" "$4" "$5"

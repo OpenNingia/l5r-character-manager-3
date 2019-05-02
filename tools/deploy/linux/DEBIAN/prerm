@@ -4,8 +4,8 @@ set -e
 
 # remove mimetypes
 if type xdg-mime > /dev/null; then	
-	xdg-mime uninstall /opt/l5rcm/mime/mime-file-l5r.xml 
-	xdg-mime uninstall /opt/l5rcm/mime/mime-file-l5rcmpack.xml
+	xdg-mime uninstall /opt/l5rcm/mime/mime-file-l5r.xml || true
+	xdg-mime uninstall /opt/l5rcm/mime/mime-file-l5rcmpack.xml || true
 fi
 
 # remove icon resources
@@ -26,5 +26,9 @@ if type xdg-desktop-menu > /dev/null; then
 	xdg-desktop-menu uninstall --novendor /usr/share/applications/l5rcm.desktop || true
 fi	
 
-# delete pyc
-find /opt/l5rcm/ | grep .pyc | xargs rm
+# delete pycache
+find /opt/l5rcm/ | grep __pycache__ | xargs rm -rf
+
+# delete .venv
+rm -rf /opt/l5rcm/.venv
+

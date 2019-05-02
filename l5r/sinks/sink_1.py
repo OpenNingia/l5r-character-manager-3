@@ -15,18 +15,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
-import dialogs
-import models
+import l5r.dialogs as dialogs
+import l5r.models as models
 import os
 
-from util import log, osutil, names
+from l5r.util import log, osutil, names
+from l5r.util.settings import L5RCMSettings
 
-import api.character
-import api.character.books
+import l5r.api as api
+import l5r.api.character
+import l5r.api.character.books
 
-from l5rcmcore import get_app_file, DB_VERSION, get_icon_path
+from l5r.l5rcmcore import get_app_file, DB_VERSION, get_icon_path
 
 
 class Sink1(QtCore.QObject):
@@ -59,16 +61,17 @@ class Sink1(QtCore.QObject):
 
     def save_character(self):
         form = self.form
-        if form.save_path == '' or not os.path.exists(form.save_path):
+        if not form.save_path or not os.path.exists(form.save_path):
             form.save_path = form.select_save_path()
 
-        if form.save_path is not None and len(form.save_path) > 0:
+        if form.save_path:
             form.pc.version = DB_VERSION
             form.pc.extra_notes = form.tx_pc_notes.get_content()
 
             # set book dependencies
             api.character.books.set_dependencies()
 
+            log.app.info("saving character file: %s", form.save_path)
             form.pc.save_to(form.save_path)
 
     def export_character_as_text(self):
@@ -128,7 +131,7 @@ class Sink1(QtCore.QObject):
         form.update_from_model()
 
     def generate_name(self):
-        '''generate a random name for the character'''
+        """generate a random name for the character"""
         form = self.form
 
         gender = self.sender().property('gender')
@@ -149,14 +152,14 @@ class Sink1(QtCore.QObject):
         form = self.form
 
         dlg = dialogs.ChooseItemDialog(form.pc, 'armor', form)
-        if dlg.exec_() == QtGui.QDialog.Accepted:
+        if dlg.exec_() == QtWidgets.QDialog.Accepted:
             form.update_from_model()
 
     def show_wear_cust_armor(self):
         form = self.form
 
         dlg = dialogs.CustomArmorDialog(form.pc, form)
-        if dlg.exec_() == QtGui.QDialog.Accepted:
+        if dlg.exec_() == QtWidgets.QDialog.Accepted:
             form.update_from_model()
 
     def show_add_misc_item(self):
@@ -166,7 +169,7 @@ class Sink1(QtCore.QObject):
         form = self.form
 
         ok = False
-        val, ok = QtGui.QInputDialog.getInt(form, 'Set Experience Limit',
+        val, ok = QtWidgets.QInputDialog.getInt(form, 'Set Experience Limit',
                                             "XP Limit:", form.pc.exp_limit,
                                             0, 10000, 1)
         if ok:
@@ -176,7 +179,7 @@ class Sink1(QtCore.QObject):
         form = self.form
 
         ok = False
-        val, ok = QtGui.QInputDialog.getInt(form, 'Set Health Multiplier',
+        val, ok = QtWidgets.QInputDialog.getInt(form, 'Set Health Multiplier',
                                             "Multiplier:", form.pc.health_multiplier,
                                             2, 5, 1)
         if ok:
@@ -186,7 +189,7 @@ class Sink1(QtCore.QObject):
         form = self.form
 
         ok = False
-        val, ok = QtGui.QInputDialog.getInt(form, 'Cure/Inflict Damage',
+        val, ok = QtWidgets.QInputDialog.getInt(form, 'Cure/Inflict Damage',
                                             "Wounds:", 1,
                                             -1000, 1000, 1)
         if ok:
@@ -194,12 +197,12 @@ class Sink1(QtCore.QObject):
 
     def warn_about_refund(self):
         form = self.form
-        settings = QtCore.QSettings()
+        settings = L5RCMSettings()
 
-        if settings.value('warn_about_refund', 'true') == 'false':
+        if not settings.app.warn_about_refund:
             return True
 
-        msgBox = QtGui.QMessageBox(form)
+        msgBox = QtWidgets.QMessageBox(form)
         msgBox.setWindowTitle('L5R: CM')
         msgBox.setText(self.tr("Advancements refund."))
         msgBox.setInformativeText(self.tr(
@@ -207,18 +210,18 @@ class Sink1(QtCore.QObject):
             "removing it might lean to incoherences in your character.\n"
             "Continue anyway?"))
 
-        do_not_prompt_again = QtGui.QCheckBox(
+        do_not_prompt_again = QtWidgets.QCheckBox(
             self.tr("Do not prompt again"), msgBox)
         # PREVENT MSGBOX TO CLOSE ON CLICK
         do_not_prompt_again.blockSignals(True)
-        msgBox.addButton(QtGui.QMessageBox.Yes)
-        msgBox.addButton(QtGui.QMessageBox.No)
-        msgBox.addButton(do_not_prompt_again, QtGui.QMessageBox.ActionRole)
-        msgBox.setDefaultButton(QtGui.QMessageBox.No)
+        msgBox.addButton(QtWidgets.QMessageBox.Yes)
+        msgBox.addButton(QtWidgets.QMessageBox.No)
+        msgBox.addButton(do_not_prompt_again, QtWidgets.QMessageBox.ActionRole)
+        msgBox.setDefaultButton(QtWidgets.QMessageBox.No)
         result = msgBox.exec_()
         if do_not_prompt_again.checkState() == QtCore.Qt.Checked:
-            settings.setValue('warn_about_refund', 'false')
-        if result == QtGui.QMessageBox.Yes:
+            settings.app.warn_about_refund = False
+        if result == QtWidgets.QMessageBox.Yes:
             return True
         return False
 
@@ -245,24 +248,22 @@ class Sink1(QtCore.QObject):
 
     # OPTIONS
     def on_toggle_buy_for_free(self, flag):
-        models.Advancement.set_buy_for_free(flag)
+        l5r.models.Advancement.set_buy_for_free(flag)
 
     def on_toggle_display_banner(self):
+        settings = L5RCMSettings()
+        settings.ui.banner_enabled = not settings.ui.banner_enabled
+
+        self.set_banner_visibility(settings.ui.banner_enabled)
+
+
+    def set_banner_visibility(self, value):
         form = self.form
-
-        settings = QtCore.QSettings()
-        lIsBannerEnabled = settings.value('isbannerenabled')
-
-        if(lIsBannerEnabled == 1):
-            lIsBannerEnabled = 0
-        else:
-            lIsBannerEnabled = 1
-        settings.setValue('isbannerenabled', lIsBannerEnabled)
-
+        
         for i in range(0, form.mvbox.count()):
             logo = form.mvbox.itemAt(i).widget()
-            if (logo.objectName() == 'BANNER'):
-                if(lIsBannerEnabled == 1):
+            if logo.objectName() == 'BANNER':
+                if value:
                     logo.show()
                 else:
                     logo.hide()
@@ -270,69 +271,29 @@ class Sink1(QtCore.QObject):
                     form.widgets.resize(1, 1)
                     form.widgets.setGeometry(QtCore.QRect(0, 0, 727, 573))
                 break
-        # form.widgets.adjustSize()
 
     def open_image_dialog(self):
         supported_ext = ['.png']
         supported_filters = [self.tr("PNG Images (*.png)")]
 
-        settings = QtCore.QSettings()
-        last_data_dir = settings.value(
-            'last_open_image_dir', QtCore.QDir.homePath())
-        fileName = QtGui.QFileDialog.getOpenFileName(
+        settings = L5RCMSettings()
+        last_data_dir = settings.app.last_open_image_dir
+
+        fileName = QtWidgets.QFileDialog.getOpenFileName(
             self.form,
             self.tr("Open image"),
             last_data_dir,
             ";;".join(supported_filters))
-        if len(fileName) != 2:
+
+        if not fileName:
             return None
 
-        last_data_dir = os.path.dirname(fileName[0])
-        if last_data_dir != '':
-            settings.setValue('last_open_image_dir', last_data_dir)
-        return fileName[0]
+        if type(fileName) is tuple:
+            fileName = fileName[0]
 
-    def open_color_dialog(self):
-        form = self.form
-        settings = QtCore.QSettings()
-        lBackgroundColor = settings.value('backgroundcolor')
-        color = QtGui.QColor()
-
-        if(lBackgroundColor is not None):
-            color = QtGui.QColor(lBackgroundColor)
-
-        if(not color.isValid()):
-            color = QtGui.QColor('#000000')
-
-        color = QtGui.QColorDialog.getColor(color, form)
-        return color
-
-    def on_set_background_color(self):
-        form = self.form
-        color = self.open_color_dialog()
-        if not color:
-            return
-
-        if color.isValid():
-            form.view.setStyleSheet("background-color:%s;" % color.name())
-            settings = QtCore.QSettings()
-            settings.setValue('backgroundcolor', color.name())
-
-    def on_set_background(self):
-        file = self.open_image_dialog()
-        if not file:
-            return
-
-        settings = QtCore.QSettings()
-        settings.setValue('background_image', file)
-
-        self.form.update_background_image()
-
-    def on_rem_background(self):
-        form = self.form
-        settings = QtCore.QSettings()
-        settings.setValue('background_image', '')
-        form.view.set_wallpaper(None)
+        if fileName:
+            settings.app.last_open_image_dir = os.path.dirname(fileName)
+        return fileName
 
     def open_data_dir_act(self):
         path = os.path.normpath(osutil.get_user_data_path())

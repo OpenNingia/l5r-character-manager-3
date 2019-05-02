@@ -16,19 +16,19 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import os
-import dal
 import re
+
+import l5rdal as dal
 
 ORG = 'openningia'
 APP = 'l5rcm'
 
-
-def get_user_data_path(rel_path = None):
+def get_user_data_path(rel_path=None):
     user_data = '.'
-    if os.name == 'posix': # Linux is ok but Macosx ???
+    if os.name == 'posix':  # Linux is ok but Macosx ???
         user_data = '%s/.config' % (os.environ['HOME'])
     elif os.name == 'nt':
-        user_data = os.environ['APPDATA'].decode('latin-1')
+        user_data = os.environ['APPDATA']
     if rel_path:
         return os.path.join(user_data, ORG, APP, rel_path)
     return os.path.join(user_data, ORG, APP)
@@ -36,6 +36,10 @@ def get_user_data_path(rel_path = None):
 
 def set_translation_context(obj):
     __api.translation_provider = obj
+
+
+def cmp(a, b):
+    return (a > b) - (a < b)
 
 
 def ver_cmp(version1, version2):
@@ -70,7 +74,7 @@ class L5RCMAPI(object):
     translation_provider = None
 
     def __init__(self, app=None):
-        '''initialize api'''
+        """initialize api"""
 
         # load data
         # self.reload()

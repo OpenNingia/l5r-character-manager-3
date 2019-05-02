@@ -15,16 +15,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import models
+import l5r.models as models
+import l5r.api as api
 
-import api.data
-import api.data.skills
-import api.data.clans
-import api.data.families
-import api.data.schools
-import api.rules
-import api.character
-from fdfexporter import FDFExporter, zigzag
+import l5r.api.data
+import l5r.api.data.skills
+import l5r.api.data.clans
+import l5r.api.data.families
+import l5r.api.data.schools
+import l5r.api.rules
+import l5r.api.character
+from l5r.exporters.fdfexporter import FDFExporter, zigzag
 
 
 class FDFExporterTwoNPC(FDFExporter):
@@ -34,7 +35,6 @@ class FDFExporterTwoNPC(FDFExporter):
         self.pcs = pcs
 
     def export_body(self, io):
-        f = self.form
 
         fields = {}
 
@@ -42,7 +42,7 @@ class FDFExporterTwoNPC(FDFExporter):
             self.export_npc(i + 1, pc, fields)
 
         # EXPORT FIELDS
-        for k in fields.iterkeys():
+        for k in fields:
             self.export_field(k, fields[k], io)
 
     def get_skills_sorted(self, pc, key):
@@ -145,7 +145,7 @@ class FDFExporterTwoNPC(FDFExporter):
             _af("Attack", atk_roll, j)
             dmg_roll = api.rules.format_rtk_t(
                 api.rules.calculate_mod_damage_roll(pc, weapon))
-            _af("Damage", atk_roll, j)
+            _af("Damage", dmg_roll, j)
             _af("Notes", weapon.desc, j)
 
         # OTHER TRAITS

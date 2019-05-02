@@ -14,16 +14,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 # ASQ ( data query )
 from asq.initiators import query
 from asq.selectors import a_
 
 # L5RCM DATA
-import api.data
-import api.data.families
-import api.data.clans
+import l5r.api as api
+import l5r.api.data
+import l5r.api.data.families
+import l5r.api.data.clans
 
 
 def green(text):
@@ -34,7 +35,7 @@ def red(text):
     return u'<span style="color: #A00">{}</span>'.format(text)
 
 
-class FamilyChooserDialog(QtGui.QDialog):
+class FamilyChooserDialog(QtWidgets.QDialog):
 
     def __init__(self, parent=None):
         super(FamilyChooserDialog, self).__init__(parent)
@@ -44,21 +45,21 @@ class FamilyChooserDialog(QtGui.QDialog):
         self.setup()
 
     def build_ui(self):
-        self.vbox_lo = QtGui.QVBoxLayout(self)
-        self.bt_ok = QtGui.QPushButton(self.tr('Ok'), self)
-        self.bt_cancel = QtGui.QPushButton(self.tr('Cancel'), self)
+        self.vbox_lo = QtWidgets.QVBoxLayout(self)
+        self.bt_ok = QtWidgets.QPushButton(self.tr('Ok'), self)
+        self.bt_cancel = QtWidgets.QPushButton(self.tr('Cancel'), self)
 
-        self.header = QtGui.QLabel(self)
+        self.header = QtWidgets.QLabel(self)
 
         # bottom bar
-        bottom_bar = QtGui.QFrame(self)
-        hbox = QtGui.QHBoxLayout(bottom_bar)
+        bottom_bar = QtWidgets.QFrame(self)
+        hbox = QtWidgets.QHBoxLayout(bottom_bar)
         hbox.addStretch()
         hbox.addWidget(self.bt_ok)
         hbox.addWidget(self.bt_cancel)
 
-        fr_central = QtGui.QFrame(self)
-        vb = QtGui.QVBoxLayout(fr_central)
+        fr_central = QtWidgets.QFrame(self)
+        vb = QtWidgets.QVBoxLayout(fr_central)
         vb.setContentsMargins(40, 20, 40, 20)
         vb.addWidget(self.widget)
 
@@ -81,12 +82,12 @@ class FamilyChooserDialog(QtGui.QDialog):
         self.header.setText(self.get_h1_text())
 
     def get_h1_text(self):
-        return self.tr('''
+        return self.tr("""
 <center>
 <h1>Select Clan and Family</h1>
 <p style="color: #666">a Samurai should serve its clan first and foremost</p>
 </center>
-        ''')
+        """)
 
     def accept(self):
 
@@ -94,15 +95,15 @@ class FamilyChooserDialog(QtGui.QDialog):
         super(FamilyChooserDialog, self).accept()
 
 
-class FamilyChooserWidget(QtGui.QWidget):
+class FamilyChooserWidget(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super(FamilyChooserWidget, self).__init__(parent)
 
-        self.cb_clan = QtGui.QComboBox(self)
-        self.cb_family = QtGui.QComboBox(self)
-        self.lb_trait = QtGui.QLabel(self)
-        self.lb_book = QtGui.QLabel(self)
-        self.lb_desc = QtGui.QLabel(self)
+        self.cb_clan = QtWidgets.QComboBox(self)
+        self.cb_family = QtWidgets.QComboBox(self)
+        self.lb_trait = QtWidgets.QLabel(self)
+        self.lb_book = QtWidgets.QLabel(self)
+        self.lb_desc = QtWidgets.QLabel(self)
 
         self.current_clan_id = None
         self.current_family_id = None
@@ -118,11 +119,11 @@ class FamilyChooserWidget(QtGui.QWidget):
         #
         # Bonus: ______
         #
-        form = QtGui.QFormLayout(self)
+        form = QtWidgets.QFormLayout(self)
         form.addRow(self.tr("Clan:"), self.cb_clan)
         form.addRow(self.tr("Family:"), self.cb_family)
         form.addRow(self.lb_book, self.lb_desc)
-        form.addRow("<hr/>", QtGui.QWidget(self))  # empty row
+        form.addRow("<hr/>", QtWidgets.QWidget(self))  # empty row
         form.addRow(self.tr("Bonus:"), self.lb_trait)
 
         self.cb_clan.currentIndexChanged.connect(self.on_clan_changed)
@@ -145,9 +146,9 @@ class FamilyChooserWidget(QtGui.QWidget):
         if not self.current_clan_id:
             self.load_clans()
 
-    def apply_to_creation(self):
-        api.character.creation.set_clan(self.current_clan_id)
-        api.character.creation.set_family(self.current_family_id)
+#    def apply_to_creation(self):
+#        api.character.creation.set_clan(self.current_clan_id)
+#        api.character.creation.set_family(self.current_family_id)
 
     def apply_to_model(self):
         # api.character.set_clan(self.current_clan_id)
@@ -243,12 +244,12 @@ class FamilyChooserWidget(QtGui.QWidget):
 
 def main():
     import sys
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
 
-    dlg = QtGui.QDialog()
+    dlg = QtWidgets.QDialog()
     fam = FamilyChooserWidget(dlg)
     fam.selected_family = 'scorpion_bayushi'
-    vbox = QtGui.QVBoxLayout(dlg)
+    vbox = QtWidgets.QVBoxLayout(dlg)
     vbox.addWidget(fam)
     dlg.exec_()
 

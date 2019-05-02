@@ -15,13 +15,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import api.data.powers
-import api.character.powers
+import l5r.api as api
+import l5r.api.data.powers
+import l5r.api.character.powers
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class KihoDialog(QtGui.QDialog):
+class KihoDialog(QtWidgets.QDialog):
 
     # title bar
     header = None
@@ -48,26 +49,26 @@ class KihoDialog(QtGui.QDialog):
         self.setup()
 
     def build_ui(self):
-        self.vbox_lo = QtGui.QVBoxLayout(self)
-        self.bt_ok = QtGui.QPushButton(self.tr('Buy'), self)
-        self.header = QtGui.QLabel(self)
-        center_fr = QtGui.QFrame(self)
-        center_fr.setFrameStyle(QtGui.QFrame.Sunken)
-        cfr_fbox = QtGui.QFormLayout(center_fr)
+        self.vbox_lo = QtWidgets.QVBoxLayout(self)
+        self.bt_ok = QtWidgets.QPushButton(self.tr('Buy'), self)
+        self.header = QtWidgets.QLabel(self)
+        center_fr = QtWidgets.QFrame(self)
+        center_fr.setFrameStyle(QtWidgets.QFrame.Sunken)
+        cfr_fbox = QtWidgets.QFormLayout(center_fr)
 
         # bottom bar
-        bottom_bar = QtGui.QFrame(self)
-        hbox = QtGui.QHBoxLayout(bottom_bar)
+        bottom_bar = QtWidgets.QFrame(self)
+        hbox = QtWidgets.QHBoxLayout(bottom_bar)
         hbox.addStretch()
         hbox.addWidget(self.bt_ok)
 
-        self.cb_kiho = QtGui.QComboBox(self)
-        self.tx_element = QtGui.QLabel(self)
-        self.tx_mastery = QtGui.QLabel(self)
-        self.tx_cost = QtGui.QLabel(self)
-        self.tx_pc_status = QtGui.QLabel(self)
-        self.tx_eligibility = QtGui.QLabel(self)
-        self.tx_detail = QtGui.QTextEdit(self)
+        self.cb_kiho = QtWidgets.QComboBox(self)
+        self.tx_element = QtWidgets.QLabel(self)
+        self.tx_mastery = QtWidgets.QLabel(self)
+        self.tx_cost = QtWidgets.QLabel(self)
+        self.tx_pc_status = QtWidgets.QLabel(self)
+        self.tx_eligibility = QtWidgets.QLabel(self)
+        self.tx_detail = QtWidgets.QTextEdit(self)
         self.tx_detail.setReadOnly(True)
 
         cfr_fbox.addRow(self.tr("Kiho"), self.cb_kiho)
@@ -92,12 +93,12 @@ class KihoDialog(QtGui.QDialog):
         self.cb_kiho.currentIndexChanged.connect(self.on_kiho_change)
 
     def setup(self):
-        self.set_header_text(self.tr('''
+        self.set_header_text(self.tr("""
         <center>
         <h1>Buy a kiho</h1>
         <p style="color: #666">Only certain classes are able to learn Kiho and at a different XP cost</p>
         </center>
-        '''))
+        """))
 
         self.setWindowTitle(self.tr("L5RCM: Kiho"))
         self.load_kiho()
@@ -180,7 +181,7 @@ class KihoDialog(QtGui.QDialog):
         super(KihoDialog, self).accept()
 
 
-class TattooDialog(QtGui.QDialog):
+class TattooDialog(QtWidgets.QDialog):
 
     # title bar
     header = None
@@ -203,22 +204,22 @@ class TattooDialog(QtGui.QDialog):
         self.setup()
 
     def build_ui(self):
-        self.vbox_lo = QtGui.QVBoxLayout(self)
-        self.bt_ok = QtGui.QPushButton(self.tr('Buy'), self)
-        self.header = QtGui.QLabel(self)
-        center_fr = QtGui.QFrame(self)
-        center_fr.setFrameStyle(QtGui.QFrame.Sunken)
-        cfr_fbox = QtGui.QFormLayout(center_fr)
+        self.vbox_lo = QtWidgets.QVBoxLayout(self)
+        self.bt_ok = QtWidgets.QPushButton(self.tr('Buy'), self)
+        self.header = QtWidgets.QLabel(self)
+        center_fr = QtWidgets.QFrame(self)
+        center_fr.setFrameStyle(QtWidgets.QFrame.Sunken)
+        cfr_fbox = QtWidgets.QFormLayout(center_fr)
 
         # bottom bar
-        bottom_bar = QtGui.QFrame(self)
-        hbox = QtGui.QHBoxLayout(bottom_bar)
+        bottom_bar = QtWidgets.QFrame(self)
+        hbox = QtWidgets.QHBoxLayout(bottom_bar)
         hbox.addStretch()
         hbox.addWidget(self.bt_ok)
 
-        self.cb_tattoo = QtGui.QComboBox(self)
-        self.tx_pc_status = QtGui.QLabel(self)
-        self.tx_detail = QtGui.QLabel(self)
+        self.cb_tattoo = QtWidgets.QComboBox(self)
+        self.tx_pc_status = QtWidgets.QLabel(self)
+        self.tx_detail = QtWidgets.QLabel(self)
         self.tx_detail.setWordWrap(True)
 
         cfr_fbox.addRow(self.tr("Tattoo"), self.cb_tattoo)
@@ -238,12 +239,12 @@ class TattooDialog(QtGui.QDialog):
         self.cb_tattoo.currentIndexChanged.connect(self.on_tattoo_change)
 
     def setup(self):
-        self.set_header_text(self.tr('''
+        self.set_header_text(self.tr("""
         <center>
         <h1>Acquire a Tattoo</h1>
         <p style="color: #666">Only members of the Togashi Order can acquire tattoos</p>
         </center>
-        '''))
+        """))
 
         self.setWindowTitle(self.tr("L5RCM: Tattoo"))
         self.load_kiho()

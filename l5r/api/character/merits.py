@@ -17,13 +17,13 @@
 __author__ = 'Daniele'
 
 # for rank advancement models
-import models
+import l5r.api as api
+import l5r.api.data.merits
 
-from api import __api
+from l5r.models import PerkAdv
+from l5r.api import __api
 from asq.initiators import query
 from asq.selectors import a_
-
-import api.data.merits
 
 
 def get_all():
@@ -63,9 +63,9 @@ def add(merit_id, rank=None):
 
     cost_ = api.data.merits.get_rank_cost(merit_id, rank)
 
-    adv_ = models.PerkAdv(merit_id, merit_rank_.id, cost_, "merit")
+    adv_ = PerkAdv(merit_id, merit_rank_.id, cost_, "merit")
     adv_.rule = merit_id
-    adv_.desc = unicode.format(__api.tr("{0} Rank {1}, XP Cost: {2}"),
+    adv_.desc = __api.tr("{0} Rank {1}, XP Cost: {2}").format(
                                merit_.name, merit_rank_.id, cost_)
 
     return api.character.purchase_advancement(adv_)
@@ -90,9 +90,9 @@ def add_starting(merit_id, rank=None):
         return False
 
     cost_ = 0
-    adv_ = models.PerkAdv(merit_id, merit_rank_.id, cost_, "merit")
+    adv_ = PerkAdv(merit_id, merit_rank_.id, cost_, "merit")
     adv_.rule = merit_id
-    adv_.desc = unicode.format(__api.tr("{0} Rank {1}, XP Cost: {2}"),
+    adv_.desc = __api.tr("{0} Rank {1}, XP Cost: {2}").format(
                                merit_.name, merit_rank_.id, cost_)
 
     first_rank_.merits.append(adv_)

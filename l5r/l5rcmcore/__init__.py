@@ -15,28 +15,31 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys
-import os
 import shutil
 from tempfile import mkstemp
 import subprocess
 
-from PyQt4 import QtCore, QtGui
+import l5r.models as models
+import l5r.exporters as exporters
 
-import models
-import exporters
-import dal
-import dal.dataimport
+import l5rdal as dal
+import l5rdal.dataimport
 
-from util import log, osutil
-import api.data
-from api.data import CMErrors
-from qtsignalsutils import *
+from l5r.util import log, osutil
+from l5r.util.fsutil import *
+import l5r.api as api
+import l5r.api.data
+import l5r.api.data.families
+import l5r.api.character
+import l5r.api.rules
+from l5r.api.data import CMErrors
+from l5r.l5rcmcore.qtsignalsutils import *
+from l5r.util.settings import L5RCMSettings
 
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
-APP_VERSION = '3.10.0'
-DB_VERSION = '3.10'
+APP_VERSION = '3.11.0'
+DB_VERSION = '3.11'
 APP_ORG = 'openningia'
 
 PROJECT_PAGE_LINK = 'https://github.com/OpenNingia/l5r-character-manager-3'
@@ -50,67 +53,8 @@ PROJECT_DOWNLOADS_LINK = 'https://sourceforge.net/projects/l5rcm/'
 L5RCM_GPLUS_PAGE = "https://plus.google.com/114911686277310621574"
 L5RCM_GPLUS_COMM = "https://plus.google.com/communities/107752342280671357654"
 
-HERE = os.path.abspath(os.path.dirname(__file__))
 
-if hasattr(sys, "frozen"):
-    HERE = os.path.dirname(HERE)
-
-MY_CWD = os.getcwd()
-
-if not os.path.exists(os.path.join(MY_CWD, 'share/l5rcm')):
-    MY_CWD = HERE
-    if not os.path.exists(os.path.join(MY_CWD, 'share/l5rcm')):
-        MY_CWD = os.path.dirname(HERE)
-
-log.app.info(u"l5rcm base dir: %s", MY_CWD)
-
-
-def get_app_file(rel_path):
-    if os.name == 'nt':
-        return os.path.join(MY_CWD, 'share/l5rcm', rel_path)
-    else:
-        sys_path = '/usr/share/l5rcm'
-        if os.path.exists(sys_path):
-            return os.path.join(sys_path, rel_path)
-        return os.path.join(MY_CWD, 'share/l5rcm', rel_path)
-
-
-def get_app_icon_path(size=(48, 48)):
-    size_str = '%dx%d' % size
-    if os.name == 'nt':
-        return os.path.join(MY_CWD, 'share/icons/l5rcm/%s' % size_str, APP_NAME + '.png')
-    else:
-        sys_path = '/usr/share/icons/l5rcm/%s' % size_str
-        if os.path.exists(sys_path):
-            return os.path.join(sys_path, APP_NAME + '.png')
-        return os.path.join(MY_CWD, 'share/icons/l5rcm/%s' % size_str, APP_NAME + '.png')
-
-
-def get_tab_icon(name):
-    if os.name == 'nt':
-        return os.path.join(MY_CWD, 'share/icons/l5rcm/tabs/', name + '.png')
-    else:
-        sys_path = '/usr/share/icons/l5rcm/tabs/'
-        if os.path.exists(sys_path):
-            return os.path.join(sys_path, name + '.png')
-        return os.path.join(MY_CWD, 'share/icons/l5rcm/tabs/', name + '.png')
-
-
-def get_icon_path(name, size=(48, 48)):
-    base = "share/icons/l5rcm/"
-    if size is not None:
-        base += '%dx%d' % size
-
-    if os.name == 'nt':
-        return os.path.join(MY_CWD, base, name + '.png')
-    else:
-        sys_path = '/usr/' + base
-        if os.path.exists(sys_path):
-            return os.path.join(sys_path, name + '.png')
-        return os.path.join(MY_CWD, base, name + '.png')
-
-
-class L5RCMCore(QtGui.QMainWindow):
+class L5RCMCore(QtWidgets.QMainWindow):
     dstore = None
 
     def __init__(self, locale, parent=None):
@@ -131,12 +75,10 @@ class L5RCMCore(QtGui.QMainWindow):
         self.reload_data()
 
     def reload_data(self):
-        settings = QtCore.QSettings()
-
-        # self.data_pack_blacklist = settings.value('data_pack_blacklist', [])
+        settings = L5RCMSettings()
 
         api.data.set_locale(self.locale)
-        api.data.set_blacklist(settings.value('data_pack_blacklist', []))
+        api.data.set_blacklist(settings.app.data_pack_blacklist)
         api.data.reload()
 
         # assign Data storage reference, for backward compatibility
@@ -153,14 +95,15 @@ class L5RCMCore(QtGui.QMainWindow):
         pass
 
     def export_as_text(self, export_file):
-        exporter = exporters.TextExporter()
-        exporter.set_form(self)
-        exporter.set_model(self.pc)
+        pass
+        #exporter = exporters.TextExporter()
+        #exporter.set_form(self)
+        #exporter.set_model(self.pc)
 
-        f = open(export_file, 'wt')
-        if f is not None:
-            exporter.export(f)
-        f.close()
+        #f = open(export_file, 'wt')
+        #if f is not None:
+        #    exporter.export(f)
+        #f.close()
 
     def create_fdf(self, exporter):
 
@@ -185,13 +128,19 @@ class L5RCMCore(QtGui.QMainWindow):
         # call pdftk
         args_ = [self.get_pdftk(), source_pdf, 'fill_form',
                  fdf_file, 'output', target_pdf, 'flatten']
+
+        log.app.debug('call %s', args_)
+
         subprocess.call(args_)
         self.try_remove(fdf_file)
-        print('created pdf {0}'.format(target_pdf))
+
+        log.app.info('created pdf %s', target_pdf)
 
     def merge_pdf(self, input_files, output_file):
         # call pdftk
         args_ = [self.get_pdftk()] + input_files + ['output', output_file]
+
+        log.app.debug('call %s', args_)
         subprocess.call(args_)
         for f in input_files:
             self.try_remove(f)
@@ -199,7 +148,7 @@ class L5RCMCore(QtGui.QMainWindow):
     def get_pdftk(self):
         if sys.platform == 'win32':
             return os.path.join(MY_CWD, 'tools', 'pdftk.exe')
-        elif sys.platform == 'linux2':
+        elif sys.platform == 'linux' or sys.platform == 'linux2':
             sys_path = '/usr/bin/pdftk'
             loc_path = os.path.join(MY_CWD, 'tools', 'pdftk')
             if os.path.exists(sys_path):
@@ -239,7 +188,7 @@ class L5RCMCore(QtGui.QMainWindow):
 
         pcs = []
         for f in npc_files:
-            c = models.AdvancedPcModel()
+            c = l5r.models.AdvancedPcModel()
             if c.load_from(f):
                 pcs.append(c)
 
@@ -284,8 +233,8 @@ class L5RCMCore(QtGui.QMainWindow):
         # we use as many extra spells sheet as needed
 
         if is_shugenja:
-            #spell_count = api.character.spells.get_all()
-            #spell_offset = 0
+            # spell_count = api.character.spells.get_all()
+            # spell_offset = 0
 
             while spell_count > 0:
                 _exporter = exporters.FDFExporterSpells(spell_offset)
@@ -406,11 +355,11 @@ class L5RCMCore(QtGui.QMainWindow):
 
     def update_data_blacklist(self):
 
-        api.data.set_blacklist( [
-            x.id for x in self.dstore.packs if not x.active] )
+        api.data.set_blacklist([
+            x.id for x in self.dstore.packs if not x.active])
 
-        settings = QtCore.QSettings()
-        settings.setValue('data_pack_blacklist', api.data.get_blacklist())
+        settings = L5RCMSettings()
+        settings.app.data_pack_blacklist = api.data.get_blacklist()
 
     def please_donate(self):
         donate_url = QtCore.QUrl(

@@ -15,15 +15,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import models
-import widgets
-import api.rules
-import api.data
-import api.data.skills
-from PyQt4 import QtCore, QtGui
+import l5r.models as models
+import l5r.widgets as widgets
+import l5r.api as api
+import l5r.api.rules
+import l5r.api.data
+import l5r.api.data.skills
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class ModifierDialog(QtGui.QDialog):
+class ModifierDialog(QtWidgets.QDialog):
 
     # title bar
     header = None
@@ -47,23 +48,23 @@ class ModifierDialog(QtGui.QDialog):
         self.setup()
 
     def build_ui(self):
-        self.vbox_lo = QtGui.QVBoxLayout(self)
-        self.bt_ok = QtGui.QPushButton(self.tr('Save'), self)
-        self.header = QtGui.QLabel(self)
-        center_fr = QtGui.QFrame(self)
-        center_fr.setFrameStyle(QtGui.QFrame.Sunken)
-        cfr_fbox = QtGui.QFormLayout(center_fr)
+        self.vbox_lo = QtWidgets.QVBoxLayout(self)
+        self.bt_ok = QtWidgets.QPushButton(self.tr('Save'), self)
+        self.header = QtWidgets.QLabel(self)
+        center_fr = QtWidgets.QFrame(self)
+        center_fr.setFrameStyle(QtWidgets.QFrame.Sunken)
+        cfr_fbox = QtWidgets.QFormLayout(center_fr)
 
         # bottom bar
-        bottom_bar = QtGui.QFrame(self)
-        hbox = QtGui.QHBoxLayout(bottom_bar)
+        bottom_bar = QtWidgets.QFrame(self)
+        hbox = QtWidgets.QHBoxLayout(bottom_bar)
         hbox.addStretch()
         hbox.addWidget(self.bt_ok)
 
-        self.cb_modifier = QtGui.QComboBox(self)
-        self.tx_detail = QtGui.QLineEdit(self)
-        self.tx_value = QtGui.QLineEdit(self)
-        self.tx_reason = QtGui.QLineEdit(self)
+        self.cb_modifier = QtWidgets.QComboBox(self)
+        self.tx_detail = QtWidgets.QLineEdit(self)
+        self.tx_value = QtWidgets.QLineEdit(self)
+        self.tx_reason = QtWidgets.QLineEdit(self)
 
         cfr_fbox.addRow(self.tr("Modifier"), self.cb_modifier)
         cfr_fbox.addRow(self.tr("Detail"), self.tx_detail)
@@ -83,26 +84,26 @@ class ModifierDialog(QtGui.QDialog):
         self.cb_modifier.currentIndexChanged.connect(self.on_modifier_change)
 
     def setup(self):
-        self.set_header_text(self.tr('''
+        self.set_header_text(self.tr("""
         <center>
         <h1>Add or Edit a modifier</h1>
         <p style="color: #666">Modifiers represent the way your character performs better in some contexts</p>
         </center>
-        '''))
+        """))
 
         self.setWindowTitle(self.tr("L5RCM: Modifiers"))
 
-        for i_key, i_value in models.MOD_TYPES.iteritems():
+        for i_key, i_value in models.MOD_TYPES.items():
             if i_key == 'none':
                 continue
             self.cb_modifier.addItem(i_value, i_key)
 
     def set_modifier(self, item):
-        '''
+        """
         :param ModifierModel item:
-        '''
+        """
         if item:
-            for i in xrange(self.cb_modifier.count()):
+            for i in range(self.cb_modifier.count()):
                 key = self.cb_modifier.itemData(i)
                 if key == item.type:
                     self.cb_modifier.setCurrentIndex(i)
@@ -126,8 +127,8 @@ class ModifierDialog(QtGui.QDialog):
             all_skills = []
             for t in api.data.skills.all():
                 all_skills.append(t.name)
-            cmp = QtGui.QCompleter(all_skills)
-            # cmp.setCompletionMode(QtGui.QCompleter.InlineCompletion)
+            cmp = QtWidgets.QCompleter(all_skills)
+            # cmp.setCompletionMode(QtWidgets.QCompleter.InlineCompletion)
             return cmp
 
         def __weap_completer():
@@ -135,20 +136,20 @@ class ModifierDialog(QtGui.QDialog):
             aweaps = []
             for w in pc.get_weapons():
                 aweaps.append(w.name)
-            cmp = QtGui.QCompleter(aweaps)
-            # cmp.setCompletionMode(QtGui.QCompleter.InlineCompletion)
+            cmp = QtWidgets.QCompleter(aweaps)
+            # cmp.setCompletionMode(QtWidgets.QCompleter.InlineCompletion)
             return cmp
 
         def __trait_completer():
             traits = [x.text for x in api.data.model().traits]
-            cmp = QtGui.QCompleter(traits)
-            # cmp.setCompletionMode(QtGui.QCompleter.InlineCompletion)
+            cmp = QtWidgets.QCompleter(traits)
+            # cmp.setCompletionMode(QtWidgets.QCompleter.InlineCompletion)
             return cmp
 
         def __ring_completer():
             rings = [x.text for x in api.data.model().rings]
-            cmp = QtGui.QCompleter(rings)
-            # cmp.setCompletionMode(QtGui.QCompleter.InlineCompletion)
+            cmp = QtWidgets.QCompleter(rings)
+            # cmp.setCompletionMode(QtWidgets.QCompleter.InlineCompletion)
             return cmp
 
         dtl = models.MOD_DTLS[mod] if mod else 'none'

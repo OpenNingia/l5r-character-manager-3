@@ -15,13 +15,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 
-import api.rules
-import api.data
-import api.data.skills
-import api.character.skills
-from util import log
+import l5r.api as api
+import l5r.api.rules
+import l5r.api.data
+import l5r.api.data.skills
+import l5r.api.character.skills
+from l5r.util import log
+from l5r.util.settings import L5RCMSettings
 
 
 class SkillItemModel(object):
@@ -44,12 +46,17 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
 
     def __init__(self, parent=None):
         super(SkillTableViewModel, self).__init__(parent)
+
         self.items = []
-        self.headers = ['Name', 'Rank', 'Trait', 'Base Roll', 'Mod Roll', 'Emphases']
-        self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
-        self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
-                         QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
-        self.item_size = QtCore.QSize(28, 28)
+        self.headers = [
+            self.tr('Name'),
+            self.tr('Rank'),
+            self.tr('Trait'),
+            self.tr('Base Roll'),
+            self.tr('Mod Roll'),
+            self.tr('Emphases')]
+
+        self.settings = L5RCMSettings()
         if parent:
             self.bold_font = parent.font()
             self.bold_font.setBold(True)
@@ -88,11 +95,15 @@ class SkillTableViewModel(QtCore.QAbstractTableModel):
             if item.is_school and self.bold_font:
                 return self.bold_font
         elif role == QtCore.Qt.ForegroundRole:
-            return self.text_color
+            if index.row() % 2:
+                return self.settings.ui.table_row_color_alt_fg
+            return self.settings.ui.table_row_color_fg
         elif role == QtCore.Qt.BackgroundRole:
-            return self.bg_color[index.row() % 2]
+            if index.row() % 2:
+                return self.settings.ui.table_row_color_alt_bg
+            return self.settings.ui.table_row_color_bg
         elif role == QtCore.Qt.SizeHintRole:
-            return self.item_size
+            return self.settings.ui.table_row_size
         elif role == QtCore.Qt.UserRole:
             return item.skill_id
         return None

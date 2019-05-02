@@ -15,9 +15,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 
-import api.data.schools
+import l5r.api as api
+import l5r.api.data.schools
+from l5r.util.settings import L5RCMSettings
 
 
 class TechItemModel(object):
@@ -47,19 +49,32 @@ class TechItemModel(object):
         return self.rank.__hash__()
 
 
-class TechViewModel(QtCore.QAbstractListModel):
+class TechViewModel(QtCore.QAbstractTableModel):
 
     def __init__(self, parent=None):
         super(TechViewModel, self).__init__(parent)
 
         self.items = []
-        self.text_color = QtGui.QBrush(QtGui.QColor(0x15, 0x15, 0x15))
-        self.bg_color = [QtGui.QBrush(QtGui.QColor(0xFF, 0xEB, 0x82)),
-                         QtGui.QBrush(QtGui.QColor(0xEB, 0xFF, 0x82))]
-        self.item_size = QtCore.QSize(32, 32)
+        self.headers = [
+            self.tr('Rank'),
+            self.tr('School'),
+            self.tr('School Rank'),
+            self.tr('Name')]
+
+        self.settings = L5RCMSettings()
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.items)
+
+    def columnCount(self, parent=QtCore.QModelIndex()):
+        return len(self.headers)
+
+    def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
+        if orientation != QtCore.Qt.Horizontal:
+            return None
+        if role == QtCore.Qt.DisplayRole:
+            return self.headers[section]
+        return None
 
     def build_item_model(self, tech_id, rank):
         itm = TechItemModel()
@@ -71,10 +86,6 @@ class TechViewModel(QtCore.QAbstractListModel):
             itm.id = tech_id
             itm.school_name = school_.name
             itm.school_id = school_.id
-
-            #if adjusted_rank == 0:
-            #    itm.rank = str(tech_.rank)
-            #else:
 
             itm.tech_rank = str(tech_.rank)
             itm.rank = str(rank)
@@ -94,15 +105,16 @@ class TechViewModel(QtCore.QAbstractListModel):
     def update_from_model(self, model):
         self.clean()
 
-        #for tech in api.character.schools.get_techs():
+        #for r in api.character.rankadv.get_all():
+        #    tech_ = api.character.schools.get_tech_by_rank(r.rank)
+        #    if tech_:
+        #        self.add_item(tech_, r.rank)
 
-        #for rank in range(1, api.character.insight_rank()+1):
-        for r in api.character.rankadv.get_all():
-            tech_ = api.character.schools.get_tech_by_rank(r.rank)
-            #adjusted_rank = self.adjust_tech_rank(model, tech)
-            ##self.add_item(tech, adjusted_rank)
+        for i in range(1, 10):
+            tech_ = api.character.schools.get_tech_by_rank(i)
             if tech_:
-                self.add_item(tech_, r.rank)
+                self.add_item(tech_, i)
+
         # sort by rank
         self.items.sort()
 
@@ -117,88 +129,26 @@ class TechViewModel(QtCore.QAbstractListModel):
             return None
         item = self.items[index.row()]
         if role == QtCore.Qt.DisplayRole:
-            return item.name
+            if index.column() == 0:
+                return item.rank
+            if index.column() == 1:
+                return item.school_name
+            if index.column() == 2:
+                return item.tech_rank
+            if index.column() == 3:
+                return item.name
         elif role == QtCore.Qt.ForegroundRole:
-            return self.text_color
+            if index.row() % 2:
+                return self.settings.ui.table_row_color_alt_fg
+            return self.settings.ui.table_row_color_fg
         elif role == QtCore.Qt.BackgroundRole:
-            return self.bg_color[index.row() % 2]
+            if index.row() % 2:
+                return self.settings.ui.table_row_color_alt_bg
+            return self.settings.ui.table_row_color_bg
         elif role == QtCore.Qt.SizeHintRole:
-            return self.item_size
+            return self.settings.ui.table_row_size
         elif role == QtCore.Qt.UserRole:
             return item
         return None
 
 
-class TechItemDelegate(QtGui.QStyledItemDelegate):
-
-    def __init__(self, parent=None):
-        super(TechItemDelegate, self).__init__(parent)
-
-    def paint(self, painter, option, index):
-        if not index.isValid():
-            super(TechItemDelegate, self).paint(painter, option, index)
-            return
-
-        item = index.data(QtCore.Qt.UserRole)
-        text_color = index.data(QtCore.Qt.ForegroundRole)
-        bg_color = index.data(QtCore.Qt.BackgroundRole)
-        hg_color = QtGui.QBrush(bg_color)
-        hg_color.setStyle(QtCore.Qt.Dense3Pattern)
-
-        painter.save()
-
-        painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
-
-        # fill the background color
-        if option.state & QtGui.QStyle.State_Selected == QtGui.QStyle.State_Selected:
-            painter.fillRect(option.rect, option.palette.highlight())
-            text_color = option.palette.highlightedText()
-        else:
-            painter.fillRect(option.rect, bg_color)
-
-        grid_pen = QtGui.QPen(QtCore.Qt.lightGray, 1)
-        painter.setPen(grid_pen)
-        painter.drawLine(option.rect.bottomLeft(), option.rect.bottomRight())
-
-        main_font = painter.font()
-        sub_font = QtGui.QFont().resolve(main_font)
-        sub_font.setPointSize(7)
-
-        margin = 15
-
-        # paint the airdate with a smaller font over the item name
-        # suppose to have 24 pixels in vertical
-        main_font.setBold(True)
-        painter.setFont(main_font)
-        font_metric = painter.fontMetrics()
-        tech_nm = item.name
-        tech_nm_rect = font_metric.boundingRect(tech_nm)
-        rank = item.rank
-
-        rank_pen = QtGui.QPen(text_color, 2)
-        painter.setPen(rank_pen)
-        rank_rect = QtCore.QRectF(float(option.rect.left() + margin),
-                                  float(option.rect.top() + 5),
-                                  float(option.rect.height() - 10), float(option.rect.height() - 10))
-        painter.drawRect(rank_rect)
-        painter.drawText(rank_rect.adjusted(8, 3.5, 0, 0), rank)
-
-        margin += rank_rect.width() + margin
-
-        text_pen = QtGui.QPen(text_color, 1)
-
-        painter.setPen(text_pen)
-        painter.drawText(margin + option.rect.left(),
-                         option.rect.top() + tech_nm_rect.height(), tech_nm)
-
-        # paint adv type & cost
-        painter.setFont(sub_font)
-        font_metric = painter.fontMetrics()
-        school_nm = item.school_name
-        school_nm_rect = font_metric.boundingRect(school_nm)
-        painter.drawText(margin + option.rect.left(),
-                         option.rect.top() + tech_nm_rect.height() +
-                         school_nm_rect.height(),
-                         school_nm)
-
-        painter.restore()

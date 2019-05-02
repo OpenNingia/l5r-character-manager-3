@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
 
-from models.advances import Advancement
+from l5r.models.advances import Advancement
 
 
 class Rank(Advancement):
@@ -76,8 +76,6 @@ class CustomStartingSkill(object):
     def __init__(self, options, rank=1):
         self.rank = rank
         self.options = options  # ( value, modifier )
-        # self.value    = value
-        #self.modifier = modifier
 
     def to_dict(self):
         out = {'rank': self.rank, 'options': self.options}
@@ -92,9 +90,4 @@ class CustomStartingSpells(object):
         self.count = count
 
     def to_dict(self):
-        out = {}
-        out['element'] = self.element
-        out['tag'] = self.tag
-        out['count'] = self.count
-
-        return out
+        return {'element': self.element, 'tag': self.tag, 'count': self.count}
