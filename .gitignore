@@ -22,10 +22,18 @@ tmp/
 *.egg-info/
 .installed.cfg
 *.egg
+*.bak
+*.deb
+*.tar.gz
 
-# Project packaging
+# Project packaging (Windows)
 tools/deploy/windows/dist
 tools/deploy/windows/common
+
+# Project packaging (Linux)
+tools/deploy/linux/tmp
+tools/deploy/linux/src
+tools/deploy/linux/tmpsrc
 
 # Installer logs
 pip-log.txt
