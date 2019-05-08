@@ -297,7 +297,7 @@ class SettingsWidget(QtWidgets.QWidget):
             ('it_IT', self.tr("Italian")),
             ('es_ES', self.tr("Spanish")),
             ('fr_FR', self.tr("French")),
-            ('pr_BR', self.tr("Portoguese (Brasil)")),
+            ('pt_BR', self.tr("Portoguese (Brasil)")),
             ('ru_RU', self.tr("Russian"))
         ]
 
