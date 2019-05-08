@@ -307,7 +307,7 @@ class SettingsWidget(QtWidgets.QWidget):
 
         QComboBoxSettingsBinder(
             self.cb_select_lang,
-            "use_locale")
+            "user_locale")
 
         self.ck_use_system_lang.toggled.connect(
             lambda x: self.cb_select_lang.setEnabled(not x)

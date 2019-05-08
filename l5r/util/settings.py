@@ -194,7 +194,7 @@ class L5RCMSettings_App(object):
 
     @property
     def user_locale(self):
-        return self._qsettings.value('use_locale', 'en_US')
+        return self._qsettings.value('user_locale', 'en_US')
 
     @property
     def use_system_locale(self):
