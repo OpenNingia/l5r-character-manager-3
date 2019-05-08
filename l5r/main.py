@@ -2502,6 +2502,8 @@ def main():
 
         # Setup translation
         settings = L5RCMSettings()
+        settings.load_defaults()
+        settings.sync()
 
         app_translator = QtCore.QTranslator(app)
         qt_translator = QtCore.QTranslator(app)

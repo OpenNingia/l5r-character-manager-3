@@ -17,6 +17,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QObject, pyqtProperty
+from l5r.util.settings import L5RCMSettings
 import api
 
 class QExampleListModel(QtCore.QAbstractListModel):
@@ -159,10 +160,9 @@ class QPropertySettingsBinder(QtCore.QObject):
         self.converter = data_converter
         self.callback = callback
 
-        self.settings = QtCore.QSettings()
+        signal.connect(self.on_notify)
 
         self.update_property()
-        signal.connect(self.on_notify)
 
     def on_notify(self, *args, **kwargs):
         if self.converter:
@@ -171,14 +171,17 @@ class QPropertySettingsBinder(QtCore.QObject):
             nv = self.parent().property(self.prop)
 
         print("update settings {} = {}".format(self.setting, nv))
-        self.settings.setValue(self.setting, nv)
+        settings = QtCore.QSettings()
+        settings.setValue(self.setting, nv)
         self.update_property()
 
     def update_property(self):
+        settings = QtCore.QSettings()
+
         if self.converter:
-            nv = self.converter.convert_to(self.settings.value(self.setting))
+            nv = self.converter.convert_to(settings.value(self.setting))
         else:
-            nv = self.settings.value(self.setting)
+            nv = settings.value(self.setting)
 
         #if self.parent().property(self.prop) == nv:
         #    return
@@ -195,8 +198,10 @@ class QComboBoxSettingsBinder(QPropertySettingsBinder):
     def __init__(self, parent, setting, data_converter=None, callback=None):
         super(QComboBoxSettingsBinder, self).__init__(parent, parent.activated, 'currentData', setting, data_converter, callback)
 
+        settings = QtCore.QSettings()
+
         # workaround for combobox
-        idx = parent.findData(self.settings.value(setting))
+        idx = parent.findData(settings.value(setting))
         parent.setCurrentIndex(idx)
 
 
@@ -327,7 +332,7 @@ class SettingsWidget(QtWidgets.QWidget):
             self.bt_select_font,
             self.bt_select_font.clicked,
             "text",
-            "ui/user-font",
+            "ui/user_font",
             QFontSelectorDataConverter(self))
 
         self.ck_use_system_font.toggled.connect(
@@ -342,8 +347,8 @@ class SettingsWidget(QtWidgets.QWidget):
         QPropertySettingsBinder(
             self.ck_show_banner,
             self.ck_show_banner.stateChanged,
-            "checked", "isbannerenabled", 
-            callback=lambda x: app.sink1.set_banner_visibility(x == 'true'))
+            "checked", "ui/isbannerenabled",
+            callback=lambda x: app.sink1.set_banner_visibility(x))
 
         # health display
         hmethods = [
@@ -377,35 +382,35 @@ class SettingsWidget(QtWidgets.QWidget):
             self.lv_example_model,
             self.bt_odd_bg.clicked,
             "odd_bg",
-            "ui/table-row-color-bg",
+            "ui/table_row_color_bg",
             QBrushSelectorDataConverter(self))
 
         QPropertySettingsBinder(
             self.lv_example_model,
             self.bt_evn_bg.clicked,
             "evn_bg",
-            "ui/table-row-color-alt-bg",
+            "ui/table_row_color_alt_bg",
             QBrushSelectorDataConverter(self))
 
         QPropertySettingsBinder(
             self.lv_example_model,
             self.bt_odd_fg.clicked,
             "odd_fg",
-            "ui/table-row-color-fg",
+            "ui/table_row_color_fg",
             QBrushSelectorDataConverter(self))
 
         QPropertySettingsBinder(
             self.lv_example_model,
             self.bt_evn_fg.clicked,
             "evn_fg",
-            "ui/table-row-color-alt-fg",
+            "ui/table_row_color_alt_fg",
             QBrushSelectorDataConverter(self))
 
         # pdf sheet
         QPropertySettingsBinder(
             self.ck_skills_on_first_page,
             self.ck_skills_on_first_page.stateChanged,
-            "checked", "pcexport/first-page-skills")
+            "checked", "pcexport/first_page_skills")
 
 
 def test():
