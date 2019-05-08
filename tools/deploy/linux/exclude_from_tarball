@@ -10,7 +10,6 @@
 pylint*
 tests*
 __pycache__
-i18n
 banner.png
 setup.cfg
 go_gpl.py
