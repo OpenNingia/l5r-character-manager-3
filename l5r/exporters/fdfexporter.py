@@ -137,16 +137,16 @@ class FDFExporterAll(FDFExporter):
         fields['STATUS'] = svalue
         fields['TAINT'] = tvalue
 
-        for i in range(1, int(hdots) * 10 + 1):
+        for i in range(1, int(hdots * 10) + 1):
             fields['HONOR_DOT.%d' % i] = True
 
-        for i in range(1, int(gdots) * 10 + 1):
+        for i in range(1, int(gdots * 10) + 1):
             fields['GLORY_DOT.%d' % i] = True
 
-        for i in range(1, int(sdots) * 10 + 1):
+        for i in range(1, int(sdots * 10) + 1):
             fields['STATUS_DOT.%d' % i] = True
 
-        for i in range(1, int(tdots) * 10 + 1):
+        for i in range(1, int(tdots * 10) + 1):
             fields['TAINT_DOT.%d' % i] = True
 
         # INITIATIVE
