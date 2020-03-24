@@ -132,6 +132,7 @@ class L5RCMCore(QtWidgets.QMainWindow):
         log.app.debug('call %s', args_)
 
         subprocess.call(args_)
+                
         self.try_remove(fdf_file)
 
         log.app.info('created pdf %s', target_pdf)
@@ -146,6 +147,11 @@ class L5RCMCore(QtWidgets.QMainWindow):
             self.try_remove(f)
 
     def get_pdftk(self):
+    
+        sys_path = shutil.which('pdftk')
+        if sys_path is not None and os.path.exists(sys_path):
+            return sys_path
+    
         if sys.platform == 'win32':
             return os.path.join(MY_CWD, 'tools', 'pdftk.exe')
         elif sys.platform == 'linux' or sys.platform == 'linux2':
@@ -157,7 +163,7 @@ class L5RCMCore(QtWidgets.QMainWindow):
                 return loc_path
         elif sys.platform == 'darwin':
             return os.path.join(MY_CWD, 'tools', 'pdftk')
-        return None
+        return 'pdftk'
 
     def try_remove(self, fpath):
         try:
