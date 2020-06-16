@@ -445,6 +445,7 @@ class FDFExporterBushi(FDFExporter):
                     break
                 rank = tech.rank - 1 if tech.rank > 0 else 0
                 fields['BUSHI_TECH.%d.%d' % (rank, i)] = tech.name
+                fields['BUSHI_TECH_TEXT.%d.%d' % (rank, i)] = tech.desc
 
         # kata
         katas = api.character.powers.get_all_kata()
