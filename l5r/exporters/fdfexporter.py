@@ -513,14 +513,18 @@ class FDFExporterMonk(FDFExporter):
                 break
             ring = api.data.get_ring(kiho.element)
             fields['KIHO_NM.%d' % (i + 1)] = kiho.name
-            fields['KIHO_MASTERY.%d' % (i + 1)] = str(kiho.mastery)
-            fields['KIHO_ELEM.%d' %
-                   (i + 1)] = ring.text
             fields['KIHO_TYPE.%d' % (i + 1)] = kiho.type
             lines = self.split_in_parts(kiho.desc) or []
             lc = min(6, len(lines))
             for j in range(0, lc):
                 fields['KIHO_EFFECT.%d.%d' % (i + 1, j)] = lines[j]
+            if not kiho.type=="tattoo":
+                fields['KIHO_MASTERY.%d' % (i + 1)] = str(kiho.mastery)
+                fields['KIHO_ELEM.%d' % (i + 1)] = ring.text
+            else:
+                fields['KIHO_MASTERY.%d' % (i + 1)] = ""
+                fields['KIHO_ELEM.%d' % (i + 1)] = ""
+
 
         # EXPORT FIELDS
         for k in fields:
