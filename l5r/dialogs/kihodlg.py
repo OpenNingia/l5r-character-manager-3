@@ -271,9 +271,10 @@ class TattooDialog(QtWidgets.QDialog):
         # save for later
         self.item = kiho
 
-        is_eligible = (api.character.has_tag('dragon_togashi_tattooed_order') or
-                       api.character.has_tag('dragon_ob_hoshi_tsurui_zumi') or
-                       api.character.has_tag('dragon_ob_hitomi_kikage_zumi'))
+        is_eligible = True
+        # is_eligible = (api.character.has_tag('dragon_togashi_tattooed_order') or
+        #                api.character.has_tag('dragon_ob_hoshi_tsurui_zumi') or
+        #                api.character.has_tag('dragon_ob_hitomi_kikage_zumi'))
         if not is_eligible:
             self.tx_pc_status.setText(
                 u"""<span style="color:#A00">{0}</span>""".format(status_ko))
