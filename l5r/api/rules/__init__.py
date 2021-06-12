@@ -207,6 +207,8 @@ def calculate_base_attack_roll(pc, weap):
     attrib = 'agility'
     if weap.skill_nm == 'Kyujutsu':
         attrib = 'reflexes'
+    if weap.trait != '':
+        attrib = weap.trait
 
     trait = api.character.modified_trait_rank(attrib)
     skill = 0

@@ -218,6 +218,8 @@ class L5RCMCore(QtWidgets.QMainWindow):
         is_courtier = api.character.is_courtier()
         spell_offset = 0
         spell_count = len(api.character.spells.get_all())
+        kihos = api.character.powers.get_all_kiho()
+        kiho_count = min(12, len(kihos))
 
         # SHUGENJA/BUSHI/MONK SHEET
         if is_shugenja:
@@ -230,6 +232,9 @@ class L5RCMCore(QtWidgets.QMainWindow):
         if is_courtier:
             self.write_pdf(
                 'sheet_courtier.pdf', exporters.FDFExporterCourtier())
+
+        if kiho_count > 0 and not(is_monk):
+            self.write_pdf('sheet_monk.pdf', exporters.FDFExporterMonk())
 
         # SPELLS
         # we use as many extra spells sheet as needed
@@ -255,8 +260,14 @@ class L5RCMCore(QtWidgets.QMainWindow):
             skill_count -= _exporter.skills_per_page
 
         # WEAPONS
-        if len(self.pc.weapons) > 2:
-            self.write_pdf('sheet_weapons.pdf', exporters.FDFExporterWeapons())
+        weapons_count = len(self.pc.weapons)
+        weapons_offset = 0
+        if weapons_count > 2:
+            while weapons_count > 0:
+                _exporter = exporters.FDFExporterWeapons(weapons_offset)
+                self.write_pdf('sheet_weapons.pdf', _exporter)
+                weapons_offset += _exporter.weapons_per_page
+                weapons_count -= _exporter.weapons_per_page
 
         self.commit_pdf_export(export_file)
 

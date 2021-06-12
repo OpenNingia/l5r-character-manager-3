@@ -57,6 +57,7 @@ class WeaponOutfit(object):
         self.base_dmg = ''
         self.max_dmg = ''
         self.tags = []
+        self.trait = ''
 
 
 def weapon_outfit_from_db(weap_nm, sk_uuid=None):
@@ -80,6 +81,7 @@ def weapon_outfit_from_db(weap_nm, sk_uuid=None):
 
     try:
         itm.skill_nm = api.data.skills.get(weapon.skill).name
+        itm.trait = api.data.skills.get(weapon.skill).trait
     except Exception as ex:
         log.model.error(u"weapon skill not found: %s", weapon.skill)
 
