@@ -216,6 +216,7 @@ class L5RCMCore(QtWidgets.QMainWindow):
         is_shugenja = api.character.is_shugenja()
         is_bushi = api.character.is_bushi()
         is_courtier = api.character.is_courtier()
+        is_ninja = api.character.is_ninja()
         spell_offset = 0
         spell_count = len(api.character.spells.get_all())
         kihos = api.character.powers.get_all_kiho()
@@ -225,7 +226,7 @@ class L5RCMCore(QtWidgets.QMainWindow):
         if is_shugenja:
             self.write_pdf(
                 'sheet_shugenja.pdf', exporters.FDFExporterShugenja())
-        elif is_bushi or is_samurai_monk:
+        elif is_bushi or is_samurai_monk or is_ninja:
             self.write_pdf('sheet_bushi.pdf', exporters.FDFExporterBushi())
         elif is_monk:
             self.write_pdf('sheet_monk.pdf', exporters.FDFExporterMonk())
