@@ -84,14 +84,14 @@ def get_missing_dependencies():
         br = BookReferenceType(id=d['id'], name=d['name'], version=d['version'])
 
         loaded_pack = api.data.pack_by_id(br.id)
-
+        
         if not loaded_pack:
             log.api.warning(u"referenced pack %s is not loaded", br.id)
             yield br
         elif not loaded_pack.active:
             log.api.warning(u"referenced pack %s is not active", br.id)
             yield br
-        elif api.ver_cmp(loaded_pack.version, br.version):
+        elif api.ver_cmp(loaded_pack.version, br.version) < 0:
             log.api.warning(u"referenced pack %s is outdated. referenced %s, loaded %s", br.id, br.version, loaded_pack.version)
             yield br
 
