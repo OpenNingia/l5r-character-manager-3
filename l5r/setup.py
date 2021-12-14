@@ -15,7 +15,8 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 # Always prefer setuptools over distutils
-from setuptools import setup, find_packages
+from distutils.core import setup
+from setuptools import find_packages
 
 # To use a consistent encoding
 from codecs import open
@@ -31,8 +32,7 @@ import glob
 
 here = path.abspath(path.dirname(__file__))
 
-setup(
-    name='l5rcm',
+setup(name='l5rcm',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
