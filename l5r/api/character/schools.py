@@ -156,7 +156,7 @@ def get_tech_by_rank(rank):
     if not school_:
         return None
 
-    return query(school_.techs).where(lambda x: x.rank == rank).select(a_('id')).first_or_default(None)
+    return query(school_.techs).where(lambda x: x.rank == (rank_[0].school_rank)).select(a_('id')).first_or_default(None)
 
 
 def get_school_rank(sid):
