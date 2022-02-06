@@ -41,10 +41,8 @@ from PyQt5.QtCore import QUrl
 
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
-APP_VERSION = '3.13.0'
-APP_VERSION = '3.13.0'
-DB_VERSION = '3.13'
-DB_VERSION = '3.13'
+APP_VERSION = '3.14.0'
+DB_VERSION = '3.14'
 APP_ORG = 'openningia'
 
 PROJECT_PAGE_LINK = 'https://github.com/OpenNingia/l5r-character-manager-3'

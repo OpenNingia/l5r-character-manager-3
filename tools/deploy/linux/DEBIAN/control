@@ -3,14 +3,14 @@ Section: misc
 Priority: optional
 Maintainer: Daniele Simonetti <oppifjellet@gmail.com>
 Build-Depends: debhelper (>= 8.0.0), python (>= 3.6~)
-Standards-Version: 3.13.0
-Standards-Version: 3.13.0
+Standards-Version: 3.14.0
+Standards-Version: 3.14.0
 Homepage: https://l5rcm.wordpress.com/
 Package: l5rcm
 Architecture: all
 Installed-Size: 10000
-Version: 3.13.0-1
-Version: 3.13.0-1
+Version: 3.14.0-1
+Version: 3.14.0-1
 Depends: python3, python3-venv
 Description: L5R 4th Edition Character Manager
  L5R: CM is a Character manager for
