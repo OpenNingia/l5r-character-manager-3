@@ -122,19 +122,22 @@ def remove_advancement(adv):
     log.api.info(u"removed advancement: %s", adv.desc)
     return True
 
+def get_xp_gained_from_flaws():
+    """returns the experience gained from disadvantages"""
+    return sum([-x.cost for x in __api.pc.advans if x.tag == 'flaw'])
 
 def xp():
     """returns the spent experience"""
     if not __api.pc:
         return 0
-    return sum([x.cost for x in __api.pc.advans])
+    return sum([x.cost for x in __api.pc.advans if x.cost > 0])
 
 
 def xp_limit():
     """returns the experience limit"""
     if not __api.pc:
         return 0
-    return __api.pc.exp_limit
+    return __api.pc.exp_limit + get_xp_gained_from_flaws()
 
 
 def xp_left():
