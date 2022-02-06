@@ -1283,41 +1283,7 @@ class L5RMain(L5RCMCore):
         lb_info.setWordWrap(True)
         hbox.addWidget(lb_info)
 
-        def on_contact_link_activate():
-            url = QtCore.QUrl(L5RCM_GPLUS_PAGE)
-            QtGui.QDesktopServices.openUrl(url)
-
-        def on_community_link_activate():
-            url = QtCore.QUrl(L5RCM_GPLUS_COMM)
-            QtGui.QDesktopServices.openUrl(url)
-
-        bt_contact_gplus = QtWidgets.QCommandLinkButton(
-            "Contact me", "but bring good news", self)
-        bt_contact_gplus.setIcon(
-            QtGui.QIcon(get_icon_path('new-g-plus-icon', (16, 16))))
-        # bt_contact_gplus.setFlat(True)
-        bt_contact_gplus.clicked.connect(on_contact_link_activate)
-
-        bt_community_gplus = QtWidgets.QCommandLinkButton(
-            "Join the G+ Community", "for answers and support", self)
-        bt_community_gplus.setIcon(
-            QtGui.QIcon(get_icon_path('new-g-plus-icon', (16, 16))))
-        # bt_community_gplus.setFlat(True)
-        bt_community_gplus.clicked.connect(on_community_link_activate)
-
-        gplus_form = QtWidgets.QVBoxLayout()
-        gplus_form.addWidget(bt_contact_gplus)
-        gplus_form.addWidget(bt_community_gplus)
-
-        gplus_form.setSpacing(6)
-
-        gplus_hbox = QtWidgets.QHBoxLayout()
-        gplus_hbox.setContentsMargins(0, 0, 50, 0)
-        gplus_hbox.addStretch()
-        gplus_hbox.addLayout(gplus_form)
-
         vbox.addLayout(hbox)
-        vbox.addLayout(gplus_hbox)
 
         self.tabs.addTab(mfr, self.tr("About"))
 
