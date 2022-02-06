@@ -36,6 +36,9 @@ from l5r.api.data import CMErrors
 from l5r.l5rcmcore.qtsignalsutils import *
 from l5r.util.settings import L5RCMSettings
 
+from PyQt5.QtGui import QDesktopServices
+from PyQt5.QtCore import QUrl
+
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
 APP_VERSION = '3.13.0'
@@ -263,11 +266,7 @@ class L5RCMCore(QtWidgets.QMainWindow):
         if len(self.pc.weapons) > 2:
             self.write_pdf('sheet_weapons.pdf', exporters.FDFExporterWeapons())
 
-        try:
-            self.commit_pdf_export(export_file)
-        except Exception as e:
-            log.app.error('cannot save pdf sheet', exc_info=1, stack_info=True)
-            self.advise_error(self.tr("Cannot save pdf sheet."))
+        self.commit_pdf_export(export_file)           
 
     def remove_advancement_item(self, adv_itm):
         if api.character.remove_advancement(adv_itm):
@@ -431,3 +430,6 @@ class L5RCMCore(QtWidgets.QMainWindow):
         if family_obj:
             return "{} {}".format(family_obj.name, self.pc.name)
         return self.pc.name
+
+    def open_pdf_file_as_shell(self, filePath):
+        QDesktopServices.openUrl(QUrl("file:///" + filePath, QUrl.TolerantMode))
