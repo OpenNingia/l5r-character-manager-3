@@ -24,7 +24,7 @@ class DataCheck(object):
     d = None
 
     def __init__(self):
-        self.d = dal.Data( ['./data_packs'])
+        self.d = l5rdal.Data( ['./data_packs'])
 
         self.tags =  [ x.id for x in self.d.clans    ]
         self.tags += [ x.id for x in self.d.families ]
