@@ -11,12 +11,12 @@
 		  dialogs/katadlg.py \
 		  dialogs/kihodlg.py \
 		  dialogs/npcexport.py \
-		  dialogs/settings.py \
 		  widgets/cost_selection.py \
 		  widgets/moneywidget.py \
 		  widgets/spell_item_selection.py \
 		  widgets/requirementwidget.py \
 		  widgets/schoolchooser.py \
+		  widgets/settings.py \
 		  sinks/sink_1.py \
 		  sinks/sink_2.py \
 		  sinks/sink_3.py \
@@ -42,6 +42,16 @@
 		  api/data/schools.py \
 		  api/data/skills.py \
 		  api/data/spells.py \
+		  util/settings.py \
+		  models/kihomodel.py \
+		  models/katamodel.py \
+		  models/maviewmodel.py \
+		  models/modifiers.py \
+		  models/outfit.py \
+		  models/perkviewmodel.py \
+		  models/skillmodel.py \
+		  models/spellmodel.py \
+		  models/techviewmodel.py \
 		  exporters/fdfexporter.py \
 		  exporters/npc.py
 
