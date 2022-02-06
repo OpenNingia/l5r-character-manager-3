@@ -1,4 +1,4 @@
-# Copyright (C) 2014 Daniele Simonetti
+# Copyright (C) 2014-2022 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='3.10.0',
+    version='3.14.0',
 
     description='L5R RPG character manager',
 
@@ -106,6 +106,8 @@ setup(
         'l5r.tools': ['*.*'],
         #'tools': glob.glob('../tools/pdftk/*')
     },
+
+    platforms=['MacOS', 'Windows', 'Debian', 'Fedora', 'CentOS', 'Arch'],
 
     # Although 'package_data' is the preferred approach, in some case you may
     # need to place data files outside of your packages. See:

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2014 Daniele Simonetti
+# Copyright (C) 2014-2022 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -1283,41 +1283,7 @@ class L5RMain(L5RCMCore):
         lb_info.setWordWrap(True)
         hbox.addWidget(lb_info)
 
-        def on_contact_link_activate():
-            url = QtCore.QUrl(L5RCM_GPLUS_PAGE)
-            QtGui.QDesktopServices.openUrl(url)
-
-        def on_community_link_activate():
-            url = QtCore.QUrl(L5RCM_GPLUS_COMM)
-            QtGui.QDesktopServices.openUrl(url)
-
-        bt_contact_gplus = QtWidgets.QCommandLinkButton(
-            "Contact me", "but bring good news", self)
-        bt_contact_gplus.setIcon(
-            QtGui.QIcon(get_icon_path('new-g-plus-icon', (16, 16))))
-        # bt_contact_gplus.setFlat(True)
-        bt_contact_gplus.clicked.connect(on_contact_link_activate)
-
-        bt_community_gplus = QtWidgets.QCommandLinkButton(
-            "Join the G+ Community", "for answers and support", self)
-        bt_community_gplus.setIcon(
-            QtGui.QIcon(get_icon_path('new-g-plus-icon', (16, 16))))
-        # bt_community_gplus.setFlat(True)
-        bt_community_gplus.clicked.connect(on_community_link_activate)
-
-        gplus_form = QtWidgets.QVBoxLayout()
-        gplus_form.addWidget(bt_contact_gplus)
-        gplus_form.addWidget(bt_community_gplus)
-
-        gplus_form.setSpacing(6)
-
-        gplus_hbox = QtWidgets.QHBoxLayout()
-        gplus_hbox.setContentsMargins(0, 0, 50, 0)
-        gplus_hbox.addStretch()
-        gplus_hbox.addLayout(gplus_form)
-
         vbox.addLayout(hbox)
-        vbox.addLayout(gplus_hbox)
 
         self.tabs.addTab(mfr, self.tr("About"))
 
@@ -2055,7 +2021,7 @@ class L5RMain(L5RCMCore):
                     w.setText(self.pc.get_property(w.link))
 
         pc_xp = api.character.xp()
-        self.tx_pc_exp.setText('{0} / {1}'.format(pc_xp, self.pc.exp_limit))
+        self.tx_pc_exp.setText('{0} / {1}'.format(pc_xp, api.character.xp_limit()))
 
         # rings
         for i, r in enumerate(api.data.rings()):

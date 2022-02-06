@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2014 Daniele Simonetti
+# Copyright (C) 2014-2022 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ class DataCheck(object):
     d = None
 
     def __init__(self):
-        self.d = dal.Data( ['./data_packs'])
+        self.d = l5rdal.Data( ['./data_packs'])
 
         self.tags =  [ x.id for x in self.d.clans    ]
         self.tags += [ x.id for x in self.d.families ]

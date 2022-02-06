@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0">
+<!DOCTYPE TS>
+<TS version="2.1">
 <context>
     <name>BuyAdvDialog</name>
     <message>
@@ -57,93 +58,93 @@ You&apos;ve reached the XP Limit.</source>
 <context>
     <name>BuyPerkDialog</name>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="49"/>
+        <location filename="../dialogs/perkseldlg.py" line="48"/>
         <source>Add Advantage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="51"/>
+        <location filename="../dialogs/perkseldlg.py" line="50"/>
         <source>Add Disadvantage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="55"/>
+        <location filename="../dialogs/perkseldlg.py" line="54"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="56"/>
+        <location filename="../dialogs/perkseldlg.py" line="55"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="60"/>
+        <location filename="../dialogs/perkseldlg.py" line="59"/>
         <source>SubType</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="69"/>
+        <location filename="../dialogs/perkseldlg.py" line="68"/>
         <source>Advantage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="71"/>
+        <location filename="../dialogs/perkseldlg.py" line="70"/>
         <source>Disadvantage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="78"/>
+        <location filename="../dialogs/perkseldlg.py" line="77"/>
         <source>Rank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="85"/>
+        <location filename="../dialogs/perkseldlg.py" line="84"/>
         <source>Notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="92"/>
+        <location filename="../dialogs/perkseldlg.py" line="91"/>
         <source>XP Cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="94"/>
+        <location filename="../dialogs/perkseldlg.py" line="93"/>
         <source>XP Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="186"/>
+        <location filename="../dialogs/perkseldlg.py" line="185"/>
         <source>Rank %d</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="230"/>
+        <location filename="../dialogs/perkseldlg.py" line="229"/>
         <source>Perk not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="230"/>
+        <location filename="../dialogs/perkseldlg.py" line="229"/>
         <source>Please select a perk.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="239"/>
+        <location filename="../dialogs/perkseldlg.py" line="238"/>
         <source>%s Rank %d, XP Cost: %d</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="243"/>
+        <location filename="../dialogs/perkseldlg.py" line="242"/>
         <source>Not enough XP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="243"/>
+        <location filename="../dialogs/perkseldlg.py" line="242"/>
         <source>Cannot purchase.
 You&apos;ve reached the XP Limit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/perkseldlg.py" line="247"/>
+        <location filename="../dialogs/perkseldlg.py" line="246"/>
         <source>%s Rank %d, XP Gain: %d</source>
         <translation type="unfinished"></translation>
     </message>
@@ -421,7 +422,7 @@ You&apos;ve reached the XP Limit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="95"/>
+        <location filename="../widgets/schoolchooser.py" line="96"/>
         <source>
 &lt;center&gt;
 &lt;h1&gt;Join your First School&lt;/h1&gt;
@@ -486,6 +487,24 @@ You&apos;ve reached the XP Limit.</source>
     <message>
         <location filename="../dialogs/katadlg.py" line="144"/>
         <source>&lt;span style=&quot;color: #A00&quot;&gt;You need at value of {0} in your {1} ring.&lt;/span&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>KataTableViewModel</name>
+    <message>
+        <location filename="../models/katamodel.py" line="48"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/katamodel.py" line="49"/>
+        <source>Mastery</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/katamodel.py" line="50"/>
+        <source>Element</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -578,34 +597,52 @@ You&apos;ve reached the XP Limit.</source>
     </message>
 </context>
 <context>
+    <name>KihoTableViewModel</name>
+    <message>
+        <location filename="../models/kihomodel.py" line="48"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/kihomodel.py" line="49"/>
+        <source>Mastery</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/kihomodel.py" line="50"/>
+        <source>Element</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>L5RCMCore</name>
     <message>
-        <location filename="../l5rcmcore/__init__.py" line="91"/>
+        <location filename="../l5rcmcore/__init__.py" line="94"/>
         <source>No Datapacks installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../l5rcmcore/__init__.py" line="91"/>
+        <location filename="../l5rcmcore/__init__.py" line="94"/>
         <source>Without data packs the software will be of little use.&lt;p&gt;Download a datapack from &lt;a href=&quot;{0}&quot;&gt;{0}&lt;/a&gt;.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../l5rcmcore/__init__.py" line="336"/>
+        <location filename="../l5rcmcore/__init__.py" line="344"/>
         <source>Cannot import data pack.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../l5rcmcore/__init__.py" line="343"/>
+        <location filename="../l5rcmcore/__init__.py" line="351"/>
         <source>Invalid data pack.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../l5rcmcore/__init__.py" line="386"/>
+        <location filename="../l5rcmcore/__init__.py" line="394"/>
         <source>{0}, Cost: {1} xp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../l5rcmcore/__init__.py" line="407"/>
+        <location filename="../l5rcmcore/__init__.py" line="415"/>
         <source>{0} Tattoo</source>
         <translation type="unfinished"></translation>
     </message>
@@ -613,941 +650,964 @@ You&apos;ve reached the XP Limit.</source>
 <context>
     <name>L5RMain</name>
     <message>
-        <location filename="../main.py" line="228"/>
+        <location filename="../main.py" line="227"/>
         <source>Character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="253"/>
+        <location filename="../main.py" line="252"/>
         <source>Edit character first school</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="257"/>
+        <location filename="../main.py" line="256"/>
         <source>School</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="262"/>
+        <location filename="../main.py" line="261"/>
         <source>Edit character family and clan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="269"/>
+        <location filename="../main.py" line="268"/>
         <source>Family</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="526"/>
+        <location filename="../main.py" line="525"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="281"/>
+        <location filename="../main.py" line="280"/>
         <source>Random male name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="283"/>
+        <location filename="../main.py" line="282"/>
         <source>Random female name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="296"/>
+        <location filename="../main.py" line="295"/>
         <source>Clan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="307"/>
+        <location filename="../main.py" line="306"/>
         <source>Exp. Points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="309"/>
+        <location filename="../main.py" line="308"/>
         <source>Edit experience points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="315"/>
+        <location filename="../main.py" line="314"/>
         <source>Rank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="317"/>
+        <location filename="../main.py" line="316"/>
         <source>Insight</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="344"/>
+        <location filename="../main.py" line="343"/>
         <source>Rings and Attributes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="349"/>
+        <location filename="../main.py" line="348"/>
         <source>Earth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="349"/>
+        <location filename="../main.py" line="348"/>
         <source>Air</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="350"/>
+        <location filename="../main.py" line="349"/>
         <source>Water</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="350"/>
+        <location filename="../main.py" line="349"/>
         <source>Fire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="351"/>
+        <location filename="../main.py" line="350"/>
         <source>Void</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="373"/>
+        <location filename="../main.py" line="372"/>
         <source>Stamina</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="374"/>
+        <location filename="../main.py" line="373"/>
         <source>Willpower</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="378"/>
+        <location filename="../main.py" line="377"/>
         <source>Reflexes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="379"/>
+        <location filename="../main.py" line="378"/>
         <source>Awareness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="383"/>
+        <location filename="../main.py" line="382"/>
         <source>Strength</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="384"/>
+        <location filename="../main.py" line="383"/>
         <source>Perception</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="388"/>
+        <location filename="../main.py" line="387"/>
         <source>Agility</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="389"/>
+        <location filename="../main.py" line="388"/>
         <source>Intelligence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="421"/>
+        <location filename="../main.py" line="420"/>
         <source>&lt;b&gt;Void Points&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="434"/>
+        <location filename="../main.py" line="433"/>
         <source>Honor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="434"/>
+        <location filename="../main.py" line="433"/>
         <source>Glory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="435"/>
+        <location filename="../main.py" line="434"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="435"/>
+        <location filename="../main.py" line="434"/>
         <source>Shadowland Taint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="436"/>
+        <location filename="../main.py" line="435"/>
         <source>Infamy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="491"/>
+        <location filename="../main.py" line="490"/>
         <source>Initiative</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="527"/>
+        <location filename="../main.py" line="526"/>
         <source>Base</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="504"/>
+        <location filename="../main.py" line="503"/>
         <source>Modifier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="530"/>
+        <location filename="../main.py" line="529"/>
         <source>Current</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="510"/>
+        <location filename="../main.py" line="509"/>
         <source>Armor TN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="528"/>
+        <location filename="../main.py" line="527"/>
         <source>Armor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="529"/>
+        <location filename="../main.py" line="528"/>
         <source>Reduction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="535"/>
+        <location filename="../main.py" line="534"/>
         <source>Wounds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="547"/>
+        <location filename="../main.py" line="546"/>
         <source>Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="611"/>
+        <location filename="../main.py" line="610"/>
         <source>Spells</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="627"/>
+        <location filename="../main.py" line="626"/>
         <source>Add new spell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="631"/>
+        <location filename="../main.py" line="630"/>
         <source>Remove spell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="635"/>
+        <location filename="../main.py" line="634"/>
         <source>Memorize/Forget spell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="660"/>
+        <location filename="../main.py" line="659"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="666"/>
+        <location filename="../main.py" line="665"/>
         <source>&lt;b&gt;&lt;i&gt;Affinity&lt;/i&gt;&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="667"/>
+        <location filename="../main.py" line="666"/>
         <source>&lt;b&gt;&lt;i&gt;Deficiency&lt;/i&gt;&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="684"/>
+        <location filename="../main.py" line="683"/>
         <source>Techs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="705"/>
+        <location filename="../main.py" line="704"/>
         <source>Kata</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="720"/>
+        <location filename="../main.py" line="719"/>
         <source>Add new Kata</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="724"/>
+        <location filename="../main.py" line="723"/>
         <source>Remove Kata</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="757"/>
+        <location filename="../main.py" line="756"/>
         <source>Kiho</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="773"/>
+        <location filename="../main.py" line="772"/>
         <source>Add new Kiho</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="777"/>
+        <location filename="../main.py" line="776"/>
         <source>Add new Tattoo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="781"/>
+        <location filename="../main.py" line="780"/>
         <source>Remove Kiho</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="830"/>
+        <location filename="../main.py" line="829"/>
         <source>Add skill rank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="832"/>
+        <location filename="../main.py" line="831"/>
         <source>Buy skill emphasys</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="834"/>
+        <location filename="../main.py" line="833"/>
         <source>Buy another skill</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="847"/>
+        <location filename="../main.py" line="846"/>
         <source>Mastery Abilities</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="861"/>
+        <location filename="../main.py" line="860"/>
         <source>Skills</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="878"/>
+        <location filename="../main.py" line="877"/>
         <source>Techniques</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="899"/>
+        <location filename="../main.py" line="898"/>
         <source>Powers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="917"/>
+        <location filename="../main.py" line="916"/>
         <source>Add Perk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="921"/>
+        <location filename="../main.py" line="920"/>
         <source>Edit Perk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="925"/>
+        <location filename="../main.py" line="924"/>
         <source>Remove Perk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="956"/>
+        <location filename="../main.py" line="955"/>
         <source>Advantages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="972"/>
+        <location filename="../main.py" line="971"/>
         <source>Disadvantages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="979"/>
+        <location filename="../main.py" line="978"/>
         <source>Perks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="988"/>
+        <location filename="../main.py" line="987"/>
         <source>&lt;p&gt;&lt;i&gt;Select the advancement to refund and hit the button&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="990"/>
+        <location filename="../main.py" line="989"/>
         <source>Refund</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1011"/>
+        <location filename="../main.py" line="1010"/>
         <source>Advancements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1030"/>
+        <location filename="../main.py" line="1029"/>
         <source>Add weapon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1033"/>
+        <location filename="../main.py" line="1032"/>
         <source>Add custom weapon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1036"/>
+        <location filename="../main.py" line="1035"/>
         <source>Edit weapon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1038"/>
+        <location filename="../main.py" line="1037"/>
         <source>Remove weapon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1041"/>
+        <location filename="../main.py" line="1040"/>
         <source>Increase Quantity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1043"/>
+        <location filename="../main.py" line="1042"/>
         <source>Decrease Quantity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1054"/>
+        <location filename="../main.py" line="1053"/>
         <source>Melee Weapons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1055"/>
+        <location filename="../main.py" line="1054"/>
         <source>Ranged Weapons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1056"/>
+        <location filename="../main.py" line="1055"/>
         <source>Arrows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1065"/>
+        <location filename="../main.py" line="1064"/>
         <source>Weapons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1083"/>
+        <location filename="../main.py" line="1082"/>
         <source>Add modifier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1085"/>
+        <location filename="../main.py" line="1084"/>
         <source>Edit modifier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1087"/>
+        <location filename="../main.py" line="1086"/>
         <source>Remove modifier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1103"/>
+        <location filename="../main.py" line="1102"/>
         <source>Modifiers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1113"/>
+        <location filename="../main.py" line="1112"/>
         <source>Personal Informations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1131"/>
+        <location filename="../main.py" line="1130"/>
         <source>Sex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1132"/>
+        <location filename="../main.py" line="1131"/>
         <source>Age</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1133"/>
+        <location filename="../main.py" line="1132"/>
         <source>Height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1134"/>
+        <location filename="../main.py" line="1133"/>
         <source>Weight</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1135"/>
+        <location filename="../main.py" line="1134"/>
         <source>Hair</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1136"/>
+        <location filename="../main.py" line="1135"/>
         <source>Eyes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1154"/>
+        <location filename="../main.py" line="1153"/>
         <source>Father</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1155"/>
+        <location filename="../main.py" line="1154"/>
         <source>Mother</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1156"/>
+        <location filename="../main.py" line="1155"/>
         <source>Brothers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1157"/>
+        <location filename="../main.py" line="1156"/>
         <source>Sisters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1158"/>
+        <location filename="../main.py" line="1157"/>
         <source>Marital Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1159"/>
+        <location filename="../main.py" line="1158"/>
         <source>Spouse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1160"/>
+        <location filename="../main.py" line="1159"/>
         <source>Children</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1190"/>
+        <location filename="../main.py" line="1189"/>
         <source>Notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1207"/>
+        <location filename="../main.py" line="1206"/>
         <source>Add equipment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1209"/>
+        <location filename="../main.py" line="1208"/>
         <source>Remove equipment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1236"/>
+        <location filename="../main.py" line="1235"/>
         <source>Equipment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1318"/>
+        <location filename="../main.py" line="1322"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1329"/>
+        <location filename="../main.py" line="1333"/>
         <source>&amp;New Character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1330"/>
+        <location filename="../main.py" line="1334"/>
         <source>&amp;Open Character...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1331"/>
+        <location filename="../main.py" line="1335"/>
         <source>&amp;Save Character...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1332"/>
+        <location filename="../main.py" line="1336"/>
         <source>Ex&amp;port as PDF...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1333"/>
+        <location filename="../main.py" line="1337"/>
         <source>Export NPC sheet...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1334"/>
+        <location filename="../main.py" line="1338"/>
         <source>E&amp;xit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1351"/>
+        <location filename="../main.py" line="1355"/>
         <source>&amp;Reset advancements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1352"/>
+        <location filename="../main.py" line="1356"/>
         <source>Refund last advancement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1361"/>
+        <location filename="../main.py" line="1365"/>
         <source>Wear Armor...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1362"/>
+        <location filename="../main.py" line="1366"/>
         <source>Wear Custom Armor...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1364"/>
+        <location filename="../main.py" line="1368"/>
         <source>Add Weapon...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1365"/>
+        <location filename="../main.py" line="1369"/>
         <source>Add Custom Weapon...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1374"/>
+        <location filename="../main.py" line="1378"/>
         <source>Set Health Multiplier...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1376"/>
+        <location filename="../main.py" line="1380"/>
         <source>Cure/Inflict Damage...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1380"/>
+        <location filename="../main.py" line="1384"/>
         <source>Insight Calculation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1402"/>
+        <location filename="../main.py" line="1406"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1385"/>
+        <location filename="../main.py" line="1389"/>
         <source>Ignore Rank 1 Skills</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1387"/>
+        <location filename="../main.py" line="1391"/>
         <source>Account Rank 1 School Skills</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1400"/>
+        <location filename="../main.py" line="1404"/>
         <source>Health Display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1403"/>
+        <location filename="../main.py" line="1407"/>
         <source>Health left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1404"/>
+        <location filename="../main.py" line="1408"/>
         <source>Total wounds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1421"/>
+        <location filename="../main.py" line="1425"/>
         <source>Import Data pack...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1422"/>
+        <location filename="../main.py" line="1426"/>
         <source>Manage Data packs...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1424"/>
+        <location filename="../main.py" line="1428"/>
         <source>Reload data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1427"/>
+        <location filename="../main.py" line="1431"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1432"/>
+        <location filename="../main.py" line="1436"/>
         <source>Toggle banner display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1434"/>
+        <location filename="../main.py" line="1438"/>
         <source>Free Shopping</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1436"/>
+        <location filename="../main.py" line="1440"/>
         <source>Open Data Directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1438"/>
+        <location filename="../main.py" line="1442"/>
         <source>Dice &amp;Roller...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1526"/>
+        <location filename="../main.py" line="1530"/>
         <source>You can donate to the project by clicking on the button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1752"/>
+        <location filename="../main.py" line="1756"/>
         <source>Add New Spell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1753"/>
+        <location filename="../main.py" line="1757"/>
         <source>&lt;center&gt;&lt;h2&gt;Select the spell to learn&lt;/h2&gt;&lt;/center&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1789"/>
+        <location filename="../main.py" line="1793"/>
         <source>You reached the next rank, you have an opportunity to decide your destiny.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1791"/>
+        <location filename="../main.py" line="1795"/>
         <source>Advance rank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1803"/>
+        <location filename="../main.py" line="1807"/>
         <source>You now fit the requirements to learn other Spells</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1805"/>
+        <location filename="../main.py" line="1809"/>
         <source>Learn Spells</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1817"/>
+        <location filename="../main.py" line="1821"/>
         <source>You can learn {0} kihos for free</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1819"/>
+        <location filename="../main.py" line="1823"/>
         <source>Learn Kihos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1831"/>
+        <location filename="../main.py" line="1835"/>
         <source>Your school gives you the choice of certain skills</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1833"/>
+        <location filename="../main.py" line="1837"/>
         <source>Choose Skills</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1852"/>
+        <location filename="../main.py" line="1856"/>
         <source>You school grant you to choose an elemental affinity.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1854"/>
+        <location filename="../main.py" line="1858"/>
         <source>Choose Affinity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1860"/>
+        <location filename="../main.py" line="1864"/>
         <source>You school grant you to choose an elemental deficiency.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1862"/>
+        <location filename="../main.py" line="1866"/>
         <source>Choose Deficiency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1871"/>
+        <location filename="../main.py" line="1875"/>
         <source>Choose School Spells</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1872"/>
+        <location filename="../main.py" line="1876"/>
         <source>&lt;center&gt;&lt;h2&gt;Your school has granted you                                      the right to choose some spells.&lt;/h2&gt;                                      &lt;h3&gt;&lt;i&gt;Choose with care.&lt;/i&gt;&lt;/h3&gt;&lt;/center&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1920"/>
+        <location filename="../main.py" line="1924"/>
         <source>Select your elemental affinity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1948"/>
+        <location filename="../main.py" line="1952"/>
         <source>Select your elemental deficiency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="1995"/>
+        <location filename="../main.py" line="1999"/>
         <source>No Clan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2003"/>
+        <location filename="../main.py" line="2007"/>
         <source>No Family</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2011"/>
+        <location filename="../main.py" line="2015"/>
         <source>No School</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2090"/>
+        <location filename="../main.py" line="2094"/>
         <source>Health / Wounds (x%d)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2162"/>
+        <location filename="../main.py" line="2166"/>
         <source>Healthy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2163"/>
+        <location filename="../main.py" line="2167"/>
         <source>Nicked</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2164"/>
+        <location filename="../main.py" line="2168"/>
         <source>Grazed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2165"/>
+        <location filename="../main.py" line="2169"/>
         <source>Hurt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2166"/>
+        <location filename="../main.py" line="2170"/>
         <source>Injured</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2167"/>
+        <location filename="../main.py" line="2171"/>
         <source>Crippled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2168"/>
+        <location filename="../main.py" line="2172"/>
         <source>Down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2221"/>
+        <location filename="../main.py" line="2231"/>
         <source>Do not prompt again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2219"/>
+        <location filename="../main.py" line="2229"/>
         <source>{0} data pack(s) imported succesfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2271"/>
+        <location filename="../main.py" line="2281"/>
         <source>The character has been modified.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2272"/>
+        <location filename="../main.py" line="2282"/>
         <source>Do you want to save your changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2282"/>
+        <location filename="../main.py" line="2292"/>
         <source>L5R: CM v%s is available for download.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2284"/>
+        <location filename="../main.py" line="2294"/>
         <source>Do you want to open the download page?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2294"/>
+        <location filename="../main.py" line="2304"/>
         <source>Not enough XP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2294"/>
+        <location filename="../main.py" line="2304"/>
         <source>Cannot purchase.
 You&apos;ve reached the XP Limit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2330"/>
+        <location filename="../main.py" line="2340"/>
         <source>Save Character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2354"/>
+        <location filename="../main.py" line="2364"/>
         <source>L5R Character files (*.l5r)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2354"/>
+        <location filename="../main.py" line="2364"/>
         <source>Load Character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2374"/>
+        <location filename="../main.py" line="2384"/>
         <source>PDF Files(*.pdf)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2381"/>
+        <location filename="../main.py" line="2391"/>
         <source>Export Character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2404"/>
+        <location filename="../main.py" line="2414"/>
         <source>L5R:CM Data Pack(*.l5rcmpack *.zip)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2405"/>
+        <location filename="../main.py" line="2415"/>
         <source>Zip Archive(*.zip)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2410"/>
+        <location filename="../main.py" line="2420"/>
         <source>Load data pack</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2447"/>
+        <location filename="../main.py" line="2457"/>
         <source>&lt;h3&gt;Missing books&lt;/h3&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="2448"/>
+        <location filename="../main.py" line="2458"/>
         <source>&lt;p&gt;To load this character you need this additional books:&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.py" line="1239"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MaViewModel</name>
+    <message>
+        <location filename="../models/maviewmodel.py" line="45"/>
+        <source>Skill</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/maviewmodel.py" line="46"/>
+        <source>Rank</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/maviewmodel.py" line="47"/>
+        <source>Effect</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ManageDataPackDlg</name>
     <message>
-        <location filename="../dialogs/managedatapack.py" line="129"/>
+        <location filename="../dialogs/managedatapack.py" line="128"/>
         <source>Data Pack Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/managedatapack.py" line="133"/>
+        <location filename="../dialogs/managedatapack.py" line="132"/>
         <source>Available data packs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/managedatapack.py" line="140"/>
+        <location filename="../dialogs/managedatapack.py" line="139"/>
         <source>Discard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/managedatapack.py" line="141"/>
+        <location filename="../dialogs/managedatapack.py" line="140"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1612,6 +1672,29 @@ You&apos;ve reached the XP Limit.</source>
     <message>
         <location filename="../dialogs/modifiersdlg.py" line="172"/>
         <source>Type ring name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ModifiersTableViewModel</name>
+    <message>
+        <location filename="../models/modifiers.py" line="74"/>
+        <source>Modifies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/modifiers.py" line="75"/>
+        <source>Detail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/modifiers.py" line="76"/>
+        <source>Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/modifiers.py" line="77"/>
+        <source>Reason</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1692,6 +1775,42 @@ what would you want to do?
     </message>
 </context>
 <context>
+    <name>PerkViewModel</name>
+    <message>
+        <location filename="../models/perkviewmodel.py" line="51"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/perkviewmodel.py" line="52"/>
+        <source>Rank</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/perkviewmodel.py" line="53"/>
+        <source>Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QExampleListModel</name>
+    <message>
+        <location filename="../widgets/settings.py" line="27"/>
+        <source>An odd row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/settings.py" line="28"/>
+        <source>An even row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/settings.py" line="29"/>
+        <source>Another odd row</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RequirementsWidget</name>
     <message>
         <location filename="../widgets/requirementwidget.py" line="115"/>
@@ -1702,22 +1821,22 @@ what would you want to do?
 <context>
     <name>SchoolChooserDialog</name>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="124"/>
+        <location filename="../widgets/schoolchooser.py" line="131"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="125"/>
+        <location filename="../widgets/schoolchooser.py" line="132"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="148"/>
+        <location filename="../widgets/schoolchooser.py" line="155"/>
         <source>L5R: CM - Select School</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="172"/>
+        <location filename="../widgets/schoolchooser.py" line="180"/>
         <source>
 &lt;center&gt;
 &lt;h1&gt;Choose the school to join&lt;/h1&gt;
@@ -1732,73 +1851,78 @@ If you choose an advanced school or alternative path be sure to check the requir
 <context>
     <name>SchoolChooserWidget</name>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="205"/>
+        <location filename="../widgets/schoolchooser.py" line="214"/>
         <source>Not enough XP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="288"/>
+        <location filename="../widgets/schoolchooser.py" line="303"/>
         <source>Clan:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="289"/>
+        <location filename="../widgets/schoolchooser.py" line="304"/>
         <source>School:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="293"/>
+        <location filename="../widgets/schoolchooser.py" line="309"/>
         <source>Bonus:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="296"/>
+        <location filename="../widgets/schoolchooser.py" line="312"/>
         <source>Filters:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="299"/>
+        <location filename="../widgets/schoolchooser.py" line="315"/>
         <source>Requirements:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="302"/>
+        <location filename="../widgets/schoolchooser.py" line="318"/>
         <source>Options:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="309"/>
+        <location filename="../widgets/schoolchooser.py" line="325"/>
         <source>Base schools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="310"/>
+        <location filename="../widgets/schoolchooser.py" line="326"/>
         <source>Advanced schools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="311"/>
+        <location filename="../widgets/schoolchooser.py" line="327"/>
         <source>Alternate paths</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="331"/>
+        <location filename="../widgets/schoolchooser.py" line="347"/>
         <source>Buy &apos;Different School&apos; advantage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="332"/>
+        <location filename="../widgets/schoolchooser.py" line="348"/>
         <source>Buy &apos;Multiple Schools&apos; advantage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="495"/>
+        <location filename="../widgets/schoolchooser.py" line="530"/>
         <source>No Clan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/schoolchooser.py" line="625"/>
+        <location filename="../widgets/schoolchooser.py" line="678"/>
         <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/schoolchooser.py" line="305"/>
+        <source>Path:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1825,115 +1949,150 @@ If you choose an advanced school or alternative path be sure to check the requir
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/advdlg.py" line="374"/>
+        <location filename="../dialogs/advdlg.py" line="373"/>
         <source>skill</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/advdlg.py" line="377"/>
+        <location filename="../dialogs/advdlg.py" line="376"/>
         <source>Any {0}, but {1} (rank {2}):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/advdlg.py" line="380"/>
+        <location filename="../dialogs/advdlg.py" line="379"/>
         <source>Any {0} skill (rank {1}):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/advdlg.py" line="397"/>
+        <location filename="../dialogs/advdlg.py" line="396"/>
         <source>{0}&apos;s Emphases: </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>SettingsDialog</name>
+    <name>SettingsWidget</name>
     <message>
-        <location filename="../dialogs/settings.py" line="112"/>
+        <location filename="../widgets/settings.py" line="226"/>
         <source>&lt;h2&gt;Settings&lt;/h2&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings.py" line="113"/>
+        <location filename="../widgets/settings.py" line="227"/>
         <source>Use system language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings.py" line="116"/>
+        <location filename="../widgets/settings.py" line="230"/>
         <source>Use system font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings.py" line="120"/>
+        <location filename="../widgets/settings.py" line="234"/>
         <source>Show application banner</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings.py" line="130"/>
+        <location filename="../widgets/settings.py" line="244"/>
         <source>&lt;h3&gt;Health display&lt;/h3&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings.py" line="135"/>
+        <location filename="../widgets/settings.py" line="249"/>
         <source>&lt;h3&gt;Insight calculation&lt;/h3&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings.py" line="151"/>
+        <location filename="../widgets/settings.py" line="254"/>
+        <source>&lt;h3&gt;Table Colors&lt;/h3&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/settings.py" line="260"/>
+        <source>Odd row background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/settings.py" line="261"/>
+        <source>Odd row foreground</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/settings.py" line="262"/>
+        <source>Even row background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/settings.py" line="263"/>
+        <source>Even row foreground</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/settings.py" line="278"/>
+        <source>&lt;h2&gt;Character sheet&lt;/h2&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/settings.py" line="279"/>
+        <source>Print skills on first page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/settings.py" line="295"/>
         <source>US English</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings.py" line="152"/>
+        <location filename="../widgets/settings.py" line="296"/>
         <source>UK English</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings.py" line="153"/>
+        <location filename="../widgets/settings.py" line="297"/>
         <source>Italian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings.py" line="154"/>
+        <location filename="../widgets/settings.py" line="298"/>
         <source>Spanish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings.py" line="155"/>
+        <location filename="../widgets/settings.py" line="299"/>
         <source>French</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings.py" line="156"/>
+        <location filename="../widgets/settings.py" line="300"/>
         <source>Portoguese (Brasil)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings.py" line="157"/>
+        <location filename="../widgets/settings.py" line="301"/>
         <source>Russian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings.py" line="218"/>
+        <location filename="../widgets/settings.py" line="369"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings.py" line="205"/>
+        <location filename="../widgets/settings.py" line="356"/>
         <source>Health left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings.py" line="206"/>
+        <location filename="../widgets/settings.py" line="357"/>
         <source>Total wounds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings.py" line="219"/>
+        <location filename="../widgets/settings.py" line="370"/>
         <source>Ignore Rank 1 Skills</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings.py" line="220"/>
+        <location filename="../widgets/settings.py" line="371"/>
         <source>Account Rank 1 School Skills</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1941,30 +2100,35 @@ If you choose an advanced school or alternative path be sure to check the requir
 <context>
     <name>Sink1</name>
     <message>
-        <location filename="../sinks/sink_1.py" line="209"/>
+        <location filename="../sinks/sink_1.py" line="212"/>
         <source>Advancements refund.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sinks/sink_1.py" line="210"/>
+        <location filename="../sinks/sink_1.py" line="213"/>
         <source>If this advancement is required from other ones
 removing it might lean to incoherences in your character.
 Continue anyway?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sinks/sink_1.py" line="215"/>
+        <location filename="../sinks/sink_1.py" line="218"/>
         <source>Do not prompt again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sinks/sink_1.py" line="276"/>
+        <location filename="../sinks/sink_1.py" line="282"/>
         <source>PNG Images (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sinks/sink_1.py" line="281"/>
+        <location filename="../sinks/sink_1.py" line="287"/>
         <source>Open image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../sinks/sink_1.py" line="94"/>
+        <source>Cannot save pdf sheet.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1973,6 +2137,39 @@ Continue anyway?</source>
     <message>
         <location filename="../sinks/sink_4.py" line="85"/>
         <source>Doubleclick to edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SkillTableViewModel</name>
+    <message>
+        <location filename="../models/skillmodel.py" line="52"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/skillmodel.py" line="53"/>
+        <source>Rank</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/skillmodel.py" line="54"/>
+        <source>Trait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/skillmodel.py" line="55"/>
+        <source>Base Roll</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/skillmodel.py" line="56"/>
+        <source>Mod Roll</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/skillmodel.py" line="57"/>
+        <source>Emphases</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2044,32 +2241,32 @@ Continue anyway?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/spelldlg.py" line="309"/>
+        <location filename="../dialogs/spelldlg.py" line="308"/>
         <source>any spell but [{0}]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/spelldlg.py" line="311"/>
+        <location filename="../dialogs/spelldlg.py" line="310"/>
         <source>a [{0}] spell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/spelldlg.py" line="313"/>
+        <location filename="../dialogs/spelldlg.py" line="312"/>
         <source>Any spell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/spelldlg.py" line="316"/>
+        <location filename="../dialogs/spelldlg.py" line="315"/>
         <source>but Maho spells</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/spelldlg.py" line="318"/>
+        <location filename="../dialogs/spelldlg.py" line="317"/>
         <source>only Maho spells</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/spelldlg.py" line="321"/>
+        <location filename="../dialogs/spelldlg.py" line="320"/>
         <source>Excluded deficiency</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2153,6 +2350,44 @@ Continue anyway?</source>
     </message>
 </context>
 <context>
+    <name>SpellTableViewModel</name>
+    <message>
+        <location filename="../models/spellmodel.py" line="57"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/spellmodel.py" line="58"/>
+        <source>Ring</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/spellmodel.py" line="59"/>
+        <source>Mastery</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/spellmodel.py" line="60"/>
+        <source>Range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/spellmodel.py" line="61"/>
+        <source>Area of Effect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/spellmodel.py" line="62"/>
+        <source>Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/spellmodel.py" line="63"/>
+        <source>Raises</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TattooDialog</name>
     <message>
         <location filename="../dialogs/kihodlg.py" line="208"/>
@@ -2201,6 +2436,87 @@ Continue anyway?</source>
     </message>
 </context>
 <context>
+    <name>TechViewModel</name>
+    <message>
+        <location filename="../models/techviewmodel.py" line="59"/>
+        <source>Rank</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/techviewmodel.py" line="60"/>
+        <source>School</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/techviewmodel.py" line="61"/>
+        <source>School Rank</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/techviewmodel.py" line="62"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WeaponTableViewModel</name>
+    <message>
+        <location filename="../models/outfit.py" line="130"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/outfit.py" line="131"/>
+        <source>DR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/outfit.py" line="115"/>
+        <source>Sec. DR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/outfit.py" line="126"/>
+        <source>ATK Roll</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/outfit.py" line="127"/>
+        <source>Mod. ATK Roll</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/outfit.py" line="118"/>
+        <source>DMG Roll</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/outfit.py" line="119"/>
+        <source>Mod. DMG Roll</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/outfit.py" line="123"/>
+        <source>Range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/outfit.py" line="124"/>
+        <source>Strength</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/outfit.py" line="125"/>
+        <source>Min. Str.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/outfit.py" line="132"/>
+        <source>Quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>XpTextBox</name>
     <message>
         <location filename="../widgets/cost_selection.py" line="27"/>
@@ -2221,7 +2537,7 @@ Continue anyway?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../api/data/schools.py" line="192"/>
+        <location filename="../api/data/schools.py" line="199"/>
         <source>Replaces School Rank: {0}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2229,7 +2545,7 @@ Continue anyway?</source>
 <context>
     <name>api</name>
     <message>
-        <location filename="../api/character/__init__.py" line="352"/>
+        <location filename="../api/character/__init__.py" line="355"/>
         <source>No Armor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2239,7 +2555,7 @@ Continue anyway?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../api/character/__init__.py" line="410"/>
+        <location filename="../api/character/__init__.py" line="412"/>
         <source>Void Ring, Rank {0} to {1}. Cost: {2} xp</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2281,6 +2597,11 @@ Continue anyway?</source>
     <message>
         <location filename="../api/character/spells.py" line="266"/>
         <source>{0}, Mastery {1}. Element: {2}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../api/character/rankadv.py" line="225"/>
+        <source>Replaced {0} with {1} (Rank1)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

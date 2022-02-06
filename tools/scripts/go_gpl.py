@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2014 Daniele Simonetti
+# Copyright (C) 2014-2022 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ HEADER_CHECK_STRING = """# -*- coding: iso-8859-1 -*-"""
 HEADER_TO_REMOVE    = """#!/usr/bin/python"""
 
 GPL_HEADER = """# -*- coding: iso-8859-1 -*-
-# Copyright (C) 2014 Daniele Simonetti
+# Copyright (C) 2014-2022 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -68,7 +68,7 @@ def place_header(header, file, remove_old_header = True):
 def visit_tree(path, func):
     for path, dirs, files in os.walk(path):
         dirn = os.path.basename(path)
-        print dirn
+        
         if dirn != '.' and dirn.startswith('.'):
             continue
         for file_ in files:
@@ -82,7 +82,7 @@ def visit_tree(path, func):
             if not func(GPL_HEADER, file_path, remove_old):
                 sys.stderr.write('Failed to apply header to %s\n' % file_path)
             else:
-                print 'processed %s' % file_path
+                print('processed %s' % file_path)
 def main():
     #if not place_header(GPL_HEADER, "test.py"):
     #    print "Failure"

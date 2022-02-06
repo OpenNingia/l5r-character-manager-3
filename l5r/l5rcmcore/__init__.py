@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2014 Daniele Simonetti
+# Copyright (C) 2014-2022 Daniele Simonetti
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -36,12 +36,13 @@ from l5r.api.data import CMErrors
 from l5r.l5rcmcore.qtsignalsutils import *
 from l5r.util.settings import L5RCMSettings
 
+from PyQt5.QtGui import QDesktopServices
+from PyQt5.QtCore import QUrl
+
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
-APP_VERSION = '3.13.0'
-APP_VERSION = '3.13.0'
-DB_VERSION = '3.13'
-DB_VERSION = '3.13'
+APP_VERSION = '3.14.0'
+DB_VERSION = '3.14'
 APP_ORG = 'openningia'
 
 PROJECT_PAGE_LINK = 'https://github.com/OpenNingia/l5r-character-manager-3'
@@ -133,10 +134,15 @@ class L5RCMCore(QtWidgets.QMainWindow):
 
         log.app.debug('call %s', args_)
 
-        subprocess.call(args_)
+        ret = subprocess.call(args_)
         self.try_remove(fdf_file)
 
-        log.app.info('created pdf %s', target_pdf)
+        if ret == 0:            
+            log.app.info('created pdf %s', target_pdf)
+        else:
+            log.app.warn('could not flatten pdf. pdftk exited with error code: %d', ret)
+
+        return ret == 0
 
     def merge_pdf(self, input_files, output_file):
         # call pdftk
@@ -270,7 +276,7 @@ class L5RCMCore(QtWidgets.QMainWindow):
                 weapons_offset += _exporter.weapons_per_page
                 weapons_count -= _exporter.weapons_per_page
 
-        self.commit_pdf_export(export_file)
+        self.commit_pdf_export(export_file)           
 
     def remove_advancement_item(self, adv_itm):
         if api.character.remove_advancement(adv_itm):
@@ -434,3 +440,6 @@ class L5RCMCore(QtWidgets.QMainWindow):
         if family_obj:
             return "{} {}".format(family_obj.name, self.pc.name)
         return self.pc.name
+
+    def open_pdf_file_as_shell(self, filePath):
+        QDesktopServices.openUrl(QUrl("file:///" + filePath, QUrl.TolerantMode))
