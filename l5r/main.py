@@ -2055,7 +2055,7 @@ class L5RMain(L5RCMCore):
                     w.setText(self.pc.get_property(w.link))
 
         pc_xp = api.character.xp()
-        self.tx_pc_exp.setText('{0} / {1}'.format(pc_xp, self.pc.exp_limit))
+        self.tx_pc_exp.setText('{0} / {1}'.format(pc_xp, api.character.xp_limit()))
 
         # rings
         for i, r in enumerate(api.data.rings()):
