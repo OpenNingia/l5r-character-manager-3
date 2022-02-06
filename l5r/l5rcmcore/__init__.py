@@ -133,10 +133,15 @@ class L5RCMCore(QtWidgets.QMainWindow):
 
         log.app.debug('call %s', args_)
 
-        subprocess.call(args_)
+        ret = subprocess.call(args_)
         self.try_remove(fdf_file)
 
-        log.app.info('created pdf %s', target_pdf)
+        if ret == 0:            
+            log.app.info('created pdf %s', target_pdf)
+        else:
+            log.app.warn('could not flatten pdf. pdftk exited with error code: %d', ret)
+
+        return ret == 0
 
     def merge_pdf(self, input_files, output_file):
         # call pdftk
@@ -258,7 +263,11 @@ class L5RCMCore(QtWidgets.QMainWindow):
         if len(self.pc.weapons) > 2:
             self.write_pdf('sheet_weapons.pdf', exporters.FDFExporterWeapons())
 
-        self.commit_pdf_export(export_file)
+        try:
+            self.commit_pdf_export(export_file)
+        except Exception as e:
+            log.app.error('cannot save pdf sheet', exc_info=1, stack_info=True)
+            self.advise_error(self.tr("Cannot save pdf sheet."))
 
     def remove_advancement_item(self, adv_itm):
         if api.character.remove_advancement(adv_itm):
