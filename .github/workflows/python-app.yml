@@ -27,6 +27,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@develop
         pip install --no-deps ./l5r
+        sudo apt-get install -y libxml2-dev libxslt1-dev python-dev librsvg2-bin python-docutils fakeroot 
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
