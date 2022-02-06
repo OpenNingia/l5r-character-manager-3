@@ -1,7 +1,7 @@
-version: 3.11.{build}
+version: 3.14.{build}
 
 image:
-- Visual Studio 2015
+- Visual Studio 2022
 
 init:
   # Gather some basic build environment details.
@@ -9,10 +9,10 @@ init:
   - dir
 
 environment:
-  PYTHONVER: 3.6
+  PYTHONVER: 3.10
   matrix:
-    - PYTHONDIR: C:\Python36
-    - PYTHONDIR: C:\Python36-x64
+    - PYTHONDIR: C:\Python310
+    - PYTHONDIR: C:\Python310-x64
 
 install:
   - if %PYTHONDIR:-x64=%==%PYTHONDIR% (set ARCH=x86) else set ARCH=x64
