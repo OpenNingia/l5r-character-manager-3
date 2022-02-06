@@ -124,7 +124,7 @@ def remove_advancement(adv):
 
 def get_xp_gained_from_flaws():
     """returns the experience gained from disadvantages"""
-    return sum([-x.cost for x in __api.pc.advans if x.tag == 'flaw'])
+    return sum([-x.cost for x in __api.pc.advans if x.type == 'perk' and x.tag == 'flaw'])
 
 def xp():
     """returns the spent experience"""

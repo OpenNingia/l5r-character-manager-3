@@ -85,8 +85,13 @@ class Sink1(QtCore.QObject):
         form = self.form
 
         file_ = form.select_export_file(".pdf")
+        
         if file_:
-            form.export_as_pdf(file_)
+            try:
+                form.export_as_pdf(file_)
+                form.open_pdf_file_as_shell(file_)
+            except:
+                self.form.advise_error(self.tr("Cannot save pdf sheet."))            
 
     def switch_to_page_1(self):
         self.form.tabs.setCurrentIndex(0)

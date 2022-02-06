@@ -617,38 +617,33 @@ You&apos;ve reached the XP Limit.</source>
 <context>
     <name>L5RCMCore</name>
     <message>
-        <location filename="../l5rcmcore/__init__.py" line="91"/>
+        <location filename="../l5rcmcore/__init__.py" line="94"/>
         <source>No Datapacks installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../l5rcmcore/__init__.py" line="91"/>
+        <location filename="../l5rcmcore/__init__.py" line="94"/>
         <source>Without data packs the software will be of little use.&lt;p&gt;Download a datapack from &lt;a href=&quot;{0}&quot;&gt;{0}&lt;/a&gt;.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../l5rcmcore/__init__.py" line="345"/>
+        <location filename="../l5rcmcore/__init__.py" line="344"/>
         <source>Cannot import data pack.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../l5rcmcore/__init__.py" line="352"/>
+        <location filename="../l5rcmcore/__init__.py" line="351"/>
         <source>Invalid data pack.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../l5rcmcore/__init__.py" line="395"/>
+        <location filename="../l5rcmcore/__init__.py" line="394"/>
         <source>{0}, Cost: {1} xp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../l5rcmcore/__init__.py" line="416"/>
+        <location filename="../l5rcmcore/__init__.py" line="415"/>
         <source>{0} Tattoo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../l5rcmcore/__init__.py" line="270"/>
-        <source>Cannot save pdf sheet.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2105,30 +2100,35 @@ If you choose an advanced school or alternative path be sure to check the requir
 <context>
     <name>Sink1</name>
     <message>
-        <location filename="../sinks/sink_1.py" line="207"/>
+        <location filename="../sinks/sink_1.py" line="212"/>
         <source>Advancements refund.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sinks/sink_1.py" line="208"/>
+        <location filename="../sinks/sink_1.py" line="213"/>
         <source>If this advancement is required from other ones
 removing it might lean to incoherences in your character.
 Continue anyway?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sinks/sink_1.py" line="213"/>
+        <location filename="../sinks/sink_1.py" line="218"/>
         <source>Do not prompt again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sinks/sink_1.py" line="277"/>
+        <location filename="../sinks/sink_1.py" line="282"/>
         <source>PNG Images (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sinks/sink_1.py" line="282"/>
+        <location filename="../sinks/sink_1.py" line="287"/>
         <source>Open image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../sinks/sink_1.py" line="94"/>
+        <source>Cannot save pdf sheet.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
