@@ -39,7 +39,7 @@ jobs:
       run: |
         cd tools/deploy/linux
         ./makedeb.sh
-        echo "RELEASE_PKG_FILE=$(ls *.deb)" >> $GITHUB_ENV
+        echo "RELEASE_PKG_FILE=tools/deploy/linux/$(ls *.deb)" >> $GITHUB_ENV
     - name: Create Release
       #if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
       id: create_release
