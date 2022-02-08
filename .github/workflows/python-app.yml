@@ -6,6 +6,7 @@ name: Python application
 on:
   push:
     branches: [ master ]
+    tags: [ v3.* ]
   pull_request:
     branches: [ master ]
 
