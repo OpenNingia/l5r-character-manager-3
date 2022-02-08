@@ -41,8 +41,8 @@ from PyQt5.QtCore import QUrl
 
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
-APP_VERSION = '3.14.0'
-DB_VERSION = '3.14'
+APP_VERSION = '3.15.0'
+DB_VERSION = '3.15'
 APP_ORG = 'openningia'
 
 PROJECT_PAGE_LINK = 'https://github.com/OpenNingia/l5r-character-manager-3'
@@ -154,6 +154,11 @@ class L5RCMCore(QtWidgets.QMainWindow):
             self.try_remove(f)
 
     def get_pdftk(self):
+    
+        sys_path = shutil.which('pdftk')
+        if sys_path is not None and os.path.exists(sys_path):
+            return sys_path
+    
         if sys.platform == 'win32':
             return os.path.join(MY_CWD, 'tools', 'pdftk.exe')
         elif sys.platform == 'linux' or sys.platform == 'linux2':
@@ -165,7 +170,7 @@ class L5RCMCore(QtWidgets.QMainWindow):
                 return loc_path
         elif sys.platform == 'darwin':
             return os.path.join(MY_CWD, 'tools', 'pdftk')
-        return None
+        return 'pdftk'
 
     def try_remove(self, fpath):
         try:

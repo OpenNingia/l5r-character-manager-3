@@ -573,3 +573,16 @@ def set_money(value):
     set_dirty_flag(True)
 
     log.api.info(u"set character money to: %s", str(value))
+
+def get_starting_outfit():
+    """return the starting outfit for the character"""
+    first_rank_ = api.character.rankadv.get_first()
+    if first_rank_:
+        return first_rank_.outfit
+    return []
+
+def set_starting_outfit(outfit):
+    """sets the starting outfit for the character"""
+    first_rank_ = api.character.rankadv.get_first()
+    if first_rank_:
+        first_rank_.outfit = outfit

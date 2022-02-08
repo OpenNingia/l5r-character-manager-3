@@ -86,17 +86,37 @@ class Sink4(QtCore.QObject):
         self.form.update_from_model()
 
     def remove_selected_equipment(self):
-        index = self.form.equip_view.selectionModel().currentIndex()
-        if not index.isValid():
-            return
-        item = index.model().data(index, QtCore.Qt.UserRole)
+        try:
+            index = self.form.equip_view.selectionModel().currentIndex()
+            if not index.isValid():
+                return
 
-        equip_list = self.form.pc.get_property('equip')
-        if equip_list and item in equip_list:
-            equip_list.remove(item)
-        elif item in self.form.pc.get_school_outfit():
-            self.form.pc.get_school_outfit().remove(item)
-        self.form.update_from_model()
+            indexRow = index.row()
+            newIndexRow = max(0, index.row()-1)
+            newIndexCol = index.column()
+            newIndexParent = index.parent()
+            itemModel = index.model()
+
+            start_outfit = api.character.get_starting_outfit() or []
+            equip_list = self.form.pc.get_property('equip') or []
+
+            if indexRow < len(start_outfit):
+                # delete from starting outfit
+                del start_outfit[indexRow]
+                api.character.set_starting_outfit(start_outfit)
+            else:
+                indexRow -= len(start_outfit)
+                if indexRow < len(equip_list):
+                    del equip_list[indexRow]
+
+            self.form.update_from_model()
+            
+            sibling = itemModel.index(newIndexRow, newIndexCol, newIndexParent)
+            if sibling.isValid():
+                self.form.equip_view.selectionModel().setCurrentIndex(sibling, QtCore.QItemSelectionModel.SelectCurrent)
+        except:
+            log.ui.error("Shit happens", exc_info=1, stack_info=True)
+
 
     def on_money_value_changed(self, value):
         api.character.set_money(value)
