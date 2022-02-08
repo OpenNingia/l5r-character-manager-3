@@ -62,7 +62,7 @@ class L5RCMCore(QtWidgets.QMainWindow):
 
     def __init__(self, locale, parent=None):
         super(L5RCMCore, self).__init__(parent)
-        # print(repr(self))
+
         self.pc = None
 
         # Flag to lock advancement refunds in order
@@ -175,9 +175,9 @@ class L5RCMCore(QtWidgets.QMainWindow):
     def try_remove(self, fpath):
         try:
             os.remove(fpath)
-            print('deleted temp file: {0}'.format(fpath))
+            log.app.debug('deleted temp file: {0}'.format(fpath))
         except:
-            print('cannot delete temp file: {0}'.format(fpath))
+            log.app.error('cannot delete temp file: {0}'.format(fpath), exc_info=1, stack_info=True)
 
     def write_pdf(self, source, exporter):
         source_pdf = get_app_file(source)

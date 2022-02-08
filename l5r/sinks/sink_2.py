@@ -121,8 +121,6 @@ class Sink2(QtCore.QObject):
 
         sel_idx = form.kiho_view.selectionModel().currentIndex()
         if not sel_idx.isValid():
-            print('index not valid')
             return
         sel_itm = form.ki_table_view.model().data(sel_idx, QtCore.Qt.UserRole)
-        print('to remove', sel_itm)
         form.remove_advancement_item(sel_itm.adv)

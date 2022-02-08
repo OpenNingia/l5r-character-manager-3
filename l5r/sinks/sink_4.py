@@ -148,8 +148,8 @@ class Sink4(QtCore.QObject):
         item = self.form.th_view_model.data(index, QtCore.Qt.UserRole)
         try:
             school, tech = api.data.schools.get_technique(item.id)
-        except Exception as e:
-            print("cannot retrieve information from tech model.", e)
+        except:
+            log.ui.error("cannot retrieve information from tech model.", exc_info=1)
         else:
             self._simple_description_dialog(
                 self.form,
@@ -163,7 +163,7 @@ class Sink4(QtCore.QObject):
         try:
             spell = api.data.spells.get(item.spell_id)
         except Exception as e:
-            print("cannot retrieve information from spell model.", e)
+            log.ui.error("cannot retrieve information from spell model.", exc_info=1)
         else:
             self._simple_description_dialog(
                 self.form,
@@ -181,7 +181,7 @@ class Sink4(QtCore.QObject):
         try:
             kata = api.data.powers.get_kata(item.id)
         except Exception as e:
-            print("cannot retrieve information from kata model.", e)
+            log.ui.error("cannot retrieve information from kata model.", exc_info=1)
         else:
             self._simple_description_dialog(
                 self.form,
@@ -199,7 +199,7 @@ class Sink4(QtCore.QObject):
         try:
             kiho = api.data.powers.get_kiho(item.id)
         except Exception as e:
-            print("cannot retrieve information from kiho model.", e)
+            log.ui.error("cannot retrieve information from kiho model.", exc_info=1)
         else:
             self._simple_description_dialog(
                 self.form,
@@ -218,14 +218,19 @@ class Sink4(QtCore.QObject):
         try:
             skill = api.data.skills.get(item)
         except Exception as e:
-            print("cannot retrieve information from skill model.", e)
-        else:
-            description = '<h3>Mastery Abilities:</h3>'
+            log.ui.error("cannot retrieve information from skill model.", exc_info=1)
+        else:            
+            description = self.tr('<h3>Mastery Abilities:</h3>')
             for i in skill.mastery_abilities:
                 description += '<B>{rank}</B>: {desc}<BR/>\n'.format(
                     rank=i.rank,
                     desc=i.desc,
                 )
+
+            if skill.desc:
+                description += self.tr('<h3>Description</h3>')
+                description += skill.desc
+
             self._simple_description_dialog(
                 self.form,
                 skill.name,

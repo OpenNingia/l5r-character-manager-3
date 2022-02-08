@@ -1948,12 +1948,12 @@ class L5RMain(L5RCMCore):
                     self.create_new_character()
                     return False
 
-                print('successfully loaded character from {0}'.format(self.save_path))
+                log.app.info('successfully loaded character from {0}'.format(self.save_path))
 
                 self.tx_pc_notes.set_content(self.pc.extra_notes)
                 self.update_from_model()
             else:
-                print('character load failure')
+                log.app.error('character load failure')
 
     def set_clan(self, clan_id):
         """Set UI clan"""
@@ -2499,13 +2499,17 @@ def main():
         app.installTranslator(app_translator)
 
         # application font
+        log.app.debug(f"settings.ui.use_system_font: {settings.ui.use_system_font}")
+        
         if not settings.ui.use_system_font:
-            try:
+            try:                                
                 font_family, font_size = settings.ui.user_font.split(",")
+                log.app.debug(f"applying user font: {font_family} {font_size}")
                 app_font = QtGui.QFont(font_family, float(font_size))
                 QtWidgets.QApplication.setFont(app_font)
+                log.app.info(f"applyed user font: {font_family} {font_size}")
             except:
-                log.app.error("Could not parse user font: %s", settings.ui.user_font)
+                log.app.error(f"Could not apply user font: {settings.ui.user_font}", exc_info=1)
 
         # start main form
         l5rcm = L5RMain(app_locale)

@@ -95,7 +95,7 @@ def parse_rtk_with_bonus(rtk):
     """parse a string in the format roll/keep plus a numeric bonus"""
     # 3k2+1
     rtk = rtk.replace(' ', '')
-    print('parsing ' + rtk)
+    #print('parsing ' + rtk)
     if 'k' not in rtk:
         irtk = int(rtk)
         if irtk != 0:
