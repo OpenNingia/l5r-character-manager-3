@@ -22,6 +22,8 @@ from l5r.util import log
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+def em(text):
+    return u'<em>{}</em>'.format(text)
 
 class SkillSelectInformativeWidget(QtWidgets.QWidget):
 
@@ -32,21 +34,23 @@ class SkillSelectInformativeWidget(QtWidgets.QWidget):
 
         self.cb_skills = QtWidgets.QComboBox(self)
         self.lb_book = QtWidgets.QLabel(self)
-        self.lb_desc = QtWidgets.QLabel(self)
+        self.lb_desc = QtWidgets.QPlainTextEdit(self)
+        self.lb_desc.setReadOnly(True)
 
         # build UI
         vb = QtWidgets.QVBoxLayout(self)
         vb.addWidget(self.cb_skills)
 
         fr_desc = QtWidgets.QFrame(self)
-        fly = QtWidgets.QFormLayout(fr_desc)
-        fly.addRow(self.lb_book, self.lb_desc)
+        fly = QtWidgets.QVBoxLayout(fr_desc)
+        fly.addWidget(self.lb_book)
+        fly.addWidget(self.lb_desc)
 
         vb.setContentsMargins(0, 0, 0, 0)
 
         vb.addWidget(fr_desc)
 
-        self.cb_skills.currentIndexChanged.connect(self.updateItem)
+        self.cb_skills.currentIndexChanged.connect(self.updateItem)        
 
     def clear(self):
         self.cb_skills.clear()
@@ -86,15 +90,35 @@ class SkillSelectInformativeWidget(QtWidgets.QWidget):
             skill_id, skill_rank = item_[0], item_[1]
         else:
             skill_id = item_
-
-        skill_ = api.data.skills.get(skill_id)
-        if skill_ and skill_.pack:
-            self.lb_book.setText(skill_.pack.display_name)
-        if skill_ and skill_.desc:
-            self.lb_desc.setText(skill_.desc)
-
+        
+        if skill_id:
+            self.update_book(skill_id)
+            self.update_desc(skill_id)
         self.currentIndexChanged.emit(item)
 
+    def update_desc(self, skill_id):
+        try:
+            skill_data = api.data.skills.get(skill_id)
+
+            if skill_data.desc:
+                self.lb_desc.setPlainText(skill_data.desc)                
+        except:
+            log.ui.error(f'cannot load description for skill: {skill_id}', exc_info=1)
+
+    def update_book(self, skill_id):
+        try:
+            skill_data = api.data.skills.get(skill_id)
+            source_book = skill_data.pack
+            page_number = skill_data.page
+
+            if not source_book:
+                self.lb_book.setText("")
+            elif not page_number:                
+                self.lb_book.setText(em(source_book.display_name))
+            else:
+                self.lb_book.setText(em(self.tr(f"{source_book.display_name}, page {page_number}")))
+        except:
+            log.ui.error(f'cannot load source book for skill: {skill_id}', exc_info=1)
 
 class BuyAdvDialog(QtWidgets.QDialog):
 
@@ -108,7 +132,7 @@ class BuyAdvDialog(QtWidgets.QDialog):
         self.quit_on_accept = True
         self.build_ui()
         self.load_data()
-
+        self.resize(500, 340)
         self.connect_signals()
 
     def build_ui(self):
@@ -159,7 +183,6 @@ class BuyAdvDialog(QtWidgets.QDialog):
         self.labels = {}
 
     def load_data(self):
-        print('load data')
         if self.tag == 'skill':
             cb = self.widgets[0]
             for t in api.data.skills.categories():

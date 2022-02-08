@@ -19,9 +19,12 @@ import sys
 import l5r.api as api
 import l5r.api.character.spells
 import l5r.api.data.spells
+from l5r.util import log
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+def em(text):
+    return u'<em>{}</em>'.format(text)
 
 class SpellItemSelection(QtWidgets.QWidget):
 
@@ -67,6 +70,7 @@ class SpellItemSelection(QtWidgets.QWidget):
         self.lb_spell = QtWidgets.QLabel(self.tr('Spell'), self)
         self.lb_tags = QtWidgets.QLabel(self.tr('Tags'), self)
         self.lb_mastery_mod = QtWidgets.QLabel(self.tr('Mastery modifier:'), self)
+        self.lb_book = QtWidgets.QLabel(self)
 
         self.tx_descr = QtWidgets.QTextEdit(self)
         self.tx_tags = QtWidgets.QLabel(self)
@@ -75,11 +79,7 @@ class SpellItemSelection(QtWidgets.QWidget):
         self.cb_element.setEditable(False)
         self.cb_mastery.setEditable(False)
 
-        monos_ = QtGui.QFont('Monospace')
-        monos_.setStyleHint(QtGui.QFont.Courier)
-
-        self.tx_descr.setReadOnly(True)
-        self.tx_descr.setFont(monos_)
+        self.tx_descr.setReadOnly(True)        
         self.tx_descr.setLineWrapMode(QtWidgets.QTextEdit.WidgetWidth)
         self.tx_descr.setWordWrapMode(QtGui.QTextOption.WordWrap)
 
@@ -95,6 +95,7 @@ class SpellItemSelection(QtWidgets.QWidget):
         vbox = QtWidgets.QVBoxLayout(self)
         vbox.addItem(form_lo)
         vbox.addWidget(self.tx_descr)
+        vbox.addWidget(self.lb_book)
 
         self.cb_element.currentIndexChanged.connect(self.on_ring_change)
         self.cb_mastery.currentIndexChanged.connect(self.on_mastery_change)
@@ -145,6 +146,7 @@ class SpellItemSelection(QtWidgets.QWidget):
             spell_tags = api.data.spells.tags(spell.id, api.character.schools.get_current())
             self.tx_descr.setText(spell.desc)
             self.tx_tags.setText(', '.join(spell_tags))
+            self.update_book(spell)
 
             self.spell_changed.emit(self.get_spell())
 
@@ -156,6 +158,20 @@ class SpellItemSelection(QtWidgets.QWidget):
                 self.tx_mastery_mod.setText("<span style='color:green'>+{}</span>".format(mmod))
             else:
                 self.tx_mastery_mod.setText("<span style='color:red'>{}</span>".format(mmod))
+
+    def update_book(self, spell_data):
+        try:
+            source_book = spell_data.pack
+            page_number = spell_data.page
+
+            if not source_book:
+                self.lb_book.setText("")
+            elif not page_number:                
+                self.lb_book.setText(em(source_book.display_name))
+            else:
+                self.lb_book.setText(em(self.tr(f"{source_book.display_name}, page {page_number}")))
+        except:
+            log.ui.error(f'cannot load source book for spell: {spell_data.id}', exc_info=1)
 
     def update_spell_list(self):
 
@@ -196,7 +212,7 @@ class SpellItemSelection(QtWidgets.QWidget):
 
     def set_spell(self, spell):
         if spell:
-            print('set spell: {0}', spell.id)
+            log.ui.debug('set spell: {0}', spell.id)
 
             self.cb_element.blockSignals(True)
             self.cb_mastery.blockSignals(True)

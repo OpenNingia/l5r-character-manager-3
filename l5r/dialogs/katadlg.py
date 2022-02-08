@@ -25,6 +25,9 @@ import l5r.widgets as widgets
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
+def em(text):
+    return u'<em>{}</em>'.format(text)
+
 class KataDialog(QtWidgets.QDialog):
 
     # title bar
@@ -55,6 +58,7 @@ class KataDialog(QtWidgets.QDialog):
         self.vbox_lo = QtWidgets.QVBoxLayout(self)
         self.bt_ok = QtWidgets.QPushButton(self.tr('Buy'), self)
         self.header = QtWidgets.QLabel(self)
+        self.lb_book = QtWidgets.QLabel(self)
         center_fr = QtWidgets.QFrame(self)
         center_fr.setFrameStyle(QtWidgets.QFrame.Sunken)
         cfr_fbox = QtWidgets.QFormLayout(center_fr)
@@ -70,7 +74,7 @@ class KataDialog(QtWidgets.QDialog):
         self.tx_element = QtWidgets.QLabel(self)
         self.tx_mastery = QtWidgets.QLabel(self)
         self.tx_ring_need = QtWidgets.QLabel(self)
-        self.tx_cost = QtWidgets.QLabel(self)
+        self.tx_cost = QtWidgets.QLabel(self)        
         self.tx_detail = QtWidgets.QTextEdit(self)
         self.tx_detail.setReadOnly(True)
         # self.tx_detail.setWordWrap(True)
@@ -89,6 +93,7 @@ class KataDialog(QtWidgets.QDialog):
         cfr_fbox.addRow(self.tr("XP Cost"), self.tx_cost)
         cfr_fbox.addRow(self.tr("Requirements"), self.req_list)
         cfr_fbox.addRow(self.tr("Details"), self.tx_detail)
+        cfr_fbox.addRow(self.tr("Source"), self.lb_book)
 
         cfr_fbox.setContentsMargins(120, 20, 120, 20)
         cfr_fbox.setVerticalSpacing(9)
@@ -130,6 +135,8 @@ class KataDialog(QtWidgets.QDialog):
         if not kata:
             return
 
+        self.update_book(kata)
+
         # save for later
         self.item = kata
 
@@ -160,3 +167,18 @@ class KataDialog(QtWidgets.QDialog):
         # save item
         self.parent().do_buy_kata(self.item)
         super(KataDialog, self).accept()
+
+
+    def update_book(self, kata_data):
+        try:
+            source_book = kata_data.pack
+            page_number = kata_data.page
+
+            if not source_book:
+                self.lb_book.setText("")
+            elif not page_number:                
+                self.lb_book.setText(em(source_book.display_name))
+            else:
+                self.lb_book.setText(em(self.tr(f"{source_book.display_name}, page {page_number}")))
+        except:
+            log.ui.error(f'cannot load source book for tattoo: {kata_data.id}', exc_info=1)

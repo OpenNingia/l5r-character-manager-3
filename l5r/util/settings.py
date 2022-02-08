@@ -104,7 +104,7 @@ class L5RCMSettings_UI(object):
 
     @property
     def use_system_font(self):
-        return self._qsettings.value('ui/use_system_font', True)
+        return _is_true(self._qsettings.value('ui/use_system_font', True))        
 
     @property
     def user_font(self):

@@ -18,9 +18,12 @@
 import l5r.api as api
 import l5r.api.data.powers
 import l5r.api.character.powers
+from l5r.util import log
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+def em(text):
+    return u'<em>{}</em>'.format(text)
 
 class KihoDialog(QtWidgets.QDialog):
 
@@ -52,6 +55,7 @@ class KihoDialog(QtWidgets.QDialog):
         self.vbox_lo = QtWidgets.QVBoxLayout(self)
         self.bt_ok = QtWidgets.QPushButton(self.tr('Buy'), self)
         self.header = QtWidgets.QLabel(self)
+        self.lb_book = QtWidgets.QLabel(self)
         center_fr = QtWidgets.QFrame(self)
         center_fr.setFrameStyle(QtWidgets.QFrame.Sunken)
         cfr_fbox = QtWidgets.QFormLayout(center_fr)
@@ -78,6 +82,7 @@ class KihoDialog(QtWidgets.QDialog):
         cfr_fbox.addRow(self.tr("PG Status"), self.tx_pc_status)
         cfr_fbox.addRow(self.tr("Eligibility"), self.tx_eligibility)
         cfr_fbox.addRow(self.tr("Details"), self.tx_detail)
+        cfr_fbox.addRow(self.tr("Source"), self.lb_book)
 
         cfr_fbox.setContentsMargins(120, 20, 120, 20)
         cfr_fbox.setVerticalSpacing(9)
@@ -118,6 +123,8 @@ class KihoDialog(QtWidgets.QDialog):
         kiho = api.data.powers.get_kiho(itm)
         if not kiho:
             return
+
+        self.update_book(kiho)
 
         status_ok = [
             self.tr("You are a Monk of the Brotherhood of Shinsei"),
@@ -180,6 +187,20 @@ class KihoDialog(QtWidgets.QDialog):
         self.parent().do_buy_kiho(self.item)
         super(KihoDialog, self).accept()
 
+    def update_book(self, kiho_data):
+        try:
+            source_book = kiho_data.pack
+            page_number = kiho_data.page
+
+            if not source_book:
+                self.lb_book.setText("")
+            elif not page_number:                
+                self.lb_book.setText(em(source_book.display_name))
+            else:
+                self.lb_book.setText(em(self.tr(f"{source_book.display_name}, page {page_number}")))
+        except:
+            log.ui.error(f'cannot load source book for tattoo: {kiho_data.id}', exc_info=1)        
+
 
 class TattooDialog(QtWidgets.QDialog):
 
@@ -207,6 +228,7 @@ class TattooDialog(QtWidgets.QDialog):
         self.vbox_lo = QtWidgets.QVBoxLayout(self)
         self.bt_ok = QtWidgets.QPushButton(self.tr('Buy'), self)
         self.header = QtWidgets.QLabel(self)
+        self.lb_book = QtWidgets.QLabel(self)
         center_fr = QtWidgets.QFrame(self)
         center_fr.setFrameStyle(QtWidgets.QFrame.Sunken)
         cfr_fbox = QtWidgets.QFormLayout(center_fr)
@@ -225,6 +247,7 @@ class TattooDialog(QtWidgets.QDialog):
         cfr_fbox.addRow(self.tr("Tattoo"), self.cb_tattoo)
         cfr_fbox.addRow(self.tr("PG Status"), self.tx_pc_status)
         cfr_fbox.addRow(self.tr("Details"), self.tx_detail)
+        cfr_fbox.addRow(self.tr("Source"), self.lb_book)
 
         cfr_fbox.setContentsMargins(120, 20, 120, 20)
 
@@ -232,7 +255,7 @@ class TattooDialog(QtWidgets.QDialog):
         self.vbox_lo.addWidget(center_fr)
         self.vbox_lo.addWidget(bottom_bar)
 
-        self.resize(600, 300)
+        self.resize(600, 400)
 
     def connect_signals(self):
         self.bt_ok.clicked.connect(self.accept)
@@ -265,6 +288,8 @@ class TattooDialog(QtWidgets.QDialog):
         if not kiho:
             return
 
+        self.update_book(kiho)
+
         status_ok = self.tr("You are a member of the Togashi Order")
         status_ko = self.tr("You have to be a member of the Togashi Order")
 
@@ -288,3 +313,17 @@ class TattooDialog(QtWidgets.QDialog):
         # save item
         self.parent().do_buy_kiho(self.item)
         super(TattooDialog, self).accept()
+
+    def update_book(self, tattoo_data):
+        try:
+            source_book = tattoo_data.pack
+            page_number = tattoo_data.page
+
+            if not source_book:
+                self.lb_book.setText("")
+            elif not page_number:                
+                self.lb_book.setText(em(source_book.display_name))
+            else:
+                self.lb_book.setText(em(self.tr(f"{source_book.display_name}, page {page_number}")))
+        except:
+            log.ui.error(f'cannot load source book for tattoo: {tattoo_data.id}', exc_info=1)
