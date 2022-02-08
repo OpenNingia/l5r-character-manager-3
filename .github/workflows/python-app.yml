@@ -26,7 +26,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@develop
+        pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@master
         pip install --no-deps ./l5r
         sudo apt-get install -y libxml2-dev libxslt1-dev python-dev librsvg2-bin python-docutils fakeroot 
     - name: Lint with flake8

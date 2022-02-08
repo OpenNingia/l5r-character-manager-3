@@ -27,7 +27,7 @@ Some of them can be installed using pip:
 
 ```bash
 pip install -r requirements.txt
-pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@develop
+pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@master
 ```
 
 Windows users can download PyQt5 binaries from here:

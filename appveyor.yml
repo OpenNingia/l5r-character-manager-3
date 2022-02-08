@@ -22,7 +22,7 @@ install:
   - python -m pip install --upgrade pip
   - pip install -r requirements.txt
   - pip install cx_Freeze
-  - pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@develop
+  - pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@master
 
 build_script:
   - pip install --no-deps .\l5r
