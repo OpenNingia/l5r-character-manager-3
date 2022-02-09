@@ -77,7 +77,7 @@ class ModifierDialog(QtWidgets.QDialog):
         self.vbox_lo.addWidget(center_fr)
         self.vbox_lo.addWidget(bottom_bar)
 
-        self.resize(600, 300)
+        self.setMinimumSize(600, 400)
 
     def connect_signals(self):
         self.bt_ok.clicked.connect(self.accept)

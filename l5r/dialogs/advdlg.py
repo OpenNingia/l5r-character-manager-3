@@ -132,7 +132,7 @@ class BuyAdvDialog(QtWidgets.QDialog):
         self.quit_on_accept = True
         self.build_ui()
         self.load_data()
-        self.resize(500, 340)
+        self.setMinimumSize(600, 400)
         self.connect_signals()
 
     def build_ui(self):

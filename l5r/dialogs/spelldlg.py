@@ -170,7 +170,7 @@ class SpellAdvDialog(QtWidgets.QDialog):
         self.vbox_lo.addWidget(self.error_bar)
         self.vbox_lo.addWidget(bottom_bar)
 
-        self.resize(620, 640)
+        self.setMinimumSize(620, 640)
         self.update_label_count()
 
     def connect_signals(self):
