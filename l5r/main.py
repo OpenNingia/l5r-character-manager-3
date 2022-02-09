@@ -944,7 +944,7 @@ class L5RMain(L5RCMCore):
             QtWidgets.QHeaderView.Interactive)
         merit_view.horizontalHeader().setStretchLastSection(True)
         merit_view.horizontalHeader().setCascadingSectionResizes(True)
-
+        merit_view.doubleClicked.connect(self.sink2.act_view_merit)
         merit_view.setModel(self.merits_sort_model)
         merit_vtb = _make_vertical_tb('merit', True, True)
         fr_ = QtWidgets.QFrame(self)
@@ -960,7 +960,7 @@ class L5RMain(L5RCMCore):
             QtWidgets.QHeaderView.Interactive)
         flaw_view.horizontalHeader().setStretchLastSection(True)
         flaw_view.horizontalHeader().setCascadingSectionResizes(True)
-
+        flaw_view.doubleClicked.connect(self.sink2.act_view_flaw)
         flaw_view.setModel(self.flaws_sort_model)
         flaw_vtb = _make_vertical_tb('flaw', True, True)
         fr_ = QtWidgets.QFrame(self)

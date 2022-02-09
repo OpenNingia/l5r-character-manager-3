@@ -127,6 +127,7 @@ class BuyPerkDialog(QtWidgets.QDialog):
         self.cb_subtype.blockSignals(flag)
 
         self.cost_widget.set_manual_only(flag)
+        self.tx_notes.setReadOnly(not flag)
 
     def load_item(self, perk):
         self.cb_perk.clear()
