@@ -91,7 +91,7 @@ class KihoDialog(QtWidgets.QDialog):
         self.vbox_lo.addWidget(center_fr)
         self.vbox_lo.addWidget(bottom_bar)
 
-        self.resize(600, 400)
+        self.setMinimumSize(600, 400)
 
     def connect_signals(self):
         self.bt_ok.clicked.connect(self.accept)
@@ -255,7 +255,7 @@ class TattooDialog(QtWidgets.QDialog):
         self.vbox_lo.addWidget(center_fr)
         self.vbox_lo.addWidget(bottom_bar)
 
-        self.resize(600, 400)
+        self.setMinimumSize(600, 400)
 
     def connect_signals(self):
         self.bt_ok.clicked.connect(self.accept)

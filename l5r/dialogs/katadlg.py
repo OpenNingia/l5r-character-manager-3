@@ -22,6 +22,7 @@ import l5r.api.data
 import l5r.api.data.powers
 import l5r.widgets as widgets
 
+from l5r.util import log
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -102,7 +103,7 @@ class KataDialog(QtWidgets.QDialog):
         self.vbox_lo.addWidget(center_fr)
         self.vbox_lo.addWidget(bottom_bar)
 
-        self.resize(600, 400)
+        self.setMinimumSize(600, 400)
 
     def connect_signals(self):
         self.bt_ok.clicked.connect(self.accept)

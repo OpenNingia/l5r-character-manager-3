@@ -75,7 +75,7 @@ class FamilyChooserDialog(QtWidgets.QDialog):
 
         self.setWindowTitle(self.tr("Clan and Family"))
 
-        self.resize(400, 240)
+        self.setMinimumSize(400, 0)
 
     def setup(self):
 

@@ -76,7 +76,8 @@ class FirstSchoolChooserDialog(QtWidgets.QDialog):
 
         self.setWindowTitle(self.tr("L5R: CM - First School"))
 
-        self.resize(400, 240)
+        self.setMinimumSize(400, 0)
+        self.resize(600, 440)
 
     def setup(self):
 
@@ -157,7 +158,7 @@ class SchoolChooserDialog(QtWidgets.QDialog):
 
         self.setWindowTitle(self.tr("L5R: CM - Select School"))
 
-        self.resize(400, 240)
+        self.setMinimumSize(400, 0)
 
     def setup(self):
 
