@@ -5,7 +5,7 @@ image:
 
 init:
   # Gather some basic build environment details.
-  - rem set
+  - set
   - dir
 
 environment:
@@ -17,8 +17,6 @@ environment:
 install:
   - if %PYTHONDIR:-x64=%==%PYTHONDIR% (set ARCH=x86) else set ARCH=x64
   - set PATH=%PYTHONDIR%;%PYTHONDIR%\scripts;C:\Program Files (x86)\Inno Setup 6;%PATH%
-  - python --version
-  - echo %PATH%
   - python -m pip install --upgrade pip
   - pip install -r requirements.txt
   - pip install cx_Freeze
