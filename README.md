@@ -9,7 +9,7 @@
 ```bash
 git clone https://github.com/OpenNingia/l5r-character-manager-3.git
 cd ./l5r-character-manager-3/
-git checkout develop
+git switch master
 ```
 
 ### Create a virtual environment
@@ -30,27 +30,24 @@ pip install -r requirements.txt
 pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@master
 ```
 
-Windows users can download PyQt5 binaries from here:
-https://www.riverbankcomputing.com/software/pyqt/download
-
 ### Note for Windows users
-You will need a basic compiler in order to build some of the dependencies (mainly lxml). 
+You will need Visual Studio or Visual Studio Build tools in order to build some of the dependencies (mainly lxml). 
 
-You will also need to install Python 3.6.x from here:
+You will also need to install Python from here (latest version should be fine):
 
 https://www.python.org/downloads/
 
 ### Note for Linux users
 You will need to download one more dependency, the pdf toolkit, needed to export the character sheets.
-Use you package manager to install the `pdftk` package. I recommend this version:
+Use you package manager to install the `pdftk-java` package. 
 
+In case this is not packaged for your distribution I recommend this version:
 https://gitlab.com/pdftk-java/pdftk
 
 ### Finally you launch the program
 
 ```
-cd l5r
-python3 main.py
+python3 ./main.py
 ```
 
 ## Getting the Datapacks
@@ -60,7 +57,7 @@ manage your characters.
 Game data is provided through packages named "datapacks" that are downloadable
 from the project website:
 
-http://sourceforge.net/projects/l5rcm/files/Data%20Packs/
+https://github.com/OpenNingia/l5rcm-data-packs/releases/latest
 
 however you might want to compile the datapack yourself; in order to do so follow these simple instructions.
 
@@ -69,7 +66,7 @@ The data pack sources are hosted in a different repo, to get them run:
 
 ```
 git clone https://github.com/OpenNingia/l5rcm-data-packs.git
-git checkout develop
+git switch master
 ```
 
 ### Build the datapacks
@@ -93,4 +90,4 @@ If the program was installed using the setup and/or debian file then you can als
 If you make a modification to the software or datapack that add value to the application
 don't esitate to share it!
 
-Please submit a pull request to the relative repository :)
+Please submit a pull request to the relative repository.
