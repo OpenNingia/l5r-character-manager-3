@@ -91,7 +91,7 @@ def get_missing_dependencies():
         elif not loaded_pack.active:
             log.api.warning(u"referenced pack %s is not active", br.id)
             yield br
-        elif api.ver_cmp(loaded_pack.version, br.version):
+        elif api.ver_cmp(loaded_pack.version, br.version) < 0:
             log.api.warning(u"referenced pack %s is outdated. referenced %s, loaded %s", br.id, br.version, loaded_pack.version)
             yield br
 
