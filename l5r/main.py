@@ -1221,7 +1221,7 @@ class L5RMain(L5RCMCore):
         self.equip_view = views_[0]
 
         font = self.equip_view.font()
-        font.setPointSize(11.5)
+        font.setPointSize(11)
         self.equip_view.setFont(font)
 
         self.money_widget = widgets.MoneyWidget(self)
