@@ -6,7 +6,7 @@
 AppName=L5R 4E: Character Manager
 AppVerName={#MyAppName} {%APPVEYOR_BUILD_VERSION|3.16.0}
 AppPublisher={#MyAppPublisher}
-DefaultDirName={pf}\openningia\l5rcm
+DefaultDirName={commonpf}\openningia\l5rcm
 DefaultGroupName=OpenNingia\L5RCM
 UninstallDisplayIcon={app}\l5rcm.exe
 SetupIconFile=l5rcm.ico
@@ -29,13 +29,13 @@ ArchitecturesInstallIn64BitMode=x64
 Source: "dist/*"; DestDir: "{app}"; Flags: recursesubdirs;
 ; Place all common files here, first one should be marked 'solidbreak'
 Source: "common/*";  DestDir: "{app}"; Flags: solidbreak recursesubdirs
-Source: "fonts/OLDSSCH_.TTF"; DestDir: "{fonts}"; FontInstall: "Oldstyle Small Caps"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontOldStyle
-Source: "fonts/OLDSIH__.TTF"; DestDir: "{fonts}"; FontInstall: "Oldstyle Italic"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontOldStyle
-Source: "fonts/OLDSH___.TTF"; DestDir: "{fonts}"; FontInstall: "Oldstyle 1"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontOldStyle
-Source: "fonts/LiberationSans-Regular.ttf"; DestDir: "{fonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
-Source: "fonts/LiberationSans-Italic.ttf"; DestDir: "{fonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
-Source: "fonts/LiberationSans-BoldItalic.ttf"; DestDir: "{fonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
-Source: "fonts/LiberationSans-Bold.ttf"; DestDir: "{fonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
+Source: "fonts/OLDSSCH_.TTF"; DestDir: "{commonfonts}"; FontInstall: "Oldstyle Small Caps"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontOldStyle
+Source: "fonts/OLDSIH__.TTF"; DestDir: "{commonfonts}"; FontInstall: "Oldstyle Italic"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontOldStyle
+Source: "fonts/OLDSH___.TTF"; DestDir: "{commonfonts}"; FontInstall: "Oldstyle 1"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontOldStyle
+Source: "fonts/LiberationSans-Regular.ttf"; DestDir: "{commonfonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
+Source: "fonts/LiberationSans-Italic.ttf"; DestDir: "{commonfonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
+Source: "fonts/LiberationSans-BoldItalic.ttf"; DestDir: "{commonfonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
+Source: "fonts/LiberationSans-Bold.ttf"; DestDir: "{commonfonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
 ; core pack
 Source: "core.l5rcmpack"; DestDir: "{app}";
 
@@ -67,4 +67,8 @@ Root: HKCR; Subkey: "L5Rcm.Character\shell\open\command"; ValueType: string; Val
 Root: HKCR; Subkey: "L5Rcm.Pack\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\l5rcm.exe"" --import ""%1"""; Flags: uninsdeletevalue; Tasks: l5rpackAssociation
 
 [Run]
-Filename: "{app}\l5rcm.exe"; Parameters: "--import ""{app}""\core.l5rcmpack"; Tasks: importCorePack
+Filename: "{app}\l5rcm.exe"; Parameters: "--import ""{app}\core.l5rcmpack"""; Tasks: importCorePack
+
+[InstallDelete]
+Type: files; Name: "{app}\Python3.dll"
+Type: files; Name: "{app}\Python310.dll"
