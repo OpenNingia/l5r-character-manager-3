@@ -72,3 +72,4 @@ Filename: "{app}\l5rcm.exe"; Parameters: "--import ""{app}\core.l5rcmpack"""; Ta
 [InstallDelete]
 Type: files; Name: "{app}\Python3.dll"
 Type: files; Name: "{app}\Python310.dll"
+Type: files; Name: "{app}\l5rcm.exe"
