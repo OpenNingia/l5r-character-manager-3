@@ -12,7 +12,6 @@ environment:
   matrix:
     - PYTHONDIR: C:\Python38-x64
     - PYTHONDIR: C:\Python39-x64
-    - PYTHONDIR: C:\Python310-x64
 
 install:
   - if %PYTHONDIR:-x64=%==%PYTHONDIR% (set ARCH=x86) else set ARCH=x64
