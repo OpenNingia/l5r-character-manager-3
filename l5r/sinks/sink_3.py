@@ -18,7 +18,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 import l5r.dialogs as dialogs
-
+from l5r.util import log
 
 class Sink3(QtCore.QObject):
 
@@ -49,8 +49,8 @@ class Sink3(QtCore.QObject):
         view_ = None
         try:
             view_ = self.sender().parent().property('source')
-        except Exception as e:
-            print("Exception", e)
+        except:
+            log.ui.error("Edit weapon error", exc_info=1)
         if view_ is None:
             return
         sel_idx = view_.selectionModel().currentIndex()
@@ -59,7 +59,7 @@ class Sink3(QtCore.QObject):
         sel_itm = view_.model().data(sel_idx, QtCore.Qt.UserRole)
         dlg = dialogs.CustomWeaponDialog(form.pc, form)
         dlg.edit_mode = True
-        print('loading weap {0}, tags: {1}'.format(sel_itm.name, sel_itm.tags))
+        log.ui.debug('loading weap {0}, tags: {1}'.format(sel_itm.name, sel_itm.tags))
         dlg.load_item(sel_itm)
         if dlg.exec_() == QtWidgets.QDialog.Accepted:
             form.update_from_model()
@@ -70,8 +70,8 @@ class Sink3(QtCore.QObject):
         view_ = None
         try:
             view_ = self.sender().parent().property('source')
-        except Exception as e:
-            print("Exception", e)
+        except:
+            log.ui.error("Remove weapon error", exc_info=1)
         if view_ is None:
             return
         sel_idx = view_.selectionModel().currentIndex()
@@ -88,7 +88,7 @@ class Sink3(QtCore.QObject):
         try:
             view_ = self.sender().parent().property('source')
         except Exception as e:
-            print("Exception", e)
+            log.ui.error("Increase quantity error", exc_info=1)
         if view_ is None:
             return
         sel_idx = view_.selectionModel().currentIndex()
@@ -109,7 +109,7 @@ class Sink3(QtCore.QObject):
         try:
             view_ = self.sender().parent().property('source')
         except Exception as e:
-            print("Exception", e)
+            log.ui.error("Decrease quantity error", exc_info=1)
         if view_ is None:
             return
         sel_idx = view_.selectionModel().currentIndex()

@@ -21,9 +21,10 @@ import l5r.widgets as widgets
 import l5r.api.character
 
 from l5r.util import log
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+def em(text):
+    return u'<em>{}</em>'.format(text)
 
 class BuyPerkDialog(QtWidgets.QDialog):
 
@@ -49,7 +50,7 @@ class BuyPerkDialog(QtWidgets.QDialog):
         else:
             self.setWindowTitle(self.tr("Add Disadvantage"))
 
-        self.setMinimumSize(400, 0)
+        self.setMinimumSize(600, 0)
 
         self.bt_accept = QtWidgets.QPushButton(self.tr("Ok"), self)
         self.bt_cancel = QtWidgets.QPushButton(self.tr("Cancel"), self)
@@ -84,7 +85,9 @@ class BuyPerkDialog(QtWidgets.QDialog):
         grp = QtWidgets.QGroupBox(self.tr("Notes"), self)
         vbox = QtWidgets.QVBoxLayout(grp)
         self.tx_notes = QtWidgets.QTextEdit(self)
+        self.lb_book = QtWidgets.QLabel(self)
         vbox.addWidget(self.tx_notes)
+        vbox.addWidget(self.lb_book)
         lvbox.addWidget(grp)
 
         if self.tag == 'merit':
@@ -124,6 +127,7 @@ class BuyPerkDialog(QtWidgets.QDialog):
         self.cb_subtype.blockSignals(flag)
 
         self.cost_widget.set_manual_only(flag)
+        self.tx_notes.setReadOnly(not flag)
 
     def load_item(self, perk):
         self.cb_perk.clear()
@@ -141,7 +145,14 @@ class BuyPerkDialog(QtWidgets.QDialog):
         self.item = perk.adv
 
         self.cost_widget.set_manual_cost(abs(self.item.cost))
-        self.tx_notes.setPlainText(self.item.extra)
+
+        if self.item.extra:
+            self.tx_notes.setPlainText(self.item.extra)
+        elif perk_itm.desc:
+            self.tx_notes.setPlainText(perk_itm.desc)
+        else:
+            self.tx_notes.setPlainText("")
+
 
     def on_subtype_select(self, text=''):
         if self.edit_mode:
@@ -174,11 +185,18 @@ class BuyPerkDialog(QtWidgets.QDialog):
         if selected < 0:
             return
         perk = self.cb_perk.itemData(selected)
+
+        self.update_book(perk)
+
         self.perk_id = perk.id
         self.perk_nm = perk.name
 
         # get perk rule
         self.perk_rule = perk.rule
+
+        # fill description
+        if perk.desc:
+            self.tx_notes.setPlainText(perk.desc)
 
         # populate ranks
         for rank in perk.ranks:
@@ -254,3 +272,17 @@ class BuyPerkDialog(QtWidgets.QDialog):
 
         self.accept()
 
+    def update_book(self, perk_data):
+        try:
+            source_book = perk_data.source_pack
+            page_number = perk_data.book_page
+
+            if not source_book:
+                self.lb_book.setText("")
+            elif not page_number:                
+                self.lb_book.setText(em(source_book.display_name))
+            else:
+                self.lb_book.setText(em(self.tr(f"{source_book.display_name}, page {page_number}")))
+        except:
+            log.ui.error(f'cannot load source book for perk: {perk_data.id}', exc_info=1)
+            print('perk data:', perk_data.__dict__)

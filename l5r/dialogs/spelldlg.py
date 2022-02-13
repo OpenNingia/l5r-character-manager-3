@@ -24,6 +24,8 @@ import l5r.api.data
 import l5r.api.data.schools
 import l5r.api.data.spells
 
+from l5r.util import log
+
 import l5r.widgets as widgets
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -168,7 +170,7 @@ class SpellAdvDialog(QtWidgets.QDialog):
         self.vbox_lo.addWidget(self.error_bar)
         self.vbox_lo.addWidget(bottom_bar)
 
-        self.resize(620, 640)
+        self.setMinimumSize(620, 640)
         self.update_label_count()
 
     def connect_signals(self):
@@ -235,7 +237,7 @@ class SpellAdvDialog(QtWidgets.QDialog):
                 elif len(wc) == 2:
                     ring, qty = wc
 
-                print(
+                log.ui.debug(
                     'wildcard, ring: {0}, qty: {1}, tag: {2}'.format(ring, qty, tag))
                 for i in range(idx, qty + idx):
                     self.properties[i] = {}

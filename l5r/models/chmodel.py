@@ -86,7 +86,6 @@ def attrib_name_from_id(attrib_id):
     if 0 <= attrib_id < len(ATTRIBS._ids):
         return ATTRIBS._ids[attrib_id]
     else:
-        print("unknown trait_id: {0}".format(attrib_id))
         return None
 
 

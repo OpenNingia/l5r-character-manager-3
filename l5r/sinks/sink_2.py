@@ -40,7 +40,7 @@ class Sink2(QtCore.QObject):
         dlg.exec_()
         form.update_from_model()
 
-    def act_edit_merit(self):
+    def _open_merit(self, editmode):
         form = self.form
 
         sel_idx = form.merit_view.selectionModel().currentIndex()
@@ -50,12 +50,19 @@ class Sink2(QtCore.QObject):
 
         dlg = dialogs.BuyPerkDialog(form.pc, 'merit', form)
 
-        dlg.set_edit_mode(True)
+        dlg.set_edit_mode(editmode)
         dlg.load_item(sel_itm)
         dlg.exec_()
-        form.update_from_model()
+        if editmode:
+            form.update_from_model()
 
-    def act_edit_flaw(self):
+    def act_view_merit(self):
+        self._open_merit(False)
+
+    def act_edit_merit(self):
+        self._open_merit(True)
+
+    def _open_flaw(self, editmode):
         form = self.form
 
         sel_idx = form.flaw_view.selectionModel().currentIndex()
@@ -65,10 +72,17 @@ class Sink2(QtCore.QObject):
 
         dlg = dialogs.BuyPerkDialog(form.pc, 'flaw', form)
 
-        dlg.set_edit_mode(True)
+        dlg.set_edit_mode(editmode)
         dlg.load_item(sel_itm)
         dlg.exec_()
-        form.update_from_model()
+        if editmode:
+            form.update_from_model()
+
+    def act_view_flaw(self):
+        self._open_flaw(False)
+
+    def act_edit_flaw(self):
+        self._open_flaw(True)
 
     def act_del_merit(self):
         form = self.form
@@ -121,8 +135,6 @@ class Sink2(QtCore.QObject):
 
         sel_idx = form.kiho_view.selectionModel().currentIndex()
         if not sel_idx.isValid():
-            print('index not valid')
             return
         sel_itm = form.ki_table_view.model().data(sel_idx, QtCore.Qt.UserRole)
-        print('to remove', sel_itm)
         form.remove_advancement_item(sel_itm.adv)

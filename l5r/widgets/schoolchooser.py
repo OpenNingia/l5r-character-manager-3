@@ -26,15 +26,18 @@ import l5r.api.character.merits
 import l5r.api.data.schools
 import l5r.api.data.clans
 
+from l5r.util import log
+
 from .requirementwidget import RequirementsWidget
 
 def green(text):
     return u'<span style="color: #0A0">{}</span>'.format(text)
 
-
 def red(text):
     return u'<span style="color: #A00">{}</span>'.format(text)
 
+def em(text):
+    return u'<em>{}</em>'.format(text)
 
 class FirstSchoolChooserDialog(QtWidgets.QDialog):
 
@@ -73,7 +76,8 @@ class FirstSchoolChooserDialog(QtWidgets.QDialog):
 
         self.setWindowTitle(self.tr("L5R: CM - First School"))
 
-        self.resize(400, 240)
+        self.setMinimumSize(400, 0)
+        self.resize(600, 440)
 
     def setup(self):
 
@@ -154,7 +158,7 @@ class SchoolChooserDialog(QtWidgets.QDialog):
 
         self.setWindowTitle(self.tr("L5R: CM - Select School"))
 
-        self.resize(400, 240)
+        self.setMinimumSize(400, 0)
 
     def setup(self):
 
@@ -303,7 +307,7 @@ class SchoolChooserWidget(QtWidgets.QWidget):
         form.addRow(self.tr("Clan:"), self.cb_clan)
         form.addRow(self.tr("School:"), self.cb_school)                
         form.addRow(self.tr("Path:"), self.cb_rank1_path)
-        form.addRow(self.lb_book, self.lb_desc)
+        form.addRow(self.tr("Source:"), self.lb_book)
 
         form.addRow(" ", QtWidgets.QWidget(self))  # empty row
         form.addRow(self.tr("Bonus:"), self.lb_trait)
@@ -672,24 +676,27 @@ class SchoolChooserWidget(QtWidgets.QWidget):
         try:
             bonus_trait = school_dal.trait
         except:
-            print('cannot find bonus trait of {}'.format(self.current_school_id))
+            log.ui.error('cannot find bonus trait of {}'.format(self.current_school_id), exc_info=1)
 
         if not bonus_trait:
             self.lb_trait.setText(red(self.tr("None")))
         else:
             self.lb_trait.setText(green(u"+1 {}").format(api.data.get_trait_or_ring(bonus_trait)))
 
-    def update_book(self, school_dal):
-        source_book = None
+    def update_book(self, school_data):
         try:
-            source_book = school_dal.pack
-        except:
-            print('cannot find source book of {}'.format(self.current_school_id))
+            source_book = school_data.pack
+            page_number = school_data.page
 
-        if not source_book:
-            self.lb_book.setText("")
-        else:
-            self.lb_book.setText(source_book.display_name)
+            if not source_book:
+                self.lb_book.setText("")
+            elif not page_number:                
+                self.lb_book.setText(em(source_book.display_name))
+            else:
+                self.lb_book.setText(em(self.tr(f"{source_book.display_name}, page {page_number}")))
+        except:
+            log.ui.error(f'cannot load source book for school: {self.current_school_id}', exc_info=1)
+
 
     def update_status(self):
         requirements_ok = self.req_list.match() if self.req_list is not None else True

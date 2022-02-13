@@ -18,6 +18,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QObject, pyqtProperty
 from l5r.util.settings import L5RCMSettings
+from l5r.util import log
 import api
 
 class QExampleListModel(QtCore.QAbstractListModel):
@@ -36,12 +37,10 @@ class QExampleListModel(QtCore.QAbstractListModel):
 
     @pyqtProperty(QtGui.QBrush)
     def odd_bg(self):
-        print('get odd bg')
         return self._bg
 
     @odd_bg.setter
     def odd_bg(self, value):
-        print('set odd bg')
         self._bg = value
 
     @pyqtProperty(QtGui.QBrush)
@@ -113,7 +112,6 @@ class QFontSelectorDataConverter(QDataConverter):
         return value
 
     def convert_to(self, value):
-        print('convert_to', value)
         return value
 
 
@@ -129,7 +127,6 @@ class QColorPaletteDataConverter(QDataConverter):
         return QtGui.QBrush(color)
 
     def convert_to(self, value):
-        print('convert_to', value)
         palette = self.parent().palette()
         if value:
             palette.setBrush(self.color_role, value)
@@ -146,7 +143,6 @@ class QBrushSelectorDataConverter(QDataConverter):
         return QtGui.QBrush(color)
 
     def convert_to(self, value):
-        print('convert_to', value)
         return value
 
 class QPropertySettingsBinder(QtCore.QObject):
@@ -170,7 +166,6 @@ class QPropertySettingsBinder(QtCore.QObject):
         else:
             nv = self.parent().property(self.prop)
 
-        print("update settings {} = {}".format(self.setting, nv))
         settings = QtCore.QSettings()
         settings.setValue(self.setting, nv)
         self.update_property()
@@ -186,7 +181,7 @@ class QPropertySettingsBinder(QtCore.QObject):
         #if self.parent().property(self.prop) == nv:
         #    return
 
-        print("set property {} from {} to {}".format(self.prop, self.parent().property(self.prop), nv))
+        log.app.debug("set property {} from {} to {}".format(self.prop, self.parent().property(self.prop), nv))
         self.parent().blockSignals(True)
         self.parent().setProperty(self.prop, nv)
         self.parent().blockSignals(False)
@@ -326,7 +321,7 @@ class SettingsWidget(QtWidgets.QWidget):
         QPropertySettingsBinder(
             self.ck_use_system_font,
             self.ck_use_system_font.stateChanged,
-            "checked", "ui/use_system_font")
+            "checked", "ui/use_system_font")            
 
         QPropertySettingsBinder(
             self.bt_select_font,

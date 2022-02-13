@@ -24,6 +24,7 @@ import l5r.api.data.spells
 import l5r.api.rules
 import l5r.models as models
 from l5r.util.settings import L5RCMSettings
+from l5r.util import log
 
 
 class FDFExporter(object):
@@ -367,7 +368,7 @@ class FDFExporterShugenja(FDFExporter):
             return ring_.text
 
         # schools
-        print('Starting Schools Export')
+        log.app.info('Starting Schools Export')
         schools = api.character.schools.get_schools_by_tag('shugenja')
         count = min(3, len(schools))
         for i in range(0, count):
@@ -391,7 +392,7 @@ class FDFExporterShugenja(FDFExporter):
                     fields['DEFICIENCY.%d' % (i + 1)] = deficiencies_str_
                     fields['SCHOOL_TECH.%d' % (i + 1)] = tech.desc
             else:
-                print('cannot export character school', schools[i])
+                log.app.error('cannot export character school: %s'.format(str(schools[i])))
 
         # EXPORT FIELDS
         for k in fields:
@@ -558,8 +559,8 @@ class FDFExporterMonk(FDFExporter):
 
             return lines
 
-        except Exception as e:
-            print(repr(e))
+        except:
+            log.app.error('Text split error', ext_info=1, stack_info=True)
             return None
 
 
@@ -634,7 +635,6 @@ class FDFExporterCourtier(FDFExporter):
                     break
                 rank = tech.rank - 1 if tech.rank > 0 else 0
                 fields['COURTIER_SCHOOL_RANK.%d.%d' % (i, rank)] = tech.name
-                print('COURTIER_SCHOOL_RANK.%d.%d' % (i, rank), tech.name)
 
         # EXPORT FIELDS
         for k in fields:

@@ -85,7 +85,7 @@ class NpcExportDialog(QtWidgets.QDialog):
 
         self.bt_ok.clicked.connect(self.accept)
 
-        self.resize(600, 300)
+        self.setMinimumSize(600, 400)
 
     def on_browse_file(self):
         index = self.a_bt_browse.index(self.sender())

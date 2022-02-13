@@ -14,6 +14,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+from pydoc import pager
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 # ASQ ( data query )
@@ -26,14 +27,16 @@ import l5r.api.data
 import l5r.api.data.families
 import l5r.api.data.clans
 
+from l5r.util import log
 
 def green(text):
     return u'<span style="color: #0A0">{}</span>'.format(text)
 
-
 def red(text):
     return u'<span style="color: #A00">{}</span>'.format(text)
 
+def em(text):
+    return u'<em>{}</em>'.format(text)
 
 class FamilyChooserDialog(QtWidgets.QDialog):
 
@@ -72,7 +75,7 @@ class FamilyChooserDialog(QtWidgets.QDialog):
 
         self.setWindowTitle(self.tr("Clan and Family"))
 
-        self.resize(400, 240)
+        self.setMinimumSize(400, 0)
 
     def setup(self):
 
@@ -103,7 +106,6 @@ class FamilyChooserWidget(QtWidgets.QWidget):
         self.cb_family = QtWidgets.QComboBox(self)
         self.lb_trait = QtWidgets.QLabel(self)
         self.lb_book = QtWidgets.QLabel(self)
-        self.lb_desc = QtWidgets.QLabel(self)
 
         self.current_clan_id = None
         self.current_family_id = None
@@ -122,7 +124,7 @@ class FamilyChooserWidget(QtWidgets.QWidget):
         form = QtWidgets.QFormLayout(self)
         form.addRow(self.tr("Clan:"), self.cb_clan)
         form.addRow(self.tr("Family:"), self.cb_family)
-        form.addRow(self.lb_book, self.lb_desc)
+        form.addRow(self.tr("Source:"), self.lb_book)
         form.addRow("<hr/>", QtWidgets.QWidget(self))  # empty row
         form.addRow(self.tr("Bonus:"), self.lb_trait)
 
@@ -219,14 +221,18 @@ class FamilyChooserWidget(QtWidgets.QWidget):
 
     def update_book(self):
         try:
-            source_book = api.data.families.get(self.current_family_id).pack
+            family_data = api.data.families.get(self.current_family_id)
+            source_book = family_data.pack
+            page_number = family_data.page
 
             if not source_book:
                 self.lb_book.setText("")
+            elif not page_number:                
+                self.lb_book.setText(em(source_book.display_name))
             else:
-                self.lb_book.setText(source_book.display_name)
+                self.lb_book.setText(em(self.tr(f"{source_book.display_name}, page {page_number}")))
         except:
-            print('cannot find source book of {}'.format(self.current_family_id))
+            log.ui.error(f'cannot load source book for family: {self.current_family_id}', exc_info=1)
 
     def update_bonus_trait(self):
         try:
@@ -237,7 +243,7 @@ class FamilyChooserWidget(QtWidgets.QWidget):
             else:
                 self.lb_trait.setText(green("+1 {}").format(api.data.get_trait_or_ring(bonus_trait)))
         except:
-            print('cannot find bonus trait of {}'.format(self.current_family_id))
+            log.ui.error(f'cannot load bonus trait for family: {self.current_family_id}', exc_info=1)
 
 # ## MAIN ## #
 

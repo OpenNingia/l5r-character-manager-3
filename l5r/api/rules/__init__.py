@@ -46,7 +46,7 @@ def get_trait_rank_cost(trait_nm, new_value):
     cost = new_value * get_trait_cost(trait_nm)
     ring = api.data.get_trait_ring(trait_nm)
 
-    elemental_bless = "elem_bless_{}".format(ring.text)
+    elemental_bless = "elem_bless_{}".format(ring.id)
     if api.character.has_rule(elemental_bless):
         cost -= 1
 
@@ -95,7 +95,7 @@ def parse_rtk_with_bonus(rtk):
     """parse a string in the format roll/keep plus a numeric bonus"""
     # 3k2+1
     rtk = rtk.replace(' ', '')
-    print('parsing ' + rtk)
+    #print('parsing ' + rtk)
     if 'k' not in rtk:
         irtk = int(rtk)
         if irtk != 0:
