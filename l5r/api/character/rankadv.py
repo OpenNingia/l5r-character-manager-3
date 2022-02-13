@@ -82,16 +82,19 @@ def advance_rank():
     from l5r.models.advancements.rank import Rank
     adv = Rank()
     # the insight rank
-    adv.rank = api.character.insight_rank()
+    adv.rank = api.character.insight_rank(strict=True) + 1
     # this is the current school for this rank
     adv.school = api.character.schools.get_current()
+    # this is the current school_rank for this school
+    adv.school_rank = api.character.schools.get_school_rank(adv.school) + 1
+
     # no cost advancing in the same rank
     adv.cost = 0
     # description
     adv.desc = api.tr("Insight Rank {0}. School: {1} rank {2} ").format(
         adv.rank,
         api.data.schools.get(adv.school).name,
-        api.character.schools.get_school_rank(adv.school) + 1
+        adv.school_rank
     )
 
     # get 3 spells each rank other than the first
@@ -121,16 +124,19 @@ def leave_path():
     from l5r.models.advancements.rank import Rank
     adv = Rank()
     # the insight rank
-    adv.rank = api.character.insight_rank()
+    adv.rank = api.character.insight_rank(strict=True) + 1
     # this is the current school for this rank
     adv.school = former_school_.school
+    # this is the current school rank for this school
+    adv.school_rank = api.character.schools.get_school_rank(adv.school) + 1
+
     # no cost advancing in the same rank
     adv.cost = 0
     # description
     adv.desc = api.tr("Insight Rank {0}. School: {1} rank {2} ").format(
         adv.rank,
         api.data.schools.get(adv.school).name,
-        api.character.schools.get_school_rank(adv.school) + 1
+        adv.school_rank
     )
 
     # get 3 spells each rank other than the first
@@ -155,14 +161,17 @@ def join_new(school_id):
     from l5r.models.advancements.rank import Rank
     adv = Rank()
     # the insight rank
-    adv.rank = api.character.insight_rank()
+    adv.rank = api.character.insight_rank(strict=True)
+    if api.character.insight_rank(strict=True) != api.character.insight_rank():
+        adv.rank +=1
+
     # this is the current school for this rank
     adv.school = school_id
+    # this is the current school rank for this school
+    adv.school_rank = api.character.schools.get_school_rank(adv.school)
+    
     # no cost advancing in the same rank
     adv.cost = 0
-    # description
-
-    school_rank = api.character.schools.get_school_rank(adv.school)
 
     # get 3 spells each rank other than the first
     if api.data.schools.is_shugenja(school_id) and adv.rank > 1:
@@ -172,7 +181,7 @@ def join_new(school_id):
         # replaces current school
         adv.replaced = api.character.schools.get_current()
     else:
-        school_rank += 1
+        adv.school_rank += 1
 
         # get 2 kiho each rank
         # alternate path doesn't get the bonus
@@ -190,11 +199,12 @@ def join_new(school_id):
             adv.deficiencies_to_choose.append(school_.deficiency)
         else:
             adv.deficiencies.append(school_.deficiency)
-
+    
+    # description
     adv.desc = api.tr("Insight Rank {0}. School: {1} rank {2} ").format(
         adv.rank,
         school_.name,
-        school_rank
+        adv.school_rank
     )
 
     return api.character.append_advancement(adv)

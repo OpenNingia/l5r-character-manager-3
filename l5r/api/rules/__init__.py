@@ -207,6 +207,8 @@ def calculate_base_attack_roll(pc, weap):
     attrib = 'agility'
     if weap.skill_nm == 'Kyujutsu':
         attrib = 'reflexes'
+    if weap.trait != '':
+        attrib = weap.trait
 
     trait = api.character.modified_trait_rank(attrib)
     skill = 0
@@ -224,6 +226,7 @@ def calculate_mod_attack_roll(pc, weap):
     atk_r, atk_k = calculate_base_attack_roll(pc, weap)
     r_mod = 0
     k_mod = 0
+    flat_bonus = 0
 
     # any roll bonuses
     anyr = pc.get_modifiers('anyr')
@@ -245,8 +248,9 @@ def calculate_mod_attack_roll(pc, weap):
         if x.active and x.dtl == weap.name:
             r_mod += x.value[0]
             k_mod += x.value[1]
+            flat_bonus += x.value[2]
 
-    return atk_r + r_mod, atk_k + k_mod
+    return atk_r + r_mod, atk_k + k_mod, flat_bonus
 
 
 def calculate_base_damage_roll(pc, weap):

@@ -431,7 +431,7 @@ class FDFExporterBushi(FDFExporter):
         # schools, bushi and samurai monk
         schools = []
         for s in api.character.schools.get_all():
-            if api.data.schools.is_bushi(s) or api.data.schools.is_samurai_monk(s):
+            if api.data.schools.is_bushi(s) or api.data.schools.is_samurai_monk(s)  or api.data.schools.is_ninja(s):
                 schools.append(s)
 
         count = min(2, len(schools))
@@ -566,19 +566,19 @@ class FDFExporterMonk(FDFExporter):
 
 class FDFExporterWeapons(FDFExporter):
 
-    def __init__(self):
+    def __init__(self, offset=0):
         super(FDFExporterWeapons, self).__init__()
+
+        self.weapons_offset = offset
+        self.weapons_per_page = 10
 
     def export_body(self, io):
         m = self.model
         f = self.form
         fields = {}
+
         # WEAPONS
-
-        count = min(10, len(m.get_weapons()))
-        j = 0
-
-        for weap in m.get_weapons()[0:count]:
+        for j, weap in enumerate(m.get_weapons()[self.weapons_offset : self.weapons_offset + self.weapons_per_page + 1]):
             weap.base_atk = api.rules.format_rtk_t(
                 api.rules.calculate_base_attack_roll(m, weap))
             weap.max_atk = api.rules.format_rtk_t(
@@ -600,12 +600,10 @@ class FDFExporterWeapons(FDFExporter):
             else:
                 fields['WEAPON.DMG.%d' % j] = weap.base_dmg
             fields['WEAPON.NOTES.%d' % j] = weap.desc
-            j += 1
-
+            
         # EXPORT FIELDS
         for k in fields:
             self.export_field(k, fields[k], io)
-
 
 class FDFExporterCourtier(FDFExporter):
 
@@ -659,22 +657,17 @@ class FDFExporterSkills(FDFExporter):
 
         # SKILLS
         skills = f.sk_view_model.items
-        if self.skill_offset > 0:
-            skills = skills[self.skill_offset:]
 
         sorted_skills = sorted(
             skills, key=lambda x: (not x.is_school, -x.rank, x.name))
-        for i, sk in enumerate(sorted_skills):
-            j = i + 1
-            if i >= self.skills_per_page:
-                break
+        for i, sk in enumerate(sorted_skills[self.skill_offset : self.skill_offset + self.skills_per_page + 1], start=1):
 
-            fields['SKILL_IS_SCHOOL.%d' % j] = sk.is_school
-            fields['SKILL_NAME.%d' % j] = sk.name
-            fields['SKILL_RANK.%d' % j] = sk.rank
-            fields['SKILL_TRAIT.%d' % j] = sk.trait
-            fields['SKILL_ROLL.%d' % j] = sk.mod_roll
-            fields['SKILL_EMPH_MA.%d' % j] = ', '.join(sk.emph)
+            fields['SKILL_IS_SCHOOL.%d' % i] = sk.is_school
+            fields['SKILL_NAME.%d' % i] = sk.name
+            fields['SKILL_RANK.%d' % i] = sk.rank
+            fields['SKILL_TRAIT.%d' % i] = sk.trait
+            fields['SKILL_ROLL.%d' % i] = sk.mod_roll
+            fields['SKILL_EMPH_MA.%d' % i] = ', '.join(sk.emph)
 
         # EXPORT FIELDS
         for k in fields:
