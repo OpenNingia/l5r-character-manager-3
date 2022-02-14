@@ -657,22 +657,17 @@ class FDFExporterSkills(FDFExporter):
 
         # SKILLS
         skills = f.sk_view_model.items
-        if self.skill_offset > 0:
-            skills = skills[self.skill_offset:]
 
         sorted_skills = sorted(
             skills, key=lambda x: (not x.is_school, -x.rank, x.name))
-        for i, sk in enumerate(sorted_skills):
-            j = i + 1
-            if i >= self.skills_per_page:
-                break
+        for i, sk in enumerate(sorted_skills[self.skill_offset : self.skill_offset + self.skills_per_page + 1], start=1):
 
-            fields['SKILL_IS_SCHOOL.%d' % j] = sk.is_school
-            fields['SKILL_NAME.%d' % j] = sk.name
-            fields['SKILL_RANK.%d' % j] = sk.rank
-            fields['SKILL_TRAIT.%d' % j] = sk.trait
-            fields['SKILL_ROLL.%d' % j] = sk.mod_roll
-            fields['SKILL_EMPH_MA.%d' % j] = ', '.join(sk.emph)
+            fields['SKILL_IS_SCHOOL.%d' % i] = sk.is_school
+            fields['SKILL_NAME.%d' % i] = sk.name
+            fields['SKILL_RANK.%d' % i] = sk.rank
+            fields['SKILL_TRAIT.%d' % i] = sk.trait
+            fields['SKILL_ROLL.%d' % i] = sk.mod_roll
+            fields['SKILL_EMPH_MA.%d' % i] = ', '.join(sk.emph)
 
         # EXPORT FIELDS
         for k in fields:
