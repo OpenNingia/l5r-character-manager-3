@@ -566,19 +566,19 @@ class FDFExporterMonk(FDFExporter):
 
 class FDFExporterWeapons(FDFExporter):
 
-    def __init__(self):
+    def __init__(self, offset=0):
         super(FDFExporterWeapons, self).__init__()
+
+        self.weapons_offset = offset
+        self.weapons_per_page = 10
 
     def export_body(self, io):
         m = self.model
         f = self.form
         fields = {}
+
         # WEAPONS
-
-        count = min(10, len(m.get_weapons()))
-        j = 0
-
-        for weap in m.get_weapons()[0:count]:
+        for j, weap in enumerate(m.get_weapons()[self.weapons_offset : self.weapons_offset + self.weapons_per_page + 1]):
             weap.base_atk = api.rules.format_rtk_t(
                 api.rules.calculate_base_attack_roll(m, weap))
             weap.max_atk = api.rules.format_rtk_t(
@@ -600,12 +600,10 @@ class FDFExporterWeapons(FDFExporter):
             else:
                 fields['WEAPON.DMG.%d' % j] = weap.base_dmg
             fields['WEAPON.NOTES.%d' % j] = weap.desc
-            j += 1
-
+            
         # EXPORT FIELDS
         for k in fields:
             self.export_field(k, fields[k], io)
-
 
 class FDFExporterCourtier(FDFExporter):
 

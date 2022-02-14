@@ -275,8 +275,14 @@ class L5RCMCore(QtWidgets.QMainWindow):
             skill_count -= _exporter.skills_per_page
 
         # WEAPONS
-        if len(self.pc.weapons) > 2:
-            self.write_pdf('sheet_weapons.pdf', exporters.FDFExporterWeapons())
+        weapons_count = len(self.pc.weapons)
+        weapons_offset = 0
+        if weapons_count > 2:
+            while weapons_count > 0:
+                _exporter = exporters.FDFExporterWeapons(weapons_offset)
+                self.write_pdf('sheet_weapons.pdf', _exporter)
+                weapons_offset += _exporter.weapons_per_page
+                weapons_count -= _exporter.weapons_per_page
 
         self.commit_pdf_export(export_file)           
 
