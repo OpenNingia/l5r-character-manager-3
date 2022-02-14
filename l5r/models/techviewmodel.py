@@ -105,18 +105,13 @@ class TechViewModel(QtCore.QAbstractTableModel):
     def update_from_model(self, model):
         self.clean()
 
-        #for r in api.character.rankadv.get_all():
-        #    tech_ = api.character.schools.get_tech_by_rank(r.rank)
-        #    if tech_:
-        #        self.add_item(tech_, r.rank)
-
-        for i in range(1, 10):
-            tech_ = api.character.schools.get_tech_by_rank(i)
+        for r in api.character.rankadv.get_all():
+            tech_ = api.character.schools.get_tech_by_rank(r.rank)
             if tech_:
-                self.add_item(tech_, i)
+                self.add_item(tech_, r.rank)
 
         # sort by rank
-        self.items.sort()
+        self.items.sort(key=lambda x: int(x.rank))
 
     def adjust_tech_rank(self, model, tech_id):
         paths = [x for x in model.schools if x.is_path and tech_id in x.techs]
