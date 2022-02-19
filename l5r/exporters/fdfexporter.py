@@ -428,10 +428,10 @@ class FDFExporterBushi(FDFExporter):
 
         fields = {}
 
-        # schools, bushi and samurai monk
+        # schools, bushi, samurai monk and ninja
         schools = []
         for s in api.character.schools.get_all():
-            if api.data.schools.is_bushi(s) or api.data.schools.is_samurai_monk(s)  or api.data.schools.is_ninja(s):
+            if api.data.schools.is_bushi(s) or api.data.schools.is_samurai_monk(s) or api.data.schools.is_ninja(s):
                 schools.append(s)
 
         count = min(2, len(schools))
