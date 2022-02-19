@@ -63,3 +63,6 @@ docs/_build/
 
 # Visual studio code
 .vscode/
+
+# inno setup output
+tools/deploy/windows/Output/

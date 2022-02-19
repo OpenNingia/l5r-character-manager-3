@@ -52,8 +52,10 @@ def get_first():
         return None
     return rank_.school
 
+
 def set_first(sid):
     return set_first_with_path(sid, None)
+
 
 def set_first_with_path(sid, pid):
     """set first school to PC"""
@@ -105,6 +107,7 @@ def set_first_with_path(sid, pid):
     # rank 1 path special case
     if pid:
         api.character.rankadv.join_rank1_path(pid)
+
 
 def join_new(sid):
     """join a new school"""
@@ -176,3 +179,4 @@ def get_techs_by_school(sid):
         return []
 
     return query(school_.techs).where(lambda x: api.character.has_rule(x.id)).select(a_('id')).to_list()
+
