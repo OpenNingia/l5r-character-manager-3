@@ -4,7 +4,7 @@
 
 [Setup]
 AppName=L5R 4E: Character Manager
-AppVerName={#MyAppName} {%APPVEYOR_BUILD_VERSION|3.16.0}
+AppVerName={#MyAppName} {%APPVEYOR_BUILD_VERSION|3.17.0}
 AppPublisher={#MyAppPublisher}
 DefaultDirName={commonpf}\openningia\l5rcm
 DefaultGroupName=OpenNingia\L5RCM
