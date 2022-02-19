@@ -108,14 +108,19 @@ def advance_rank():
     return api.character.append_advancement(adv)
 
 
+def get_former_school():
+    """returns the first available school to return after an alternate path"""
+    return query(get_all()).where(
+        lambda x: not api.data.schools.is_path(x)).order_by(a_('rank')).first_or_default(None)
+
+
 def leave_path():
     """the character resume its former path"""
 
     # this function assumes that the character is
     # currently following an alternate path
 
-    former_school_ = query(get_all()).where(
-        lambda x: not api.data.schools.is_path(x)).order_by(a_('rank')).first_or_default(None)
+    former_school_ = get_former_school()
 
     if not former_school_:
         log.api.error(u"former school not found. could not resume old path")
@@ -136,7 +141,7 @@ def leave_path():
     adv.desc = api.tr("Insight Rank {0}. School: {1} rank {2} ").format(
         adv.rank,
         api.data.schools.get(adv.school).name,
-        adv.school_rank
+        api.character.schools.get_school_rank(adv.school)
     )
 
     # get 3 spells each rank other than the first
