@@ -41,8 +41,8 @@ from PyQt5.QtCore import QUrl
 
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
-APP_VERSION = '3.16.0'
-DB_VERSION = '3.16'
+APP_VERSION = '3.17.0'
+DB_VERSION = '3.17'
 APP_ORG = 'openningia'
 
 PROJECT_PAGE_LINK = 'https://github.com/OpenNingia/l5r-character-manager-3'
@@ -51,10 +51,7 @@ PROJECT_PAGE_NAME = 'Project Page'
 AUTHOR_NAME = 'Daniele Simonetti'
 L5R_RPG_HOME_PAGE = 'http://www.l5r.com/rpg/'
 ALDERAC_HOME_PAGE = 'http://www.alderac.com/'
-PROJECT_DOWNLOADS_LINK = 'https://sourceforge.net/projects/l5rcm/'
-
-L5RCM_GPLUS_PAGE = "https://plus.google.com/114911686277310621574"
-L5RCM_GPLUS_COMM = "https://plus.google.com/communities/107752342280671357654"
+DATA_PACKS_DOWNLOADS_LINK = 'https://github.com/OpenNingia/l5rcm-data-packs/releases/latest'
 
 
 class L5RCMCore(QtWidgets.QMainWindow):
@@ -91,8 +88,8 @@ class L5RCMCore(QtWidgets.QMainWindow):
         if not len(api.data.packs()):
             self.advise_warning(self.tr("No Datapacks installed"),
                                 self.tr("Without data packs the software will be of little use."
-                                        "<p>Download a datapack from <a href=\"{0}\">{0}</a>.</p>"
-                                        .format(PROJECT_DOWNLOADS_LINK)))
+                                        "<p>Download a datapack from <a href=\"{0}\">Github</a>.</p>"
+                                        .format(DATA_PACKS_DOWNLOADS_LINK)))
 
     def update_from_model(self):
         pass

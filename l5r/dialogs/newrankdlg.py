@@ -58,10 +58,17 @@ what would you want to do?
             api.character.schools.get_current()
         )
 
+        former_school_adv = api.character.rankadv.get_former_school()
+        former_school = api.data.schools.get(former_school_adv.school) if former_school_adv else None
+
         # check if the PC is following an alternate path
         if is_path:
             # offer to going back
-            self.bt_go_on.setText(self.tr("Go back to your old school"))
+            if former_school:
+                self.bt_go_on.setText(self.tr("Continue ") + former_school.name)
+            else:
+                self.bt_go_on.setText(self.tr("Go back to your old school"))
+            self.bt_go_on.setEnabled(former_school != None)
 
     def connect_signals(self):
         self.bt_go_on.clicked.connect(self.simply_go_on)
