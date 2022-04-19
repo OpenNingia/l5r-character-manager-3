@@ -40,7 +40,7 @@ log.app.info(u"l5rcm base dir: %s", MY_CWD)
 
 def get_app_file(rel_path):
     if os.name == 'nt':
-        return os.path.join(MY_CWD, 'share/l5rcm', rel_path)
+        return os.path.join(MY_CWD, 'share\\l5rcm', rel_path)
     else:
         sys_path = '/usr/share/l5rcm'
         if os.path.exists(sys_path):

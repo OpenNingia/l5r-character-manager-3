@@ -1,4 +1,4 @@
-@echo off
+rem @echo off
 
 echo "> START BUILD x86 APP"
 
@@ -16,7 +16,7 @@ del /S /F /Q .\dist\*.* 1> NUL
 
 REM BUILD EXECUTABLE
 echo "* building new binaries"
-c:\python27x86\python setup.py py2exe 1> NUL
+python setup.py py2exe 1> NUL
 
 REM COPY DIST DIRECTORY IN THE DEPLOY DIR
 echo "* copying binaries to deployment directory"
