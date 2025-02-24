@@ -37,3 +37,5 @@ artifacts:
 
 # fetch repository as zip archive
 shallow_clone: true
+
+skip_branch_with_pr: true
