@@ -90,7 +90,7 @@ class Sink1(QtCore.QObject):
             try:
                 form.export_as_pdf(file_)
                 form.open_pdf_file_as_shell(file_)
-            except:
+            except Exception as e:
                 self.form.advise_error(self.tr("Cannot save pdf sheet."))            
 
     def switch_to_page_1(self):

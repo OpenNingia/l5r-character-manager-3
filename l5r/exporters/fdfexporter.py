@@ -600,7 +600,7 @@ class FDFExporterWeapons(FDFExporter):
             else:
                 fields['WEAPON.DMG.%d' % j] = weap.base_dmg
             fields['WEAPON.NOTES.%d' % j] = weap.desc
-            
+
         # EXPORT FIELDS
         for k in fields:
             self.export_field(k, fields[k], io)
@@ -624,17 +624,17 @@ class FDFExporterCourtier(FDFExporter):
 
         count = min(2, len(schools))
         for i in range(0, count):
-            school = api.data.schools.get(schools[i])
             techs = api.character.schools.get_techs_by_school(schools[i])
-
-            fields['COURTIER_SCHOOL_NM.%d' % i] = school.name
+            school = api.data.schools.get(schools[i])
+            fields['BUSHI_SCHOOL_NM.%d' % i] = school.name
 
             for t in techs:
                 thsc, tech = api.data.schools.get_technique(t)
                 if not tech:
                     break
                 rank = tech.rank - 1 if tech.rank > 0 else 0
-                fields['COURTIER_SCHOOL_RANK.%d.%d' % (i, rank)] = tech.name
+                fields['BUSHI_TECH.%d.%d' % (rank, i)] = tech.name
+                fields['BUSHI_TECH_TEXT.%d.%d' % (rank, i)] = tech.desc
 
         # EXPORT FIELDS
         for k in fields:

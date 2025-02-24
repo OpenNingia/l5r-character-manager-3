@@ -59,7 +59,7 @@ class NpcExportDialog(QtWidgets.QDialog):
         self.a_bt_browse = [QtWidgets.QToolButton(self), QtWidgets.QToolButton(self)]
 
         fnt = QtGui.QFont()
-        fnt.setPointSize(12.0)
+        fnt.setPointSize(12)
 
         for bt in self.a_bt_browse:
             bt.setAutoRaise(True)
