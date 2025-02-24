@@ -1,0 +1,45 @@
+[project]
+name = "l5rcm"
+
+authors = [
+    {name = "Daniele Simonetti", email = "oppifjellet@gmail.com"},
+]
+description = "L5R RPG character manager"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["l5r", "rpg", "legend-of-the-five-rings", "character-manager"]
+license = {text = "GPLv3"}
+classifiers=[
+    # How mature is this project? Common values are
+    #   3 - Alpha
+    #   4 - Beta
+    #   5 - Production/Stable
+    'Development Status :: 5 - Production/Stable',
+
+    'Intended Audience :: End Users/Desktop',
+
+    'Environment :: Win32 (MS Windows)',
+    'Environment :: X11 Applications :: Qt',
+
+    'Topic :: Games/Entertainment :: Role-Playing',
+    'Topic :: Utilities',
+
+    # Pick your license as you wish (should match "license" above)
+    'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+
+    # Specify the Python versions you support here. In particular, ensure
+    # that you indicate whether you support Python 2, Python 3 or both.
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3 :: Only'
+]
+dynamic = ["version"]
+
+[tool.cxfreeze]
+executables = [
+    {script = "main.py", base = "gui", "icon" = "tools/deploy/windows/l5rcm.ico", target_name = "l5rcm"}
+]
+
+[tool.cxfreeze.build_exe]
+excludes = ["tests", "unittest"]
+includes = ["l5r.widgets.iconloader"]
+zip_include_packages = ["encodings", "PySide5", "shiboken5", "lxml._elementpath"]

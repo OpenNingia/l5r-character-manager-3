@@ -10,8 +10,7 @@ init:
 
 environment:
   matrix:
-    - PYTHONDIR: C:\Python38-x64
-    - PYTHONDIR: C:\Python39-x64
+    - PYTHONDIR: C:\Python312-x64
 
 install:
   - if %PYTHONDIR:-x64=%==%PYTHONDIR% (set ARCH=x86) else set ARCH=x64
@@ -26,7 +25,7 @@ build_script:
 
 after_build:
   - mkdir tools\deploy\windows\dist
-  - python cxfreeze.py build
+  - cxfreeze build --target-dir .\tools\deploy\windows\dist
   - cd tools\deploy\windows\
   - deploy_common.bat
   - dir common
@@ -38,3 +37,5 @@ artifacts:
 
 # fetch repository as zip archive
 shallow_clone: true
+
+skip_branch_with_pr: true
