@@ -39,6 +39,15 @@ class FDFExporter(object):
     def set_form(self, form):
         self.form = form
 
+    def get_fields(self):
+        fields = self.build_fields()
+        for f in fields:
+            if isinstance(fields[f], bool):
+                fields[f] = "/Yes" if fields[f] else "/Off"
+            else:
+                fields[f] = str(fields[f])
+        return fields
+
     def export(self, io):
         self.export_header(io)
         self.export_body(io)
@@ -51,7 +60,11 @@ class FDFExporter(object):
         io.write(hd.encode('UTF-8'))
 
     def export_body(self, io):
-        pass
+        fields = self.build_fields()
+
+        # EXPORT FIELDS
+        for k in fields:
+            self.export_field(k, fields[k], io)
 
     def export_footer(self, io):
         ft = u"""</fields></xfdf>"""
@@ -107,7 +120,7 @@ class FDFExporterAll(FDFExporter):
         self.skill_offset = 0
         self.skills_per_page = 37
 
-    def export_body(self, io):
+    def build_fields(self):
         m = self.model
         f = self.form
 
@@ -301,9 +314,7 @@ class FDFExporterAll(FDFExporter):
                 fields['SKILL_ROLL.%d' % j] = sk.mod_roll
                 fields['SKILL_EMPH_MA.%d' % j] = ', '.join(sk.emph)
 
-        # EXPORT FIELDS
-        for k in fields:
-            self.export_field(k, fields[k], io)
+        return fields
 
 
 class FDFExporterShugenja(FDFExporter):
@@ -354,12 +365,11 @@ class FDFExporterShugenja(FDFExporter):
             #    lControlNumber = 1
             #    lPageNumber += 1
 
-    def export_body(self, io):
+    def build_fields(self):
         m = self.model
         f = self.form
 
         fields = {}
-        # self.export_spells(fields)
 
         def get_affinity_text_(element_or_tag):
             ring_ = api.data.get_ring(element_or_tag)
@@ -394,9 +404,7 @@ class FDFExporterShugenja(FDFExporter):
             else:
                 log.app.error('cannot export character school: %s'.format(str(schools[i])))
 
-        # EXPORT FIELDS
-        for k in fields:
-            self.export_field(k, fields[k], io)
+        return fields
 
 
 class FDFExporterSpells(FDFExporterShugenja):
@@ -407,14 +415,10 @@ class FDFExporterSpells(FDFExporterShugenja):
         self.spell_offset = offset
         self.spell_per_page = 6
 
-    def export_body(self, io):
-
+    def build_fields(self):
         fields = {}
         self.export_spells(fields=fields, pg=2, off=self.spell_offset)
-
-        # EXPORT FIELDS
-        for k in fields:
-            self.export_field(k, fields[k], io)
+        return fields
 
 
 class FDFExporterBushi(FDFExporter):
@@ -422,7 +426,7 @@ class FDFExporterBushi(FDFExporter):
     def __init__(self):
         super(FDFExporterBushi, self).__init__()
 
-    def export_body(self, io):
+    def build_fields(self):
         m = self.model
         f = self.form
 
@@ -459,17 +463,14 @@ class FDFExporterBushi(FDFExporter):
             fields['KATA_RING_MA.%d' %
                    (i + 1)] = '{0} ({1})'.format(kata.element, kata.mastery)
 
-        # EXPORT FIELDS
-        for k in fields:
-            self.export_field(k, fields[k], io)
-
+        return fields
 
 class FDFExporterMonk(FDFExporter):
 
     def __init__(self):
         super(FDFExporterMonk, self).__init__()
 
-    def export_body(self, io):
+    def build_fields(self):
         m = self.model
         f = self.form
 
@@ -527,9 +528,7 @@ class FDFExporterMonk(FDFExporter):
                 fields['KIHO_ELEM.%d' % (i + 1)] = ""
 
 
-        # EXPORT FIELDS
-        for k in fields:
-            self.export_field(k, fields[k], io)
+        return fields
 
     def split_in_parts(self, text, max_lines=6):
         try:
@@ -572,7 +571,7 @@ class FDFExporterWeapons(FDFExporter):
         self.weapons_offset = offset
         self.weapons_per_page = 10
 
-    def export_body(self, io):
+    def build_fields(self):
         m = self.model
         f = self.form
         fields = {}
@@ -601,16 +600,14 @@ class FDFExporterWeapons(FDFExporter):
                 fields['WEAPON.DMG.%d' % j] = weap.base_dmg
             fields['WEAPON.NOTES.%d' % j] = weap.desc
 
-        # EXPORT FIELDS
-        for k in fields:
-            self.export_field(k, fields[k], io)
+        return fields
 
 class FDFExporterCourtier(FDFExporter):
 
     def __init__(self):
         super(FDFExporterCourtier, self).__init__()
 
-    def export_body(self, io):
+    def build_fields(self):
         m = self.model
         f = self.form
 
@@ -636,9 +633,7 @@ class FDFExporterCourtier(FDFExporter):
                 fields['BUSHI_TECH.%d.%d' % (rank, i)] = tech.name
                 fields['BUSHI_TECH_TEXT.%d.%d' % (rank, i)] = tech.desc
 
-        # EXPORT FIELDS
-        for k in fields:
-            self.export_field(k, fields[k], io)
+        return fields
 
 
 class FDFExporterSkills(FDFExporter):
@@ -649,7 +644,7 @@ class FDFExporterSkills(FDFExporter):
         self.skill_offset = offset
         self.skills_per_page = 37
 
-    def export_body(self, io):
+    def build_fields(self):
         m = self.model
         f = self.form
 
@@ -669,6 +664,5 @@ class FDFExporterSkills(FDFExporter):
             fields['SKILL_ROLL.%d' % i] = sk.mod_roll
             fields['SKILL_EMPH_MA.%d' % i] = ', '.join(sk.emph)
 
-        # EXPORT FIELDS
-        for k in fields:
-            self.export_field(k, fields[k], io)
+        return fields
+

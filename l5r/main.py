@@ -1314,7 +1314,7 @@ class L5RMain(L5RCMCore):
         exit_act.triggered.connect(self.close)
 
         export_pdf_act .triggered.connect(self.sink1.export_character_as_pdf)
-        export_npc_act .triggered.connect(self.sink4.show_npc_export_dialog)
+        export_npc_act .triggered.connect(self.sink1.show_npc_export_dialog)
 
         # Advancement menu
         # actions buy advancement, view advancements

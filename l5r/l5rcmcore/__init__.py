@@ -39,6 +39,9 @@ from l5r.util.settings import L5RCMSettings
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import QUrl
 
+# PyPDF
+from pypdf import PdfReader, PdfWriter
+
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
 APP_VERSION = '3.17.0'
@@ -105,18 +108,13 @@ class L5RCMCore(QtWidgets.QMainWindow):
         #    exporter.export(f)
         #f.close()
 
-    def create_fdf(self, exporter):
-
+    def create_form_fields(self, exporter):
         exporter.set_form(self)
         exporter.set_model(self.pc)
+        return exporter.get_fields()
 
-        fd, fpath = mkstemp(suffix='.fdf', text=False)
-        with os.fdopen(fd, 'wb') as fobj:
-            exporter.export(fobj)
 
-        return fpath
-
-    def flatten_pdf(self, fdf_file, source_pdf, target_pdf, target_suffix=None):
+    def flatten_pdf(self, form_fields, source_pdf, target_pdf, target_suffix=None):
         basen = os.path.splitext(os.path.basename(target_pdf))[0]
         based = os.path.dirname(target_pdf)
 
@@ -125,49 +123,41 @@ class L5RCMCore(QtWidgets.QMainWindow):
         else:
             target_pdf = os.path.join(based, basen) + '.pdf'
 
-        # call pdftk
-        args_ = [self.get_pdftk(), source_pdf, 'fill_form',
-                 fdf_file, 'output', target_pdf, 'flatten']
+        try:
+            reader = PdfReader(source_pdf)
+            writer = PdfWriter()
+            writer.append(reader)
 
-        log.app.debug('call %s', args_)
+            writer.update_page_form_field_values(
+                None,
+                form_fields,
+                auto_regenerate=False,
+                flatten=False
+            )
 
-        ret = subprocess.call(args_)
-        self.try_remove(fdf_file)
+            with open(target_pdf, "wb") as output_stream:
+                writer.write(output_stream)     
 
-        if ret == 0:            
             log.app.info('created pdf %s', target_pdf)
-        else:
-            log.app.warn('could not flatten pdf. pdftk exited with error code: %d', ret)
-
-        return ret == 0
+            return True
+        finally:
+            pass
+        #except Exception as ex:
+        #    log.app.error('could not generate output pdf. exception: %s', ex)
+        #    return False
 
     def merge_pdf(self, input_files, output_file):
-        # call pdftk
-        args_ = [self.get_pdftk()] + input_files + ['output', output_file]
+        try:
+            merger = PdfWriter()
 
-        log.app.debug('call %s', args_)
-        subprocess.call(args_)
-        for f in input_files:
-            self.try_remove(f)
+            for pdf in input_files:
+                merger.append(pdf)
 
-    def get_pdftk(self):
-    
-        sys_path = shutil.which('pdftk')
-        if sys_path is not None and os.path.exists(sys_path):
-            return sys_path
-    
-        if sys.platform == 'win32':
-            return os.path.join(MY_CWD, 'tools', 'pdftk.exe')
-        elif sys.platform == 'linux' or sys.platform == 'linux2':
-            sys_path = '/usr/bin/pdftk'
-            loc_path = os.path.join(MY_CWD, 'tools', 'pdftk')
-            if os.path.exists(sys_path):
-                return sys_path
-            else:
-                return loc_path
-        elif sys.platform == 'darwin':
-            return os.path.join(MY_CWD, 'tools', 'pdftk')
-        return 'pdftk'
+            merger.write(output_file)
+            merger.close()
+        finally:
+            for f in input_files:
+                self.try_remove(f)
 
     def try_remove(self, fpath):
         try:
@@ -178,10 +168,11 @@ class L5RCMCore(QtWidgets.QMainWindow):
 
     def write_pdf(self, source, exporter):
         source_pdf = get_app_file(source)
-        source_fdf = self.create_fdf(exporter)
+        form_fields = self.create_form_fields(exporter)
+
         fd, fpath = mkstemp(suffix='.pdf')
         os.fdopen(fd, 'wb').close()
-        self.flatten_pdf(source_fdf, source_pdf, fpath)
+        self.flatten_pdf(form_fields, source_pdf, fpath)
         self.temp_files.append(fpath)
 
     def commit_pdf_export(self, export_file):
@@ -211,11 +202,11 @@ class L5RCMCore(QtWidgets.QMainWindow):
 
         # GENERIC SHEET
         source_pdf = get_app_file('sheet_all.pdf')
-        source_fdf = self.create_fdf(exporters.FDFExporterAll())
+        form_fields = self.create_form_fields(exporters.FDFExporterAll())
         fd, fpath = mkstemp(suffix='.pdf')
         os.fdopen(fd, 'wb').close()
 
-        self.flatten_pdf(source_fdf, source_pdf, fpath)
+        self.flatten_pdf(form_fields, source_pdf, fpath)
         self.temp_files.append(fpath)
 
         # SAMURAI MONKS ALSO FITS IN THE BUSHI CHARACTER SHEET
