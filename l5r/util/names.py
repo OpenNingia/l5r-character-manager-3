@@ -23,8 +23,6 @@ cache_names = {}
 
 
 def get_random_name(path):
-    global cache_names
-
     names = []
     if path in cache_names:
         names = cache_names[path]
