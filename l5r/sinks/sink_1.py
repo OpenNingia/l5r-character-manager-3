@@ -92,7 +92,6 @@ class Sink1(QtCore.QObject):
         file_ = form.select_export_file(".pdf")
         
         if file_:
-
             spinner = pyqtspinner.WaitingSpinner(form, True, True, Qt.ApplicationModal)                      
 
             worker = Worker(form.export_as_pdf, file_) # Any other args, kwargs are passed to the run function
@@ -102,7 +101,25 @@ class Sink1(QtCore.QObject):
 
             self.thread_pool.start(worker)
 
-            spinner.start() # starts spinning           
+            spinner.start() # starts spinning 
+
+    # NPC EXPORT
+    def show_npc_export_dialog(self):
+        form = self.form
+        dlg = dialogs.NpcExportDialog(form)
+        if dlg.exec_() == QtWidgets.QDialog.Accepted:
+            file_ = form.select_export_file(".pdf")
+            if len(file_) > 0:
+                spinner = pyqtspinner.WaitingSpinner(form, True, True, Qt.ApplicationModal)                      
+
+                worker = Worker(form.export_npc_characters, dlg.paths, file_)
+                worker.signals.result.connect(lambda x: form.open_pdf_file_as_shell(file_))
+                worker.signals.finished.connect(lambda: spinner.stop())
+                worker.signals.error.connect(lambda x: form.advise_error(self.tr("Cannot save pdf sheet.")))
+
+                self.thread_pool.start(worker)
+
+                spinner.start() # starts spinning                                     
 
     def switch_to_page_1(self):
         self.form.tabs.setCurrentIndex(0)

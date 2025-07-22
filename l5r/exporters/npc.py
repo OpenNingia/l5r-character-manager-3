@@ -34,16 +34,14 @@ class FDFExporterTwoNPC(FDFExporter):
         super(FDFExporterTwoNPC, self).__init__()
         self.pcs = pcs
 
-    def export_body(self, io):
+    def build_fields(self):
 
         fields = {}
 
         for i, pc in enumerate(self.pcs):
             self.export_npc(i + 1, pc, fields)
 
-        # EXPORT FIELDS
-        for k in fields:
-            self.export_field(k, fields[k], io)
+        return fields
 
     def get_skills_sorted(self, pc, key):
 

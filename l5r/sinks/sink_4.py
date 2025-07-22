@@ -121,15 +121,6 @@ class Sink4(QtCore.QObject):
     def on_money_value_changed(self, value):
         api.character.set_money(value)
 
-    # NPC EXPORT
-    def show_npc_export_dialog(self):
-        form = self.form
-        dlg = dialogs.NpcExportDialog(form)
-        if dlg.exec_() == QtWidgets.QDialog.Accepted:
-            file_ = form.select_export_file(".pdf")
-            if len(file_) > 0:
-                form.export_npc_characters(dlg.paths, file_)
-
     # EDIT FAMILY
     def on_edit_family(self):
         form = self.form
