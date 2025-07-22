@@ -19,22 +19,22 @@ __author__ = 'Daniele'
 import os
 
 # global cache
-_cache_names = {}
+cache_names = {}
 
 
 def get_random_name(path):
-    global _cache_names
+    global cache_names
 
     names = []
-    if path in _cache_names:
-        names = _cache_names[path]
+    if path in cache_names:
+        names = cache_names[path]
     else:
         f = open(path, 'rt')
         for l in f:
             if l.strip().startswith('*'):
                 names.append(l.strip('* \n\r'))
         f.close()
-        _cache_names[path] = names
+        cache_names[path] = names
 
     i = (ord(os.urandom(1)) + (ord(os.urandom(1)) << 8)) % len(names)
     return names[i]
