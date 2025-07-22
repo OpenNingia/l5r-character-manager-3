@@ -21,7 +21,7 @@ import l5r.api as api
 import l5r.api.rules
 import l5r.api.data
 import l5r.api.data.skills
-from PyQt5 import QtCore, QtGui, QtWidgets
+from qtpy import QtCore, QtGui, QtWidgets
 
 
 class ModifierDialog(QtWidgets.QDialog):

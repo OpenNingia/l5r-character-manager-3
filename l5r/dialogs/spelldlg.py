@@ -27,7 +27,7 @@ import l5r.api.data.spells
 from l5r.util import log
 
 import l5r.widgets as widgets
-from PyQt5 import QtCore, QtGui, QtWidgets
+from qtpy import QtCore, QtGui, QtWidgets
 
 
 def colored_span(col, text):

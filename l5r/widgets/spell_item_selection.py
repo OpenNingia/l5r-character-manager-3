@@ -21,7 +21,7 @@ import l5r.api.character.spells
 import l5r.api.data.spells
 from l5r.util import log
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from qtpy import QtCore, QtGui, QtWidgets
 
 def em(text):
     return u'<em>{}</em>'.format(text)
@@ -51,7 +51,7 @@ class SpellItemSelection(QtWidgets.QWidget):
     tx_descr = None
 
     # spell changed
-    spell_changed = QtCore.pyqtSignal(int)
+    spell_changed = QtCore.Signal(int)
 
     def __init__(self, pc, parent=None):
         super(SpellItemSelection, self).__init__(parent)

@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt5.QtGui import QBrush, QColor
-from PyQt5.QtCore import QSettings, QDir
+from qtpy.QtGui import QBrush, QColor
+from qtpy.QtCore import QSettings, QDir
 
 
 def _is_true(val):

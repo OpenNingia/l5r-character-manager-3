@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QRunnable, pyqtSlot, QObject, pyqtSignal
+from qtpy.QtCore import QRunnable, Slot, QObject, Signal
 
 import traceback, sys
 
@@ -18,10 +18,10 @@ class WorkerSignals(QObject):
         object data returned from processing, anything
 
     '''
-    finished = pyqtSignal()
-    error = pyqtSignal(tuple)
-    result = pyqtSignal(object)
-    
+    finished = Signal()
+    error = Signal(tuple)
+    result = Signal(object)
+
 class Worker(QRunnable):
     '''
     Worker thread
@@ -44,7 +44,7 @@ class Worker(QRunnable):
         self.kwargs = kwargs
         self.signals = WorkerSignals()
 
-    @pyqtSlot()
+    @Slot()
     def run(self):
         '''
         Initialise the runner function with passed args, kwargs.

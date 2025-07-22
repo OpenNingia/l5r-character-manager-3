@@ -20,14 +20,14 @@ import l5r.models.advances as advances
 import l5r.api.data.skills
 from l5r.util import log
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from qtpy import QtCore, QtGui, QtWidgets
 
 def em(text):
     return u'<em>{}</em>'.format(text)
 
 class SkillSelectInformativeWidget(QtWidgets.QWidget):
 
-    currentIndexChanged = QtCore.pyqtSignal(int)
+    currentIndexChanged = QtCore.Signal(int)
 
     def __init__(self, parent=None):
         super(SkillSelectInformativeWidget, self).__init__(parent)

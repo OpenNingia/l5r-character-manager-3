@@ -18,7 +18,7 @@
 import l5r.widgets as widgets
 import os
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from qtpy import QtCore, QtGui, QtWidgets
 
 
 class NpcExportDialog(QtWidgets.QDialog):

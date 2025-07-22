@@ -20,7 +20,7 @@ import l5r.api.data.powers
 import l5r.api.character.powers
 from l5r.util import log
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from qtpy import QtCore, QtGui, QtWidgets
 
 def em(text):
     return u'<em>{}</em>'.format(text)

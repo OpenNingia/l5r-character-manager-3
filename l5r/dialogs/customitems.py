@@ -21,7 +21,7 @@ import l5r.api as api
 import l5r.api.data.outfit
 import l5r.api.rules
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from qtpy import QtCore, QtGui, QtWidgets
 
 
 def grouped_widget(title, widget, parent=None):

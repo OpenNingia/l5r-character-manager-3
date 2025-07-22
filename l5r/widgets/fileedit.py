@@ -14,7 +14,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt5.QtWidgets import QLineEdit
+from qtpy.QtWidgets import QLineEdit
 
 
 class FileEdit(QLineEdit):

@@ -15,8 +15,8 @@
 # Adapted to PyQt5 by Daniele Simonetti
 
 import os
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+from qtpy.QtCore import *
+from qtpy.QtGui import *
 
 
 class QIconTheme:

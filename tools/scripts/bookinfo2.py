@@ -5,7 +5,7 @@ import shutil
 import sys
 import os
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from qtpy import QtCore, QtGui, QtWidgets
 
 class PackItemModel(object):
     def __init__(self):

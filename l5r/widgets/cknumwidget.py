@@ -15,7 +15,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys
-from PyQt5 import QtCore, QtGui, QtWidgets
+from qtpy import QtCore, QtGui, QtWidgets
 
 
 def find(f, seq):
@@ -27,7 +27,7 @@ def find(f, seq):
 
 class CkNumWidget(QtWidgets.QWidget):
 
-    valueChanged = QtCore.pyqtSignal(int, int)
+    valueChanged = QtCore.Signal(int, int)
 
     def __init__(self, count=9, parent=None):
         super(CkNumWidget, self).__init__(parent)

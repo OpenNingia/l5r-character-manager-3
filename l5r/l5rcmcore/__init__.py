@@ -36,8 +36,8 @@ from l5r.api.data import CMErrors
 from l5r.l5rcmcore.qtsignalsutils import *
 from l5r.util.settings import L5RCMSettings
 
-from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtCore import QUrl
+from qtpy.QtGui import QDesktopServices
+from qtpy.QtCore import QUrl
 
 # PyPDF
 from pypdf import PdfReader, PdfWriter

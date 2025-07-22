@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QObject, pyqtProperty
+from qtpy import QtCore, QtGui, QtWidgets
+from qtpy.QtCore import QObject, Property
 from l5r.util.settings import L5RCMSettings
 from l5r.util import log
 import api
@@ -35,7 +35,7 @@ class QExampleListModel(QtCore.QAbstractListModel):
         self._bg = QtGui.QBrush()
         self._fg = QtGui.QBrush()
 
-    @pyqtProperty(QtGui.QBrush)
+    @Property(QtGui.QBrush)
     def odd_bg(self):
         return self._bg
 
@@ -43,7 +43,7 @@ class QExampleListModel(QtCore.QAbstractListModel):
     def odd_bg(self, value):
         self._bg = value
 
-    @pyqtProperty(QtGui.QBrush)
+    @Property(QtGui.QBrush)
     def odd_fg(self):
         return self._fg
 
@@ -51,7 +51,7 @@ class QExampleListModel(QtCore.QAbstractListModel):
     def odd_fg(self, value):
         self._fg = value
 
-    @pyqtProperty(QtGui.QBrush)
+    @Property(QtGui.QBrush)
     def evn_bg(self):
         return self._alt_bg
 
@@ -59,7 +59,7 @@ class QExampleListModel(QtCore.QAbstractListModel):
     def evn_bg(self, value):
         self._alt_bg = value
 
-    @pyqtProperty(QtGui.QBrush)
+    @Property(QtGui.QBrush)
     def evn_fg(self):
         return self._alt_fg
 

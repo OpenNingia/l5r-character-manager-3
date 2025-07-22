@@ -19,7 +19,7 @@ import l5r.models as models
 
 from copy import copy
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from qtpy import QtCore, QtGui, QtWidgets
 
 
 def paintLayout(painter, item):
