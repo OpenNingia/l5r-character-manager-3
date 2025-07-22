@@ -16,6 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import Qt
 
 import l5r.dialogs as dialogs
 import l5r.models as models
@@ -23,6 +24,7 @@ import os
 
 from l5r.util import log, osutil, names
 from l5r.util.settings import L5RCMSettings
+from l5r.util.worker import Worker
 
 import l5r.api as api
 import l5r.api.character
@@ -30,12 +32,15 @@ import l5r.api.character.books
 
 from l5r.l5rcmcore import get_app_file, DB_VERSION, get_icon_path
 
+import pyqtspinner
 
 class Sink1(QtCore.QObject):
 
     def __init__(self, parent=None):
         super(Sink1, self).__init__(parent)
         self.form = parent
+        self.thread_pool = QtCore.QThreadPool()
+        self.thread_pool.setMaxThreadCount(2)
 
     def new_character(self):
         form = self.form
@@ -87,11 +92,17 @@ class Sink1(QtCore.QObject):
         file_ = form.select_export_file(".pdf")
         
         if file_:
-            try:
-                form.export_as_pdf(file_)
-                form.open_pdf_file_as_shell(file_)
-            except Exception as e:
-                self.form.advise_error(self.tr("Cannot save pdf sheet."))            
+
+            spinner = pyqtspinner.WaitingSpinner(form, True, True, Qt.ApplicationModal)                      
+
+            worker = Worker(form.export_as_pdf, file_) # Any other args, kwargs are passed to the run function
+            worker.signals.result.connect(lambda x: form.open_pdf_file_as_shell(file_))
+            worker.signals.finished.connect(lambda: spinner.stop())
+            worker.signals.error.connect(lambda x: form.advise_error(self.tr("Cannot save pdf sheet.")))
+
+            self.thread_pool.start(worker)
+
+            spinner.start() # starts spinning           
 
     def switch_to_page_1(self):
         self.form.tabs.setCurrentIndex(0)

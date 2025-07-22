@@ -1,4 +1,5 @@
 lxml
 asq
 PyQt5
-PyPDF
+git+https://github.com/OpenNingia/pypdf.git@main
+pyqtspinner
