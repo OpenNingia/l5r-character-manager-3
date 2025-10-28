@@ -32,7 +32,9 @@ import l5r.api.character.books
 
 from l5r.l5rcmcore import get_app_file, DB_VERSION, get_icon_path
 
-import pyqtspinner
+from typing import cast
+
+from pyqtwaitingspinner import SpinnerParameters, WaitingSpinner
 
 class Sink1(QtCore.QObject):
 
@@ -41,6 +43,11 @@ class Sink1(QtCore.QObject):
         self.form = parent
         self.thread_pool = QtCore.QThreadPool()
         self.thread_pool.setMaxThreadCount(2)
+
+    def make_spinner(self):
+        spin_pars = SpinnerParameters(disable_parent_when_spinning=True)
+        spinner = WaitingSpinner(self.form.centralWidget(), spin_pars)
+        return spinner
 
     def new_character(self):
         form = self.form
@@ -92,7 +99,7 @@ class Sink1(QtCore.QObject):
         file_ = form.select_export_file(".pdf")
         
         if file_:
-            spinner = pyqtspinner.WaitingSpinner(form, True, True, Qt.ApplicationModal)                      
+            spinner = self.make_spinner()
 
             worker = Worker(form.export_as_pdf, file_) # Any other args, kwargs are passed to the run function
             worker.signals.result.connect(lambda x: form.open_pdf_file_as_shell(file_))
@@ -110,7 +117,7 @@ class Sink1(QtCore.QObject):
         if dlg.exec_() == QtWidgets.QDialog.Accepted:
             file_ = form.select_export_file(".pdf")
             if len(file_) > 0:
-                spinner = pyqtspinner.WaitingSpinner(form, True, True, Qt.ApplicationModal)                      
+                spinner = self.make_spinner()                 
 
                 worker = Worker(form.export_npc_characters, dlg.paths, file_)
                 worker.signals.result.connect(lambda x: form.open_pdf_file_as_shell(file_))

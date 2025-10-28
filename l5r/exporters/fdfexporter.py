@@ -39,6 +39,12 @@ class FDFExporter(object):
     def set_form(self, form):
         self.form = form
 
+    def build_fields(self):
+        return {}
+    
+    def format_long_text(self, text):
+        return (text, '', 8)
+
     def get_fields(self):
         fields = self.build_fields()
         for f in fields:
@@ -46,6 +52,8 @@ class FDFExporter(object):
                 fields[f] = "/Yes" if fields[f] else "/Off"
             else:
                 fields[f] = str(fields[f])
+                if len(fields[f]) > 16:
+                    fields[f] = self.format_long_text(fields[f])
         return fields
 
     def export(self, io):

@@ -1523,13 +1523,7 @@ class L5RMain(L5RCMCore):
 
         self.void_points.valueChanged.connect(self.on_void_points_change)
 
-        self.trait_sig_mapper.mapped[str].connect(self.on_trait_increase)
-        #QtCore.connect(self.trait_sig_mapper,
-        #                       QtCore.SIGNAL('mapped(const QString &)'),
-        #                       self.on_trait_increase)
-        #self.trait_sig_mapper.connect(QtCore.SIGNAL("mapped(const QString &)"),
-        #                              self,
-        #                              QtCore.SLOT("on_trait_increase(const QString &)"))
+        self.trait_sig_mapper.mappedString.connect(self.on_trait_increase)
 
         self.ic_act_grp.triggered.connect(self.on_change_insight_calculation)
         self.hm_act_grp.triggered.connect(self.on_change_health_visualization)
@@ -2452,7 +2446,7 @@ def main():
     try:
         app = QtWidgets.QApplication(sys.argv)
 
-        log.app.info(u"START")
+        log.app.info(u"START. Qt Version: %s", QtCore.__version__)
 
         # setup mimetypes
         mimetypes.add_type(MIME_L5R_CHAR, ".l5r")

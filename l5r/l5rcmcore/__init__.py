@@ -41,11 +41,12 @@ from qtpy.QtCore import QUrl
 
 # PyPDF
 from pypdf import PdfReader, PdfWriter
+from pypdf.constants import FieldDictionaryAttributes
 
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
-APP_VERSION = '3.17.0'
-DB_VERSION = '3.17'
+APP_VERSION = '3.20.0'
+DB_VERSION = '3.20'
 APP_ORG = 'openningia'
 
 PROJECT_PAGE_LINK = 'https://github.com/OpenNingia/l5r-character-manager-3'
@@ -114,7 +115,7 @@ class L5RCMCore(QtWidgets.QMainWindow):
         return exporter.get_fields()
 
 
-    def flatten_pdf(self, form_fields, source_pdf, target_pdf, target_suffix=None):
+    def fill_pdf(self, form_fields, source_pdf, target_pdf, target_suffix=None):
         basen = os.path.splitext(os.path.basename(target_pdf))[0]
         based = os.path.dirname(target_pdf)
 
@@ -128,9 +129,12 @@ class L5RCMCore(QtWidgets.QMainWindow):
             writer = PdfWriter()
             writer.append(reader)
 
+            flags = FieldDictionaryAttributes.FfBits.ReadOnly
+
             writer.update_page_form_field_values(
                 None,
                 form_fields,
+                flags=flags,
                 auto_regenerate=False,
                 flatten=False
             )
@@ -172,7 +176,7 @@ class L5RCMCore(QtWidgets.QMainWindow):
 
         fd, fpath = mkstemp(suffix='.pdf')
         os.fdopen(fd, 'wb').close()
-        self.flatten_pdf(form_fields, source_pdf, fpath)
+        self.fill_pdf(form_fields, source_pdf, fpath)
         self.temp_files.append(fpath)
 
     def commit_pdf_export(self, export_file):
@@ -206,7 +210,7 @@ class L5RCMCore(QtWidgets.QMainWindow):
         fd, fpath = mkstemp(suffix='.pdf')
         os.fdopen(fd, 'wb').close()
 
-        self.flatten_pdf(form_fields, source_pdf, fpath)
+        self.fill_pdf(form_fields, source_pdf, fpath)
         self.temp_files.append(fpath)
 
         # SAMURAI MONKS ALSO FITS IN THE BUSHI CHARACTER SHEET

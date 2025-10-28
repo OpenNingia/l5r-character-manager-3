@@ -112,7 +112,7 @@ class DiceRoller(QtWidgets.QDialog):
         #                       QtCore.SIGNAL("buttonPressed(int)"),
         #                       self.on_expr_bt_pressed)
         #
-        saved_bt_grp.buttonPressed[int].connect(self.on_expr_bt_pressed)
+        saved_bt_grp.idPressed.connect(self.on_expr_bt_pressed)
 
         self.saved_bt_grp = saved_bt_grp
         self.sr_vbox = sr_vbox

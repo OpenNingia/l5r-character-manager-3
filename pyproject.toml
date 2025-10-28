@@ -42,4 +42,4 @@ executables = [
 [tool.cxfreeze.build_exe]
 excludes = ["tests", "unittest"]
 includes = ["l5r.widgets.iconloader"]
-zip_include_packages = ["encodings", "PySide5", "shiboken5", "lxml._elementpath"]
+zip_include_packages = ["encodings", "PyQt6", "lxml._elementpath"]

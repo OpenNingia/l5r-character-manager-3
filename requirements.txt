@@ -1,5 +1,5 @@
 lxml
 asq
-PyQt5
+PyQt6
 git+https://github.com/OpenNingia/pypdf.git@main
-pyqtspinner
+pyqtwaitingspinner
