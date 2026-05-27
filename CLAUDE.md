@@ -48,10 +48,20 @@ The app is non-functional without datapacks. They are imported by the user via *
 
 ## Architecture
 
-### The `__api` singleton (`l5r/api/__init__.py`)
-A single module-level `L5RCMAPI` instance holds global mutable state: `__api.pc` is the active character model, `__api.ds` is the `l5rdal.Data` store, plus locale and the current rank advancement. The `l5r.api.character.*` and `l5r.api.data.*` submodules are *functions* that read/mutate this singleton — they are not classes. So `api.character.model()` returns the current PC; `api.character.new()` replaces it; `api.data.set_model(ds)` swaps the data store (this is how tests inject fake data — see `l5r/tests/fakedata.py`).
+### The `L5RCMContext` (`l5r/api/context.py`)
+An `L5RCMContext` instance holds the mutable session state the API layer operates on: `ctx.pc` is the active character model, `ctx.ds` is the `l5rdal.Data` store, plus `ctx.locale`, `ctx.blacklist`, `ctx.current_rank_adv`, and `ctx.translation_provider`. The `l5r.api.character.*` and `l5r.api.data.*` submodules are *functions* that read/mutate this context — they are not classes. So `api.character.model()` returns the current PC; `api.character.new()` replaces it; `api.data.set_model(ds)` swaps the data store.
 
-Implication: tests and any code that touches characters/data must `set_model` first or the singleton will be `None`. Don't try to thread a character object through call chains — the API layer assumes the singleton.
+Internally every API function reads the active context via `get_context()` — a `contextvars.ContextVar` lookup. Production code calls `api.character.X(...)` as-is; no context is threaded through call sites. At import time `l5r/api/__init__.py` binds a single production `L5RCMContext` onto the `_current` ContextVar; that's the one production reads.
+
+Tests override the context per-scope with `l5r.api.context.use(...)`:
+```python
+with l5r.api.context.use(L5RCMContext()):
+    api.character.set_family('doji')
+    # ...
+# previous context restored here
+```
+
+Implication: don't thread a `ctx` parameter through call chains — the API layer reads it implicitly from the ContextVar. If you find yourself wanting a fresh context (e.g. for a test or a second character editor), construct an `L5RCMContext` and push it with `use()`.
 
 ### Layers
 - **`l5r/api/`** — pure-Python business logic. `character/` (skills, schools, spells, merits, flaws, ranks, books, powers), `data/` (clan/family/school/skill/etc. lookups against the DAL), `rules/` (calculations like rings, TN, wounds, glory).
