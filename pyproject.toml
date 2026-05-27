@@ -56,16 +56,10 @@ include = ["l5r*"]
 exclude = ["l5r.tests*", "l5r.api.tests*", "l5r.models.tests*"]
 
 [tool.setuptools.package-data]
-"l5r.share.l5rcm" = ["*.pdf", "*.txt", "*.png"]
-"l5r.share.l5rcm.i18n" = ["*.qm"]
-"l5r.share.icons.l5rcm" = ["*.png"]
-"l5r.share.icons.l5rcm.tabs" = ["*.png"]
-"l5r.share.icons.l5rcm.16x16" = ["*.png"]
-"l5r.share.icons.l5rcm.32x32" = ["*.png"]
-"l5r.share.icons.l5rcm.48x48" = ["*.png"]
-"l5r.share.icons.l5rcm.64x64" = ["*.png"]
-"l5r.share.icons.l5rcm.128x128" = ["*.png"]
-"l5r.share.icons.l5rcm.256x256" = ["*.png"]
+# Wildcard key applies to every discovered package. We can't list the icon
+# packages explicitly (e.g. "l5r.share.icons.l5rcm.16x16") because their
+# segments start with digits and fail setuptools' module-name validation.
+"*" = ["*.pdf", "*.txt", "*.png", "*.qm"]
 
 [tool.cxfreeze]
 executables = [
