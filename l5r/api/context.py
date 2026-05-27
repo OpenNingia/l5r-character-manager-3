@@ -10,13 +10,14 @@
 # operates on (active character, data store, locale, etc.).
 #
 # Introduced in Phase 5 of the 2026 modernization as the replacement
-# for the module-level __api singleton in l5r/api/__init__.py.
+# for the old module-level singleton (``__api = L5RCMAPI()`` in
+# l5r/api/__init__.py).
 #
 # How it's used:
 #
 #   * Production startup binds the default context once (in
-#     l5r/api/__init__.py at import time): the module-level ``__api``
-#     instance is pushed onto the ``_current`` ContextVar.
+#     l5r/api/__init__.py at import time): a fresh L5RCMContext is
+#     pushed onto the ``_current`` ContextVar.
 #
 #   * API implementations (l5r.api.character.*, l5r.api.data.*,
 #     l5r.api.rules.*) read it via ``get_context().X`` — no ctx is
@@ -92,9 +93,10 @@ class L5RCMContext:
 # --- ContextVar machinery ---------------------------------------------------
 #
 # ``_current`` holds the active L5RCMContext for this Python execution
-# context (thread, asyncio task, etc.). It is bound to the module-level
-# ``__api`` singleton at import time in l5r/api/__init__.py, so any
-# call to ``get_context()`` from production code returns that instance.
+# context (thread, asyncio task, etc.). It is bound to a production
+# L5RCMContext instance at import time in l5r/api/__init__.py, so any
+# call to ``get_context()`` from production code returns that instance
+# unless a ``use()`` block has scoped a different one.
 
 _current: contextvars.ContextVar["L5RCMContext"] = contextvars.ContextVar("l5rcm_context")
 
