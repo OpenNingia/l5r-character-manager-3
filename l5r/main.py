@@ -20,7 +20,6 @@ import sys
 
 from qtpy import QtCore, QtGui, QtWidgets
 
-import l5r.sinks
 import l5r.api as api
 import l5r.api.rules
 
@@ -34,15 +33,15 @@ from l5r.ui.persistence import PersistenceMixin, PersistenceSink
 from l5r.ui.refresh import ModelRefreshMixin
 from l5r.ui.tabs.about import AboutTabMixin
 from l5r.ui.tabs.advancements import AdvancementsTabMixin, AdvancementsSink
-from l5r.ui.tabs.equipment import EquipmentTabMixin
-from l5r.ui.tabs.modifiers import ModifiersTabMixin
+from l5r.ui.tabs.equipment import EquipmentTabMixin, EquipmentSink
+from l5r.ui.tabs.modifiers import ModifiersTabMixin, ModifiersSink
 from l5r.ui.tabs.notes import NotesTabMixin
 from l5r.ui.tabs.pc_info import PcInfoTabMixin, PcInfoSink
 from l5r.ui.tabs.perks import PerksTabMixin, PerksSink
 from l5r.ui.tabs.powers import PowersTabMixin, PowersSink
 from l5r.ui.tabs.settings_tab import SettingsTabMixin
-from l5r.ui.tabs.skills import SkillsTabMixin
-from l5r.ui.tabs.techniques import TechniquesTabMixin
+from l5r.ui.tabs.skills import SkillsTabMixin, SkillsSink
+from l5r.ui.tabs.techniques import TechniquesTabMixin, TechniquesSink
 from l5r.ui.tabs.weapons import WeaponsTabMixin, WeaponsSink
 from l5r.util import log
 from l5r.util.settings import L5RCMSettings
@@ -68,9 +67,9 @@ class L5RMain(AboutTabMixin, AdvancementsTabMixin, AdvanceMixin, AdviseMixin,
         self.save_path = ''
 
         # Per-mixin Qt slot containers (sinks). Each mixin contributes its
-        # own QObject child rather than sharing a global Sink1..Sink4 grab
-        # bag -- gives proper Qt parent-ownership and keeps the per-class
-        # slot surface bounded.
+        # own QObject child rather than sharing a global grab-bag -- gives
+        # proper Qt parent-ownership and keeps the per-class slot surface
+        # bounded.
         self.persistence_sink = PersistenceSink(self)
         self.advancements_sink = AdvancementsSink(self)
         self.pc_info_sink = PcInfoSink(self)
@@ -78,7 +77,10 @@ class L5RMain(AboutTabMixin, AdvancementsTabMixin, AdvanceMixin, AdviseMixin,
         self.perks_sink = PerksSink(self)
         self.powers_sink = PowersSink(self)
         self.weapons_sink = WeaponsSink(self)
-        self.sink4 = l5r.sinks.Sink4(self)  # Weapons Sink
+        self.skills_sink = SkillsSink(self)
+        self.techniques_sink = TechniquesSink(self)
+        self.modifiers_sink = ModifiersSink(self)
+        self.equipment_sink = EquipmentSink(self)
 
         self.table_views = []
 
@@ -233,8 +235,8 @@ class L5RMain(AboutTabMixin, AdvancementsTabMixin, AdvanceMixin, AdviseMixin,
         self.ic_act_grp.triggered.connect(self.on_change_insight_calculation)
         self.hm_act_grp.triggered.connect(self.on_change_health_visualization)
 
-        self.bt_edit_family.clicked.connect(self.sink4.on_edit_family)
-        self.bt_edit_school.clicked.connect(self.sink4.on_edit_first_school)
+        self.bt_edit_family.clicked.connect(self.pc_info_sink.on_edit_family)
+        self.bt_edit_school.clicked.connect(self.pc_info_sink.on_edit_first_school)
 
         self.bt_set_exp_points.clicked.connect(self.pc_info_sink.on_set_exp_limit)
 
