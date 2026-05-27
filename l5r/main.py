@@ -43,7 +43,7 @@ from l5r.ui.tabs.powers import PowersTabMixin, PowersSink
 from l5r.ui.tabs.settings_tab import SettingsTabMixin
 from l5r.ui.tabs.skills import SkillsTabMixin
 from l5r.ui.tabs.techniques import TechniquesTabMixin
-from l5r.ui.tabs.weapons import WeaponsTabMixin
+from l5r.ui.tabs.weapons import WeaponsTabMixin, WeaponsSink
 from l5r.util import log
 from l5r.util.settings import L5RCMSettings
 
@@ -77,7 +77,7 @@ class L5RMain(AboutTabMixin, AdvancementsTabMixin, AdvanceMixin, AdviseMixin,
         self.menu_sink = MenuSink(self)
         self.perks_sink = PerksSink(self)
         self.powers_sink = PowersSink(self)
-        self.sink3 = l5r.sinks.Sink3(self)  # Weapons Sink
+        self.weapons_sink = WeaponsSink(self)
         self.sink4 = l5r.sinks.Sink4(self)  # Weapons Sink
 
         self.table_views = []
