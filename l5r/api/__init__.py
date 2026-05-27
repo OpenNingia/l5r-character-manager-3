@@ -36,7 +36,7 @@ def get_user_data_path(rel_path=None):
 
 
 def set_translation_context(obj):
-    __api.translation_provider = obj
+    get_context().translation_provider = obj
 
 
 def cmp(a, b):
@@ -51,27 +51,20 @@ def ver_cmp(version1, version2):
 
 def tr(*args, **kwargs):
     """translate text"""
-    return __api.tr(*args, **kwargs)
+    return get_context().tr(*args, **kwargs)
 
 
-# Back-compat alias. Pre-Phase-5 code referred to the class as
-# L5RCMAPI; the new name is L5RCMContext (see l5r/api/context.py).
-L5RCMAPI = L5RCMContext
+# Bind the production L5RCMContext onto the _current ContextVar at
+# import time so any get_context() call in production code returns it.
+# Tests can override per-scope with l5r.api.context.use().
+_current.set(L5RCMContext())
 
 
-# The production L5RCMContext. Bound to the _current ContextVar
-# immediately below so that production code paths see it as the active
-# context, while tests can override per-scope with l5r.api.context.use().
-#
-# ``__api`` is retained as a transitional alias so existing references
-# (e.g. ``from l5r.api import get_context; __api.pc``) keep working while
-# the find-and-replace to ``get_context()`` rolls through the codebase.
-__api = L5RCMContext()
-_current.set(__api)
-
-
-# L5RCMContext.reload needs get_user_data_path, but that helper lives
-# here (in l5r/api/__init__.py). Bind a wrapper that supplies it so
-# existing callers can keep doing ``__api.reload()`` without args.
-_original_reload = __api.reload
-__api.reload = lambda: _original_reload(get_user_data_path)
+# L5RCMContext.reload needs get_user_data_path (which lives here in
+# l5r/api/__init__.py, to avoid a circular import with l5r/api/context.py).
+# Bind a wrapper on the production context that supplies it so callers
+# can keep doing ``get_context().reload()`` without args.
+_ctx = get_context()
+_original_reload = _ctx.reload
+_ctx.reload = lambda: _original_reload(get_user_data_path)
+del _ctx, _original_reload
