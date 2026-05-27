@@ -1,5 +1,0 @@
-lxml
-asq
-PyQt6
-git+https://github.com/OpenNingia/pypdf.git@main
-pyqtwaitingspinner
