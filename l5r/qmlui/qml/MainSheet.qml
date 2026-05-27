@@ -11,7 +11,12 @@ ApplicationWindow {
     width: 1000
     height: 720
     visible: true
-    title: pcProxy.displayTitle
+    // Null-guard the proxy refs: QML evaluates ApplicationWindow's
+    // construction-time bindings before context properties are fully
+    // wired, so pcProxy/appCtrl read as null on the first pass and
+    // then resettle. Without the guard the engine logs a TypeError on
+    // every launch.
+    title: pcProxy ? pcProxy.displayTitle : ""
 
     menuBar: MenuBar {
         Menu {
@@ -82,7 +87,7 @@ ApplicationWindow {
                 anchors.fill: parent
                 anchors.topMargin: 8
                 anchors.bottomMargin: 8
-                model: appCtrl.tabs
+                model: appCtrl ? appCtrl.tabs : []
                 clip: true
                 currentIndex: 0
                 spacing: 2
@@ -161,7 +166,7 @@ ApplicationWindow {
 
                 Repeater {
                     id: sheetRepeater
-                    model: appCtrl.tabs
+                    model: appCtrl ? appCtrl.tabs : []
                     delegate: SectionBlock {
                         width: sheetColumn.width
                         tabId: modelData.id

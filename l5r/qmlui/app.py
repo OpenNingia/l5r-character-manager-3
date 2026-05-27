@@ -10,7 +10,6 @@
 # L5RCMCore.__init__ (translation context, datapack reload) and hands
 # control to a QQmlApplicationEngine rooted at qml/Main.qml.
 
-import os
 from pathlib import Path
 
 from qtpy.QtCore import QUrl
@@ -22,23 +21,6 @@ from l5r.qmlui.proxies.app_controller import AppController
 from l5r.qmlui.proxies.pc_proxy import PcProxy
 from l5r.util import log
 from l5r.util.settings import L5RCMSettings
-
-
-LAYOUT_ENV = "L5RCM_QML_LAYOUT"
-_LAYOUT_FILES = {
-    "tabs":  "Main.qml",
-    "rail":  "MainRail.qml",
-    "sheet": "MainSheet.qml",
-}
-
-
-def _resolve_layout():
-    """Pick the root QML file based on $L5RCM_QML_LAYOUT (default 'sheet')."""
-    raw = os.environ.get(LAYOUT_ENV, "sheet").strip().lower()
-    if raw not in _LAYOUT_FILES:
-        log.app.warning(u"Unknown %s=%r, falling back to 'sheet'", LAYOUT_ENV, raw)
-        raw = "sheet"
-    return raw, _LAYOUT_FILES[raw]
 
 
 def _bootstrap_data(locale):
@@ -77,14 +59,11 @@ def run_qml_app(qapp, locale, startup_action):
     api.character.new()
     api.character.set_dirty_flag(False)
 
-    layout_name, layout_file = _resolve_layout()
-    log.app.info(u"QML UI: layout=%s (%s)", layout_name, layout_file)
-
     engine = QQmlApplicationEngine()
     engine.rootContext().setContextProperty("pcProxy", pc_proxy)
     engine.rootContext().setContextProperty("appCtrl", controller)
 
-    qml_main = Path(__file__).parent / "qml" / layout_file
+    qml_main = Path(__file__).parent / "qml" / "MainSheet.qml"
     engine.load(QUrl.fromLocalFile(str(qml_main)))
     if not engine.rootObjects():
         log.app.error(u"QML UI: engine failed to load %s", qml_main)

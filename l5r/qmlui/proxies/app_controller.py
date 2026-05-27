@@ -10,6 +10,8 @@
 # context property called ``appCtrl`` and exposes Q_INVOKABLE slots for
 # every action the QML side needs to drive.
 
+from pathlib import Path
+
 from qtpy.QtCore import QObject, Property, Signal, Slot
 from qtpy.QtGui import QGuiApplication
 from qtpy.QtWidgets import QFileDialog
@@ -18,8 +20,20 @@ import l5r.api as api
 import l5r.api.character
 import l5r.models
 
-from l5r.l5rcmcore import DB_VERSION
+from l5r.l5rcmcore import (
+    COMPANY_HOME_PAGE,
+    APP_DESC,
+    APP_VERSION,
+    AUTHOR_NAME,
+    BUGTRAQ_LINK,
+    DATA_PACKS_DOWNLOADS_LINK,
+    DB_VERSION,
+    L5R_RPG_HOME_PAGE,
+    PROJECT_PAGE_LINK,
+    PROJECT_PAGE_NAME,
+)
 from l5r.util import log
+from l5r.util.fsutil import get_app_icon_path
 
 
 _TAB_DEFS = [
@@ -55,6 +69,24 @@ class AppController(QObject):
             {"id": tid, "title": self.tr(title), "icon": icon}
             for tid, title, icon in _TAB_DEFS
         ]
+
+    # --- about page ---------------------------------------------------
+
+    @Property("QVariantMap", constant=True)
+    def aboutInfo(self):
+        icon_path = get_app_icon_path((64, 64))
+        return {
+            "appDesc": APP_DESC,
+            "version": APP_VERSION,
+            "projectPage": PROJECT_PAGE_LINK,
+            "projectPageName": PROJECT_PAGE_NAME,
+            "bugtraq": BUGTRAQ_LINK,
+            "l5rRpgHome": L5R_RPG_HOME_PAGE,
+            "companyHome": COMPANY_HOME_PAGE,
+            "dataPacks": DATA_PACKS_DOWNLOADS_LINK,
+            "author": AUTHOR_NAME,
+            "iconUrl": Path(icon_path).as_uri() if icon_path else "",
+        }
 
     # --- file menu ----------------------------------------------------
 

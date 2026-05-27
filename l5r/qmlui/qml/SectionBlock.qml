@@ -7,6 +7,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import "sections" as Sections
+
 Item {
     id: section
     property string tabId: ""
@@ -56,23 +58,42 @@ Item {
             opacity: 0.35
         }
 
-        // Body -- inherit the surrounding window bg (transparent fill)
-        // so the Label below stays paired with palette.windowText. A
-        // 1px border + radius gives the "card" affordance without
-        // introducing a theme-dependent contrast trap.
-        Rectangle {
+        // Body -- per-tab content if we have a section QML for this id,
+        // otherwise a neutral "coming soon" card. The Loader sizes
+        // itself to its content's implicit height so the surrounding
+        // sheetColumn (in MainSheet) sees an accurate y for each
+        // sibling SectionBlock, which the TOC needs.
+        Loader {
+            id: body
             Layout.fillWidth: true
-            Layout.preferredHeight: 220
-            color: "transparent"
-            radius: 6
-            border.width: 1
-            border.color: palette.mid
+            sourceComponent: {
+                switch (section.tabId) {
+                case "about": return aboutBody
+                default:      return placeholderBody
+                }
+            }
 
-            Label {
-                anchors.centerIn: parent
-                text: qsTr("Section '%1' content coming soon").arg(section.tabId)
-                opacity: 0.7
-                font.pixelSize: 13
+            Component {
+                id: aboutBody
+                Sections.AboutSection {}
+            }
+
+            Component {
+                id: placeholderBody
+                Rectangle {
+                    implicitHeight: 220
+                    color: "transparent"
+                    radius: 6
+                    border.width: 1
+                    border.color: palette.mid
+
+                    Label {
+                        anchors.centerIn: parent
+                        text: qsTr("Section '%1' content coming soon").arg(section.tabId)
+                        opacity: 0.7
+                        font.pixelSize: 13
+                    }
+                }
             }
         }
     }

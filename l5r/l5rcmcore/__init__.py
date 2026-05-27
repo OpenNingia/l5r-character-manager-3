@@ -59,7 +59,7 @@ from pypdf.generic import ArrayObject, NameObject
 
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
-APP_VERSION = '3.20.0'
+APP_VERSION = '4.0.0'
 DB_VERSION = '3.20'
 APP_ORG = 'openningia'
 
@@ -67,8 +67,8 @@ PROJECT_PAGE_LINK = 'https://github.com/OpenNingia/l5r-character-manager-3'
 BUGTRAQ_LINK = 'https://github.com/OpenNingia/l5r-character-manager-3/issues'
 PROJECT_PAGE_NAME = 'Project Page'
 AUTHOR_NAME = 'Daniele Simonetti'
-L5R_RPG_HOME_PAGE = 'http://www.l5r.com/rpg/'
-ALDERAC_HOME_PAGE = 'http://www.alderac.com/'
+L5R_RPG_HOME_PAGE = 'https://www.legendofthefiverings.com/products/roleplaying-games/legend-of-the-five-rings/'
+COMPANY_HOME_PAGE = 'https://www.fantasyflightgames.com/'
 DATA_PACKS_DOWNLOADS_LINK = 'https://github.com/OpenNingia/l5rcm-data-packs/releases/latest'
 
 

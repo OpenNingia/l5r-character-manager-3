@@ -12,7 +12,7 @@
 from qtpy import QtCore, QtGui, QtWidgets
 
 from l5r.l5rcmcore import (
-    ALDERAC_HOME_PAGE,
+    COMPANY_HOME_PAGE,
     APP_DESC,
     AUTHOR_NAME,
     BUGTRAQ_LINK,
@@ -50,7 +50,7 @@ class AboutTabMixin:
                   <p>
                   All right on Legend of The Five Rings RPG are possession of
                   <p>
-                  <a href="%s">Alderac Entertainment Group (AEG)</a>
+                  <a href="%s">Fantasy Flight Games</a>
                   </p>
                   </p>
                   <p style='color:palette(mid)'>&copy; 2015 %s</p>
@@ -64,7 +64,7 @@ class AboutTabMixin:
                                        ),
                                        PROJECT_PAGE_LINK, PROJECT_PAGE_NAME,
                                        BUGTRAQ_LINK, L5R_RPG_HOME_PAGE,
-                                       ALDERAC_HOME_PAGE, AUTHOR_NAME)
+                                       COMPANY_HOME_PAGE, AUTHOR_NAME)
         lb_info = QtWidgets.QLabel(info, self)
         lb_info.setOpenExternalLinks(True)
         lb_info.setWordWrap(True)
