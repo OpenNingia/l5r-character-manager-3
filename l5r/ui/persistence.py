@@ -46,6 +46,11 @@ class PersistenceSink(QtCore.QObject):
         spinner = WaitingSpinner(self.window.centralWidget(), spin_pars)
         return spinner
 
+    def _on_pdf_export_error(self, err):
+        exctype, value, tb = err
+        log.app.error("PDF export failed: %s: %s\n%s", exctype.__name__, value, tb)
+        self.window.advise_error(self.tr("Cannot save pdf sheet."))
+
     def new_character(self):
         window = self.window
         window.save_path = ''
@@ -94,7 +99,7 @@ class PersistenceSink(QtCore.QObject):
         worker = Worker(window.export_as_pdf, file_)
         worker.signals.result.connect(lambda x: window.open_pdf_file_as_shell(file_))
         worker.signals.finished.connect(lambda: spinner.stop())
-        worker.signals.error.connect(lambda x: window.advise_error(self.tr("Cannot save pdf sheet.")))
+        worker.signals.error.connect(self._on_pdf_export_error)
 
         self.thread_pool.start(worker)
         spinner.start()
@@ -114,7 +119,7 @@ class PersistenceSink(QtCore.QObject):
         worker = Worker(window.export_npc_characters, dlg.paths, file_)
         worker.signals.result.connect(lambda x: window.open_pdf_file_as_shell(file_))
         worker.signals.finished.connect(lambda: spinner.stop())
-        worker.signals.error.connect(lambda x: window.advise_error(self.tr("Cannot save pdf sheet.")))
+        worker.signals.error.connect(self._on_pdf_export_error)
 
         self.thread_pool.start(worker)
         spinner.start()
