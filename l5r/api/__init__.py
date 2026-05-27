@@ -15,6 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import functools
 import os
 import re
 
@@ -62,9 +63,10 @@ _current.set(L5RCMContext())
 
 # L5RCMContext.reload needs get_user_data_path (which lives here in
 # l5r/api/__init__.py, to avoid a circular import with l5r/api/context.py).
-# Bind a wrapper on the production context that supplies it so callers
-# can keep doing ``get_context().reload()`` without args.
+# Bind a partial on the production context that supplies it so callers
+# can keep doing ``get_context().reload()`` without args. functools.partial
+# (rather than a closure-capturing lambda) keeps the wrapper independent of
+# the surrounding module namespace.
 _ctx = get_context()
-_original_reload = _ctx.reload
-_ctx.reload = lambda: _original_reload(get_user_data_path)
-del _ctx, _original_reload
+_ctx.reload = functools.partial(_ctx.reload, get_user_data_path)
+del _ctx
