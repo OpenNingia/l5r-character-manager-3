@@ -2,9 +2,17 @@
 #define MyAppName      "L5R: CM"
 #define MyAppPublisher "OpenNingia"
 
+; AppVer is passed in by ISCC via `/DAppVer=X.Y.Z`, driven from
+; l5r.l5rcmcore.APP_VERSION in the GitHub Actions workflow. The fallback
+; keeps local ISCC runs working.
+#ifndef AppVer
+  #define AppVer "0.0.0-dev"
+#endif
+
 [Setup]
 AppName=L5R 4E: Character Manager
-AppVerName={#MyAppName} {%APPVEYOR_BUILD_VERSION|3.17.0}
+AppVersion={#AppVer}
+AppVerName={#MyAppName} {#AppVer}
 AppPublisher={#MyAppPublisher}
 DefaultDirName={commonpf}\openningia\l5rcm
 DefaultGroupName=OpenNingia\L5RCM
