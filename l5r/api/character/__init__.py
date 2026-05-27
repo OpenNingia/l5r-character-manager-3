@@ -60,6 +60,58 @@ def set_name(value):
     log.api.info(u"set character name: %s", value)
 
 
+def get_notes():
+    """return the character extra notes (rich-text HTML)"""
+    pc = get_context().pc
+    return pc.extra_notes if pc else ""
+
+
+def set_notes(value):
+    """set the character extra notes (canonical setter; emits on the bus)"""
+    pc = get_context().pc
+    if pc is None:
+        return
+    value = value or ""
+    if pc.extra_notes == value:
+        return
+    pc.extra_notes = value
+    set_dirty_flag(True)
+    l5r.api.signals.bus().notes_changed.emit(value)
+
+
+_PERSONAL_INFO_KEYS = (
+    "sex", "age", "height", "weight", "hair", "eyes",
+    "father", "mother", "brothers", "sisters",
+    "marsta", "spouse", "childr",
+)
+
+
+def personal_info_keys():
+    """return the canonical anagraphic/family property keys"""
+    return _PERSONAL_INFO_KEYS
+
+
+def get_personal_info(key):
+    """return a single anagraphic/family property as a string"""
+    pc = get_context().pc
+    if pc is None:
+        return ""
+    return pc.get_property(key, "") or ""
+
+
+def set_personal_info(key, value):
+    """set a single anagraphic/family property (canonical setter)"""
+    pc = get_context().pc
+    if pc is None:
+        return
+    value = value or ""
+    if pc.get_property(key, "") == value:
+        return
+    pc.set_property(key, value)
+    set_dirty_flag(True)
+    l5r.api.signals.bus().personal_info_changed.emit()
+
+
 def get_family_tags():
     """return tags related to the choosen family"""
     if get_family():

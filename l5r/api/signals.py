@@ -27,6 +27,8 @@ class _ModelBus(QObject):
     name_changed = Signal(str)
     family_changed = Signal(str)
     clan_changed = Signal(str)
+    notes_changed = Signal(str)
+    personal_info_changed = Signal()
 
 
 _BUS = None

@@ -69,6 +69,7 @@ Item {
             sourceComponent: {
                 switch (section.tabId) {
                 case "about": return aboutBody
+                case "notes": return notesBody
                 default:      return placeholderBody
                 }
             }
@@ -76,6 +77,11 @@ Item {
             Component {
                 id: aboutBody
                 Sections.AboutSection {}
+            }
+
+            Component {
+                id: notesBody
+                Sections.NotesSection {}
             }
 
             Component {

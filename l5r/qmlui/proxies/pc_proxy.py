@@ -30,6 +30,8 @@ class PcProxy(QObject):
     dirtyChanged = Signal()
     modelReplaced = Signal()
     displayTitleChanged = Signal()
+    notesChanged = Signal()
+    personalInfoChanged = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -39,6 +41,8 @@ class PcProxy(QObject):
         bus.name_changed.connect(self._on_name_changed)
         bus.family_changed.connect(self._on_family_changed)
         bus.clan_changed.connect(self._on_clan_changed)
+        bus.notes_changed.connect(self._on_notes_changed)
+        bus.personal_info_changed.connect(self._on_personal_info_changed)
 
     # --- bus listeners ------------------------------------------------
 
@@ -49,6 +53,8 @@ class PcProxy(QObject):
         self.clanChanged.emit()
         self.dirtyChanged.emit()
         self.displayTitleChanged.emit()
+        self.notesChanged.emit()
+        self.personalInfoChanged.emit()
 
     def _on_dirty_changed(self, _value):
         self.dirtyChanged.emit()
@@ -63,6 +69,12 @@ class PcProxy(QObject):
 
     def _on_clan_changed(self, _value):
         self.clanChanged.emit()
+
+    def _on_notes_changed(self, _value):
+        self.notesChanged.emit()
+
+    def _on_personal_info_changed(self):
+        self.personalInfoChanged.emit()
 
     # --- properties ---------------------------------------------------
 
@@ -94,3 +106,12 @@ class PcProxy(QObject):
         body = "{} [{}]".format(pc.name, clan) if clan else pc.name
         suffix = " *" if pc.unsaved else ""
         return "{} — {}{}".format(base, body, suffix)
+
+    @Property(str, notify=notesChanged)
+    def notesHtml(self):
+        return api.character.get_notes()
+
+    @Property("QVariantMap", notify=personalInfoChanged)
+    def personalInfo(self):
+        return {k: api.character.get_personal_info(k)
+                for k in api.character.personal_info_keys()}

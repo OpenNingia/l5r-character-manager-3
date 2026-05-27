@@ -155,6 +155,16 @@ class AppController(QObject):
     def fileQuit(self):
         QGuiApplication.instance().quit()
 
+    # --- notes / personal info ---------------------------------------
+
+    @Slot(str)
+    def setNotes(self, html):
+        api.character.set_notes(html)
+
+    @Slot(str, str)
+    def setPersonalInfoField(self, key, value):
+        api.character.set_personal_info(key, value)
+
     # --- startup hooks ------------------------------------------------
 
     def apply_startup(self, action, path):
