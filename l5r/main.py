@@ -59,12 +59,16 @@ from l5r.ui.helpers import (
 from l5r.ui.menu import MenuMixin
 from l5r.ui.nicebar import NicebarMixin
 from l5r.ui.persistence import PersistenceMixin
+from l5r.ui.tabs.about import AboutTabMixin
+from l5r.ui.tabs.advancements import AdvancementsTabMixin
+from l5r.ui.tabs.settings_tab import SettingsTabMixin
 from l5r.util import log
 from l5r.util.settings import L5RCMSettings
 
 
-class L5RMain(AdvanceMixin, AdviseMixin, HealthDisplayMixin, MenuMixin,
-              NicebarMixin, PersistenceMixin, L5RCMCore):
+class L5RMain(AboutTabMixin, AdvancementsTabMixin, AdvanceMixin, AdviseMixin,
+              HealthDisplayMixin, MenuMixin, NicebarMixin, PersistenceMixin,
+              SettingsTabMixin, L5RCMCore):
 
     default_size = QtCore.QSize(820, 720)
     default_point_size = 8.25
@@ -936,38 +940,6 @@ class L5RMain(AdvanceMixin, AdviseMixin, HealthDisplayMixin, MenuMixin,
 
         self.tabs.addTab(mfr, self.tr("Perks"))
 
-    def build_ui_page_6(self):
-        mfr = QtWidgets.QFrame(self)
-        vbox = QtWidgets.QVBoxLayout(mfr)
-
-        fr_ = QtWidgets.QFrame(self)
-        fr_h = QtWidgets.QHBoxLayout(fr_)
-        fr_h.setContentsMargins(0, 0, 0, 0)
-        fr_h.addWidget(
-            QtWidgets.QLabel(self.tr("""<p><i>Select the advancement to refund and hit the button</i></p>"""), self))
-        bt_refund_adv = QtWidgets.QPushButton(self.tr("Refund"), self)
-        bt_refund_adv.setSizePolicy(QtWidgets.QSizePolicy.Maximum,
-                                    QtWidgets.QSizePolicy.Preferred)
-        bt_refund_adv.clicked.connect(self.sink1.refund_advancement)
-        fr_h.addWidget(bt_refund_adv)
-        vbox.addWidget(fr_)
-
-        self.adv_view_model = l5r.models.AdvancementViewModel(self)
-        view = QtWidgets.QTableView(self)
-        view.setSortingEnabled(False)
-        view.horizontalHeader().setSectionResizeMode(
-            QtWidgets.QHeaderView.Interactive)
-        view.horizontalHeader().setStretchLastSection(True)
-        view.horizontalHeader().setCascadingSectionResizes(True)
-
-        self.table_views.append(view)
-        view.setModel(self.adv_view_model)
-        vbox.addWidget(view)
-
-        self.adv_view = view
-
-        self.tabs.addTab(mfr, self.tr("Advancements"))
-
     def build_ui_page_7(self):
         self.melee_view_model = models.WeaponTableViewModel('melee', self)
         self.ranged_view_model = models.WeaponTableViewModel('ranged', self)
@@ -1192,59 +1164,6 @@ class L5RMain(AdvanceMixin, AdviseMixin, HealthDisplayMixin, MenuMixin,
 
         vtb .setProperty('source', self.equip_view)
         self.tabs.addTab(frame_, self.tr("Equipment"))
-
-    def build_ui_page_settings(self):
-        self.settings_widgets = widgets.SettingsWidget(self)
-        self.tabs.addTab(self.settings_widgets, self.tr("Settings"))
-        self.settings_widgets.setup(self)
-
-    def build_ui_page_about(self):
-        mfr = QtWidgets.QFrame(self)
-        hbox = QtWidgets.QHBoxLayout()
-        hbox.setAlignment(QtCore.Qt.AlignCenter)
-        hbox.setSpacing(30)
-
-        logo = QtWidgets.QLabel(self)
-        logo.setPixmap(QtGui.QPixmap(get_app_icon_path((64, 64))))
-        hbox.addWidget(logo, 0, QtCore.Qt.AlignTop)
-
-        vbox = QtWidgets.QVBoxLayout(mfr)
-        vbox.setAlignment(QtCore.Qt.AlignCenter)
-        vbox.setSpacing(30)
-
-        info = """<html><style>a { color: palette(text); }</style><body><h1>%s</h1>
-                  <p>Version %s</p>
-                  <p><a href="%s">%s</a></p>
-                  <p>Report bugs and send in your ideas <a href="%s">here</a></p>
-                  <p>To know about Legend of the Five rings please visit
-                  <a href="%s">L5R RPG Home Page</a>
-                  </p>
-                  <p>
-                  All right on Legend of The Five Rings RPG are possession of
-                  <p>
-                  <a href="%s">Alderac Entertainment Group (AEG)</a>
-                  </p>
-                  </p>
-                  <p style='color:palette(mid)'>&copy; 2015 %s</p>
-                  <p>Special Thanks:</p>
-                  <p style="margin-left: 10;">
-                  Paul Tar, Jr aka Geiko (Lots of cool stuff)</p>
-                  <p style="margin-left: 10;">Derrick D. Cochran (OS X Distro)
-                  </p>
-                  </body></html>""" % (APP_DESC,
-                                       QtWidgets.QApplication.applicationVersion(
-                                       ),
-                                       PROJECT_PAGE_LINK, PROJECT_PAGE_NAME,
-                                       BUGTRAQ_LINK, L5R_RPG_HOME_PAGE,
-                                       ALDERAC_HOME_PAGE, AUTHOR_NAME)
-        lb_info = QtWidgets.QLabel(info, self)
-        lb_info.setOpenExternalLinks(True)
-        lb_info.setWordWrap(True)
-        hbox.addWidget(lb_info)
-
-        vbox.addLayout(hbox)
-
-        self.tabs.addTab(mfr, self.tr("About"))
 
     def init(self):
         """ second step initialization """
