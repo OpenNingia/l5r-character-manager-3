@@ -9,13 +9,56 @@
 # Tab 4 — Powers (Katas + Kihos). Extracted from l5r/main.py during the
 # Phase 4 split — no behaviour changes.
 
-from qtpy import QtGui, QtWidgets
+from qtpy import QtCore, QtGui, QtWidgets
 
+import l5r.dialogs as dialogs
 import l5r.models as models
 import l5r.widgets as widgets
 
 from l5r.api.data import CMErrors
 from l5r.util.fsutil import get_icon_path
+
+
+class PowersSink(QtCore.QObject):
+    """Qt slots for Tab 4 katas + kihos toolbar buttons."""
+
+    def __init__(self, window):
+        super().__init__(window)
+        self.window = window
+
+    def act_buy_kata(self):
+        window = self.window
+        dlg = dialogs.KataDialog(window.pc, window)
+        dlg.exec_()
+        window.update_from_model()
+
+    def act_buy_kiho(self):
+        window = self.window
+        dlg = dialogs.KihoDialog(window.pc, window)
+        dlg.exec_()
+        window.update_from_model()
+
+    def act_buy_tattoo(self):
+        window = self.window
+        dlg = dialogs.TattooDialog(window.pc, window)
+        dlg.exec_()
+        window.update_from_model()
+
+    def act_del_kata(self):
+        window = self.window
+        sel_idx = window.kata_view.selectionModel().currentIndex()
+        if not sel_idx.isValid():
+            return
+        sel_itm = window.ka_table_view.model().data(sel_idx, QtCore.Qt.UserRole)
+        window.remove_advancement_item(sel_itm.adv)
+
+    def act_del_kiho(self):
+        window = self.window
+        sel_idx = window.kiho_view.selectionModel().currentIndex()
+        if not sel_idx.isValid():
+            return
+        sel_itm = window.ki_table_view.model().data(sel_idx, QtCore.Qt.UserRole)
+        window.remove_advancement_item(sel_itm.adv)
 
 
 class PowersTabMixin:
@@ -55,8 +98,8 @@ class PowersTabMixin:
             vtb = widgets.VerticalToolBar(self)
             vtb.addStretch()
 
-            cb_buy = self.sink2.act_buy_kata
-            cb_remove = self.sink2.act_del_kata
+            cb_buy = self.powers_sink.act_buy_kata
+            cb_remove = self.powers_sink.act_del_kata
 
             self.add_kata_bt = vtb.addButton(
                 QtGui.QIcon(get_icon_path('buy', (16, 16))),
@@ -107,9 +150,9 @@ class PowersTabMixin:
             vtb = widgets.VerticalToolBar(self)
             vtb.addStretch()
 
-            cb_buy = self.sink2.act_buy_kiho
-            cb_remove = self.sink2.act_del_kiho
-            cb_buy_tattoo = self.sink2.act_buy_tattoo
+            cb_buy = self.powers_sink.act_buy_kiho
+            cb_remove = self.powers_sink.act_del_kiho
+            cb_buy_tattoo = self.powers_sink.act_buy_tattoo
 
             self.add_kiho_bt = vtb.addButton(
                 QtGui.QIcon(get_icon_path('buy', (16, 16))),
