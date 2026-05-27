@@ -46,56 +46,16 @@ import l5r.widgets as widgets
 import l5r.dialogs as dialogs
 
 from l5r.l5rcmcore import *
+from l5r.ui.helpers import (
+    new_horiz_line,
+    new_item_groupbox,
+    new_small_le,
+    new_small_plus_bt,
+    new_vert_line,
+)
 from l5r.util import log
 from l5r.util.settings import L5RCMSettings
 
-
-def new_small_le(parent=None, ro=True):
-    le = QtWidgets.QLineEdit(parent)
-    le.setSizePolicy(QtWidgets.QSizePolicy.Maximum,
-                     QtWidgets.QSizePolicy.Maximum)
-    le.setMaximumSize(QtCore.QSize(32, 24))
-    le.setReadOnly(ro)
-    return le
-
-
-def new_horiz_line(parent=None):
-    line = QtWidgets.QFrame(parent)
-    line.setObjectName("hline")
-    line.setGeometry(QtCore.QRect(3, 3, 3, 3))
-    line.setFrameShape(QtWidgets.QFrame.HLine)
-    line.setFrameShadow(QtWidgets.QFrame.Sunken)
-    line.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
-    return line
-
-
-def new_vert_line(parent=None):
-    line = QtWidgets.QFrame(parent)
-    line.setObjectName("vline")
-    line.setGeometry(QtCore.QRect(320, 150, 118, 3))
-    line.setFrameShape(QtWidgets.QFrame.VLine)
-    line.setFrameShadow(QtWidgets.QFrame.Sunken)
-    return line
-
-
-def new_item_groupbox(name, widget):
-    grp = QtWidgets.QGroupBox(name, widget.parent())
-    vbox = QtWidgets.QVBoxLayout(grp)
-    vbox.addWidget(widget)
-    return grp
-
-
-def new_small_plus_bt(parent=None):
-    bt = QtWidgets.QToolButton(parent)
-    bt.setAutoRaise(True)
-    bt.setText('+')
-    bt.setIcon(
-        QtGui.QIcon.fromTheme('gtk-add', QtGui.QIcon(
-            get_icon_path('add', (16, 16)))))
-    bt.setMaximumSize(16, 16)
-    bt.setMinimumSize(16, 16)
-    bt.setToolButtonStyle(QtCore.Qt.ToolButtonFollowStyle)
-    return bt
 
 class L5RMain(L5RCMCore):
 
