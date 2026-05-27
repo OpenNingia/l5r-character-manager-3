@@ -74,10 +74,18 @@ jobs:
           wait-for-completion: true
           output-artifact-directory: tools/deploy/windows/dist/
 
+      - name: Read APP_VERSION
+        id: appver
+        shell: bash
+        run: |
+          ver=$(python -c "from l5r.l5rcmcore import APP_VERSION; print(APP_VERSION)")
+          echo "version=$ver" >> "$GITHUB_OUTPUT"
+          echo "APP_VERSION=$ver"
+
       - name: Inno Setup
         shell: cmd
         working-directory: tools/deploy/windows
-        run: '"%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" setup_appveyor.iss'
+        run: '"%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" /DAppVer=${{ steps.appver.outputs.version }} setup.iss'
 
       - name: Upload unsigned installer (for SignPath)
         if: steps.signing.outputs.enabled == 'true'
