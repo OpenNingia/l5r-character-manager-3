@@ -19,7 +19,7 @@ __author__ = 'Daniele'
 import l5r.api as api
 import l5r.api.data
 
-from l5r.api import __api
+from l5r.api import get_context
 
 from collections import namedtuple
 from l5r.util import log
@@ -66,12 +66,12 @@ def set_dependencies():
         book_list.append(dict(id=p.id, name=p.display_name, version=p.version))
         log.api.debug(u"pack: %s %s", p.id, p.version)
 
-    __api.pc.pack_refs = book_list
+    get_context().pc.pack_refs = book_list
 
 
 def get_dependencies():
     """returns the list of datapack dependencies"""
-    return __api.pc.pack_refs
+    return get_context().pc.pack_refs
 
 
 def get_missing_dependencies():

@@ -18,7 +18,7 @@ __author__ = 'Daniele'
 import l5r.api as api
 
 from l5r.models import MemoSpellAdv, SpellAdv
-from l5r.api import __api
+from l5r.api import get_context
 from asq.initiators import query
 from asq.selectors import a_
 from l5r.util import log
@@ -32,7 +32,7 @@ def get_all():
 def base_deficiencies():
     """returns character deficiencies"""
     list_ = []
-    if not __api.pc:
+    if not get_context().pc:
         return list_
 
     for r in api.character.rankadv.get_all():
@@ -49,7 +49,7 @@ def deficiencies():
 def base_affinities():
     """returns character base affinities"""
     list_ = []
-    if not __api.pc:
+    if not get_context().pc:
         return list_
 
     for r in api.character.rankadv.get_all():
@@ -280,13 +280,13 @@ def get_school_spells():
 
 def get_learned_spells():
     """return the spells not bounded to a rank advancement"""
-    return query(__api.pc.advans).where(
+    return query(get_context().pc.advans).where(
         lambda x: x.type == 'spell').select(a_('spell')).distinct().to_list()
 
 
 def get_memorized_spells():
     """return the memorized spels"""
-    return query(__api.pc.advans).where(
+    return query(get_context().pc.advans).where(
         lambda x: x.type == 'memo_spell').select(a_('spell')).distinct().to_list()
 
 

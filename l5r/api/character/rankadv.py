@@ -21,7 +21,7 @@ import l5r.api.character.schools
 import l5r.api.data.merits
 
 from l5r.models.advancements.rank import Rank
-from l5r.api import __api
+from l5r.api import get_context
 
 from asq.initiators import query
 from asq.selectors import a_
@@ -30,9 +30,9 @@ from l5r.util import log
 
 
 def get_all():
-    if not __api.pc:
+    if not get_context().pc:
         return []
-    return query(__api.pc.advans).where(lambda x: x.type == 'rank').to_list()
+    return query(get_context().pc.advans).where(lambda x: x.type == 'rank').to_list()
 
 
 def get(rank):
@@ -99,7 +99,7 @@ def advance_rank():
 
     # get 3 spells each rank other than the first
     if api.data.schools.is_shugenja(adv.school) and adv.rank > 1:
-        adv.gained_spells_count = __api.pc.get_spells_per_rank()
+        adv.gained_spells_count = get_context().pc.get_spells_per_rank()
 
     # get 2 kiho each rank
     if api.data.schools.is_brotherhood_monk(adv.school) and adv.rank > 1:
@@ -146,7 +146,7 @@ def leave_path():
 
     # get 3 spells each rank other than the first
     if api.data.schools.is_shugenja(adv.school) and adv.rank > 1:
-        adv.gained_spells_count = __api.pc.get_spells_per_rank()
+        adv.gained_spells_count = get_context().pc.get_spells_per_rank()
 
     # get 2 kiho each rank
     if api.data.schools.is_brotherhood_monk(adv.school) and adv.rank > 1:
@@ -180,7 +180,7 @@ def join_new(school_id):
 
     # get 3 spells each rank other than the first
     if api.data.schools.is_shugenja(school_id) and adv.rank > 1:
-        adv.gained_spells_count = __api.pc.get_spells_per_rank()
+        adv.gained_spells_count = get_context().pc.get_spells_per_rank()
 
     if api.data.schools.is_path(adv.school):
         # replaces current school

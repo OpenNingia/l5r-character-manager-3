@@ -21,7 +21,7 @@ import l5r.api as api
 import l5r.api.data.merits
 
 from l5r.models import PerkAdv
-from l5r.api import __api
+from l5r.api import get_context
 from asq.initiators import query
 from asq.selectors import a_
 
@@ -33,9 +33,9 @@ def get_all():
 
 def get_bought():
     """return all merits that comes from advancements"""
-    if not __api.pc:
+    if not get_context().pc:
         return []
-    return query(__api.pc.advans).where(
+    return query(get_context().pc.advans).where(
         lambda x: x.type == 'perk' and (x.cost > 0 or x.tag == 'merit')).to_list()
 
 
@@ -65,7 +65,7 @@ def add(merit_id, rank=None):
 
     adv_ = PerkAdv(merit_id, merit_rank_.id, cost_, "merit")
     adv_.rule = merit_id
-    adv_.desc = __api.tr("{0} Rank {1}, XP Cost: {2}").format(
+    adv_.desc = get_context().tr("{0} Rank {1}, XP Cost: {2}").format(
                                merit_.name, merit_rank_.id, cost_)
 
     return api.character.purchase_advancement(adv_)
@@ -92,7 +92,7 @@ def add_starting(merit_id, rank=None):
     cost_ = 0
     adv_ = PerkAdv(merit_id, merit_rank_.id, cost_, "merit")
     adv_.rule = merit_id
-    adv_.desc = __api.tr("{0} Rank {1}, XP Cost: {2}").format(
+    adv_.desc = get_context().tr("{0} Rank {1}, XP Cost: {2}").format(
                                merit_.name, merit_rank_.id, cost_)
 
     first_rank_.merits.append(adv_)
