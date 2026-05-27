@@ -7,23 +7,117 @@
 # (at your option) any later version.
 #
 # Character file load/save dialogs and the create-new-character entry
-# point. Extracted from l5r/main.py during the Phase 4 split — no
-# behaviour changes. Expects self.sink1, self.pc, self.save_path,
-# self.tx_pc_notes, self.pers_info_widgets, self.tx_pc_name plus
-# self.warn_about_missing_books and self.update_from_model from other
-# mixins / the host class.
+# point, plus the matching Qt-slot endpoints in PersistenceSink.
+# Extracted from l5r/main.py / l5r/sinks/sink_1.py during Phase 4 / 4.5.
 
 import os
 
-from qtpy import QtWidgets
+from qtpy import QtCore, QtWidgets
+
+from pyqtwaitingspinner import SpinnerParameters, WaitingSpinner
 
 import l5r.api as api
 import l5r.api.character
 import l5r.api.character.books
+import l5r.dialogs as dialogs
 
+from l5r.l5rcmcore import DB_VERSION
 from l5r.l5rcmcore.qtsignalsutils import QtSignalLock
 from l5r.util import log
 from l5r.util.settings import L5RCMSettings
+from l5r.util.worker import Worker
+
+
+class PersistenceSink(QtCore.QObject):
+    """Qt signal/slot endpoints for character-file persistence and PDF export.
+
+    Owned by L5RMain as ``self.persistence_sink``. Holds its own
+    QThreadPool for the PDF export workers.
+    """
+
+    def __init__(self, window):
+        super().__init__(window)
+        self.window = window
+        self.thread_pool = QtCore.QThreadPool()
+        self.thread_pool.setMaxThreadCount(2)
+
+    def _make_spinner(self):
+        spin_pars = SpinnerParameters(disable_parent_when_spinning=True)
+        spinner = WaitingSpinner(self.window.centralWidget(), spin_pars)
+        return spinner
+
+    def new_character(self):
+        window = self.window
+        window.save_path = ''
+
+        # create new character
+        api.character.new()
+
+        # backward compatibility, assign to form
+        window.pc = api.character.model()
+
+        window.tx_pc_notes.set_content('')
+        window.update_from_model()
+
+    def load_character(self):
+        window = self.window
+        path = window.select_load_path()
+        window.load_character_from(path)
+
+        # TODO. let the API handle the loading
+        api.character.set_model(window.pc)
+
+    def save_character(self):
+        window = self.window
+        if not window.save_path or not os.path.exists(window.save_path):
+            window.save_path = window.select_save_path()
+
+        if window.save_path:
+            window.pc.version = DB_VERSION
+            window.pc.extra_notes = window.tx_pc_notes.get_content()
+
+            # set book dependencies
+            api.character.books.set_dependencies()
+
+            log.app.info("saving character file: %s", window.save_path)
+            window.pc.save_to(window.save_path)
+
+    def export_character_as_pdf(self):
+        window = self.window
+
+        file_ = window.select_export_file(".pdf")
+        if not file_:
+            return
+
+        spinner = self._make_spinner()
+
+        worker = Worker(window.export_as_pdf, file_)
+        worker.signals.result.connect(lambda x: window.open_pdf_file_as_shell(file_))
+        worker.signals.finished.connect(lambda: spinner.stop())
+        worker.signals.error.connect(lambda x: window.advise_error(self.tr("Cannot save pdf sheet.")))
+
+        self.thread_pool.start(worker)
+        spinner.start()
+
+    def show_npc_export_dialog(self):
+        window = self.window
+        dlg = dialogs.NpcExportDialog(window)
+        if dlg.exec_() != QtWidgets.QDialog.Accepted:
+            return
+
+        file_ = window.select_export_file(".pdf")
+        if not file_:
+            return
+
+        spinner = self._make_spinner()
+
+        worker = Worker(window.export_npc_characters, dlg.paths, file_)
+        worker.signals.result.connect(lambda x: window.open_pdf_file_as_shell(file_))
+        worker.signals.finished.connect(lambda: spinner.stop())
+        worker.signals.error.connect(lambda x: window.advise_error(self.tr("Cannot save pdf sheet.")))
+
+        self.thread_pool.start(worker)
+        spinner.start()
 
 
 class PersistenceMixin:
@@ -156,5 +250,5 @@ class PersistenceMixin:
         return files
 
     def create_new_character(self):
-        self.sink1.new_character()
+        self.persistence_sink.new_character()
         self.pc.unsaved = False
