@@ -343,7 +343,7 @@ class SettingsWidget(QtWidgets.QWidget):
             self.ck_show_banner,
             self.ck_show_banner.stateChanged,
             "checked", "ui/isbannerenabled",
-            callback=lambda x: app.sink1.set_banner_visibility(x))
+            callback=lambda x: app.menu_sink.set_banner_visibility(x))
 
         # health display
         hmethods = [

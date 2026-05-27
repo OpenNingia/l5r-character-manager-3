@@ -9,17 +9,98 @@
 # Application menu (gear button at top-left of the tab widget) and the
 # PayPal donate button in the status bar. Extracted from l5r/main.py
 # during the Phase 4 split — no behaviour changes.
-# Expects self.widgets / self.tabs / self.ic_idx / self.sink1..sink4
-# from the host class plus self.please_donate / self.update_from_model
-# from L5RCMCore / other mixins.
+# Expects self.widgets / self.tabs / self.ic_idx / self.menu_sink (and
+# the other per-mixin sinks) from the host class plus self.please_donate
+# / self.update_from_model from L5RCMCore / other mixins.
+
+import os
 
 from qtpy import QtCore, QtGui, QtWidgets
 
 import l5r.api as api
 import l5r.api.character
+import l5r.dialogs as dialogs
+import l5r.models
 
+from l5r.util import osutil
 from l5r.util.fsutil import get_icon_path
 from l5r.util.settings import L5RCMSettings
+
+
+class MenuSink(QtCore.QObject):
+    """Qt slots for the gear-button application menu actions (Rules,
+    Options, Outfit, Data submenus)."""
+
+    def __init__(self, window):
+        super().__init__(window)
+        self.window = window
+
+    # --- Rules submenu ---
+
+    def on_set_wnd_mult(self):
+        window = self.window
+        val, ok = QtWidgets.QInputDialog.getInt(window, 'Set Health Multiplier',
+                                                "Multiplier:", window.pc.health_multiplier,
+                                                2, 5, 1)
+        if ok:
+            window.set_health_multiplier(val)
+
+    def on_damage_act(self):
+        window = self.window
+        val, ok = QtWidgets.QInputDialog.getInt(window, 'Cure/Inflict Damage',
+                                                "Wounds:", 1,
+                                                -1000, 1000, 1)
+        if ok:
+            window.damage_health(val)
+
+    # --- Outfit submenu ---
+
+    def show_wear_armor(self):
+        window = self.window
+        dlg = dialogs.ChooseItemDialog(window.pc, 'armor', window)
+        if dlg.exec_() == QtWidgets.QDialog.Accepted:
+            window.update_from_model()
+
+    def show_wear_cust_armor(self):
+        window = self.window
+        dlg = dialogs.CustomArmorDialog(window.pc, window)
+        if dlg.exec_() == QtWidgets.QDialog.Accepted:
+            window.update_from_model()
+
+    # --- Options submenu ---
+
+    def on_toggle_buy_for_free(self, flag):
+        l5r.models.Advancement.set_buy_for_free(flag)
+
+    def on_toggle_display_banner(self):
+        settings = L5RCMSettings()
+        settings.ui.banner_enabled = not settings.ui.banner_enabled
+        self.set_banner_visibility(settings.ui.banner_enabled)
+
+    def set_banner_visibility(self, value):
+        window = self.window
+        for i in range(0, window.mvbox.count()):
+            logo = window.mvbox.itemAt(i).widget()
+            if logo.objectName() == 'BANNER':
+                if value:
+                    logo.show()
+                else:
+                    logo.hide()
+                    window.widgets.adjustSize()
+                    window.widgets.resize(1, 1)
+                    window.widgets.setGeometry(QtCore.QRect(0, 0, 727, 573))
+                break
+
+    def open_data_dir_act(self):
+        path = os.path.normpath(osutil.get_user_data_path())
+        if not os.path.exists(path):
+            os.makedirs(path)
+        osutil.portable_open(path)
+
+    def show_dice_roller(self):
+        from l5r.diceroller import drgui
+        dlg = drgui.DiceRoller(self.window)
+        dlg.show()
 
 
 class MenuMixin:
@@ -46,13 +127,13 @@ class MenuMixin:
         save_act.setShortcut(QtGui.QKeySequence.Save)
         exit_act.setShortcut(QtGui.QKeySequence.Quit)
 
-        new_act .triggered.connect(self.sink1.new_character)
-        open_act.triggered.connect(self.sink1.load_character)
-        save_act.triggered.connect(self.sink1.save_character)
+        new_act .triggered.connect(self.persistence_sink.new_character)
+        open_act.triggered.connect(self.persistence_sink.load_character)
+        save_act.triggered.connect(self.persistence_sink.save_character)
         exit_act.triggered.connect(self.close)
 
-        export_pdf_act .triggered.connect(self.sink1.export_character_as_pdf)
-        export_npc_act .triggered.connect(self.sink1.show_npc_export_dialog)
+        export_pdf_act .triggered.connect(self.persistence_sink.export_character_as_pdf)
+        export_npc_act .triggered.connect(self.persistence_sink.show_npc_export_dialog)
 
         # Advancement menu
         # actions buy advancement, view advancements
@@ -61,8 +142,8 @@ class MenuMixin:
 
         refund_act .setShortcut(QtGui.QKeySequence.Undo)
 
-        resetadv_act.triggered.connect(self.sink1.reset_adv)
-        refund_act  .triggered.connect(self.sink1.refund_last_adv)
+        resetadv_act.triggered.connect(self.advancements_sink.reset_adv)
+        refund_act  .triggered.connect(self.advancements_sink.refund_last_adv)
 
         # Outfit menu
         # actions, select armor, add weapon, add misc item
@@ -73,8 +154,8 @@ class MenuMixin:
         add_cust_weap_act = QtWidgets.QAction(
             self.tr("Add Custom Weapon..."), self)
 
-        sel_armor_act     .triggered.connect(self.sink1.show_wear_armor)
-        sel_cust_armor_act.triggered.connect(self.sink1.show_wear_cust_armor)
+        sel_armor_act     .triggered.connect(self.menu_sink.show_wear_armor)
+        sel_cust_armor_act.triggered.connect(self.menu_sink.show_wear_cust_armor)
         add_weap_act      .triggered.connect(self.sink3.show_add_weapon)
         add_cust_weap_act .triggered.connect(self.sink3.show_add_cust_weapon)
 
@@ -122,8 +203,8 @@ class MenuMixin:
             if act.property('method') == hm_mode:
                 act.setChecked(True)
 
-        set_wound_mult_act.triggered.connect(self.sink1.on_set_wnd_mult)
-        damage_act        .triggered.connect(self.sink1.on_damage_act)
+        set_wound_mult_act.triggered.connect(self.menu_sink.on_set_wnd_mult)
+        damage_act        .triggered.connect(self.menu_sink.on_damage_act)
 
         # Data menu
         import_data_act = QtWidgets.QAction(self.tr("Import Data pack..."), self)
@@ -164,12 +245,12 @@ class MenuMixin:
         options_banner_act.setChecked(settings.ui.banner_enabled)
 
         options_banner_act.triggered.connect(
-            self.sink1.on_toggle_display_banner)
+            self.menu_sink.on_toggle_display_banner)
         options_buy_for_free_act.toggled.connect(
-            self.sink1.on_toggle_buy_for_free)
+            self.menu_sink.on_toggle_buy_for_free)
         options_open_data_dir_act.triggered.connect(
-            self.sink1.open_data_dir_act)
-        options_dice_roll_act.triggered.connect(self.sink1.show_dice_roller)
+            self.menu_sink.open_data_dir_act)
+        options_dice_roll_act.triggered.connect(self.menu_sink.show_dice_roller)
 
         # GENERAL MENU
         self.app_menu_tb.setAutoRaise(True)
