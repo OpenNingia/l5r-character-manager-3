@@ -37,13 +37,6 @@ You will also need to install Python from here (latest version should be fine):
 
 https://www.python.org/downloads/
 
-### Note for Linux users
-You will need to download one more dependency, the pdf toolkit, needed to export the character sheets.
-Use your package manager to install the `pdftk-java` package.
-
-In case this is not packaged for your distribution I recommend this version:
-https://gitlab.com/pdftk-java/pdftk
-
 ### Finally you launch the program
 
 ```
