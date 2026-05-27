@@ -9,13 +9,67 @@
 # Tab 10 — Equipment list + money widget. Extracted from l5r/main.py
 # during the Phase 4 split — no behaviour changes.
 
-from qtpy import QtGui
+from qtpy import QtCore, QtGui
 
+import l5r.api as api
+import l5r.api.character
 import l5r.models as models
 import l5r.widgets as widgets
 
 from l5r.ui.helpers import new_horiz_line
+from l5r.util import log
 from l5r.util.fsutil import get_icon_path
+
+
+class EquipmentSink(QtCore.QObject):
+    """Qt slots for the Tab 10 equipment list + money widget."""
+
+    def __init__(self, window):
+        super().__init__(window)
+        self.window = window
+
+    def add_equipment(self):
+        window = self.window
+        equip_list = window.pc.get_property('equip', [])
+        equip_list.append(self.tr('Doubleclick to edit'))
+        window.update_from_model()
+
+    def remove_selected_equipment(self):
+        window = self.window
+        try:
+            index = window.equip_view.selectionModel().currentIndex()
+            if not index.isValid():
+                return
+
+            indexRow = index.row()
+            newIndexRow = max(0, index.row() - 1)
+            newIndexCol = index.column()
+            newIndexParent = index.parent()
+            itemModel = index.model()
+
+            start_outfit = api.character.get_starting_outfit() or []
+            equip_list = window.pc.get_property('equip') or []
+
+            if indexRow < len(start_outfit):
+                # delete from starting outfit
+                del start_outfit[indexRow]
+                api.character.set_starting_outfit(start_outfit)
+            else:
+                indexRow -= len(start_outfit)
+                if indexRow < len(equip_list):
+                    del equip_list[indexRow]
+
+            window.update_from_model()
+
+            sibling = itemModel.index(newIndexRow, newIndexCol, newIndexParent)
+            if sibling.isValid():
+                window.equip_view.selectionModel().setCurrentIndex(
+                    sibling, QtCore.QItemSelectionModel.SelectCurrent)
+        except Exception:
+            log.ui.error("Shit happens", exc_info=1, stack_info=True)
+
+    def on_money_value_changed(self, value):
+        api.character.set_money(value)
 
 
 class EquipmentTabMixin:
@@ -37,9 +91,9 @@ class EquipmentTabMixin:
             vtb = widgets.VerticalToolBar(self)
             vtb.addStretch()
             vtb.addButton(QtGui.QIcon(get_icon_path('buy', (16, 16))),
-                          self.tr("Add equipment"), self.sink4.add_equipment)
+                          self.tr("Add equipment"), self.equipment_sink.add_equipment)
             vtb.addButton(QtGui.QIcon(get_icon_path('minus', (16, 16))),
-                          self.tr("Remove equipment"), self.sink4.remove_selected_equipment)
+                          self.tr("Remove equipment"), self.equipment_sink.remove_selected_equipment)
 
             vtb.addStretch()
             return vtb
@@ -62,7 +116,7 @@ class EquipmentTabMixin:
         frame_.layout().addWidget(new_horiz_line(self))
         frame_.layout().addWidget(self.money_widget)
         self.money_widget.valueChanged.connect(
-            self.sink4.on_money_value_changed)
+            self.equipment_sink.on_money_value_changed)
 
         vtb .setProperty('source', self.equip_view)
         self.tabs.addTab(frame_, self.tr("Equipment"))

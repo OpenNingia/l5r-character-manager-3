@@ -11,16 +11,21 @@
 
 from qtpy import QtCore, QtGui, QtWidgets
 
+import l5r.api as api
+import l5r.api.data
+import l5r.api.data.powers
 import l5r.dialogs as dialogs
 import l5r.models as models
 import l5r.widgets as widgets
 
 from l5r.api.data import CMErrors
+from l5r.ui.item_description import get_element_ring_text, show_description_dialog
+from l5r.util import log
 from l5r.util.fsutil import get_icon_path
 
 
 class PowersSink(QtCore.QObject):
-    """Qt slots for Tab 4 katas + kihos toolbar buttons."""
+    """Qt slots for Tab 4 katas + kihos toolbar buttons + double-click."""
 
     def __init__(self, window):
         super().__init__(window)
@@ -59,6 +64,37 @@ class PowersSink(QtCore.QObject):
             return
         sel_itm = window.ki_table_view.model().data(sel_idx, QtCore.Qt.UserRole)
         window.remove_advancement_item(sel_itm.adv)
+
+    def on_kata_item_activate(self, index):
+        item = self.window.ka_sort_model.data(index, QtCore.Qt.UserRole)
+        try:
+            kata = api.data.powers.get_kata(item.id)
+        except Exception:
+            log.ui.error("cannot retrieve information from kata model.", exc_info=1)
+            return
+        show_description_dialog(
+            self.window,
+            kata.name,
+            self.tr("{element}, Mastery {mastery}").format(
+                element=get_element_ring_text(kata),
+                mastery=kata.mastery),
+            kata.desc)
+
+    def on_kiho_item_activate(self, index):
+        item = self.window.ki_sort_model.data(index, QtCore.Qt.UserRole)
+        try:
+            kiho = api.data.powers.get_kiho(item.id)
+        except Exception:
+            log.ui.error("cannot retrieve information from kiho model.", exc_info=1)
+            return
+        show_description_dialog(
+            self.window,
+            kiho.name,
+            self.tr("{type} - {element}, Mastery {mastery}").format(
+                type=kiho.type,
+                element=get_element_ring_text(kiho),
+                mastery=kiho.mastery),
+            kiho.desc)
 
 
 class PowersTabMixin:
@@ -124,7 +160,7 @@ class PowersTabMixin:
         view.horizontalHeader().setStretchLastSection(True)
         view.horizontalHeader().setCascadingSectionResizes(True)
         view.setModel(model)
-        view.doubleClicked.connect(self.sink4.on_kata_item_activate)
+        view.doubleClicked.connect(self.powers_sink.on_kata_item_activate)
         self.ka_table_view = view
         self.table_views.append(view)
 
@@ -181,7 +217,7 @@ class PowersTabMixin:
         view.horizontalHeader().setStretchLastSection(True)
         view.horizontalHeader().setCascadingSectionResizes(True)
         view.setModel(model)
-        view.doubleClicked.connect(self.sink4.on_kiho_item_activate)
+        view.doubleClicked.connect(self.powers_sink.on_kiho_item_activate)
         self.ki_table_view = view
         self.table_views.append(view)
 
