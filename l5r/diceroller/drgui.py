@@ -25,8 +25,13 @@ from .drcore import (
     set_output_cb,
     set_reroll_1,
 )
+from l5r.util import log, osutil
 import random
 import os
+
+
+def _saved_expr_path():
+    return os.path.join(osutil.get_user_data_path(), 'saved_expr')
 
 
 class DiceRoller(QtWidgets.QDialog):
@@ -144,22 +149,30 @@ class DiceRoller(QtWidgets.QDialog):
         layout_.addWidget(dr_frame)
 
     def closeEvent(self, event):
-        self.save_expressions()
+        try:
+            self.save_expressions()
+        except Exception:
+            log.ui.exception("dice roller: failed to save expressions")
+        super().closeEvent(event)
 
     def load_expressions(self):
-        if not os.path.exists('saved_expr'):
+        path = _saved_expr_path()
+        if not os.path.exists(path):
             return
 
-        with open('saved_expr', 'rt') as fobj:
-            i = 0
-            for expr in fobj:
-                expr = expr.strip()
-                self.saved_expr.append(expr)
-                self.add_save_expr_bt(i, expr)
-                i += 1
+        try:
+            with open(path, 'rt') as fobj:
+                for i, expr in enumerate(fobj):
+                    expr = expr.strip()
+                    self.saved_expr.append(expr)
+                    self.add_save_expr_bt(i, expr)
+        except OSError:
+            log.ui.exception("dice roller: failed to load expressions from %s", path)
 
     def save_expressions(self):
-        with open('saved_expr', 'wt') as fobj:
+        path = _saved_expr_path()
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, 'wt') as fobj:
             for expr in self.saved_expr:
                 fobj.write(expr)
                 fobj.write('\n')
