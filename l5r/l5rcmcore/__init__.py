@@ -15,9 +15,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import os
 import shutil
 from tempfile import mkstemp
-import subprocess
+
+from qtpy import QtCore, QtGui, QtWidgets
 
 import l5r.models as models
 import l5r.exporters as exporters

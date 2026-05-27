@@ -26,6 +26,11 @@
 #sip.setapi('QVariant', 2)
 
 import mimetypes
+import os
+import sys
+
+from qtpy import QtCore, QtGui, QtWidgets
+
 import l5r.sinks
 import l5r.api.character
 import l5r.api.character.spells
