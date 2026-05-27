@@ -9,6 +9,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import "../widgets" as Widgets
 import Theme 1.0
 
 ColumnLayout {
@@ -81,12 +82,12 @@ ColumnLayout {
     }
 
     // Personal Information ---------------------------------------------
-    GroupBox {
+    Widgets.SheetPanel {
         Layout.fillWidth: true
         title: qsTr("Personal Informations")
 
         RowLayout {
-            anchors.fill: parent
+            width: parent.width
             spacing: 16
 
             // Anagraphic column

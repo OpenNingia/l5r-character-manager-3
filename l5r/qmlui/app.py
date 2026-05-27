@@ -13,7 +13,7 @@
 from pathlib import Path
 
 from qtpy.QtCore import QUrl
-from qtpy.QtGui import QFontDatabase
+from qtpy.QtGui import QFont, QFontDatabase
 from qtpy.QtQml import QQmlApplicationEngine
 
 import l5r.api as api
@@ -56,6 +56,32 @@ def _load_bundled_fonts():
         log.app.debug(u"QML UI: registered %s -> %s", ttf.name, families)
 
 
+def _apply_body_font(qapp):
+    """Make EB Garamond the app-wide default body font.
+
+    Cinzel stays the display face (consumed via ``Theme.fontDisplay``
+    on headers, ring labels, numerals, dialog titles, the watermark).
+    Garamond becomes the body face by overriding the QApplication's
+    default ``QFont``, which every Quick Controls item -- TextField,
+    ComboBox, SpinBox, plain Label without an explicit family --
+    inherits at construction. Avoids touching dozens of consumer
+    files for the same effect.
+
+    Garamond's optical width is narrower than typical UI sans, so we
+    bump the size by one point to keep on-screen body text legible at
+    parity with the system font. The legacy QWidget path's
+    ``settings.ui.use_system_font`` preference is a QWidget-era
+    setting and intentionally not honoured here -- the QML UI's body
+    face is part of its designed identity.
+    """
+    base = qapp.font()
+    body = QFont("EB Garamond")
+    base_size = base.pointSizeF()
+    if base_size > 0:
+        body.setPointSizeF(base_size + 1.0)
+    qapp.setFont(body)
+
+
 def run_qml_app(qapp, locale, startup_action):
     """Launch the QML UI.
 
@@ -74,6 +100,7 @@ def run_qml_app(qapp, locale, startup_action):
 
     api.set_translation_context(qapp)
     _load_bundled_fonts()
+    _apply_body_font(qapp)
     _bootstrap_data(locale)
 
     pc_proxy = PcProxy()

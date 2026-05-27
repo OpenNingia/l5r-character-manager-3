@@ -226,12 +226,12 @@ ColumnLayout {
     // host two attribute rows; the Void card is buy-rank-only and
     // pairs with the Void-points dot track underneath.
     // -----------------------------------------------------------------
-    GroupBox {
+    Widgets.SheetPanel {
         Layout.fillWidth: true
         title: qsTr("Rings and Attributes")
 
         ColumnLayout {
-            anchors.fill: parent
+            width: parent.width
             spacing: 10
 
             Flow {
@@ -294,12 +294,12 @@ ColumnLayout {
     // shows the flag name, a rank SpinBox, and a 0..9 point track in
     // the flag's brand colour.
     // -----------------------------------------------------------------
-    GroupBox {
+    Widgets.SheetPanel {
         Layout.fillWidth: true
         title: qsTr("Social / Spiritual")
 
         Flow {
-            anchors.fill: parent
+            width: parent.width
             spacing: 16
 
             Repeater {
@@ -374,12 +374,12 @@ ColumnLayout {
         Layout.fillWidth: true
         spacing: 16
 
-        GroupBox {
+        Widgets.SheetPanel {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignTop
             title: qsTr("Initiative")
             GridLayout {
-                anchors.fill: parent
+                width: parent.width
                 columns: 2
                 columnSpacing: 8
                 rowSpacing: 4
@@ -416,12 +416,12 @@ ColumnLayout {
             }
         }
 
-        GroupBox {
+        Widgets.SheetPanel {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignTop
             title: qsTr("Armor TN")
             GridLayout {
-                anchors.fill: parent
+                width: parent.width
                 columns: 2
                 columnSpacing: 8
                 rowSpacing: 4
@@ -478,12 +478,12 @@ ColumnLayout {
             }
         }
 
-        GroupBox {
+        Widgets.SheetPanel {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignTop
             title: qsTr("Health / Wounds (x%1)").arg(section._hm)
             GridLayout {
-                anchors.fill: parent
+                width: parent.width
                 columns: 4
                 columnSpacing: 6
                 rowSpacing: 2
