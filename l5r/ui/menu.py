@@ -156,8 +156,8 @@ class MenuMixin:
 
         sel_armor_act     .triggered.connect(self.menu_sink.show_wear_armor)
         sel_cust_armor_act.triggered.connect(self.menu_sink.show_wear_cust_armor)
-        add_weap_act      .triggered.connect(self.sink3.show_add_weapon)
-        add_cust_weap_act .triggered.connect(self.sink3.show_add_cust_weapon)
+        add_weap_act      .triggered.connect(self.weapons_sink.show_add_weapon)
+        add_cust_weap_act .triggered.connect(self.weapons_sink.show_add_cust_weapon)
 
         # Rules menu
         set_wound_mult_act = QtWidgets.QAction(
