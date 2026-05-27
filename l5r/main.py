@@ -28,16 +28,16 @@ from l5r.l5rcmcore import *
 from l5r.ui.advance import AdvanceMixin
 from l5r.ui.advise import AdviseMixin
 from l5r.ui.health import HealthDisplayMixin
-from l5r.ui.menu import MenuMixin
+from l5r.ui.menu import MenuMixin, MenuSink
 from l5r.ui.nicebar import NicebarMixin
-from l5r.ui.persistence import PersistenceMixin
+from l5r.ui.persistence import PersistenceMixin, PersistenceSink
 from l5r.ui.refresh import ModelRefreshMixin
 from l5r.ui.tabs.about import AboutTabMixin
-from l5r.ui.tabs.advancements import AdvancementsTabMixin
+from l5r.ui.tabs.advancements import AdvancementsTabMixin, AdvancementsSink
 from l5r.ui.tabs.equipment import EquipmentTabMixin
 from l5r.ui.tabs.modifiers import ModifiersTabMixin
 from l5r.ui.tabs.notes import NotesTabMixin
-from l5r.ui.tabs.pc_info import PcInfoTabMixin
+from l5r.ui.tabs.pc_info import PcInfoTabMixin, PcInfoSink
 from l5r.ui.tabs.perks import PerksTabMixin
 from l5r.ui.tabs.powers import PowersTabMixin
 from l5r.ui.tabs.settings_tab import SettingsTabMixin
@@ -67,8 +67,14 @@ class L5RMain(AboutTabMixin, AdvancementsTabMixin, AdvanceMixin, AdviseMixin,
         # character file save path
         self.save_path = ''
 
-        # slot sinks
-        self.sink1 = l5r.sinks.Sink1(self)  # Menu Sink
+        # Per-mixin Qt slot containers (sinks). Each mixin contributes its
+        # own QObject child rather than sharing a global Sink1..Sink4 grab
+        # bag -- gives proper Qt parent-ownership and keeps the per-class
+        # slot surface bounded.
+        self.persistence_sink = PersistenceSink(self)
+        self.advancements_sink = AdvancementsSink(self)
+        self.pc_info_sink = PcInfoSink(self)
+        self.menu_sink = MenuSink(self)
         self.sink2 = l5r.sinks.Sink2(self)  # MeritFlaw Sink
         self.sink3 = l5r.sinks.Sink3(self)  # Weapons Sink
         self.sink4 = l5r.sinks.Sink4(self)  # Weapons Sink
@@ -229,7 +235,7 @@ class L5RMain(AboutTabMixin, AdvancementsTabMixin, AdvanceMixin, AdviseMixin,
         self.bt_edit_family.clicked.connect(self.sink4.on_edit_family)
         self.bt_edit_school.clicked.connect(self.sink4.on_edit_first_school)
 
-        self.bt_set_exp_points.clicked.connect(self.sink1.on_set_exp_limit)
+        self.bt_set_exp_points.clicked.connect(self.pc_info_sink.on_set_exp_limit)
 
     def closeEvent(self, ev):
         # update interface last time, to set unsaved states
@@ -249,7 +255,7 @@ class L5RMain(AboutTabMixin, AdvancementsTabMixin, AdvanceMixin, AdviseMixin,
         if self.pc.is_dirty():
             resp = self.ask_to_save()
             if resp == QtWidgets.QMessageBox.Save:
-                self.sink1.save_character()
+                self.persistence_sink.save_character()
             elif resp == QtWidgets.QMessageBox.Cancel:
                 ev.ignore()
             else:

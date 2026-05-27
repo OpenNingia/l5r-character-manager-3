@@ -24,8 +24,38 @@ import l5r.widgets as widgets
 
 from l5r.api.data import CMErrors
 from l5r.ui.helpers import new_horiz_line, new_small_le, new_small_plus_bt
-from l5r.util import log
-from l5r.util.fsutil import get_icon_path
+from l5r.util import log, names
+from l5r.util.fsutil import get_app_file, get_icon_path
+
+
+class PcInfoSink(QtCore.QObject):
+    """Qt slots for Tab 1 widgets (name generator, family/school edit
+    buttons, experience-limit edit)."""
+
+    def __init__(self, window):
+        super().__init__(window)
+        self.window = window
+
+    def generate_name(self):
+        """generate a random name for the character"""
+        window = self.window
+
+        gender = self.sender().property('gender')
+        if gender == 'male':
+            name = names.get_random_name(get_app_file('male.txt'))
+        else:
+            name = names.get_random_name(get_app_file('female.txt'))
+        window.pc.name = name
+        window.update_from_model()
+
+    def on_set_exp_limit(self):
+        window = self.window
+
+        val, ok = QtWidgets.QInputDialog.getInt(window, 'Set Experience Limit',
+                                                "XP Limit:", window.pc.exp_limit,
+                                                0, 10000, 1)
+        if ok:
+            window.set_exp_limit(val)
 
 
 class PcInfoTabMixin:
@@ -100,8 +130,8 @@ class PcInfoTabMixin:
             # gender tag, connect signals
             bt_generate_male  .setProperty('gender', 'male')
             bt_generate_female.setProperty('gender', 'female')
-            bt_generate_male  .clicked.connect(self.sink1.generate_name)
-            bt_generate_female.clicked.connect(self.sink1.generate_name)
+            bt_generate_male  .clicked.connect(self.pc_info_sink.generate_name)
+            bt_generate_female.clicked.connect(self.pc_info_sink.generate_name)
 
             grid.addLayout(hb_name, 0, 0)
             grid.addWidget(QtWidgets.QLabel(self.tr("Clan"), self), 1, 0)
