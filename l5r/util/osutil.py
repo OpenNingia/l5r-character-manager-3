@@ -43,7 +43,7 @@ def portable_open(what):
     if sys.platform == 'win32':
         # TODO ShellExec
         Popen(['explorer', what])
-    elif sys.platform == 'linux2':
+    elif sys.platform == 'linux':
         de = detect_desktop_environment()
         if de == 'gnome':
             Popen(['gnome-open', what])
@@ -60,7 +60,7 @@ def portable_open(what):
 
 
 def get_system_font():
-    if sys.platform == 'linux2':
+    if sys.platform == 'linux':
         de = detect_desktop_environment()
         if de == 'gnome':
             try:

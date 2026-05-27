@@ -193,7 +193,7 @@ class AdvancedPcModel(object):
 
     # properties
     def has_property(self, name):
-        return name not in self.properties
+        return name in self.properties
 
     def get_property(self, name, default=''):
         if name not in self.properties:
