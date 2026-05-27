@@ -18,7 +18,7 @@
 import os
 import re
 
-from l5r.api.context import L5RCMContext
+from l5r.api.context import L5RCMContext, _current, get_context, use  # noqa: F401
 
 ORG = 'openningia'
 APP = 'l5rcm'
@@ -59,10 +59,15 @@ def tr(*args, **kwargs):
 L5RCMAPI = L5RCMContext
 
 
-# Module-level singleton context. During Phase 5 of the 2026
-# modernization, callers will progressively be migrated to receive a
-# context explicitly instead of reading it from this module attribute.
+# The production L5RCMContext. Bound to the _current ContextVar
+# immediately below so that production code paths see it as the active
+# context, while tests can override per-scope with l5r.api.context.use().
+#
+# ``__api`` is retained as a transitional alias so existing references
+# (e.g. ``from l5r.api import __api; __api.pc``) keep working while
+# the find-and-replace to ``get_context()`` rolls through the codebase.
 __api = L5RCMContext()
+_current.set(__api)
 
 
 # L5RCMContext.reload needs get_user_data_path, but that helper lives

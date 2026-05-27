@@ -7,14 +7,34 @@
 # (at your option) any later version.
 #
 # L5RCMContext — explicit holder for the mutable state the API layer
-# operates on (active character, data store, locale, etc.). Introduced
-# in Phase 5 of the 2026 modernization as the replacement for the
-# module-level __api singleton in l5r/api/__init__.py.
+# operates on (active character, data store, locale, etc.).
 #
-# During the transition __api remains an instance of this class, and
-# the l5r.api.character / l5r.api.data submodules still read it via the
-# module-level alias. As call sites get migrated, they will pass a
-# context explicitly instead.
+# Introduced in Phase 5 of the 2026 modernization as the replacement
+# for the module-level __api singleton in l5r/api/__init__.py.
+#
+# How it's used:
+#
+#   * Production startup binds the default context once (in
+#     l5r/api/__init__.py at import time): the module-level ``__api``
+#     instance is pushed onto the ``_current`` ContextVar.
+#
+#   * API implementations (l5r.api.character.*, l5r.api.data.*,
+#     l5r.api.rules.*) read it via ``get_context().X`` — no ctx is
+#     threaded through call sites.
+#
+#   * Tests scope an isolated context with the ``use()`` context
+#     manager:
+#
+#         with l5r.api.context.use(my_ctx):
+#             api.character.set_family('doji')
+#
+#     Inside the ``with``, every API call reads from ``my_ctx``. On
+#     exit, the previous context is restored. ContextVars are also
+#     async-/thread-safe out of the box.
+
+import contextlib
+import contextvars
+from typing import Iterator
 
 import l5rdal as dal
 
@@ -67,3 +87,43 @@ class L5RCMContext:
         if not self.translation_provider:
             return args[0]
         return self.translation_provider.tr(*args, **kwargs)
+
+
+# --- ContextVar machinery ---------------------------------------------------
+#
+# ``_current`` holds the active L5RCMContext for this Python execution
+# context (thread, asyncio task, etc.). It is bound to the module-level
+# ``__api`` singleton at import time in l5r/api/__init__.py, so any
+# call to ``get_context()`` from production code returns that instance.
+
+_current: contextvars.ContextVar["L5RCMContext"] = contextvars.ContextVar("l5rcm_context")
+
+
+def get_context() -> "L5RCMContext":
+    """Return the active L5RCMContext.
+
+    Raises LookupError if no context has been bound yet -- which in
+    practice can only happen if ``l5r.api`` was never imported.
+    """
+    return _current.get()
+
+
+@contextlib.contextmanager
+def use(ctx: "L5RCMContext") -> Iterator["L5RCMContext"]:
+    """Scope an alternative context for the duration of a block.
+
+    Typical use is in tests::
+
+        with l5r.api.context.use(my_ctx):
+            api.character.set_family('doji')
+            ...
+        # the previous context is restored here
+
+    Nesting is supported; the inner context wins until its ``with``
+    block exits.
+    """
+    token = _current.set(ctx)
+    try:
+        yield ctx
+    finally:
+        _current.reset(token)
