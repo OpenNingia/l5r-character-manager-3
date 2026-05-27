@@ -25,19 +25,6 @@
 #sip.setapi('QUrl', 2)
 #sip.setapi('QVariant', 2)
 
-import sys
-import os
-
-here = ''
-
-try:
-    here = os.path.abspath(os.path.dirname(__file__))
-except NameError:  # We are the main py2exe script, not a module
-    here = os.path.dirname(os.path.abspath(sys.argv[0]))
-
-parent = os.path.abspath(os.path.dirname(here))
-sys.path.append(here)
-
 import mimetypes
 import l5r.sinks
 import l5r.api.character

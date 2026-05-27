@@ -1,4 +1,6 @@
 lxml
 asq
-sip
-PyQt5
+qtpy
+PyQt6
+pyqtwaitingspinner
+pypdf @ git+https://github.com/OpenNingia/pypdf.git@main
