@@ -38,8 +38,8 @@ from l5r.ui.tabs.equipment import EquipmentTabMixin
 from l5r.ui.tabs.modifiers import ModifiersTabMixin
 from l5r.ui.tabs.notes import NotesTabMixin
 from l5r.ui.tabs.pc_info import PcInfoTabMixin, PcInfoSink
-from l5r.ui.tabs.perks import PerksTabMixin
-from l5r.ui.tabs.powers import PowersTabMixin
+from l5r.ui.tabs.perks import PerksTabMixin, PerksSink
+from l5r.ui.tabs.powers import PowersTabMixin, PowersSink
 from l5r.ui.tabs.settings_tab import SettingsTabMixin
 from l5r.ui.tabs.skills import SkillsTabMixin
 from l5r.ui.tabs.techniques import TechniquesTabMixin
@@ -75,7 +75,8 @@ class L5RMain(AboutTabMixin, AdvancementsTabMixin, AdvanceMixin, AdviseMixin,
         self.advancements_sink = AdvancementsSink(self)
         self.pc_info_sink = PcInfoSink(self)
         self.menu_sink = MenuSink(self)
-        self.sink2 = l5r.sinks.Sink2(self)  # MeritFlaw Sink
+        self.perks_sink = PerksSink(self)
+        self.powers_sink = PowersSink(self)
         self.sink3 = l5r.sinks.Sink3(self)  # Weapons Sink
         self.sink4 = l5r.sinks.Sink4(self)  # Weapons Sink
 
