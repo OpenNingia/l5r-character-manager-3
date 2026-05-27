@@ -19,7 +19,6 @@ from qtpy import QtCore, QtGui, QtWidgets
 from qtpy.QtCore import QObject, Property
 from l5r.util.settings import L5RCMSettings
 from l5r.util import log
-import api
 
 class QExampleListModel(QtCore.QAbstractListModel):
     def __init__(self, parent=None):
