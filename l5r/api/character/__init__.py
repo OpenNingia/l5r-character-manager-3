@@ -21,6 +21,7 @@ import operator
 import l5r.api as api
 import l5r.api.data
 import l5r.api.rules
+import l5r.api.signals
 import l5r.models
 
 from l5r.api import get_context
@@ -42,11 +43,21 @@ def new():
     get_context().pc.load_default()
 
     log.api.info("Created new character")
+    l5r.api.signals.bus().model_replaced.emit()
 
 
 def set_model(value):
     """set character model"""
     get_context().pc = value
+    l5r.api.signals.bus().model_replaced.emit()
+
+
+def set_name(value):
+    """set the character name (canonical setter; emits on the bus)"""
+    get_context().pc.name = value
+    set_dirty_flag(True)
+    l5r.api.signals.bus().name_changed.emit(value)
+    log.api.info(u"set character name: %s", value)
 
 
 def get_family_tags():
@@ -473,6 +484,8 @@ def set_family(family_id):
         get_context().pc.clan = family_.clanid
 
         log.api.info(u"set family: %s, clan: %s", family_.id, family_.clanid)
+        l5r.api.signals.bus().family_changed.emit(family_.id)
+        l5r.api.signals.bus().clan_changed.emit(family_.clanid)
     else:
         log.api.warning(u"family not found: %s", family_id)
 
@@ -546,6 +559,7 @@ def is_courtier():
 def set_dirty_flag(value):
     """set the character dirty flag"""
     get_context().pc.unsaved = value
+    l5r.api.signals.bus().dirty_changed.emit(bool(value))
 
 
 def get_health_multiplier():

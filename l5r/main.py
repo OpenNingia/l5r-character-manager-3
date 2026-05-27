@@ -16,6 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import mimetypes
+import os
 import sys
 
 from qtpy import QtCore, QtGui, QtWidgets
@@ -274,6 +275,41 @@ IMPORT_CMD_SWITCH = '--import'
 MIME_L5R_CHAR = "applications/x-l5r-character"
 MIME_L5R_PACK = "applications/x-l5r-pack"
 
+UI_MODE_ENV = "L5RCM_UI"
+
+
+def _resolve_startup_action(argv):
+    """Parse argv and return (action, path).
+
+    Action is one of "open", "import", "new". For "new" the path is
+    None. Shared by the widget and QML entry points so CLI flags behave
+    identically across UI modes.
+    """
+    if len(argv) <= 1:
+        return ("new", None)
+
+    if OPEN_CMD_SWITCH in argv:
+        idx = argv.index(OPEN_CMD_SWITCH)
+        if idx + 1 < len(argv):
+            return ("open", argv[idx + 1])
+        return ("new", None)
+
+    if IMPORT_CMD_SWITCH in argv:
+        idx = argv.index(IMPORT_CMD_SWITCH)
+        if idx + 1 < len(argv):
+            return ("import", argv[idx + 1])
+        return ("new", None)
+
+    # mime sniff on the first positional
+    file_path = argv[1]
+    mime = mimetypes.guess_type(file_path)
+    if mime[0] == MIME_L5R_CHAR:
+        return ("open", file_path)
+    if mime[0] == MIME_L5R_PACK:
+        return ("import", file_path)
+    return ("new", None)
+
+
 def main():
     try:
         app = QtWidgets.QApplication(sys.argv)
@@ -337,6 +373,21 @@ def main():
             except:
                 log.app.error(f"Could not apply user font: {settings.ui.user_font}", exc_info=1)
 
+        startup_action = _resolve_startup_action(sys.argv)
+        log.app.debug(u"startup action: %s", startup_action)
+
+        # Optional QML UI branch. Dev-only: defaults to widgets, unknown
+        # values fall back to widgets with a warning.
+        ui_mode = os.environ.get(UI_MODE_ENV, "widgets").strip().lower()
+        if ui_mode not in ("widgets", "qml"):
+            log.app.warning(u"Unknown %s=%r, falling back to widgets",
+                            UI_MODE_ENV, ui_mode)
+            ui_mode = "widgets"
+
+        if ui_mode == "qml":
+            from l5r.qmlui import run_qml_app
+            return run_qml_app(app, app_locale, startup_action)
+
         # start main form
         l5rcm = L5RMain(app_locale)
         l5rcm.setWindowTitle(APP_DESC + ' v' + APP_VERSION)
@@ -345,28 +396,14 @@ def main():
         # initialize new character
         l5rcm.create_new_character()
 
-        if len(sys.argv) > 1:
-            if OPEN_CMD_SWITCH in sys.argv:
-                log.app.debug(u"open character from command line")
-                of = sys.argv.index(OPEN_CMD_SWITCH)
-                l5rcm.load_character_from(sys.argv[of + 1])
-            elif IMPORT_CMD_SWITCH in sys.argv:
-                imf = sys.argv.index(IMPORT_CMD_SWITCH)
-                pack_path = sys.argv[imf + 1]
-                log.app.debug(u"import datapack from command line: %s", pack_path)
-                app.quit()
-                return l5rcm.import_data_pack(pack_path)
-            else:
-                # check mimetype
-                log.app.debug(u"import file from command line ( should guess mimetype )")
-                file_path = sys.argv[1]
-                mime = mimetypes.guess_type(file_path)
-                log.app.info(u"open file: %s, mime type: %s", file_path, mime)
-                if mime[0] == MIME_L5R_CHAR:
-                    l5rcm.load_character_from(file_path)
-                elif mime[0] == MIME_L5R_PACK:
-                    app.quit()
-                    return l5rcm.import_data_pack(file_path)
+        action, path = startup_action
+        if action == "open" and path:
+            log.app.debug(u"open character from command line")
+            l5rcm.load_character_from(path)
+        elif action == "import" and path:
+            log.app.debug(u"import datapack from command line: %s", path)
+            app.quit()
+            return l5rcm.import_data_pack(path)
 
         l5rcm.show()
 
