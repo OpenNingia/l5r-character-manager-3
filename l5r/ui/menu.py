@@ -99,8 +99,14 @@ class MenuSink(QtCore.QObject):
 
     def show_dice_roller(self):
         from l5r.diceroller import drgui
-        dlg = drgui.DiceRoller(self.window)
+        window = self.window
+        dlg = getattr(window, '_dice_roller_dlg', None)
+        if dlg is None:
+            dlg = drgui.DiceRoller(window)
+            window._dice_roller_dlg = dlg
         dlg.show()
+        dlg.raise_()
+        dlg.activateWindow()
 
     # --- Data submenu ---
 
