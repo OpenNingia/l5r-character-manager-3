@@ -22,23 +22,23 @@ import l5r.api.data
 import l5r.api.character
 
 from l5r.models import chmodel
-from l5r.api import __api
+from l5r.api import get_context
 from l5r.util import log
 
 
 def get_trait_cost(trait_nm):
     """return the base multiplier to purchase the given trait"""
-    if not __api.pc:
+    if not get_context().pc:
         return 0
     trait_id = chmodel.attrib_from_name(trait_nm)
-    return __api.pc.get_attrib_cost(trait_id)
+    return get_context().pc.get_attrib_cost(trait_id)
 
 
 def get_void_cost():
     """return the base multiplier to increase Void ring"""
-    if not __api.pc:
+    if not get_context().pc:
         return 0
-    return __api.pc.void_cost
+    return get_context().pc.void_cost
 
 
 def get_trait_rank_cost(trait_nm, new_value):
@@ -443,7 +443,7 @@ def get_init_modifiers():
     """returns initiative modifiers"""
     r, k, b = 0, 0, 0
     mods = [x for x in
-            __api.pc.get_modifiers('anyr') + __api.pc.get_modifiers('init')
+            get_context().pc.get_modifiers('anyr') + get_context().pc.get_modifiers('init')
             if x.active]
     for m in mods:
         r += m.value[0]
@@ -474,7 +474,7 @@ def get_wound_penalties(index):
         reduction = (api.character.insight_rank() * 2) + api.character.trait_rank('willpower')
         result = max(0, result-reduction)
 
-    for x in __api.pc.get_modifiers('wpen'):
+    for x in get_context().pc.get_modifiers('wpen'):
         if x.active:
             result = max(0, result - x.value[2])
 
@@ -486,7 +486,7 @@ def get_health_rank(idx):
     earth_rank = api.character.ring_rank('earth')
     if idx == 0:
         return earth_rank * 5 + get_health_rank_mod()
-    return earth_rank * __api.pc.health_multiplier + get_health_rank_mod()
+    return earth_rank * get_context().pc.health_multiplier + get_health_rank_mod()
 
 
 def get_health_rank_mod():
@@ -495,7 +495,7 @@ def get_health_rank_mod():
     if api.character.has_rule('crane_the_force_of_honor'):
         mod = max(1, int(api.character.honor() - 4))
 
-    for x in __api.pc.get_modifiers('hrnk'):
+    for x in get_context().pc.get_modifiers('hrnk'):
         if x.active and len(x.value) > 2:
             mod += x.value[2]
     return mod
@@ -526,10 +526,10 @@ def get_wounds_table():
         and the stacked value.
     """
 
-    if not __api.pc:
+    if not get_context().pc:
         return
 
-    tot_wounds = __api.pc.wounds
+    tot_wounds = get_context().pc.wounds
     cur_wounds = tot_wounds
     increments = [get_health_rank(i) for i in range(0, 8)]
     total = sum(increments)

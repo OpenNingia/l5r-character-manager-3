@@ -16,15 +16,15 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
 
-from l5r.api import __api
+from l5r.api import get_context
 from asq.initiators import query
 
 
 def categories():
     """returns a list of skill categories with 'id' and 'name' properties"""
-    if not __api.ds:
+    if not get_context().ds:
         return []
-    return __api.ds.skcategs
+    return get_context().ds.skcategs
 
 
 def get_category(categ_id):
@@ -34,9 +34,9 @@ def get_category(categ_id):
 
 def all():
     """returns the list of skills"""
-    if not __api.ds:
+    if not get_context().ds:
         return []
-    return __api.ds.skills
+    return get_context().ds.skills
 
 
 def get(sid):

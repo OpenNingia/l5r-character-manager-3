@@ -16,7 +16,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
 
-from l5r.api import __api
+from l5r.api import get_context
 
 import l5rdal as dal
 import l5rdal.query
@@ -44,22 +44,22 @@ __RINGS = [
 
 def set_locale(loc):
     """set data locale"""
-    __api.locale = loc
+    get_context().locale = loc
 
 
 def set_blacklist(blk):
     """set data blacklist"""
-    __api.blacklist = blk
+    get_context().blacklist = blk
 
 
 def get_blacklist():
     """return data blacklist"""
-    return __api.blacklist
+    return get_context().blacklist
 
 
 def reload():
     """reloads data from storage"""
-    __api.reload()
+    get_context().reload()
 
 
 def rings():
@@ -74,38 +74,38 @@ def traits():
 
 def get_trait(trait_id):
     """returns the trait from the given id"""
-    if not __api.ds:
+    if not get_context().ds:
         return None
-    return dal.query.get_trait(__api.ds, trait_id)
+    return dal.query.get_trait(get_context().ds, trait_id)
 
 
 def get_ring(ring_id):
     """returns the ring from the given id"""
-    if not __api.ds:
+    if not get_context().ds:
         return None
-    return dal.query.get_ring(__api.ds, ring_id)
+    return dal.query.get_ring(get_context().ds, ring_id)
 
 
 def get_trait_or_ring(traitid):
     """returns the trait or the ring from the given id"""
-    if not __api.ds:
+    if not get_context().ds:
         return None
-    return (dal.query.get_trait(__api.ds, traitid) or
-            dal.query.get_ring(__api.ds, traitid))
+    return (dal.query.get_trait(get_context().ds, traitid) or
+            dal.query.get_ring(get_context().ds, traitid))
 
 
 #def rings():
 #    """returns all the rings"""
-#    if not __api.ds:
+#    if not get_context().ds:
 #        return []
-#    return __api.ds.rings
+#    return get_context().ds.rings
 
 
 #def traits():
 #    """returns all the traits"""
-#    if not __api.ds:
+#    if not get_context().ds:
 #        return []
-#    return __api.ds.traits
+#    return get_context().ds.traits
 
 
 def get_trait_ring(trait_id):
@@ -162,19 +162,19 @@ def get_trait_by_index(trait_n):
 
 def model():
     """returns data access model"""
-    return __api.ds
+    return get_context().ds
 
 
 def set_model(value):
     """inject the data access model"""
-    __api.ds = value
+    get_context().ds = value
 
 
 def packs():
     """returns loaded data packs"""
-    if not __api.ds:
+    if not get_context().ds:
         return []
-    return __api.ds.get_packs()
+    return get_context().ds.get_packs()
 
 
 def pack_by_id(pack_id):

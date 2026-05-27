@@ -18,7 +18,7 @@ __author__ = 'Daniele'
 
 import l5rdal.query
 from asq.initiators import query
-from l5r.api import __api
+from l5r.api import get_context
 
 
 def get(c):
@@ -28,6 +28,6 @@ def get(c):
 
 def all():
     """returns all clans"""
-    if not __api.ds:
+    if not get_context().ds:
         return []
-    return __api.ds.clans
+    return get_context().ds.clans

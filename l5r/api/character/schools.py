@@ -19,7 +19,7 @@ __author__ = 'Daniele'
 import l5r.api as api
 import l5r.api.character.rankadv
 
-from l5r.api import __api
+from l5r.api import get_context
 
 from asq.initiators import query
 from asq.selectors import a_
@@ -67,10 +67,10 @@ def set_first_with_path(sid, pid):
     rank_ = api.character.rankadv.join_new(school_.id)
 
     # reset character honor, glory and status
-    __api.pc.honor = __api.pc.glory = __api.pc.status = 0
+    get_context().pc.honor = get_context().pc.glory = get_context().pc.status = 0
 
     # set schools
-    __api.pc.set_school(school_.id, school_.trait, 1, school_.honor, school_.tags + [school_.id])
+    get_context().pc.set_school(school_.id, school_.trait, 1, school_.honor, school_.tags + [school_.id])
 
     # set starting skills
     for sk in school_.skills:

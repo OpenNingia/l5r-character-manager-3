@@ -16,14 +16,14 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 __author__ = 'Daniele'
 
-from l5r.api import __api
+from l5r.api import get_context
 from asq.initiators import query
 
 
 def kiho():
-    if not __api:
+    if not get_context().ds:
         return []
-    return __api.ds.kihos
+    return get_context().ds.kihos
 
 
 def get_kiho(kid):
@@ -31,9 +31,9 @@ def get_kiho(kid):
 
 
 def kata():
-    if not __api:
+    if not get_context().ds:
         return []
-    return __api.ds.katas
+    return get_context().ds.katas
 
 
 def get_kata(kid):
