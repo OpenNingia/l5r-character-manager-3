@@ -61,21 +61,26 @@ from l5r.ui.nicebar import NicebarMixin
 from l5r.ui.persistence import PersistenceMixin
 from l5r.ui.tabs.about import AboutTabMixin
 from l5r.ui.tabs.advancements import AdvancementsTabMixin
+from l5r.ui.tabs.equipment import EquipmentTabMixin
+from l5r.ui.tabs.modifiers import ModifiersTabMixin
+from l5r.ui.tabs.notes import NotesTabMixin
 from l5r.ui.tabs.pc_info import PcInfoTabMixin
 from l5r.ui.tabs.perks import PerksTabMixin
 from l5r.ui.tabs.powers import PowersTabMixin
 from l5r.ui.tabs.settings_tab import SettingsTabMixin
 from l5r.ui.tabs.skills import SkillsTabMixin
 from l5r.ui.tabs.techniques import TechniquesTabMixin
+from l5r.ui.tabs.weapons import WeaponsTabMixin
 from l5r.util import log
 from l5r.util.settings import L5RCMSettings
 
 
 class L5RMain(AboutTabMixin, AdvancementsTabMixin, AdvanceMixin, AdviseMixin,
-              HealthDisplayMixin, MenuMixin, NicebarMixin, PcInfoTabMixin,
+              EquipmentTabMixin, HealthDisplayMixin, MenuMixin,
+              ModifiersTabMixin, NicebarMixin, NotesTabMixin, PcInfoTabMixin,
               PerksTabMixin, PersistenceMixin, PowersTabMixin,
               SettingsTabMixin, SkillsTabMixin, TechniquesTabMixin,
-              L5RCMCore):
+              WeaponsTabMixin, L5RCMCore):
 
     default_size = QtCore.QSize(820, 720)
     default_point_size = 8.25
@@ -223,231 +228,6 @@ class L5RMain(AboutTabMixin, AdvancementsTabMixin, AdvanceMixin, AdviseMixin,
             vbox.addWidget(grp)
             views_.append(view)
         return mfr, views_
-
-    def build_ui_page_7(self):
-        self.melee_view_model = models.WeaponTableViewModel('melee', self)
-        self.ranged_view_model = models.WeaponTableViewModel('ranged', self)
-        self.arrow_view_model = models.WeaponTableViewModel('arrow', self)
-
-        def _make_sortable(model):
-            # enable sorting through a proxy model
-            sort_model_ = models.ColorFriendlySortProxyModel(self)
-            sort_model_.setDynamicSortFilter(True)
-            sort_model_.setSourceModel(model)
-            return sort_model_
-
-        # weapon vertical toolbar
-        def _make_vertical_tb(has_custom, has_edit, has_qty, filt):
-            vtb = widgets.VerticalToolBar(self)
-            vtb.setProperty('filter', filt)
-            vtb.addStretch()
-            vtb.addButton(QtGui.QIcon(get_icon_path('buy', (16, 16))),
-                          self.tr("Add weapon"), self.sink3.show_add_weapon)
-            if has_custom:
-                vtb.addButton(QtGui.QIcon(get_icon_path('custom', (16, 16))),
-                              self.tr("Add custom weapon"), self.sink3.show_add_cust_weapon)
-            if has_edit:
-                vtb.addButton(QtGui.QIcon(get_icon_path('edit', (16, 16))),
-                              self.tr("Edit weapon"), self.sink3.edit_selected_weapon)
-            vtb.addButton(QtGui.QIcon(get_icon_path('minus', (16, 16))),
-                          self.tr("Remove weapon"), self.sink3.remove_selected_weapon)
-            if has_qty:
-                vtb.addButton(QtGui.QIcon(get_icon_path('add', (16, 16))),
-                              self.tr("Increase Quantity"), self.sink3.on_increase_item_qty)
-                vtb.addButton(QtGui.QIcon(get_icon_path('minus', (16, 16))),
-                              self.tr("Decrease Quantity"), self.sink3.on_decrease_item_qty)
-
-            vtb.addStretch()
-            return vtb
-
-        melee_vtb = _make_vertical_tb(True, True, False, 'melee')
-        ranged_vtb = _make_vertical_tb(True, True, False, 'ranged')
-        arrow_vtb = _make_vertical_tb(False, False, True, 'arrow')
-
-        models_ = [
-            (self.tr("Melee Weapons"), 'table', _make_sortable(self.melee_view_model), None, melee_vtb, None),
-            (self.tr("Ranged Weapons"), 'table', _make_sortable(self.ranged_view_model), None, ranged_vtb, None),
-            (self.tr("Arrows"), 'table', _make_sortable(self.arrow_view_model), None, arrow_vtb, None)
-        ]
-
-        frame_, views_ = self._build_generic_page(models_)
-
-        melee_vtb .setProperty('source', views_[0])
-        ranged_vtb.setProperty('source', views_[1])
-        arrow_vtb .setProperty('source', views_[2])
-
-        self.tabs.addTab(frame_, self.tr("Weapons"))
-
-    def build_ui_page_8(self):
-        # modifiers
-        self.mods_view_model = models.ModifiersTableViewModel(self)
-        self.mods_view_model.user_change.connect(self.update_from_model)
-
-        def _make_sortable(model):
-            # enable sorting through a proxy model
-            sort_model_ = models.ColorFriendlySortProxyModel(self)
-            sort_model_.setDynamicSortFilter(True)
-            sort_model_.setSourceModel(model)
-            return sort_model_
-
-        # weapon vertical toolbar
-        def _make_vertical_tb():
-            vtb = widgets.VerticalToolBar(self)
-            vtb.addStretch()
-            vtb.addButton(QtGui.QIcon(get_icon_path('buy', (16, 16))),
-                          self.tr("Add modifier"), self.sink4.add_new_modifier)
-            vtb.addButton(QtGui.QIcon(get_icon_path('edit', (16, 16))),
-                          self.tr("Edit modifier"), self.sink4.edit_selected_modifier)
-            vtb.addButton(QtGui.QIcon(get_icon_path('minus', (16, 16))),
-                          self.tr("Remove modifier"), self.sink4.remove_selected_modifier)
-
-            vtb.addStretch()
-            return vtb
-
-        vtb = _make_vertical_tb()
-
-        models_ = [
-            (self.tr("Modifiers"), 'table', _make_sortable(self.mods_view_model), None, vtb, None)
-        ]
-
-        frame_, views_ = self._build_generic_page(models_)
-        self.mod_view = views_[0]
-
-        vtb .setProperty('source', self.mod_view)
-        self.tabs.addTab(frame_, self.tr("Modifiers"))
-
-    def build_ui_page_9(self):
-        mfr = QtWidgets.QFrame(self)
-        vbox = QtWidgets.QVBoxLayout(mfr)
-
-        self.tx_pc_notes = widgets.SimpleRichEditor(self)
-        vbox.addWidget(self.tx_pc_notes)
-
-        def build_pers_info():
-            grp = QtWidgets.QGroupBox(self.tr("Personal Informations"), self)
-            grp.setSizePolicy(QtWidgets.QSizePolicy.Expanding,
-                              QtWidgets.QSizePolicy.Preferred)
-
-            hgrp = QtWidgets.QHBoxLayout(grp)
-
-            # anagraphic
-
-            afr = QtWidgets.QFrame(self)
-            afl = QtWidgets.QFormLayout(afr)
-
-            self.tx_pc_sex = QtWidgets.QLineEdit(self)
-            self.tx_pc_age = QtWidgets.QLineEdit(self)
-            self.tx_pc_height = QtWidgets.QLineEdit(self)
-            self.tx_pc_weight = QtWidgets.QLineEdit(self)
-            self.tx_pc_hair = QtWidgets.QLineEdit(self)
-            self.tx_pc_eyes = QtWidgets.QLineEdit(self)
-
-            afl.addRow(self.tr("Sex"), self.tx_pc_sex)
-            afl.addRow(self.tr("Age"), self.tx_pc_age)
-            afl.addRow(self.tr("Height"), self.tx_pc_height)
-            afl.addRow(self.tr("Weight"), self.tx_pc_weight)
-            afl.addRow(self.tr("Hair"), self.tx_pc_hair)
-            afl.addRow(self.tr("Eyes"), self.tx_pc_eyes)
-            hgrp.addWidget(afr)
-
-            # separator
-            hgrp.addWidget(new_vert_line())
-
-            # parents
-            bfr = QtWidgets.QFrame(self)
-            bfl = QtWidgets.QFormLayout(bfr)
-
-            self.tx_pc_father = QtWidgets.QLineEdit(self)
-            self.tx_pc_mother = QtWidgets.QLineEdit(self)
-            self.tx_pc_bro = QtWidgets.QLineEdit(self)
-            self.tx_pc_sis = QtWidgets.QLineEdit(self)
-            self.tx_pc_marsta = QtWidgets.QLineEdit(self)
-            self.tx_pc_spouse = QtWidgets.QLineEdit(self)
-            self.tx_pc_childr = QtWidgets.QLineEdit(self)
-
-            bfl.addRow(self.tr("Father"), self.tx_pc_father)
-            bfl.addRow(self.tr("Mother"), self.tx_pc_mother)
-            bfl.addRow(self.tr("Brothers"), self.tx_pc_bro)
-            bfl.addRow(self.tr("Sisters"), self.tx_pc_sis)
-            bfl.addRow(self.tr("Marital Status"), self.tx_pc_marsta)
-            bfl.addRow(self.tr("Spouse"), self.tx_pc_spouse)
-            bfl.addRow(self.tr("Children"), self.tx_pc_childr)
-            hgrp.addWidget(bfr)
-
-            self.pers_info_widgets = [
-                self.tx_pc_sex, self.tx_pc_age,
-                self.tx_pc_height, self.tx_pc_weight,
-                self.tx_pc_hair, self.tx_pc_eyes,
-                self.tx_pc_father, self.tx_pc_mother,
-                self.tx_pc_bro, self.tx_pc_marsta,
-                self.tx_pc_sis, self.tx_pc_spouse, self.tx_pc_childr]
-
-            # link personal information widgets
-            self.tx_pc_sex.link = 'sex'
-            self.tx_pc_age.link = 'age'
-            self.tx_pc_height.link = 'height'
-            self.tx_pc_weight.link = 'weight'
-            self.tx_pc_hair.link = 'hair'
-            self.tx_pc_eyes.link = 'eyes'
-            self.tx_pc_father.link = 'father'
-            self.tx_pc_mother.link = 'mother'
-            self.tx_pc_bro.link = 'brothers'
-            self.tx_pc_sis.link = 'sisters'
-            self.tx_pc_marsta.link = 'marsta'
-            self.tx_pc_spouse.link = 'spouse'
-            self.tx_pc_childr.link = 'childr'
-
-            return grp
-
-        vbox.addWidget(build_pers_info())
-
-        self.tabs.addTab(mfr, self.tr("Notes"))
-
-    def build_ui_page_10(self):
-        self.equip_view_model = models.EquipmentListModel(self)
-        # self.equip_view_model.user_change.connect(self.update_from_model)
-
-        def _make_sortable(model):
-            # enable sorting through a proxy model
-            sort_model_ = models.ColorFriendlySortProxyModel(self)
-            sort_model_.setDynamicSortFilter(True)
-            sort_model_.setSourceModel(model)
-            return sort_model_
-
-        # weapon vertical toolbar
-        def _make_vertical_tb():
-            vtb = widgets.VerticalToolBar(self)
-            vtb.addStretch()
-            vtb.addButton(QtGui.QIcon(get_icon_path('buy', (16, 16))),
-                          self.tr("Add equipment"), self.sink4.add_equipment)
-            vtb.addButton(QtGui.QIcon(get_icon_path('minus', (16, 16))),
-                          self.tr("Remove equipment"), self.sink4.remove_selected_equipment)
-
-            vtb.addStretch()
-            return vtb
-
-        vtb = _make_vertical_tb()
-
-        models_ = [
-            (self.tr("Equipment"), 'list', _make_sortable(self.equip_view_model), None, vtb, None)
-        ]
-
-        frame_, views_ = self._build_generic_page(models_)
-        self.equip_view = views_[0]
-
-        font = self.equip_view.font()
-        font.setPointSize(11)
-        self.equip_view.setFont(font)
-
-        self.money_widget = widgets.MoneyWidget(self)
-        frame_.layout().setSpacing(12)
-        frame_.layout().addWidget(new_horiz_line(self))
-        frame_.layout().addWidget(self.money_widget)
-        self.money_widget.valueChanged.connect(
-            self.sink4.on_money_value_changed)
-
-        vtb .setProperty('source', self.equip_view)
-        self.tabs.addTab(frame_, self.tr("Equipment"))
 
     def init(self):
         """ second step initialization """
