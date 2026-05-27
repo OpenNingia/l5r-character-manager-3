@@ -548,6 +548,30 @@ def set_dirty_flag(value):
     get_context().pc.unsaved = value
 
 
+def get_health_multiplier():
+    """return the wound-level multiplier (default 2, per L5R 4e)"""
+    return get_context().pc.health_multiplier
+
+
+def set_health_multiplier(value):
+    """set the wound-level multiplier and mark the character dirty.
+
+    The multiplier scales the seven non-Healthy wound levels (the first
+    level is always Earth*5). Values < 1 are rejected because they would
+    produce a non-monotonic wound table.
+    """
+    value = int(value)
+    if value < 1:
+        raise ValueError("health_multiplier must be >= 1, got %r" % value)
+
+    pc = get_context().pc
+    if pc.health_multiplier == value:
+        return
+    pc.health_multiplier = value
+    set_dirty_flag(True)
+    log.api.info("set health multiplier to: %d", value)
+
+
 def get_starting_money():
     """return PC starting money"""
     first_rank_ = api.character.rankadv.get_first()

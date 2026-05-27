@@ -44,7 +44,7 @@ Linux AppImage and Windows installer are produced by `.github/workflows/release.
 
 ## Datapacks at runtime
 
-The app is non-functional without datapacks. They are imported by the user via *Gear menu → Import datapack…* into `$XDG_CONFIG_HOME/openningia/l5rcm/data*` (Linux) or `%APPDATA%\openningia\l5rcm\data*` (Windows) — see `l5r.api.L5RCMAPI.reload()` / `l5r.api.get_user_data_path()`. When debugging missing schools/skills/spells, the cause is usually missing or unselected datapacks, not a code bug.
+The app is non-functional without datapacks. They are imported by the user via *Gear menu → Import datapack…* into `$XDG_CONFIG_HOME/openningia/l5rcm/data*` (Linux) or `%APPDATA%\openningia\l5rcm\data*` (Windows) — see `L5RCMContext.reload()` in `l5r/api/context.py` and `l5r.api.get_user_data_path()`. When debugging missing schools/skills/spells, the cause is usually missing or unselected datapacks, not a code bug.
 
 ## Architecture
 
@@ -86,6 +86,7 @@ Implication: don't thread a `ctx` parameter through call chains — the API laye
 ## Conventions to preserve
 
 - **Qt imports always through `qtpy`**, never `PyQt6` directly. The codebase deliberately targets multiple Qt bindings via the `QT_API` env var (set in `main.py`).
-- **Don't move logic out of the `__api` singleton pattern** unless you intend to refactor the whole API layer — every `l5r.api.character.*` function depends on it.
+- **Read context implicitly via `get_context()`, don't thread `ctx` through call chains.** Every `l5r.api.character.*` / `l5r.api.data.*` / `l5r.api.rules.*` function reads the active `L5RCMContext` from the `_current` `ContextVar` (see [The `L5RCMContext`](#the-l5rcmcontext-l5rapicontextpy) above). Production binds one at import time; tests scope an alternative with `l5r.api.context.use(...)`. If you find yourself adding a `ctx` parameter to an API function, you're swimming against the pattern.
+- **Setters in `l5r/api/character/*.py` own the dirty flag.** When you add a function that mutates `pc`, call `set_dirty_flag(True)` so close-the-window prompts work. `set_money` and `set_health_multiplier` are the reference shape. The Qt-side wrappers in `L5RCMCore` should delegate to the API setter rather than poking `self.pc.<attr>` directly.
 - The package-level `__init__.py` files in `l5r/dialogs/`, `l5r/diceroller/`, `l5r/exporters/`, `l5r/models/`, `l5r/widgets/` use `from X import *` to re-export submodule symbols. This is the intentional namespace shape so callers can write `dialogs.AdvDlg(...)`. Don't "fix" these in passing — converting them requires touching every consumer.
 - **Mixin + per-mixin sink pattern.** Each `l5r/ui/*.py` module (and `l5r/ui/tabs/*.py`) exports both `XxxMixin` (plain Python methods inherited by `L5RMain`) and `XxxSink(QObject)` (Qt slot endpoints owned by `L5RMain` as `self.xxx_sink`). When wiring a `signal.connect(...)`, connect to a sink method (`self.persistence_sink.save_character`); when calling internal helpers from other mixin code, call the mixin method directly (`self.load_character_from(path)`). Sinks have proper Qt parent-ownership and keep the per-class slot surface from ballooning on a 19-base MRO.

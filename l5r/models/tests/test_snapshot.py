@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
+import contextlib
 import unittest
 import l5rdal as dal
 import l5r.api as api
 import l5r.api.data
 import l5r.api.character
+from l5r.api.context import L5RCMContext, use
 from l5r.models import CharacterSnapshot
 from l5r.tests.fakedata import *
 
@@ -14,6 +16,12 @@ __author__ = 'Daniele Simonetti'
 class TestCharacterSnapshot(unittest.TestCase):
 
     def setUp(self):
+        # Scope a fresh L5RCMContext for this test so we don't bleed
+        # state into the production singleton or sibling tests.
+        self._stack = contextlib.ExitStack()
+        self.addCleanup(self._stack.close)
+        self._stack.enter_context(use(L5RCMContext()))
+
         # inject some data
         data_ = dal.Data([], [])
         api.data.set_model(data_)
