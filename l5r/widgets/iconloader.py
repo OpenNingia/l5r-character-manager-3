@@ -15,8 +15,8 @@
 # Adapted to PyQt5 by Daniele Simonetti
 
 import os
-from qtpy.QtCore import *
-from qtpy.QtGui import *
+from qtpy.QtCore import QDir, QFile, QFileInfo, QSettings
+from qtpy.QtGui import QIcon, QPixmap, QPixmapCache
 
 
 class QIconTheme:

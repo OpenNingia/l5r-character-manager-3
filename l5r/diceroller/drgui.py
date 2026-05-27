@@ -17,7 +17,14 @@
 
 from qtpy import QtCore, QtGui, QtWidgets
 
-from .drcore import *
+from .drcore import (
+    math_to_rpn,
+    rpn_solve,
+    set_explode,
+    set_explode_once,
+    set_output_cb,
+    set_reroll_1,
+)
 import random
 import os
 
