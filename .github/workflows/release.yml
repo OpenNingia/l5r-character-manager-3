@@ -18,9 +18,9 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -56,7 +56,7 @@ jobs:
       - name: Upload unsigned frozen build (for SignPath)
         if: steps.signing.outputs.enabled == 'true'
         id: upload-frozen
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: l5rcm-frozen-unsigned
           path: tools/deploy/windows/dist/
@@ -82,7 +82,7 @@ jobs:
       - name: Upload unsigned installer (for SignPath)
         if: steps.signing.outputs.enabled == 'true'
         id: upload-installer-unsigned
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: l5rcm-setup-windows-unsigned
           path: tools/deploy/windows/Output/l5rcm-setup.exe
@@ -101,7 +101,7 @@ jobs:
           output-artifact-directory: tools/deploy/windows/Output/
 
       - name: Upload final installer (signed if SignPath ran)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: l5rcm-setup-windows
           path: tools/deploy/windows/Output/l5rcm-setup.exe
@@ -109,9 +109,9 @@ jobs:
   deb:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -129,7 +129,7 @@ jobs:
         run: ./makedeb.sh
 
       - name: Upload .deb
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: l5rcm-deb
           path: tools/deploy/linux/*.deb
@@ -139,9 +139,9 @@ jobs:
     env:
       APPDIR: ${{ github.workspace }}/AppDir
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -181,7 +181,7 @@ jobs:
         run: ./appimagetool-x86_64.AppImage "$APPDIR" l5rcm-x86_64.AppImage
 
       - name: Upload AppImage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: l5rcm-appimage
           path: l5rcm-x86_64.AppImage
@@ -193,7 +193,7 @@ jobs:
     if: ${{ startsWith(github.ref, 'refs/tags/v3.') || (github.event_name == 'workflow_dispatch' && inputs.tag_name != '') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           path: dist
           merge-multiple: true
