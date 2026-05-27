@@ -18,10 +18,11 @@
 import os
 import re
 
-import l5rdal as dal
+from l5r.api.context import L5RCMContext
 
 ORG = 'openningia'
 APP = 'l5rcm'
+
 
 def get_user_data_path(rel_path=None):
     user_data = '.'
@@ -53,50 +54,19 @@ def tr(*args, **kwargs):
     return __api.tr(*args, **kwargs)
 
 
-class L5RCMAPI(object):
+# Back-compat alias. Pre-Phase-5 code referred to the class as
+# L5RCMAPI; the new name is L5RCMContext (see l5r/api/context.py).
+L5RCMAPI = L5RCMContext
 
-    # character model
-    pc = None
 
-    # data access
-    ds = None
+# Module-level singleton context. During Phase 5 of the 2026
+# modernization, callers will progressively be migrated to receive a
+# context explicitly instead of reading it from this module attribute.
+__api = L5RCMContext()
 
-    # culture locale
-    locale = None
 
-    # data pack blacklist
-    blacklist = []
-
-    # current rank advancement
-    current_rank_adv = None
-
-    # translation provider
-    translation_provider = None
-
-    def __init__(self, app=None):
-        """initialize api"""
-
-        # load data
-        # self.reload()
-
-        if app:
-            self.translation_provider = app
-
-    def reload(self):
-
-        locations = [get_user_data_path('core.data'),
-                     get_user_data_path('data')]
-        if self.locale:
-            locations += [get_user_data_path('data.' + self.locale)]
-
-        if not self.ds:
-            self.ds = dal.Data(locations, self.blacklist)
-        else:
-            self.ds.rebuild(locations, self.blacklist)
-
-    def tr(self, *args, **kwargs):
-        if not self.translation_provider:
-            return args[0]
-        return self.translation_provider.tr(*args, **kwargs)
-
-__api = L5RCMAPI()
+# L5RCMContext.reload needs get_user_data_path, but that helper lives
+# here (in l5r/api/__init__.py). Bind a wrapper that supplies it so
+# existing callers can keep doing ``__api.reload()`` without args.
+_original_reload = __api.reload
+__api.reload = lambda: _original_reload(get_user_data_path)
