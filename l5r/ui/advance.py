@@ -144,23 +144,6 @@ class AdvanceMixin:
         if dlg.exec_() == QtWidgets.QDialog.Accepted:
             self.update_from_model()
 
-    def show_buy_skill_dlg(self):
-        dlg = dialogs.BuyAdvDialog(self.pc, 'skill', self)
-        dlg.exec_()
-        self.update_from_model()
-
-    def show_buy_emph_dlg(self):
-        # get selected skill
-        sm_ = self.skill_table_view.selectionModel()
-        if sm_.hasSelection():
-            model_ = self.skill_table_view.model()
-            skill_id = model_.data(sm_.currentIndex(), QtCore.Qt.UserRole)
-
-            dlg = dialogs.BuyAdvDialog(self.pc, 'emph', self)
-            dlg.fix_skill_id(skill_id)
-            dlg.exec_()
-            self.update_from_model()
-
     def show_select_affinity(self):
 
         rank_ = api.character.rankadv.get_last()
