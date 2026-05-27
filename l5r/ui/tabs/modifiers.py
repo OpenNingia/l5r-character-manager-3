@@ -9,12 +9,50 @@
 # Tab 8 — Modifiers. Extracted from l5r/main.py during the Phase 4
 # split — no behaviour changes.
 
-from qtpy import QtGui
+from qtpy import QtCore, QtGui, QtWidgets
 
+import l5r.dialogs as dialogs
 import l5r.models as models
 import l5r.widgets as widgets
 
 from l5r.util.fsutil import get_icon_path
+
+
+class ModifiersSink(QtCore.QObject):
+    """Qt slots for the Tab 8 modifiers toolbar."""
+
+    def __init__(self, window):
+        super().__init__(window)
+        self.window = window
+
+    def add_new_modifier(self):
+        window = self.window
+        item = models.ModifierModel()
+        window.pc.add_modifier(item)
+        dlg = dialogs.ModifierDialog(window.pc, window)
+        dlg.set_modifier(item)
+        if dlg.exec_() == QtWidgets.QDialog.Accepted:
+            window.update_from_model()
+
+    def edit_selected_modifier(self):
+        window = self.window
+        index = window.mod_view.selectionModel().currentIndex()
+        if not index.isValid():
+            return
+        item = index.model().data(index, QtCore.Qt.UserRole)
+        dlg = dialogs.ModifierDialog(window.pc, window)
+        dlg.set_modifier(item)
+        if dlg.exec_() == QtWidgets.QDialog.Accepted:
+            window.update_from_model()
+
+    def remove_selected_modifier(self):
+        window = self.window
+        index = window.mod_view.selectionModel().currentIndex()
+        if not index.isValid():
+            return
+        item = index.model().data(index, QtCore.Qt.UserRole)
+        window.pc.modifiers.remove(item)
+        window.update_from_model()
 
 
 class ModifiersTabMixin:
@@ -37,11 +75,11 @@ class ModifiersTabMixin:
             vtb = widgets.VerticalToolBar(self)
             vtb.addStretch()
             vtb.addButton(QtGui.QIcon(get_icon_path('buy', (16, 16))),
-                          self.tr("Add modifier"), self.sink4.add_new_modifier)
+                          self.tr("Add modifier"), self.modifiers_sink.add_new_modifier)
             vtb.addButton(QtGui.QIcon(get_icon_path('edit', (16, 16))),
-                          self.tr("Edit modifier"), self.sink4.edit_selected_modifier)
+                          self.tr("Edit modifier"), self.modifiers_sink.edit_selected_modifier)
             vtb.addButton(QtGui.QIcon(get_icon_path('minus', (16, 16))),
-                          self.tr("Remove modifier"), self.sink4.remove_selected_modifier)
+                          self.tr("Remove modifier"), self.modifiers_sink.remove_selected_modifier)
 
             vtb.addStretch()
             return vtb

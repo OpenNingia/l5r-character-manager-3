@@ -11,12 +11,44 @@
 
 from qtpy import QtCore, QtGui
 
+import l5r.api as api
+import l5r.api.data
+import l5r.api.data.skills
 import l5r.dialogs as dialogs
 import l5r.models as models
 import l5r.widgets as widgets
 
 from l5r.api.data import CMErrors
+from l5r.ui.item_description import show_description_dialog
+from l5r.util import log
 from l5r.util.fsutil import get_icon_path
+
+
+class SkillsSink(QtCore.QObject):
+    """Qt slot for the Tab 2 skill table double-click handler."""
+
+    def __init__(self, window):
+        super().__init__(window)
+        self.window = window
+
+    def on_skill_item_activate(self, index):
+        item = self.window.sk_sort_model.data(index, QtCore.Qt.UserRole)
+        try:
+            skill = api.data.skills.get(item)
+        except Exception:
+            log.ui.error("cannot retrieve information from skill model.", exc_info=1)
+            return
+
+        description = self.tr('<h3>Mastery Abilities:</h3>')
+        for i in skill.mastery_abilities:
+            description += '<B>{rank}</B>: {desc}<BR/>\n'.format(
+                rank=i.rank, desc=i.desc)
+
+        if skill.desc:
+            description += self.tr('<h3>Description</h3>')
+            description += skill.desc
+
+        show_description_dialog(self.window, skill.name, skill.type, description)
 
 
 class SkillsTabMixin:
@@ -54,7 +86,7 @@ class SkillsTabMixin:
                 self.sk_sort_model,
                 None,
                 vtb,
-                self.sink4.on_skill_item_activate
+                self.skills_sink.on_skill_item_activate
             ),
             (
                 self.tr("Mastery Abilities"),

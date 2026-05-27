@@ -102,6 +102,26 @@ class MenuSink(QtCore.QObject):
         dlg = drgui.DiceRoller(self.window)
         dlg.show()
 
+    # --- Data submenu ---
+
+    def import_data_act(self):
+        window = self.window
+        data_pack_files = window.select_import_data_pack()
+        if data_pack_files:
+            window.import_data_packs(data_pack_files)
+
+    def manage_data_act(self):
+        window = self.window
+        dlg = dialogs.ManageDataPackDlg(window.dstore, window)
+        if dlg.exec_() == QtWidgets.QDialog.Accepted:
+            window.update_data_blacklist()
+            self.reload_data_act()
+
+    def reload_data_act(self):
+        window = self.window
+        window.reload_data()
+        window.create_new_character()
+
 
 class MenuMixin:
     """Builds the gear-button menu and the donate button."""
@@ -302,9 +322,9 @@ class MenuMixin:
         self.app_menu_tb.setMenu(self.app_menu)
         self.tabs.setCornerWidget(self.app_menu_tb, QtCore.Qt.TopLeftCorner)
 
-        import_data_act  .triggered.connect(self.sink4.import_data_act)
-        manage_data_act  .triggered.connect(self.sink4.manage_data_act)
-        reload_data_act  .triggered.connect(self.sink4.reload_data_act)
+        import_data_act  .triggered.connect(self.menu_sink.import_data_act)
+        manage_data_act  .triggered.connect(self.menu_sink.manage_data_act)
+        reload_data_act  .triggered.connect(self.menu_sink.reload_data_act)
 
     def setup_donate_button(self):
         self.statusBar().showMessage(

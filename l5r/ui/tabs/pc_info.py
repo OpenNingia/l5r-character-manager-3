@@ -57,6 +57,18 @@ class PcInfoSink(QtCore.QObject):
         if ok:
             window.set_exp_limit(val)
 
+    def on_edit_family(self):
+        window = self.window
+        dlg = widgets.FamilyChooserDialog(window)
+        if dlg.exec_() == QtWidgets.QDialog.Accepted:
+            window.update_from_model()
+
+    def on_edit_first_school(self):
+        window = self.window
+        dlg = widgets.FirstSchoolChooserDialog(window)
+        if dlg.exec_() == QtWidgets.QDialog.Accepted:
+            window.update_from_model()
+
 
 class PcInfoTabMixin:
     """Tab 1: identity (name, clan, family, school), rings/attributes,

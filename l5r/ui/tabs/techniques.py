@@ -11,12 +11,50 @@
 
 from qtpy import QtCore, QtWidgets, QtGui
 
+import l5r.api as api
+import l5r.api.data
+import l5r.api.data.schools
+import l5r.api.data.spells
 import l5r.dialogs as dialogs
 import l5r.models as models
 import l5r.widgets as widgets
 
 from l5r.api.data import CMErrors
+from l5r.ui.item_description import get_element_ring_text, show_description_dialog
+from l5r.util import log
 from l5r.util.fsutil import get_icon_path
+
+
+class TechniquesSink(QtCore.QObject):
+    """Qt slots for Tab 3 spell + tech double-click handlers."""
+
+    def __init__(self, window):
+        super().__init__(window)
+        self.window = window
+
+    def on_spell_item_activate(self, index):
+        item = self.window.sp_sort_model.data(index, QtCore.Qt.UserRole)
+        try:
+            spell = api.data.spells.get(item.spell_id)
+        except Exception:
+            log.ui.error("cannot retrieve information from spell model.", exc_info=1)
+            return
+        show_description_dialog(
+            self.window,
+            spell.name,
+            self.tr("{element}, Mastery {mastery}").format(
+                element=get_element_ring_text(spell),
+                mastery=spell.mastery),
+            spell.desc)
+
+    def on_tech_item_activate(self, index):
+        item = self.window.th_view_model.data(index, QtCore.Qt.UserRole)
+        try:
+            school, tech = api.data.schools.get_technique(item.id)
+        except Exception:
+            log.ui.error("cannot retrieve information from tech model.", exc_info=1)
+            return
+        show_description_dialog(self.window, tech.name, school.name, tech.desc)
 
 
 class TechniquesTabMixin:
@@ -108,7 +146,7 @@ class TechniquesTabMixin:
         hbox.addWidget(fr_)
         layout.addWidget(grp)
 
-        view.doubleClicked.connect(self.sink4.on_spell_item_activate)
+        view.doubleClicked.connect(self.techniques_sink.on_spell_item_activate)
 
         return view
 
@@ -129,7 +167,7 @@ class TechniquesTabMixin:
         vbox.addWidget(view)
         layout.addWidget(grp)
 
-        view.doubleClicked.connect(self.sink4.on_tech_item_activate)
+        view.doubleClicked.connect(self.techniques_sink.on_tech_item_activate)
 
         return view
 
