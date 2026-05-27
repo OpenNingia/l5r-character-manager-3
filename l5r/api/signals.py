@@ -29,6 +29,12 @@ class _ModelBus(QObject):
     clan_changed = Signal(str)
     notes_changed = Signal(str)
     personal_info_changed = Signal()
+    # Coarse "character recomputed" event: fired by callers after a
+    # mutation that affects derived state which has no dedicated signal
+    # (rings/attribs/insight/xp/flags/initiative/armor/wounds). Mirrors
+    # the QWidget side's update_from_model() pull -- the QML side
+    # subscribes once per mixin and re-emits its bundle signals.
+    character_refreshed = Signal()
 
 
 _BUS = None

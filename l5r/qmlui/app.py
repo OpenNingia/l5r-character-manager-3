@@ -60,10 +60,15 @@ def run_qml_app(qapp, locale, startup_action):
     api.character.set_dirty_flag(False)
 
     engine = QQmlApplicationEngine()
+    # Make `import Theme 1.0` resolvable everywhere via the qml/Theme
+    # singleton module. addImportPath takes the *parent* of the module
+    # directory.
+    qml_dir = Path(__file__).parent / "qml"
+    engine.addImportPath(str(qml_dir))
     engine.rootContext().setContextProperty("pcProxy", pc_proxy)
     engine.rootContext().setContextProperty("appCtrl", controller)
 
-    qml_main = Path(__file__).parent / "qml" / "MainSheet.qml"
+    qml_main = qml_dir / "MainSheet.qml"
     engine.load(QUrl.fromLocalFile(str(qml_main)))
     if not engine.rootObjects():
         log.app.error(u"QML UI: engine failed to load %s", qml_main)

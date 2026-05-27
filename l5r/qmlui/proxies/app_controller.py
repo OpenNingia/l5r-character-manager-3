@@ -6,20 +6,31 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 #
-# Glue between QML actions (File menu) and the Python API. Lives as a
-# context property called ``appCtrl`` and exposes Q_INVOKABLE slots for
-# every action the QML side needs to drive.
+# Glue between QML actions (File menu, character mutations) and the
+# Python api layer. Lives as a context property called ``appCtrl`` and
+# exposes Q_INVOKABLE slots for every action the QML side needs to
+# drive. Splitting AppController into per-area files is a follow-up if
+# the surface keeps growing -- for now organised by `# --- section`
+# comment blocks.
 
 from pathlib import Path
 
+from asq.initiators import query
+from asq.selectors import a_
 from qtpy.QtCore import QObject, Property, Signal, Slot
 from qtpy.QtGui import QGuiApplication
-from qtpy.QtWidgets import QFileDialog
+from qtpy.QtWidgets import QFileDialog, QMessageBox
 
 import l5r.api as api
 import l5r.api.character
+import l5r.api.character.schools
+import l5r.api.data
+import l5r.api.data.clans
+import l5r.api.data.families
+import l5r.api.data.schools
 import l5r.models
 
+from l5r.api.data import CMErrors
 from l5r.l5rcmcore import (
     COMPANY_HOME_PAGE,
     APP_DESC,
@@ -32,8 +43,8 @@ from l5r.l5rcmcore import (
     PROJECT_PAGE_LINK,
     PROJECT_PAGE_NAME,
 )
-from l5r.util import log
-from l5r.util.fsutil import get_app_icon_path
+from l5r.util import log, names
+from l5r.util.fsutil import get_app_file, get_app_icon_path
 
 
 _TAB_DEFS = [
@@ -50,6 +61,50 @@ _TAB_DEFS = [
     ("settings",      "Settings",      "⚙"),  # gear
     ("about",         "About",         "ⓘ"),  # circled i
 ]
+
+
+_FLAG_SETTERS = {
+    "honor":  api.character.set_honor,
+    "glory":  api.character.set_glory,
+    "status": api.character.set_status,
+    "taint":  api.character.set_taint,
+    "infamy": api.character.set_infamy,
+}
+
+
+def _school_record(school_dal):
+    """Serialise a school DAL row for QML consumption."""
+    if school_dal is None:
+        return None
+    try:
+        pack_name = school_dal.pack.display_name if school_dal.pack else ""
+    except Exception:
+        pack_name = ""
+    return {
+        "id":     school_dal.id,
+        "name":   school_dal.name,
+        "clanId": getattr(school_dal, "clanid", "") or "",
+        "trait":  getattr(school_dal, "trait", "") or "",
+        "book":   pack_name,
+        "page":   int(getattr(school_dal, "page", 0) or 0),
+    }
+
+
+def _family_record(family_dal):
+    if family_dal is None:
+        return None
+    try:
+        pack_name = family_dal.pack.display_name if family_dal.pack else ""
+    except Exception:
+        pack_name = ""
+    return {
+        "id":     family_dal.id,
+        "name":   family_dal.name,
+        "clanId": getattr(family_dal, "clanid", "") or "",
+        "trait":  getattr(family_dal, "trait", "") or "",
+        "book":   pack_name,
+        "page":   int(getattr(family_dal, "page", 0) or 0),
+    }
 
 
 class AppController(QObject):
@@ -164,6 +219,153 @@ class AppController(QObject):
     @Slot(str, str)
     def setPersonalInfoField(self, key, value):
         api.character.set_personal_info(key, value)
+
+    # --- identity ----------------------------------------------------
+
+    @Slot(str)
+    def generateName(self, gender):
+        """Pick a random male/female name and apply it to the model."""
+        src = "male.txt" if gender == "male" else "female.txt"
+        name = names.get_random_name(get_app_file(src))
+        api.character.set_name(name)
+
+    @Slot(str)
+    def setName(self, value):
+        api.character.set_name(value or "")
+
+    @Slot(int)
+    def setExpLimit(self, value):
+        api.character.set_exp_limit(int(value))
+
+    # --- traits / void -----------------------------------------------
+
+    @Slot(str)
+    def increaseTrait(self, trait_name):
+        """Buy the next rank in a trait. Surfaces a QMessageBox if the
+        character is short on XP. TODO: replace the message box with a
+        proper QML notification surface (see project memory)."""
+        idx = l5r.models.chmodel.attrib_from_name(trait_name)
+        if idx < 0:
+            log.api.warning(u"QML UI: unknown trait %r", trait_name)
+            return
+        res = api.character.purchase_trait_rank(idx)
+        if res == CMErrors.NOT_ENOUGH_XP:
+            self._show_not_enough_xp()
+            return
+        api.character.notify_character_refreshed()
+
+    @Slot()
+    def increaseVoid(self):
+        res = api.character.purchase_void_rank()
+        if res == CMErrors.NOT_ENOUGH_XP:
+            self._show_not_enough_xp()
+            return
+        api.character.notify_character_refreshed()
+
+    @Slot(int)
+    def setVoidPoints(self, value):
+        api.character.set_void_points(int(value))
+
+    def _show_not_enough_xp(self):
+        # Stopgap: QMessageBox bubbled out of the QML window. Slated for
+        # replacement with a QML toast/dialog -- see the
+        # `project-qmlui-msgbox-refactor` memory.
+        QMessageBox.warning(
+            None,
+            self.tr("Not enough XP"),
+            self.tr("You don't have enough experience points "
+                    "to complete this purchase."),
+        )
+
+    # --- social/spiritual flags --------------------------------------
+
+    @Slot(str, float)
+    def setFlag(self, flag_name, value):
+        setter = _FLAG_SETTERS.get(flag_name)
+        if setter is None:
+            log.api.warning(u"QML UI: unknown flag %r", flag_name)
+            return
+        setter(float(value))
+
+    # --- health ------------------------------------------------------
+
+    @Slot(int)
+    def setHealthMultiplier(self, value):
+        try:
+            api.character.set_health_multiplier(int(value))
+        except ValueError:
+            log.api.warning(u"QML UI: invalid health multiplier %r", value)
+            return
+        api.character.notify_character_refreshed()
+
+    # --- clan / family / school choosers -----------------------------
+
+    @Slot(result="QVariantList")
+    def clansList(self):
+        return [{"id": c.id, "name": c.name}
+                for c in query(api.data.clans.all()).order_by(a_("name"))]
+
+    @Slot(str, result="QVariantList")
+    def familiesForClan(self, clan_id):
+        all_families = api.data.families.get_all()
+        if clan_id:
+            filtered = query(all_families).where(lambda x: x.clanid == clan_id)
+        else:
+            filtered = query(all_families)
+        return [_family_record(f) for f in filtered.order_by(a_("name"))]
+
+    @Slot(str, result="QVariantList")
+    def basicSchoolsForClan(self, clan_id):
+        base = api.data.schools.get_base()
+        if clan_id:
+            base = [s for s in base if s.clanid == clan_id]
+        return [_school_record(s)
+                for s in sorted(base, key=lambda x: x.name)]
+
+    @Slot(str, result="QVariantList")
+    def rank1PathsForClan(self, clan_id):
+        paths = api.data.schools.get_paths_with_rank(1)
+        if clan_id:
+            paths = [s for s in paths if s.clanid == clan_id]
+        return [_school_record(s)
+                for s in sorted(paths, key=lambda x: x.name)]
+
+    @Slot(result=str)
+    def currentFamilyId(self):
+        return api.character.get_family() or ""
+
+    @Slot(result=str)
+    def currentClanId(self):
+        return api.character.get_clan() or ""
+
+    @Slot(result=str)
+    def currentFirstSchoolId(self):
+        return api.character.schools.get_first() or ""
+
+    @Slot(result=bool)
+    def canEditOrigin(self):
+        """Origin (family/school) edits are blocked once XP has been
+        spent -- mirrors the QWidget side's disabled edit buttons."""
+        pc = api.character.model()
+        return bool(pc and len(pc.advans) == 0)
+
+    @Slot(str)
+    def setFamily(self, family_id):
+        if not family_id:
+            return
+        api.character.set_family(family_id)
+        api.character.notify_character_refreshed()
+
+    @Slot(str, str)
+    def setFirstSchool(self, school_id, path_id):
+        if not school_id:
+            return
+        if path_id:
+            api.character.schools.set_first_with_path(school_id, path_id)
+        else:
+            api.character.schools.set_first(school_id)
+        api.character.set_dirty_flag(True)
+        api.character.notify_character_refreshed()
 
     # --- startup hooks ------------------------------------------------
 

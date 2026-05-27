@@ -225,6 +225,8 @@ def honor():
 def set_honor(value):
     """store the character honor as difference with the starting value"""
     get_context().pc.honor = value - get_starting_honor()
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
 
 
 def get_starting_glory():
@@ -245,6 +247,8 @@ def glory():
 def set_glory(value):
     """store the character glory as difference with the starting value"""
     get_context().pc.glory = value - get_starting_glory()
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
 
 
 def get_starting_status():
@@ -262,6 +266,8 @@ def status():
 def set_status(value):
     """store the character status as difference with the starting value"""
     get_context().pc.status = value - get_starting_status()
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
 
 
 def get_starting_infamy():
@@ -277,6 +283,8 @@ def infamy():
 def set_infamy(value):
     """store the character infamy as difference with the starting value"""
     get_context().pc.infamy = value - get_starting_infamy()
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
 
 
 def get_starting_taint():
@@ -292,6 +300,8 @@ def taint():
 def set_taint(value):
     """store the character taint as difference with the starting value"""
     get_context().pc.taint = value - get_starting_taint()
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
 
 
 def trait_rank(trait_id):
@@ -612,6 +622,42 @@ def set_dirty_flag(value):
     """set the character dirty flag"""
     get_context().pc.unsaved = value
     l5r.api.signals.bus().dirty_changed.emit(bool(value))
+
+
+def notify_character_refreshed():
+    """Coarse 'character recomputed' notification. Use after mutations
+    that change derived state lacking a dedicated bus signal -- trait
+    purchases, void purchases, school changes -- so the QML proxy
+    re-emits its bundle signals. A no-op for the QWidget UI, which uses
+    a pull (update_from_model) refresh instead."""
+    l5r.api.signals.bus().character_refreshed.emit()
+
+
+def set_exp_limit(value):
+    """set the character's experience-point limit (canonical setter)"""
+    pc = get_context().pc
+    if pc is None:
+        return
+    value = int(value)
+    if pc.exp_limit == value:
+        return
+    pc.exp_limit = value
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
+    log.api.info(u"set exp limit: %d", value)
+
+
+def set_void_points(value):
+    """set the character's current Void-points pool (canonical setter)"""
+    pc = get_context().pc
+    if pc is None:
+        return
+    value = int(value)
+    if pc.void_points == value:
+        return
+    pc.set_void_points(value)
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
 
 
 def get_health_multiplier():

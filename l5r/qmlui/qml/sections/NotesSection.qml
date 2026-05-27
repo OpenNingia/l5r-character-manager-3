@@ -9,6 +9,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import Theme 1.0
+
 ColumnLayout {
     id: section
     spacing: 16
@@ -125,8 +127,8 @@ ColumnLayout {
             Rectangle {
                 Layout.fillHeight: true
                 Layout.preferredWidth: 1
-                color: palette.mid
-                opacity: 0.35
+                color: Theme.divider
+                opacity: Theme.dividerOpacity
             }
 
             // Family column

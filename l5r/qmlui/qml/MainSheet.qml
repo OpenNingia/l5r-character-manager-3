@@ -6,6 +6,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import Theme 1.0
+
 ApplicationWindow {
     id: root
     width: 1000
@@ -104,9 +106,17 @@ ApplicationWindow {
                         root.jumpTo(index)
                     }
 
-                    // Switch label colors when highlighted so they always
-                    // contrast with the palette.highlight background that
-                    // ItemDelegate draws underneath.
+                    // Active item: accent stripe on the left, accent
+                    // icon, accent-tinted label.  Inactive: normal
+                    // palette text colours so the OS theme is honoured.
+                    Rectangle {
+                        anchors.left: parent.left
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        width: 3
+                        color: Theme.accent
+                        visible: tocDelegate.highlighted
+                    }
                     contentItem: RowLayout {
                         spacing: 10
                         Label {
@@ -115,7 +125,7 @@ ApplicationWindow {
                             Layout.leftMargin: 14
                             Layout.preferredWidth: 22
                             horizontalAlignment: Text.AlignHCenter
-                            color: tocDelegate.highlighted ? palette.highlightedText : palette.windowText
+                            color: tocDelegate.highlighted ? Theme.accent : palette.windowText
                             opacity: tocDelegate.highlighted ? 1.0 : 0.7
                         }
                         Label {
@@ -123,7 +133,7 @@ ApplicationWindow {
                             font.pixelSize: 12
                             Layout.fillWidth: true
                             elide: Text.ElideRight
-                            color: tocDelegate.highlighted ? palette.highlightedText : palette.windowText
+                            color: tocDelegate.highlighted ? Theme.accent : palette.windowText
                             font.weight: tocDelegate.highlighted ? Font.DemiBold : Font.Normal
                         }
                     }
@@ -134,8 +144,8 @@ ApplicationWindow {
         Rectangle {
             Layout.preferredWidth: 1
             Layout.fillHeight: true
-            color: palette.mid
-            opacity: 0.45
+            color: Theme.divider
+            opacity: Theme.dividerOpacity
         }
 
         // ---- Scrollable sheet -----------------------------------------

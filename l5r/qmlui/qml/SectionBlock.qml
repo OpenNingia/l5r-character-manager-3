@@ -8,6 +8,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import "sections" as Sections
+import Theme 1.0
 
 Item {
     id: section
@@ -34,28 +35,31 @@ Item {
             Label {
                 text: section.icon
                 font.pixelSize: 26
-                opacity: 0.6
+                color: Theme.accent
+                opacity: 0.85
             }
 
             Label {
                 text: section.title || section.tabId
-                font.pixelSize: 20
+                font.pixelSize: Theme.headerFont
                 font.weight: Font.DemiBold
+                color: Theme.heading
                 Layout.fillWidth: true
             }
 
             Label {
                 text: "#" + section.tabId
                 font.pixelSize: 11
-                opacity: 0.4
+                color: Theme.borderSubtle
+                opacity: 0.75
             }
         }
 
         Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: 1
-            color: palette.mid
-            opacity: 0.35
+            color: Theme.divider
+            opacity: Theme.dividerOpacity
         }
 
         // Body -- per-tab content if we have a section QML for this id,
@@ -68,9 +72,10 @@ Item {
             Layout.fillWidth: true
             sourceComponent: {
                 switch (section.tabId) {
-                case "about": return aboutBody
-                case "notes": return notesBody
-                default:      return placeholderBody
+                case "about":   return aboutBody
+                case "notes":   return notesBody
+                case "pc_info": return characterBody
+                default:        return placeholderBody
                 }
             }
 
@@ -82,6 +87,11 @@ Item {
             Component {
                 id: notesBody
                 Sections.NotesSection {}
+            }
+
+            Component {
+                id: characterBody
+                Sections.CharacterSection {}
             }
 
             Component {

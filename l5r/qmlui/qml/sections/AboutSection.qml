@@ -6,6 +6,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import Theme 1.0
+
 ColumnLayout {
     id: about
     // appCtrl reads as null on the first binding pass (see MainSheet.qml
@@ -35,15 +37,17 @@ ColumnLayout {
 
             Label {
                 text: about.info.appDesc
-                font.pixelSize: 20
+                font.pixelSize: Theme.headerFont
                 font.weight: Font.DemiBold
+                color: Theme.heading
                 Layout.fillWidth: true
                 wrapMode: Text.WordWrap
             }
             Label {
                 text: qsTr("Version %1").arg(about.info.version)
-                font.pixelSize: 13
-                opacity: 0.7
+                font.pixelSize: Theme.bodyFont
+                color: Theme.accent
+                opacity: 0.85
             }
         }
     }
@@ -51,8 +55,8 @@ ColumnLayout {
     Rectangle {
         Layout.fillWidth: true
         Layout.preferredHeight: 1
-        color: palette.mid
-        opacity: 0.35
+        color: Theme.divider
+        opacity: Theme.dividerOpacity
     }
 
     Label {
@@ -60,7 +64,7 @@ ColumnLayout {
         wrapMode: Text.WordWrap
         textFormat: Text.RichText
         color: palette.windowText
-        linkColor: palette.link
+        linkColor: Theme.accent
         onLinkActivated: function(link) { Qt.openUrlExternally(link) }
         text: qsTr(
               "<p><a href=\"%1\">%2</a></p>"

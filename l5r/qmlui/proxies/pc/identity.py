@@ -1,0 +1,105 @@
+# -*- coding: utf-8 -*-
+# Copyright (C) 2014-2026 Daniele Simonetti
+#
+# Identity slice of PcProxy: name, clan, family, first school, and the
+# composite window-title string. Also exposes a `progression` bundle
+# (insight, rank, XP, XP limit) -- everything that updates whenever the
+# character's advancement history changes.
+
+from qtpy.QtCore import Property, Signal
+
+import l5r.api as api
+import l5r.api.character
+import l5r.api.character.schools
+import l5r.api.data
+import l5r.api.data.schools
+
+from l5r.l5rcmcore import APP_DESC, APP_VERSION
+
+
+class IdentityMixin:
+    nameChanged = Signal()
+    clanChanged = Signal()
+    familyChanged = Signal()
+    schoolChanged = Signal()
+    progressionChanged = Signal()
+    displayTitleChanged = Signal()
+
+    def _wire_identity(self, bus):
+        bus.name_changed.connect(self._on_name_changed)
+        bus.family_changed.connect(self._on_family_changed)
+        bus.clan_changed.connect(self._on_clan_changed)
+        bus.dirty_changed.connect(self._on_dirty_changed_for_title)
+        bus.character_refreshed.connect(self._on_character_refreshed_identity)
+        bus.model_replaced.connect(self._on_model_replaced_identity)
+
+    def _on_name_changed(self, _value):
+        self.nameChanged.emit()
+        self.displayTitleChanged.emit()
+
+    def _on_family_changed(self, _value):
+        self.familyChanged.emit()
+        # Family change recomputes school context-relative bits too.
+        self.progressionChanged.emit()
+
+    def _on_clan_changed(self, _value):
+        self.clanChanged.emit()
+        self.displayTitleChanged.emit()
+
+    def _on_dirty_changed_for_title(self, _value):
+        self.displayTitleChanged.emit()
+
+    def _on_character_refreshed_identity(self):
+        self.schoolChanged.emit()
+        self.progressionChanged.emit()
+
+    def _on_model_replaced_identity(self):
+        self.nameChanged.emit()
+        self.familyChanged.emit()
+        self.clanChanged.emit()
+        self.schoolChanged.emit()
+        self.progressionChanged.emit()
+        self.displayTitleChanged.emit()
+
+    @Property(str, notify=nameChanged)
+    def name(self):
+        pc = api.character.model()
+        return pc.name if pc else ""
+
+    @Property(str, notify=familyChanged)
+    def family(self):
+        return api.character.get_family() or ""
+
+    @Property(str, notify=clanChanged)
+    def clan(self):
+        return api.character.get_clan() or ""
+
+    @Property(str, notify=schoolChanged)
+    def school(self):
+        sid = api.character.schools.get_first()
+        if not sid:
+            return ""
+        school_ = api.data.schools.get(sid)
+        return school_.name if school_ else ""
+
+    @Property("QVariantMap", notify=progressionChanged)
+    def progression(self):
+        return {
+            "insight": api.character.insight(),
+            "rank": api.character.insight_rank(),
+            "xp": api.character.xp(),
+            "xpLimit": api.character.xp_limit(),
+            "rawXpLimit": api.character.model().exp_limit
+                if api.character.model() else 0,
+        }
+
+    @Property(str, notify=displayTitleChanged)
+    def displayTitle(self):
+        pc = api.character.model()
+        base = "{} v{}".format(APP_DESC, APP_VERSION)
+        if not pc or not pc.name:
+            return base
+        clan = api.character.get_clan() or ""
+        body = "{} [{}]".format(pc.name, clan) if clan else pc.name
+        suffix = " *" if pc.unsaved else ""
+        return "{} — {}{}".format(base, body, suffix)
