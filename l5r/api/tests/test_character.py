@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Daniele Simonetti'
 
+import contextlib
 import unittest
 
 import l5r.api as api
 import l5r.api.character
 import l5r.api.data
+from l5r.api.context import L5RCMContext, use
 
 import l5rdal as dal
 
@@ -15,6 +17,13 @@ from l5r.tests.fakedata import *
 class TestCharacterBll(unittest.TestCase):
 
     def setUp(self):
+        # Each test gets a fresh, isolated L5RCMContext so it never
+        # mutates (or is contaminated by) the production singleton bound
+        # in l5r/api/__init__.py.
+        self._stack = contextlib.ExitStack()
+        self.addCleanup(self._stack.close)
+        self._stack.enter_context(use(L5RCMContext()))
+
         # inject some data
         data_ = dal.Data([], [])
         api.data.set_model(data_)
