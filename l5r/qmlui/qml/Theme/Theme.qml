@@ -55,6 +55,18 @@ QtObject {
     readonly property int   titleFont:      18
     readonly property int   headerFont:     20
 
+    // Display face for section headers, ring labels, derived stats,
+    // dialog titles -- anything that should feel like a character
+    // sheet rather than a system dialog. The .ttf is bundled in
+    // l5r/share/fonts/ and registered at qmlui bootstrap via
+    // QFontDatabase.addApplicationFont(), so this name resolves on
+    // every OS without any user-side install. QML's `font.family`
+    // takes a single family name (no CSS-style fallback chain), so
+    // shipping the asset is the only way to guarantee identity.
+    // Body text intentionally inherits the OS UI font.
+    readonly property string fontDisplay: "Cinzel"
+    readonly property real watermarkOpacity: 0.06
+
     // Helper: pick the matching flag colour by key.
     function flagColor(key) {
         switch (key) {

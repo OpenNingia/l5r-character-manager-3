@@ -19,6 +19,25 @@ Item {
     implicitHeight: column.implicitHeight + 32
     Layout.fillWidth: true
 
+    // Section-icon watermark. Declared first so it paints behind the
+    // body. At ~6% opacity the L5R glyph (clan-mon stand-in) reads
+    // as atmosphere; the user's gaze still lands on the actual data.
+    Label {
+        id: watermark
+        text: section.icon
+        visible: section.icon.length > 0
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.rightMargin: 16
+        anchors.topMargin: -8
+        font.pixelSize: 180
+        font.family: Theme.fontDisplay
+        color: Theme.heading
+        opacity: Theme.watermarkOpacity
+        // Watermark must never steal hits from the content above.
+        enabled: false
+    }
+
     ColumnLayout {
         id: column
         anchors.left: parent.left
@@ -41,17 +60,11 @@ Item {
 
             Label {
                 text: section.title || section.tabId
+                font.family: Theme.fontDisplay
                 font.pixelSize: Theme.headerFont
                 font.weight: Font.DemiBold
                 color: Theme.heading
                 Layout.fillWidth: true
-            }
-
-            Label {
-                text: "#" + section.tabId
-                font.pixelSize: 11
-                color: Theme.borderSubtle
-                opacity: 0.75
             }
         }
 

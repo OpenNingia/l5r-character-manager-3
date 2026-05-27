@@ -37,6 +37,7 @@ ColumnLayout {
 
             Label {
                 text: about.info.appDesc
+                font.family: Theme.fontDisplay
                 font.pixelSize: Theme.headerFont
                 font.weight: Font.DemiBold
                 color: Theme.heading

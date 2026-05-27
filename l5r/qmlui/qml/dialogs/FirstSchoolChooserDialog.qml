@@ -82,6 +82,7 @@ Dialog {
             Layout.topMargin: 6
             horizontalAlignment: Text.AlignHCenter
             text: qsTr("Join your First School")
+            font.family: Theme.fontDisplay
             font.pixelSize: Theme.titleFont
             font.weight: Font.DemiBold
             color: Theme.heading

@@ -55,7 +55,8 @@ Rectangle {
         Label {
             text: card.ringValue
             color: "white"
-            font.pixelSize: 36
+            font.family: Theme.fontDisplay
+            font.pixelSize: 38
             font.weight: Font.Black
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 40
@@ -76,8 +77,10 @@ Rectangle {
                 Label {
                     text: card.ringLabel
                     color: "white"
+                    font.family: Theme.fontDisplay
                     font.weight: Font.DemiBold
-                    font.pixelSize: 14
+                    font.pixelSize: 15
+                    font.letterSpacing: 1.2
                     Layout.fillWidth: true
                     elide: Text.ElideRight
                 }

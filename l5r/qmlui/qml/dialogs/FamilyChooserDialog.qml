@@ -76,6 +76,7 @@ Dialog {
             Layout.topMargin: 6
             horizontalAlignment: Text.AlignHCenter
             text: qsTr("Select Clan and Family")
+            font.family: Theme.fontDisplay
             font.pixelSize: Theme.titleFont
             font.weight: Font.DemiBold
             color: Theme.heading

@@ -13,6 +13,7 @@
 from pathlib import Path
 
 from qtpy.QtCore import QUrl
+from qtpy.QtGui import QFontDatabase
 from qtpy.QtQml import QQmlApplicationEngine
 
 import l5r.api as api
@@ -29,6 +30,30 @@ def _bootstrap_data(locale):
     api.data.set_locale(locale)
     api.data.set_blacklist(settings.app.data_pack_blacklist)
     api.data.reload()
+
+
+def _load_bundled_fonts():
+    """Register the display fonts shipped in ``l5r/share/fonts/`` so
+    ``Theme.fontDisplay`` resolves to the same face on every install.
+
+    QML's ``font.family`` grouped property takes a single family name
+    and does *not* parse CSS-style comma fallback chains, so we can't
+    rely on the user having Cinzel installed -- we ship it. Each .ttf
+    is added via ``QFontDatabase.addApplicationFont`` and registered
+    against the running QGuiApplication; missing files are warned but
+    don't abort bootstrap (the Theme would fall back to Qt's serif).
+    """
+    fonts_dir = Path(__file__).parent.parent / "share" / "fonts"
+    if not fonts_dir.is_dir():
+        log.app.warning(u"QML UI: bundled fonts dir missing at %s", fonts_dir)
+        return
+    for ttf in sorted(fonts_dir.glob("*.ttf")):
+        font_id = QFontDatabase.addApplicationFont(str(ttf))
+        if font_id < 0:
+            log.app.warning(u"QML UI: failed to load font %s", ttf.name)
+            continue
+        families = QFontDatabase.applicationFontFamilies(font_id)
+        log.app.debug(u"QML UI: registered %s -> %s", ttf.name, families)
 
 
 def run_qml_app(qapp, locale, startup_action):
@@ -48,6 +73,7 @@ def run_qml_app(qapp, locale, startup_action):
     log.app.info(u"QML UI: bootstrap")
 
     api.set_translation_context(qapp)
+    _load_bundled_fonts()
     _bootstrap_data(locale)
 
     pc_proxy = PcProxy()

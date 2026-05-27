@@ -124,10 +124,14 @@ ColumnLayout {
             }
         }
         Label { text: qsTr("Rank"); Layout.alignment: Qt.AlignRight }
-        TextField {
+        Label {
             Layout.fillWidth: true
-            readOnly: true
             text: section._prog.rank
+            font.family: Theme.fontDisplay
+            font.pixelSize: 16
+            font.weight: Font.DemiBold
+            color: Theme.heading
+            elide: Text.ElideRight
         }
 
         Label { text: qsTr("Clan") }
@@ -140,10 +144,14 @@ ColumnLayout {
         RowLayout {
             Layout.fillWidth: true
             spacing: 6
-            TextField {
+            Label {
                 Layout.fillWidth: true
-                readOnly: true
                 text: section._prog.xp + " / " + section._prog.xpLimit
+                font.family: Theme.fontDisplay
+                font.pixelSize: 16
+                font.weight: Font.DemiBold
+                color: Theme.heading
+                elide: Text.ElideRight
             }
             ToolButton {
                 text: "✎"
@@ -173,10 +181,14 @@ ColumnLayout {
             elide: Text.ElideRight
         }
         Label { text: qsTr("Insight"); Layout.alignment: Qt.AlignRight }
-        TextField {
+        Label {
             Layout.fillWidth: true
-            readOnly: true
             text: section._prog.insight
+            font.family: Theme.fontDisplay
+            font.pixelSize: 16
+            font.weight: Font.DemiBold
+            color: Theme.heading
+            elide: Text.ElideRight
         }
 
         RowLayout {
@@ -372,11 +384,35 @@ ColumnLayout {
                 columnSpacing: 8
                 rowSpacing: 4
                 Label { text: qsTr("Base") }
-                TextField { Layout.fillWidth: true; readOnly: true; text: section._init.base }
+                Label {
+                    Layout.fillWidth: true
+                    text: section._init.base
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: 16
+                    font.weight: Font.DemiBold
+                    color: palette.windowText
+                    elide: Text.ElideRight
+                }
                 Label { text: qsTr("Modifier") }
-                TextField { Layout.fillWidth: true; readOnly: true; text: section._init.mod }
+                Label {
+                    Layout.fillWidth: true
+                    text: section._init.mod
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: 16
+                    color: palette.windowText
+                    opacity: 0.85
+                    elide: Text.ElideRight
+                }
                 Label { text: qsTr("Current") }
-                TextField { Layout.fillWidth: true; readOnly: true; text: section._init.current }
+                Label {
+                    Layout.fillWidth: true
+                    text: section._init.current
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: 20
+                    font.weight: Font.DemiBold
+                    color: Theme.heading
+                    elide: Text.ElideRight
+                }
             }
         }
 
@@ -390,21 +426,55 @@ ColumnLayout {
                 columnSpacing: 8
                 rowSpacing: 4
                 Label { text: qsTr("Name") }
-                TextField {
+                Label {
                     Layout.fillWidth: true
-                    readOnly: true
                     text: section._armor.name
-                    ToolTip.visible: hovered && section._armor.desc.length > 0
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: 14
+                    font.italic: true
+                    color: palette.windowText
+                    elide: Text.ElideRight
+                    HoverHandler { id: armorHover }
+                    ToolTip.visible: armorHover.hovered && section._armor.desc.length > 0
                     ToolTip.text: section._armor.desc
                 }
                 Label { text: qsTr("Base") }
-                TextField { Layout.fillWidth: true; readOnly: true; text: section._armor.baseTn }
+                Label {
+                    Layout.fillWidth: true
+                    text: section._armor.baseTn
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: 16
+                    color: palette.windowText
+                    elide: Text.ElideRight
+                }
                 Label { text: qsTr("Armor") }
-                TextField { Layout.fillWidth: true; readOnly: true; text: section._armor.armorTn }
+                Label {
+                    Layout.fillWidth: true
+                    text: section._armor.armorTn
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: 16
+                    color: palette.windowText
+                    elide: Text.ElideRight
+                }
                 Label { text: qsTr("Reduction") }
-                TextField { Layout.fillWidth: true; readOnly: true; text: section._armor.rd }
+                Label {
+                    Layout.fillWidth: true
+                    text: section._armor.rd
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: 16
+                    color: palette.windowText
+                    elide: Text.ElideRight
+                }
                 Label { text: qsTr("Current") }
-                TextField { Layout.fillWidth: true; readOnly: true; text: section._armor.currentTn }
+                Label {
+                    Layout.fillWidth: true
+                    text: section._armor.currentTn
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: 20
+                    font.weight: Font.DemiBold
+                    color: Theme.heading
+                    elide: Text.ElideRight
+                }
             }
         }
 
