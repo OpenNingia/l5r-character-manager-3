@@ -31,6 +31,20 @@ ColumnLayout {
         : ({ name: "", baseTn: 0, armorTn: 0, rd: 0, currentTn: 0, desc: "" })
     readonly property var _wounds: pcProxy ? pcProxy.wounds : []
     readonly property int _hm: pcProxy ? pcProxy.healthMultiplier : 2
+    // The highest row in the wound table that has any wounds recorded
+    // against it is the player's current wound level -- `taken` is the
+    // cumulative wounds at-or-below that threshold, so the last row
+    // with taken > 0 is the active row. Defaults to 0 (Healthy) when
+    // no wounds have been taken yet.
+    readonly property int _currentWoundIndex: {
+        var last = 0
+        if (_wounds) {
+            for (var i = 0; i < _wounds.length; ++i) {
+                if (_wounds[i].taken > 0) last = i
+            }
+        }
+        return last
+    }
     readonly property bool _canEditOrigin: appCtrl ? appCtrl.canEditOrigin() : true
 
     // Ring / attribute display metadata. Keys mirror the api side
@@ -368,148 +382,238 @@ ColumnLayout {
     }
 
     // -----------------------------------------------------------------
-    // Combat strip: Initiative + Armor TN + Wounds
+    // Combat Bar: a single panel with three columns -- Initiative,
+    // Armor TN, Wounds. The first two columns lead with a large hero
+    // number (the value the player actually reads at the table) and
+    // demote base/modifier/armor/reduction to caption rows underneath.
+    // The Wounds column is a vertical ladder (Healthy at the top,
+    // Out at the bottom) with a burnt-gold stripe marking the
+    // player's current level -- closer to how the wound system reads
+    // in the L5R 4e rulebook than the old 4x2 grid.
     // -----------------------------------------------------------------
-    RowLayout {
+    Widgets.SheetPanel {
         Layout.fillWidth: true
-        spacing: 16
+        title: qsTr("Combat")
 
-        Widgets.SheetPanel {
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignTop
-            title: qsTr("Initiative")
-            GridLayout {
-                width: parent.width
-                columns: 2
-                columnSpacing: 8
-                rowSpacing: 4
-                Label { text: qsTr("Base") }
+        RowLayout {
+            width: parent.width
+            spacing: 20
+
+            // ---- Initiative column ----------------------------------
+            ColumnLayout {
+                Layout.preferredWidth: 140
+                Layout.alignment: Qt.AlignTop
+                spacing: 4
+
                 Label {
                     Layout.fillWidth: true
-                    text: section._init.base
+                    text: qsTr("INITIATIVE")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: 16
-                    font.weight: Font.DemiBold
-                    color: palette.windowText
-                    elide: Text.ElideRight
+                    font.pixelSize: Theme.smallFont
+                    font.letterSpacing: 2.0
+                    horizontalAlignment: Text.AlignHCenter
+                    color: Theme.heading
+                    opacity: 0.75
                 }
-                Label { text: qsTr("Modifier") }
-                Label {
-                    Layout.fillWidth: true
-                    text: section._init.mod
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: 16
-                    color: palette.windowText
-                    opacity: 0.85
-                    elide: Text.ElideRight
-                }
-                Label { text: qsTr("Current") }
                 Label {
                     Layout.fillWidth: true
                     text: section._init.current
                     font.family: Theme.fontDisplay
-                    font.pixelSize: 20
-                    font.weight: Font.DemiBold
+                    font.pixelSize: 30
+                    font.weight: Font.Bold
+                    horizontalAlignment: Text.AlignHCenter
                     color: Theme.heading
-                    elide: Text.ElideRight
+                }
+                Item { Layout.preferredHeight: 4 }
+                RowLayout {
+                    Layout.fillWidth: true
+                    Label {
+                        text: qsTr("base")
+                        font.pixelSize: Theme.smallFont
+                        opacity: 0.65
+                    }
+                    Item { Layout.fillWidth: true }
+                    Label {
+                        text: section._init.base
+                        font.family: Theme.fontDisplay
+                        font.pixelSize: Theme.bodyFont
+                    }
+                }
+                RowLayout {
+                    Layout.fillWidth: true
+                    Label {
+                        text: qsTr("mod")
+                        font.pixelSize: Theme.smallFont
+                        opacity: 0.65
+                    }
+                    Item { Layout.fillWidth: true }
+                    Label {
+                        text: section._init.mod
+                        font.family: Theme.fontDisplay
+                        font.pixelSize: Theme.bodyFont
+                    }
                 }
             }
-        }
 
-        Widgets.SheetPanel {
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignTop
-            title: qsTr("Armor TN")
-            GridLayout {
-                width: parent.width
-                columns: 2
-                columnSpacing: 8
-                rowSpacing: 4
-                Label { text: qsTr("Name") }
+            // Vertical divider in the burnt-gold rule colour, faded
+            // so it reads as a hairline rather than a hard pipe.
+            Rectangle {
+                Layout.preferredWidth: 1
+                Layout.fillHeight: true
+                Layout.topMargin: 4
+                Layout.bottomMargin: 4
+                color: Theme.heading
+                opacity: 0.25
+            }
+
+            // ---- Armor TN column ------------------------------------
+            ColumnLayout {
+                Layout.preferredWidth: 160
+                Layout.alignment: Qt.AlignTop
+                spacing: 4
+
                 Label {
                     Layout.fillWidth: true
-                    text: section._armor.name
+                    text: qsTr("ARMOR TN")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: 14
+                    font.pixelSize: Theme.smallFont
+                    font.letterSpacing: 2.0
+                    horizontalAlignment: Text.AlignHCenter
+                    color: Theme.heading
+                    opacity: 0.75
+                }
+                Label {
+                    Layout.fillWidth: true
+                    text: section._armor.currentTn
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: 30
+                    font.weight: Font.Bold
+                    horizontalAlignment: Text.AlignHCenter
+                    color: Theme.heading
+                }
+                Label {
+                    Layout.fillWidth: true
+                    visible: section._armor.name.length > 0
+                    text: section._armor.name
                     font.italic: true
-                    color: palette.windowText
+                    font.pixelSize: Theme.smallFont
+                    horizontalAlignment: Text.AlignHCenter
+                    opacity: 0.75
                     elide: Text.ElideRight
                     HoverHandler { id: armorHover }
                     ToolTip.visible: armorHover.hovered && section._armor.desc.length > 0
                     ToolTip.text: section._armor.desc
                 }
-                Label { text: qsTr("Base") }
-                Label {
+                Item { Layout.preferredHeight: 2 }
+                RowLayout {
                     Layout.fillWidth: true
-                    text: section._armor.baseTn
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: 16
-                    color: palette.windowText
-                    elide: Text.ElideRight
+                    Label {
+                        text: qsTr("base")
+                        font.pixelSize: Theme.smallFont
+                        opacity: 0.65
+                    }
+                    Item { Layout.fillWidth: true }
+                    Label {
+                        text: section._armor.baseTn
+                        font.family: Theme.fontDisplay
+                        font.pixelSize: Theme.bodyFont
+                    }
                 }
-                Label { text: qsTr("Armor") }
-                Label {
+                RowLayout {
                     Layout.fillWidth: true
-                    text: section._armor.armorTn
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: 16
-                    color: palette.windowText
-                    elide: Text.ElideRight
+                    Label {
+                        text: qsTr("armor")
+                        font.pixelSize: Theme.smallFont
+                        opacity: 0.65
+                    }
+                    Item { Layout.fillWidth: true }
+                    Label {
+                        text: section._armor.armorTn
+                        font.family: Theme.fontDisplay
+                        font.pixelSize: Theme.bodyFont
+                    }
                 }
-                Label { text: qsTr("Reduction") }
-                Label {
+                RowLayout {
                     Layout.fillWidth: true
-                    text: section._armor.rd
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: 16
-                    color: palette.windowText
-                    elide: Text.ElideRight
-                }
-                Label { text: qsTr("Current") }
-                Label {
-                    Layout.fillWidth: true
-                    text: section._armor.currentTn
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: 20
-                    font.weight: Font.DemiBold
-                    color: Theme.heading
-                    elide: Text.ElideRight
+                    Label {
+                        text: qsTr("reduction")
+                        font.pixelSize: Theme.smallFont
+                        opacity: 0.65
+                    }
+                    Item { Layout.fillWidth: true }
+                    Label {
+                        text: section._armor.rd
+                        font.family: Theme.fontDisplay
+                        font.pixelSize: Theme.bodyFont
+                    }
                 }
             }
-        }
 
-        Widgets.SheetPanel {
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignTop
-            title: qsTr("Health / Wounds (x%1)").arg(section._hm)
-            GridLayout {
-                width: parent.width
-                columns: 4
-                columnSpacing: 6
-                rowSpacing: 2
+            Rectangle {
+                Layout.preferredWidth: 1
+                Layout.fillHeight: true
+                Layout.topMargin: 4
+                Layout.bottomMargin: 4
+                color: Theme.heading
+                opacity: 0.25
+            }
 
+            // ---- Wounds ladder --------------------------------------
+            ColumnLayout {
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignTop
+                spacing: 1
+
+                Label {
+                    Layout.fillWidth: true
+                    text: qsTr("WOUNDS  ×%1").arg(section._hm)
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: Theme.smallFont
+                    font.letterSpacing: 2.0
+                    color: Theme.heading
+                    opacity: 0.75
+                }
+                Item { Layout.preferredHeight: 2 }
                 Repeater {
                     model: section._wounds
                     delegate: RowLayout {
-                        Layout.column: index < 4 ? 0 : 2
-                        Layout.row: index < 4 ? index : (index - 4)
-                        Layout.columnSpan: 2
-                        spacing: 4
+                        Layout.fillWidth: true
+                        spacing: 8
+                        // The "active" row is the player's current
+                        // wound level. Inactive rows render in the
+                        // panel's body ink colour at normal weight;
+                        // the active row gets a 3px burnt-gold
+                        // stripe on the left, plus heading colour
+                        // + DemiBold weight on the text.
+                        readonly property bool _active:
+                            index === section._currentWoundIndex
+
+                        Rectangle {
+                            Layout.preferredWidth: 3
+                            Layout.fillHeight: true
+                            color: _active ? Theme.heading : "transparent"
+                        }
                         Label {
                             text: modelData.label
-                            Layout.preferredWidth: 100
+                            Layout.fillWidth: true
                             elide: Text.ElideRight
+                            font.weight: _active ? Font.DemiBold : Font.Normal
+                            color: _active ? Theme.heading : palette.windowText
                         }
                         Label {
                             text: modelData.value
-                            Layout.preferredWidth: 28
+                            Layout.preferredWidth: 32
                             horizontalAlignment: Text.AlignRight
+                            font.family: Theme.fontDisplay
+                            font.weight: _active ? Font.DemiBold : Font.Normal
+                            color: _active ? Theme.heading : palette.windowText
                         }
                         Label {
                             text: modelData.taken ? modelData.taken : ""
-                            opacity: 0.7
                             Layout.preferredWidth: 28
                             horizontalAlignment: Text.AlignRight
+                            font.pixelSize: Theme.smallFont
+                            opacity: 0.6
                         }
                     }
                 }
