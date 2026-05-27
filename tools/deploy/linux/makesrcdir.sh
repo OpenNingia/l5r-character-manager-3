@@ -25,9 +25,9 @@ mkdir -p ${SRC}
 mkdir -p ${TMPSRC}
 
 # get l5rdal
-wget https://github.com/OpenNingia/l5rcm-data-access/archive/develop.zip -O ${TMPSRC}/l5rdal.zip
+wget https://github.com/OpenNingia/l5rcm-data-access/archive/master.zip -O ${TMPSRC}/l5rdal.zip
 unzip ${TMPSRC}/l5rdal.zip -d ${TMPSRC}/
-cp -r ${TMPSRC}/l5rcm-data-access-develop/l5rdal ${SRC}/
+cp -r ${TMPSRC}/l5rcm-data-access-master/l5rdal ${SRC}/
 # copy app source
 cp -r ../../../l5r/ ${SRC}
 

@@ -1,42 +1,69 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "l5rcm"
-
+description = "L5R RPG character manager"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "GPLv3"}
 authors = [
     {name = "Daniele Simonetti", email = "oppifjellet@gmail.com"},
 ]
-description = "L5R RPG character manager"
-readme = "README.md"
-requires-python = ">=3.8"
 keywords = ["l5r", "rpg", "legend-of-the-five-rings", "character-manager"]
-license = {text = "GPLv3"}
-classifiers=[
-    # How mature is this project? Common values are
-    #   3 - Alpha
-    #   4 - Beta
-    #   5 - Production/Stable
-    'Development Status :: 5 - Production/Stable',
-
-    'Intended Audience :: End Users/Desktop',
-
-    'Environment :: Win32 (MS Windows)',
-    'Environment :: X11 Applications :: Qt',
-
-    'Topic :: Games/Entertainment :: Role-Playing',
-    'Topic :: Utilities',
-
-    # Pick your license as you wish (should match "license" above)
-    'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
-
-    # Specify the Python versions you support here. In particular, ensure
-    # that you indicate whether you support Python 2, Python 3 or both.
-    'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3 :: Only'
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: End Users/Desktop",
+    "Environment :: Win32 (MS Windows)",
+    "Environment :: X11 Applications :: Qt",
+    "Topic :: Games/Entertainment :: Role-Playing",
+    "Topic :: Utilities",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "lxml",
+    "asq",
+    "qtpy",
+    "PyQt6",
+    "pyqtwaitingspinner",
+    "pypdf @ git+https://github.com/OpenNingia/pypdf.git@main",
+    "l5rdal @ git+https://github.com/OpenNingia/l5rcm-data-access.git@master",
 ]
 dynamic = ["version"]
 
+[project.urls]
+Homepage = "https://github.com/OpenNingia/l5r-character-manager-3"
+Issues = "https://github.com/OpenNingia/l5r-character-manager-3/issues"
+
+[project.scripts]
+l5rcm = "l5r.main:main"
+
+[project.gui-scripts]
+l5rcm-gui = "l5r.main:main"
+
+[tool.setuptools.dynamic]
+# Single source of truth for the version. tools/deploy/linux/makedeb.sh
+# also greps APP_VERSION out of the same file.
+version = {attr = "l5r.l5rcmcore.APP_VERSION"}
+
+[tool.setuptools.packages.find]
+include = ["l5r*"]
+exclude = ["l5r.tests*", "l5r.api.tests*", "l5r.models.tests*"]
+
+[tool.setuptools.package-data]
+# Wildcard key applies to every discovered package. We can't list the icon
+# packages explicitly (e.g. "l5r.share.icons.l5rcm.16x16") because their
+# segments start with digits and fail setuptools' module-name validation.
+"*" = ["*.pdf", "*.txt", "*.png", "*.qm"]
+
 [tool.cxfreeze]
 executables = [
-    {script = "main.py", base = "gui", "icon" = "tools/deploy/windows/l5rcm.ico", target_name = "l5rcm"}
+    {script = "main.py", base = "gui", icon = "tools/deploy/windows/l5rcm.ico", target_name = "l5rcm"}
 ]
 
 [tool.cxfreeze.build_exe]

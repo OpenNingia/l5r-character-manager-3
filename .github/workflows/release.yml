@@ -1,0 +1,210 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Optional tag to attach the artifacts to as a GitHub Release (leave blank for artifacts only)."
+        required: false
+        default: ""
+  push:
+    tags:
+      - "v3.*"
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build deps
+        run: |
+          pip install --upgrade pip
+          pip install . cx_Freeze
+
+      - name: cxfreeze build
+        run: cxfreeze build --target-dir tools/deploy/windows/dist
+
+      - name: Stage shared resources (deploy_common.bat)
+        shell: cmd
+        working-directory: tools/deploy/windows
+        run: deploy_common.bat
+
+      # --- SignPath: sign frozen binaries before bundling ----------------------
+      # Activates only when the SIGNPATH_API_TOKEN secret is present, so this
+      # workflow is signing-ready without breaking unsigned dev builds.
+      - name: Probe SignPath secret
+        id: signing
+        shell: bash
+        env:
+          SIGNPATH_API_TOKEN: ${{ secrets.SIGNPATH_API_TOKEN }}
+        run: |
+          if [ -n "$SIGNPATH_API_TOKEN" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "SIGNPATH_API_TOKEN not set; skipping signing."
+          fi
+
+      - name: Upload unsigned frozen build (for SignPath)
+        if: steps.signing.outputs.enabled == 'true'
+        id: upload-frozen
+        uses: actions/upload-artifact@v4
+        with:
+          name: l5rcm-frozen-unsigned
+          path: tools/deploy/windows/dist/
+
+      - name: Submit frozen build to SignPath
+        if: steps.signing.outputs.enabled == 'true'
+        uses: signpath/github-action-submit-signing-request@v1
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ vars.SIGNPATH_SIGNING_POLICY_SLUG }}
+          artifact-configuration-slug: ${{ vars.SIGNPATH_FROZEN_ARTIFACT_SLUG }}
+          github-artifact-id: ${{ steps.upload-frozen.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: tools/deploy/windows/dist/
+
+      - name: Inno Setup
+        shell: cmd
+        working-directory: tools/deploy/windows
+        run: '"%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" setup_appveyor.iss'
+
+      - name: Upload unsigned installer (for SignPath)
+        if: steps.signing.outputs.enabled == 'true'
+        id: upload-installer-unsigned
+        uses: actions/upload-artifact@v4
+        with:
+          name: l5rcm-setup-windows-unsigned
+          path: tools/deploy/windows/Output/l5rcm-setup.exe
+
+      - name: Submit installer to SignPath
+        if: steps.signing.outputs.enabled == 'true'
+        uses: signpath/github-action-submit-signing-request@v1
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ vars.SIGNPATH_SIGNING_POLICY_SLUG }}
+          artifact-configuration-slug: ${{ vars.SIGNPATH_INSTALLER_ARTIFACT_SLUG }}
+          github-artifact-id: ${{ steps.upload-installer-unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: tools/deploy/windows/Output/
+
+      - name: Upload final installer (signed if SignPath ran)
+        uses: actions/upload-artifact@v4
+        with:
+          name: l5rcm-setup-windows
+          path: tools/deploy/windows/Output/l5rcm-setup.exe
+
+  deb:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: System dependencies for .deb build
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y librsvg2-bin python3-docutils fakeroot \
+            libxml2-dev libxslt1-dev
+
+      - name: Install package
+        run: pip install .
+
+      - name: Build .deb
+        working-directory: tools/deploy/linux
+        run: ./makedeb.sh
+
+      - name: Upload .deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: l5rcm-deb
+          path: tools/deploy/linux/*.deb
+
+  appimage:
+    runs-on: ubuntu-22.04 # older glibc → wider AppImage compatibility
+    env:
+      APPDIR: ${{ github.workspace }}/AppDir
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: System dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxml2-dev libxslt1-dev libfuse2 \
+            libegl1 libxcb-cursor0 libxkbcommon-x11-0
+
+      - name: Install package into a fresh prefix
+        run: |
+          mkdir -p "$APPDIR/usr"
+          pip install --prefix="$APPDIR/usr" --no-warn-script-location .
+
+      - name: Stage AppImage metadata
+        run: |
+          mkdir -p "$APPDIR/usr/share/applications" "$APPDIR/usr/share/icons/hicolor/256x256/apps"
+          cp tools/deploy/linux/l5rcm.desktop "$APPDIR/l5rcm.desktop"
+          cp tools/deploy/linux/l5rcm.desktop "$APPDIR/usr/share/applications/l5rcm.desktop"
+          cp tools/deploy/linux/l5rcm.png "$APPDIR/l5rcm.png"
+          cp tools/deploy/linux/l5rcm.png "$APPDIR/usr/share/icons/hicolor/256x256/apps/l5rcm.png"
+          cat > "$APPDIR/AppRun" <<'EOF'
+          #!/bin/bash
+          HERE="$(dirname "$(readlink -f "$0")")"
+          export PYTHONHOME="$HERE/usr"
+          export PYTHONPATH="$HERE/usr/lib/python3.11/site-packages"
+          exec "$HERE/usr/bin/l5rcm-gui" "$@"
+          EOF
+          chmod +x "$APPDIR/AppRun"
+
+      - name: Fetch appimagetool
+        run: |
+          wget -q https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool-x86_64.AppImage
+
+      - name: Build AppImage
+        run: ./appimagetool-x86_64.AppImage "$APPDIR" l5rcm-x86_64.AppImage
+
+      - name: Upload AppImage
+        uses: actions/upload-artifact@v4
+        with:
+          name: l5rcm-appimage
+          path: l5rcm-x86_64.AppImage
+
+  release:
+    # Only attach to a GitHub Release when triggered by a tag push, or when
+    # workflow_dispatch was invoked with an explicit tag_name input.
+    needs: [windows, deb, appimage]
+    if: ${{ startsWith(github.ref, 'refs/tags/v3.') || (github.event_name == 'workflow_dispatch' && inputs.tag_name != '') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create / update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.tag_name || github.ref_name }}
+          files: |
+            dist/l5rcm-setup.exe
+            dist/*.deb
+            dist/l5rcm-x86_64.AppImage
+          draft: true
+          generate_release_notes: true

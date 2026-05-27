@@ -15,9 +15,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import os
 import shutil
 from tempfile import mkstemp
-import subprocess
+
+from qtpy import QtCore, QtGui, QtWidgets
 
 import l5r.models as models
 import l5r.exporters as exporters
@@ -26,14 +28,26 @@ import l5rdal as dal
 import l5rdal.dataimport
 
 from l5r.util import log, osutil
-from l5r.util.fsutil import *
+from l5r.util.fsutil import (
+    APP_NAME,
+    HERE,
+    MY_CWD,
+    get_app_file,
+    get_app_icon_path,
+    get_icon_path,
+    get_tab_icon,
+)
 import l5r.api as api
 import l5r.api.data
 import l5r.api.data.families
 import l5r.api.character
 import l5r.api.rules
 from l5r.api.data import CMErrors
-from l5r.l5rcmcore.qtsignalsutils import *
+from l5r.l5rcmcore.qtsignalsutils import (
+    QtSignalLock,
+    pause_signals,
+    resume_signals,
+)
 from l5r.util.settings import L5RCMSettings
 
 from qtpy.QtGui import QDesktopServices

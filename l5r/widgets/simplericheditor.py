@@ -17,8 +17,7 @@
 from qtpy import QtCore, QtGui, QtWidgets
 
 from . import iconloader
-
-from .toolbar_rc import *
+from . import toolbar_rc  # noqa: F401 -- imported for Qt resource registration side effect
 
 
 class SimpleRichEditor(QtWidgets.QWidget):
