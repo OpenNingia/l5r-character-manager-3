@@ -22,7 +22,7 @@ from l5r.models import SkillAdv
 import l5r.api.data.schools
 import l5r.api.data.skills
 
-from l5r.api import __api
+from l5r.api import get_context
 from l5r.util import log
 
 from asq.initiators import query
@@ -31,7 +31,7 @@ from asq.selectors import a_
 
 def get_all():
     """return all character skills"""
-    if not __api.pc:
+    if not get_context().pc:
         return []
 
     return query(get_starting() + get_learned() + get_acquired()).distinct().to_list()
@@ -39,9 +39,9 @@ def get_all():
 
 def get_learned():
     """return all the learned ( not starting ) skills"""
-    if not __api.pc:
+    if not get_context().pc:
         return []
-    return query(__api.pc.advans).where(
+    return query(get_context().pc.advans).where(
         lambda x: x.type == 'skill').select(
         lambda x: x.skill).distinct().to_list()
 
@@ -91,14 +91,14 @@ def is_starter(skill_id):
 
 def get_skill_rank(skill_id):
     """return the character skill rank"""
-    if not __api.pc:
+    if not get_context().pc:
         return 0
 
     sk_rank_ = 0
     for r in api.character.rankadv.get_all():
         sk_rank_ += query(r.skills).where(lambda x: x == skill_id).count()
 
-    sk_rank_ += query(__api.pc.advans).where(
+    sk_rank_ += query(get_context().pc.advans).where(
         lambda x: x.type == 'skill' and x.skill == skill_id).count()
 
     if skill_id in get_acquired():
@@ -115,7 +115,7 @@ def get_skill_emphases(skill_id):
             continue
         sk_emph_list += r.emphases[skill_id]
 
-    sk_emph_list += query(__api.pc.advans).where(
+    sk_emph_list += query(get_context().pc.advans).where(
         lambda x: x.type == 'emph' and x.skill == skill_id).select(a_('text')).to_list()
 
     return sk_emph_list

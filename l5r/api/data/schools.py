@@ -24,18 +24,18 @@ import l5rdal.query
 
 import l5r.api as api
 
-from l5r.api import __api
+from l5r.api import get_context
 from l5r.util import log
 
 
 def get(c):
     """return a school by its id"""
-    return query(__api.ds.schools).where(lambda x: x.id == c).first_or_default(None)
+    return query(get_context().ds.schools).where(lambda x: x.id == c).first_or_default(None)
 
 
 def get_base():
     """returns basic schools list"""
-    return query(__api.ds.schools) \
+    return query(get_context().ds.schools) \
         .where(lambda x: 'advanced' not in x.tags) \
         .where(lambda x: 'alternate' not in x.tags) \
         .to_list()
@@ -43,21 +43,21 @@ def get_base():
 
 def get_advanced():
     """returns advanced schools list"""
-    return query(__api.ds.schools) \
+    return query(get_context().ds.schools) \
         .where(lambda x: 'advanced' in x.tags) \
         .to_list()
 
 
 def get_paths():
     """returns alternate path schools list"""
-    return query(__api.ds.schools) \
+    return query(get_context().ds.schools) \
         .where(lambda x: 'alternate' in x.tags) \
         .to_list()
 
 def get_paths_with_rank(rank):
     """returns alternate schools list with rank equal to `rank`"""
 
-    return query(__api.ds.schools) \
+    return query(get_context().ds.schools) \
         .where(lambda x: 'alternate' in x.tags) \
         .where(lambda x: query(x.techs).select(a_('rank')).first_or_default(0) == rank) \
         .to_list()
@@ -163,7 +163,7 @@ def get_emphasis_to_choose(sid):
 
 def get_technique(tech_id):
     """returns the school and the technique by tech_id"""
-    return dal.query.get_tech(__api.ds, tech_id)
+    return dal.query.get_tech(get_context().ds, tech_id)
 
 
 def get_requirements(sid):
@@ -196,7 +196,7 @@ def get_requirements(sid):
             r.min = path_rank_ - 1
             r.max = path_rank_ - 1
             r.trg = None
-            r.text = __api.tr("Replaces School Rank: {0}").format(path_rank_)
+            r.text = get_context().tr("Replaces School Rank: {0}").format(path_rank_)
 
             coded_requirements_.append(r)
 

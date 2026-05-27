@@ -21,14 +21,14 @@ from asq.initiators import query
 import l5r.api as api
 import l5r.api.character.schools
 
-from l5r.api import __api
+from l5r.api import get_context
 
 
 def all():
     """returns the list of spells"""
-    if not __api:
+    if not get_context().ds:
         return []
-    return __api.ds.spells
+    return get_context().ds.spells
 
 
 def get(sid):

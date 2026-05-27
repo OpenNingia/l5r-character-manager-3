@@ -4,7 +4,7 @@ __author__ = 'Daniele'
 import l5r.api as api
 import l5r.api.data
 
-from l5r.api import __api
+from l5r.api import get_context
 
 from collections import namedtuple
 
@@ -16,12 +16,12 @@ from l5r.util import log
 
 def get_all_kiho():
     """returns all character kiho"""
-    return query(__api.pc.advans).where(lambda x: x.type == 'kiho').select(a_('kiho')).to_list()
+    return query(get_context().pc.advans).where(lambda x: x.type == 'kiho').select(a_('kiho')).to_list()
 
 
 def get_all_kata():
     """returns all character kata"""
-    return query(__api.pc.advans).where(lambda x: x.type == 'kata').select(a_('kata')).to_list()
+    return query(get_context().pc.advans).where(lambda x: x.type == 'kata').select(a_('kata')).to_list()
 
 
 def has_kata(kid):

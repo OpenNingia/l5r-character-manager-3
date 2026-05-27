@@ -20,7 +20,7 @@ __author__ = 'Daniele'
 import l5r.api as api
 import l5r.api.data.merits
 from l5r.models import PerkAdv
-from l5r.api import __api
+from l5r.api import get_context
 from asq.initiators import query
 from asq.selectors import a_
 
@@ -32,9 +32,9 @@ def get_all():
 
 def get_bought():
     """return all flaws that comes from advancements"""
-    if not __api.pc:
+    if not get_context().pc:
         return []
-    return query(__api.pc.advans).where(
+    return query(get_context().pc.advans).where(
         lambda x: x.type == 'perk' and (x.cost < 0 or x.tag == 'flaw')).to_list()
 
 
@@ -64,7 +64,7 @@ def add(flaw_id, rank=None):
 
     adv_ = PerkAdv(flaw_id, flaw_rank_.id, -gain_, "flaw")
     adv_.rule = flaw_id
-    adv_.desc = __api.tr("{0} Rank {1}, XP Gain: {2}").format(
+    adv_.desc = get_context().tr("{0} Rank {1}, XP Gain: {2}").format(
                                flaw_.name, flaw_rank_.id, gain_)
 
     api.character.append_advancement(adv_)
@@ -93,7 +93,7 @@ def add_starting(flaw_id, rank=None):
 
     adv_ = PerkAdv(flaw_id, flaw_rank_.id, -gain_, "flaw")
     adv_.rule = flaw_id
-    adv_.desc = __api.tr("{0} Rank {1}, XP Gain: {2}").format(
+    adv_.desc = get_context().tr("{0} Rank {1}, XP Gain: {2}").format(
                                flaw_.name, flaw_rank_.id, gain_)
 
     first_rank_.flaws.append(adv_)

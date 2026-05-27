@@ -64,7 +64,7 @@ L5RCMAPI = L5RCMContext
 # context, while tests can override per-scope with l5r.api.context.use().
 #
 # ``__api`` is retained as a transitional alias so existing references
-# (e.g. ``from l5r.api import __api; __api.pc``) keep working while
+# (e.g. ``from l5r.api import get_context; __api.pc``) keep working while
 # the find-and-replace to ``get_context()`` rolls through the codebase.
 __api = L5RCMContext()
 _current.set(__api)
