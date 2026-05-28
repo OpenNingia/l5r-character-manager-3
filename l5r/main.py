@@ -16,7 +16,6 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import mimetypes
-import os
 import sys
 
 from qtpy import QtCore, QtGui, QtWidgets
