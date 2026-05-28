@@ -4,7 +4,9 @@
 
 ### First of all, clone the repo
 
-[![Build Status](https://travis-ci.org/OpenNingia/l5r-character-manager-3.svg)](https://travis-ci.org/OpenNingia/l5r-character-manager-3)
+[![CI](https://github.com/OpenNingia/l5r-character-manager-3/actions/workflows/ci.yml/badge.svg)](https://github.com/OpenNingia/l5r-character-manager-3/actions/workflows/ci.yml)
+
+[![Release](https://github.com/OpenNingia/l5r-character-manager-3/actions/workflows/release.yml/badge.svg)](https://github.com/OpenNingia/l5r-character-manager-3/actions/workflows/release.yml)
 
 ```bash
 git clone https://github.com/OpenNingia/l5r-character-manager-3.git

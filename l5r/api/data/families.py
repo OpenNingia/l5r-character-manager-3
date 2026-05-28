@@ -18,12 +18,12 @@ __author__ = 'Daniele'
 
 from asq.initiators import query
 from asq.selectors import a_
-from l5r.api import __api
+from l5r.api import get_context
 
 
 def get_all():
     """returns all families"""
-    return __api.ds.families
+    return get_context().ds.families
 
 
 def get(c):

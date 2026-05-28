@@ -1,5 +1,6 @@
 from qtpy.QtCore import QRunnable, Slot, QObject, Signal
 
+import contextvars
 import traceback, sys
 
 class WorkerSignals(QObject):
@@ -43,6 +44,11 @@ class Worker(QRunnable):
         self.args = args
         self.kwargs = kwargs
         self.signals = WorkerSignals()
+        # Snapshot the caller's ContextVars (notably the active
+        # l5r.api L5RCMContext) so fn runs against the same context
+        # on the worker thread. Without this, ContextVar.get() inside
+        # fn raises LookupError because thread pools don't inherit them.
+        self._context = contextvars.copy_context()
 
     @Slot()
     def run(self):
@@ -52,9 +58,7 @@ class Worker(QRunnable):
 
         # Retrieve args/kwargs here; and fire processing using them
         try:
-            result = self.fn(
-                *self.args, **self.kwargs
-            )
+            result = self._context.run(self.fn, *self.args, **self.kwargs)
         except:
             traceback.print_exc()
             exctype, value = sys.exc_info()[:2]

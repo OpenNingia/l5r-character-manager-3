@@ -26,12 +26,12 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
-    "lxml",
-    "asq",
-    "qtpy",
-    "PyQt6",
-    "pyqtwaitingspinner",
-    "pypdf @ git+https://github.com/OpenNingia/pypdf.git@main",
+    "lxml >= 6.1",
+    "asq >= 2.0",
+    "qtpy >= 2.4",
+    "PyQt6 >= 6.7",
+    "pyqtwaitingspinner >= 1.3",
+    "pypdf @ git+https://github.com/OpenNingia/pypdf.git@fix_indirect",
     "l5rdal @ git+https://github.com/OpenNingia/l5rcm-data-access.git@master",
 ]
 dynamic = ["version"]
@@ -68,5 +68,5 @@ executables = [
 
 [tool.cxfreeze.build_exe]
 excludes = ["tests", "unittest"]
-includes = ["l5r.widgets.iconloader"]
+includes = ["l5r.widgets.iconloader", "l5r.widgets.toolbar_rc"]
 zip_include_packages = ["encodings", "PyQt6", "lxml._elementpath"]

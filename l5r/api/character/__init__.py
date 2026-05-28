@@ -23,7 +23,7 @@ import l5r.api.data
 import l5r.api.rules
 import l5r.models
 
-from l5r.api import __api
+from l5r.api import get_context
 
 from asq.initiators import query
 from asq.selectors import a_
@@ -33,20 +33,20 @@ from l5r.util import log
 
 def model():
     """return character model"""
-    return __api.pc
+    return get_context().pc
 
 
 def new():
     """creates new player character model"""
-    __api.pc = l5r.models.AdvancedPcModel()
-    __api.pc.load_default()
+    get_context().pc = l5r.models.AdvancedPcModel()
+    get_context().pc.load_default()
 
     log.api.info("Created new character")
 
 
 def set_model(value):
     """set character model"""
-    __api.pc = value
+    get_context().pc = value
 
 
 def get_family_tags():
@@ -86,7 +86,7 @@ def get_school_rules():
 
 def get_perk_rules():
     """return merit/flaw related rules"""
-    return [x.rule for x in __api.pc.advans if getattr(x, 'rule', None) is not None]
+    return [x.rule for x in get_context().pc.advans if getattr(x, 'rule', None) is not None]
 
 
 def get_rules():
@@ -116,28 +116,28 @@ def has_tag_or_rule(tag):
 
 def remove_advancement(adv):
     """remove an advancement, returns True on success"""
-    if not __api.pc or adv not in __api.pc.advans:
+    if not get_context().pc or adv not in get_context().pc.advans:
         return False
-    __api.pc.advans.remove(adv)
+    get_context().pc.advans.remove(adv)
     log.api.info(u"removed advancement: %s", adv.desc)
     return True
 
 def get_xp_gained_from_flaws():
     """returns the experience gained from disadvantages"""
-    return sum([-x.cost for x in __api.pc.advans if x.type == 'perk' and x.tag == 'flaw'])
+    return sum([-x.cost for x in get_context().pc.advans if x.type == 'perk' and x.tag == 'flaw'])
 
 def xp():
     """returns the spent experience"""
-    if not __api.pc:
+    if not get_context().pc:
         return 0
-    return sum([x.cost for x in __api.pc.advans if x.cost > 0])
+    return sum([x.cost for x in get_context().pc.advans if x.cost > 0])
 
 
 def xp_limit():
     """returns the experience limit"""
-    if not __api.pc:
+    if not get_context().pc:
         return 0
-    return __api.pc.exp_limit + get_xp_gained_from_flaws()
+    return get_context().pc.exp_limit + get_xp_gained_from_flaws()
 
 
 def xp_left():
@@ -156,12 +156,12 @@ def get_starting_honor():
 
 def honor():
     """returns the honor value"""
-    return __api.pc.honor + get_starting_honor()
+    return get_context().pc.honor + get_starting_honor()
 
 
 def set_honor(value):
     """store the character honor as difference with the starting value"""
-    __api.pc.honor = value - get_starting_honor()
+    get_context().pc.honor = value - get_starting_honor()
 
 
 def get_starting_glory():
@@ -176,12 +176,12 @@ def get_starting_glory():
 
 def glory():
     """returns the glory value"""
-    return __api.pc.glory + get_starting_glory()
+    return get_context().pc.glory + get_starting_glory()
 
 
 def set_glory(value):
     """store the character glory as difference with the starting value"""
-    __api.pc.glory = value - get_starting_glory()
+    get_context().pc.glory = value - get_starting_glory()
 
 
 def get_starting_status():
@@ -193,12 +193,12 @@ def get_starting_status():
 
 def status():
     """returns the status value"""
-    return __api.pc.status + get_starting_status()
+    return get_context().pc.status + get_starting_status()
 
 
 def set_status(value):
     """store the character status as difference with the starting value"""
-    __api.pc.status = value - get_starting_status()
+    get_context().pc.status = value - get_starting_status()
 
 
 def get_starting_infamy():
@@ -208,12 +208,12 @@ def get_starting_infamy():
 
 def infamy():
     """returns the infamy value"""
-    return __api.pc.infamy + get_starting_infamy()
+    return get_context().pc.infamy + get_starting_infamy()
 
 
 def set_infamy(value):
     """store the character infamy as difference with the starting value"""
-    __api.pc.infamy = value - get_starting_infamy()
+    get_context().pc.infamy = value - get_starting_infamy()
 
 
 def get_starting_taint():
@@ -223,23 +223,23 @@ def get_starting_taint():
 
 def taint():
     """returns the taint value"""
-    return __api.pc.taint + get_starting_taint()
+    return get_context().pc.taint + get_starting_taint()
 
 
 def set_taint(value):
     """store the character taint as difference with the starting value"""
-    __api.pc.taint = value - get_starting_taint()
+    get_context().pc.taint = value - get_starting_taint()
 
 
 def trait_rank(trait_id):
     """returns the rank of the given trait"""
-    if not __api.pc:
+    if not get_context().pc:
         return 0
 
     trait_nm = trait_id
     trait_idx = l5r.models.attrib_from_name(trait_id)
 
-    starting_value_ = __api.pc.starting_traits[trait_idx]
+    starting_value_ = get_context().pc.starting_traits[trait_idx]
 
     family_trait_ = api.data.families.get_family_trait(
         get_family()
@@ -248,7 +248,7 @@ def trait_rank(trait_id):
         get_starting_school()
     )
 
-    total_ = starting_value_ + sum([1 for x in __api.pc.advans if x.type == 'attrib' and x.attrib == trait_idx])
+    total_ = starting_value_ + sum([1 for x in get_context().pc.advans if x.type == 'attrib' and x.attrib == trait_idx])
     if family_trait_ == trait_nm:
         total_ += 1
     if school_trait_ == trait_nm:
@@ -290,7 +290,7 @@ def void_rank():
 
     trait_nm = 'void'
 
-    starting_value_ = __api.pc.starting_void
+    starting_value_ = get_context().pc.starting_void
     family_trait_ = api.data.families.get_family_trait(
         get_family()
     )
@@ -298,7 +298,7 @@ def void_rank():
         get_starting_school()
     )
 
-    total_ = starting_value_ + sum([1 for x in __api.pc.advans if x.type == trait_nm])
+    total_ = starting_value_ + sum([1 for x in get_context().pc.advans if x.type == trait_nm])
     if family_trait_ == trait_nm:
         total_ += 1
     if school_trait_ == trait_nm:
@@ -315,12 +315,12 @@ def get_base_tn():
 
 def get_armor_tn():
     """returns the armor's TN"""
-    return __api.pc.armor.tn if __api.pc.armor is not None else 0
+    return get_context().pc.armor.tn if get_context().pc.armor is not None else 0
 
 
 def get_armor_tn_mod():
     """return armor TN modifers"""
-    return sum(x.value[2] for x in __api.pc.get_modifiers('artn') if x.active and len(x.value) > 2)
+    return sum(x.value[2] for x in get_context().pc.get_modifiers('artn') if x.active and len(x.value) > 2)
 
 
 def get_base_rd():
@@ -332,7 +332,7 @@ def get_base_rd():
 
 def get_armor_rd():
     """returns the armor's RD"""
-    return __api.pc.armor.rd if __api.pc.armor is not None else 0
+    return get_context().pc.armor.rd if get_context().pc.armor is not None else 0
 
 
 def get_full_tn():
@@ -342,7 +342,7 @@ def get_full_tn():
 
 def get_armor_rd_mod():
     """return armor RD modifers"""
-    return sum(x.value[2] for x in __api.pc.get_modifiers('arrd') if x.active and len(x.value) > 2)
+    return sum(x.value[2] for x in get_context().pc.get_modifiers('arrd') if x.active and len(x.value) > 2)
 
 
 def get_full_rd():
@@ -352,19 +352,19 @@ def get_full_rd():
 
 def get_armor_name():
     """return the armor name if any"""
-    return __api.pc.armor.name if __api.pc.armor is not None else api.tr("No Armor")
+    return get_context().pc.armor.name if get_context().pc.armor is not None else api.tr("No Armor")
 
 
 def get_armor_desc():
     """returns the armor description"""
-    return __api.pc.armor.desc if __api.pc.armor is not None else u""
+    return get_context().pc.armor.desc if get_context().pc.armor is not None else u""
 
 
 def append_advancement(adv):
     """append an advancement to the advancement list"""
-    if __api.pc:
+    if get_context().pc:
         log.api.info(u"add advancement: %s", adv.desc)
-        __api.pc.add_advancement(adv)
+        get_context().pc.add_advancement(adv)
         return adv
     return None
 
@@ -455,12 +455,12 @@ def insight_rank(strict=False):
 
 def insight_calculation_method():
     """returns PC's insight calculation method"""
-    return __api.pc.insight_calculation
+    return get_context().pc.insight_calculation
 
 
 def set_insight_calculation_method(value):
     """set PC's insight calculation method"""
-    __api.pc.insight_calculation = value
+    get_context().pc.insight_calculation = value
 
 
 def set_family(family_id):
@@ -468,9 +468,9 @@ def set_family(family_id):
 
     family_ = api.data.families.get(family_id)
     if family_:
-        #__api.pc.set_family(family_.id, family_.trait, 1, [family_.id, family_.clanid])
-        __api.pc.family = family_.id
-        __api.pc.clan = family_.clanid
+        #get_context().pc.set_family(family_.id, family_.trait, 1, [family_.id, family_.clanid])
+        get_context().pc.family = family_.id
+        get_context().pc.clan = family_.clanid
 
         log.api.info(u"set family: %s, clan: %s", family_.id, family_.clanid)
     else:
@@ -487,7 +487,7 @@ def get_clan():
 
 def get_family():
     """get PC family"""
-    return __api.pc.family
+    return get_context().pc.family
 
 
 def get_starting_school():
@@ -545,7 +545,31 @@ def is_courtier():
 
 def set_dirty_flag(value):
     """set the character dirty flag"""
-    __api.pc.unsaved = value
+    get_context().pc.unsaved = value
+
+
+def get_health_multiplier():
+    """return the wound-level multiplier (default 2, per L5R 4e)"""
+    return get_context().pc.health_multiplier
+
+
+def set_health_multiplier(value):
+    """set the wound-level multiplier and mark the character dirty.
+
+    The multiplier scales the seven non-Healthy wound levels (the first
+    level is always Earth*5). Values < 1 are rejected because they would
+    produce a non-monotonic wound table.
+    """
+    value = int(value)
+    if value < 1:
+        raise ValueError("health_multiplier must be >= 1, got %r" % value)
+
+    pc = get_context().pc
+    if pc.health_multiplier == value:
+        return
+    pc.health_multiplier = value
+    set_dirty_flag(True)
+    log.api.info("set health multiplier to: %d", value)
 
 
 def get_starting_money():
@@ -558,7 +582,7 @@ def get_starting_money():
 
 def get_money():
     """return PC total money"""
-    stored_money_ = __api.pc.get_property('money', (0, 0, 0))
+    stored_money_ = get_context().pc.get_property('money', (0, 0, 0))
     starting_money_ = get_starting_money()
 
     return tuple(map(operator.add, stored_money_, starting_money_))
@@ -569,7 +593,7 @@ def set_money(value):
     starting_money_ = get_starting_money()
     stored_money_ = tuple(map(operator.sub, value, starting_money_))
 
-    __api.pc.set_property('money', stored_money_)
+    get_context().pc.set_property('money', stored_money_)
     set_dirty_flag(True)
 
     log.api.info(u"set character money to: %s", str(value))

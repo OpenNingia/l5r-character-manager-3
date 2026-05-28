@@ -21,19 +21,19 @@ from asq.initiators import query
 import l5r.api as api
 import l5r.api.character
 
-from l5r.api import __api
+from l5r.api import get_context
 
 
 def all():
     """returns all the merits"""
-    if not __api.pc:
+    if not get_context().pc:
         return []
-    return __api.ds.merits
+    return get_context().ds.merits
 
 
 def get(mid):
     """returns a merit by its id, None if not found"""
-    if not __api.pc:
+    if not get_context().pc:
         return None
     return query(all()).where(lambda x: x.id == mid).first_or_default(None)
 

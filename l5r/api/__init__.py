@@ -15,13 +15,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import functools
 import os
 import re
 
-import l5rdal as dal
+from l5r.api.context import L5RCMContext, _current, get_context, use  # noqa: F401
 
 ORG = 'openningia'
 APP = 'l5rcm'
+
 
 def get_user_data_path(rel_path=None):
     user_data = '.'
@@ -35,7 +37,7 @@ def get_user_data_path(rel_path=None):
 
 
 def set_translation_context(obj):
-    __api.translation_provider = obj
+    get_context().translation_provider = obj
 
 
 def cmp(a, b):
@@ -50,53 +52,21 @@ def ver_cmp(version1, version2):
 
 def tr(*args, **kwargs):
     """translate text"""
-    return __api.tr(*args, **kwargs)
+    return get_context().tr(*args, **kwargs)
 
 
-class L5RCMAPI(object):
+# Bind the production L5RCMContext onto the _current ContextVar at
+# import time so any get_context() call in production code returns it.
+# Tests can override per-scope with l5r.api.context.use().
+_current.set(L5RCMContext())
 
-    # character model
-    pc = None
 
-    # data access
-    ds = None
-
-    # culture locale
-    locale = None
-
-    # data pack blacklist
-    blacklist = []
-
-    # current rank advancement
-    current_rank_adv = None
-
-    # translation provider
-    translation_provider = None
-
-    def __init__(self, app=None):
-        """initialize api"""
-
-        # load data
-        # self.reload()
-
-        if app:
-            self.translation_provider = app
-
-    def reload(self):
-
-        locations = [get_user_data_path('core.data'),
-                     get_user_data_path('data')]
-        if self.locale:
-            locations += [get_user_data_path('data.' + self.locale)]
-
-        if not self.ds:
-            self.ds = dal.Data(locations, self.blacklist)
-        else:
-            self.ds.rebuild(locations, self.blacklist)
-
-    def tr(self, *args, **kwargs):
-        if not self.translation_provider:
-            return args[0]
-        return self.translation_provider.tr(*args, **kwargs)
-
-__api = L5RCMAPI()
+# L5RCMContext.reload needs get_user_data_path (which lives here in
+# l5r/api/__init__.py, to avoid a circular import with l5r/api/context.py).
+# Bind a partial on the production context that supplies it so callers
+# can keep doing ``get_context().reload()`` without args. functools.partial
+# (rather than a closure-capturing lambda) keeps the wrapper independent of
+# the surrounding module namespace.
+_ctx = get_context()
+_ctx.reload = functools.partial(_ctx.reload, get_user_data_path)
+del _ctx

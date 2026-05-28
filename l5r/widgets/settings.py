@@ -19,7 +19,6 @@ from qtpy import QtCore, QtGui, QtWidgets
 from qtpy.QtCore import QObject, Property
 from l5r.util.settings import L5RCMSettings
 from l5r.util import log
-import api
 
 class QExampleListModel(QtCore.QAbstractListModel):
     def __init__(self, parent=None):
@@ -343,7 +342,7 @@ class SettingsWidget(QtWidgets.QWidget):
             self.ck_show_banner,
             self.ck_show_banner.stateChanged,
             "checked", "ui/isbannerenabled",
-            callback=lambda x: app.sink1.set_banner_visibility(x))
+            callback=lambda x: app.menu_sink.set_banner_visibility(x))
 
         # health display
         hmethods = [

@@ -2,9 +2,17 @@
 #define MyAppName      "L5R: CM"
 #define MyAppPublisher "OpenNingia"
 
+; AppVer is passed in by ISCC via `/DAppVer=X.Y.Z`, driven from
+; l5r.l5rcmcore.APP_VERSION in the GitHub Actions workflow. The fallback
+; keeps local ISCC runs working.
+#ifndef AppVer
+  #define AppVer "0.0.0-dev"
+#endif
+
 [Setup]
 AppName=L5R 4E: Character Manager
-AppVerName={#MyAppName} {%APPVEYOR_BUILD_VERSION|3.17.0}
+AppVersion={#AppVer}
+AppVerName={#MyAppName} {#AppVer}
 AppPublisher={#MyAppPublisher}
 DefaultDirName={commonpf}\openningia\l5rcm
 DefaultGroupName=OpenNingia\L5RCM
@@ -70,6 +78,8 @@ Root: HKCR; Subkey: "L5Rcm.Pack\shell\open\command"; ValueType: string; ValueNam
 Filename: "{app}\l5rcm.exe"; Parameters: "--import ""{app}\core.l5rcmpack"""; Tasks: importCorePack
 
 [InstallDelete]
-Type: files; Name: "{app}\Python3.dll"
+; Clean up the Python 3.10 interpreter DLL left behind when upgrading from a
+; pre-3.11 install. We ship Python311.dll now, so the old file is not in
+; [Files] and would otherwise linger forever in the install directory.
+; Bump this when the bundled Python version changes again.
 Type: files; Name: "{app}\Python310.dll"
-Type: files; Name: "{app}\l5rcm.exe"
