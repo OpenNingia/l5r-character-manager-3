@@ -55,7 +55,7 @@ from qtpy.QtCore import QUrl
 
 # PyPDF
 from pypdf import PdfReader, PdfWriter
-from pypdf.constants import FieldDictionaryAttributes
+from pypdf.generic import ArrayObject, NameObject
 
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
@@ -143,18 +143,17 @@ class L5RCMCore(QtWidgets.QMainWindow):
             writer = PdfWriter()
             writer.append(reader)
 
-            flags = FieldDictionaryAttributes.FfBits.ReadOnly
-
             writer.update_page_form_field_values(
                 None,
                 form_fields,
-                flags=flags,
                 auto_regenerate=False,
-                flatten=False
+                flatten=True,
             )
 
+            self._strip_form_widgets(writer)
+
             with open(target_pdf, "wb") as output_stream:
-                writer.write(output_stream)     
+                writer.write(output_stream)
 
             log.app.info('created pdf %s', target_pdf)
             return True
@@ -163,6 +162,26 @@ class L5RCMCore(QtWidgets.QMainWindow):
         #except Exception as ex:
         #    log.app.error('could not generate output pdf. exception: %s', ex)
         #    return False
+
+    @staticmethod
+    def _strip_form_widgets(writer):
+        """Remove form widget annotations and /AcroForm from a flattened PDF.
+
+        pypdf's ``update_page_form_field_values(..., flatten=True)`` bakes the
+        appearance stream into the page contents but leaves the widget
+        annotations in place, so the now-empty field overlays still render on
+        top. Drop them to get a truly flattened, no-form output.
+        """
+        for p in writer.pages:
+            if "/Annots" not in p:
+                continue
+            kept = [
+                a for a in p["/Annots"]
+                if a.get_object().get("/Subtype") != "/Widget"
+            ]
+            p[NameObject("/Annots")] = ArrayObject(kept)
+        if "/AcroForm" in writer._root_object:
+            del writer._root_object[NameObject("/AcroForm")]
 
     def merge_pdf(self, input_files, output_file):
         try:
