@@ -3,11 +3,16 @@
 // QML replacement for l5r.widgets.CkNumWidget used on the Character
 // tab for the void-points pool and the social-flag point trackers.
 // Interactions:
-//   * click dot          -> set value to (index + 1); click again to clear
-//                           down to `index` (matches CkNumWidget).
+//   * click dot          -> request value (index + 1); click the top dot
+//                           again to request `index` (matches CkNumWidget).
 //   * shift+click dot    -> emit `rankBumpRequested()` so the parent can
-//                           advance the underlying rank and reset points.
-//   * wheel up / down    -> ±1 fine adjustment, clamped to [0, count].
+//                           advance the underlying rank.
+//   * wheel up / down    -> request ±1, clamped to [0, count].
+// Like RankStepper, this widget is SIGNAL-ONLY: it emits `valueRequested`
+// and never assigns its own `value`. The parent owns `value` via a binding
+// to the model, so the dots always track live model state. (Self-assigning
+// here would break that binding and freeze the dots -- e.g. they'd keep a
+// stale fill after File>New or loading a character.)
 //   * hover              -> the dot under the cursor gently scales up.
 // Styling: filled dots take `accent`; empty dots also use `accent` for
 // the border so the track reads as a single colour-themed row (e.g.
@@ -25,6 +30,10 @@ Row {
     property int dotSize: Theme.pointDotSize
     property color accent: Theme.accent
     signal rankBumpRequested
+    // Emitted on user interaction with the requested new value. The widget
+    // does NOT assign `value` itself -- the parent commits to the model and
+    // the `value` binding flows the result back (see header note).
+    signal valueRequested(int requested)
     spacing: Theme.pointDotSpacing
 
     // Scroll-wheel fine adjustment. Sits on the Row so the wheel zone
@@ -35,7 +44,7 @@ Row {
             var step = event.angleDelta.y > 0 ? 1 : -1;
             var newValue = Math.max(0, Math.min(track.count, track.value + step));
             if (newValue !== track.value) {
-                track.value = newValue;
+                track.valueRequested(newValue);
             }
             event.accepted = true;
         }
@@ -72,7 +81,7 @@ Row {
                     }
                     var newValue = (track.value === index + 1) ? index : index + 1;
                     if (newValue !== track.value) {
-                        track.value = newValue;
+                        track.valueRequested(newValue);
                     }
                 }
             }

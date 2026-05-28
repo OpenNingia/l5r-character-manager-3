@@ -112,10 +112,12 @@ ColumnLayout {
                 // Left pan -- XP paid for blessings.
                 ColumnLayout {
                     Layout.fillWidth: true
+                    Layout.preferredWidth: 1   // equal split; see banner note
                     Layout.alignment: Qt.AlignTop
                     spacing: 2
                     Label {
                         Layout.fillWidth: true
+                        wrapMode: Text.WordWrap
                         text: qsTr("INVESTED IN BLESSINGS")
                         font.family: Theme.fontDisplay
                         font.pixelSize: Theme.smallFont
@@ -166,6 +168,7 @@ ColumnLayout {
                 // blessings cost (rare but possible at character gen).
                 ColumnLayout {
                     Layout.fillWidth: true
+                    Layout.preferredWidth: 1   // equal split; see banner note
                     Layout.alignment: Qt.AlignTop
                     spacing: 2
 
@@ -174,6 +177,7 @@ ColumnLayout {
 
                     Label {
                         Layout.fillWidth: true
+                        wrapMode: Text.WordWrap
                         text: parent._netCost ? qsTr("NET BURDEN ON THE SOUL") : qsTr("NET GIFT TO THE SOUL")
                         font.family: Theme.fontDisplay
                         font.pixelSize: Theme.smallFont
@@ -225,10 +229,12 @@ ColumnLayout {
                 // confuse it with a "cost".
                 ColumnLayout {
                     Layout.fillWidth: true
+                    Layout.preferredWidth: 1   // equal split; see banner note
                     Layout.alignment: Qt.AlignTop
                     spacing: 2
                     Label {
                         Layout.fillWidth: true
+                        wrapMode: Text.WordWrap
                         text: qsTr("GRANTED BY BURDENS")
                         font.family: Theme.fontDisplay
                         font.pixelSize: Theme.smallFont

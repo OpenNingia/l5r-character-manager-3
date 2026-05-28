@@ -327,10 +327,9 @@ ColumnLayout {
                     count: 10
                     value: section._voidPoints
                     accent: Theme.ringVoid
-                    onValueChanged: {
-                        if (appCtrl && value !== section._voidPoints) {
-                            appCtrl.setVoidPoints(value);
-                        }
+                    onValueRequested: function (v) {
+                        if (appCtrl)
+                            appCtrl.setVoidPoints(v);
                     }
                 }
                 Item {
@@ -404,13 +403,12 @@ ColumnLayout {
                     function _commitPoints(newValue) {
                         if (!appCtrl)
                             return;
-                        if (newValue === 10) {
-                            // 10th dot = rank-up, points reset to 0.
-                            if (_flagRank < 10)
-                                appCtrl.setFlag(_key, _flagRank + 1);
-                            return;
-                        }
-                        var combined = _flagRank + newValue / 10.0;
+                        // Points run 0..9 within a rank; the dots edit points
+                        // only and never roll the rank over -- use shift+click
+                        // (or the −/+ stepper) to change the rank. Clamp
+                        // defensively so a stray value can't advance the rank.
+                        var pts = Math.max(0, Math.min(9, newValue));
+                        var combined = _flagRank + pts / 10.0;
                         if (Math.abs(combined - _flagValue) > 0.001) {
                             appCtrl.setFlag(_key, combined);
                         }
@@ -462,10 +460,12 @@ ColumnLayout {
                     }
                     Widgets.PointTrack {
                         Layout.leftMargin: 20  // align under the label
-                        count: 10
+                        count: 9  // points 0..9 within a rank; no roll-over
                         value: _flagPoints
                         accent: _flagColor
-                        onValueChanged: _commitPoints(value)
+                        onValueRequested: function (v) {
+                            _commitPoints(v);
+                        }
                         onRankBumpRequested: _bumpRank()
                     }
                 }
@@ -538,20 +538,17 @@ ColumnLayout {
                             }
                         }
                         Widgets.PointTrack {
-                            count: 10
+                            count: 9  // points 0..9 within a rank; no roll-over
                             dotSize: 10
                             value: _flagPoints
                             accent: _flagColor
-                            onValueChanged: {
+                            onValueRequested: function (v) {
                                 if (!appCtrl)
                                     return;
-                                if (value === 10) {
-                                    if (_flagRank < 10) {
-                                        appCtrl.setFlag(_key, _flagRank + 1);
-                                    }
-                                    return;
-                                }
-                                var combined = _flagRank + value / 10.0;
+                                // Points 0..9 only; dots never roll the rank
+                                // over (shift+click or the stepper does that).
+                                var pts = Math.max(0, Math.min(9, v));
+                                var combined = _flagRank + pts / 10.0;
                                 if (Math.abs(combined - _flagValue) > 0.001) {
                                     appCtrl.setFlag(_key, combined);
                                 }

@@ -188,10 +188,12 @@ ColumnLayout {
             // Hero metric: XP invested
             ColumnLayout {
                 Layout.fillWidth: true
+                Layout.preferredWidth: 1   // equal split; see banner note
                 Layout.alignment: Qt.AlignTop
                 spacing: 2
                 Label {
                     Layout.fillWidth: true
+                    wrapMode: Text.WordWrap
                     text: qsTr("EXPERIENCE SPENT")
                     font.family: Theme.fontDisplay
                     font.pixelSize: Theme.smallFont
@@ -234,10 +236,12 @@ ColumnLayout {
             // Hero metric: entries logged
             ColumnLayout {
                 Layout.fillWidth: true
+                Layout.preferredWidth: 1   // equal split; see banner note
                 Layout.alignment: Qt.AlignTop
                 spacing: 2
                 Label {
                     Layout.fillWidth: true
+                    wrapMode: Text.WordWrap
                     text: qsTr("ENTRIES")
                     font.family: Theme.fontDisplay
                     font.pixelSize: Theme.smallFont
@@ -282,10 +286,12 @@ ColumnLayout {
             // history feeds into).
             ColumnLayout {
                 Layout.fillWidth: true
+                Layout.preferredWidth: 1   // equal split; see banner note
                 Layout.alignment: Qt.AlignTop
                 spacing: 2
                 Label {
                     Layout.fillWidth: true
+                    wrapMode: Text.WordWrap
                     text: qsTr("CURRENT RANK")
                     font.family: Theme.fontDisplay
                     font.pixelSize: Theme.smallFont
