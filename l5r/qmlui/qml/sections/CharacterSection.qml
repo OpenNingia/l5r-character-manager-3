@@ -230,10 +230,8 @@ ColumnLayout {
         Item { Layout.preferredWidth: 1; Layout.preferredHeight: 1 }
     }
 
-    Rectangle {
+    Widgets.OrnateDivider {
         Layout.fillWidth: true
-        Layout.preferredHeight: 1
-        color: Theme.divider; opacity: Theme.dividerOpacity
     }
 
     // -----------------------------------------------------------------
@@ -301,74 +299,227 @@ ColumnLayout {
                 }
                 Item { Layout.fillWidth: true }
             }
-        }
-    }
 
-    // -----------------------------------------------------------------
-    // Social / spiritual flags -- their own full-width row beneath the
-    // rings. Five compact columns laid out horizontally; each column
-    // shows the flag name, a rank SpinBox, and a 0..9 point track in
-    // the flag's brand colour.
-    // -----------------------------------------------------------------
-    Widgets.SheetPanel {
-        Layout.fillWidth: true
-        title: qsTr("Social / Spiritual")
+            // -------------------------------------------------------------
+            // Social / spiritual flags -- a sub-block sharing the same
+            // parchment as the rings panel (no second border between the
+            // two; they are one document, two ledger headings). The
+            // inner banner mirrors SheetPanel's own title styling so it
+            // reads as a peer to "Rings and Attributes" above.
+            //
+            // Honor/Glory/Status get the headline treatment (full-width
+            // row + 10-dot track); Shadowlands & Infamy sit below a
+            // hairline-dashed divider in a compact two-column grid --
+            // they're almost always zero in play and don't deserve the
+            // same prominence.
+            //
+            // Click dot sets value, shift+click bumps rank (resets
+            // points), scroll fine-tunes by 1. Shift+click and clicking
+            // the 10th dot both route through setFlag(rank+1) -- when
+            // the model pushes back the value binding resets the dots
+            // to 0 naturally.
+            // -------------------------------------------------------------
+            Label {
+                Layout.fillWidth: true
+                Layout.topMargin: 14
+                text: qsTr("Social / Spiritual")
+                font.family: Theme.fontDisplay
+                font.pixelSize: Theme.titleFont
+                font.weight: Theme.headingWeight
+                font.letterSpacing: 1.5
+                color: Theme.heading
+            }
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.topMargin: -2
+                Layout.preferredHeight: 1
+                color: Theme.heading
+                opacity: 0.45
+            }
 
-        Flow {
-            width: parent.width
-            spacing: 16
+            Label {
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignRight
+                text: qsTr("click dot to set · shift+click to advance rank · scroll to fine-tune")
+                font.italic: true
+                font.pixelSize: Theme.smallFont
+                opacity: 0.6
+            }
 
+            // ---- Honor / Glory / Status -- full-width tracks --------
             Repeater {
-                model: section._flagDefs
+                model: [section._flagDefs[0], section._flagDefs[1], section._flagDefs[2]]
                 delegate: ColumnLayout {
-                    width: 160
-                    spacing: 4
-                    readonly property color _flagColor: Theme.flagColor(modelData.key)
+                    Layout.fillWidth: true
+                    spacing: 6
+                    readonly property string _key: modelData.key
+                    readonly property color _flagColor: Theme.flagColor(_key)
                     readonly property real _flagValue:
-                        section._flags[modelData.key] !== undefined
-                            ? section._flags[modelData.key] : 0
-                    readonly property int _flagRank:
-                        Math.floor(_flagValue)
+                        section._flags[_key] !== undefined
+                            ? section._flags[_key] : 0
+                    readonly property int _flagRank: Math.floor(_flagValue)
                     readonly property int _flagPoints:
                         Math.round((_flagValue - _flagRank) * 10)
 
+                    function _commitRank(newRank) {
+                        if (!appCtrl) return
+                        var clamped = Math.max(0, Math.min(10, newRank))
+                        var combined = clamped + _flagPoints / 10.0
+                        appCtrl.setFlag(_key, combined)
+                    }
+                    function _commitPoints(newValue) {
+                        if (!appCtrl) return
+                        if (newValue === 10) {
+                            // 10th dot = rank-up, points reset to 0.
+                            if (_flagRank < 10) appCtrl.setFlag(_key, _flagRank + 1)
+                            return
+                        }
+                        var combined = _flagRank + newValue / 10.0
+                        if (Math.abs(combined - _flagValue) > 0.001) {
+                            appCtrl.setFlag(_key, combined)
+                        }
+                    }
+                    function _bumpRank() {
+                        if (!appCtrl) return
+                        if (_flagRank < 10) appCtrl.setFlag(_key, _flagRank + 1)
+                    }
+
                     RowLayout {
                         Layout.fillWidth: true
-                        spacing: 6
+                        spacing: 10
                         Rectangle {
-                            width: 10; height: 10; radius: 5
+                            Layout.preferredWidth: 10
+                            Layout.preferredHeight: 10
+                            radius: 5
                             color: _flagColor
-                            border.width: 1
-                            border.color: Qt.darker(color, 1.3)
                         }
                         Label {
-                            text: modelData.label
-                            font.weight: Font.DemiBold
+                            text: modelData.label.toUpperCase()
+                            font.family: Theme.fontDisplay
+                            font.pixelSize: Theme.bodyFont
+                            font.weight: Theme.headingWeight
+                            font.letterSpacing: 1.6
                             color: _flagColor
-                            Layout.fillWidth: true
+                            Layout.preferredWidth: 100
                             elide: Text.ElideRight
                         }
-                        SpinBox {
-                            from: 0; to: 10
+                        Widgets.RankStepper {
                             value: _flagRank
-                            implicitWidth: 60
-                            onValueModified: {
-                                if (!appCtrl) return
-                                var combined = value + _flagPoints / 10.0
-                                appCtrl.setFlag(modelData.key, combined)
-                            }
+                            from: 0; to: 10
+                            onValueModified: function(v) { _commitRank(v) }
+                        }
+                        Item { Layout.fillWidth: true }
+                        Label {
+                            text: qsTr("rank ") + _flagRank + "." + _flagPoints
+                            font.pixelSize: Theme.smallFont
+                            font.features: Theme.tabularNumbers
+                            color: _flagColor
+                            opacity: 0.9
                         }
                     }
                     Widgets.PointTrack {
-                        Layout.alignment: Qt.AlignLeft
-                        count: 9
+                        Layout.leftMargin: 20  // align under the label
+                        count: 10
                         value: _flagPoints
                         accent: _flagColor
-                        onValueChanged: {
-                            if (!appCtrl) return
-                            var combined = _flagRank + value / 10.0
-                            if (Math.abs(combined - _flagValue) > 0.001) {
-                                appCtrl.setFlag(modelData.key, combined)
+                        onValueChanged: _commitPoints(value)
+                        onRankBumpRequested: _bumpRank()
+                    }
+                }
+            }
+
+            // ---- Hairline dashed divider ----------------------------
+            Canvas {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 1
+                Layout.topMargin: 6
+                Layout.bottomMargin: 6
+                onPaint: {
+                    var ctx = getContext("2d")
+                    ctx.reset()
+                    ctx.strokeStyle = Theme.borderSubtle
+                    ctx.lineWidth = 1
+                    ctx.setLineDash([4, 4])
+                    ctx.beginPath()
+                    ctx.moveTo(0, 0.5)
+                    ctx.lineTo(width, 0.5)
+                    ctx.stroke()
+                }
+                onWidthChanged: requestPaint()
+            }
+
+            // ---- Shadowlands / Infamy -- compact two-column grid ----
+            GridLayout {
+                Layout.fillWidth: true
+                columns: 2
+                columnSpacing: 24
+                rowSpacing: 4
+
+                Repeater {
+                    model: [section._flagDefs[3], section._flagDefs[4]]
+                    delegate: ColumnLayout {
+                        Layout.fillWidth: true
+                        Layout.alignment: Qt.AlignTop
+                        spacing: 4
+                        readonly property string _key: modelData.key
+                        readonly property color _flagColor: Theme.flagColor(_key)
+                        readonly property real _flagValue:
+                            section._flags[_key] !== undefined
+                                ? section._flags[_key] : 0
+                        readonly property int _flagRank: Math.floor(_flagValue)
+                        readonly property int _flagPoints:
+                            Math.round((_flagValue - _flagRank) * 10)
+
+                        RowLayout {
+                            Layout.fillWidth: true
+                            spacing: 8
+                            Rectangle {
+                                Layout.preferredWidth: 10
+                                Layout.preferredHeight: 10
+                                radius: 5
+                                color: _flagColor
+                            }
+                            Label {
+                                text: modelData.label.toUpperCase()
+                                font.family: Theme.fontDisplay
+                                font.pixelSize: Theme.smallFont
+                                font.weight: Theme.headingWeight
+                                font.letterSpacing: 1.4
+                                color: _flagColor
+                                Layout.fillWidth: true
+                                elide: Text.ElideRight
+                            }
+                            Label {
+                                text: _flagRank + "." + _flagPoints
+                                font.pixelSize: Theme.smallFont
+                                font.features: Theme.tabularNumbers
+                                color: _flagColor
+                                opacity: 0.9
+                            }
+                        }
+                        Widgets.PointTrack {
+                            count: 10
+                            dotSize: 10
+                            value: _flagPoints
+                            accent: _flagColor
+                            onValueChanged: {
+                                if (!appCtrl) return
+                                if (value === 10) {
+                                    if (_flagRank < 10) {
+                                        appCtrl.setFlag(_key, _flagRank + 1)
+                                    }
+                                    return
+                                }
+                                var combined = _flagRank + value / 10.0
+                                if (Math.abs(combined - _flagValue) > 0.001) {
+                                    appCtrl.setFlag(_key, combined)
+                                }
+                            }
+                            onRankBumpRequested: {
+                                if (!appCtrl) return
+                                if (_flagRank < 10) {
+                                    appCtrl.setFlag(_key, _flagRank + 1)
+                                }
                             }
                         }
                     }
@@ -377,10 +528,8 @@ ColumnLayout {
         }
     }
 
-    Rectangle {
+    Widgets.OrnateDivider {
         Layout.fillWidth: true
-        Layout.preferredHeight: 1
-        color: Theme.divider; opacity: Theme.dividerOpacity
     }
 
     // -----------------------------------------------------------------

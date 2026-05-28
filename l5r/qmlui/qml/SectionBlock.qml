@@ -8,6 +8,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import "sections" as Sections
+import "widgets" as Widgets
 import Theme 1.0
 
 Item {
@@ -69,11 +70,8 @@ Item {
             }
         }
 
-        Rectangle {
+        Widgets.OrnateDivider {
             Layout.fillWidth: true
-            Layout.preferredHeight: 1
-            color: Theme.divider
-            opacity: Theme.dividerOpacity
         }
 
         // Body -- per-tab content if we have a section QML for this id,

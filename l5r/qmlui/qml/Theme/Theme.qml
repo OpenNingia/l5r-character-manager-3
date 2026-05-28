@@ -77,6 +77,10 @@ QtObject {
     // dances horizontally row-to-row. Requires Qt 6.6+.
     readonly property var tabularNumbers: ({ "tnum": 1 })
     readonly property real watermarkOpacity: 0.06
+    // Rice-paper fibre noise drawn on top of the parchment fill in
+    // RicePaperOverlay. 0.06 reads as texture without dirtying the
+    // ink contrast underneath.
+    readonly property real paperTextureOpacity: 0.06
 
     // Helper: pick the matching flag colour by key.
     function flagColor(key) {

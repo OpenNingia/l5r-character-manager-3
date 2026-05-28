@@ -52,6 +52,11 @@ Pane {
         border.width: 1
         border.color: Theme.borderStrong
         radius: 0
+
+        // Hand-made-paper fibre overlay. Lives inside the background
+        // Rectangle so it auto-clips to the panel border and never
+        // bleeds onto content above it.
+        RicePaperOverlay {}
     }
 
     // Force ink-on-paper. These palette overrides cascade to every

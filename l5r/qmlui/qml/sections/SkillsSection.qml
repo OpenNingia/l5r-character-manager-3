@@ -184,21 +184,46 @@ ColumnLayout {
                 }
                 Item { Layout.fillWidth: true }
                 Button {
+                    id: newSkillBtn
                     text: qsTr("＋  New Skill")
                     enabled: section._canEdit
-                    flat: true
-                    font.family: Theme.fontDisplay
-                    font.letterSpacing: 1.1
-                    palette.buttonText: Theme.heading
                     onClicked: buySkillDlg.open()
+                    topPadding: 5
+                    bottomPadding: 5
+                    leftPadding: 14
+                    rightPadding: 14
+
+                    contentItem: Label {
+                        text: newSkillBtn.text
+                        font.family: Theme.fontDisplay
+                        font.pixelSize: Theme.bodyFont
+                        font.weight: Theme.headingWeight
+                        font.letterSpacing: 1.6
+                        color: newSkillBtn.enabled ? Theme.heading
+                                                   : Qt.lighter(Theme.heading, 1.6)
+                        opacity: newSkillBtn.hovered ? 1.0 : 0.88
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                    background: Rectangle {
+                        // Hairline burnt-gold border with a barely-there
+                        // parchment fill that warms on hover -- ink-on-
+                        // paper button, not a system rectangle.
+                        color: newSkillBtn.down  ? Qt.rgba(0.54, 0.35, 0.10, 0.18)
+                             : newSkillBtn.hovered ? Qt.rgba(0.54, 0.35, 0.10, 0.10)
+                                                   : "transparent"
+                        border.width: 1
+                        border.color: newSkillBtn.enabled ? Theme.heading
+                                                          : Theme.borderSubtle
+                        radius: 1
+                    }
                 }
             }
 
-            Rectangle {
+            Widgets.OrnateDivider {
                 Layout.fillWidth: true
-                Layout.preferredHeight: 1
-                color: Theme.heading
-                opacity: 0.30
+                ruleColor: Theme.heading
+                ruleOpacity: 0.30
             }
 
             // ---- Ring clusters -----------------------------------
@@ -273,12 +298,11 @@ ColumnLayout {
             }
 
             // ---- Footer coda --------------------------------------
-            Rectangle {
+            Widgets.OrnateDivider {
                 Layout.fillWidth: true
                 Layout.topMargin: 8
-                Layout.preferredHeight: 1
-                color: Theme.heading
-                opacity: 0.30
+                ruleColor: Theme.heading
+                ruleOpacity: 0.30
             }
             Label {
                 Layout.fillWidth: true
