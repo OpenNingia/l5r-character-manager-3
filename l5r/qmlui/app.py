@@ -48,13 +48,16 @@ def _load_bundled_fonts():
     if not fonts_dir.is_dir():
         log.app.warning(u"QML UI: bundled fonts dir missing at %s", fonts_dir)
         return
-    for ttf in sorted(fonts_dir.glob("*.ttf")):
-        font_id = QFontDatabase.addApplicationFont(str(ttf))
+    # Accept both TrueType and OpenType -- the brush-style CJK faces we
+    # ship for the kanji slots come as .otf.
+    candidates = sorted(list(fonts_dir.glob("*.ttf")) + list(fonts_dir.glob("*.otf")))
+    for face in candidates:
+        font_id = QFontDatabase.addApplicationFont(str(face))
         if font_id < 0:
-            log.app.warning(u"QML UI: failed to load font %s", ttf.name)
+            log.app.warning(u"QML UI: failed to load font %s", face.name)
             continue
         families = QFontDatabase.applicationFontFamilies(font_id)
-        log.app.debug(u"QML UI: registered %s -> %s", ttf.name, families)
+        log.app.debug(u"QML UI: registered %s -> %s", face.name, families)
 
 
 def _apply_body_font(qapp):

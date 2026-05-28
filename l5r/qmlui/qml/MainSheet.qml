@@ -232,11 +232,16 @@ ApplicationWindow {
                         }
                         contentItem: RowLayout {
                             spacing: 10
+                            // Brush-script kanji; the Hakushū Higerei face
+                            // has heavier strokes than a system CJK font
+                            // so 20px is comfortable here without crowding
+                            // the column.
                             Label {
                                 text: modelData.icon
-                                font.pixelSize: 16
+                                font.family: Theme.fontKanji
+                                font.pixelSize: 22
                                 Layout.leftMargin: 14
-                                Layout.preferredWidth: 22
+                                Layout.preferredWidth: 28
                                 horizontalAlignment: Text.AlignHCenter
                                 color: tocDelegate.highlighted ? Theme.accent : palette.windowText
                                 opacity: tocDelegate.highlighted ? 1.0 : 0.7

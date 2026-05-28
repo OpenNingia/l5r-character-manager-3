@@ -21,8 +21,8 @@ Item {
     Layout.fillWidth: true
 
     // Section-icon watermark. Declared first so it paints behind the
-    // body. At ~6% opacity the L5R glyph (clan-mon stand-in) reads
-    // as atmosphere; the user's gaze still lands on the actual data.
+    // body. At ~6% opacity the brush-script kanji reads as a
+    // calligraphy stamp behind the data, not as a UI symbol.
     Label {
         id: watermark
         text: section.icon
@@ -31,13 +31,17 @@ Item {
         anchors.top: parent.top
         anchors.rightMargin: 16
         anchors.topMargin: -8
+        font.family: Theme.fontKanji
         font.pixelSize: 180
-        font.family: Theme.fontDisplay
         color: Theme.heading
         opacity: Theme.watermarkOpacity
         // Watermark must never steal hits from the content above.
         enabled: false
     }
+
+    // Header strip icon -- same brush face as the watermark and TOC
+    // for visual consistency across the three kanji slots.
+    // (The Loader body below renders all section content.)
 
     ColumnLayout {
         id: column
@@ -54,7 +58,8 @@ Item {
 
             Label {
                 text: section.icon
-                font.pixelSize: 26
+                font.family: Theme.fontKanji
+                font.pixelSize: 28
                 color: Theme.accent
                 opacity: 0.85
             }

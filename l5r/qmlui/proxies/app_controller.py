@@ -50,19 +50,26 @@ from l5r.util import log, names
 from l5r.util.fsutil import get_app_file, get_app_icon_path
 
 
+# Single-kanji glyphs lean on the system CJK font (no bundled face) --
+# the L5R setting is fantasy-Japan, so a kanji column reads as part of
+# the document rather than UI chrome. Each pick is one kanji that maps
+# to the tab's concept by L5R-idiomatic reading (ryū for techniques,
+# mon for about/clan crest, etc.). On a host with no CJK font installed
+# the fallback box is ugly -- that's the known trade vs. the previous
+# universal Unicode symbols.
 _TAB_DEFS = [
-    ("pc_info",       "Character",     "✴"),  # 8-pointed star -- profile
-    ("advancements",  "Advancements",  "★"),  # filled star
-    ("skills",        "Skills",        "◆"),  # filled diamond
-    ("perks",         "Merits/Flaws",  "◉"),  # fisheye -- yin/yang feel
-    ("techniques",    "Techniques",    "☯"),  # taijitu
-    ("powers",        "Powers",        "✨"),  # sparkles
-    ("modifiers",     "Modifiers",     "✚"),  # heavy greek cross
-    ("weapons",       "Weapons",       "⚔"),  # crossed swords
-    ("equipment",     "Equipment",     "⚺"),  # atom
-    ("notes",         "Notes",         "✎"),  # lower right pencil
-    ("settings",      "Settings",      "⚙"),  # gear
-    ("about",         "About",         "ⓘ"),  # circled i
+    ("pc_info",       "Character",     "侍"),  # samurai
+    ("advancements",  "Advancements",  "道"),  # dō -- way / path
+    ("skills",        "Skills",        "技"),  # gi -- technique / skill
+    ("perks",         "Merits/Flaws",  "縁"),  # en -- bond / karma (neutral)
+    ("techniques",    "Techniques",    "流"),  # ryū -- school / style
+    ("powers",        "Powers",        "呪"),  # ju -- spell / incantation
+    ("modifiers",     "Modifiers",     "変"),  # hen -- change
+    ("weapons",       "Weapons",       "刀"),  # tō -- katana / blade
+    ("equipment",     "Equipment",     "具"),  # gu -- tool / equipment
+    ("notes",         "Notes",         "記"),  # ki -- record / note
+    ("settings",      "Settings",      "設"),  # setsu -- setup
+    ("about",         "About",         "紋"),  # mon -- clan crest
 ]
 
 

@@ -59,7 +59,7 @@ exclude = ["l5r.tests*", "l5r.api.tests*", "l5r.models.tests*"]
 # Wildcard key applies to every discovered package. We can't list the icon
 # packages explicitly (e.g. "l5r.share.icons.l5rcm.16x16") because their
 # segments start with digits and fail setuptools' module-name validation.
-"*" = ["*.pdf", "*.txt", "*.png", "*.qm", "*.qml", "*.ttf"]
+"*" = ["*.pdf", "*.txt", "*.png", "*.qm", "*.qml", "*.ttf", "*.otf"]
 
 [tool.cxfreeze]
 executables = [

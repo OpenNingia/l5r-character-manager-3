@@ -81,6 +81,17 @@ QtObject {
     // shipping the asset is the only way to guarantee identity.
     // Body text intentionally inherits the OS UI font.
     readonly property string fontDisplay: "Cinzel"
+    // Brush-style kanji face (Kōzan Mōhitsu / 衡山毛筆) bundled in
+    // l5r/share/fonts/KouzanMouhituFontOTF.otf. Used wherever a CJK
+    // glyph appears on the sheet -- the TOC icon column, the
+    // section-header icon, and the large watermark behind each
+    // section. Cinzel has zero CJK coverage so kanji on those slots
+    // would otherwise fall back to the OS system font; pinning a
+    // bundled brush face here makes the aesthetic identical across
+    // every install. The family name below (KouzanBrushFontOTF) is
+    // the OTF's internal family, NOT the file stem -- Qt registers
+    // by metadata, not by filename.
+    readonly property string fontKanji: "KouzanBrushFontOTF"
     // Cinzel has thin strokes below ~22px and reads anaemic at any
     // weight under 900 on the parchment surface. Headers use this
     // semantic token so a single bump here lifts every banner / title
