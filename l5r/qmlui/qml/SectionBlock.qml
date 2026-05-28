@@ -88,6 +88,7 @@ Item {
                 case "about":   return aboutBody
                 case "notes":   return notesBody
                 case "pc_info": return characterBody
+                case "skills":  return skillsBody
                 default:        return placeholderBody
                 }
             }
@@ -105,6 +106,11 @@ Item {
             Component {
                 id: characterBody
                 Sections.CharacterSection {}
+            }
+
+            Component {
+                id: skillsBody
+                Sections.SkillsSection {}
             }
 
             Component {

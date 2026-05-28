@@ -24,11 +24,14 @@ from qtpy.QtWidgets import QFileDialog, QMessageBox
 import l5r.api as api
 import l5r.api.character
 import l5r.api.character.schools
+import l5r.api.character.skills
 import l5r.api.data
 import l5r.api.data.clans
 import l5r.api.data.families
 import l5r.api.data.schools
+import l5r.api.data.skills
 import l5r.models
+import l5r.models.advances
 
 from l5r.api.data import CMErrors
 from l5r.l5rcmcore import (
@@ -297,6 +300,65 @@ class AppController(QObject):
             log.api.warning(u"QML UI: invalid health multiplier %r", value)
             return
         api.character.notify_character_refreshed()
+
+    # --- skills ------------------------------------------------------
+
+    @Slot(str)
+    def buySkillRank(self, skill_id):
+        """Purchase the next rank of `skill_id`. Buying when the
+        character doesn't yet own the skill walks rank 0 -> 1 -- so
+        this slot serves both 'add new skill' and 'level up' paths."""
+        if not skill_id:
+            return
+        res = api.character.skills.purchase_skill_rank(skill_id)
+        if res == CMErrors.NOT_ENOUGH_XP:
+            self._show_not_enough_xp()
+            return
+        api.character.notify_character_refreshed()
+
+    @Slot(str, str)
+    def buySkillEmphasis(self, skill_id, text):
+        """Add an emphasis to `skill_id`. Emphases cost a flat 2 XP
+        (mirrors the legacy advdlg.py SkillEmph cost)."""
+        text = (text or "").strip()
+        if not skill_id or not text:
+            return
+        sk = api.data.skills.get(skill_id)
+        if not sk:
+            log.api.warning(u"QML UI: unknown skill for emphasis: %r", skill_id)
+            return
+        adv = l5r.models.advances.SkillEmph(skill_id, text, 2)
+        adv.desc = self.tr("{0}, Skill {1}. Cost: {2} xp").format(
+            text, sk.name, adv.cost)
+        if api.character.purchase_advancement(adv) == CMErrors.NOT_ENOUGH_XP:
+            self._show_not_enough_xp()
+            return
+        api.character.notify_character_refreshed()
+
+    @Slot(result="QVariantList")
+    def availableSkillsToBuy(self):
+        """Skills the character does NOT yet own -- feeds BuySkillDialog.
+        Sorted by category, then name, matching the legacy chooser."""
+        owned = set(api.character.skills.get_all() or [])
+        out = []
+        for sk in api.data.skills.all():
+            if sk.id in owned:
+                continue
+            try:
+                categ_row = api.data.skills.get_category(sk.type)
+                categ_name = categ_row.name if categ_row else (sk.type or "")
+            except Exception:
+                categ_name = sk.type or ""
+            trait_row = api.data.get_trait_or_ring(sk.trait)
+            trait_label = trait_row.text if trait_row else (sk.trait or "")
+            out.append({
+                "id":       sk.id,
+                "name":     sk.name,
+                "category": categ_name,
+                "trait":    trait_label,
+            })
+        out.sort(key=lambda r: (r["category"].lower(), r["name"].lower()))
+        return out
 
     # --- clan / family / school choosers -----------------------------
 

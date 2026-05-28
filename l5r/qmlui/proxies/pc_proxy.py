@@ -27,6 +27,7 @@ from l5r.qmlui.proxies.pc.flags import FlagsMixin
 from l5r.qmlui.proxies.pc.identity import IdentityMixin
 from l5r.qmlui.proxies.pc.notes import NotesMixin
 from l5r.qmlui.proxies.pc.session import SessionMixin
+from l5r.qmlui.proxies.pc.skills import SkillsMixin
 from l5r.qmlui.proxies.pc.traits import TraitsMixin
 
 
@@ -37,6 +38,7 @@ class PcProxy(
     FlagsMixin,
     CombatMixin,
     NotesMixin,
+    SkillsMixin,
     QObject,
 ):
     def __init__(self, parent=None):
@@ -48,3 +50,4 @@ class PcProxy(
         self._wire_flags(bus)
         self._wire_combat(bus)
         self._wire_notes(bus)
+        self._wire_skills(bus)
