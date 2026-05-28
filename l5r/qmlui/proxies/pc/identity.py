@@ -68,11 +68,13 @@ class IdentityMixin:
 
     @Property(str, notify=familyChanged)
     def family(self):
-        return api.character.get_family() or ""
+        family_ = api.data.families.get(api.character.get_family())
+        return family_.name if family_ else ""
 
     @Property(str, notify=clanChanged)
     def clan(self):
-        return api.character.get_clan() or ""
+        clan_ = api.data.clans.get(api.character.get_clan())
+        return clan_.name if clan_ else ""
 
     @Property(str, notify=schoolChanged)
     def school(self):
