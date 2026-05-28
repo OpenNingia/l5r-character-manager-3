@@ -28,8 +28,11 @@ import l5r.api.character.skills
 import l5r.api.data
 import l5r.api.data.clans
 import l5r.api.data.families
+import l5r.api.data.flaws
+import l5r.api.data.merits
 import l5r.api.data.schools
 import l5r.api.data.skills
+import l5r.api.signals
 import l5r.models
 import l5r.models.advances
 
@@ -60,13 +63,13 @@ from l5r.util.settings import L5RCMSettings
 # universal Unicode symbols.
 _TAB_DEFS = [
     ("pc_info",       "Character",     "侍"),  # samurai
-    ("advancements",  "Advancements",  "道"),  # dō -- way / path
     ("skills",        "Skills",        "技"),  # gi -- technique / skill
     ("perks",         "Merits/Flaws",  "縁"),  # en -- bond / karma (neutral)
     ("techniques",    "Techniques",    "流"),  # ryū -- school / style
     ("spells",        "Spells",        "呪"),  # ju -- spell / incantation
     ("kata",          "Kata",          "型"),  # kata -- form
     ("kiho",          "Kiho",          "気"),  # ki -- spirit / breath
+    ("advancements",  "Advancements",  "道"),  # dō -- way / path
     ("weapons",       "Weapons",       "刀"),  # tō -- katana / blade
     ("misc",          "Miscellanea",   "雑"),  # zatsu -- miscellaneous (modifiers + equipment)
     ("notes",         "Notes",         "記"),  # ki -- record / note
@@ -407,6 +410,226 @@ class AppController(QObject):
         dialog -- writes through QSettings so the preference outlives
         this session."""
         L5RCMSettings().app.warn_about_refund = False
+
+    # --- merits / flaws ----------------------------------------------
+
+    @Slot(result="QVariantList")
+    def availableMerits(self):
+        """Catalogue feed for InscribePerkDialog in merit mode. Slot
+        rather than constant Property so datapack imports mid-session
+        are reflected without restarting the app."""
+        return self._catalogue(is_flaw=False)
+
+    @Slot(result="QVariantList")
+    def availableFlaws(self):
+        """Catalogue feed for InscribePerkDialog in flaw mode."""
+        return self._catalogue(is_flaw=True)
+
+    @Slot(result="QVariantList")
+    def perkCategories(self):
+        """Categories used to bucket merits/flaws -- Physical, Social,
+        Mental, Spiritual, Material in the stock datapack. Drives the
+        category-filter strip in InscribePerkDialog (mirrors the
+        legacy BuyPerkDialog's subtype combobox)."""
+        ds = api.data.model()
+        if ds is None:
+            return []
+        out = []
+        for t in getattr(ds, "perktypes", None) or []:
+            out.append({"id": t.id, "name": t.name})
+        out.sort(key=lambda r: (r["name"] or "").lower())
+        return out
+
+    def _catalogue(self, is_flaw):
+        rows_src = (api.data.flaws.all() if is_flaw
+                    else api.data.merits.all())
+        out = []
+        for p in rows_src or []:
+            ranks = []
+            for r in getattr(p, "ranks", None) or []:
+                # The rank value is signed in the datapack (flaws are
+                # negative); the QML side wants the positive magnitude.
+                # Clan/tag exceptions are applied for the active PC so
+                # the suggested cost reflects discounts the player
+                # actually qualifies for.
+                cost = abs(int(r.value))
+                for ex in r.exceptions or []:
+                    if api.character.has_tag_or_rule(ex.tag):
+                        cost = abs(int(ex.value))
+                ranks.append({"rank": int(r.id), "cost": cost})
+            ranks.sort(key=lambda x: x["rank"])
+
+            suggested = ranks[0]["cost"] if ranks else 0
+
+            try:
+                pack_name = (p.source_pack.display_name
+                             if p.source_pack else "")
+            except Exception:
+                pack_name = ""
+            # book_page may be an int, a numeric string, or a range
+            # like "157-158" -- the datapack format does not constrain
+            # it. Render whatever non-empty string we get.
+            page_raw = getattr(p, "book_page", "") or ""
+            page = str(page_raw).strip()
+            if pack_name and page and page != "0":
+                source = "{} p.{}".format(pack_name, page)
+            else:
+                source = pack_name
+
+            out.append({
+                "ruleId":        p.id,
+                "name":          p.name or p.id,
+                "type":          getattr(p, "type", "") or "",
+                "description":   getattr(p, "desc", "") or "",
+                "source":        source,
+                "suggestedCost": suggested,
+                "ranks":         ranks,
+            })
+        out.sort(key=lambda r: (r["name"] or "").lower())
+        return out
+
+    @Slot(str, str, int, str, int)
+    def inscribePerk(self, kind, rule_id, rank, extra, override_cost):
+        """Buy a merit or flaw. `override_cost == -1` means use the
+        rulebook suggestion (with clan/tag discounts); any non-negative
+        value is the player's manual XP -- house rules are common in
+        L5R, so the slot accepts whatever the player picks without an
+        XP-affordability gate.
+
+        Mirrors BuyPerkDialog.on_accept: builds a PerkAdv directly and
+        routes through append_advancement rather than the
+        merits.add/flaws.add convenience APIs (those don't support
+        cost overrides)."""
+        if not rule_id:
+            return
+        is_flaw = kind == "flaw"
+
+        if is_flaw:
+            perk_row = api.data.flaws.get(rule_id)
+        else:
+            perk_row = api.data.merits.get(rule_id)
+        if perk_row is None:
+            log.api.warning(u"QML UI: unknown %s id %r", kind, rule_id)
+            return
+
+        rank_row = (api.data.flaws.get_rank(rule_id, rank) if is_flaw
+                    else api.data.merits.get_rank(rule_id, rank))
+        if rank_row is None:
+            log.api.warning(u"QML UI: %s %r has no rank %s",
+                            kind, rule_id, rank)
+            return
+
+        # Resolve cost: suggestion (with discount) or manual override.
+        if override_cost is None or int(override_cost) < 0:
+            cost = (api.data.flaws.get_rank_gain(rule_id, rank) if is_flaw
+                    else api.data.merits.get_rank_cost(rule_id, rank))
+            cost = abs(int(cost))
+        else:
+            cost = abs(int(override_cost))
+
+        # Sign convention: flaws are stored with negative cost so the
+        # global XP math (xp(), xp_limit(), get_xp_gained_from_flaws)
+        # works as written.
+        stored_cost = -cost if is_flaw else cost
+
+        adv = l5r.models.advances.PerkAdv(rule_id, rank_row.id,
+                                          stored_cost, kind)
+        adv.rule = rule_id
+        adv.extra = (extra or "").strip()
+        if is_flaw:
+            adv.desc = self.tr("{0} Rank {1}, XP Gain: {2}").format(
+                perk_row.name, rank_row.id, cost)
+        else:
+            adv.desc = self.tr("{0} Rank {1}, XP Cost: {2}").format(
+                perk_row.name, rank_row.id, cost)
+
+        api.character.append_advancement(adv)
+        api.character.set_dirty_flag(True)
+        api.character.notify_character_refreshed()
+
+    @Slot(str)
+    def removePerk(self, adv_id):
+        """Remove a previously-inscribed merit or flaw by stable id.
+        `adv_id` is the str(id(adv)) value the PcProxy emitted for that
+        entry; we re-resolve to the actual PerkAdv by scanning the
+        live advancement list."""
+        if not adv_id:
+            return
+        pc = api.character.model()
+        if not pc:
+            return
+        target = None
+        for adv in pc.advans or []:
+            if str(id(adv)) == adv_id:
+                target = adv
+                break
+        if target is None:
+            log.api.warning(u"QML UI: removePerk: no adv with id %r", adv_id)
+            return
+        if api.character.remove_advancement(target):
+            api.character.set_dirty_flag(True)
+            api.character.notify_character_refreshed()
+
+    @Slot(str, str, int)
+    def editPerk(self, adv_id, extra, override_cost):
+        """Edit an existing merit/flaw entry. Mirrors the legacy
+        BuyPerkDialog edit mode: rule and rank stay fixed (changing
+        those is semantically a remove+rebuy), but the player can
+        re-key the notes (`extra`) and the XP figure. `override_cost`
+        carries the same convention as inscribePerk: -1 = "use the
+        rulebook suggestion (with discounts)"; any non-negative value
+        is an explicit manual cost."""
+        if not adv_id:
+            return
+        pc = api.character.model()
+        if not pc:
+            return
+        target = None
+        for adv in pc.advans or []:
+            if str(id(adv)) == adv_id:
+                target = adv
+                break
+        if target is None:
+            log.api.warning(u"QML UI: editPerk: no adv with id %r", adv_id)
+            return
+
+        is_flaw = (getattr(target, "tag", None) == "flaw"
+                   or (target.cost or 0) < 0)
+        rule_id = target.perk
+        rank = target.rank
+
+        # Resolve cost: suggestion (with discount) or manual override.
+        if override_cost is None or int(override_cost) < 0:
+            try:
+                cost = (api.data.flaws.get_rank_gain(rule_id, rank) if is_flaw
+                        else api.data.merits.get_rank_cost(rule_id, rank))
+            except AttributeError:
+                cost = abs(int(target.cost or 0))
+            cost = abs(int(cost))
+        else:
+            cost = abs(int(override_cost))
+
+        target.extra = (extra or "").strip()
+        # Keep the sign convention: flaws are stored with negative cost.
+        target.cost = -cost if is_flaw else cost
+
+        # Refresh the human-readable description so the advancements
+        # chronicle stays in sync with the new figure.
+        try:
+            perk_row = (api.data.flaws.get(rule_id) if is_flaw
+                        else api.data.merits.get(rule_id))
+        except AttributeError:
+            perk_row = None
+        perk_name = perk_row.name if perk_row else rule_id
+        if is_flaw:
+            target.desc = self.tr("{0} Rank {1}, XP Gain: {2}").format(
+                perk_name, rank, cost)
+        else:
+            target.desc = self.tr("{0} Rank {1}, XP Cost: {2}").format(
+                perk_name, rank, cost)
+
+        api.character.set_dirty_flag(True)
+        api.character.notify_character_refreshed()
 
     # --- clan / family / school choosers -----------------------------
 

@@ -6,7 +6,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-
 import "sections" as Sections
 import "widgets" as Widgets
 import Theme 1.0
@@ -42,7 +41,6 @@ Item {
     // Header strip icon -- same brush face as the watermark and TOC
     // for visual consistency across the three kanji slots.
     // (The Loader body below renders all section content.)
-
     ColumnLayout {
         id: column
         anchors.left: parent.left
@@ -89,38 +87,57 @@ Item {
             Layout.fillWidth: true
             sourceComponent: {
                 switch (section.tabId) {
-                case "about":        return aboutBody
-                case "notes":        return notesBody
-                case "pc_info":      return characterBody
-                case "skills":       return skillsBody
-                case "advancements": return advancementsBody
-                default:             return placeholderBody
+                case "about":
+                    return aboutBody;
+                case "notes":
+                    return notesBody;
+                case "pc_info":
+                    return characterBody;
+                case "skills":
+                    return skillsBody;
+                case "advancements":
+                    return advancementsBody;
+                case "perks":
+                    return perksBody;
+                default:
+                    return placeholderBody;
                 }
             }
 
             Component {
                 id: aboutBody
-                Sections.AboutSection {}
+                Sections.AboutSection {
+                }
             }
 
             Component {
                 id: notesBody
-                Sections.NotesSection {}
+                Sections.NotesSection {
+                }
             }
 
             Component {
                 id: characterBody
-                Sections.CharacterSection {}
+                Sections.CharacterSection {
+                }
             }
 
             Component {
                 id: skillsBody
-                Sections.SkillsSection {}
+                Sections.SkillsSection {
+                }
             }
 
             Component {
                 id: advancementsBody
-                Sections.AdvancementsSection {}
+                Sections.AdvancementsSection {
+                }
+            }
+
+            Component {
+                id: perksBody
+                Sections.PerksSection {
+                }
             }
 
             Component {
