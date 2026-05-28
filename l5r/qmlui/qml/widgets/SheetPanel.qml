@@ -80,7 +80,7 @@ Pane {
             text: panel.title
             font.family: Theme.fontDisplay
             font.pixelSize: Theme.titleFont
-            font.weight: Font.Bold
+            font.weight: Theme.headingWeight
             // The letterSpacing nudge turns Cinzel into a proper
             // section banner -- without it the all-caps reads
             // crowded against itself at 18px.

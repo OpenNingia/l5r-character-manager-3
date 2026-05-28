@@ -65,6 +65,17 @@ QtObject {
     // shipping the asset is the only way to guarantee identity.
     // Body text intentionally inherits the OS UI font.
     readonly property string fontDisplay: "Cinzel"
+    // Cinzel has thin strokes below ~22px and reads anaemic at any
+    // weight under 900 on the parchment surface. Headers use this
+    // semantic token so a single bump here lifts every banner / title
+    // / ring label without hunting through call sites.
+    readonly property int headingWeight: Font.Black
+    // OpenType tabular-figures feature. Apply via `font.features` on
+    // any Label that holds a number stacked above/below another -- ring
+    // ranks, XP totals, skill ranks, wound thresholds. Without this,
+    // Cinzel uses proportional figures and a column of "1 / 5 / 3 / 8"
+    // dances horizontally row-to-row. Requires Qt 6.6+.
+    readonly property var tabularNumbers: ({ "tnum": 1 })
     readonly property real watermarkOpacity: 0.06
 
     // Helper: pick the matching flag colour by key.

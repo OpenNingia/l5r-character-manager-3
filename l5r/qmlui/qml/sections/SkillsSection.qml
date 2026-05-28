@@ -228,7 +228,7 @@ ColumnLayout {
                             text: modelData.label.toUpperCase()
                             font.family: Theme.fontDisplay
                             font.pixelSize: Theme.bodyFont
-                            font.weight: Font.DemiBold
+                            font.weight: Theme.headingWeight
                             font.letterSpacing: 2.4
                             color: _ringColor
                             opacity: _hasRows ? 1.0 : 0.55
@@ -244,6 +244,7 @@ ColumnLayout {
                             text: _rows.length
                             font.family: Theme.fontDisplay
                             font.pixelSize: Theme.smallFont
+                            font.features: Theme.tabularNumbers
                             color: _ringColor
                             opacity: 0.85
                         }
@@ -432,6 +433,7 @@ ColumnLayout {
                     font.family: Theme.fontDisplay
                     font.pixelSize: Theme.bodyFont
                     font.weight: Font.DemiBold
+                    font.features: Theme.tabularNumbers
                     horizontalAlignment: Text.AlignRight
                     Layout.preferredWidth: 50
                     HoverHandler { id: rollHover }
@@ -463,6 +465,7 @@ ColumnLayout {
                     font.family: Theme.fontDisplay
                     font.pixelSize: 22
                     font.weight: Font.Bold
+                    font.features: Theme.tabularNumbers
                     horizontalAlignment: Text.AlignRight
                     Layout.preferredWidth: 28
                 }
@@ -538,6 +541,7 @@ ColumnLayout {
                                     font.family: Theme.fontDisplay
                                     font.pixelSize: 11
                                     font.weight: Font.DemiBold
+                                    font.features: Theme.tabularNumbers
                                     color: _unlocked ? "white" : Theme.borderStrong
                                 }
                             }

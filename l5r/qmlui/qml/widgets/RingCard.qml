@@ -58,6 +58,7 @@ Rectangle {
             font.family: Theme.fontDisplay
             font.pixelSize: 38
             font.weight: Font.Black
+            font.features: Theme.tabularNumbers
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 40
             horizontalAlignment: Text.AlignHCenter
@@ -78,7 +79,7 @@ Rectangle {
                     text: card.ringLabel
                     color: "white"
                     font.family: Theme.fontDisplay
-                    font.weight: Font.DemiBold
+                    font.weight: Theme.headingWeight
                     font.pixelSize: 15
                     font.letterSpacing: 1.2
                     Layout.fillWidth: true
@@ -125,6 +126,7 @@ Rectangle {
                             ? card.attrValues[modelData] : "0"
                         color: "white"
                         font.weight: Font.DemiBold
+                        font.features: Theme.tabularNumbers
                         Layout.preferredWidth: 18
                         horizontalAlignment: Text.AlignRight
                     }

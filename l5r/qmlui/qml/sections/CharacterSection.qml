@@ -144,6 +144,7 @@ ColumnLayout {
             font.family: Theme.fontDisplay
             font.pixelSize: 16
             font.weight: Font.DemiBold
+            font.features: Theme.tabularNumbers
             color: Theme.heading
             elide: Text.ElideRight
         }
@@ -201,6 +202,7 @@ ColumnLayout {
             font.family: Theme.fontDisplay
             font.pixelSize: 16
             font.weight: Font.DemiBold
+            font.features: Theme.tabularNumbers
             color: Theme.heading
             elide: Text.ElideRight
         }
@@ -410,10 +412,11 @@ ColumnLayout {
                     text: qsTr("INITIATIVE")
                     font.family: Theme.fontDisplay
                     font.pixelSize: Theme.smallFont
+                    font.weight: Theme.headingWeight
                     font.letterSpacing: 2.0
                     horizontalAlignment: Text.AlignHCenter
                     color: Theme.heading
-                    opacity: 0.75
+                    opacity: 0.85
                 }
                 Label {
                     Layout.fillWidth: true
@@ -421,6 +424,7 @@ ColumnLayout {
                     font.family: Theme.fontDisplay
                     font.pixelSize: 30
                     font.weight: Font.Bold
+                    font.features: Theme.tabularNumbers
                     horizontalAlignment: Text.AlignHCenter
                     color: Theme.heading
                 }
@@ -437,6 +441,7 @@ ColumnLayout {
                         text: section._init.base
                         font.family: Theme.fontDisplay
                         font.pixelSize: Theme.bodyFont
+                        font.features: Theme.tabularNumbers
                     }
                 }
                 RowLayout {
@@ -451,6 +456,7 @@ ColumnLayout {
                         text: section._init.mod
                         font.family: Theme.fontDisplay
                         font.pixelSize: Theme.bodyFont
+                        font.features: Theme.tabularNumbers
                     }
                 }
             }
@@ -477,10 +483,11 @@ ColumnLayout {
                     text: qsTr("ARMOR TN")
                     font.family: Theme.fontDisplay
                     font.pixelSize: Theme.smallFont
+                    font.weight: Theme.headingWeight
                     font.letterSpacing: 2.0
                     horizontalAlignment: Text.AlignHCenter
                     color: Theme.heading
-                    opacity: 0.75
+                    opacity: 0.85
                 }
                 Label {
                     Layout.fillWidth: true
@@ -488,6 +495,7 @@ ColumnLayout {
                     font.family: Theme.fontDisplay
                     font.pixelSize: 30
                     font.weight: Font.Bold
+                    font.features: Theme.tabularNumbers
                     horizontalAlignment: Text.AlignHCenter
                     color: Theme.heading
                 }
@@ -517,6 +525,7 @@ ColumnLayout {
                         text: section._armor.baseTn
                         font.family: Theme.fontDisplay
                         font.pixelSize: Theme.bodyFont
+                        font.features: Theme.tabularNumbers
                     }
                 }
                 RowLayout {
@@ -531,6 +540,7 @@ ColumnLayout {
                         text: section._armor.armorTn
                         font.family: Theme.fontDisplay
                         font.pixelSize: Theme.bodyFont
+                        font.features: Theme.tabularNumbers
                     }
                 }
                 RowLayout {
@@ -545,6 +555,7 @@ ColumnLayout {
                         text: section._armor.rd
                         font.family: Theme.fontDisplay
                         font.pixelSize: Theme.bodyFont
+                        font.features: Theme.tabularNumbers
                     }
                 }
             }
@@ -569,9 +580,10 @@ ColumnLayout {
                     text: qsTr("WOUNDS  ×%1").arg(section._hm)
                     font.family: Theme.fontDisplay
                     font.pixelSize: Theme.smallFont
+                    font.weight: Theme.headingWeight
                     font.letterSpacing: 2.0
                     color: Theme.heading
-                    opacity: 0.75
+                    opacity: 0.85
                 }
                 Item { Layout.preferredHeight: 2 }
                 Repeater {
@@ -606,6 +618,7 @@ ColumnLayout {
                             horizontalAlignment: Text.AlignRight
                             font.family: Theme.fontDisplay
                             font.weight: _active ? Font.DemiBold : Font.Normal
+                            font.features: Theme.tabularNumbers
                             color: _active ? Theme.heading : palette.windowText
                         }
                         Label {
@@ -613,6 +626,7 @@ ColumnLayout {
                             Layout.preferredWidth: 28
                             horizontalAlignment: Text.AlignRight
                             font.pixelSize: Theme.smallFont
+                            font.features: Theme.tabularNumbers
                             opacity: 0.6
                         }
                     }
