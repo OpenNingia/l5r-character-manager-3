@@ -48,6 +48,7 @@ from l5r.l5rcmcore import (
 )
 from l5r.util import log, names
 from l5r.util.fsutil import get_app_file, get_app_icon_path
+from l5r.util.settings import L5RCMSettings
 
 
 # Single-kanji glyphs lean on the system CJK font (no bundled face) --
@@ -382,6 +383,30 @@ class AppController(QObject):
             })
         out.sort(key=lambda r: (r["category"].lower(), r["name"].lower()))
         return out
+
+    # --- advancements ------------------------------------------------
+
+    @Slot()
+    def refundLastAdvancement(self):
+        """Pop the head of the advancement stack. Refund is stack-LIFO
+        because each entry's XP cost depends on the rank reached by the
+        ones beneath it (see project-advancement-stack-semantics).
+        The api setter owns the dirty-flag + refresh contract."""
+        api.character.refund_last_advancement()
+
+    @Slot(result=bool)
+    def refundWarningEnabled(self):
+        """True when the QML side should pop the refund-confirmation
+        dialog before refunding. False after the user ticks 'Do not
+        prompt again' (mirrors the legacy QMessageBox flow)."""
+        return bool(L5RCMSettings().app.warn_about_refund)
+
+    @Slot()
+    def suppressRefundWarning(self):
+        """Persist the 'Do not prompt again' choice from the QML refund
+        dialog -- writes through QSettings so the preference outlives
+        this session."""
+        L5RCMSettings().app.warn_about_refund = False
 
     # --- clan / family / school choosers -----------------------------
 

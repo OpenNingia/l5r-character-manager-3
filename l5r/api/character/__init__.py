@@ -185,6 +185,31 @@ def remove_advancement(adv):
     log.api.info(u"removed advancement: %s", adv.desc)
     return True
 
+
+def refund_last_advancement():
+    """Pop the head of the advancement stack (the most recently
+    purchased entry), refunding its XP cost. Returns the popped
+    Advancement instance, or None when the stack is empty.
+
+    Stack-LIFO is the only safe refund order: L5R 4e advancement
+    costs scale with the current rank of the trait/skill, so each
+    entry's recorded cost is valid only against the state produced
+    by every entry beneath it. Removing a non-head entry would
+    leave subsequent entries with stale costs.
+
+    Owns the dirty-flag contract (CLAUDE.md: api-level setters set
+    the dirty flag) and emits character_refreshed so QML bindings
+    re-evaluate.
+    """
+    pc = get_context().pc
+    if not pc or not pc.advans:
+        return None
+    adv = pc.advans.pop()
+    log.api.info(u"refunded advancement: %s (cost %s)", adv.desc, adv.cost)
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
+    return adv
+
 def get_xp_gained_from_flaws():
     """returns the experience gained from disadvantages"""
     return sum([-x.cost for x in get_context().pc.advans if x.type == 'perk' and x.tag == 'flaw'])

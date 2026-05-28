@@ -22,6 +22,7 @@ from qtpy.QtCore import QObject
 import l5r.api as api
 import l5r.api.signals
 
+from l5r.qmlui.proxies.pc.advancements import AdvancementsMixin
 from l5r.qmlui.proxies.pc.combat import CombatMixin
 from l5r.qmlui.proxies.pc.flags import FlagsMixin
 from l5r.qmlui.proxies.pc.identity import IdentityMixin
@@ -39,6 +40,7 @@ class PcProxy(
     CombatMixin,
     NotesMixin,
     SkillsMixin,
+    AdvancementsMixin,
     QObject,
 ):
     def __init__(self, parent=None):
@@ -51,3 +53,4 @@ class PcProxy(
         self._wire_combat(bus)
         self._wire_notes(bus)
         self._wire_skills(bus)
+        self._wire_advancements(bus)

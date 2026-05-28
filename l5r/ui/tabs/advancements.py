@@ -11,6 +11,8 @@
 
 from qtpy import QtCore, QtWidgets
 
+import l5r.api as api
+import l5r.api.character
 import l5r.models
 
 from l5r.util import log
@@ -30,12 +32,13 @@ class AdvancementsSink(QtCore.QObject):
         window.update_from_model()
 
     def refund_last_adv(self):
-        """pops last advancement"""
-        window = self.window
-        if len(window.pc.advans) > 0:
-            adv = window.pc.advans.pop()
-            log.ui.info(u"removed advancement: %s", adv.desc)
-            window.update_from_model()
+        """Pop the head of the advancement stack via the api helper.
+        The QWidget UI is pull-refresh, so we still call
+        update_from_model() after the api emits character_refreshed --
+        the bus signal is a no-op here (see notify_character_refreshed
+        in l5r.api.character)."""
+        if api.character.refund_last_advancement() is not None:
+            self.window.update_from_model()
 
     def _warn_about_refund(self):
         window = self.window
