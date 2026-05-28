@@ -44,6 +44,22 @@ QtObject {
     readonly property color borderStrong:  "#5a4a3a"
     readonly property color borderSubtle:  "#9c8e80"
 
+    // --- parchment surfaces ---------------------------------------
+    // The sheet IS the app: window bg, sidebar, and panels all share
+    // these warm cream tones rather than living on the OS theme bg.
+    // `parchment` is the main field; `parchmentSidebar` is a clearly
+    // darker shade for the TOC so the navigation reads as a separate
+    // zone without breaking the "one document" illusion.
+    // `parchmentInset` is the alternate-row / cell tone used by tables
+    // and lighter input wells.  `ink` is the body text colour applied
+    // via palette overrides so descendants render dark-on-cream
+    // regardless of the OS theme.
+    readonly property color parchment:        "#f4ead5"
+    readonly property color parchmentSidebar: "#e6d4ac"
+    readonly property color parchmentInset:   "#ece1c4"
+    readonly property color parchmentBase:    "#fdf6e3"
+    readonly property color ink:              "#2a221b"
+
     // --- layout / typography --------------------------------------
     readonly property int   sectionSpacing: 14
     readonly property int   groupSpacing:   10

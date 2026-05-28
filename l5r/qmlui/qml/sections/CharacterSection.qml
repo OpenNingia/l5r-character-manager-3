@@ -230,10 +230,6 @@ ColumnLayout {
         Item { Layout.preferredWidth: 1; Layout.preferredHeight: 1 }
     }
 
-    Widgets.OrnateDivider {
-        Layout.fillWidth: true
-    }
-
     // -----------------------------------------------------------------
     // Rings & attributes: five horizontal cards (Earth/Air/Water/Fire/
     // Void), each tinted in its element colour. The 4 elemental cards
@@ -526,10 +522,6 @@ ColumnLayout {
                 }
             }
         }
-    }
-
-    Widgets.OrnateDivider {
-        Layout.fillWidth: true
     }
 
     // -----------------------------------------------------------------

@@ -6,6 +6,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import "widgets" as Widgets
 import Theme 1.0
 
 ApplicationWindow {
@@ -19,6 +20,10 @@ ApplicationWindow {
     // then resettle. Without the guard the engine logs a TypeError on
     // every launch.
     title: pcProxy ? pcProxy.displayTitle : ""
+    // The whole client area is parchment now -- no OS-grey desk under
+    // the panels. The menubar above still follows the OS theme so the
+    // window chrome stays native.
+    color: Theme.parchment
 
     menuBar: MenuBar {
         Menu {
@@ -70,6 +75,31 @@ ApplicationWindow {
         easing.type: Easing.OutQuad
     }
 
+    // Outer Pane owns the parchment background, the rice-paper fibre
+    // texture, and the ink-on-paper palette overrides. The palette
+    // descends to every Control/Label inside (TOC delegates, section
+    // bodies, dialogs) so we don't need to repeat the overrides
+    // per-SheetPanel -- the SheetPanel ones become defensive defaults
+    // for when a panel is used outside this window (e.g. tests).
+    Pane {
+        anchors.fill: parent
+        padding: 0
+        palette.windowText: Theme.ink
+        palette.text:       Theme.ink
+        palette.buttonText: Theme.ink
+        palette.base:       Theme.parchmentBase
+        palette.alternateBase: Theme.parchmentInset
+        palette.placeholderText: "#8a7a65"
+        palette.mid:        "#a89580"
+
+        background: Rectangle {
+            color: Theme.parchment
+            // Window-wide fibre overlay -- continuous across panels
+            // and gutters so the whole sheet feels like one piece of
+            // paper.
+            Widgets.RicePaperOverlay {}
+        }
+
     RowLayout {
         anchors.fill: parent
         spacing: 0
@@ -78,11 +108,15 @@ ApplicationWindow {
         Rectangle {
             Layout.preferredWidth: 200
             Layout.fillHeight: true
-            // Inherit the window bg so TOC labels can safely default to
-            // palette.windowText. Differentiation comes from the 1px
-            // divider on the right -- a tinted bg here was reading too
-            // dark relative to the buttons on the user's theme.
-            color: "transparent"
+            // Slightly darker parchment than the main sheet so the
+            // navigation column reads as a distinct zone without
+            // breaking the "one document" illusion.
+            color: Theme.parchmentSidebar
+
+            // Same fibre texture as the main sheet so the sidebar
+            // reads as the same paper, just a darker shade -- not a
+            // flat coloured panel glued onto the document.
+            Widgets.RicePaperOverlay {}
 
             ListView {
                 id: toc
@@ -104,6 +138,18 @@ ApplicationWindow {
                     onClicked: {
                         toc.currentIndex = index
                         root.jumpTo(index)
+                    }
+
+                    // Strip the default Control background -- without
+                    // this override, ItemDelegate paints a palette-
+                    // driven fill that reads as flat grey on top of
+                    // the parchment sidebar.  Hover gets a warm wash
+                    // (lighter parchment), idle is fully transparent
+                    // so the sidebar texture shows through.
+                    background: Rectangle {
+                        color: tocDelegate.hovered
+                                ? Qt.lighter(Theme.parchmentSidebar, 1.07)
+                                : "transparent"
                     }
 
                     // Active item: accent stripe on the left, accent
@@ -186,5 +232,6 @@ ApplicationWindow {
                 }
             }
         }
+    }
     }
 }

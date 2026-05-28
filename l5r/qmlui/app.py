@@ -10,6 +10,7 @@
 # L5RCMCore.__init__ (translation context, datapack reload) and hands
 # control to a QQmlApplicationEngine rooted at qml/Main.qml.
 
+import os
 from pathlib import Path
 
 from qtpy.QtCore import QUrl
@@ -97,6 +98,22 @@ def run_qml_app(qapp, locale, startup_action):
         ``None`` for "just show an empty window".
     """
     log.app.info(u"QML UI: bootstrap")
+
+    # Force the Fusion style. The default on Windows is the native
+    # Windows style, which refuses customization of `background` and
+    # `contentItem` on Quick Controls (ItemDelegate, ComboBox, etc.)
+    # -- every `background: Rectangle { ... }` override in our QML is
+    # then silently no-op'd and Qt logs "The current style does not
+    # support customization of this control".  Fusion ships with
+    # PyQt6, is identical across platforms, and accepts customization,
+    # which we lean on heavily for the parchment / ink-on-paper look.
+    # We use the env var rather than ``QQuickStyle.setStyle()`` because
+    # ``qtpy`` does not currently expose the QtQuickControls2 module
+    # for PyQt6; the codebase invariant is that Qt is imported through
+    # qtpy only. Quick Controls reads this env var when the first
+    # control is instantiated, which happens during ``engine.load``
+    # below, so setting it here is in time.
+    os.environ["QT_QUICK_CONTROLS_STYLE"] = "Fusion"
 
     api.set_translation_context(qapp)
     _load_bundled_fonts()

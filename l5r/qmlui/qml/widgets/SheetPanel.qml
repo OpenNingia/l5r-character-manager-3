@@ -1,12 +1,14 @@
 // Copyright (C) 2014-2026 Daniele Simonetti
 // Document-flavoured replacement for the stock GroupBox. The panel
-// IS the parchment: a fixed cream surface with a hairline burnt-gold
-// title rule and a sharp 1px sepia border. Crucially, the panel
-// *does not* track the OS dark theme -- a character sheet is a
-// document, and a document is paper regardless of what the desk
-// underneath looks like. The window chrome, TOC, and menubar still
-// follow the OS theme so the app feels native; the sheet inside
-// commits to its own world.
+// shares the surrounding window's parchment fill (Theme.parchment)
+// and contributes only a 1px sepia border + a hairline burnt-gold
+// title rule, so panels read as inked sections of one continuous
+// sheet rather than separate cards floating on a desk. Crucially,
+// the panel *does not* track the OS dark theme -- a character sheet
+// is a document, and a document is paper regardless of what the desk
+// underneath looks like.  The rice-paper texture is drawn at the
+// window level (MainSheet) so it stays continuous across panels and
+// gutters; SheetPanel itself does not own a per-panel overlay.
 //
 // Why Pane and not Rectangle: child Labels/TextFields read their
 // text colour from the inherited `palette` group. A plain Rectangle
@@ -46,17 +48,12 @@ Pane {
     default property alias content: bodyHolder.data
 
     background: Rectangle {
-        // Aged parchment. Hand-picked rather than computed so the
-        // sheet has the same character on every install.
-        color: "#f4ead5"
-        border.width: 1
-        border.color: Theme.borderStrong
+        // Panels share the window-level parchment fill and have no
+        // border -- separation comes from the title-band and the
+        // heading rule below the title, so panels read as sections of
+        // one continuous sheet rather than boxed cards.
+        color: Theme.parchment
         radius: 0
-
-        // Hand-made-paper fibre overlay. Lives inside the background
-        // Rectangle so it auto-clips to the panel border and never
-        // bleeds onto content above it.
-        RicePaperOverlay {}
     }
 
     // Force ink-on-paper. These palette overrides cascade to every
@@ -65,11 +62,11 @@ Pane {
     // Controls). Explicit per-Label `color: Theme.foo` overrides
     // still win, so the burnt-gold headings and ring-tinted flag
     // labels are unaffected.
-    palette.windowText: "#2a221b"
-    palette.text:       "#2a221b"
-    palette.buttonText: "#2a221b"
-    palette.base:       "#fdf6e3"
-    palette.alternateBase: "#ece1c4"
+    palette.windowText: Theme.ink
+    palette.text:       Theme.ink
+    palette.buttonText: Theme.ink
+    palette.base:       Theme.parchmentBase
+    palette.alternateBase: Theme.parchmentInset
     palette.placeholderText: "#8a7a65"
     palette.mid:        "#a89580"
 

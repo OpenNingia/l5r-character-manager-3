@@ -165,7 +165,6 @@ ColumnLayout {
     // ----------------------------------------------------------------
     Widgets.SheetPanel {
         Layout.fillWidth: true
-        title: qsTr("Skills")
 
         ColumnLayout {
             width: parent.width
