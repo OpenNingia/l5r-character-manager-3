@@ -63,10 +63,11 @@ _TAB_DEFS = [
     ("skills",        "Skills",        "技"),  # gi -- technique / skill
     ("perks",         "Merits/Flaws",  "縁"),  # en -- bond / karma (neutral)
     ("techniques",    "Techniques",    "流"),  # ryū -- school / style
-    ("powers",        "Powers",        "呪"),  # ju -- spell / incantation
-    ("modifiers",     "Modifiers",     "変"),  # hen -- change
+    ("spells",        "Spells",        "呪"),  # ju -- spell / incantation
+    ("kata",          "Kata",          "型"),  # kata -- form
+    ("kiho",          "Kiho",          "気"),  # ki -- spirit / breath
     ("weapons",       "Weapons",       "刀"),  # tō -- katana / blade
-    ("equipment",     "Equipment",     "具"),  # gu -- tool / equipment
+    ("misc",          "Miscellanea",   "雑"),  # zatsu -- miscellaneous (modifiers + equipment)
     ("notes",         "Notes",         "記"),  # ki -- record / note
     ("settings",      "Settings",      "設"),  # setsu -- setup
     ("about",         "About",         "紋"),  # mon -- clan crest
