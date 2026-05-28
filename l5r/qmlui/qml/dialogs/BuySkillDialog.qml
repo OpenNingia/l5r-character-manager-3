@@ -5,13 +5,11 @@
 // appCtrl.availableSkillsToBuy() and, on accept, walks the selected
 // skill from rank 0 -> 1 via appCtrl.buySkillRank(id) -- the same
 // purchase path used to level up an existing skill.
-//
 // Lives in qml/dialogs/ alongside the family / school choosers; the
 // SkillsSection drives it through `id` + `open()`.
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-
 import Theme 1.0
 
 Dialog {
@@ -26,18 +24,19 @@ Dialog {
     property string _selectedId: ""
 
     onAboutToShow: {
-        _candidates = appCtrl ? appCtrl.availableSkillsToBuy() : []
-        skillCombo.currentIndex = _candidates.length > 0 ? 0 : -1
-        _selectedId = _candidates.length > 0 ? _candidates[0].id : ""
+        _candidates = appCtrl ? appCtrl.availableSkillsToBuy() : [];
+        skillCombo.currentIndex = _candidates.length > 0 ? 0 : -1;
+        _selectedId = _candidates.length > 0 ? _candidates[0].id : "";
     }
     onAccepted: {
-        if (_selectedId && appCtrl) appCtrl.buySkillRank(_selectedId)
+        if (_selectedId && appCtrl)
+            appCtrl.buySkillRank(_selectedId);
     }
 
     function _currentRecord() {
-        if (skillCombo.currentIndex < 0
-            || skillCombo.currentIndex >= _candidates.length) return null
-        return _candidates[skillCombo.currentIndex]
+        if (skillCombo.currentIndex < 0 || skillCombo.currentIndex >= _candidates.length)
+            return null;
+        return _candidates[skillCombo.currentIndex];
     }
 
     contentItem: ColumnLayout {
@@ -83,38 +82,44 @@ Dialog {
             columnSpacing: 12
             rowSpacing: 8
 
-            Label { text: qsTr("Skill:") }
+            Label {
+                text: qsTr("Skill:")
+            }
             ComboBox {
                 id: skillCombo
                 Layout.fillWidth: true
                 textRole: "name"
                 model: root._candidates
-                onActivated: function(index) {
-                    var rec = root._candidates[index]
-                    root._selectedId = rec ? rec.id : ""
+                onActivated: function (index) {
+                    var rec = root._candidates[index];
+                    root._selectedId = rec ? rec.id : "";
                 }
             }
 
-            Label { text: qsTr("Category:") }
+            Label {
+                text: qsTr("Category:")
+            }
             Label {
                 Layout.fillWidth: true
                 font.italic: true
                 opacity: 0.85
                 text: {
-                    var rec = root._currentRecord()
-                    return rec ? rec.category : ""
+                    var rec = root._currentRecord();
+                    return rec ? rec.category : "";
                 }
             }
 
-            Label { text: qsTr("Trait:") }
+            Label {
+                text: qsTr("Trait:")
+            }
             Label {
                 Layout.fillWidth: true
                 font.family: Theme.fontDisplay
                 font.letterSpacing: 1.4
                 color: Theme.heading
                 text: {
-                    var rec = root._currentRecord()
-                    return rec ? rec.trait.toUpperCase() : ""
+                    var rec = root._currentRecord();
+                    return rec ? rec.trait.toUpperCase() : "";
                 }
             }
         }

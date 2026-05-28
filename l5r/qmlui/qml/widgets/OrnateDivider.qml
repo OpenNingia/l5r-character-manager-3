@@ -2,12 +2,10 @@
 // Replacement for the plain `Rectangle { height: 1; color: divider }`
 // horizontal rule. Two faded sepia hairlines flank a centred fleuron
 // glyph in burnt-gold Cinzel -- the document-as-character-sheet flavor.
-//
 // Drop-in: anywhere a section divider is wanted, swap the Rectangle
 // for this. Keep the plain rule for tight in-panel separations (under
 // a SheetPanel banner, between table rows) -- the ornament is meant
 // to mark structural breaks, not every horizontal line.
-//
 // Usage:
 //     Widgets.OrnateDivider {
 //         Layout.fillWidth: true
@@ -16,7 +14,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-
 import Theme 1.0
 
 RowLayout {
@@ -26,11 +23,11 @@ RowLayout {
 
     // Public ----------------------------------------------------------
     property string glyph: "❖"
-    property color  ruleColor: Theme.divider
-    property real   ruleOpacity: Theme.dividerOpacity
-    property color  glyphColor: Theme.heading
-    property real   glyphOpacity: 0.55
-    property int    glyphSize: Theme.bodyFont
+    property color ruleColor: Theme.divider
+    property real ruleOpacity: Theme.dividerOpacity
+    property color glyphColor: Theme.heading
+    property real glyphOpacity: 0.55
+    property int glyphSize: Theme.bodyFont
 
     Rectangle {
         Layout.fillWidth: true

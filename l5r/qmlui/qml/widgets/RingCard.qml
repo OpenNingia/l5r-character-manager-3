@@ -5,7 +5,6 @@
 // attribute rows -- each "Attribute  value  +". The Void card uses
 // the same shape but has no attribute rows; only the increase-ring
 // button on the right.
-//
 // Card background is the ring's brand colour, darkened slightly so
 // white text on top stays comfortably above the WCAG-AA threshold
 // for all five rings (Air at #5d8aa8 was borderline at full
@@ -13,7 +12,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-
 import Theme 1.0
 
 Rectangle {
@@ -22,17 +20,17 @@ Rectangle {
     // External API ----------------------------------------------------
     property string ringKey: "earth"
     property string ringLabel: "Earth"
-    property int    ringValue: 0
+    property int ringValue: 0
     // attrs: array of attribute keys, e.g. ["stamina", "willpower"].
     // attrLabels: map from key -> translated display name.
     // attrValues: map from key -> current rank int.
-    property var    attrs: []
-    property var    attrLabels: ({})
-    property var    attrValues: ({})
-    property bool   isVoid: false
+    property var attrs: []
+    property var attrLabels: ({})
+    property var attrValues: ({})
+    property bool isVoid: false
 
     signal increaseTrait(string traitKey)
-    signal increaseVoid()
+    signal increaseVoid
 
     // Visual ----------------------------------------------------------
     color: Qt.darker(Theme.ringColor(ringKey), 1.1)
@@ -117,13 +115,14 @@ Rectangle {
                         Layout.fillWidth: true
                         elide: Text.ElideRight
                         font.pixelSize: 12
-                        HoverHandler { id: attrHover }
+                        HoverHandler {
+                            id: attrHover
+                        }
                         ToolTip.visible: attrHover.hovered && attrLabel.truncated
                         ToolTip.text: card.attrLabels[modelData] || modelData
                     }
                     Label {
-                        text: card.attrValues[modelData] !== undefined
-                            ? card.attrValues[modelData] : "0"
+                        text: card.attrValues[modelData] !== undefined ? card.attrValues[modelData] : "0"
                         color: "white"
                         font.weight: Font.DemiBold
                         font.features: Theme.tabularNumbers
@@ -139,8 +138,7 @@ Rectangle {
                         palette.buttonText: "white"
                         font.weight: Font.Bold
                         ToolTip.visible: hovered
-                        ToolTip.text: qsTr("Buy the next rank in %1").arg(
-                            card.attrLabels[modelData] || modelData)
+                        ToolTip.text: qsTr("Buy the next rank in %1").arg(card.attrLabels[modelData] || modelData)
                         onClicked: card.increaseTrait(modelData)
                     }
                 }

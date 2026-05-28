@@ -5,9 +5,7 @@
 // surface of SheetPanel. Emits `valueModified(int)` only on user
 // click -- bound values do NOT round-trip, so this is safe to drive
 // from a model property without a feedback loop.
-//
 // Usage:
-//
 //     Widgets.RankStepper {
 //         value: rank
 //         from: 0; to: 10
@@ -16,7 +14,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-
 import Theme 1.0
 
 Rectangle {
@@ -34,7 +31,7 @@ Rectangle {
     radius: 3
 
     function _clamp(v) {
-        return Math.max(stepper.from, Math.min(stepper.to, v))
+        return Math.max(stepper.from, Math.min(stepper.to, v));
     }
 
     RowLayout {
@@ -52,7 +49,11 @@ Rectangle {
                 color: minusMa.enabled ? "#6b5b3f" : "#bdb09c"
             }
             Rectangle {
-                anchors { right: parent.right; top: parent.top; bottom: parent.bottom }
+                anchors {
+                    right: parent.right
+                    top: parent.top
+                    bottom: parent.bottom
+                }
                 width: 1
                 color: Theme.borderSubtle
                 opacity: 0.55
@@ -93,7 +94,11 @@ Rectangle {
                 color: plusMa.enabled ? "#6b5b3f" : "#bdb09c"
             }
             Rectangle {
-                anchors { left: parent.left; top: parent.top; bottom: parent.bottom }
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                    bottom: parent.bottom
+                }
                 width: 1
                 color: Theme.borderSubtle
                 opacity: 0.55

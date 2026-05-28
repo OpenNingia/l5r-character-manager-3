@@ -9,7 +9,6 @@
 // underneath looks like.  The rice-paper texture is drawn at the
 // window level (MainSheet) so it stays continuous across panels and
 // gutters; SheetPanel itself does not own a per-panel overlay.
-//
 // Why Pane and not Rectangle: child Labels/TextFields read their
 // text colour from the inherited `palette` group. A plain Rectangle
 // does not propagate palette, so internal text on a dark OS would
@@ -18,9 +17,7 @@
 // visual parent chain to resolve `palette.windowText` on every
 // descendant. Setting the palette here once forces ink-on-paper
 // throughout the panel without consumers having to set colours.
-//
 // Usage:
-//
 //     import "../widgets" as Widgets
 //     Widgets.SheetPanel {
 //         Layout.fillWidth: true
@@ -31,7 +28,6 @@
 //             // ... content; Label colours inherit from panel.palette
 //         }
 //     }
-//
 // Child layouts must use `width: parent.width` (or equivalent
 // left/right anchors), NOT `anchors.fill: parent`, to avoid a
 // cycle between bodyHolder.implicitHeight (driven by child) and
@@ -39,7 +35,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-
 import Theme 1.0
 
 Pane {
@@ -63,12 +58,12 @@ Pane {
     // still win, so the burnt-gold headings and ring-tinted flag
     // labels are unaffected.
     palette.windowText: Theme.ink
-    palette.text:       Theme.ink
+    palette.text: Theme.ink
     palette.buttonText: Theme.ink
-    palette.base:       Theme.parchmentBase
+    palette.base: Theme.parchmentBase
     palette.alternateBase: Theme.parchmentInset
     palette.placeholderText: "#8a7a65"
-    palette.mid:        "#a89580"
+    palette.mid: "#a89580"
 
     padding: 12
     spacing: 0
