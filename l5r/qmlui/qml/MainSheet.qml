@@ -100,87 +100,155 @@ ApplicationWindow {
             Widgets.RicePaperOverlay {}
         }
 
-    RowLayout {
-        anchors.fill: parent
-        spacing: 0
+        RowLayout {
+            anchors.fill: parent
+            spacing: 0
 
-        // ---- Left TOC --------------------------------------------------
-        Rectangle {
-            Layout.preferredWidth: 200
-            Layout.fillHeight: true
-            // Slightly darker parchment than the main sheet so the
-            // navigation column reads as a distinct zone without
-            // breaking the "one document" illusion.
-            color: Theme.parchmentSidebar
+            // ---- Left TOC --------------------------------------------------
+            Rectangle {
+                Layout.preferredWidth: 220
+                Layout.fillHeight: true
+                // Slightly darker parchment than the main sheet so the
+                // navigation column reads as a distinct zone without
+                // breaking the "one document" illusion.
+                color: Theme.parchmentSidebar
 
-            // Same fibre texture as the main sheet so the sidebar
-            // reads as the same paper, just a darker shade -- not a
-            // flat coloured panel glued onto the document.
-            Widgets.RicePaperOverlay {}
+                // Same fibre texture as the main sheet so the sidebar
+                // reads as the same paper, just a darker shade -- not a
+                // flat coloured panel glued onto the document.
+                Widgets.RicePaperOverlay {}
 
-            ListView {
-                id: toc
-                anchors.fill: parent
-                anchors.topMargin: 8
-                anchors.bottomMargin: 8
-                model: appCtrl ? appCtrl.tabs : []
-                clip: true
-                currentIndex: 0
-                spacing: 2
-                interactive: true
-                boundsBehavior: Flickable.StopAtBounds
+                ColumnLayout {
+                    anchors.fill: parent
+                    anchors.topMargin: 14
+                    anchors.bottomMargin: 8
+                    anchors.leftMargin: 10
+                    anchors.rightMargin: 10
+                    spacing: 6
 
-                delegate: ItemDelegate {
-                    id: tocDelegate
-                    width: ListView.view.width
-                    height: 38
-                    highlighted: ListView.isCurrentItem
-                    onClicked: {
-                        toc.currentIndex = index
-                        root.jumpTo(index)
-                    }
+                    // ---- Identity block ----------------------------------
+                    // Three-line character header above the TOC: name in
+                    // burnt-gold display type, clan + rank as a single
+                    // secondary line, school italicised underneath. Reads
+                    // like the title block of a character sheet rather
+                    // than a piece of chrome.
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        spacing: 1
 
-                    // Strip the default Control background -- without
-                    // this override, ItemDelegate paints a palette-
-                    // driven fill that reads as flat grey on top of
-                    // the parchment sidebar.  Hover gets a warm wash
-                    // (lighter parchment), idle is fully transparent
-                    // so the sidebar texture shows through.
-                    background: Rectangle {
-                        color: tocDelegate.hovered
-                                ? Qt.lighter(Theme.parchmentSidebar, 1.07)
-                                : "transparent"
-                    }
-
-                    // Active item: accent stripe on the left, accent
-                    // icon, accent-tinted label.  Inactive: normal
-                    // palette text colours so the OS theme is honoured.
-                    Rectangle {
-                        anchors.left: parent.left
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-                        width: 3
-                        color: Theme.accent
-                        visible: tocDelegate.highlighted
-                    }
-                    contentItem: RowLayout {
-                        spacing: 10
                         Label {
-                            text: modelData.icon
-                            font.pixelSize: 16
-                            Layout.leftMargin: 14
-                            Layout.preferredWidth: 22
+                            Layout.fillWidth: true
+                            text: (pcProxy && pcProxy.name)
+                                ? pcProxy.name : qsTr("Unnamed")
+                            font.family: Theme.fontDisplay
+                            font.pixelSize: 17
+                            font.weight: Font.DemiBold
+                            font.letterSpacing: 0.5
+                            color: Theme.heading
+                            elide: Text.ElideRight
                             horizontalAlignment: Text.AlignHCenter
-                            color: tocDelegate.highlighted ? Theme.accent : palette.windowText
-                            opacity: tocDelegate.highlighted ? 1.0 : 0.7
                         }
                         Label {
-                            text: modelData.title
-                            font.pixelSize: 12
                             Layout.fillWidth: true
+                            readonly property string _clan: (pcProxy && pcProxy.clan)
+                                ? pcProxy.clan : ""
+                            readonly property int _rank: pcProxy
+                                ? pcProxy.progression.rank : 0
+                            text: {
+                                var clanFmt = _clan
+                                    ? _clan.charAt(0).toUpperCase() + _clan.slice(1)
+                                    : qsTr("No Clan")
+                                return clanFmt + " — " + qsTr("Rank %1").arg(_rank)
+                            }
+                            font.pixelSize: Theme.bodyFont
+                            font.features: Theme.tabularNumbers
+                            color: palette.windowText
+                            opacity: 0.85
                             elide: Text.ElideRight
-                            color: tocDelegate.highlighted ? Theme.accent : palette.windowText
-                            font.weight: tocDelegate.highlighted ? Font.DemiBold : Font.Normal
+                            horizontalAlignment: Text.AlignHCenter
+                        }
+                        Label {
+                            Layout.fillWidth: true
+                            text: (pcProxy && pcProxy.school)
+                                ? pcProxy.school : qsTr("No School")
+                            font.pixelSize: Theme.smallFont
+                            font.italic: true
+                            color: palette.windowText
+                            opacity: 0.7
+                            elide: Text.ElideRight
+                            horizontalAlignment: Text.AlignHCenter
+                        }
+                    }
+
+                    Widgets.OrnateDivider {
+                        Layout.fillWidth: true
+                        Layout.topMargin: 4
+                        Layout.bottomMargin: 2
+                    }
+
+                    ListView {
+                        id: toc
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        model: appCtrl ? appCtrl.tabs : []
+                        clip: true
+                        currentIndex: 0
+                        spacing: 2
+                        interactive: true
+                        boundsBehavior: Flickable.StopAtBounds
+
+                    delegate: ItemDelegate {
+                        id: tocDelegate
+                        width: ListView.view.width
+                        height: 38
+                        highlighted: ListView.isCurrentItem
+                        onClicked: {
+                            toc.currentIndex = index
+                            root.jumpTo(index)
+                        }
+
+                        // Strip the default Control background -- without
+                        // this override, ItemDelegate paints a palette-
+                        // driven fill that reads as flat grey on top of
+                        // the parchment sidebar.  Hover gets a warm wash
+                        // (lighter parchment), idle is fully transparent
+                        // so the sidebar texture shows through.
+                        background: Rectangle {
+                            color: tocDelegate.hovered
+                                    ? Qt.lighter(Theme.parchmentSidebar, 1.07)
+                                    : "transparent"
+                        }
+
+                        // Active item: accent stripe on the left, accent
+                        // icon, accent-tinted label.  Inactive: normal
+                        // palette text colours so the OS theme is honoured.
+                        Rectangle {
+                            anchors.left: parent.left
+                            anchors.top: parent.top
+                            anchors.bottom: parent.bottom
+                            width: 3
+                            color: Theme.accent
+                            visible: tocDelegate.highlighted
+                        }
+                        contentItem: RowLayout {
+                            spacing: 10
+                            Label {
+                                text: modelData.icon
+                                font.pixelSize: 16
+                                Layout.leftMargin: 14
+                                Layout.preferredWidth: 22
+                                horizontalAlignment: Text.AlignHCenter
+                                color: tocDelegate.highlighted ? Theme.accent : palette.windowText
+                                opacity: tocDelegate.highlighted ? 1.0 : 0.7
+                            }
+                            Label {
+                                text: modelData.title
+                                font.pixelSize: 12
+                                Layout.fillWidth: true
+                                elide: Text.ElideRight
+                                color: tocDelegate.highlighted ? Theme.accent : palette.windowText
+                                font.weight: tocDelegate.highlighted ? Font.DemiBold : Font.Normal
+                            }
                         }
                     }
                 }
