@@ -1,9 +1,9 @@
 // Copyright (C) 2014-2026 Daniele Simonetti
 // Character sheet header: identity (name, clan, family, school, rank,
 // XP, insight), traits (5 rings, 8 attributes, void points), social
-// flags (honor, glory, status, taint, infamy), and the combat strip
-// (initiative, armor TN, wound table). QML replacement for
-// l5r/ui/tabs/pc_info.py.
+// flags (honor, glory, status, taint, infamy), the combat strip
+// (initiative, armor TN), and the wounds sub-block. QML replacement
+// for l5r/ui/tabs/pc_info.py.
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -29,22 +29,6 @@ ColumnLayout {
         : ({ base: "", mod: "", current: "" })
     readonly property var _armor: pcProxy ? pcProxy.armorTn
         : ({ name: "", baseTn: 0, armorTn: 0, rd: 0, currentTn: 0, desc: "" })
-    readonly property var _wounds: pcProxy ? pcProxy.wounds : []
-    readonly property int _hm: pcProxy ? pcProxy.healthMultiplier : 2
-    // The highest row in the wound table that has any wounds recorded
-    // against it is the player's current wound level -- `taken` is the
-    // cumulative wounds at-or-below that threshold, so the last row
-    // with taken > 0 is the active row. Defaults to 0 (Healthy) when
-    // no wounds have been taken yet.
-    readonly property int _currentWoundIndex: {
-        var last = 0
-        if (_wounds) {
-            for (var i = 0; i < _wounds.length; ++i) {
-                if (_wounds[i].taken > 0) last = i
-            }
-        }
-        return last
-    }
     readonly property bool _canEditOrigin: appCtrl ? appCtrl.canEditOrigin() : true
 
     // Ring / attribute display metadata. Keys mirror the api side
@@ -701,79 +685,18 @@ ColumnLayout {
                 }
             }
 
-            Rectangle {
-                Layout.preferredWidth: 1
-                Layout.fillHeight: true
-                Layout.topMargin: 4
-                Layout.bottomMargin: 4
-                color: Theme.heading
-                opacity: 0.25
-            }
-
-            // ---- Wounds ladder --------------------------------------
-            ColumnLayout {
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignTop
-                spacing: 1
-
-                Label {
-                    Layout.fillWidth: true
-                    text: qsTr("WOUNDS  ×%1").arg(section._hm)
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.smallFont
-                    font.weight: Theme.headingWeight
-                    font.letterSpacing: 2.0
-                    color: Theme.heading
-                    opacity: 0.85
-                }
-                Item { Layout.preferredHeight: 2 }
-                Repeater {
-                    model: section._wounds
-                    delegate: RowLayout {
-                        Layout.fillWidth: true
-                        spacing: 8
-                        // The "active" row is the player's current
-                        // wound level. Inactive rows render in the
-                        // panel's body ink colour at normal weight;
-                        // the active row gets a 3px burnt-gold
-                        // stripe on the left, plus heading colour
-                        // + DemiBold weight on the text.
-                        readonly property bool _active:
-                            index === section._currentWoundIndex
-
-                        Rectangle {
-                            Layout.preferredWidth: 3
-                            Layout.fillHeight: true
-                            color: _active ? Theme.heading : "transparent"
-                        }
-                        Label {
-                            text: modelData.label
-                            Layout.fillWidth: true
-                            elide: Text.ElideRight
-                            font.weight: _active ? Font.DemiBold : Font.Normal
-                            color: _active ? Theme.heading : palette.windowText
-                        }
-                        Label {
-                            text: modelData.value
-                            Layout.preferredWidth: 32
-                            horizontalAlignment: Text.AlignRight
-                            font.family: Theme.fontDisplay
-                            font.weight: _active ? Font.DemiBold : Font.Normal
-                            font.features: Theme.tabularNumbers
-                            color: _active ? Theme.heading : palette.windowText
-                        }
-                        Label {
-                            text: modelData.taken ? modelData.taken : ""
-                            Layout.preferredWidth: 28
-                            horizontalAlignment: Text.AlignRight
-                            font.pixelSize: Theme.smallFont
-                            font.features: Theme.tabularNumbers
-                            opacity: 0.6
-                        }
-                    }
-                }
-            }
+            Item { Layout.fillWidth: true }
         }
+    }
+
+    // -----------------------------------------------------------------
+    // Wounds -- full-width sub-block. Replaces the old right-column
+    // ladder in the Combat strip. Owns its own header, status banner,
+    // and the 4x2 card grid; wired to appCtrl.damageHealth /
+    // setWoundsTotal / resetWounds so the dirty flag stays correct.
+    // -----------------------------------------------------------------
+    Widgets.WoundsBlock {
+        Layout.fillWidth: true
     }
 
     // -----------------------------------------------------------------

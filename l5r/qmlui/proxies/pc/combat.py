@@ -81,10 +81,17 @@ class CombatMixin:
         for idx, row in enumerate(table):
             inc, total, stacked, inc_w, total_w, stacked_w = row
             name = _WOUND_NAMES[idx] if idx < len(_WOUND_NAMES) else ""
+            # get_wound_penalties only covers rows 0..6 (Healthy..Down);
+            # OUT is fatal, not penalised. Report 0 for OUT so the QML
+            # consumer can branch on the row index alone.
+            penalty = int(api.rules.get_wound_penalties(idx)) if idx < 7 else 0
             rows.append({
+                "key":     name,
                 "label":   _wound_label(idx, name),
                 "value":   int(stacked),
+                "inc":     int(inc),
                 "taken":   int(stacked_w) if stacked_w else 0,
+                "penalty": penalty,
             })
         return rows
 
@@ -92,3 +99,30 @@ class CombatMixin:
     def healthMultiplier(self):
         pc = api.character.model()
         return int(pc.health_multiplier) if pc else 2
+
+    @Property(int, notify=combatChanged)
+    def currentWounds(self):
+        pc = api.character.model()
+        return int(pc.wounds) if pc else 0
+
+    @Property(int, notify=combatChanged)
+    def maxWounds(self):
+        if not api.character.model():
+            return 0
+        return int(api.rules.get_max_wounds())
+
+    @Property(int, notify=combatChanged)
+    def currentWoundLevel(self):
+        # Index 0..7 of the wound row the player is currently *at*.
+        # Mirrors the rules layer: the last row where `stacked_wounds`
+        # is non-zero is the player's level (see api.rules.get_wounds_table).
+        # Defaults to 0 (Healthy) when no wounds have been taken.
+        if not api.character.model():
+            return 0
+        table = api.rules.get_wounds_table() or []
+        last = 0
+        for idx, row in enumerate(table):
+            stacked_w = row[5]
+            if stacked_w:
+                last = idx
+        return last

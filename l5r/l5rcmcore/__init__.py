@@ -335,12 +335,7 @@ class L5RCMCore(QtWidgets.QMainWindow):
         self.update_from_model()
 
     def damage_health(self, val):
-        self.pc.wounds += val
-        if self.pc.wounds < 0:
-            self.pc.wounds = 0
-        if self.pc.wounds > api.rules.get_max_wounds():
-            self.pc.wounds = api.rules.get_max_wounds()
-
+        api.character.damage_health(val)
         self.update_from_model()
 
     def buy_next_skill_rank(self, skill_id):

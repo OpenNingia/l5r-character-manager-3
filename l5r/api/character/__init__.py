@@ -681,7 +681,37 @@ def set_health_multiplier(value):
         return
     pc.health_multiplier = value
     set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
     log.api.info("set health multiplier to: %d", value)
+
+
+def get_wounds_taken():
+    """return the total wounds (HP damage) currently on the character."""
+    pc = get_context().pc
+    return int(pc.wounds) if pc else 0
+
+
+def set_wounds_taken(value):
+    """set the total wounds on the character, clamped to [0, max].
+
+    Canonical wounds setter -- mutations here own the dirty flag and the
+    character_refreshed signal so the QML proxy and QWidget UI both pick
+    up the change. The max is api.rules.get_max_wounds() (the "Out"
+    threshold), which depends on Earth ring and health multiplier."""
+    pc = get_context().pc
+    if pc is None:
+        return
+    value = max(0, min(int(value), int(api.rules.get_max_wounds())))
+    if int(pc.wounds) == value:
+        return
+    pc.wounds = value
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
+
+
+def damage_health(delta):
+    """add ``delta`` to the wounds total (negative heals), clamped."""
+    set_wounds_taken(get_wounds_taken() + int(delta))
 
 
 def get_starting_money():

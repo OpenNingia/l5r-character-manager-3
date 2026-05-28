@@ -301,6 +301,21 @@ class AppController(QObject):
             return
         api.character.notify_character_refreshed()
 
+    @Slot(int)
+    def damageHealth(self, delta):
+        api.character.damage_health(int(delta))
+        api.character.notify_character_refreshed()
+
+    @Slot(int)
+    def setWoundsTotal(self, value):
+        api.character.set_wounds_taken(int(value))
+        api.character.notify_character_refreshed()
+
+    @Slot()
+    def resetWounds(self):
+        api.character.set_wounds_taken(0)
+        api.character.notify_character_refreshed()
+
     # --- skills ------------------------------------------------------
 
     @Slot(str)
