@@ -1,6 +1,5 @@
 // Copyright (C) 2014-2026 Daniele Simonetti
 // Advantages & Disadvantages section -- replaces l5r/ui/tabs/perks.py.
-//
 // Design intent: a balance-scroll, "The Ledger of Fortune & Misfortune"
 // (福禍の帳). The page opens with a Tenbin (天秤) banner that puts the
 // two ledgers in dialogue -- XP spent on blessings on the left pan, XP
@@ -10,16 +9,13 @@
 // each as its own SheetPanel with brush-kanji seals, an inline add
 // affordance, and per-entry hover-revealed removal. Empty states paint
 // a generous watermark plaque rather than collapsing the panel.
-//
 // Adding an entry opens InscribePerkDialog (a QML-native two-pane
 // catalogue). The dialog suggests the rulebook cost; the player can
 // flip an override switch and inscribe a manually-set value -- the
 // switch is intentionally muted so the suggested cost is the default
 // path and overrides feel like a deliberate house-rule.
-//
 // Data contract expected from the proxy (degrades gracefully when
 // missing -- the section renders the empty-state):
-//
 //   pcProxy.merits: [
 //     { advId:   "<uuid or stable handle>",
 //       ruleId:  "allies",
@@ -38,21 +34,17 @@
 //   pcProxy.flawsXp:  number      // sum of flaw gains
 //   pcProxy.perksNetXp: number    // meritsXp - flawsXp (positive = net spend)
 //   pcProxy.flawsCap:  number     // 4e house cap (typically 10); 0 = no cap
-//
 //   appCtrl.openInscribeMerit(): void     // opens the picker, "merit" mode
 //   appCtrl.openInscribeFlaw():  void
 //   appCtrl.removePerk(advId):   void     // works for both merits and flaws
-//
 // (If the controller hands the picker its catalogue inline, you can
 // also drive InscribePerkDialog directly -- see the bottom of this
 // file for the embedded instance and its `present(kind)` entrypoint.)
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-
 import "../widgets" as Widgets
 import "../dialogs" as Dialogs
-
 import Theme 1.0
 
 ColumnLayout {
@@ -63,26 +55,22 @@ ColumnLayout {
     // Defensive bindings -- proxy properties may be absent on first
     // paint or on older builds. Read once, fall back to safe defaults.
     // -----------------------------------------------------------------
-    readonly property var  _merits:   (pcProxy && pcProxy.merits) ? pcProxy.merits : []
-    readonly property var  _flaws:    (pcProxy && pcProxy.flaws)  ? pcProxy.flaws  : []
-    readonly property int  _meritsXp: (pcProxy && pcProxy.meritsXp !== undefined)
-        ? pcProxy.meritsXp : section._sumCost(section._merits)
-    readonly property int  _flawsXp:  (pcProxy && pcProxy.flawsXp !== undefined)
-        ? pcProxy.flawsXp : section._sumCost(section._flaws)
-    readonly property int  _netXp:    (pcProxy && pcProxy.perksNetXp !== undefined)
-        ? pcProxy.perksNetXp : (section._meritsXp - section._flawsXp)
-    readonly property int  _flawsCap: (pcProxy && pcProxy.flawsCap !== undefined)
-        ? pcProxy.flawsCap : 10
+    readonly property var _merits: (pcProxy && pcProxy.merits) ? pcProxy.merits : []
+    readonly property var _flaws: (pcProxy && pcProxy.flaws) ? pcProxy.flaws : []
+    readonly property int _meritsXp: (pcProxy && pcProxy.meritsXp !== undefined) ? pcProxy.meritsXp : section._sumCost(section._merits)
+    readonly property int _flawsXp: (pcProxy && pcProxy.flawsXp !== undefined) ? pcProxy.flawsXp : section._sumCost(section._flaws)
+    readonly property int _netXp: (pcProxy && pcProxy.perksNetXp !== undefined) ? pcProxy.perksNetXp : (section._meritsXp - section._flawsXp)
+    readonly property int _flawsCap: (pcProxy && pcProxy.flawsCap !== undefined) ? pcProxy.flawsCap : 10
 
     readonly property bool _hasMerits: section._merits.length > 0
-    readonly property bool _hasFlaws:  section._flaws.length  > 0
+    readonly property bool _hasFlaws: section._flaws.length > 0
 
     function _sumCost(arr) {
-        var s = 0
-        for (var i = 0; i < arr.length; ++i) s += (arr[i].cost || 0)
-        return s
+        var s = 0;
+        for (var i = 0; i < arr.length; ++i)
+            s += (arr[i].cost || 0);
+        return s;
     }
-
 
     // -----------------------------------------------------------------
     // Tenbin banner -- the scale. Three hero numbers ride across a
@@ -186,8 +174,7 @@ ColumnLayout {
 
                     Label {
                         Layout.fillWidth: true
-                        text: parent._netCost ? qsTr("NET BURDEN ON THE SOUL")
-                                              : qsTr("NET GIFT TO THE SOUL")
+                        text: parent._netCost ? qsTr("NET BURDEN ON THE SOUL") : qsTr("NET GIFT TO THE SOUL")
                         font.family: Theme.fontDisplay
                         font.pixelSize: Theme.smallFont
                         font.weight: Theme.headingWeight
@@ -212,9 +199,7 @@ ColumnLayout {
                     }
                     Label {
                         Layout.fillWidth: true
-                        text: parent._netCost
-                            ? qsTr("the cost of grace, after the gods take their due")
-                            : qsTr("favour earned by accepting hardship")
+                        text: parent._netCost ? qsTr("the cost of grace, after the gods take their due") : qsTr("favour earned by accepting hardship")
                         font.italic: true
                         font.pixelSize: Theme.smallFont
                         horizontalAlignment: Text.AlignHCenter
@@ -265,9 +250,7 @@ ColumnLayout {
                     }
                     Label {
                         Layout.fillWidth: true
-                        text: section._flawsCap > 0
-                            ? qsTr("of %1 the gods will recognise").arg(section._flawsCap)
-                            : qsTr("paid back for hardship accepted")
+                        text: section._flawsCap > 0 ? qsTr("of %1 the gods will recognise").arg(section._flawsCap) : qsTr("paid back for hardship accepted")
                         font.italic: true
                         font.pixelSize: Theme.smallFont
                         horizontalAlignment: Text.AlignHCenter
@@ -307,15 +290,15 @@ ColumnLayout {
                     font.pixelSize: Theme.smallFont
                     opacity: 0.6
                 }
-                Item { Layout.fillWidth: true }
+                Item {
+                    Layout.fillWidth: true
+                }
                 Label {
                     visible: section._hasMerits
                     // i18n note: prefer ngettext-style on the proxy side
                     // for proper pluralisation; this fallback keeps the
                     // line useful when the proxy doesn't supply one.
-                    text: section._merits.length === 1
-                        ? qsTr("1 blessing")
-                        : qsTr("%1 blessings").arg(section._merits.length)
+                    text: section._merits.length === 1 ? qsTr("1 blessing") : qsTr("%1 blessings").arg(section._merits.length)
                     font.italic: true
                     font.pixelSize: Theme.smallFont
                     opacity: 0.55
@@ -356,8 +339,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     Layout.maximumWidth: 460
                     Layout.alignment: Qt.AlignHCenter
-                    text: qsTr("Choose what gifts your samurai has been granted — "
-                             + "fortunes of birth, sworn allies, a sharp eye, a long memory.")
+                    text: qsTr("Choose what gifts your samurai has been granted — " + "fortunes of birth, sworn allies, a sharp eye, a long memory.")
                     font.italic: true
                     font.pixelSize: Theme.bodyFont
                     horizontalAlignment: Text.AlignHCenter
@@ -380,7 +362,6 @@ ColumnLayout {
                     width: meritList.width
                     item: modelData
                     accentColor: Theme.secondary
-                    kanji: "縁"
                     kind: "merit"
                     onRemoveRequested: section._requestRemove(modelData)
                     onEditRequested: section._requestEdit(modelData, "merit")
@@ -396,7 +377,9 @@ ColumnLayout {
                 Layout.fillWidth: true
                 Layout.topMargin: section._hasMerits ? 4 : 8
                 spacing: 8
-                Item { Layout.fillWidth: true }
+                Item {
+                    Layout.fillWidth: true
+                }
                 AbstractButton {
                     id: inscribeMeritBtn
                     implicitHeight: 32
@@ -406,10 +389,7 @@ ColumnLayout {
 
                     background: Rectangle {
                         radius: 2
-                        color: inscribeMeritBtn.down
-                            ? Theme.secondary
-                            : (inscribeMeritBtn.hovered ? Qt.rgba(0.224, 0.286, 0.671, 0.12)
-                                                        : "transparent")
+                        color: inscribeMeritBtn.down ? Theme.secondary : (inscribeMeritBtn.hovered ? Qt.rgba(0.224, 0.286, 0.671, 0.12) : "transparent")
                         border.color: Theme.secondary
                         border.width: 1
                     }
@@ -467,7 +447,9 @@ ColumnLayout {
                     opacity: 0.6
                 }
 
-                Item { Layout.fillWidth: true }
+                Item {
+                    Layout.fillWidth: true
+                }
 
                 Rectangle {
                     visible: section._flawsCap > 0 && section._flaws.length > 0
@@ -475,13 +457,10 @@ ColumnLayout {
                     implicitWidth: capLabel.implicitWidth + 14
 
                     readonly property bool _over: section._flawsXp > section._flawsCap
-                    readonly property bool _near: !_over
-                        && section._flawsXp >= Math.floor(section._flawsCap * 0.8)
+                    readonly property bool _near: !_over && section._flawsXp >= Math.floor(section._flawsCap * 0.8)
 
-                    color: _over ? Theme.accent
-                                 : (_near ? Theme.highlight : "transparent")
-                    border.color: _over ? Theme.accentMuted
-                                        : (_near ? Theme.highlight : Theme.borderSubtle)
+                    color: _over ? Theme.accent : (_near ? Theme.highlight : "transparent")
+                    border.color: _over ? Theme.accentMuted : (_near ? Theme.highlight : Theme.borderSubtle)
                     border.width: 1
                     radius: 9
                     opacity: _over || _near ? 1.0 : 0.7
@@ -495,9 +474,7 @@ ColumnLayout {
                         font.weight: Theme.headingWeight
                         font.letterSpacing: 1.2
                         font.features: Theme.tabularNumbers
-                        color: parent._over || parent._near
-                            ? Theme.parchmentBase
-                            : Theme.ink
+                        color: parent._over || parent._near ? Theme.parchmentBase : Theme.ink
                         opacity: parent._over || parent._near ? 1.0 : 0.7
                     }
                 }
@@ -537,8 +514,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     Layout.maximumWidth: 460
                     Layout.alignment: Qt.AlignHCenter
-                    text: qsTr("A samurai who accepts a flaw is granted experience to compensate. "
-                             + "Choose the burdens you carry, and the gods will balance the scale.")
+                    text: qsTr("A samurai who accepts a flaw is granted experience to compensate. " + "Choose the burdens you carry, and the gods will balance the scale.")
                     font.italic: true
                     font.pixelSize: Theme.bodyFont
                     horizontalAlignment: Text.AlignHCenter
@@ -561,7 +537,6 @@ ColumnLayout {
                     width: flawList.width
                     item: modelData
                     accentColor: Theme.accent
-                    kanji: "業"
                     kind: "flaw"
                     onRemoveRequested: section._requestRemove(modelData)
                     onEditRequested: section._requestEdit(modelData, "flaw")
@@ -573,7 +548,9 @@ ColumnLayout {
                 Layout.fillWidth: true
                 Layout.topMargin: section._hasFlaws ? 4 : 8
                 spacing: 8
-                Item { Layout.fillWidth: true }
+                Item {
+                    Layout.fillWidth: true
+                }
                 AbstractButton {
                     id: inscribeFlawBtn
                     implicitHeight: 32
@@ -583,10 +560,7 @@ ColumnLayout {
 
                     background: Rectangle {
                         radius: 2
-                        color: inscribeFlawBtn.down
-                            ? Theme.accent
-                            : (inscribeFlawBtn.hovered ? Qt.rgba(0.690, 0.188, 0.188, 0.12)
-                                                       : "transparent")
+                        color: inscribeFlawBtn.down ? Theme.accent : (inscribeFlawBtn.hovered ? Qt.rgba(0.690, 0.188, 0.188, 0.12) : "transparent")
                         border.color: Theme.accent
                         border.width: 1
                     }
@@ -644,39 +618,42 @@ ColumnLayout {
     // -----------------------------------------------------------------
     function _openInscribe(kind) {
         if (appCtrl && kind === "merit" && appCtrl.openInscribeMerit) {
-            appCtrl.openInscribeMerit()
-            return
+            appCtrl.openInscribeMerit();
+            return;
         }
         if (appCtrl && kind === "flaw" && appCtrl.openInscribeFlaw) {
-            appCtrl.openInscribeFlaw()
-            return
+            appCtrl.openInscribeFlaw();
+            return;
         }
-        inscribeDlg.present(kind)
+        inscribeDlg.present(kind);
     }
 
     function _requestRemove(item) {
-        if (!item) return
+        if (!item)
+            return;
         // Starting-school entries can't be refunded (they have no XP
         // cost on the stack); the card hides its remove control in that
         // case, so this guard is a belt-and-braces.
-        if (item.isStarting) return
+        if (item.isStarting)
+            return;
         if (appCtrl && appCtrl.removePerk) {
-            appCtrl.removePerk(item.advId)
+            appCtrl.removePerk(item.advId);
         }
     }
 
     function _requestEdit(item, kind) {
-        if (!item || item.isStarting) return
+        if (!item || item.isStarting)
+            return;
         editDlg.present({
-            kind:          kind,
-            advId:         item.advId,
-            name:          item.name,
-            category:      item.category,
-            rank:          item.rank,
-            cost:          item.cost,
-            suggestedCost: item.suggestedCost,
-            subtype:       item.subtype
-        })
+                "kind": kind,
+                "advId": item.advId,
+                "name": item.name,
+                "category": item.category,
+                "rank": item.rank,
+                "cost": item.cost,
+                "suggestedCost": item.suggestedCost,
+                "subtype": item.subtype
+            });
     }
 
     // =================================================================
@@ -685,54 +662,47 @@ ColumnLayout {
     // this section and keeping the parametrisation local makes the
     // accent-colour / kanji / kind handoff easy to follow.
     // =================================================================
-    component PerkCard : Rectangle {
+    component PerkCard: Rectangle {
         id: card
-        property var    item:        null
-        property color  accentColor: Theme.heading
-        property string kanji:       "印"
-        property string kind:        "merit"   // "merit" | "flaw"
+        property var item: null
+        property color accentColor: Theme.heading
+        property string kind: "merit"   // "merit" | "flaw"
 
-        signal removeRequested()
-        signal editRequested()
+        signal removeRequested
+        signal editRequested
 
-        readonly property bool _isFlaw:     kind === "flaw"
+        readonly property bool _isFlaw: kind === "flaw"
         readonly property bool _isStarting: !!(item && item.isStarting)
-        readonly property bool _isCustom:   !!(item && item.isCustom)
-        readonly property int  _cost:       (item && item.cost !== undefined) ? item.cost : 0
-        readonly property int  _suggested:
-            (item && item.suggestedCost !== undefined) ? item.suggestedCost : 0
+        readonly property bool _isCustom: !!(item && item.isCustom)
+        readonly property int _cost: (item && item.cost !== undefined) ? item.cost : 0
+        readonly property int _suggested: (item && item.suggestedCost !== undefined) ? item.suggestedCost : 0
         // Strikethrough is meaningful only when both figures exist and
         // disagree; suppressing it for the suggested==0 case avoids a
         // misleading "0̶ 5" reading on free-by-tag merits.
-        readonly property bool _showStrike: _suggested > 0
-            && _suggested !== _cost
-            && !_isStarting
-        readonly property string _captionText: card._buildCaption()
-
-        // Caption row under the name. Joins category, rank, and subtype
-        // with quiet middle-dot separators. Each piece is optional --
-        // when only a name is known the caption row hides itself rather
-        // than printing dangling separators.
-        function _buildCaption() {
-            if (!item) return ""
-            var parts = []
-            if (item.category && item.category.length > 0) parts.push(item.category)
-            if (item.rank && item.rank > 0)
-                parts.push(qsTr("Rank %1").arg(item.rank))
-            if (item.subtype && item.subtype.length > 0) parts.push(item.subtype)
-            return parts.join("  ·  ")
-        }
+        readonly property bool _showStrike: _suggested > 0 && _suggested !== _cost && !_isStarting
+        readonly property string _categoryText: (item && item.category && item.category.length > 0) ? item.category : ""
+        readonly property bool _hasCategory: card._categoryText.length > 0
+        readonly property bool _hasRank: !!(item && item.rank && item.rank > 0)
+        readonly property string _subtypeText: (item && item.subtype && item.subtype.length > 0) ? item.subtype : ""
+        readonly property bool _hasSubtitle: _isStarting || _subtypeText.length > 0
 
         implicitHeight: cardBody.implicitHeight + 18
 
         color: hoverHandler.hovered ? Theme.parchmentBase : Theme.parchmentInset
-        border.color: hoverHandler.hovered ? Qt.darker(accentColor, 1.4)
-                                           : Theme.borderSubtle
+        border.color: hoverHandler.hovered ? Qt.darker(accentColor, 1.4) : Theme.borderSubtle
         border.width: 1
         radius: 2
 
-        Behavior on color { ColorAnimation { duration: 120 } }
-        Behavior on border.color { ColorAnimation { duration: 120 } }
+        Behavior on color  {
+            ColorAnimation {
+                duration: 120
+            }
+        }
+        Behavior on border.color  {
+            ColorAnimation {
+                duration: 120
+            }
+        }
 
         // Left rail accent -- 3px crimson/indigo strip that turns the
         // rectangle into a "sealed scroll segment".
@@ -745,7 +715,9 @@ ColumnLayout {
             opacity: card._isStarting ? 0.45 : 0.9
         }
 
-        HoverHandler { id: hoverHandler }
+        HoverHandler {
+            id: hoverHandler
+        }
 
         RowLayout {
             id: cardBody
@@ -754,66 +726,84 @@ ColumnLayout {
             anchors.leftMargin: 14
             spacing: 12
 
-            // Seal column -- brush kanji + (if starting) a 初 stamp
-            // underneath so the player understands why this entry has
-            // no XP figure.
-            ColumnLayout {
-                Layout.preferredWidth: 44
-                Layout.alignment: Qt.AlignVCenter
-                spacing: 0
-                Label {
-                    Layout.fillWidth: true
-                    text: card.kanji
-                    font.family: Theme.fontKanji
-                    font.pixelSize: 30
-                    horizontalAlignment: Text.AlignHCenter
-                    color: card.accentColor
-                    opacity: 0.92
-                }
-                Label {
-                    visible: card._isStarting
-                    Layout.fillWidth: true
-                    text: qsTr("BIRTH")
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: 8
-                    font.weight: Theme.headingWeight
-                    font.letterSpacing: 1.4
-                    horizontalAlignment: Text.AlignHCenter
-                    color: card.accentColor
-                    opacity: 0.7
-                }
-            }
-
-            // Body column -- three lines, each conditional:
-            //   1. name (always present)
-            //   2. caption joining category, rank, and per-instance notes
-            //      with middle-dots; replaced by "granted by your
-            //      starting school" on starting-school entries.
-            //   3. override status -- "cost adjusted by agreement with
-            //      your GM" -- the strikethrough on the cost column
-            //      shows the *figures*; this subtitle states the *why*.
+            // Body column -- title row carries name + category/rank pills;
+            // the subtitle below shows the per-instance subtype (or, for
+            // starting-school entries, the "granted by..." rationale).
             ColumnLayout {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
-                spacing: 2
-                Label {
+                spacing: 4
+
+                RowLayout {
                     Layout.fillWidth: true
-                    text: (card.item && card.item.name) ? card.item.name
-                                                        : qsTr("(unnamed)")
-                    font.pixelSize: Theme.bodyFont + 1
-                    font.weight: Font.DemiBold
-                    color: Theme.ink
-                    wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
-                    maximumLineCount: 2
+                    spacing: 8
+
+                    Label {
+                        text: (card.item && card.item.name) ? card.item.name : qsTr("(unnamed)")
+                        font.pixelSize: Theme.bodyFont + 1
+                        font.weight: Font.DemiBold
+                        color: Theme.ink
+                        elide: Text.ElideRight
+                        Layout.alignment: Qt.AlignVCenter
+                    }
+
+                    // Category pill -- outlined, accent-tinted. Stays
+                    // intrinsically sized so the title row stays packed
+                    // to the left.
+                    Rectangle {
+                        visible: card._hasCategory
+                        Layout.preferredHeight: 18
+                        Layout.alignment: Qt.AlignVCenter
+                        implicitWidth: categoryLabel.implicitWidth + 14
+                        color: "transparent"
+                        border.color: card.accentColor
+                        border.width: 1
+                        radius: 9
+                        opacity: 0.75
+                        Label {
+                            id: categoryLabel
+                            anchors.centerIn: parent
+                            text: card._categoryText
+                            font.family: Theme.fontDisplay
+                            font.pixelSize: 10
+                            font.weight: Theme.headingWeight
+                            font.letterSpacing: 1.2
+                            color: card.accentColor
+                        }
+                    }
+
+                    // Rank pill -- same shape as the category pill.
+                    Rectangle {
+                        visible: card._hasRank
+                        Layout.preferredHeight: 18
+                        Layout.alignment: Qt.AlignVCenter
+                        implicitWidth: rankLabel.implicitWidth + 14
+                        color: "transparent"
+                        border.color: card.accentColor
+                        border.width: 1
+                        radius: 9
+                        opacity: 0.75
+                        Label {
+                            id: rankLabel
+                            anchors.centerIn: parent
+                            text: qsTr("Rank %1").arg(card.item ? card.item.rank : 0)
+                            font.family: Theme.fontDisplay
+                            font.pixelSize: 10
+                            font.weight: Theme.headingWeight
+                            font.letterSpacing: 1.2
+                            color: card.accentColor
+                        }
+                    }
+
+                    Item {
+                        Layout.fillWidth: true
+                    }
                 }
+
                 Label {
-                    visible: card._isStarting
-                        || (card._captionText && card._captionText.length > 0)
+                    visible: card._hasSubtitle
                     Layout.fillWidth: true
-                    text: card._isStarting
-                        ? qsTr("granted by your starting school")
-                        : card._captionText
+                    text: card._isStarting ? qsTr("granted by your starting school") : card._subtypeText
                     font.italic: true
                     font.pixelSize: Theme.smallFont
                     color: Theme.ink
@@ -843,10 +833,7 @@ ColumnLayout {
                     // carry the strikeout so the eye reads them as a
                     // single struck phrase rather than two glyphs that
                     // happen to share a line.
-                    text: qsTr("suggested:") + " "
-                        + (card._isFlaw && card._suggested !== 0
-                            ? "+" + card._suggested
-                            : "" + card._suggested)
+                    text: qsTr("suggested:") + " " + (card._isFlaw && card._suggested !== 0 ? "+" + card._suggested : "" + card._suggested)
                     font.family: Theme.fontDisplay
                     font.pixelSize: Theme.smallFont
                     font.weight: Font.DemiBold
@@ -910,7 +897,11 @@ ColumnLayout {
                             border.color: card.accentColor
                             border.width: 1
                             opacity: editBtn.hovered ? 1.0 : 0.55
-                            Behavior on opacity { NumberAnimation { duration: 120 } }
+                            Behavior on opacity  {
+                                NumberAnimation {
+                                    duration: 120
+                                }
+                            }
                         }
                         contentItem: Label {
                             text: "✎"   // U+270E lower-right pencil
@@ -921,9 +912,7 @@ ColumnLayout {
                         }
                         ToolTip.visible: hovered
                         ToolTip.delay: 400
-                        ToolTip.text: card._isFlaw
-                            ? qsTr("Edit this burden")
-                            : qsTr("Edit this blessing")
+                        ToolTip.text: card._isFlaw ? qsTr("Edit this burden") : qsTr("Edit this blessing")
                     }
 
                     AbstractButton {
@@ -940,7 +929,11 @@ ColumnLayout {
                             border.color: card.accentColor
                             border.width: 1
                             opacity: removeBtn.hovered ? 1.0 : 0.55
-                            Behavior on opacity { NumberAnimation { duration: 120 } }
+                            Behavior on opacity  {
+                                NumberAnimation {
+                                    duration: 120
+                                }
+                            }
                         }
                         contentItem: Label {
                             text: "✕"
@@ -951,9 +944,7 @@ ColumnLayout {
                         }
                         ToolTip.visible: hovered
                         ToolTip.delay: 400
-                        ToolTip.text: card._isFlaw
-                            ? qsTr("Release this burden")
-                            : qsTr("Forfeit this blessing")
+                        ToolTip.text: card._isFlaw ? qsTr("Release this burden") : qsTr("Forfeit this blessing")
                     }
                 }
             }

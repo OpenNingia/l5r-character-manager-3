@@ -28,6 +28,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Theme 1.0
 
+import "../widgets" as Widgets
+
 Dialog {
     id: dlg
     parent: Overlay.overlay
@@ -79,7 +81,13 @@ Dialog {
         // this way means re-opening edit on a custom-cost perk lands on
         // the SpinBox with the existing figure, not the suggestion.
         var current = data.cost || 0;
-        dlg._overrideOn = dlg.suggestedCost !== 0 && current !== dlg.suggestedCost;
+        // Open in override mode either when the existing cost diverges
+        // from the rulebook suggestion, or when there is no rulebook
+        // suggestion at all (manual cost is the only valid input -- the
+        // Switch stays disabled in that case, just locked-on, since
+        // there is no suggestion to flip back to).
+        dlg._overrideOn = dlg.suggestedCost === 0
+            || current !== dlg.suggestedCost;
         dlg._overrideCost = current;
         dlg.open();
     }
@@ -99,6 +107,10 @@ Dialog {
         border.color: Theme.borderStrong
         border.width: 1
         radius: 2
+        // Same fibre overlay the MainSheet uses, so the dialog reads
+        // as a page lifted off the document rather than a flat card.
+        Widgets.RicePaperOverlay {
+        }
     }
 
     header: Item {
@@ -144,6 +156,7 @@ Dialog {
                     text: qsTr("notes and cost; the rule and rank are fixed")
                     font.italic: true
                     font.pixelSize: Theme.smallFont
+                    color: Theme.ink
                     opacity: 0.7
                 }
             }
@@ -198,6 +211,7 @@ Dialog {
                         }
                         font.italic: true
                         font.pixelSize: Theme.smallFont
+                        color: Theme.ink
                         opacity: 0.65
                     }
                 }
@@ -223,6 +237,8 @@ Dialog {
                 text: dlg._subtype
                 onTextEdited: dlg._subtype = text
                 placeholderText: dlg._isFlaw ? qsTr("circumstance, target, or detail…") : qsTr("name, ally, or detail…")
+                color: Theme.ink
+                placeholderTextColor: "#8a7a65"
                 background: Rectangle {
                     color: Theme.parchmentBase
                     border.color: Theme.borderSubtle
@@ -288,6 +304,7 @@ Dialog {
                             text: dlg._isFlaw ? qsTr("experience the gods will grant in return") : qsTr("experience the chronicle will require")
                             font.italic: true
                             font.pixelSize: Theme.smallFont
+                            color: Theme.ink
                             opacity: 0.6
                             wrapMode: Text.WordWrap
                             Layout.fillWidth: true
@@ -436,6 +453,9 @@ Dialog {
     footer: Rectangle {
         implicitHeight: 52
         color: Theme.parchmentSidebar
+        // Fibre texture matching the catalogue-pane / sidebar shade.
+        Widgets.RicePaperOverlay {
+        }
         Rectangle {
             anchors.left: parent.left
             anchors.right: parent.right

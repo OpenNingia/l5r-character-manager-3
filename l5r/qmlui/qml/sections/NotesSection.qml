@@ -8,7 +8,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-
 import "../widgets" as Widgets
 import Theme 1.0
 
@@ -20,24 +19,48 @@ ColumnLayout {
 
     // Pairs of (translated label, model key) -- order matches the
     // legacy widget tab so users see the same form.
-    readonly property var _anagraphicFields: [
-        { key: "sex",    label: qsTr("Sex") },
-        { key: "age",    label: qsTr("Age") },
-        { key: "height", label: qsTr("Height") },
-        { key: "weight", label: qsTr("Weight") },
-        { key: "hair",   label: qsTr("Hair") },
-        { key: "eyes",   label: qsTr("Eyes") }
-    ]
+    readonly property var _anagraphicFields: [{
+            "key": "sex",
+            "label": qsTr("Sex")
+        }, {
+            "key": "age",
+            "label": qsTr("Age")
+        }, {
+            "key": "height",
+            "label": qsTr("Height")
+        }, {
+            "key": "weight",
+            "label": qsTr("Weight")
+        }, {
+            "key": "hair",
+            "label": qsTr("Hair")
+        }, {
+            "key": "eyes",
+            "label": qsTr("Eyes")
+        }]
 
-    readonly property var _familyFields: [
-        { key: "father",   label: qsTr("Father") },
-        { key: "mother",   label: qsTr("Mother") },
-        { key: "brothers", label: qsTr("Brothers") },
-        { key: "sisters",  label: qsTr("Sisters") },
-        { key: "marsta",   label: qsTr("Marital Status") },
-        { key: "spouse",   label: qsTr("Spouse") },
-        { key: "childr",   label: qsTr("Children") }
-    ]
+    readonly property var _familyFields: [{
+            "key": "father",
+            "label": qsTr("Father")
+        }, {
+            "key": "mother",
+            "label": qsTr("Mother")
+        }, {
+            "key": "brothers",
+            "label": qsTr("Brothers")
+        }, {
+            "key": "sisters",
+            "label": qsTr("Sisters")
+        }, {
+            "key": "marsta",
+            "label": qsTr("Marital Status")
+        }, {
+            "key": "spouse",
+            "label": qsTr("Spouse")
+        }, {
+            "key": "childr",
+            "label": qsTr("Children")
+        }]
 
     // Notes editor ------------------------------------------------------
     ScrollView {
@@ -59,23 +82,23 @@ ColumnLayout {
                 target: pcProxy
                 function onNotesChanged() {
                     if (notesEditor.text !== pcProxy.notesHtml) {
-                        notesEditor._syncing = true
-                        notesEditor.text = pcProxy.notesHtml
-                        notesEditor._syncing = false
+                        notesEditor._syncing = true;
+                        notesEditor.text = pcProxy.notesHtml;
+                        notesEditor._syncing = false;
                     }
                 }
             }
             Component.onCompleted: {
                 if (pcProxy) {
-                    _syncing = true
-                    text = pcProxy.notesHtml
-                    _syncing = false
+                    _syncing = true;
+                    text = pcProxy.notesHtml;
+                    _syncing = false;
                 }
             }
 
             onActiveFocusChanged: {
                 if (!activeFocus && !_syncing && appCtrl) {
-                    appCtrl.setNotes(text)
+                    appCtrl.setNotes(text);
                 }
             }
         }
@@ -117,7 +140,7 @@ ColumnLayout {
                             text: section._info[modelData.key] || ""
                             onEditingFinished: {
                                 if (appCtrl && text !== (section._info[modelData.key] || "")) {
-                                    appCtrl.setPersonalInfoField(modelData.key, text)
+                                    appCtrl.setPersonalInfoField(modelData.key, text);
                                 }
                             }
                         }
@@ -159,7 +182,7 @@ ColumnLayout {
                             text: section._info[modelData.key] || ""
                             onEditingFinished: {
                                 if (appCtrl && text !== (section._info[modelData.key] || "")) {
-                                    appCtrl.setPersonalInfoField(modelData.key, text)
+                                    appCtrl.setPersonalInfoField(modelData.key, text);
                                 }
                             }
                         }

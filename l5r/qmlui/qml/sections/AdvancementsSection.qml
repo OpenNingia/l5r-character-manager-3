@@ -1,7 +1,6 @@
 // Copyright (C) 2014-2026 Daniele Simonetti
 // Advancements section -- the character's training ledger. Replaces
 // l5r/ui/tabs/advancements.py.
-//
 // Design intent: a kakemono-scroll chronicle. The page reads top-down
 // like an unfurled scroll -- a stamped ledger banner at the top with
 // total XP spent / entries / current rank, then a vertical timeline of
@@ -9,10 +8,8 @@
 // entry (the head of the stack) is the only one that can be refunded;
 // older entries are read-only history, which matches the stack-pop
 // semantics of l5r.api.advancements.refund_last_advancement.
-//
 // Data contract expected from the proxy (degrades gracefully when
 // missing -- the section renders the empty-state):
-//
 //   pcProxy.advancements: [
 //     { type: "skill"|"attrib"|"void"|"perk"|"kata"|"kiho"
 //             |"spell"|"memo_spell"|"emph",
@@ -24,14 +21,11 @@
 //   ]
 //   pcProxy.advancementsXpSpent: number       // sum of costs
 //   pcProxy.advancementsCount:   number       // length of the list
-//
 //   appCtrl.refundLastAdvancement(): void
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-
 import "../widgets" as Widgets
-
 import Theme 1.0
 
 ColumnLayout {
@@ -43,13 +37,10 @@ ColumnLayout {
     // bound on first paint, and proxy properties may be absent on
     // older builds. Read-once via the safe accessors below.
     // -----------------------------------------------------------------
-    readonly property var  _items:    (pcProxy && pcProxy.advancements) ? pcProxy.advancements : []
-    readonly property int  _count:    (pcProxy && pcProxy.advancementsCount !== undefined)
-        ? pcProxy.advancementsCount : section._items.length
-    readonly property int  _xpSpent:  (pcProxy && pcProxy.advancementsXpSpent !== undefined)
-        ? pcProxy.advancementsXpSpent : 0
-    readonly property int  _rank:     (pcProxy && pcProxy.progression)
-        ? pcProxy.progression.rank : 0
+    readonly property var _items: (pcProxy && pcProxy.advancements) ? pcProxy.advancements : []
+    readonly property int _count: (pcProxy && pcProxy.advancementsCount !== undefined) ? pcProxy.advancementsCount : section._items.length
+    readonly property int _xpSpent: (pcProxy && pcProxy.advancementsXpSpent !== undefined) ? pcProxy.advancementsXpSpent : 0
+    readonly property int _rank: (pcProxy && pcProxy.progression) ? pcProxy.progression.rank : 0
     readonly property bool _hasItems: section._items.length > 0
 
     // -----------------------------------------------------------------
@@ -58,14 +49,25 @@ ColumnLayout {
     // the semantics never silently change with a chip selection.
     // -----------------------------------------------------------------
     property string _filter: "all"
-    readonly property var _filterDefs: [
-        { key: "all",     label: qsTr("All") },
-        { key: "skill",   label: qsTr("Skills") },
-        { key: "attrib",  label: qsTr("Traits") },
-        { key: "perk",    label: qsTr("Advantages") },
-        { key: "spell",   label: qsTr("Spells") },
-        { key: "kata",    label: qsTr("Disciplines") }
-    ]
+    readonly property var _filterDefs: [{
+            "key": "all",
+            "label": qsTr("All")
+        }, {
+            "key": "skill",
+            "label": qsTr("Skills")
+        }, {
+            "key": "attrib",
+            "label": qsTr("Traits")
+        }, {
+            "key": "perk",
+            "label": qsTr("Advantages")
+        }, {
+            "key": "spell",
+            "label": qsTr("Spells")
+        }, {
+            "key": "kata",
+            "label": qsTr("Disciplines")
+        }]
 
     // -----------------------------------------------------------------
     // Type metadata -- kanji glyph, accent colour, and human label per
@@ -75,42 +77,100 @@ ColumnLayout {
     // -----------------------------------------------------------------
     function _meta(t) {
         switch (t) {
-        case "attrib":     return { kanji: "力", color: Theme.ringEarth,  label: qsTr("Trait") }
-        case "void":       return { kanji: "空", color: Theme.ringVoid,   label: qsTr("Void") }
-        case "skill":      return { kanji: "技", color: Theme.secondary,  label: qsTr("Skill") }
-        case "emph":       return { kanji: "妙", color: Theme.secondary,  label: qsTr("Emphasis") }
-        case "perk":       return { kanji: "縁", color: Theme.highlight,  label: qsTr("Advantage") }
-        case "kata":       return { kanji: "型", color: Theme.accent,     label: qsTr("Kata") }
-        case "kiho":       return { kanji: "拳", color: Theme.accent,     label: qsTr("Kiho") }
-        case "spell":      return { kanji: "呪", color: Theme.ringFire,   label: qsTr("Spell") }
-        case "memo_spell": return { kanji: "記", color: Theme.ringFire,   label: qsTr("Memorised") }
-        default:           return { kanji: "印", color: Theme.heading,    label: t || qsTr("Entry") }
+        case "attrib":
+            return {
+                "kanji": "力",
+                "color": Theme.ringEarth,
+                "label": qsTr("Trait")
+            };
+        case "void":
+            return {
+                "kanji": "空",
+                "color": Theme.ringVoid,
+                "label": qsTr("Void")
+            };
+        case "skill":
+            return {
+                "kanji": "技",
+                "color": Theme.secondary,
+                "label": qsTr("Skill")
+            };
+        case "emph":
+            return {
+                "kanji": "妙",
+                "color": Theme.secondary,
+                "label": qsTr("Emphasis")
+            };
+        case "perk":
+            return {
+                "kanji": "縁",
+                "color": Theme.highlight,
+                "label": qsTr("Advantage")
+            };
+        case "kata":
+            return {
+                "kanji": "型",
+                "color": Theme.accent,
+                "label": qsTr("Kata")
+            };
+        case "kiho":
+            return {
+                "kanji": "拳",
+                "color": Theme.accent,
+                "label": qsTr("Kiho")
+            };
+        case "spell":
+            return {
+                "kanji": "呪",
+                "color": Theme.ringFire,
+                "label": qsTr("Spell")
+            };
+        case "memo_spell":
+            return {
+                "kanji": "記",
+                "color": Theme.ringFire,
+                "label": qsTr("Memorised")
+            };
+        default:
+            return {
+                "kanji": "印",
+                "color": Theme.heading,
+                "label": t || qsTr("Entry")
+            };
         }
     }
 
     function _fmtTimestamp(ts) {
-        if (!ts) return ""
-        var d = new Date(ts * 1000)
-        var pad = function(n) { return n < 10 ? "0" + n : "" + n }
-        return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate())
-            + "  " + pad(d.getHours()) + ":" + pad(d.getMinutes())
+        if (!ts)
+            return "";
+        var d = new Date(ts * 1000);
+        var pad = function (n) {
+            return n < 10 ? "0" + n : "" + n;
+        };
+        return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()) + "  " + pad(d.getHours()) + ":" + pad(d.getMinutes());
     }
 
     function _passesFilter(item) {
-        if (section._filter === "all") return true
-        if (section._filter === "skill")  return item.type === "skill" || item.type === "emph"
-        if (section._filter === "spell")  return item.type === "spell" || item.type === "memo_spell"
-        if (section._filter === "kata")   return item.type === "kata"  || item.type === "kiho"
-        return item.type === section._filter
+        if (section._filter === "all")
+            return true;
+        if (section._filter === "skill")
+            return item.type === "skill" || item.type === "emph";
+        if (section._filter === "spell")
+            return item.type === "spell" || item.type === "memo_spell";
+        if (section._filter === "kata")
+            return item.type === "kata" || item.type === "kiho";
+        return item.type === section._filter;
     }
 
     function _filteredItems() {
-        if (section._filter === "all") return section._items
-        var out = []
+        if (section._filter === "all")
+            return section._items;
+        var out = [];
         for (var i = 0; i < section._items.length; ++i) {
-            if (section._passesFilter(section._items[i])) out.push(section._items[i])
+            if (section._passesFilter(section._items[i]))
+                out.push(section._items[i]);
         }
-        return out
+        return out;
     }
 
     // -----------------------------------------------------------------
@@ -319,19 +379,25 @@ ColumnLayout {
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
-                        HoverHandler { id: chipHover }
+                        HoverHandler {
+                            id: chipHover
+                        }
                         opacity: chip.active || chipHover.hovered ? 1.0 : 0.75
-                        Behavior on opacity { NumberAnimation { duration: 120 } }
+                        Behavior on opacity  {
+                            NumberAnimation {
+                                duration: 120
+                            }
+                        }
                     }
                 }
 
-                Item { Layout.fillWidth: true }
+                Item {
+                    Layout.fillWidth: true
+                }
 
                 Label {
                     visible: section._filter !== "all"
-                    text: qsTr("showing %1 of %2")
-                        .arg(section._filteredItems().length)
-                        .arg(section._items.length)
+                    text: qsTr("showing %1 of %2").arg(section._filteredItems().length).arg(section._items.length)
                     font.italic: true
                     font.pixelSize: Theme.smallFont
                     opacity: 0.55
@@ -377,9 +443,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     Layout.maximumWidth: 480
                     Layout.alignment: Qt.AlignHCenter
-                    text: qsTr("No advancements have yet been recorded for this samurai. " +
-                               "Purchase a trait, skill, or technique on its own tab and the " +
-                               "entry will appear here, atop the stack.")
+                    text: qsTr("No advancements have yet been recorded for this samurai. " + "Purchase a trait, skill, or technique on its own tab and the " + "entry will appear here, atop the stack.")
                     font.italic: true
                     font.pixelSize: Theme.bodyFont
                     horizontalAlignment: Text.AlignHCenter
@@ -592,7 +656,9 @@ ColumnLayout {
                                         font.pixelSize: Theme.smallFont
                                         opacity: 0.6
                                     }
-                                    Item { Layout.fillWidth: true }
+                                    Item {
+                                        Layout.fillWidth: true
+                                    }
                                 }
                             }
 
@@ -642,20 +708,19 @@ ColumnLayout {
                                     ToolTip.visible: hovered
                                     ToolTip.text: qsTr("Refund this advancement")
                                     onClicked: {
-                                        if (!appCtrl) return
+                                        if (!appCtrl)
+                                            return;
                                         // Honor the "Do not prompt again" preference -- if the
                                         // user already opted out of the warning, refund inline.
-                                        if (appCtrl.refundWarningEnabled
-                                                && appCtrl.refundWarningEnabled()) {
-                                            refundDlg.open()
+                                        if (appCtrl.refundWarningEnabled && appCtrl.refundWarningEnabled()) {
+                                            refundDlg.open();
                                         } else {
-                                            appCtrl.refundLastAdvancement()
+                                            appCtrl.refundLastAdvancement();
                                         }
                                     }
                                     background: Rectangle {
                                         radius: 2
-                                        color: parent.down ? Theme.accentMuted
-                                            : (parent.hovered ? Theme.accent : "transparent")
+                                        color: parent.down ? Theme.accentMuted : (parent.hovered ? Theme.accent : "transparent")
                                         border.color: Theme.accent
                                         border.width: 1
                                     }
@@ -752,9 +817,7 @@ ColumnLayout {
                     }
                     Label {
                         Layout.fillWidth: true
-                        text: refundDlg._head
-                            ? section._fmtTimestamp(refundDlg._head.timestamp)
-                            : ""
+                        text: refundDlg._head ? section._fmtTimestamp(refundDlg._head.timestamp) : ""
                         font.italic: true
                         font.pixelSize: Theme.smallFont
                         opacity: 0.6
@@ -780,7 +843,9 @@ ColumnLayout {
                 Layout.topMargin: 4
                 spacing: 8
 
-                Item { Layout.fillWidth: true }
+                Item {
+                    Layout.fillWidth: true
+                }
 
                 Button {
                     text: qsTr("Cancel")
@@ -790,8 +855,7 @@ ColumnLayout {
                     text: qsTr("Refund")
                     background: Rectangle {
                         radius: 2
-                        color: parent.down ? Theme.accentMuted
-                            : (parent.hovered ? Theme.accent : Theme.accent)
+                        color: parent.down ? Theme.accentMuted : (parent.hovered ? Theme.accent : Theme.accent)
                         border.color: Theme.accentMuted
                         border.width: 1
                     }
@@ -807,13 +871,13 @@ ColumnLayout {
                     onClicked: {
                         if (appCtrl) {
                             if (dontAskCheck.checked && appCtrl.suppressRefundWarning) {
-                                appCtrl.suppressRefundWarning()
+                                appCtrl.suppressRefundWarning();
                             }
                             if (appCtrl.refundLastAdvancement) {
-                                appCtrl.refundLastAdvancement()
+                                appCtrl.refundLastAdvancement();
                             }
                         }
-                        refundDlg.accept()
+                        refundDlg.accept();
                     }
                 }
             }

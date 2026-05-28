@@ -1,5 +1,4 @@
 // Copyright (C) 2014-2026 Daniele Simonetti
-//
 // Skills section -- character competencies grouped by their governing
 // ring (Earth / Air / Water / Fire / Void). The ring-colour palette
 // from Theme is the primary visual hook: every row carries a 4px
@@ -8,19 +7,16 @@
 // skills -- the ones the character started with via their school --
 // are marked with a 2px crimson rib inside the stripe AND rendered
 // with an italic name, mirroring how the rulebook bolds them.
-//
 // Click a row's name to expand it: the skill description and the
 // full mastery-ability ladder appear inline. Unlocked rungs are
 // filled circles in the ring colour; locked rungs are hollow and
 // dimmed. The legacy second QTableView ("Mastery Abilities") is
 // replaced by a footer count -- the data you actually want at hand
 // during play is now attached to the skill it belongs to.
-//
 // Affordances:
 //   - section header "+ New Skill"        --> BuySkillDialog (QML)
 //   - per-row "+" inside the emph row     --> emphDlg prompt
 //   - per-row "+" at the right edge       --> appCtrl.buySkillRank(id)
-//
 // Expected row shape on pcProxy.skills:
 //   {
 //     id          : string slug
@@ -35,37 +31,42 @@
 //     mastery     : [{rank: int, desc: string}, ...]
 //     description : string  (optional prose, shown when expanded)
 //   }
-//
 // Required controller methods on appCtrl:
 //   buySkillRank(id)
 //   buySkillEmphasis(id, text)
 //   availableSkillsToBuy() -> [{id, name, category, trait}, ...]
-//
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-
 import "../dialogs" as Dialogs
 import "../widgets" as Widgets
-
 import Theme 1.0
 
 ColumnLayout {
     id: section
     spacing: Theme.sectionSpacing
 
-    readonly property var  _skills:  pcProxy ? pcProxy.skills : []
+    readonly property var _skills: pcProxy ? pcProxy.skills : []
     readonly property bool _canEdit: !pcProxy || pcProxy.canEdit !== false
 
     // Display order mirrors the Rings & Attributes block in
     // CharacterSection.qml so the eye is already trained for it.
-    readonly property var _ringOrder: [
-        { key: "earth", label: qsTr("Earth") },
-        { key: "air",   label: qsTr("Air")   },
-        { key: "water", label: qsTr("Water") },
-        { key: "fire",  label: qsTr("Fire")  },
-        { key: "void",  label: qsTr("Void")  }
-    ]
+    readonly property var _ringOrder: [{
+            "key": "earth",
+            "label": qsTr("Earth")
+        }, {
+            "key": "air",
+            "label": qsTr("Air")
+        }, {
+            "key": "water",
+            "label": qsTr("Water")
+        }, {
+            "key": "fire",
+            "label": qsTr("Fire")
+        }, {
+            "key": "void",
+            "label": qsTr("Void")
+        }]
 
     // Id of the currently-expanded skill, or "" for none. A single
     // id (not per-row toggles) so opening a new row collapses the
@@ -73,37 +74,46 @@ ColumnLayout {
     property string _expandedId: ""
 
     function _toggleExpand(id) {
-        _expandedId = (_expandedId === id) ? "" : id
+        _expandedId = (_expandedId === id) ? "" : id;
     }
 
     function _bucketByRing() {
-        var buckets = { earth: [], air: [], water: [], fire: [], "void": [] }
+        var buckets = {
+            "earth": [],
+            "air": [],
+            "water": [],
+            "fire": [],
+            "void": []
+        };
         for (var i = 0; i < _skills.length; ++i) {
-            var s = _skills[i]
-            var k = ((s && s.ringKey) || "void").toLowerCase()
-            if (!buckets[k]) k = "void"
-            buckets[k].push(s)
+            var s = _skills[i];
+            var k = ((s && s.ringKey) || "void").toLowerCase();
+            if (!buckets[k])
+                k = "void";
+            buckets[k].push(s);
         }
         for (var key in buckets) {
-            buckets[key].sort(function(a, b) {
-                return (a.name || "").localeCompare(b.name || "")
-            })
+            buckets[key].sort(function (a, b) {
+                    return (a.name || "").localeCompare(b.name || "");
+                });
         }
-        return buckets
+        return buckets;
     }
 
     readonly property var _buckets: _bucketByRing()
 
     function _unlockedMasteryCount() {
-        var n = 0
+        var n = 0;
         for (var i = 0; i < _skills.length; ++i) {
-            var s = _skills[i]
-            if (!s || !s.mastery) continue
+            var s = _skills[i];
+            if (!s || !s.mastery)
+                continue;
             for (var j = 0; j < s.mastery.length; ++j) {
-                if (s.mastery[j].rank <= s.rank) n++
+                if (s.mastery[j].rank <= s.rank)
+                    n++;
             }
         }
-        return n
+        return n;
     }
 
     // ----------------------------------------------------------------
@@ -131,15 +141,16 @@ ColumnLayout {
         property string targetName: ""
 
         function openFor(id, name) {
-            targetId = id
-            targetName = name
-            emphField.text = ""
-            open()
-            emphField.forceActiveFocus()
+            targetId = id;
+            targetName = name;
+            emphField.text = "";
+            open();
+            emphField.forceActiveFocus();
         }
         onAccepted: {
-            var t = emphField.text.trim()
-            if (appCtrl && t.length > 0) appCtrl.buySkillEmphasis(targetId, t)
+            var t = emphField.text.trim();
+            if (appCtrl && t.length > 0)
+                appCtrl.buySkillEmphasis(targetId, t);
         }
 
         contentItem: ColumnLayout {
@@ -175,13 +186,13 @@ ColumnLayout {
                 Layout.fillWidth: true
                 spacing: 6
                 Label {
-                    text: section._skills.length > 0
-                        ? qsTr("%1 entries").arg(section._skills.length)
-                        : qsTr("Your repertoire begins empty.")
+                    text: section._skills.length > 0 ? qsTr("%1 entries").arg(section._skills.length) : qsTr("Your repertoire begins empty.")
                     font.italic: true
                     opacity: 0.7
                 }
-                Item { Layout.fillWidth: true }
+                Item {
+                    Layout.fillWidth: true
+                }
                 Button {
                     id: newSkillBtn
                     text: qsTr("＋  New Skill")
@@ -198,8 +209,7 @@ ColumnLayout {
                         font.pixelSize: Theme.bodyFont
                         font.weight: Theme.headingWeight
                         font.letterSpacing: 1.6
-                        color: newSkillBtn.enabled ? Theme.heading
-                                                   : Qt.lighter(Theme.heading, 1.6)
+                        color: newSkillBtn.enabled ? Theme.heading : Qt.lighter(Theme.heading, 1.6)
                         opacity: newSkillBtn.hovered ? 1.0 : 0.88
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -208,12 +218,9 @@ ColumnLayout {
                         // Hairline burnt-gold border with a barely-there
                         // parchment fill that warms on hover -- ink-on-
                         // paper button, not a system rectangle.
-                        color: newSkillBtn.down  ? Qt.rgba(0.54, 0.35, 0.10, 0.18)
-                             : newSkillBtn.hovered ? Qt.rgba(0.54, 0.35, 0.10, 0.10)
-                                                   : "transparent"
+                        color: newSkillBtn.down ? Qt.rgba(0.54, 0.35, 0.10, 0.18) : newSkillBtn.hovered ? Qt.rgba(0.54, 0.35, 0.10, 0.10) : "transparent"
                         border.width: 1
-                        border.color: newSkillBtn.enabled ? Theme.heading
-                                                          : Theme.borderSubtle
+                        border.color: newSkillBtn.enabled ? Theme.heading : Theme.borderSubtle
                         radius: 1
                     }
                 }
@@ -279,8 +286,7 @@ ColumnLayout {
                         Layout.fillWidth: true
                         Layout.leftMargin: 28
                         Layout.bottomMargin: 2
-                        text: qsTr("— no %1 skills yet —")
-                            .arg(modelData.label.toLowerCase())
+                        text: qsTr("— no %1 skills yet —").arg(modelData.label.toLowerCase())
                         font.italic: true
                         font.pixelSize: Theme.smallFont
                         opacity: 0.45
@@ -306,8 +312,7 @@ ColumnLayout {
             Label {
                 Layout.fillWidth: true
                 horizontalAlignment: Text.AlignHCenter
-                text: qsTr("%1 mastery abilities at hand")
-                    .arg(section._unlockedMasteryCount())
+                text: qsTr("%1 mastery abilities at hand").arg(section._unlockedMasteryCount())
                 font.family: Theme.fontDisplay
                 font.pixelSize: Theme.smallFont
                 font.letterSpacing: 2.0
@@ -325,30 +330,38 @@ ColumnLayout {
     component SkillRow: Item {
         id: rowItem
         property color ringColor: Theme.accent
-        property var   row: ({})
+        property var row: ({})
 
         readonly property bool _expanded: section._expandedId === row.id
         readonly property bool _hasMastery: row.mastery && row.mastery.length > 0
-        readonly property int  _unlockedMastery: {
-            if (!_hasMastery) return 0
-            var n = 0
+        readonly property int _unlockedMastery: {
+            if (!_hasMastery)
+                return 0;
+            var n = 0;
             for (var i = 0; i < row.mastery.length; ++i) {
-                if (row.mastery[i].rank <= row.rank) n++
+                if (row.mastery[i].rank <= row.rank)
+                    n++;
             }
-            return n
+            return n;
         }
 
         Layout.fillWidth: true
         implicitHeight: bodyCol.implicitHeight + 8
 
-        HoverHandler { id: rowHover }
+        HoverHandler {
+            id: rowHover
+        }
 
         // Tinted hover/expanded background -- fades in from parchment.
         Rectangle {
             anchors.fill: parent
             color: rowItem.ringColor
             opacity: rowItem._expanded ? 0.09 : (rowHover.hovered ? 0.06 : 0.0)
-            Behavior on opacity { NumberAnimation { duration: 120 } }
+            Behavior on opacity  {
+                NumberAnimation {
+                    duration: 120
+                }
+            }
         }
         // Persistent ring stripe.
         Rectangle {
@@ -389,15 +402,18 @@ ColumnLayout {
                 // Click the name to expand the row.
                 Label {
                     text: rowItem.row.name || ""
-                    color: rowItem.row.isSchool ? Theme.accentMuted
-                                                : palette.windowText
+                    color: rowItem.row.isSchool ? Theme.accentMuted : palette.windowText
                     font.italic: rowItem.row.isSchool === true
                     font.weight: rowItem.row.isSchool ? Font.DemiBold : Font.Normal
                     font.pixelSize: Theme.bodyFont + 1
                     Layout.preferredWidth: 180
                     elide: Text.ElideRight
-                    TapHandler { onTapped: section._toggleExpand(rowItem.row.id) }
-                    HoverHandler { cursorShape: Qt.PointingHandCursor }
+                    TapHandler {
+                        onTapped: section._toggleExpand(rowItem.row.id)
+                    }
+                    HoverHandler {
+                        cursorShape: Qt.PointingHandCursor
+                    }
                 }
 
                 Label {
@@ -459,12 +475,11 @@ ColumnLayout {
                     font.features: Theme.tabularNumbers
                     horizontalAlignment: Text.AlignRight
                     Layout.preferredWidth: 50
-                    HoverHandler { id: rollHover }
-                    ToolTip.visible: rollHover.hovered
-                        && (rowItem.row.baseRoll || "") !== (rowItem.row.modRoll || "")
-                    ToolTip.text: qsTr("Base: %1   ·   Mod: %2")
-                        .arg(rowItem.row.baseRoll || "—")
-                        .arg(rowItem.row.modRoll  || "—")
+                    HoverHandler {
+                        id: rollHover
+                    }
+                    ToolTip.visible: rollHover.hovered && (rowItem.row.baseRoll || "") !== (rowItem.row.modRoll || "")
+                    ToolTip.text: qsTr("Base: %1   ·   Mod: %2").arg(rowItem.row.baseRoll || "—").arg(rowItem.row.modRoll || "—")
                 }
 
                 // Mastery-unlocked dot -- pre-expansion teaser.
@@ -475,10 +490,11 @@ ColumnLayout {
                     radius: 3
                     color: Theme.heading
                     opacity: 0.85
-                    HoverHandler { id: maHover }
+                    HoverHandler {
+                        id: maHover
+                    }
                     ToolTip.visible: maHover.hovered
-                    ToolTip.text: qsTr("%1 mastery ability unlocked")
-                        .arg(rowItem._unlockedMastery)
+                    ToolTip.text: qsTr("%1 mastery ability unlocked").arg(rowItem._unlockedMastery)
                 }
 
                 // Rank -- the hero numeral, tinted to its ring.
@@ -504,9 +520,9 @@ ColumnLayout {
                     font.pixelSize: 14
                     palette.buttonText: Theme.heading
                     ToolTip.visible: hovered
-                    ToolTip.text: qsTr("Buy the next rank in %1")
-                        .arg(rowItem.row.name)
-                    onClicked: if (appCtrl) appCtrl.buySkillRank(rowItem.row.id)
+                    ToolTip.text: qsTr("Buy the next rank in %1").arg(rowItem.row.name)
+                    onClicked: if (appCtrl)
+                        appCtrl.buySkillRank(rowItem.row.id)
                 }
             }
 
@@ -546,8 +562,7 @@ ColumnLayout {
                         delegate: RowLayout {
                             Layout.fillWidth: true
                             spacing: 8
-                            readonly property bool _unlocked:
-                                modelData.rank <= rowItem.row.rank
+                            readonly property bool _unlocked: modelData.rank <= rowItem.row.rank
 
                             Rectangle {
                                 Layout.preferredWidth: 18
@@ -555,9 +570,7 @@ ColumnLayout {
                                 radius: 9
                                 color: _unlocked ? rowItem.ringColor : "transparent"
                                 border.width: 1
-                                border.color: _unlocked
-                                    ? Qt.darker(rowItem.ringColor, 1.3)
-                                    : Theme.borderSubtle
+                                border.color: _unlocked ? Qt.darker(rowItem.ringColor, 1.3) : Theme.borderSubtle
                                 Label {
                                     anchors.centerIn: parent
                                     text: modelData.rank
@@ -572,9 +585,7 @@ ColumnLayout {
                                 Layout.fillWidth: true
                                 text: modelData.desc
                                 wrapMode: Text.WordWrap
-                                color: _unlocked
-                                    ? palette.windowText
-                                    : Qt.lighter(palette.windowText, 1.8)
+                                color: _unlocked ? palette.windowText : Qt.lighter(palette.windowText, 1.8)
                                 opacity: _unlocked ? 1.0 : 0.55
                                 font.italic: !_unlocked
                             }

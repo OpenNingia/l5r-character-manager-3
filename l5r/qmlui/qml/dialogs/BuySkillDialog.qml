@@ -7,30 +7,40 @@
 // purchase path used to level up an existing skill.
 // Lives in qml/dialogs/ alongside the family / school choosers; the
 // SkillsSection drives it through `id` + `open()`.
+// Visual identity matches InscribePerkDialog: kakemono header with a
+// brush seal, parchment + rice-paper background, hand-skinned ComboBox
+// in the parchment vocabulary, and custom Cancel/Add buttons.
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Theme 1.0
 
+import "../widgets" as Widgets
+
 Dialog {
     id: root
-    title: qsTr("L5R: CM - Buy Skill")
-    standardButtons: Dialog.Ok | Dialog.Cancel
+    parent: Overlay.overlay
+    anchors.centerIn: Overlay.overlay
     modal: true
-    width: 520
+    standardButtons: Dialog.NoButton
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+
+    width: Math.min(Overlay.overlay ? Overlay.overlay.width - 80 : 520, 520)
 
     property var _candidates: []
     property string _selectedId: ""
+
+    readonly property color _accent: Theme.secondary
 
     onAboutToShow: {
         _candidates = appCtrl ? appCtrl.availableSkillsToBuy() : [];
         skillCombo.currentIndex = _candidates.length > 0 ? 0 : -1;
         _selectedId = _candidates.length > 0 ? _candidates[0].id : "";
     }
-    onAccepted: {
+    function _accept() {
         if (_selectedId && appCtrl)
             appCtrl.buySkillRank(_selectedId);
+        root.accept();
     }
 
     function _currentRecord() {
@@ -39,52 +49,123 @@ Dialog {
         return _candidates[skillCombo.currentIndex];
     }
 
+    // --- backplate ------------------------------------------------
+    background: Rectangle {
+        color: Theme.parchment
+        border.color: Theme.borderStrong
+        border.width: 1
+        radius: 2
+        Widgets.RicePaperOverlay {
+        }
+    }
+
+    // --- header: kakemono band with brush seal --------------------
+    header: Item {
+        implicitHeight: 64
+        Rectangle {
+            anchors.fill: parent
+            color: Qt.lighter(root._accent, 1.7)
+            opacity: 0.55
+        }
+        Rectangle {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            height: 1
+            color: root._accent
+            opacity: 0.45
+        }
+        RowLayout {
+            anchors.fill: parent
+            anchors.leftMargin: 16
+            anchors.rightMargin: 16
+            spacing: 14
+
+            Label {
+                // 修 -- "to cultivate / to train"; reads as the act of
+                // learning a discipline, which is what buying a skill
+                // models.
+                text: "修"
+                font.family: Theme.fontKanji
+                font.pixelSize: 42
+                color: root._accent
+                opacity: 0.88
+            }
+            ColumnLayout {
+                Layout.fillWidth: true
+                spacing: 0
+                Label {
+                    text: qsTr("Add a new skill to your repertoire")
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: Theme.titleFont + 2
+                    font.weight: Theme.headingWeight
+                    font.letterSpacing: 1.6
+                    color: Theme.heading
+                }
+                Label {
+                    text: qsTr("the first rank of any unknown skill costs experience")
+                    font.italic: true
+                    font.pixelSize: Theme.smallFont
+                    color: Theme.ink
+                    opacity: 0.7
+                    wrapMode: Text.WordWrap
+                }
+            }
+        }
+    }
+
+    // --- body ----------------------------------------------------
     contentItem: ColumnLayout {
         spacing: 14
-
-        Label {
-            Layout.fillWidth: true
-            Layout.topMargin: 6
-            horizontalAlignment: Text.AlignHCenter
-            text: qsTr("Add a new skill to your repertoire")
-            font.family: Theme.fontDisplay
-            font.pixelSize: Theme.titleFont
-            font.weight: Font.DemiBold
-            color: Theme.heading
-        }
-        Label {
-            Layout.fillWidth: true
-            horizontalAlignment: Text.AlignHCenter
-            text: qsTr("The first rank of any unknown skill costs experience.")
-            opacity: 0.75
-            font.italic: true
-            color: Theme.accentMuted
-        }
 
         // Empty-state notice when no candidates exist (rare -- requires
         // the datapacks to be empty or the character to already know
         // everything in them).
-        Label {
+        ColumnLayout {
             visible: root._candidates.length === 0
             Layout.fillWidth: true
-            Layout.topMargin: 12
-            horizontalAlignment: Text.AlignHCenter
-            text: qsTr("No further skills are available to learn.")
-            opacity: 0.7
-            font.italic: true
+            Layout.topMargin: 8
+            spacing: 6
+
+            Label {
+                Layout.alignment: Qt.AlignHCenter
+                text: "修"
+                font.family: Theme.fontKanji
+                font.pixelSize: 90
+                color: root._accent
+                opacity: 0.15
+            }
+            Label {
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignHCenter
+                text: qsTr("No further skills are available to learn.")
+                font.italic: true
+                color: Theme.ink
+                opacity: 0.7
+            }
         }
 
+        // --- chooser body: combo + read-only details ----------------
         GridLayout {
             visible: root._candidates.length > 0
             Layout.fillWidth: true
-            Layout.topMargin: 10
+            Layout.topMargin: 4
             columns: 2
-            columnSpacing: 12
-            rowSpacing: 8
+            columnSpacing: 14
+            rowSpacing: 10
 
             Label {
-                text: qsTr("Skill:")
+                text: qsTr("Skill")
+                font.family: Theme.fontDisplay
+                font.pixelSize: Theme.smallFont
+                font.weight: Theme.headingWeight
+                font.letterSpacing: 1.6
+                color: Theme.heading
+                Layout.preferredWidth: 90
             }
+            // Hand-skinned ComboBox -- same parchment vocabulary as the
+            // category combo in InscribePerkDialog so this picker feels
+            // like the same tool.
             ComboBox {
                 id: skillCombo
                 Layout.fillWidth: true
@@ -94,14 +175,83 @@ Dialog {
                     var rec = root._candidates[index];
                     root._selectedId = rec ? rec.id : "";
                 }
+
+                background: Rectangle {
+                    color: "#fbf6e8"
+                    border.color: skillCombo.activeFocus ? root._accent : Theme.borderSubtle
+                    border.width: 1
+                    radius: 3
+                    implicitHeight: 30
+                }
+                contentItem: Label {
+                    leftPadding: 10
+                    rightPadding: skillCombo.indicator.width + 6
+                    text: skillCombo.displayText
+                    font.pixelSize: Theme.bodyFont
+                    font.weight: Font.DemiBold
+                    color: "#3a3a3a"
+                    verticalAlignment: Text.AlignVCenter
+                    elide: Text.ElideRight
+                }
+                indicator: Label {
+                    x: skillCombo.width - width - 8
+                    y: (skillCombo.height - height) / 2
+                    text: "▾"
+                    font.pixelSize: 12
+                    color: "#6b5b3f"
+                    opacity: skillCombo.pressed ? 1.0 : 0.85
+                }
+                popup: Popup {
+                    y: skillCombo.height
+                    width: skillCombo.width
+                    implicitHeight: Math.min(contentItem.implicitHeight + 4, 320)
+                    padding: 2
+                    background: Rectangle {
+                        color: Theme.parchmentBase
+                        border.color: Theme.borderStrong
+                        border.width: 1
+                        radius: 3
+                    }
+                    contentItem: ListView {
+                        clip: true
+                        implicitHeight: contentHeight
+                        model: skillCombo.popup.visible ? skillCombo.delegateModel : null
+                        currentIndex: skillCombo.highlightedIndex
+                        ScrollIndicator.vertical: ScrollIndicator {
+                        }
+                    }
+                }
+                delegate: ItemDelegate {
+                    width: skillCombo.width
+                    implicitHeight: 26
+                    highlighted: skillCombo.highlightedIndex === index
+                    background: Rectangle {
+                        color: highlighted ? Qt.rgba(0.224, 0.286, 0.671, 0.12) : "transparent"
+                    }
+                    contentItem: Label {
+                        leftPadding: 10
+                        rightPadding: 6
+                        text: modelData.name
+                        font.pixelSize: Theme.bodyFont
+                        color: "#3a3a3a"
+                        verticalAlignment: Text.AlignVCenter
+                        elide: Text.ElideRight
+                    }
+                }
             }
 
             Label {
-                text: qsTr("Category:")
+                text: qsTr("Category")
+                font.family: Theme.fontDisplay
+                font.pixelSize: Theme.smallFont
+                font.weight: Theme.headingWeight
+                font.letterSpacing: 1.6
+                color: Theme.heading
             }
             Label {
                 Layout.fillWidth: true
                 font.italic: true
+                color: Theme.ink
                 opacity: 0.85
                 text: {
                     var rec = root._currentRecord();
@@ -110,16 +260,110 @@ Dialog {
             }
 
             Label {
-                text: qsTr("Trait:")
+                text: qsTr("Trait")
+                font.family: Theme.fontDisplay
+                font.pixelSize: Theme.smallFont
+                font.weight: Theme.headingWeight
+                font.letterSpacing: 1.6
+                color: Theme.heading
             }
             Label {
                 Layout.fillWidth: true
                 font.family: Theme.fontDisplay
                 font.letterSpacing: 1.4
+                font.weight: Font.DemiBold
                 color: Theme.heading
                 text: {
                     var rec = root._currentRecord();
                     return rec ? rec.trait.toUpperCase() : "";
+                }
+            }
+        }
+    }
+
+    // --- footer: Cancel / Add ------------------------------------
+    footer: Rectangle {
+        implicitHeight: 56
+        color: Theme.parchmentSidebar
+        Widgets.RicePaperOverlay {
+        }
+        Rectangle {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            height: 1
+            color: Theme.heading
+            opacity: 0.35
+        }
+        RowLayout {
+            anchors.fill: parent
+            anchors.leftMargin: 16
+            anchors.rightMargin: 16
+            spacing: 10
+
+            Item {
+                Layout.fillWidth: true
+            }
+
+            AbstractButton {
+                id: cancelBtn
+                implicitHeight: 32
+                leftPadding: 18
+                rightPadding: 18
+                onClicked: root.reject()
+                background: Rectangle {
+                    radius: 2
+                    color: cancelBtn.down ? Qt.darker(Theme.parchmentBase, 1.05)
+                                          : (cancelBtn.hovered ? Theme.parchmentBase : "transparent")
+                    border.color: Theme.borderStrong
+                    border.width: 1
+                }
+                contentItem: Label {
+                    text: qsTr("Cancel")
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: Theme.smallFont + 1
+                    font.weight: Font.DemiBold
+                    font.letterSpacing: 1.3
+                    color: Theme.ink
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+
+            AbstractButton {
+                id: addBtn
+                implicitHeight: 32
+                leftPadding: 22
+                rightPadding: 22
+                enabled: root._selectedId.length > 0
+                opacity: enabled ? 1.0 : 0.45
+                onClicked: root._accept()
+
+                background: Rectangle {
+                    radius: 2
+                    color: addBtn.down ? Qt.darker(root._accent, 1.25) : root._accent
+                    border.color: Qt.darker(root._accent, 1.4)
+                    border.width: 1
+                }
+                contentItem: RowLayout {
+                    spacing: 6
+                    Label {
+                        text: "修"
+                        font.family: Theme.fontKanji
+                        font.pixelSize: 16
+                        color: Theme.parchmentBase
+                        opacity: 0.95
+                    }
+                    Label {
+                        text: qsTr("Add")
+                        font.family: Theme.fontDisplay
+                        font.pixelSize: Theme.smallFont + 1
+                        font.weight: Font.DemiBold
+                        font.letterSpacing: 1.6
+                        color: Theme.parchmentBase
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
                 }
             }
         }

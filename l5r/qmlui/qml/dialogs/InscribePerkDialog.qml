@@ -38,6 +38,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Theme 1.0
 
+import "../widgets" as Widgets
+
 Dialog {
     id: dlg
     parent: Overlay.overlay
@@ -159,6 +161,10 @@ Dialog {
         border.color: Theme.borderStrong
         border.width: 1
         radius: 2
+        // Same fibre overlay the MainSheet uses, so the dialog reads
+        // as a page lifted off the document rather than a flat card.
+        Widgets.RicePaperOverlay {
+        }
     }
 
     // The Dialog's default header is plain; replace it with a kakemono
@@ -206,6 +212,7 @@ Dialog {
                     text: dlg._isFlaw ? qsTr("the gods weigh hardship and return the difference in experience") : qsTr("choose a gift to inscribe into your samurai's chronicle")
                     font.italic: true
                     font.pixelSize: Theme.smallFont
+                    color: Theme.ink
                     opacity: 0.7
                     wrapMode: Text.WordWrap
                 }
@@ -267,6 +274,7 @@ Dialog {
                         font.pixelSize: Theme.bodyFont
                         font.italic: text.length === 0
                         color: Theme.ink
+                        placeholderTextColor: "#8a7a65"
                         onTextChanged: dlg._search = text
                     }
                 }
@@ -400,6 +408,8 @@ Dialog {
                 background: Rectangle {
                     color: Theme.parchmentSidebar
                     radius: 0
+                    Widgets.RicePaperOverlay {
+                    }
                 }
                 palette.windowText: Theme.ink
                 palette.text: Theme.ink
@@ -436,8 +446,12 @@ Dialog {
                                 dlg._selectedRank = 1;
                             }
                             dlg._subtype = "";
-                            dlg._overrideOn = false;
                             dlg._overrideCost = dlg._suggestedCost;
+                            // No-fixed-cost rules force the manual path
+                            // straight away -- mirrors the Edit dialog so
+                            // the player isn't faced with a 0 XP plaque
+                            // and a locked switch.
+                            dlg._overrideOn = dlg._suggestedCost === 0;
                         }
 
                         background: Rectangle {
@@ -497,6 +511,8 @@ Dialog {
                 background: Rectangle {
                     color: Theme.parchment
                     radius: 0
+                    Widgets.RicePaperOverlay {
+                    }
                 }
                 palette.windowText: Theme.ink
                 palette.text: Theme.ink
@@ -700,6 +716,8 @@ Dialog {
                             text: dlg._subtype
                             onTextEdited: dlg._subtype = text
                             placeholderText: dlg._isFlaw ? qsTr("circumstance, target, or detail…") : qsTr("name, ally, or detail…")
+                            color: Theme.ink
+                            placeholderTextColor: "#8a7a65"
                             background: Rectangle {
                                 color: Theme.parchmentBase
                                 border.color: Theme.borderSubtle
@@ -865,6 +883,11 @@ Dialog {
                                 Switch {
                                     id: overrideSwitch
                                     checked: dlg._overrideOn
+                                    // Disable when the rule has no fixed
+                                    // cost: the manual SpinBox is the only
+                                    // valid input, so the toggle would be
+                                    // meaningless. Matches EditPerkDialog.
+                                    enabled: dlg._suggestedCost > 0
                                     onToggled: {
                                         dlg._overrideOn = checked;
                                         if (checked) {
@@ -880,7 +903,10 @@ Dialog {
                                 }
                                 Label {
                                     Layout.fillWidth: true
-                                    text: dlg._overrideOn ? qsTr("Manual cost — agreed with your GM.") : qsTr("Override the suggested cost")
+                                    text: dlg._suggestedCost === 0
+                                        ? qsTr("This rule has no fixed cost; set one manually.")
+                                        : (dlg._overrideOn ? qsTr("Manual cost — agreed with your GM.")
+                                                           : qsTr("Override the suggested cost"))
                                     font.pixelSize: Theme.bodyFont
                                     font.italic: !dlg._overrideOn
                                     color: dlg._overrideOn ? Theme.accent : Theme.ink
@@ -930,6 +956,8 @@ Dialog {
     footer: Rectangle {
         implicitHeight: 56
         color: Theme.parchmentSidebar
+        Widgets.RicePaperOverlay {
+        }
         Rectangle {
             anchors.left: parent.left
             anchors.right: parent.right

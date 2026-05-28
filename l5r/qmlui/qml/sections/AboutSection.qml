@@ -5,7 +5,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-
 import Theme 1.0
 
 ColumnLayout {
@@ -66,23 +65,10 @@ ColumnLayout {
         textFormat: Text.RichText
         color: palette.windowText
         linkColor: Theme.accent
-        onLinkActivated: function(link) { Qt.openUrlExternally(link) }
-        text: qsTr(
-              "<p><a href=\"%1\">%2</a></p>"
-            + "<p>Report bugs and send in your ideas <a href=\"%3\">here</a>.</p>"
-            + "<p>To learn more about Legend of the Five Rings, visit "
-            + "<a href=\"%4\">the L5R RPG home page</a>.</p>"
-            + "<p>All rights on Legend of the Five Rings RPG belong to "
-            + "<a href=\"%5\">Fantasy Flight Games</a>.</p>"
-            + "<p>Get the latest data packs "
-            + "<a href=\"%6\">on GitHub</a>.</p>"
-        )
-        .arg(about.info.projectPage)
-        .arg(about.info.projectPageName)
-        .arg(about.info.bugtraq)
-        .arg(about.info.l5rRpgHome)
-        .arg(about.info.companyHome)
-        .arg(about.info.dataPacks)
+        onLinkActivated: function (link) {
+            Qt.openUrlExternally(link);
+        }
+        text: qsTr("<p><a href=\"%1\">%2</a></p>" + "<p>Report bugs and send in your ideas <a href=\"%3\">here</a>.</p>" + "<p>To learn more about Legend of the Five Rings, visit " + "<a href=\"%4\">the L5R RPG home page</a>.</p>" + "<p>All rights on Legend of the Five Rings RPG belong to " + "<a href=\"%5\">Fantasy Flight Games</a>.</p>" + "<p>Get the latest data packs " + "<a href=\"%6\">on GitHub</a>.</p>").arg(about.info.projectPage).arg(about.info.projectPageName).arg(about.info.bugtraq).arg(about.info.l5rRpgHome).arg(about.info.companyHome).arg(about.info.dataPacks)
     }
 
     Label {
