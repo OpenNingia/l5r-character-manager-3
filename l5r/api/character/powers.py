@@ -238,3 +238,110 @@ def remove_kata(kata_id):
         api.character.set_dirty_flag(True)
         return True
     return False
+
+
+def _tattoo_source(kiho_):
+    """'<book>, p.<page>' citation for a tattoo (kiho) DAL row; the book
+    name alone when no page is set, or '' when the source is unknown.
+    Mirrors _kata_source / the legacy TattooDialog.update_book."""
+    try:
+        pack = kiho_.pack
+    except Exception:
+        pack = None
+    if not pack:
+        return u""
+    name = getattr(pack, "display_name", "") or u""
+    page = getattr(kiho_, "page", 0) or 0
+    if name and page:
+        return u"{}, p.{}".format(name, page)
+    return name
+
+
+def get_all_tattoo():
+    """ids of the tattoos the active character bears.
+
+    A tattoo shares storage with a kiho -- both are KihoAdv entries
+    (adv.type == 'kiho') -- so they are told apart by the kind of power
+    they reference: a tattoo's DAL row has type == 'tattoo'. This returns
+    only the tattoo ids, leaving the proper kiho to the kiho slice."""
+    out = []
+    for kid in get_all_kiho():
+        k = api.data.powers.get_kiho(kid)
+        if k and k.type == 'tattoo':
+            out.append(kid)
+    return out
+
+
+def get_all_buyable_tattoo():
+    """Catalogue of tattoos the active character does not yet bear, each
+    bundled with what a chooser needs: id, name, prose description and a
+    source citation.
+
+    Tattoos are the mystic marks of the Togashi Order. Unlike kiho they
+    carry no element, mastery or XP cost -- they are free. The legacy
+    TattooDialog nominally gated them on Togashi membership, but that
+    check was disabled in practice (always eligible), so every unowned
+    tattoo is offered here. Returns plain dicts, sorted by name."""
+    pc = get_context().pc
+    if pc is None:
+        return []
+
+    owned = set(get_all_tattoo())
+    out = []
+    for k in api.data.powers.kiho():
+        if k.type != 'tattoo' or k.id in owned:
+            continue
+        out.append({
+            "id":          k.id,
+            "name":        k.name or k.id,
+            "description": getattr(k, "desc", "") or "",
+            "source":      _tattoo_source(k),
+        })
+    out.sort(key=lambda r: (r["name"] or "").lower())
+    return out
+
+
+def buy_tattoo(tattoo_id):
+    """Acquire a tattoo for the active character.
+
+    Tattoos are free (4e RAW: the Togashi ise zumi bear them at no XP
+    cost), so this appends a zero-cost KihoAdv directly rather than
+    routing through purchase_advancement. Lifted from the legacy
+    L5RCMCore.buy_tattoo so the QWidget and QML front-ends share one
+    path. Returns a ``CMErrors``: INTERNAL_ERROR for an unknown id,
+    NO_ERROR on success. Owns the dirty flag per the setter contract."""
+    kiho_ = api.data.powers.get_kiho(tattoo_id)
+    if not kiho_:
+        log.api.error(u"tattoo not found: %s", tattoo_id)
+        return api.data.CMErrors.INTERNAL_ERROR
+
+    adv = l5r.models.advances.KihoAdv(kiho_.id, kiho_.id, 0)
+    adv.desc = api.tr(u'{0} Tattoo').format(kiho_.name)
+
+    api.character.append_advancement(adv)
+    api.character.set_dirty_flag(True)
+    return api.data.CMErrors.NO_ERROR
+
+
+def remove_tattoo(tattoo_id):
+    """Remove a tattoo: drop the KihoAdv that granted it. Returns True
+    when an entry was removed. Owns the dirty flag per the setter
+    contract. A character bears any given tattoo at most once (the
+    chooser filters out owned ones), so keying removal by id is
+    unambiguous -- no opaque advancement handle needs to cross the UI
+    boundary."""
+    pc = get_context().pc
+    if pc is None:
+        return False
+    target = None
+    for adv in pc.advans or []:
+        if adv.type == 'kiho' and getattr(adv, 'kiho', None) == tattoo_id:
+            target = adv
+            break
+    if target is None:
+        log.api.warning(u"remove_tattoo: character does not bear tattoo %s", tattoo_id)
+        return False
+    if api.character.remove_advancement(target):
+        api.character.set_dirty_flag(True)
+        return True
+    return False

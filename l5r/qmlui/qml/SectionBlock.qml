@@ -99,6 +99,8 @@ Item {
                     return techniquesBody;
                 case "kata":
                     return kataBody;
+                case "tattoo":
+                    return tattooBody;
                 case "advancements":
                     return advancementsBody;
                 case "perks":
@@ -141,6 +143,12 @@ Item {
             Component {
                 id: kataBody
                 Sections.KataSection {
+                }
+            }
+
+            Component {
+                id: tattooBody
+                Sections.TattooSection {
                 }
             }
 

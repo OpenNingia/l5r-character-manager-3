@@ -446,13 +446,13 @@ class L5RCMCore(QtWidgets.QMainWindow):
         return CMErrors.NO_ERROR
 
     def buy_tattoo(self, kiho):
-        adv = models.KihoAdv(kiho.id, kiho.id, 0)
-        adv.desc = self.tr('{0} Tattoo').format(kiho.name)
-
-        self.pc.add_advancement(adv)
-        self.update_from_model()
-
-        return CMErrors.NO_ERROR
+        # Delegates to the shared api purchase path so the QWidget and
+        # QML UIs use one implementation (the api setter owns the dirty
+        # flag); we only drive the QWidget pull-refresh on success.
+        res = api.character.powers.buy_tattoo(kiho.id)
+        if res == CMErrors.NO_ERROR:
+            self.update_from_model()
+        return res
 
     def get_character_full_name(self):
 

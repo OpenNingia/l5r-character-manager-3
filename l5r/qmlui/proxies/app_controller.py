@@ -70,6 +70,7 @@ _TAB_DEFS = [
     ("spells",        "Spells",        "呪"),  # ju -- spell / incantation
     ("kata",          "Kata",          "型"),  # kata -- form
     ("kiho",          "Kiho",          "気"),  # ki -- spirit / breath
+    ("tattoo",        "Tattoos",       "彫"),  # chō -- carve / engrave (irezumi)
     ("advancements",  "Advancements",  "道"),  # dō -- way / path
     ("weapons",       "Weapons",       "刀"),  # tō -- katana / blade
     ("misc",          "Miscellanea",   "雑"),  # zatsu -- miscellaneous (modifiers + equipment)
@@ -664,6 +665,37 @@ class AppController(QObject):
         Property so mid-session datapack imports show up without a
         restart."""
         return api.character.powers.get_all_buyable_kata()
+
+    # --- tattoo ------------------------------------------------------
+
+    @Slot(str)
+    def buyTattoo(self, tattoo_id):
+        """Receive a tattoo by id. Delegates to the api setter (which
+        owns the dirty flag); refreshes derived state on success.
+        Tattoos are free, so there is no XP gate -- a missing id is the
+        only failure mode."""
+        if not tattoo_id:
+            return
+        if api.character.powers.buy_tattoo(tattoo_id) == CMErrors.NO_ERROR:
+            api.character.notify_character_refreshed()
+
+    @Slot(str)
+    def removeTattoo(self, tattoo_id):
+        """Remove a tattoo by id. Delegates to the api setter (which owns
+        the dirty flag), then refreshes derived state on success."""
+        if not tattoo_id:
+            return
+        if api.character.powers.remove_tattoo(tattoo_id):
+            api.character.notify_character_refreshed()
+
+    @Slot(result="QVariantList")
+    def availableTattooToBuy(self):
+        """Catalogue feed for BuyTattooDialog -- the tattoos the
+        character may still receive (see
+        api.character.powers.get_all_buyable_tattoo). Slot rather than
+        Property so mid-session datapack imports show up without a
+        restart."""
+        return api.character.powers.get_all_buyable_tattoo()
 
     # --- clan / family / school choosers -----------------------------
 

@@ -476,6 +476,7 @@ Each section of the main navigation uses a dedicated kanji as both the sidebar i
 | Spells | 呪 | U+546A | Spell |
 | Kata | 型 | U+578B | Form/Kata |
 | Kiho | 気 | U+6C17 | Ki/Spirit |
+| Tattoos | 彫 | U+5F6B | Carve/Engrave (irezumi) |
 | Advancements | 道 | U+9053 | Path/Way |
 | Weapons | 刀 | U+5200 | Blade |
 | Miscellanea | 雑 | U+96D1 | Miscellaneous |
