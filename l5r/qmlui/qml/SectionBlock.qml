@@ -111,6 +111,8 @@ Item {
                     return perksBody;
                 case "weapons":
                     return weaponsBody;
+                case "settings":
+                    return settingsBody;
                 default:
                     return placeholderBody;
                 }
@@ -185,6 +187,12 @@ Item {
             Component {
                 id: weaponsBody
                 Sections.WeaponsSection {
+                }
+            }
+
+            Component {
+                id: settingsBody
+                Sections.SettingsSection {
                 }
             }
 

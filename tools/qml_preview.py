@@ -98,6 +98,7 @@ def main():
     # Null stubs so proxy-guarded getters return empty rather than ReferenceError.
     engine.rootContext().setContextProperty("appCtrl", None)
     engine.rootContext().setContextProperty("pcProxy", None)
+    engine.rootContext().setContextProperty("appSettings", None)
 
     tmp = None
     if args.dialog:

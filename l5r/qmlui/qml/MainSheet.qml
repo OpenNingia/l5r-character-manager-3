@@ -407,4 +407,23 @@ ApplicationWindow {
             }
         }
     }
+
+    // Transient notices that sit above the sheet, bottom-centred. Driven
+    // by the settings proxy's reloadRequired signal (language / front-end
+    // changes that only take effect on the next launch). Null-guarded:
+    // the preview tool binds appSettings to null.
+    Widgets.Toast {
+        id: toast
+        z: 1000
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: Theme.s5
+    }
+
+    Connections {
+        target: appSettings
+        function onReloadRequired(message) {
+            toast.show(message);
+        }
+    }
 }

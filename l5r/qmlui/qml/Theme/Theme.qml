@@ -192,6 +192,18 @@ QtObject {
     readonly property var tabularNumbers: ({
             "tnum": 1
         })
+    // --- motion (design system §9) ---------------------------------
+    // Subtle, functional durations (ms). The setting is meditative --
+    // no playful bounces. Easing *type* is chosen per call site
+    // (Easing.OutQuad for entrances, InQuad for exits, InOutQuad for
+    // the symmetric toggle) since QML easing is an enum, not a value.
+    //   durHover -- button hover/press feedback (§9: 120 ms)
+    //   durFast  -- list-item / dropdown / dialog-close (§9: 150 ms)
+    //   durBase  -- dialog open, toggle switch, toast (§9: 200 ms)
+    readonly property int durHover: 120
+    readonly property int durFast: 150
+    readonly property int durBase: 200
+
     readonly property real watermarkOpacity: 0.06
     // Rice-paper fibre noise drawn on top of the parchment fill in
     // RicePaperOverlay. 0.06 reads as texture without dirtying the

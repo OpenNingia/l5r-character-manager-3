@@ -375,13 +375,20 @@ def main():
         startup_action = _resolve_startup_action(sys.argv)
         log.app.debug(u"startup action: %s", startup_action)
 
-        # Optional QML UI branch. Dev-only: defaults to widgets, unknown
-        # values fall back to widgets with a warning.
-        ui_mode = os.environ.get(UI_MODE_ENV, "widgets").strip().lower()
-        if ui_mode not in ("widgets", "qml"):
-            log.app.warning(u"Unknown %s=%r, falling back to widgets",
-                            UI_MODE_ENV, ui_mode)
-            ui_mode = "widgets"
+        # Choose the front-end. The L5RCM_UI env var is a dev override:
+        # when set it wins (and unknown values fall back to widgets with a
+        # warning). When it is unset, the persisted `ui/use_qml_ui`
+        # preference decides -- the new QML UI is the default, the legacy
+        # QWidget UI is the opt-out (toggled from either Settings panel).
+        env_mode = os.environ.get(UI_MODE_ENV)
+        if env_mode is not None:
+            ui_mode = env_mode.strip().lower()
+            if ui_mode not in ("widgets", "qml"):
+                log.app.warning(u"Unknown %s=%r, falling back to widgets",
+                                UI_MODE_ENV, ui_mode)
+                ui_mode = "widgets"
+        else:
+            ui_mode = "qml" if settings.ui.use_qml_ui else "widgets"
 
         if ui_mode == "qml":
             from l5r.qmlui import run_qml_app

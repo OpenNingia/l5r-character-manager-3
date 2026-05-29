@@ -21,6 +21,7 @@ import l5r.api as api
 import l5r.api.data
 from l5r.qmlui.proxies.app_controller import AppController
 from l5r.qmlui.proxies.pc_proxy import PcProxy
+from l5r.qmlui.proxies.settings_proxy import SettingsProxy
 from l5r.util import log
 from l5r.util.settings import L5RCMSettings
 
@@ -132,6 +133,7 @@ def run_qml_app(qapp, locale, startup_action):
 
     pc_proxy = PcProxy()
     controller = AppController()
+    settings_proxy = SettingsProxy()
 
     # Start with a fresh, in-memory character so pcProxy.* getters never
     # see ctx.pc == None. The QWidget path does the same via
@@ -147,6 +149,7 @@ def run_qml_app(qapp, locale, startup_action):
     engine.addImportPath(str(qml_dir))
     engine.rootContext().setContextProperty("pcProxy", pc_proxy)
     engine.rootContext().setContextProperty("appCtrl", controller)
+    engine.rootContext().setContextProperty("appSettings", settings_proxy)
 
     qml_main = qml_dir / "MainSheet.qml"
     engine.load(QUrl.fromLocalFile(str(qml_main)))
@@ -159,6 +162,7 @@ def run_qml_app(qapp, locale, startup_action):
     qapp._l5r_qml_engine = engine
     qapp._l5r_pc_proxy = pc_proxy
     qapp._l5r_app_controller = controller
+    qapp._l5r_settings_proxy = settings_proxy
 
     if startup_action is not None:
         controller.apply_startup(*startup_action)

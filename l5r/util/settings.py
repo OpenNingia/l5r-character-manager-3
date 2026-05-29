@@ -80,6 +80,7 @@ class L5RCMSettings_UI(object):
         self.use_system_font = self.use_system_font
         self.user_font = self.user_font
         self.banner_enabled = self.banner_enabled
+        self.use_qml_ui = self.use_qml_ui
 
     # getter
     @property
@@ -114,6 +115,13 @@ class L5RCMSettings_UI(object):
     def banner_enabled(self):
         return _is_true(self._qsettings.value('ui/isbannerenabled', True))
 
+    @property
+    def use_qml_ui(self):
+        # The new parchment QML front-end is the default; the legacy
+        # QWidget UI is the opt-out. The L5RCM_UI env var still overrides
+        # this at startup (dev escape hatch) -- see l5r.main.main().
+        return _is_true(self._qsettings.value('ui/use_qml_ui', True))
+
     # setter
     @table_row_color_bg.setter
     def table_row_color_bg(self, value):
@@ -146,6 +154,10 @@ class L5RCMSettings_UI(object):
     @banner_enabled.setter
     def banner_enabled(self, value):
         self._qsettings.setValue('ui/isbannerenabled', value)
+
+    @use_qml_ui.setter
+    def use_qml_ui(self, value):
+        self._qsettings.setValue('ui/use_qml_ui', value)
 
 
 class L5RCMSettings_PcExport(object):
