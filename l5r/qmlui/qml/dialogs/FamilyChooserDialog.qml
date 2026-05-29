@@ -1,25 +1,34 @@
 // Copyright (C) 2014-2026 Daniele Simonetti
 // QML replacement for l5r/widgets/familychooser.py FamilyChooserDialog.
 // Two combos (Clan, Family) + source-book and bonus-trait readouts.
-// Closes via OK to commit the selection through appCtrl.setFamily(),
-// or Cancel to discard.
+// Closes via Accept to commit the selection through appCtrl.setFamily(),
+// or Cancel to discard. Built on Widgets.L5RDialog (shared chrome); the
+// blue accent + 家 seal mark it as an identity/configuration dialog.
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Theme 1.0
+import "../widgets" as Widgets
 
-Dialog {
+Widgets.L5RDialog {
     id: root
-    title: qsTr("Clan and Family")
-    standardButtons: Dialog.Ok | Dialog.Cancel
-    modal: true
     width: 480
+    padding: Theme.s5
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+
+    // --- chrome ---------------------------------------------------
+    title: qsTr("Clan and Family")
+    tagline: qsTr("a Samurai should serve its clan first and foremost")
+    seal: "家"   // ie -- house / family
+    accent: Theme.secondary
+    accentDark: Theme.secondaryDark
+    acceptText: qsTr("Accept")
+    acceptEnabled: _selectedFamilyId.length > 0
 
     // Caller sets this before open() so we can preselect.
     property string initialFamilyId: ""
 
-    // Working state, separate from the model until OK fires.
+    // Working state, separate from the model until Accept fires.
     property string _selectedClanId: ""
     property string _selectedFamilyId: ""
     property var _families: []
@@ -73,105 +82,82 @@ Dialog {
         return _families[familyCombo.currentIndex];
     }
 
-    contentItem: ColumnLayout {
-        spacing: 14
+    // --- body -----------------------------------------------------
+    contentItem: GridLayout {
+        columns: 2
+        columnSpacing: 12
+        rowSpacing: 8
 
         Label {
+            text: qsTr("Clan:")
+        }
+        Widgets.L5RComboBox {
+            id: clanCombo
             Layout.fillWidth: true
-            Layout.topMargin: 6
-            horizontalAlignment: Text.AlignHCenter
-            text: qsTr("Select Clan and Family")
-            font.family: Theme.fontDisplay
-            font.pixelSize: Theme.fsHeading1
-            font.weight: Font.DemiBold
-            color: Theme.heading
+            textRole: "name"
+            accent: root.accent
+            model: {
+                var clans = appCtrl ? appCtrl.clansList() : [];
+                return [{
+                        "id": "",
+                        "name": qsTr("No Clan")
+                    }].concat(clans);
+            }
+            onActivated: function (index) {
+                var rec = clanCombo.model[index];
+                root._selectedClanId = rec ? rec.id : "";
+                root._refreshFamilies();
+                root._syncFamilyCombo();
+            }
+        }
+
+        Label {
+            text: qsTr("Family:")
+        }
+        Widgets.L5RComboBox {
+            id: familyCombo
+            Layout.fillWidth: true
+            textRole: "name"
+            accent: root.accent
+            model: root._families
+            onActivated: function (index) {
+                var rec = root._families[index];
+                root._selectedFamilyId = rec ? rec.id : "";
+            }
+        }
+
+        Label {
+            text: qsTr("Source:")
         }
         Label {
             Layout.fillWidth: true
-            horizontalAlignment: Text.AlignHCenter
-            text: qsTr("a Samurai should serve its clan first and foremost")
-            opacity: 0.75
             font.italic: true
-            color: Theme.accentMuted
+            opacity: 0.8
+            text: {
+                var rec = root._currentFamilyRecord();
+                if (!rec || !rec.book)
+                    return "";
+                return rec.page ? qsTr("%1, page %2").arg(rec.book).arg(rec.page) : rec.book;
+            }
         }
 
-        GridLayout {
+        Rectangle {
+            Layout.columnSpan: 2
             Layout.fillWidth: true
-            Layout.topMargin: 10
-            columns: 2
-            columnSpacing: 12
-            rowSpacing: 8
+            Layout.preferredHeight: 1
+            color: Theme.divider
+            opacity: Theme.dividerOpacity
+        }
 
-            Label {
-                text: qsTr("Clan:")
-            }
-            ComboBox {
-                id: clanCombo
-                Layout.fillWidth: true
-                textRole: "name"
-                model: {
-                    var clans = appCtrl ? appCtrl.clansList() : [];
-                    return [{
-                            "id": "",
-                            "name": qsTr("No Clan")
-                        }].concat(clans);
-                }
-                onActivated: function (index) {
-                    var rec = clanCombo.model[index];
-                    root._selectedClanId = rec ? rec.id : "";
-                    root._refreshFamilies();
-                    root._syncFamilyCombo();
-                }
-            }
-
-            Label {
-                text: qsTr("Family:")
-            }
-            ComboBox {
-                id: familyCombo
-                Layout.fillWidth: true
-                textRole: "name"
-                model: root._families
-                onActivated: function (index) {
-                    var rec = root._families[index];
-                    root._selectedFamilyId = rec ? rec.id : "";
-                }
-            }
-
-            Label {
-                text: qsTr("Source:")
-            }
-            Label {
-                Layout.fillWidth: true
-                font.italic: true
-                opacity: 0.8
-                text: {
-                    var rec = root._currentFamilyRecord();
-                    if (!rec || !rec.book)
-                        return "";
-                    return rec.page ? qsTr("%1, page %2").arg(rec.book).arg(rec.page) : rec.book;
-                }
-            }
-
-            Rectangle {
-                Layout.columnSpan: 2
-                Layout.fillWidth: true
-                Layout.preferredHeight: 1
-                color: Theme.divider
-                opacity: Theme.dividerOpacity
-            }
-
-            Label {
-                text: qsTr("Bonus:")
-            }
-            Label {
-                Layout.fillWidth: true
-                color: Theme.positive
-                font.weight: Font.DemiBold
-                text: {
-                    var rec = root._currentFamilyRecord();
-                    return rec && rec.trait ? qsTr("+1 %1").arg(rec.trait) : "";
-                }
+        Label {
+            text: qsTr("Bonus:")
+        }
+        Label {
+            Layout.fillWidth: true
+            color: Theme.positive
+            text: {
+                var rec = root._currentFamilyRecord();
+                return rec && rec.trait ? qsTr("+1 %1").arg(rec.trait) : "";
             }
         }
     }

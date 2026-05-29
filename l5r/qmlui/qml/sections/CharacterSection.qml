@@ -779,13 +779,16 @@ ColumnLayout {
     // -----------------------------------------------------------------
     // Inline XP-limit prompt -- avoids QInputDialog (no widget reuse).
     // -----------------------------------------------------------------
-    Dialog {
+    Widgets.L5RDialog {
         id: expLimitDlg
-        parent: Overlay.overlay
-        anchors.centerIn: Overlay.overlay
-        modal: true
+        width: 380
+        padding: Theme.s5
         title: qsTr("Set Experience Limit")
-        standardButtons: Dialog.Ok | Dialog.Cancel
+        tagline: qsTr("the ceiling the chronicle may spend")
+        seal: "経"   // kei -- experience
+        accent: Theme.secondary
+        accentDark: Theme.secondaryDark
+        acceptText: qsTr("Set")
 
         function openWithCurrent() {
             xpSpin.value = section._prog.rawXpLimit;
@@ -794,15 +797,20 @@ ColumnLayout {
         onAccepted: if (appCtrl)
             appCtrl.setExpLimit(xpSpin.value)
 
-        contentItem: ColumnLayout {
-            spacing: 10
+        contentItem: RowLayout {
+            spacing: 12
             Label {
-                text: qsTr("XP limit:")
-                Layout.alignment: Qt.AlignHCenter
+                text: qsTr("XP limit")
+                font.family: Theme.fontDisplay
+                font.pixelSize: Theme.fsCaption
+                font.weight: Theme.headingWeight
+                font.letterSpacing: 1.6
+                color: Theme.heading
+                Layout.alignment: Qt.AlignVCenter
             }
             SpinBox {
                 id: xpSpin
-                Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
                 from: 0
                 to: 10000
                 editable: true

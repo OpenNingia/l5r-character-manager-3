@@ -1,28 +1,18 @@
 // Copyright (C) 2014-2026 Daniele Simonetti
-// EditPerkDialog -- in-place editor for a previously-inscribed merit
-// or flaw. Mirrors the legacy BuyPerkDialog edit mode: the rule and
-// rank stay locked (changing those is semantically a remove+rebuy);
-// only the per-instance notes (`extra`) and the XP figure are
-// editable.
+// EditPerkDialog -- in-place editor for a previously-inscribed merit or
+// flaw. Mirrors the legacy BuyPerkDialog edit mode: the rule and rank
+// stay locked (changing those is semantically a remove+rebuy); only the
+// per-instance notes (`extra`) and the XP figure are editable.
 //     editDlg.present({
-//         advId:         "...",
-//         name:          "Allies",
-//         category:      "Social",
-//         rank:          2,
-//         cost:          4,
-//         suggestedCost: 7,
-//         subtype:       "Yasuki Trading",
-//         kind:          "merit"           // "merit" | "flaw"
+//         advId: "...", name: "Allies", category: "Social", rank: 2,
+//         cost: 4, suggestedCost: 7, subtype: "Yasuki Trading",
+//         kind: "merit"   // "merit" | "flaw"
 //     })
 // On accept, calls appCtrl.editPerk(advId, extra, overrideCost) where
 // `overrideCost == -1` means "use the rulebook suggestion (with any
-// applicable clan/tag discount)". Any non-negative value is the
-// player's manual cost.
-// Aesthetic: a narrow modal, the same kakemono header and parchment
-// surfaces as InscribePerkDialog, but no catalogue pane -- the perk
-// is fixed at open() time. The price scroll widget is the same shape
-// (suggested-plaque <-> override-inkwell), so override behaviour is
-// the same gesture the player already learned during inscribe.
+// applicable clan/tag discount)". Any non-negative value is manual.
+// Built on Widgets.L5RDialog (shared header/footer/background); the body
+// here is the read-only target plaque + notes field + price scroll.
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -30,13 +20,10 @@ import Theme 1.0
 
 import "../widgets" as Widgets
 
-Dialog {
+Widgets.L5RDialog {
     id: dlg
-    parent: Overlay.overlay
-    anchors.centerIn: Overlay.overlay
-    modal: true
-    standardButtons: Dialog.NoButton
-    closePolicy: Popup.CloseOnEscape
+    width: Math.min(Overlay.overlay ? Overlay.overlay.width - 80 : 520, 520)
+    padding: Theme.s5
 
     // --- target + edit state --------------------------------------
     property string kind: "merit"
@@ -52,15 +39,19 @@ Dialog {
     // --- derived ---------------------------------------------------
     readonly property bool _isFlaw: kind === "flaw"
     readonly property color _accent: _isFlaw ? Theme.accent : Theme.secondary
-    readonly property color _accentSoft: _isFlaw ? Theme.accentSoft : Qt.lighter(Theme.secondary, 1.7)
     readonly property string _seal: _isFlaw ? "業" : "縁"
-
     readonly property int _effectiveCost: _overrideOn ? _overrideCost : suggestedCost
 
-    // --- size ------------------------------------------------------
-    width: Math.min(Overlay.overlay ? Overlay.overlay.width - 80 : 520, 520)
-
+    // --- chrome (via L5RDialog) -----------------------------------
     title: _isFlaw ? qsTr("Edit Burden") : qsTr("Edit Blessing")
+    tagline: qsTr("notes and cost; the rule and rank are fixed")
+    seal: _seal
+    accent: _accent
+    accentDark: _isFlaw ? Theme.accentMuted : Theme.secondaryDark
+    acceptText: qsTr("Save")
+    statusText: _isFlaw ? qsTr("This burden will grant +%1 XP.").arg(_effectiveCost) : qsTr("This blessing will require %1 XP.").arg(_effectiveCost)
+    onAccepted: if (appCtrl && appCtrl.editPerk)
+        appCtrl.editPerk(dlg.advId, dlg._subtype, dlg._overrideOn ? dlg._overrideCost : -1)
 
     // --- entrypoint -----------------------------------------------
     // `data` is a QVariantMap (or JS object) with the fields listed in
@@ -76,91 +67,17 @@ Dialog {
         dlg.perkRank = data.rank || 1;
         dlg.suggestedCost = data.suggestedCost || 0;
         dlg._subtype = data.subtype || "";
-        // The override is "on" iff the current cost differs from the
-        // rulebook suggestion (and a suggestion exists). Pre-seeding it
-        // this way means re-opening edit on a custom-cost perk lands on
-        // the SpinBox with the existing figure, not the suggestion.
-        var current = data.cost || 0;
         // Open in override mode only when the stored cost diverges from
         // the rulebook suggestion. A 0 XP suggestion is legitimate (clan
         // discounts make some merits free), so it no longer forces the
         // manual path -- the player can still flip the switch by hand.
+        var current = data.cost || 0;
         dlg._overrideOn = current !== dlg.suggestedCost;
         dlg._overrideCost = current;
         dlg.open();
     }
 
-    function _accept() {
-        if (!appCtrl || !appCtrl.editPerk) {
-            dlg.accept();
-            return;
-        }
-        appCtrl.editPerk(dlg.advId, dlg._subtype, dlg._overrideOn ? dlg._overrideCost : -1);
-        dlg.accept();
-    }
-
-    // --- backplate ------------------------------------------------
-    background: Rectangle {
-        color: Theme.parchment
-        border.color: Theme.borderStrong
-        border.width: 1
-        radius: 2
-        // Same fibre overlay the MainSheet uses, so the dialog reads
-        // as a page lifted off the document rather than a flat card.
-        Widgets.RicePaperOverlay {
-        }
-    }
-
-    header: Item {
-        implicitHeight: 60
-        Rectangle {
-            anchors.fill: parent
-            color: dlg._accentSoft
-            opacity: 0.55
-        }
-        Rectangle {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            height: 1
-            color: dlg._accent
-            opacity: 0.45
-        }
-        RowLayout {
-            anchors.fill: parent
-            anchors.leftMargin: 16
-            anchors.rightMargin: 16
-            spacing: 12
-
-            Label {
-                text: dlg._seal
-                font.family: Theme.fontKanji
-                font.pixelSize: 36
-                color: dlg._accent
-                opacity: 0.88
-            }
-            ColumnLayout {
-                Layout.fillWidth: true
-                spacing: 0
-                Label {
-                    text: dlg.title
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.fsHeading1
-                    font.weight: Theme.headingWeight
-                    font.letterSpacing: 1.5
-                    color: Theme.heading
-                }
-                Label {
-                    text: qsTr("notes and cost; the rule and rank are fixed")
-                    font.italic: true
-                    font.pixelSize: Theme.fsCaption
-                    color: Theme.ink
-                    opacity: 0.7
-                }
-            }
-        }
-    }
-
+    // --- body -----------------------------------------------------
     contentItem: ColumnLayout {
         spacing: 12
 
@@ -192,7 +109,7 @@ Dialog {
                         text: dlg.perkName
                         font.family: Theme.fontDisplay
                         font.pixelSize: Theme.fsHeading1
-                        font.weight: Font.DemiBold
+                        font.weight: Theme.wSemiBold
                         color: Theme.ink
                         elide: Text.ElideRight
                     }
@@ -247,30 +164,30 @@ Dialog {
         }
 
         // ---- Price scroll -- same visual vocabulary as
-        // InscribePerkDialog: suggested-plaque on the parchment by
-        // default; flipping the override switch swaps it for a crimson-
-        // rimmed inkwell SpinBox seeded with the current value, with a
-        // "reset to N" chip when the figure drifts from suggestion.
+        // InscribePerkDialog: suggested-plaque by default; flipping the
+        // override switch swaps it for a crimson-rimmed inkwell SpinBox
+        // seeded with the current value, with a "reset to N" chip when
+        // the figure drifts from suggestion.
         Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: priceBody.implicitHeight + 22
 
-            color: dlg._overrideOn ? Qt.rgba(0.690, 0.188, 0.188, 0.05) : Theme.parchmentInset
+            color: dlg._overrideOn ? Qt.rgba(Theme.accent.r, Theme.accent.g, Theme.accent.b, 0.05) : Theme.parchmentInset
             border.color: dlg._overrideOn ? Theme.accent : Theme.borderSubtle
             border.width: dlg._overrideOn ? 1.5 : 1
             radius: 2
 
-            Behavior on color  {
+            Behavior on color {
                 ColorAnimation {
                     duration: 160
                 }
             }
-            Behavior on border.color  {
+            Behavior on border.color {
                 ColorAnimation {
                     duration: 160
                 }
             }
-            Behavior on border.width  {
+            Behavior on border.width {
                 NumberAnimation {
                     duration: 160
                 }
@@ -404,7 +321,7 @@ Dialog {
                     Label {
                         Layout.fillWidth: true
                         text: dlg._overrideOn ? qsTr("Manual cost — agreed with your GM.") : qsTr("Override the suggested cost")
-                        font.pixelSize:Theme.fsBody 
+                        font.pixelSize: Theme.fsBody
                         font.italic: !dlg._overrideOn
                         color: dlg._overrideOn ? Theme.accent : Theme.ink
                         opacity: dlg._overrideOn ? 1.0 : 0.7
@@ -431,7 +348,7 @@ Dialog {
                             text: qsTr("reset to %1").arg(dlg.suggestedCost)
                             font.family: Theme.fontDisplay
                             font.pixelSize: 10
-                            font.weight: Font.DemiBold
+                            font.weight: Theme.wSemiBold
                             font.letterSpacing: 1.2
                             color: resetBtn.hovered ? Theme.parchmentBase : Theme.heading
                             horizontalAlignment: Text.AlignHCenter
@@ -439,50 +356,6 @@ Dialog {
                         }
                     }
                 }
-            }
-        }
-    }
-
-    footer: Rectangle {
-        implicitHeight: 52
-        color: Theme.parchmentSidebar
-        // Fibre texture matching the catalogue-pane / sidebar shade.
-        Widgets.RicePaperOverlay {
-        }
-        Rectangle {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            height: 1
-            color: Theme.heading
-            opacity: 0.35
-        }
-        RowLayout {
-            anchors.fill: parent
-            anchors.leftMargin: 16
-            anchors.rightMargin: 16
-            spacing: 10
-
-            Label {
-                Layout.fillWidth: true
-                text: dlg._isFlaw ? qsTr("This burden will grant +%1 XP.").arg(dlg._effectiveCost) : qsTr("This blessing will require %1 XP.").arg(dlg._effectiveCost)
-                font.italic: true
-                font.pixelSize:Theme.fsBody 
-                color: dlg._overrideOn ? Theme.accent : Theme.ink
-                opacity: dlg._overrideOn ? 1.0 : 0.75
-                wrapMode: Text.WordWrap
-            }
-
-            Widgets.L5RButton {
-                text: qsTr("Cancel")
-                primary: false
-                onClicked: dlg.reject()
-            }
-            Widgets.L5RButton {
-                text: qsTr("Save")
-                accent: dlg._accent
-                accentDark: dlg._isFlaw ? Theme.accentMuted : Theme.secondaryDark
-                onClicked: dlg._accept()
             }
         }
     }

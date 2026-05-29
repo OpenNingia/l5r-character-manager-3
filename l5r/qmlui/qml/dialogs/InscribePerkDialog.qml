@@ -40,13 +40,8 @@ import Theme 1.0
 
 import "../widgets" as Widgets
 
-Dialog {
+Widgets.L5RDialog {
     id: dlg
-    parent: Overlay.overlay
-    anchors.centerIn: Overlay.overlay
-    modal: true
-    standardButtons: Dialog.NoButton
-    closePolicy: Popup.CloseOnEscape
 
     // --- mode + selection state -----------------------------------
     property string kind: "merit"   // "merit" | "flaw"
@@ -89,6 +84,20 @@ Dialog {
     height: Math.min(Overlay.overlay ? Overlay.overlay.height - 80 : 640, 640)
 
     title: _isFlaw ? qsTr("Accept a Burden") : qsTr("Inscribe a Blessing")
+
+    // --- chrome (via L5RDialog) -----------------------------------
+    seal: _seal
+    tagline: _isFlaw ? qsTr("the gods weigh hardship and return the difference in experience") : qsTr("choose a gift to inscribe into your samurai's chronicle")
+    accent: _accent
+    accentDark: _isFlaw ? Theme.accentMuted : Theme.secondaryDark
+    acceptText: _isFlaw ? qsTr("Accept") : qsTr("Inscribe")
+    acceptGlyph: _seal
+    acceptEnabled: _selected !== null
+    statusText: _selected ? (_isFlaw ? qsTr("This burden will grant +%1 XP.").arg(_effectiveCost) : qsTr("This blessing will require %1 XP.").arg(_effectiveCost)) : ""
+    onAccepted: {
+        if (_selected && appCtrl && appCtrl.inscribePerk)
+            appCtrl.inscribePerk(dlg.kind, _selected.ruleId, _selectedRank, _subtype, _overrideOn ? _overrideCost : -1);
+    }
 
     // --- entrypoint -----------------------------------------------
     // Note: named `present` rather than `open` so it does not shadow
@@ -146,79 +155,7 @@ Dialog {
         return out;
     }
 
-    function _accept() {
-        if (!_selected)
-            return;
-        if (appCtrl && appCtrl.inscribePerk) {
-            appCtrl.inscribePerk(dlg.kind, _selected.ruleId, _selectedRank, _subtype, _overrideOn ? _overrideCost : -1);
-        }
-        dlg.accept();
-    }
-
-    // --- backplate ------------------------------------------------
-    background: Rectangle {
-        color: Theme.parchment
-        border.color: Theme.borderStrong
-        border.width: 1
-        radius: 2
-        // Same fibre overlay the MainSheet uses, so the dialog reads
-        // as a page lifted off the document rather than a flat card.
-        Widgets.RicePaperOverlay {
-        }
-    }
-
-    // The Dialog's default header is plain; replace it with a kakemono
-    // banner that carries the brush seal and the title in Cinzel.
-    header: Item {
-        implicitHeight: 64
-        Rectangle {
-            anchors.fill: parent
-            color: dlg._accentSoft
-            opacity: 0.55
-        }
-        Rectangle {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            height: 1
-            color: dlg._accent
-            opacity: 0.45
-        }
-        RowLayout {
-            anchors.fill: parent
-            anchors.leftMargin: 16
-            anchors.rightMargin: 16
-            spacing: 14
-
-            Label {
-                text: dlg._seal
-                font.family: Theme.fontKanji
-                font.pixelSize: 42
-                color: dlg._accent
-                opacity: 0.88
-            }
-            ColumnLayout {
-                Layout.fillWidth: true
-                spacing: 0
-                Label {
-                    text: dlg.title
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.fsHeading1 + 2
-                    font.weight: Theme.headingWeight
-                    font.letterSpacing: 1.6
-                    color: Theme.heading
-                }
-                Label {
-                    text: dlg._isFlaw ? qsTr("the gods weigh hardship and return the difference in experience") : qsTr("choose a gift to inscribe into your samurai's chronicle")
-                    font.italic: true
-                    font.pixelSize: Theme.fsCaption
-                    color: Theme.ink
-                    opacity: 0.7
-                    wrapMode: Text.WordWrap
-                }
-            }
-        }
-    }
+    padding: Theme.s1   // thin inset so the opaque two-pane body reveals the gold frame
 
     contentItem: ColumnLayout {
         spacing: 0
@@ -830,57 +767,4 @@ Dialog {
         }   // body RowLayout
     }
 
-    // --- footer -- Cancel / Inscribe ------------------------------
-    footer: Rectangle {
-        implicitHeight: 56
-        color: Theme.parchmentSidebar
-        Widgets.RicePaperOverlay {
-        }
-        Rectangle {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            height: 1
-            color: Theme.heading
-            opacity: 0.35
-        }
-        RowLayout {
-            anchors.fill: parent
-            anchors.leftMargin: 16
-            anchors.rightMargin: 16
-            spacing: 10
-
-            // A quiet recap on the left so the player can read the
-            // verdict without flicking their eyes back up to the plaque.
-            Label {
-                Layout.fillWidth: true
-                visible: dlg._selected !== null
-                text: dlg._isFlaw ? qsTr("This burden will grant +%1 XP.").arg(dlg._effectiveCost) : qsTr("This blessing will require %1 XP.").arg(dlg._effectiveCost)
-                font.italic: true
-                font.pixelSize:Theme.fsBody 
-                color: dlg._overrideOn ? Theme.accent : Theme.ink
-                opacity: dlg._overrideOn ? 1.0 : 0.75
-                wrapMode: Text.WordWrap
-            }
-            Item {
-                visible: dlg._selected === null
-                Layout.fillWidth: true
-            }
-
-            Widgets.L5RButton {
-                text: qsTr("Cancel")
-                primary: false
-                onClicked: dlg.reject()
-            }
-
-            Widgets.L5RButton {
-                text: dlg._isFlaw ? qsTr("Accept") : qsTr("Inscribe")
-                glyph: dlg._seal
-                accent: dlg._accent
-                accentDark: dlg._isFlaw ? Theme.accentMuted : Theme.secondaryDark
-                enabled: dlg._selected !== null
-                onClicked: dlg._accept()
-            }
-        }
-    }
 }

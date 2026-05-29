@@ -19,7 +19,7 @@ Widgets.L5RDialog {
     id: root
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
     width: Math.min(Overlay.overlay ? Overlay.overlay.width - 80 : 520, 520)
-    padding: 16
+    padding: Theme.s5
 
     // --- chrome (blue Blessing-style accent) ----------------------
     accent: Theme.secondary
@@ -50,7 +50,7 @@ Widgets.L5RDialog {
     }
 
     // --- body -----------------------------------------------------
-    ColumnLayout {
+    contentItem: ColumnLayout {
         spacing: 14
 
         // Empty-state notice when no candidates exist (rare -- requires

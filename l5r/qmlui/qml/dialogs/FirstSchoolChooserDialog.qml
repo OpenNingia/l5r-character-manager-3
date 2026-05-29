@@ -3,19 +3,27 @@
 // Three combos -- Clan, Basic School, Rank-1 Alternate Path (optional) --
 // plus source-book and bonus-trait readouts. The legacy dialog only
 // surfaces basic schools and rank-1 paths; advanced schools are reached
-// later through the Advancements tab.
+// later through the Advancements tab. Built on Widgets.L5RDialog.
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Theme 1.0
+import "../widgets" as Widgets
 
-Dialog {
+Widgets.L5RDialog {
     id: root
-    title: qsTr("L5R: CM - First School")
-    standardButtons: Dialog.Ok | Dialog.Cancel
-    modal: true
     width: 540
+    padding: Theme.s5
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+
+    // --- chrome ---------------------------------------------------
+    title: qsTr("Join your First School")
+    tagline: qsTr("in this phase you're limited to base schools")
+    seal: "流"   // ryū -- school / style
+    accent: Theme.secondary
+    accentDark: Theme.secondaryDark
+    acceptText: qsTr("Accept")
+    acceptEnabled: _selectedSchoolId.length > 0
 
     property string initialSchoolId: ""
 
@@ -78,131 +86,109 @@ Dialog {
         return _schools[schoolCombo.currentIndex];
     }
 
-    contentItem: ColumnLayout {
-        spacing: 14
+    // --- body -----------------------------------------------------
+    contentItem: GridLayout {
+        columns: 2
+        columnSpacing: 12
+        rowSpacing: 8
 
         Label {
+            text: qsTr("Clan:")
+        }
+        Widgets.L5RComboBox {
+            id: clanCombo
             Layout.fillWidth: true
-            Layout.topMargin: 6
-            horizontalAlignment: Text.AlignHCenter
-            text: qsTr("Join your First School")
-            font.family: Theme.fontDisplay
-            font.pixelSize: Theme.fsHeading1
-            font.weight: Font.DemiBold
-            color: Theme.heading
+            textRole: "name"
+            accent: root.accent
+            model: {
+                var clans = appCtrl ? appCtrl.clansList() : [];
+                return [{
+                        "id": "",
+                        "name": qsTr("No Clan")
+                    }].concat(clans);
+            }
+            onActivated: function (index) {
+                var rec = clanCombo.model[index];
+                root._selectedClanId = rec ? rec.id : "";
+                root._refreshSchools();
+                root._refreshPaths();
+                root._syncSchoolCombo();
+                pathCombo.currentIndex = 0;
+                root._selectedPathId = "";
+            }
+        }
+
+        Label {
+            text: qsTr("School:")
+        }
+        Widgets.L5RComboBox {
+            id: schoolCombo
+            Layout.fillWidth: true
+            textRole: "name"
+            accent: root.accent
+            model: root._schools
+            onActivated: function (index) {
+                var rec = root._schools[index];
+                root._selectedSchoolId = rec ? rec.id : "";
+            }
+        }
+
+        Label {
+            text: qsTr("Path:")
+        }
+        Widgets.L5RComboBox {
+            id: pathCombo
+            Layout.fillWidth: true
+            textRole: "name"
+            accent: root.accent
+            model: {
+                var none = [{
+                        "id": "",
+                        "name": qsTr("None")
+                    }];
+                return none.concat(root._paths);
+            }
+            onActivated: function (index) {
+                var rec = pathCombo.model[index];
+                root._selectedPathId = rec ? rec.id : "";
+            }
+        }
+
+        Label {
+            text: qsTr("Source:")
         }
         Label {
             Layout.fillWidth: true
-            horizontalAlignment: Text.AlignHCenter
-            text: qsTr("In this phase you're limited to base schools")
-            opacity: 0.75
             font.italic: true
-            color: Theme.accentMuted
+            opacity: 0.8
+            text: {
+                var rec = root._currentSchoolRecord();
+                if (!rec || !rec.book)
+                    return "";
+                return rec.page ? qsTr("%1, page %2").arg(rec.book).arg(rec.page) : rec.book;
+            }
         }
 
-        GridLayout {
+        Rectangle {
+            Layout.columnSpan: 2
             Layout.fillWidth: true
-            Layout.topMargin: 10
-            columns: 2
-            columnSpacing: 12
-            rowSpacing: 8
+            Layout.preferredHeight: 1
+            color: Theme.divider
+            opacity: Theme.dividerOpacity
+        }
 
-            Label {
-                text: qsTr("Clan:")
+        Label {
+            text: qsTr("Bonus:")
+        }
+        Label {
+            Layout.fillWidth: true
+            color: {
+                var rec = root._currentSchoolRecord();
+                return rec && rec.trait ? Theme.positive : Theme.negative;
             }
-            ComboBox {
-                id: clanCombo
-                Layout.fillWidth: true
-                textRole: "name"
-                model: {
-                    var clans = appCtrl ? appCtrl.clansList() : [];
-                    return [{
-                            "id": "",
-                            "name": qsTr("No Clan")
-                        }].concat(clans);
-                }
-                onActivated: function (index) {
-                    var rec = clanCombo.model[index];
-                    root._selectedClanId = rec ? rec.id : "";
-                    root._refreshSchools();
-                    root._refreshPaths();
-                    root._syncSchoolCombo();
-                    pathCombo.currentIndex = 0;
-                    root._selectedPathId = "";
-                }
-            }
-
-            Label {
-                text: qsTr("School:")
-            }
-            ComboBox {
-                id: schoolCombo
-                Layout.fillWidth: true
-                textRole: "name"
-                model: root._schools
-                onActivated: function (index) {
-                    var rec = root._schools[index];
-                    root._selectedSchoolId = rec ? rec.id : "";
-                }
-            }
-
-            Label {
-                text: qsTr("Path:")
-            }
-            ComboBox {
-                id: pathCombo
-                Layout.fillWidth: true
-                textRole: "name"
-                model: {
-                    var none = [{
-                            "id": "",
-                            "name": qsTr("None")
-                        }];
-                    return none.concat(root._paths);
-                }
-                onActivated: function (index) {
-                    var rec = pathCombo.model[index];
-                    root._selectedPathId = rec ? rec.id : "";
-                }
-            }
-
-            Label {
-                text: qsTr("Source:")
-            }
-            Label {
-                Layout.fillWidth: true
-                font.italic: true
-                opacity: 0.8
-                text: {
-                    var rec = root._currentSchoolRecord();
-                    if (!rec || !rec.book)
-                        return "";
-                    return rec.page ? qsTr("%1, page %2").arg(rec.book).arg(rec.page) : rec.book;
-                }
-            }
-
-            Rectangle {
-                Layout.columnSpan: 2
-                Layout.fillWidth: true
-                Layout.preferredHeight: 1
-                color: Theme.divider
-                opacity: Theme.dividerOpacity
-            }
-
-            Label {
-                text: qsTr("Bonus:")
-            }
-            Label {
-                Layout.fillWidth: true
-                color: {
-                    var rec = root._currentSchoolRecord();
-                    return rec && rec.trait ? Theme.positive : Theme.negative;
-                }
-                font.weight: Font.DemiBold
-                text: {
-                    var rec = root._currentSchoolRecord();
-                    return rec && rec.trait ? qsTr("+1 %1").arg(rec.trait) : qsTr("None");
-                }
+            text: {
+                var rec = root._currentSchoolRecord();
+                return rec && rec.trait ? qsTr("+1 %1").arg(rec.trait) : qsTr("None");
             }
         }
     }
