@@ -15,6 +15,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Theme 1.0
+import ClanTheme 1.0
 
 Pane {
     id: panel
@@ -31,7 +32,7 @@ Pane {
 
     // Parchment surface + ink-on-paper palette, identical to SheetPanel.
     background: Rectangle {
-        color: Theme.parchment
+        color: ClanTheme.paper
         radius: 0
     }
     palette.windowText: Theme.ink

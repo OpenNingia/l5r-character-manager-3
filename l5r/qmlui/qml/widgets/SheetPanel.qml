@@ -36,6 +36,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Theme 1.0
+import ClanTheme 1.0
 
 Pane {
     id: panel
@@ -47,7 +48,7 @@ Pane {
         // border -- separation comes from the title-band and the
         // heading rule below the title, so panels read as sections of
         // one continuous sheet rather than boxed cards.
-        color: Theme.parchment
+        color: ClanTheme.paper
         radius: 0
     }
 

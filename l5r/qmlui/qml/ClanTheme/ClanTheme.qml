@@ -34,6 +34,17 @@ QtObject {
     // ten-row table. Binds to `primary`, so it re-derives on setClan.
     readonly property color selectedBg: Qt.tint(Theme.parchment, Qt.rgba(primary.r, primary.g, primary.b, 0.16))
 
+    // --- clan-tinted backgrounds -----------------------------------
+    // The active clan's accent merged into the parchment surfaces at a
+    // low opacity, so the whole sheet + sidebar carry a faint clan wash
+    // while staying legible parchment ("one document", but in the clan's
+    // hue). The persistent sheet surfaces (window, sidebar, panels) bind
+    // to these; transient dialogs keep the neutral Theme tones. Derived
+    // from `primary`, so they re-tint on setClan.
+    readonly property real bgTint: 0.10
+    readonly property color paper: Qt.tint(Theme.parchment, Qt.rgba(primary.r, primary.g, primary.b, bgTint))
+    readonly property color paperSidebar: Qt.tint(Theme.parchmentSidebar, Qt.rgba(primary.r, primary.g, primary.b, bgTint))
+
     // §5 clan -> [primary, primaryDark]. Keys are the lowercase clan ids
     // returned by api.character.get_clan() (family_.clanid).
     readonly property var _table: ({

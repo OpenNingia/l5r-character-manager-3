@@ -22,8 +22,10 @@ ApplicationWindow {
     title: pcProxy ? pcProxy.displayTitle : ""
     // The whole client area is parchment now -- no OS-grey desk under
     // the panels. The menubar above still follows the OS theme so the
-    // window chrome stays native.
-    color: Theme.parchment
+    // window chrome stays native. The parchment carries a faint wash of
+    // the active clan's accent (ClanTheme.paper) so the whole sheet reads
+    // in the clan's hue.
+    color: ClanTheme.paper
 
     // Drive the per-clan accent (design system §5): push the active
     // character's clan id into the ClanTheme singleton whenever it
@@ -123,7 +125,7 @@ ApplicationWindow {
         palette.mid: Theme.inkFaint
 
         background: Rectangle {
-            color: Theme.parchment
+            color: ClanTheme.paper
             // Window-wide fibre overlay -- continuous across panels
             // and gutters so the whole sheet feels like one piece of
             // paper.
@@ -142,7 +144,7 @@ ApplicationWindow {
                 // Slightly darker parchment than the main sheet so the
                 // navigation column reads as a distinct zone without
                 // breaking the "one document" illusion.
-                color: Theme.parchmentSidebar
+                color: ClanTheme.paperSidebar
 
                 // Same fibre texture as the main sheet so the sidebar
                 // reads as the same paper, just a darker shade -- not a
@@ -240,7 +242,7 @@ ApplicationWindow {
                             // (lighter parchment), idle is fully transparent
                             // so the sidebar texture shows through.
                             background: Rectangle {
-                                color: tocDelegate.hovered ? Qt.lighter(Theme.parchmentSidebar, 1.07) : "transparent"
+                                color: tocDelegate.hovered ? Qt.lighter(ClanTheme.paperSidebar, 1.07) : "transparent"
                             }
 
                             // Active item: accent stripe on the left, accent
