@@ -145,7 +145,7 @@ Dialog {
                 Label {
                     text: dlg.title
                     font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.titleFont
+                    font.pixelSize: Theme.fsHeading1
                     font.weight: Theme.headingWeight
                     font.letterSpacing: 1.5
                     color: Theme.heading
@@ -153,7 +153,7 @@ Dialog {
                 Label {
                     text: qsTr("notes and cost; the rule and rank are fixed")
                     font.italic: true
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     color: Theme.ink
                     opacity: 0.7
                 }
@@ -191,7 +191,7 @@ Dialog {
                         Layout.fillWidth: true
                         text: dlg.perkName
                         font.family: Theme.fontDisplay
-                        font.pixelSize: Theme.titleFont
+                        font.pixelSize: Theme.fsHeading1
                         font.weight: Font.DemiBold
                         color: Theme.ink
                         elide: Text.ElideRight
@@ -208,7 +208,7 @@ Dialog {
                             return parts.join("  ·  ");
                         }
                         font.italic: true
-                        font.pixelSize: Theme.smallFont
+                        font.pixelSize: Theme.fsCaption
                         color: Theme.ink
                         opacity: 0.65
                     }
@@ -223,7 +223,7 @@ Dialog {
             Label {
                 text: qsTr("Notes")
                 font.family: Theme.fontDisplay
-                font.pixelSize: Theme.smallFont
+                font.pixelSize: Theme.fsCaption
                 font.weight: Theme.headingWeight
                 font.letterSpacing: 1.6
                 color: Theme.heading
@@ -236,7 +236,7 @@ Dialog {
                 onTextEdited: dlg._subtype = text
                 placeholderText: dlg._isFlaw ? qsTr("circumstance, target, or detail…") : qsTr("name, ally, or detail…")
                 color: Theme.ink
-                placeholderTextColor: "#8a7a65"
+                placeholderTextColor: Theme.inkFaint
                 background: Rectangle {
                     color: Theme.parchmentBase
                     border.color: Theme.borderSubtle
@@ -292,7 +292,7 @@ Dialog {
                         Label {
                             text: dlg._overrideOn ? qsTr("MANUAL COST") : qsTr("SUGGESTED BY THE RULEBOOK")
                             font.family: Theme.fontDisplay
-                            font.pixelSize: Theme.smallFont
+                            font.pixelSize: Theme.fsCaption
                             font.weight: Theme.headingWeight
                             font.letterSpacing: 2.0
                             color: dlg._overrideOn ? Theme.accent : Theme.heading
@@ -301,7 +301,7 @@ Dialog {
                         Label {
                             text: dlg._isFlaw ? qsTr("experience the gods will grant in return") : qsTr("experience the chronicle will require")
                             font.italic: true
-                            font.pixelSize: Theme.smallFont
+                            font.pixelSize: Theme.fsCaption
                             color: Theme.ink
                             opacity: 0.6
                             wrapMode: Text.WordWrap
@@ -324,9 +324,9 @@ Dialog {
                             Label {
                                 anchors.centerIn: parent
                                 text: (dlg._isFlaw ? "+" : "") + dlg.suggestedCost
-                                font.family: Theme.fontDisplay
-                                font.pixelSize: 28
-                                font.weight: Font.Bold
+                                font.family: Theme.fontStat
+                                font.pixelSize: Theme.fsXpValue
+                                font.weight: Theme.wSemiBold
                                 font.features: Theme.tabularNumbers
                                 color: dlg._isFlaw ? Theme.highlight : dlg._accent
                             }
@@ -364,9 +364,9 @@ Dialog {
                             }
                             contentItem: TextInput {
                                 text: overrideSpin.textFromValue(overrideSpin.value, overrideSpin.locale)
-                                font.family: Theme.fontDisplay
-                                font.pixelSize: 24
-                                font.weight: Font.Bold
+                                font.family: Theme.fontStat
+                                font.pixelSize: Theme.fsXpValue
+                                font.weight: Theme.wSemiBold
                                 font.features: Theme.tabularNumbers
                                 color: Theme.accent
                                 horizontalAlignment: TextInput.AlignHCenter
@@ -404,7 +404,7 @@ Dialog {
                     Label {
                         Layout.fillWidth: true
                         text: dlg._overrideOn ? qsTr("Manual cost — agreed with your GM.") : qsTr("Override the suggested cost")
-                        font.pixelSize: Theme.bodyFont
+                        font.pixelSize:Theme.fsBody 
                         font.italic: !dlg._overrideOn
                         color: dlg._overrideOn ? Theme.accent : Theme.ink
                         opacity: dlg._overrideOn ? 1.0 : 0.7
@@ -467,7 +467,7 @@ Dialog {
                 Layout.fillWidth: true
                 text: dlg._isFlaw ? qsTr("This burden will grant +%1 XP.").arg(dlg._effectiveCost) : qsTr("This blessing will require %1 XP.").arg(dlg._effectiveCost)
                 font.italic: true
-                font.pixelSize: Theme.bodyFont
+                font.pixelSize:Theme.fsBody 
                 color: dlg._overrideOn ? Theme.accent : Theme.ink
                 opacity: dlg._overrideOn ? 1.0 : 0.75
                 wrapMode: Text.WordWrap
@@ -488,7 +488,7 @@ Dialog {
                 contentItem: Label {
                     text: qsTr("Cancel")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.smallFont + 1
+                    font.pixelSize: Theme.fsCaption + 1
                     font.weight: Font.DemiBold
                     font.letterSpacing: 1.3
                     color: Theme.ink
@@ -511,7 +511,7 @@ Dialog {
                 contentItem: Label {
                     text: qsTr("Save")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.smallFont + 1
+                    font.pixelSize: Theme.fsCaption + 1
                     font.weight: Font.DemiBold
                     font.letterSpacing: 1.6
                     color: Theme.parchmentBase

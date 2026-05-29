@@ -44,7 +44,7 @@ import Theme 1.0
 
 ColumnLayout {
     id: section
-    spacing: Theme.sectionSpacing
+    spacing: Theme.s4
 
     readonly property var _skills: pcProxy ? pcProxy.skills : []
     readonly property bool _canEdit: !pcProxy || pcProxy.canEdit !== false
@@ -159,7 +159,7 @@ ColumnLayout {
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("Emphasis for %1").arg(emphDlg.targetName)
                 font.family: Theme.fontDisplay
-                font.pixelSize: Theme.titleFont
+                font.pixelSize: Theme.fsHeading1
                 color: Theme.heading
             }
             TextField {
@@ -179,7 +179,7 @@ ColumnLayout {
 
         ColumnLayout {
             width: parent.width
-            spacing: Theme.groupSpacing
+            spacing: Theme.s3
 
             // ---- Section header row -------------------------------
             RowLayout {
@@ -206,7 +206,7 @@ ColumnLayout {
                     contentItem: Label {
                         text: newSkillBtn.text
                         font.family: Theme.fontDisplay
-                        font.pixelSize: Theme.bodyFont
+                        font.pixelSize:Theme.fsBody 
                         font.weight: Theme.headingWeight
                         font.letterSpacing: 1.6
                         color: newSkillBtn.enabled ? Theme.heading : Qt.lighter(Theme.heading, 1.6)
@@ -258,7 +258,7 @@ ColumnLayout {
                         Label {
                             text: modelData.label.toUpperCase()
                             font.family: Theme.fontDisplay
-                            font.pixelSize: Theme.bodyFont
+                            font.pixelSize:Theme.fsBody 
                             font.weight: Theme.headingWeight
                             font.letterSpacing: 2.4
                             color: _ringColor
@@ -273,8 +273,8 @@ ColumnLayout {
                         Label {
                             visible: _hasRows
                             text: _rows.length
-                            font.family: Theme.fontDisplay
-                            font.pixelSize: Theme.smallFont
+                            font.family: Theme.fontStat
+                            font.pixelSize: Theme.fsCaption
                             font.features: Theme.tabularNumbers
                             color: _ringColor
                             opacity: 0.85
@@ -288,7 +288,7 @@ ColumnLayout {
                         Layout.bottomMargin: 2
                         text: qsTr("— no %1 skills yet —").arg(modelData.label.toLowerCase())
                         font.italic: true
-                        font.pixelSize: Theme.smallFont
+                        font.pixelSize: Theme.fsCaption
                         opacity: 0.45
                     }
                     // Rows
@@ -314,7 +314,7 @@ ColumnLayout {
                 horizontalAlignment: Text.AlignHCenter
                 text: qsTr("%1 mastery abilities at hand").arg(section._unlockedMasteryCount())
                 font.family: Theme.fontDisplay
-                font.pixelSize: Theme.smallFont
+                font.pixelSize: Theme.fsCaption
                 font.letterSpacing: 2.0
                 color: Theme.heading
                 opacity: 0.70
@@ -405,7 +405,7 @@ ColumnLayout {
                     color: rowItem.row.isSchool ? Theme.accentMuted : palette.windowText
                     font.italic: rowItem.row.isSchool === true
                     font.weight: rowItem.row.isSchool ? Font.DemiBold : Font.Normal
-                    font.pixelSize: Theme.bodyFont + 1
+                    font.pixelSize:Theme.fsBody  + 1
                     Layout.preferredWidth: 180
                     elide: Text.ElideRight
                     TapHandler {
@@ -421,7 +421,7 @@ ColumnLayout {
                     color: rowItem.ringColor
                     opacity: 0.85
                     font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     font.letterSpacing: 1.4
                     Layout.preferredWidth: 100
                     elide: Text.ElideRight
@@ -444,7 +444,7 @@ ColumnLayout {
                                 id: pillLabel
                                 anchors.centerIn: parent
                                 text: modelData
-                                font.pixelSize: Theme.smallFont
+                                font.pixelSize: Theme.fsCaption
                                 color: Qt.darker(rowItem.ringColor, 1.2)
                             }
                         }
@@ -469,9 +469,9 @@ ColumnLayout {
                 Label {
                     text: rowItem.row.modRoll || rowItem.row.baseRoll || ""
                     color: Theme.heading
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.bodyFont
-                    font.weight: Font.DemiBold
+                    font.family: Theme.fontStat
+                    font.pixelSize: Theme.fsStatSmall
+                    font.weight: Theme.wRegular
                     font.features: Theme.tabularNumbers
                     horizontalAlignment: Text.AlignRight
                     Layout.preferredWidth: 50
@@ -501,9 +501,9 @@ ColumnLayout {
                 Label {
                     text: rowItem.row.rank !== undefined ? rowItem.row.rank : ""
                     color: rowItem.ringColor
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: 22
-                    font.weight: Font.Bold
+                    font.family: Theme.fontStat
+                    font.pixelSize: Theme.fsStatMedium
+                    font.weight: Theme.wMedium
                     font.features: Theme.tabularNumbers
                     horizontalAlignment: Text.AlignRight
                     Layout.preferredWidth: 28
@@ -548,7 +548,7 @@ ColumnLayout {
                         wrapMode: Text.WordWrap
                         textFormat: Text.RichText
                         font.italic: true
-                        font.pixelSize: Theme.smallFont + 1
+                        font.pixelSize: Theme.fsCaption + 1
                         opacity: 0.85
                     }
                     Rectangle {
@@ -574,9 +574,9 @@ ColumnLayout {
                                 Label {
                                     anchors.centerIn: parent
                                     text: modelData.rank
-                                    font.family: Theme.fontDisplay
-                                    font.pixelSize: 11
-                                    font.weight: Font.DemiBold
+                                    font.family: Theme.fontStat
+                                    font.pixelSize: Theme.fsCaption
+                                    font.weight: Theme.wRegular
                                     font.features: Theme.tabularNumbers
                                     color: _unlocked ? "white" : Theme.borderStrong
                                 }
@@ -597,7 +597,7 @@ ColumnLayout {
                         Layout.leftMargin: 22
                         text: qsTr("This skill has no mastery abilities.")
                         font.italic: true
-                        font.pixelSize: Theme.smallFont
+                        font.pixelSize: Theme.fsCaption
                         opacity: 0.55
                     }
                 }

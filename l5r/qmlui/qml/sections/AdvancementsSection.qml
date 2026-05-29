@@ -30,7 +30,7 @@ import Theme 1.0
 
 ColumnLayout {
     id: section
-    spacing: Theme.sectionSpacing
+    spacing: Theme.s4
 
     // -----------------------------------------------------------------
     // Defensive bindings -- the QML side runs before the proxy is
@@ -196,7 +196,7 @@ ColumnLayout {
                     wrapMode: Text.WordWrap
                     text: qsTr("EXPERIENCE SPENT")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     font.weight: Theme.headingWeight
                     font.letterSpacing: 2.0
                     horizontalAlignment: Text.AlignHCenter
@@ -206,9 +206,9 @@ ColumnLayout {
                 Label {
                     Layout.fillWidth: true
                     text: section._xpSpent
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: 34
-                    font.weight: Font.Bold
+                    font.family: Theme.fontStat
+                    font.pixelSize: Theme.fsStatLarge
+                    font.weight: Theme.wSemiBold
                     font.features: Theme.tabularNumbers
                     horizontalAlignment: Text.AlignHCenter
                     color: Theme.accent
@@ -217,7 +217,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     text: qsTr("points logged across the chronicle")
                     font.italic: true
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     horizontalAlignment: Text.AlignHCenter
                     opacity: 0.6
                     wrapMode: Text.WordWrap
@@ -244,7 +244,7 @@ ColumnLayout {
                     wrapMode: Text.WordWrap
                     text: qsTr("ENTRIES")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     font.weight: Theme.headingWeight
                     font.letterSpacing: 2.0
                     horizontalAlignment: Text.AlignHCenter
@@ -254,9 +254,9 @@ ColumnLayout {
                 Label {
                     Layout.fillWidth: true
                     text: section._count
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: 34
-                    font.weight: Font.Bold
+                    font.family: Theme.fontStat
+                    font.pixelSize: Theme.fsStatLarge
+                    font.weight: Theme.wSemiBold
                     font.features: Theme.tabularNumbers
                     horizontalAlignment: Text.AlignHCenter
                     color: Theme.heading
@@ -265,7 +265,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     text: qsTr("inked since the brush was first lifted")
                     font.italic: true
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     horizontalAlignment: Text.AlignHCenter
                     opacity: 0.6
                     wrapMode: Text.WordWrap
@@ -294,7 +294,7 @@ ColumnLayout {
                     wrapMode: Text.WordWrap
                     text: qsTr("CURRENT RANK")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     font.weight: Theme.headingWeight
                     font.letterSpacing: 2.0
                     horizontalAlignment: Text.AlignHCenter
@@ -304,9 +304,9 @@ ColumnLayout {
                 Label {
                     Layout.fillWidth: true
                     text: section._rank
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: 34
-                    font.weight: Font.Bold
+                    font.family: Theme.fontStat
+                    font.pixelSize: Theme.fsStatLarge
+                    font.weight: Theme.wSemiBold
                     font.features: Theme.tabularNumbers
                     horizontalAlignment: Text.AlignHCenter
                     color: Theme.heading
@@ -315,7 +315,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     text: qsTr("insight tier reached")
                     font.italic: true
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     horizontalAlignment: Text.AlignHCenter
                     opacity: 0.6
                     wrapMode: Text.WordWrap
@@ -354,7 +354,7 @@ ColumnLayout {
                 Label {
                     text: qsTr("filter")
                     font.italic: true
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     opacity: 0.6
                 }
 
@@ -377,7 +377,7 @@ ColumnLayout {
                         contentItem: Label {
                             text: modelData.label
                             font.family: Theme.fontDisplay
-                            font.pixelSize: Theme.smallFont
+                            font.pixelSize: Theme.fsCaption
                             font.weight: Font.DemiBold
                             font.letterSpacing: 1.2
                             color: chip.active ? Theme.parchmentBase : Theme.ink
@@ -405,7 +405,7 @@ ColumnLayout {
                     visible: section._filter !== "all"
                     text: qsTr("showing %1 of %2").arg(section._filteredItems().length).arg(section._items.length)
                     font.italic: true
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     opacity: 0.55
                 }
             }
@@ -439,7 +439,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     text: qsTr("The brush awaits.")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.titleFont
+                    font.pixelSize: Theme.fsHeading1
                     font.weight: Theme.headingWeight
                     font.letterSpacing: 1.5
                     horizontalAlignment: Text.AlignHCenter
@@ -451,7 +451,7 @@ ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
                     text: qsTr("No advancements have yet been recorded for this samurai. " + "Purchase a trait, skill, or technique on its own tab and the " + "entry will appear here, atop the stack.")
                     font.italic: true
-                    font.pixelSize: Theme.bodyFont
+                    font.pixelSize:Theme.fsBody 
                     horizontalAlignment: Text.AlignHCenter
                     wrapMode: Text.WordWrap
                     opacity: 0.7
@@ -633,7 +633,7 @@ ColumnLayout {
                                 Label {
                                     Layout.fillWidth: true
                                     text: _item.desc || qsTr("(unnamed advancement)")
-                                    font.pixelSize: Theme.bodyFont + 1
+                                    font.pixelSize:Theme.fsBody  + 1
                                     font.weight: Font.DemiBold
                                     color: Theme.ink
                                     wrapMode: Text.WordWrap
@@ -646,7 +646,7 @@ ColumnLayout {
                                     Label {
                                         text: section._fmtTimestamp(_item.timestamp)
                                         font.italic: true
-                                        font.pixelSize: Theme.smallFont
+                                        font.pixelSize: Theme.fsCaption
                                         font.features: Theme.tabularNumbers
                                         opacity: 0.6
                                     }
@@ -659,7 +659,7 @@ ColumnLayout {
                                     }
                                     Label {
                                         text: _meta.label
-                                        font.pixelSize: Theme.smallFont
+                                        font.pixelSize: Theme.fsCaption
                                         opacity: 0.6
                                     }
                                     Item {
@@ -681,9 +681,9 @@ ColumnLayout {
                                 Label {
                                     Layout.fillWidth: true
                                     text: _item.cost
-                                    font.family: Theme.fontDisplay
-                                    font.pixelSize: 26
-                                    font.weight: Font.Bold
+                                    font.family: Theme.fontStat
+                                    font.pixelSize: Theme.fsStatMedium
+                                    font.weight: Theme.wMedium
                                     font.features: Theme.tabularNumbers
                                     horizontalAlignment: Text.AlignRight
                                     color: _isHead ? Theme.accent : Theme.heading
@@ -733,7 +733,7 @@ ColumnLayout {
                                     contentItem: Label {
                                         text: parent.text
                                         font.family: Theme.fontDisplay
-                                        font.pixelSize: Theme.smallFont
+                                        font.pixelSize: Theme.fsCaption
                                         font.weight: Font.DemiBold
                                         font.letterSpacing: 1.4
                                         color: parent.hovered ? Theme.parchmentBase : Theme.accent
@@ -760,7 +760,7 @@ ColumnLayout {
                 horizontalAlignment: Text.AlignRight
                 text: qsTr("Only the most recent advancement may be refunded.")
                 font.italic: true
-                font.pixelSize: Theme.smallFont
+                font.pixelSize: Theme.fsCaption
                 opacity: 0.55
                 wrapMode: Text.WordWrap
             }
@@ -792,7 +792,7 @@ ColumnLayout {
                 Layout.maximumWidth: 380
                 text: qsTr("Refund this advancement and return its XP to your pool?")
                 wrapMode: Text.WordWrap
-                font.pixelSize: Theme.bodyFont
+                font.pixelSize:Theme.fsBody 
             }
 
             Rectangle {
@@ -825,15 +825,15 @@ ColumnLayout {
                         Layout.fillWidth: true
                         text: refundDlg._head ? section._fmtTimestamp(refundDlg._head.timestamp) : ""
                         font.italic: true
-                        font.pixelSize: Theme.smallFont
+                        font.pixelSize: Theme.fsCaption
                         opacity: 0.6
                     }
                 }
                 Label {
                     text: refundDlg._head ? ("+" + refundDlg._head.cost + " XP") : ""
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: 18
-                    font.weight: Font.Bold
+                    font.family: Theme.fontStat
+                    font.pixelSize: Theme.fsStatMedium
+                    font.weight: Theme.wMedium
                     color: Theme.accent
                 }
             }

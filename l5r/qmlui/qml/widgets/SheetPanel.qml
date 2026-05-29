@@ -62,8 +62,8 @@ Pane {
     palette.buttonText: Theme.ink
     palette.base: Theme.parchmentBase
     palette.alternateBase: Theme.parchmentInset
-    palette.placeholderText: "#8a7a65"
-    palette.mid: "#a89580"
+    palette.placeholderText: Theme.inkFaint
+    palette.mid: Theme.inkFaint
 
     padding: 12
     spacing: 0
@@ -76,7 +76,7 @@ Pane {
             Layout.fillWidth: true
             text: panel.title
             font.family: Theme.fontDisplay
-            font.pixelSize: Theme.titleFont
+            font.pixelSize: Theme.fsHeading1
             font.weight: Theme.headingWeight
             // The letterSpacing nudge turns Cinzel into a proper
             // section banner -- without it the all-caps reads

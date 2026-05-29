@@ -65,7 +65,7 @@ Item {
             Label {
                 text: section.title || section.tabId
                 font.family: Theme.fontDisplay
-                font.pixelSize: Theme.headerFont
+                font.pixelSize: Theme.fsDisplay
                 font.weight: Theme.headingWeight
                 font.letterSpacing: 1.2
                 color: Theme.heading

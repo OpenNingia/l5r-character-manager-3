@@ -13,7 +13,7 @@ import Theme 1.0
 
 ColumnLayout {
     id: section
-    spacing: Theme.sectionSpacing
+    spacing: Theme.s4
 
     // Context properties are null on the first binding pass.
     readonly property var _id: pcProxy ? pcProxy : null
@@ -163,9 +163,9 @@ ColumnLayout {
         Label {
             Layout.fillWidth: true
             text: section._prog.rank
-            font.family: Theme.fontDisplay
-            font.pixelSize: 16
-            font.weight: Font.DemiBold
+            font.family: Theme.fontStat
+            font.pixelSize: Theme.fsStatMedium
+            font.weight: Theme.wMedium
             font.features: Theme.tabularNumbers
             color: Theme.heading
             elide: Text.ElideRight
@@ -189,9 +189,9 @@ ColumnLayout {
             Label {
                 Layout.fillWidth: true
                 text: section._prog.xp + " / " + section._prog.xpLimit
-                font.family: Theme.fontDisplay
-                font.pixelSize: 16
-                font.weight: Font.DemiBold
+                font.family: Theme.fontStat
+                font.pixelSize: Theme.fsStatMedium
+                font.weight: Theme.wMedium
                 color: Theme.heading
                 elide: Text.ElideRight
             }
@@ -231,9 +231,9 @@ ColumnLayout {
         Label {
             Layout.fillWidth: true
             text: section._prog.insight
-            font.family: Theme.fontDisplay
-            font.pixelSize: 16
-            font.weight: Font.DemiBold
+            font.family: Theme.fontStat
+            font.pixelSize: Theme.fsStatMedium
+            font.weight: Theme.wMedium
             font.features: Theme.tabularNumbers
             color: Theme.heading
             elide: Text.ElideRight
@@ -359,7 +359,7 @@ ColumnLayout {
                 Layout.topMargin: 14
                 text: qsTr("Social / Spiritual")
                 font.family: Theme.fontDisplay
-                font.pixelSize: Theme.titleFont
+                font.pixelSize: Theme.fsHeading1
                 font.weight: Theme.headingWeight
                 font.letterSpacing: 1.5
                 color: Theme.heading
@@ -377,7 +377,7 @@ ColumnLayout {
                 horizontalAlignment: Text.AlignRight
                 text: qsTr("click dot to set · shift+click to advance rank · scroll to fine-tune")
                 font.italic: true
-                font.pixelSize: Theme.smallFont
+                font.pixelSize: Theme.fsCaption
                 opacity: 0.6
             }
 
@@ -432,7 +432,7 @@ ColumnLayout {
                         Label {
                             text: modelData.label.toUpperCase()
                             font.family: Theme.fontDisplay
-                            font.pixelSize: Theme.bodyFont
+                            font.pixelSize:Theme.fsBody 
                             font.weight: Theme.headingWeight
                             font.letterSpacing: 1.6
                             color: _flagColor
@@ -452,7 +452,7 @@ ColumnLayout {
                         }
                         Label {
                             text: qsTr("rank ") + _flagRank + "." + _flagPoints
-                            font.pixelSize: Theme.smallFont
+                            font.pixelSize: Theme.fsCaption
                             font.features: Theme.tabularNumbers
                             color: _flagColor
                             opacity: 0.9
@@ -522,7 +522,7 @@ ColumnLayout {
                             Label {
                                 text: modelData.label.toUpperCase()
                                 font.family: Theme.fontDisplay
-                                font.pixelSize: Theme.smallFont
+                                font.pixelSize: Theme.fsCaption
                                 font.weight: Theme.headingWeight
                                 font.letterSpacing: 1.4
                                 color: _flagColor
@@ -531,7 +531,7 @@ ColumnLayout {
                             }
                             Label {
                                 text: _flagRank + "." + _flagPoints
-                                font.pixelSize: Theme.smallFont
+                                font.pixelSize: Theme.fsCaption
                                 font.features: Theme.tabularNumbers
                                 color: _flagColor
                                 opacity: 0.9
@@ -595,7 +595,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     text: qsTr("INITIATIVE")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     font.weight: Theme.headingWeight
                     font.letterSpacing: 2.0
                     horizontalAlignment: Text.AlignHCenter
@@ -605,9 +605,9 @@ ColumnLayout {
                 Label {
                     Layout.fillWidth: true
                     text: section._init.current
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: 30
-                    font.weight: Font.Bold
+                    font.family: Theme.fontStat
+                    font.pixelSize: Theme.fsStatLarge
+                    font.weight: Theme.wSemiBold
                     font.features: Theme.tabularNumbers
                     horizontalAlignment: Text.AlignHCenter
                     color: Theme.heading
@@ -619,7 +619,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     Label {
                         text: qsTr("base")
-                        font.pixelSize: Theme.smallFont
+                        font.pixelSize: Theme.fsCaption
                         opacity: 0.65
                     }
                     Item {
@@ -627,8 +627,8 @@ ColumnLayout {
                     }
                     Label {
                         text: section._init.base
-                        font.family: Theme.fontDisplay
-                        font.pixelSize: Theme.bodyFont
+                        font.family: Theme.fontStat
+                        font.pixelSize: Theme.fsStatSmall
                         font.features: Theme.tabularNumbers
                     }
                 }
@@ -636,7 +636,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     Label {
                         text: qsTr("mod")
-                        font.pixelSize: Theme.smallFont
+                        font.pixelSize: Theme.fsCaption
                         opacity: 0.65
                     }
                     Item {
@@ -644,8 +644,8 @@ ColumnLayout {
                     }
                     Label {
                         text: section._init.mod
-                        font.family: Theme.fontDisplay
-                        font.pixelSize: Theme.bodyFont
+                        font.family: Theme.fontStat
+                        font.pixelSize: Theme.fsStatSmall
                         font.features: Theme.tabularNumbers
                     }
                 }
@@ -672,7 +672,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     text: qsTr("ARMOR TN")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     font.weight: Theme.headingWeight
                     font.letterSpacing: 2.0
                     horizontalAlignment: Text.AlignHCenter
@@ -682,9 +682,9 @@ ColumnLayout {
                 Label {
                     Layout.fillWidth: true
                     text: section._armor.currentTn
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: 30
-                    font.weight: Font.Bold
+                    font.family: Theme.fontStat
+                    font.pixelSize: Theme.fsStatLarge
+                    font.weight: Theme.wSemiBold
                     font.features: Theme.tabularNumbers
                     horizontalAlignment: Text.AlignHCenter
                     color: Theme.heading
@@ -694,7 +694,7 @@ ColumnLayout {
                     visible: section._armor.name.length > 0
                     text: section._armor.name
                     font.italic: true
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     horizontalAlignment: Text.AlignHCenter
                     opacity: 0.75
                     elide: Text.ElideRight
@@ -711,7 +711,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     Label {
                         text: qsTr("base")
-                        font.pixelSize: Theme.smallFont
+                        font.pixelSize: Theme.fsCaption
                         opacity: 0.65
                     }
                     Item {
@@ -719,8 +719,8 @@ ColumnLayout {
                     }
                     Label {
                         text: section._armor.baseTn
-                        font.family: Theme.fontDisplay
-                        font.pixelSize: Theme.bodyFont
+                        font.family: Theme.fontStat
+                        font.pixelSize: Theme.fsStatSmall
                         font.features: Theme.tabularNumbers
                     }
                 }
@@ -728,7 +728,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     Label {
                         text: qsTr("armor")
-                        font.pixelSize: Theme.smallFont
+                        font.pixelSize: Theme.fsCaption
                         opacity: 0.65
                     }
                     Item {
@@ -736,8 +736,8 @@ ColumnLayout {
                     }
                     Label {
                         text: section._armor.armorTn
-                        font.family: Theme.fontDisplay
-                        font.pixelSize: Theme.bodyFont
+                        font.family: Theme.fontStat
+                        font.pixelSize: Theme.fsStatSmall
                         font.features: Theme.tabularNumbers
                     }
                 }
@@ -745,7 +745,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     Label {
                         text: qsTr("reduction")
-                        font.pixelSize: Theme.smallFont
+                        font.pixelSize: Theme.fsCaption
                         opacity: 0.65
                     }
                     Item {
@@ -753,8 +753,8 @@ ColumnLayout {
                     }
                     Label {
                         text: section._armor.rd
-                        font.family: Theme.fontDisplay
-                        font.pixelSize: Theme.bodyFont
+                        font.family: Theme.fontStat
+                        font.pixelSize: Theme.fsStatSmall
                         font.features: Theme.tabularNumbers
                     }
                 }

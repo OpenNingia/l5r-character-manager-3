@@ -97,7 +97,7 @@ Dialog {
                 Label {
                     text: qsTr("Add a new skill to your repertoire")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.titleFont + 2
+                    font.pixelSize: Theme.fsHeading1 + 2
                     font.weight: Theme.headingWeight
                     font.letterSpacing: 1.6
                     color: Theme.heading
@@ -105,7 +105,7 @@ Dialog {
                 Label {
                     text: qsTr("the first rank of any unknown skill costs experience")
                     font.italic: true
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     color: Theme.ink
                     opacity: 0.7
                     wrapMode: Text.WordWrap
@@ -157,7 +157,7 @@ Dialog {
             Label {
                 text: qsTr("Skill")
                 font.family: Theme.fontDisplay
-                font.pixelSize: Theme.smallFont
+                font.pixelSize: Theme.fsCaption
                 font.weight: Theme.headingWeight
                 font.letterSpacing: 1.6
                 color: Theme.heading
@@ -177,7 +177,7 @@ Dialog {
                 }
 
                 background: Rectangle {
-                    color: "#fbf6e8"
+                    color: Theme.parchmentBase
                     border.color: skillCombo.activeFocus ? root._accent : Theme.borderSubtle
                     border.width: 1
                     radius: 3
@@ -187,9 +187,9 @@ Dialog {
                     leftPadding: 10
                     rightPadding: skillCombo.indicator.width + 6
                     text: skillCombo.displayText
-                    font.pixelSize: Theme.bodyFont
+                    font.pixelSize:Theme.fsBody 
                     font.weight: Font.DemiBold
-                    color: "#3a3a3a"
+                    color: Theme.ink
                     verticalAlignment: Text.AlignVCenter
                     elide: Text.ElideRight
                 }
@@ -198,7 +198,7 @@ Dialog {
                     y: (skillCombo.height - height) / 2
                     text: "▾"
                     font.pixelSize: 12
-                    color: "#6b5b3f"
+                    color: Theme.inkMuted
                     opacity: skillCombo.pressed ? 1.0 : 0.85
                 }
                 popup: Popup {
@@ -232,8 +232,8 @@ Dialog {
                         leftPadding: 10
                         rightPadding: 6
                         text: modelData.name
-                        font.pixelSize: Theme.bodyFont
-                        color: "#3a3a3a"
+                        font.pixelSize:Theme.fsBody 
+                        color: Theme.ink
                         verticalAlignment: Text.AlignVCenter
                         elide: Text.ElideRight
                     }
@@ -243,7 +243,7 @@ Dialog {
             Label {
                 text: qsTr("Category")
                 font.family: Theme.fontDisplay
-                font.pixelSize: Theme.smallFont
+                font.pixelSize: Theme.fsCaption
                 font.weight: Theme.headingWeight
                 font.letterSpacing: 1.6
                 color: Theme.heading
@@ -262,7 +262,7 @@ Dialog {
             Label {
                 text: qsTr("Trait")
                 font.family: Theme.fontDisplay
-                font.pixelSize: Theme.smallFont
+                font.pixelSize: Theme.fsCaption
                 font.weight: Theme.headingWeight
                 font.letterSpacing: 1.6
                 color: Theme.heading
@@ -321,7 +321,7 @@ Dialog {
                 contentItem: Label {
                     text: qsTr("Cancel")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.smallFont + 1
+                    font.pixelSize: Theme.fsCaption + 1
                     font.weight: Font.DemiBold
                     font.letterSpacing: 1.3
                     color: Theme.ink
@@ -357,7 +357,7 @@ Dialog {
                     Label {
                         text: qsTr("Add")
                         font.family: Theme.fontDisplay
-                        font.pixelSize: Theme.smallFont + 1
+                        font.pixelSize: Theme.fsCaption + 1
                         font.weight: Font.DemiBold
                         font.letterSpacing: 1.6
                         color: Theme.parchmentBase

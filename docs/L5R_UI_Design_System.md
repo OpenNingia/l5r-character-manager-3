@@ -76,31 +76,38 @@ Each ring card uses its token as the card background. Text inside ring cards is 
 
 ### 3.1 Font Stack
 
-| Role | Font | Fallback | Notes |
-|---|---|---|---|
-| Display / Section titles | `Cinzel` | `Trajan Pro`, serif | ALL-CAPS spaced headings (`letter-spacing: 0.08em`) |
-| Body / Labels | `IM Fell English` | `Palatino Linotype`, `Book Antiqua`, serif | Slightly calligraphic; use regular weight for body |
-| Monospace / Stat numbers | `EB Garamond` | `Garamond`, serif | Large ring/stat numbers |
-| Kanji decorations | `KouzanBrushFontOTF` | `Source Han Serif`, serif | Semi-transparent overlays only |
-| UI utility (placeholders, hints) | `IM Fell English` italic | same | Italic variant for placeholder strings |
+| Role | Font | Weights used | Fallback | Notes |
+|---|---|---|---|---|
+| Display / Section titles | `Cinzel` | SemiBold 600, Bold 700, Black 900 | `Trajan Pro`, serif | ALL-CAPS spaced headings (`letter-spacing: 0.08em`). **Never below 600**; Black 900 (`wBlack`) for the most prominent headers — see 3.4 |
+| Body / Labels | `IM Fell English` | Regular 400 only | `Palatino Linotype`, `Book Antiqua`, serif | **Single-weight family — no bold variant exists**; see 3.4 |
+| Stat numbers | `EB Garamond` | Regular 400, Medium 500, SemiBold 600 | `Garamond`, serif | Large ring/stat numbers |
+| Kanji decorations | `KouzanBrushFontOTF` | as-shipped | `Source Han Serif`, serif | Semi-transparent overlays only; single weight |
+| UI utility (placeholders, hints) | `IM Fell English` italic | Italic 400 | same | Italic variant for placeholder strings |
 
-> **Embedding:** Bundle `Cinzel-Regular.ttf`, `Cinzel-Bold.ttf`, `IMFellEnglish-Regular.ttf`, `IMFellEnglish-Italic.ttf`, and `EBGaramond-Regular.ttf` in `/assets/fonts/`. Register them at application startup with `QFontDatabase::addApplicationFont`.
+> **Embedding:** Cinzel and EB Garamond are variable/multi-weight families — bundle the specific static instances the spec uses (do **not** rely on Qt synthesising weights, which produces uneven stems at UI sizes). Place the following in `/assets/fonts/` and register each at startup with `QFontDatabase.addApplicationFont`:
+> - `Cinzel-SemiBold.ttf` (600), `Cinzel-Bold.ttf` (700)
+> - `IMFellEnglish-Regular.ttf` (400), `IMFellEnglish-Italic.ttf` (400 italic)
+> - `EBGaramond-Regular.ttf` (400), `EBGaramond-Medium.ttf` (500), `EBGaramond-SemiBold.ttf` (600)
+>
+> After registering, always set `font.weight` explicitly (via the `Theme` weight tokens in 12.1) rather than `font.bold: true`. `font.bold` maps to weight 700 and will pick the wrong static instance for any element specced at 600.
 
 ### 3.2 Type Scale
 
 | Token | Size (px) | Weight | Family | Usage |
 |---|---|---|---|---|
-| `--text-display` | 22 | Bold | Cinzel | Page/section title (e.g. "Character", "Skills") |
-| `--text-heading-1` | 18 | Bold | Cinzel | Dialog title (e.g. "Antisocial", "Wealthy") |
-| `--text-heading-2` | 15 | Bold | Cinzel | Sub-section header (e.g. "Rings and Attributes") |
-| `--text-label` | 13 | Regular | Cinzel | Field label, column header |
-| `--text-body` | 13 | Regular | IM Fell English | Description paragraphs, notes |
-| `--text-caption` | 11 | Regular | IM Fell English | Hints, metadata, "Core book p.156" |
-| `--text-caption-italic` | 11 | Italic | IM Fell English | Taglines under dialog titles |
-| `--text-stat-large` | 36 | Regular | EB Garamond | Ring number inside coloured card |
-| `--text-stat-medium` | 22 | Regular | EB Garamond | Attribute value, Insight, Rank |
-| `--text-stat-small` | 15 | Regular | EB Garamond | Skill rank, XP cost labels |
-| `--text-xp-value` | 28 | Bold | EB Garamond | "+2 XP" cost display in dialogs |
+| `--text-display` | 22 | 700 (Bold) | Cinzel | Page/section title (e.g. "Character", "Skills") |
+| `--text-heading-1` | 18 | 700 (Bold) | Cinzel | Dialog title (e.g. "Antisocial", "Wealthy") |
+| `--text-heading-2` | 15 | 600 (SemiBold) | Cinzel | Sub-section header (e.g. "Rings and Attributes") |
+| `--text-label` | 13 | 600 (SemiBold) | Cinzel | Field label, column header — **600, not Regular**: Cinzel at 13 px loses legibility below SemiBold |
+| `--text-body` | 13 | 400 (Regular) | IM Fell English | Description paragraphs, notes |
+| `--text-caption` | 11 | 400 (Regular) | IM Fell English | Hints, metadata, "Core book p.156" |
+| `--text-caption-italic` | 11 | 400 (Italic) | IM Fell English | Taglines under dialog titles |
+| `--text-stat-large` | 36 | 600 (SemiBold) | EB Garamond | Ring number inside coloured card |
+| `--text-stat-medium` | 22 | 500 (Medium) | EB Garamond | Attribute value, Insight, Rank |
+| `--text-stat-small` | 15 | 400 (Regular) | EB Garamond | Skill rank, XP cost labels |
+| `--text-xp-value` | 28 | 600 (SemiBold) | EB Garamond | "+2 XP" cost display in dialogs |
+
+Weight values are the standard CSS/`QFont.Weight` numeric scale (400 = Normal, 500 = Medium, 600 = DemiBold, 700 = Bold).
 
 ### 3.3 Kanji Decoration
 
@@ -109,6 +116,33 @@ Large kanji characters are placed as **decorative background elements** (not int
 - Size: 120–200 px depending on context
 - Position: top-right or bottom-right of a panel/card, clipped to the panel bounds
 - Each major section has a dedicated kanji (see Section 7 — Section Kanji Map)
+
+### 3.4 Font Weight Policy
+
+Each family has different weight characteristics, and the wrong weight at UI sizes is the single most common way this theme reads as "off". Follow these per-family rules.
+
+**Cinzel (titles, labels, buttons) — minimum weight 600.**
+Cinzel is a high-contrast Trajan-style display face: its thin strokes and small counters disappear at UI sizes when set Regular (400) or Medium (500), exactly the legibility problem to avoid. Therefore:
+- Never set Cinzel below **600 (SemiBold)** anywhere in the application, regardless of size.
+- Use **600 (SemiBold)** for everything ≤ 15 px (labels, sub-headings, button text, the `OrnateDivider` fleuron).
+- Use **700 (Bold)** for dialog titles and the *active* state of rank buttons, where extra presence reads as "selected".
+- Use **900 (Black, `Theme.wBlack`)** for the most prominent display Cinzel — page/section headers, ring labels, the sidebar character name — where maximum presence on parchment is wanted. This is also the `Theme.headingWeight` convenience alias.
+- **Variable-font caveat (current build).** The shipped *variable* Cinzel renders **600 / 700 / 800 identically** (one heavy bucket); only **900** is distinctly heavier. So with the current asset `wSemiBold` and `wBold` look the same on Cinzel, and `wBlack` is the only way to get a heavier display weight — which is why prominent headers use `wBlack`. The 600-vs-700 distinction above only becomes visible if the static `Cinzel-SemiBold`/`Cinzel-Bold` instances (§3.1) are ever bundled; keep setting the semantically-correct weight regardless so the UI is ready for that swap.
+- ALL-CAPS + `letter-spacing: 0.08em` is mandatory on Cinzel; it compensates for the tight default spacing and improves caps legibility.
+
+**IM Fell English (body, captions) — Regular 400 only; there is no bold.**
+IM Fell English is effectively a single-weight family (Regular + matching Italic). There is no genuine bold cut.
+- Do **not** request a bold weight or set `font.bold: true` on body text — Qt would synthesise a faux-bold with smeared, uneven stems that clashes with the period feel.
+- For emphasis inside body text, in order of preference: (1) switch the emphasised run to **gold** (`--color-accent-gold`), (2) use the **Italic** variant, or (3) promote the phrase to **Cinzel SemiBold** if it is acting as a label rather than prose. Never fake-bold.
+
+**EB Garamond (stat numbers) — weight scales with size.**
+Garamond reads well across weights, so weight is used here to give numeric elements presence proportional to their size:
+- 36 px ring numbers → **600 (SemiBold)** so they hold up against the saturated ring-card backgrounds.
+- 22 px attribute/Insight/Rank values → **500 (Medium)**.
+- ≤ 15 px stat labels → **400 (Regular)**.
+- The 28 px XP value → **600 (SemiBold)** in gold; this replaces the earlier "Bold" call — 700 in gold over `--color-white-wash` clots optically, 600 stays crisp.
+
+**Implementation rule.** Always set `font.weight` to one of the `Theme` weight tokens (12.1). Never use `font.bold: true` as a shortcut: it maps to 700 and will silently select the wrong bundled static instance for any 600-spec element, and triggers synthetic bolding for IM Fell English.
 
 ---
 
@@ -218,7 +252,7 @@ Height:          40 px
 Horizontal pad:  20 px
 Border-radius:   3 px
 Background:      --color-accent-crimson  (Burden/default) | --color-accent-blue (Blessing)
-Text:            --color-white-wash, --text-label, uppercase, letter-spacing 0.08em
+Text:            --color-white-wash, --text-label, weight 600 (Theme.wSemiBold), uppercase, letter-spacing 0.08em
 Icon:            16 px kanji glyph left of text; gap 8 px
 Hover:           background --color-accent-crimson-dark / --color-accent-blue-dark
 Pressed:         background darkened 10 %; subtle inset shadow
@@ -233,7 +267,7 @@ Horizontal pad:  20 px
 Border-radius:   3 px
 Background:      transparent
 Border:          1px solid --color-parchment-border
-Text:            --color-ink-muted, --text-label, uppercase, letter-spacing 0.08em
+Text:            --color-ink-muted, --text-label, weight 600 (Theme.wSemiBold), uppercase, letter-spacing 0.08em
 Hover:           background --color-paper; border --color-ink-muted
 Pressed:         background --color-paper-dark
 ```
@@ -247,7 +281,7 @@ Button size:     36 × 36 px
 Border-radius:   2 px
 Inactive:        background transparent; border 1px --color-parchment-border; text --color-ink-muted
 Active/selected: background --color-accent-crimson (Burden) | --color-accent-blue (Blessing)
-                 border transparent; text --color-white-wash; font-weight bold
+                 border transparent; text --color-white-wash; weight 700 (Theme.wBold)
 Hover (inactive):background --color-paper; border --color-ink-muted
 Gap between:     4 px
 Font:            --text-stat-small
@@ -292,7 +326,7 @@ Popup:           background --color-white-wash; border 1px --color-parchment-bor
                  shadow 0 4px 12px rgba(0,0,0,0.18); border-radius 2 px
 Popup item height: 32 px; horizontal padding 12 px
 Popup hover:     background --color-accent-crimson-bg; text --color-ink
-Popup selected:  background --color-paper-dark; font-weight bold
+Popup selected:  background --color-paper-dark; weight 600 (Theme.wSemiBold)
 ```
 
 ### 6.8 Toggle Switch (Override cost)
@@ -366,11 +400,26 @@ Row layout:      dots left-aligned; –/value/+ controls right-aligned; "rank N.
 
 ### 6.13 Section Divider / Horizontal Rule
 
+Two variants. Use the **plain rule** for tight, in-panel separations (under a panel title band, between table rows); use the **ornate divider** to mark *structural* breaks between major blocks (sidebar identity block ↔ nav, between stacked sheet sections). The ornament marks structure — do not use it for every horizontal line.
+
+**Plain rule**
 ```
 Height:          1 px
 Background:      linear-gradient(to right, transparent, --color-parchment-border 20%, --color-parchment-border 80%, transparent)
 Vertical margin: --space-5 top and bottom
 ```
+
+**Ornate divider** (`OrnateDivider`, `l5r/qmlui/qml/widgets/OrnateDivider.qml`)
+
+Two faded sepia hairlines flanking a centred fleuron glyph in burnt-gold Cinzel — the document-as-character-sheet flavour.
+```
+Layout:          [ hairline ⟶ fill ]  glyph  [ fill ⟵ hairline ]   (gap 10 px each side)
+Hairline:        1 px; colour --color-parchment-border (Theme.divider); opacity ~0.6 (Theme.dividerOpacity)
+Glyph:           default fleuron "❖" (overridable via `glyph`)
+                 font Cinzel (Theme.fontDisplay), weight 600 (Theme.wSemiBold); size --text-body (13)
+                 colour --color-accent-gold (Theme.heading); opacity ~0.55
+```
+Parameters `glyph`, `ruleColor`, `ruleOpacity`, `glyphColor`, `glyphOpacity`, `glyphSize` are all overridable so the same widget covers crimson/blue accent contexts without forking.
 
 ### 6.14 Status Bar (dialog footer)
 
@@ -444,9 +493,14 @@ The **Blessing dialog** uses 縁 (U+7E01, "blessing/connection") in its header t
 
 Apply a subtle paper-grain texture to all `--color-paper` and `--color-paper-dark` surfaces.
 
-- Asset: `/assets/textures/rice_paper_light.png` — a 512 × 512 px seamless tileable PNG
-- Blend mode: `Multiply` at **8–12 %** opacity over the solid colour
-- In QML: use a `ShaderEffectSource` or a `BorderImage`/`Image` with `fillMode: Image.Tile`
+The texture is generated **procedurally**, not shipped as a PNG. This keeps the cxfreeze `package-data` manifest clean (no binary texture asset to bundle and track) and lets the grain scale to any panel size without tiling seams. Use the `RicePaperOverlay` widget (`l5r/qmlui/qml/widgets/RicePaperOverlay.qml`):
+
+- Implementation: a `Canvas` that paints short ink-coloured fibre marks (1 px dots + a few short directional strokes) using a fixed-seed linear-congruential PRNG, so every surface renders the **same** stable fibre pattern (consistent fibres read as "this is the paper"; per-paint random ones read as noise that won't sit still).
+- Colour & opacity: ink marks (`--color-ink`) at **~6 %** overall opacity — texture without dirtying ink contrast. Exposed as `Theme.paperTextureOpacity`.
+- Placement: draw the overlay **once at the window level** so the grain stays continuous across panels and gutters (the sheet reads as one piece of paper). Panels do not own a per-panel overlay; dialogs/popups that detach from the window get their own.
+- Repaint only on resize (`onWidthChanged`/`onHeightChanged`), not on scroll.
+
+> Rationale for not using a PNG: a `ShaderEffectSource` / tiled `BorderImage` was the original plan, but the procedural `Canvas` removes a bundled asset, avoids tiling artefacts, and renders identically on every install. The PNG approach is acceptable only if the procedural path ever proves too costly on low-end hardware.
 
 ### 8.2 Worn Edges (Dialog/Panel borders)
 
@@ -515,12 +569,12 @@ Core icon set needed (SVG, 20 × 20 px):
 
 ### 12.1 Token Singleton
 
-Create `/qml/Style.qml` as a `QtObject` singleton exposing all tokens as properties:
+The token singleton is named **`Theme`** and lives in a **`Theme` module** at `l5r/qmlui/qml/Theme/Theme.qml`, consumed everywhere via `import Theme 1.0` (e.g. `Label { color: Theme.accentCrimson }`). It is *not* named `Style`, and the module is *not* `App` — earlier drafts of this spec used those names; the implementation settled on `Theme`/`Theme` and that is authoritative. It exposes all tokens as `readonly property` values:
 
 ```qml
-// Style.qml
+// l5r/qmlui/qml/Theme/Theme.qml
 pragma Singleton
-import QtQuick 2.15
+import QtQuick
 
 QtObject {
     // --- Colours ---
@@ -563,6 +617,13 @@ QtObject {
     readonly property string fontBody:     "IM Fell English"
     readonly property string fontStat:     "EB Garamond"
 
+    // Font weights (QFont.Weight numeric scale)
+    readonly property int wRegular:  400   // Font.Normal
+    readonly property int wMedium:   500   // Font.Medium
+    readonly property int wSemiBold: 600   // Font.DemiBold
+    readonly property int wBold:     700   // Font.Bold
+    readonly property int wBlack:    900   // Font.Black -- Cinzel display only
+
     // Font sizes
     readonly property int fsDisplay:     22
     readonly property int fsHeading1:    18
@@ -577,9 +638,19 @@ QtObject {
 }
 ```
 
-Register it in `main.cpp`:
-```cpp
-qmlRegisterSingletonType(QUrl("qrc:/qml/Style.qml"), "App", 1, 0, "Style");
+Register it as a QML module via a `qmldir` next to the file, not via C++ `qmlRegisterSingletonType` (this is a Python / `qtpy` app, no C++ entry point):
+
+```
+// l5r/qmlui/qml/Theme/qmldir
+module Theme
+singleton Theme 1.0 Theme.qml
+```
+
+The engine resolves `import Theme 1.0` because the bootstrap adds the *parent* of the module directory to the import path (see `l5r/qmlui/app.py:run_qml_app`):
+
+```python
+qml_dir = Path(__file__).parent / "qml"
+engine.addImportPath(str(qml_dir))   # makes `import Theme 1.0` resolvable
 ```
 
 ### 12.2 Clan Accent Runtime Override
@@ -631,9 +702,12 @@ Example:
 
 | ✅ Do | ❌ Don't |
 |---|---|
-| Use tokens from `Style.qml` for every colour and spacing value | Hard-code hex values or pixel values inline |
+| Use tokens from `Theme.qml` for every colour and spacing value | Hard-code hex values or pixel values inline |
 | Apply rice-paper texture via `RicePaperOverlay` | Use pure `#FFFFFF` or `#000000` anywhere |
 | Use Cinzel for all section/dialog titles | Use system sans-serif fonts for UI headings |
+| Set Cinzel at weight 600+ always (Theme.wSemiBold / wBold) | Set Cinzel at Regular/Medium — it goes spindly at UI sizes |
+| Set `font.weight` from a `Theme` weight token | Use `font.bold: true` (picks weight 700, breaks 600-spec elements) |
+| Emphasise body text with gold or italic | Fake-bold IM Fell English (no real bold cut exists — Qt smears it) |
 | Use IM Fell English for body and labels | Use Arial, Helvetica, or Roboto anywhere |
 | Use kanji as decorative watermarks only | Display kanji as the primary label for an action |
 | Keep ring card text white regardless of content | Use dark text inside coloured ring cards |

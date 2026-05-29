@@ -53,9 +53,9 @@ Rectangle {
         Label {
             text: card.ringValue
             color: "white"
-            font.family: Theme.fontDisplay
-            font.pixelSize: 38
-            font.weight: Font.Black
+            font.family: Theme.fontStat
+            font.pixelSize: Theme.fsStatLarge
+            font.weight: Theme.wSemiBold
             font.features: Theme.tabularNumbers
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 40
@@ -114,7 +114,7 @@ Rectangle {
                         opacity: 0.92
                         Layout.fillWidth: true
                         elide: Text.ElideRight
-                        font.pixelSize: 12
+                        font.pixelSize: Theme.fsLabel
                         HoverHandler {
                             id: attrHover
                         }
@@ -124,6 +124,7 @@ Rectangle {
                     Label {
                         text: card.attrValues[modelData] !== undefined ? card.attrValues[modelData] : "0"
                         color: "white"
+                        font.pixelSize: Theme.fsStatSmall
                         font.weight: Font.DemiBold
                         font.features: Theme.tabularNumbers
                         Layout.preferredWidth: 18

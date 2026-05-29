@@ -39,8 +39,8 @@ Pane {
     palette.buttonText: Theme.ink
     palette.base: Theme.parchmentBase
     palette.alternateBase: Theme.parchmentInset
-    palette.placeholderText: "#8a7a65"
-    palette.mid: "#a89580"
+    palette.placeholderText: Theme.inkFaint
+    palette.mid: Theme.inkFaint
 
     padding: 12
 
@@ -69,7 +69,7 @@ Pane {
         if (idx === 6)
             return active ? "#3a0e0e" : "#5a1a1a";
         if (active)
-            return "#fdf6e3";
+            return Theme.parchmentBase;
         return Theme.ink;
     }
     function _bucketStart(idx) {
@@ -103,12 +103,12 @@ Pane {
                 color: Theme.heading
                 opacity: 0.7
                 font.family: Theme.fontDisplay
-                font.pixelSize: Theme.bodyFont
+                font.pixelSize:Theme.fsBody 
             }
             Label {
                 text: qsTr("WOUNDS")
                 font.family: Theme.fontDisplay
-                font.pixelSize: Theme.titleFont
+                font.pixelSize: Theme.fsHeading1
                 font.weight: Theme.headingWeight
                 font.letterSpacing: 1.5
                 color: Theme.heading
@@ -122,7 +122,7 @@ Pane {
             }
             Label {
                 text: qsTr("Earth %1").arg(panel._rings.earth || 0)
-                font.pixelSize: Theme.smallFont
+                font.pixelSize: Theme.fsCaption
                 opacity: 0.65
                 Layout.leftMargin: 4
             }
@@ -138,7 +138,7 @@ Pane {
             // through a Gear menu.
             Label {
                 text: qsTr("multiplier")
-                font.pixelSize: Theme.smallFont
+                font.pixelSize: Theme.fsCaption
                 opacity: 0.6
             }
             RankStepper {
@@ -155,7 +155,7 @@ Pane {
             }
             Label {
                 text: qsTr("current")
-                font.pixelSize: Theme.smallFont
+                font.pixelSize: Theme.fsCaption
                 opacity: 0.6
             }
             RankStepper {
@@ -195,13 +195,13 @@ Pane {
                 // most-glanced label on the panel.
                 Label {
                     text: panel._nameFor(panel._lvl)
-                    font.pixelSize: Theme.bodyFont
+                    font.pixelSize:Theme.fsBody 
                     font.weight: Font.Bold
                     color: panel._lvl >= 6 ? Theme.accentMuted : (panel._lvl === 0 ? Theme.positive : Theme.heading)
                 }
                 Label {
                     text: (panel._wounds[panel._lvl] && panel._wounds[panel._lvl].penalty > 0) ? qsTr("· +%1 TN to all rolls").arg(panel._wounds[panel._lvl].penalty) : qsTr("· no penalty")
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     opacity: 0.85
                 }
                 Item {
@@ -209,7 +209,7 @@ Pane {
                 }
                 Label {
                     text: panel._statusCaption()
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     opacity: 0.6
                 }
                 Item {
@@ -217,23 +217,23 @@ Pane {
                 }
                 Label {
                     text: panel._cur
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: 22
-                    font.weight: Font.Bold
+                    font.family: Theme.fontStat
+                    font.pixelSize: Theme.fsStatMedium
+                    font.weight: Theme.wMedium
                     font.features: Theme.tabularNumbers
                     color: Theme.heading
                 }
                 Label {
                     text: qsTr("/ %1").arg(panel._max)
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.bodyFont
+                    font.family: Theme.fontStat
+                    font.pixelSize: Theme.fsStatSmall
                     font.features: Theme.tabularNumbers
                     opacity: 0.7
                 }
                 Label {
                     text: qsTr("TOTAL")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     font.letterSpacing: 1.5
                     color: Theme.heading
                     opacity: 0.7
@@ -269,16 +269,16 @@ Pane {
                         Label {
                             text: panel._nameFor(index).toUpperCase()
                             font.family: Theme.fontDisplay
-                            font.pixelSize: Theme.smallFont
+                            font.pixelSize: Theme.fsCaption
                             font.weight: Theme.headingWeight
                             font.letterSpacing: 1.5
                             color: panel._cardInk(index, card._active)
                         }
                         Label {
                             text: modelData.value
-                            font.family: Theme.fontDisplay
-                            font.pixelSize: 24
-                            font.weight: Font.Bold
+                            font.family: Theme.fontStat
+                            font.pixelSize: Theme.fsStatMedium
+                            font.weight: Theme.wMedium
                             font.features: Theme.tabularNumbers
                             color: panel._cardInk(index, card._active)
                         }
@@ -289,7 +289,7 @@ Pane {
                             Layout.fillWidth: true
                             Label {
                                 text: index === 7 ? qsTr("unconscious") : qsTr("+%1 TN").arg(modelData.penalty)
-                                font.pixelSize: Theme.smallFont
+                                font.pixelSize: Theme.fsCaption
                                 font.weight: Font.DemiBold
                                 color: panel._cardInk(index, card._active)
                                 opacity: 0.9
@@ -305,8 +305,8 @@ Pane {
                             // "Down" and "really out").
                             Label {
                                 text: qsTr("+%1").arg(modelData.inc)
-                                font.family: Theme.fontDisplay
-                                font.pixelSize: Theme.smallFont
+                                font.family: Theme.fontStat
+                                font.pixelSize: Theme.fsStatSmall
                                 font.features: Theme.tabularNumbers
                                 color: panel._cardInk(index, card._active)
                                 opacity: 0.75

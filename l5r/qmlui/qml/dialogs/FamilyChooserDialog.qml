@@ -82,7 +82,7 @@ Dialog {
             horizontalAlignment: Text.AlignHCenter
             text: qsTr("Select Clan and Family")
             font.family: Theme.fontDisplay
-            font.pixelSize: Theme.titleFont
+            font.pixelSize: Theme.fsHeading1
             font.weight: Font.DemiBold
             color: Theme.heading
         }

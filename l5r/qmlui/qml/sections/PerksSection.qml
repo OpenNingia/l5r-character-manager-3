@@ -49,7 +49,7 @@ import Theme 1.0
 
 ColumnLayout {
     id: section
-    spacing: Theme.sectionSpacing
+    spacing: Theme.s4
 
     // -----------------------------------------------------------------
     // Defensive bindings -- proxy properties may be absent on first
@@ -120,7 +120,7 @@ ColumnLayout {
                         wrapMode: Text.WordWrap
                         text: qsTr("INVESTED IN BLESSINGS")
                         font.family: Theme.fontDisplay
-                        font.pixelSize: Theme.smallFont
+                        font.pixelSize: Theme.fsCaption
                         font.weight: Theme.headingWeight
                         font.letterSpacing: 2.0
                         horizontalAlignment: Text.AlignHCenter
@@ -130,9 +130,9 @@ ColumnLayout {
                     Label {
                         Layout.fillWidth: true
                         text: section._meritsXp
-                        font.family: Theme.fontDisplay
-                        font.pixelSize: 34
-                        font.weight: Font.Bold
+                        font.family: Theme.fontStat
+                        font.pixelSize: Theme.fsStatLarge
+                        font.weight: Theme.wSemiBold
                         font.features: Theme.tabularNumbers
                         horizontalAlignment: Text.AlignHCenter
                         color: Theme.heading
@@ -141,7 +141,7 @@ ColumnLayout {
                         Layout.fillWidth: true
                         text: qsTr("points laid down for advantage")
                         font.italic: true
-                        font.pixelSize: Theme.smallFont
+                        font.pixelSize: Theme.fsCaption
                         horizontalAlignment: Text.AlignHCenter
                         opacity: 0.6
                         wrapMode: Text.WordWrap
@@ -180,7 +180,7 @@ ColumnLayout {
                         wrapMode: Text.WordWrap
                         text: parent._netCost ? qsTr("NET BURDEN ON THE SOUL") : qsTr("NET GIFT TO THE SOUL")
                         font.family: Theme.fontDisplay
-                        font.pixelSize: Theme.smallFont
+                        font.pixelSize: Theme.fsCaption
                         font.weight: Theme.headingWeight
                         font.letterSpacing: 2.0
                         horizontalAlignment: Text.AlignHCenter
@@ -194,9 +194,13 @@ ColumnLayout {
                         // burdens > blessings). The display number is
                         // always positive magnitude.
                         text: (parent._netCost ? "" : "+") + Math.abs(section._netXp)
-                        font.family: Theme.fontDisplay
+                        font.family: Theme.fontStat
+                        // 44px is an intentional above-scale focal size for the
+                        // net-XP verdict (the centre of the "scale" metaphor);
+                        // the spec type scale tops out at fsStatLarge=36, so this
+                        // one stays a literal until/unless a hero token is added.
                         font.pixelSize: 44
-                        font.weight: Font.Bold
+                        font.weight: Theme.wSemiBold
                         font.features: Theme.tabularNumbers
                         horizontalAlignment: Text.AlignHCenter
                         color: parent._netColor
@@ -205,7 +209,7 @@ ColumnLayout {
                         Layout.fillWidth: true
                         text: parent._netCost ? qsTr("the cost of grace, after the gods take their due") : qsTr("favour earned by accepting hardship")
                         font.italic: true
-                        font.pixelSize: Theme.smallFont
+                        font.pixelSize: Theme.fsCaption
                         horizontalAlignment: Text.AlignHCenter
                         opacity: 0.6
                         wrapMode: Text.WordWrap
@@ -237,7 +241,7 @@ ColumnLayout {
                         wrapMode: Text.WordWrap
                         text: qsTr("GRANTED BY BURDENS")
                         font.family: Theme.fontDisplay
-                        font.pixelSize: Theme.smallFont
+                        font.pixelSize: Theme.fsCaption
                         font.weight: Theme.headingWeight
                         font.letterSpacing: 2.0
                         horizontalAlignment: Text.AlignHCenter
@@ -247,9 +251,9 @@ ColumnLayout {
                     Label {
                         Layout.fillWidth: true
                         text: section._flawsXp
-                        font.family: Theme.fontDisplay
-                        font.pixelSize: 34
-                        font.weight: Font.Bold
+                        font.family: Theme.fontStat
+                        font.pixelSize: Theme.fsStatLarge
+                        font.weight: Theme.wSemiBold
                         font.features: Theme.tabularNumbers
                         horizontalAlignment: Text.AlignHCenter
                         color: Theme.highlight
@@ -258,7 +262,7 @@ ColumnLayout {
                         Layout.fillWidth: true
                         text: section._flawsCap > 0 ? qsTr("of %1 the gods will recognise").arg(section._flawsCap) : qsTr("paid back for hardship accepted")
                         font.italic: true
-                        font.pixelSize: Theme.smallFont
+                        font.pixelSize: Theme.fsCaption
                         horizontalAlignment: Text.AlignHCenter
                         opacity: 0.6
                         wrapMode: Text.WordWrap
@@ -293,7 +297,7 @@ ColumnLayout {
                 Label {
                     text: qsTr("blessings inscribed upon the soul")
                     font.italic: true
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     opacity: 0.6
                 }
                 Item {
@@ -306,7 +310,7 @@ ColumnLayout {
                     // line useful when the proxy doesn't supply one.
                     text: section._merits.length === 1 ? qsTr("1 blessing") : qsTr("%1 blessings").arg(section._merits.length)
                     font.italic: true
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     opacity: 0.55
                 }
             }
@@ -335,7 +339,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     text: qsTr("No favour has yet been claimed.")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.titleFont
+                    font.pixelSize: Theme.fsHeading1
                     font.weight: Theme.headingWeight
                     font.letterSpacing: 1.4
                     horizontalAlignment: Text.AlignHCenter
@@ -347,7 +351,7 @@ ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
                     text: qsTr("Choose what gifts your samurai has been granted — " + "fortunes of birth, sworn allies, a sharp eye, a long memory.")
                     font.italic: true
-                    font.pixelSize: Theme.bodyFont
+                    font.pixelSize:Theme.fsBody 
                     horizontalAlignment: Text.AlignHCenter
                     wrapMode: Text.WordWrap
                     opacity: 0.7
@@ -410,7 +414,7 @@ ColumnLayout {
                         Label {
                             text: qsTr("Inscribe a Blessing")
                             font.family: Theme.fontDisplay
-                            font.pixelSize: Theme.smallFont + 1
+                            font.pixelSize: Theme.fsCaption + 1
                             font.weight: Font.DemiBold
                             font.letterSpacing: 1.4
                             color: inscribeMeritBtn.down ? Theme.parchmentBase : Theme.secondary
@@ -449,7 +453,7 @@ ColumnLayout {
                 Label {
                     text: qsTr("hardships sworn, gifts received")
                     font.italic: true
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     opacity: 0.6
                 }
 
@@ -510,7 +514,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     text: qsTr("No hardship has been sworn.")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.titleFont
+                    font.pixelSize: Theme.fsHeading1
                     font.weight: Theme.headingWeight
                     font.letterSpacing: 1.4
                     horizontalAlignment: Text.AlignHCenter
@@ -522,7 +526,7 @@ ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
                     text: qsTr("A samurai who accepts a flaw is granted experience to compensate. " + "Choose the burdens you carry, and the gods will balance the scale.")
                     font.italic: true
-                    font.pixelSize: Theme.bodyFont
+                    font.pixelSize:Theme.fsBody 
                     horizontalAlignment: Text.AlignHCenter
                     wrapMode: Text.WordWrap
                     opacity: 0.7
@@ -581,7 +585,7 @@ ColumnLayout {
                         Label {
                             text: qsTr("Accept a Burden")
                             font.family: Theme.fontDisplay
-                            font.pixelSize: Theme.smallFont + 1
+                            font.pixelSize: Theme.fsCaption + 1
                             font.weight: Font.DemiBold
                             font.letterSpacing: 1.4
                             color: inscribeFlawBtn.down ? Theme.parchmentBase : Theme.accent
@@ -746,7 +750,7 @@ ColumnLayout {
 
                     Label {
                         text: (card.item && card.item.name) ? card.item.name : qsTr("(unnamed)")
-                        font.pixelSize: Theme.bodyFont + 1
+                        font.pixelSize:Theme.fsBody  + 1
                         font.weight: Font.DemiBold
                         color: Theme.ink
                         elide: Text.ElideRight
@@ -811,7 +815,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     text: card._isStarting ? qsTr("granted by your starting school") : card._subtypeText
                     font.italic: true
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     color: Theme.ink
                     opacity: 0.6
                     wrapMode: Text.WordWrap
@@ -841,7 +845,7 @@ ColumnLayout {
                     // happen to share a line.
                     text: qsTr("suggested:") + " " + (card._isFlaw && card._suggested !== 0 ? "+" + card._suggested : "" + card._suggested)
                     font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.smallFont
+                    font.pixelSize: Theme.fsCaption
                     font.weight: Font.DemiBold
                     font.features: Theme.tabularNumbers
                     font.strikeout: true

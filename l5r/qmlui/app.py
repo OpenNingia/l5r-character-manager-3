@@ -63,23 +63,30 @@ def _load_bundled_fonts():
 def _apply_body_font(qapp):
     """Make IM Fell English the app-wide default body font.
 
-    Cinzel stays the display face (consumed via ``Theme.fontDisplay``
-    on headers, ring labels, numerals, dialog titles, the watermark).
-    Garamond becomes the body face by overriding the QApplication's
-    default ``QFont``, which every Quick Controls item -- TextField,
-    ComboBox, SpinBox, plain Label without an explicit family --
-    inherits at construction. Avoids touching dozens of consumer
-    files for the same effect.
+    This is the ``Theme.fontBody`` face (design system §3.1). Cinzel
+    stays the display face (``Theme.fontDisplay`` -- headers, ring
+    labels, dialog titles, the watermark) and EB Garamond is the stat
+    face (``Theme.fontStat`` -- numerals). IM Fell English becomes the
+    body face by overriding the QApplication's default ``QFont``, which
+    every Quick Controls item -- TextField, ComboBox, SpinBox, plain
+    Label without an explicit family -- inherits at construction. That
+    avoids touching dozens of consumer files for the same effect.
 
-    Garamond's optical width is narrower than typical UI sans, so we
-    bump the size by one point to keep on-screen body text legible at
-    parity with the system font. The legacy QWidget path's
-    ``settings.ui.use_system_font`` preference is a QWidget-era
-    setting and intentionally not honoured here -- the QML UI's body
-    face is part of its designed identity.
+    The family string is the .ttf's exact internal name, the ALL-CAPS
+    ``IM FELL English`` (see _load_bundled_fonts output). Qt matches
+    family names case-insensitively, so ``"IM Fell English"`` resolves
+    too, but pinning the exact name makes ``QFont.exactMatch()`` true
+    and keeps the value identical to ``Theme.fontBody``.
+
+    IM Fell English's optical width is narrower than a typical UI sans,
+    so we bump the size by one point to keep on-screen body text
+    legible at parity with the system font. The legacy QWidget path's
+    ``settings.ui.use_system_font`` preference is a QWidget-era setting
+    and intentionally not honoured here -- the QML UI's body face is
+    part of its designed identity.
     """
     base = qapp.font()
-    body = QFont("IM Fell English")
+    body = QFont("IM FELL English")
     base_size = base.pointSizeF()
     if base_size > 0:
         body.setPointSizeF(base_size + 1.0)

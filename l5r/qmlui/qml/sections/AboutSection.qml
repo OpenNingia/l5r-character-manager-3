@@ -37,7 +37,7 @@ ColumnLayout {
             Label {
                 text: about.info.appDesc
                 font.family: Theme.fontDisplay
-                font.pixelSize: Theme.headerFont
+                font.pixelSize: Theme.fsDisplay
                 font.weight: Font.DemiBold
                 color: Theme.heading
                 Layout.fillWidth: true
@@ -45,7 +45,7 @@ ColumnLayout {
             }
             Label {
                 text: qsTr("Version %1").arg(about.info.version)
-                font.pixelSize: Theme.bodyFont
+                font.pixelSize:Theme.fsBody 
                 color: Theme.accent
                 opacity: 0.85
             }

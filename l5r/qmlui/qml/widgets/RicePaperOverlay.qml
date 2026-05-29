@@ -36,7 +36,7 @@ Canvas {
             return;
         var ctx = getContext("2d");
         ctx.clearRect(0, 0, width, height);
-        ctx.fillStyle = "#2a221b";
+        ctx.fillStyle = Theme.ink;
 
         // Linear-congruential PRNG (Park-Miller). Seeded fixed so
         // fibres are stable across repaints. JS' Math.random is

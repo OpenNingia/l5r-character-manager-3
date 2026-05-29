@@ -10,96 +10,185 @@ pragma Singleton
 import QtQuick
 
 QtObject {
-    // --- brand accents (work on light + dark backgrounds) ----------
-    readonly property color accent: "#b03030"  // samurai crimson
-    readonly property color accentMuted: "#7a2424"
-    readonly property color accentSoft: "#e8b4b4"
-    readonly property color secondary: "#3949ab"  // indigo
-    readonly property color highlight: "#c89a3c"  // amber/gold
-    readonly property color positive: "#2a8a2a"
-    readonly property color negative: "#a83232"
-    readonly property color heading: "#8a5a1a"  // burnt-gold for titles
+    // ===============================================================
+    // COLOUR PALETTE -- hex values per design system §2. Token NAMES
+    // are kept as the existing *semantic* names (heading, divider,
+    // parchment, flagHonor…) rather than the spec's literal-colour
+    // names (accentGold, parchmentBorder, paper…): the semantic names
+    // survive a re-theme better, and renaming would risk substring
+    // collisions (accent ⊂ accentMuted/accentSoft). Genuinely-new spec
+    // tokens that had no existing equivalent are added below with
+    // spec-style names (inkMuted, whiteWash, secondaryDark/Soft,
+    // warning, errorBorder, disabled*). Mapping of name → spec token is
+    // noted per line.
+    // ===============================================================
 
-    // --- ring / element palette ------------------------------------
-    readonly property color ringEarth: "#8d6e63"
-    readonly property color ringAir: "#5d8aa8"
-    readonly property color ringWater: "#2f6ea5"
-    readonly property color ringFire: "#c0392b"
-    readonly property color ringVoid: "#6b4f9e"
+    // --- brand accents (design system §2.2) ------------------------
+    readonly property color accent: "#8B1A1A"          // accent-crimson: primary action, active nav
+    readonly property color accentMuted: "#6B1010"     // accent-crimson-dark: hover/pressed
+    readonly property color accentSoft: "#F5E0E0"      // accent-crimson-bg: selected-item wash (Burden)
+    readonly property color secondary: "#4A6FA5"       // accent-blue: blessing / advantage actions
+    readonly property color secondaryDark: "#3A5A8A"   // accent-blue-dark: blue hover/pressed (NEW)
+    readonly property color secondarySoft: "#E0E8F5"   // accent-blue-bg: selected-item wash, Blessing (NEW)
+    readonly property color heading: "#B8860B"         // accent-gold: headings, titles, XP values, +N
+    readonly property color highlight: "#D4A017"       // accent-gold-light: highlighted numbers, active rank
+    readonly property color positive: "#3A7A3A"        // success: positive feedback
+    readonly property color warning: "#B87A1A"         // warning: glory, cost warnings (NEW)
+    readonly property color negative: "#8B1A1A"        // error (reuses crimson)
+    readonly property color errorBorder: "#C03030"     // error-state input borders (NEW)
+
+    // --- ink / text (design system §2.1) ---------------------------
+    readonly property color ink: "#2C1A0E"             // primary text (body, labels)
+    readonly property color inkMuted: "#6B4F35"        // secondary text: captions, placeholders, metadata (NEW)
+    readonly property color inkFaint: "#A08060"        // tertiary text: disabled, hints (NEW)
+
+    // --- ring / element palette (design system §2.3) ---------------
+    readonly property color ringEarth: "#5C4A30"
+    readonly property color ringAir: "#4A7A8A"
+    readonly property color ringWater: "#2A4A7A"
+    readonly property color ringFire: "#8B2A1A"
+    readonly property color ringVoid: "#4A2A6A"
 
     // --- flag palette (honor / glory / status / taint / infamy) ----
-    readonly property color flagHonor: "#2a8a2a"
-    readonly property color flagGlory: "#c89a3c"
-    readonly property color flagStatus: "#3949ab"
-    readonly property color flagTaint: "#5c3a82"
-    readonly property color flagInfamy: "#a83232"
+    // Mapped onto §2.4 status hues where the spec defines one; taint
+    // keeps its domain purple (no spec token).
+    readonly property color flagHonor: "#3A7A3A"       // = success
+    readonly property color flagGlory: "#B87A1A"       // = warning
+    readonly property color flagStatus: "#4A6FA5"      // = accent-blue
+    readonly property color flagTaint: "#5c3a82"       // domain purple (extra, no spec token)
+    readonly property color flagInfamy: "#8B1A1A"      // = error/crimson
 
-    // --- structure -------------------------------------------------
-    // Stronger than palette.mid so dividers/borders read on both
-    // light and dark themes without looking washed-out.
-    readonly property color divider: "#9c8e80"
-    readonly property real dividerOpacity: 0.6
-    readonly property color borderStrong: "#5a4a3a"
-    readonly property color borderSubtle: "#9c8e80"
+    // --- structure / borders (design system §2.1) ------------------
+    readonly property color divider: "#C8B89A"         // parchment-border: default divider
+    readonly property real dividerOpacity: 0.8
+    readonly property color borderSubtle: "#C8B89A"    // parchment-border
+    readonly property color borderStrong: "#5a4a3a"    // strong sepia border (extra, no spec token)
 
-    // --- parchment surfaces ---------------------------------------
+    // --- parchment surfaces (design system §2.1) -------------------
     // The sheet IS the app: window bg, sidebar, and panels all share
-    // these warm cream tones rather than living on the OS theme bg.
-    // `parchment` is the main field; `parchmentSidebar` is a clearly
-    // darker shade for the TOC so the navigation reads as a separate
-    // zone without breaking the "one document" illusion.
-    // `parchmentInset` is the alternate-row / cell tone used by tables
-    // and lighter input wells.  `ink` is the body text colour applied
-    // via palette overrides so descendants render dark-on-cream
-    // regardless of the OS theme.
-    readonly property color parchment: "#f4ead5"
-    readonly property color parchmentSidebar: "#e6d4ac"
-    readonly property color parchmentInset: "#ece1c4"
-    readonly property color parchmentBase: "#fdf6e3"
-    readonly property color ink: "#2a221b"
+    // these warm cream tones. `parchment` is the main field (paper);
+    // `parchmentSidebar` the darker TOC / alternating-row tone
+    // (paper-dark); `parchmentBase` the input-fill / hover tone
+    // (paper-light); `whiteWash` the dialog/modal overlay. `ink` is the
+    // body text colour applied via palette overrides so descendants
+    // render dark-on-cream. `parchmentInset` is a mid cell tone kept as
+    // an extra (sits between paper and paper-dark; no exact spec token).
+    readonly property color parchment: "#F5EDD6"       // paper: primary background
+    readonly property color parchmentSidebar: "#EDE0C0"// paper-dark: sidebar, alternating rows
+    readonly property color parchmentBase: "#FAF4E4"   // paper-light: input fills, hover backgrounds
+    readonly property color whiteWash: "#FFFDF5"       // dialog overlays / modal surfaces (NEW)
+    readonly property color parchmentInset: "#ece1c4"  // mid cell tone (extra, between paper & paper-dark)
 
-    // --- layout / typography --------------------------------------
-    readonly property int sectionSpacing: 14
-    readonly property int groupSpacing: 10
-    readonly property int formSpacing: 8
+    // --- disabled (design system §2.4) -----------------------------
+    readonly property color disabledBg: "#DDD0B8"      // disabled control fills (NEW)
+    readonly property color disabledText: "#A08060"    // disabled control labels (NEW)
+
+    // --- spacing scale (8px base grid, design system §4.1) --------
+    // Names mirror the design-system tokens s1..s7 so call sites read
+    // straight off the spec. 8px is the base unit; s1 is the only
+    // sub-base step (tight icon/label gaps).
+    readonly property int s1: 4    // tight gaps (icon<->label, rank-button gap)
+    readonly property int s2: 8    // default inner padding for small controls
+    readonly property int s3: 12   // list-item vertical padding
+    readonly property int s4: 16   // section / card inner padding
+    readonly property int s5: 24   // between sections
+    readonly property int s6: 32   // dialog internal sections
+    readonly property int s7: 48   // top/bottom margins on major containers
+
+    // Component-local metrics, NOT part of the global scale: the
+    // social / void point-track dots (design §6.12 fixes the dot at
+    // 14px with a 4px gap).
     readonly property int pointDotSize: 14
     readonly property int pointDotSpacing: 4
-    readonly property int smallFont: 11
-    readonly property int bodyFont: 13
-    readonly property int titleFont: 18
-    readonly property int headerFont: 20
 
-    // Display face for section headers, ring labels, derived stats,
-    // dialog titles -- anything that should feel like a character
-    // sheet rather than a system dialog. The .ttf is bundled in
-    // l5r/share/fonts/ and registered at qmlui bootstrap via
-    // QFontDatabase.addApplicationFont(), so this name resolves on
-    // every OS without any user-side install. QML's `font.family`
-    // takes a single family name (no CSS-style fallback chain), so
-    // shipping the asset is the only way to guarantee identity.
-    // Body text intentionally inherits the OS UI font.
+    // --- font families (design system §3.1) ------------------------
+    // Each face is bundled in l5r/share/fonts/ and registered at qmlui
+    // bootstrap via QFontDatabase.addApplicationFont(), so the names
+    // below resolve on every OS without a user-side install. QML's
+    // `font.family` takes a single family name (no CSS-style fallback
+    // chain), so shipping the asset is the only guarantee of identity.
+    //
+    //   fontDisplay -- Cinzel. Section/dialog titles, headings, ring
+    //                  LABELS (not the numerals); ALL-CAPS banners.
+    //   fontBody    -- IM Fell English. Body copy, field labels,
+    //                  captions. Also set app-wide as the default QFont
+    //                  in l5r.qmlui.app._apply_body_font so plain
+    //                  Labels/controls inherit it; this token is the
+    //                  explicit handle for places that set a family.
+    //                  NB: the .ttf's internal family is the ALL-CAPS
+    //                  "IM FELL English". Qt matches case-insensitively
+    //                  but we pin the exact name so QFont.exactMatch()
+    //                  is true and style selection is unambiguous.
+    //   fontStat    -- EB Garamond. ALL numeric stat displays: ring
+    //                  ranks, attribute/insight/rank values, initiative
+    //                  & armor TN, skill ranks, XP cost figures. Keeps
+    //                  the figures visually distinct from Cinzel heads.
     readonly property string fontDisplay: "Cinzel"
+    readonly property string fontBody: "IM FELL English"
+    readonly property string fontStat: "EB Garamond"
     // Brush-style kanji face (Kōzan Mōhitsu / 衡山毛筆) bundled in
     // l5r/share/fonts/KouzanMouhituFontOTF.otf. Used wherever a CJK
     // glyph appears on the sheet -- the TOC icon column, the
     // section-header icon, and the large watermark behind each
-    // section. Cinzel has zero CJK coverage so kanji on those slots
-    // would otherwise fall back to the OS system font; pinning a
-    // bundled brush face here makes the aesthetic identical across
-    // every install. The family name below (KouzanBrushFontOTF) is
-    // the OTF's internal family, NOT the file stem -- Qt registers
-    // by metadata, not by filename.
+    // section. Cinzel/EB Garamond have zero CJK coverage so kanji on
+    // those slots would otherwise fall back to the OS system font;
+    // pinning a bundled brush face here makes the aesthetic identical
+    // across every install. The family name below (KouzanBrushFontOTF)
+    // is the OTF's internal family, NOT the file stem -- Qt registers
+    // by metadata, not by filename. (Not in the design-system token
+    // table, which omits the kanji face, but required by §3.3 / §7.)
     readonly property string fontKanji: "KouzanBrushFontOTF"
-    // Cinzel has thin strokes below ~22px and reads anaemic at any
-    // weight under 900 on the parchment surface. Headers use this
-    // semantic token so a single bump here lifts every banner / title
-    // / ring label without hunting through call sites.
-    readonly property int headingWeight: Font.Black
+
+    // --- font weights (design system §3.1 / §3.4) ------------------
+    // QFont.Weight numeric scale. ALWAYS set font.weight from one of
+    // these -- never font.bold (which forces 700 and faux-bolds the
+    // single-weight body face). Per-family policy (§3.4):
+    //   Cinzel  -- never below wSemiBold. The *variable* Cinzel we ship
+    //              renders 600/700/800 IDENTICALLY (one heavy bucket);
+    //              only 900 (wBlack) is distinctly heavier. So use
+    //              wBlack for prominent display (titles, section headers,
+    //              ring labels) and wSemiBold/wBold for smaller labels &
+    //              buttons -- the latter two are cosmetically identical
+    //              in the variable face but stay semantically correct
+    //              (and ready for static instances per §3.1).
+    //   IM Fell -- wRegular only; it has no real bold cut.
+    //   EB Gar. -- wSemiBold@36, wMedium@22, wRegular@<=15 (the shipped
+    //              variable EB Garamond renders all four weights).
+    readonly property int wRegular: 400     // Font.Normal
+    readonly property int wMedium: 500      // Font.Medium
+    readonly property int wSemiBold: 600    // Font.DemiBold
+    readonly property int wBold: 700        // Font.Bold
+    readonly property int wBlack: 900       // Font.Black -- Cinzel display only
+
+    // --- type scale (design system §3.2) ---------------------------
+    // fs* = "font size", keyed to the spec's named roles. Display /
+    // heading / label / caption pair with fontDisplay or fontBody;
+    // the stat* + xpValue sizes pair with fontStat.
+    readonly property int fsDisplay: 22     // page / section title (Cinzel)
+    readonly property int fsHeading1: 18    // dialog title (Cinzel)
+    readonly property int fsHeading2: 15    // sub-section header (Cinzel)
+    readonly property int fsLabel: 13       // field label, column header (Cinzel)
+    readonly property int fsBody: 13        // description paragraphs, notes (IM Fell)
+    readonly property int fsCaption: 11     // hints, metadata, taglines (IM Fell)
+    readonly property int fsStatLarge: 36   // ring numeral / hero stat (EB Garamond)
+    readonly property int fsStatMedium: 20  // attribute value, insight, rank
+    readonly property int fsStatSmall: 15   // skill rank, xp-cost labels
+    readonly property int fsXpValue: 28     // "+N XP" cost figure (EB Garamond bold)
+
+    // Convenience alias for the Cinzel display weight: wBlack (900).
+    // This is the ONLY weight the shipped variable Cinzel renders
+    // heavier than the 600/700/800 bucket, so it's what gives titles,
+    // section headers and ring labels their presence on parchment (and
+    // restores the original Font.Black look). New call sites may read
+    // this for any prominent Cinzel heading; smaller Cinzel labels &
+    // buttons should use wSemiBold / wBold directly per §3.4.
+    readonly property int headingWeight: wBlack
     // OpenType tabular-figures feature. Apply via `font.features` on
     // any Label that holds a number stacked above/below another -- ring
     // ranks, XP totals, skill ranks, wound thresholds. Without this,
-    // Cinzel uses proportional figures and a column of "1 / 5 / 3 / 8"
-    // dances horizontally row-to-row. Requires Qt 6.6+.
+    // a column of "1 / 5 / 3 / 8" dances horizontally row-to-row as the
+    // proportional figures shift. Both Cinzel and EB Garamond ship the
+    // feature. Requires Qt 6.6+.
     readonly property var tabularNumbers: ({
             "tnum": 1
         })

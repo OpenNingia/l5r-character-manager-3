@@ -25,7 +25,7 @@ Rectangle {
 
     implicitWidth: 82
     implicitHeight: 26
-    color: "#fbf6e8"
+    color: Theme.parchmentBase
     border.color: Theme.borderSubtle
     border.width: 1
     radius: 3
@@ -46,7 +46,7 @@ Rectangle {
                 anchors.centerIn: parent
                 text: "−"  // U+2212 minus
                 font.pixelSize: 14
-                color: minusMa.enabled ? "#6b5b3f" : "#bdb09c"
+                color: minusMa.enabled ? Theme.inkMuted : Theme.disabledText
             }
             Rectangle {
                 anchors {
@@ -75,11 +75,11 @@ Rectangle {
             Label {
                 anchors.centerIn: parent
                 text: stepper.value
-                font.family: Theme.fontDisplay
-                font.pixelSize: 13
-                font.weight: Font.DemiBold
+                font.family: Theme.fontStat
+                font.pixelSize: Theme.fsStatSmall
+                font.weight: Theme.wRegular
                 font.features: Theme.tabularNumbers
-                color: "#3a3a3a"
+                color: Theme.ink
             }
         }
 
@@ -91,7 +91,7 @@ Rectangle {
                 anchors.centerIn: parent
                 text: "+"
                 font.pixelSize: 14
-                color: plusMa.enabled ? "#6b5b3f" : "#bdb09c"
+                color: plusMa.enabled ? Theme.inkMuted : Theme.disabledText
             }
             Rectangle {
                 anchors {

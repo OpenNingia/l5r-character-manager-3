@@ -104,8 +104,8 @@ ApplicationWindow {
         palette.buttonText: Theme.ink
         palette.base: Theme.parchmentBase
         palette.alternateBase: Theme.parchmentInset
-        palette.placeholderText: "#8a7a65"
-        palette.mid: "#a89580"
+        palette.placeholderText: Theme.inkFaint
+        palette.mid: Theme.inkFaint
 
         background: Rectangle {
             color: Theme.parchment
@@ -172,7 +172,7 @@ ApplicationWindow {
                                 var clanFmt = _clan ? _clan.charAt(0).toUpperCase() + _clan.slice(1) : qsTr("No Clan");
                                 return clanFmt + " — " + qsTr("Rank %1").arg(_rank);
                             }
-                            font.pixelSize: Theme.bodyFont
+                            font.pixelSize:Theme.fsBody 
                             font.features: Theme.tabularNumbers
                             color: palette.windowText
                             opacity: 0.85
@@ -182,7 +182,7 @@ ApplicationWindow {
                         Label {
                             Layout.fillWidth: true
                             text: (pcProxy && pcProxy.school) ? pcProxy.school : qsTr("No School")
-                            font.pixelSize: Theme.smallFont
+                            font.pixelSize: Theme.fsCaption
                             font.italic: true
                             color: palette.windowText
                             opacity: 0.7

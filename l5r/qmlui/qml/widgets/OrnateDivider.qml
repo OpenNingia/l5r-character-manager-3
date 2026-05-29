@@ -27,7 +27,7 @@ RowLayout {
     property real ruleOpacity: Theme.dividerOpacity
     property color glyphColor: Theme.heading
     property real glyphOpacity: 0.55
-    property int glyphSize: Theme.bodyFont
+    property int glyphSize:Theme.fsBody 
 
     Rectangle {
         Layout.fillWidth: true
