@@ -280,6 +280,35 @@ ApplicationWindow {
                                     color: tocDelegate.highlighted ? ClanTheme.primary : palette.windowText
                                     font.weight: tocDelegate.highlighted ? Font.DemiBold : Font.Normal
                                 }
+
+                                // Opportunity badge -- a count of pending
+                                // "you unlocked something" actions resolved
+                                // in this section (free kiho today; granted
+                                // skills / spells / rank-up as those flows
+                                // are ported). Accent-blue per the §6.16
+                                // positive-action language -- crimson is
+                                // reserved for destructive/unmet, so this
+                                // reads as an invitation, not an alarm.
+                                Rectangle {
+                                    readonly property int _count: (pcProxy && pcProxy.opportunityBadges && pcProxy.opportunityBadges[modelData.id] !== undefined) ? pcProxy.opportunityBadges[modelData.id] : 0
+                                    visible: _count > 0
+                                    Layout.rightMargin: 12
+                                    Layout.alignment: Qt.AlignVCenter
+                                    implicitWidth: Math.max(18, badgeCount.implicitWidth + 10)
+                                    implicitHeight: 18
+                                    radius: 9
+                                    color: Theme.secondary
+                                    Label {
+                                        id: badgeCount
+                                        anchors.centerIn: parent
+                                        text: parent._count
+                                        font.family: Theme.fontStat
+                                        font.pixelSize: Theme.fsCaption
+                                        font.weight: Theme.wSemiBold
+                                        font.features: Theme.tabularNumbers
+                                        color: Theme.whiteWash
+                                    }
+                                }
                             }
                         }
                     }

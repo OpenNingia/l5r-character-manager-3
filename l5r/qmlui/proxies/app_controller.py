@@ -24,6 +24,7 @@ from qtpy.QtWidgets import QFileDialog, QMessageBox
 import l5r.api as api
 import l5r.api.character
 import l5r.api.character.powers
+import l5r.api.character.rankadv
 import l5r.api.character.schools
 import l5r.api.character.skills
 import l5r.api.data
@@ -413,6 +414,69 @@ class AppController(QObject):
         this session."""
         L5RCMSettings().app.warn_about_refund = False
 
+    # --- rank advancement --------------------------------------------
+
+    @Slot(result="QVariantMap")
+    def advanceRankInfo(self):
+        """Drives the QML AdvanceRankDialog's confirmation copy -- the
+        legacy NextRankDlg 'go on' branch: advance in the current school,
+        or (when on an alternate path) resume the former school. Multiclass
+        ('join a new school') is not surfaced here yet, so when the only
+        way forward is to join a new school -- on a path with no former
+        school to return to -- `canContinue` is False and the dialog
+        explains why advancing is unavailable."""
+        pc = api.character.model()
+        if pc is None:
+            return {}
+
+        current_id = api.character.schools.get_current()
+        on_path = bool(api.data.schools.is_path(current_id))
+        current = api.data.schools.get(current_id)
+        current_name = current.name if current else ""
+
+        former_adv = api.character.rankadv.get_former_school()
+        former = api.data.schools.get(former_adv.school) if former_adv else None
+        former_name = former.name if former else ""
+
+        try:
+            next_rank = int(api.character.insight_rank())
+        except Exception:
+            next_rank = 0
+
+        # "Continue" is impossible only when on a path with no former
+        # (non-path) school to fall back to -- that case requires the
+        # deferred multiclass join.
+        can_continue = (not on_path) or (former is not None)
+
+        return {
+            "nextRank":      next_rank,
+            "onPath":        on_path,
+            "currentSchool": current_name,
+            "formerSchool":  former_name,
+            "canContinue":   can_continue,
+        }
+
+    @Slot()
+    def advanceRank(self):
+        """Advance in the current school, or resume the former school when
+        on an alternate path -- the legacy NextRankDlg 'go on' branch.
+        Multiclass is deferred. Guards on availability (advance_rank assumes
+        a pending rank-up) and owns the dirty flag (the rankadv helpers
+        append the advancement directly and do not)."""
+        if api.character.model() is None:
+            return
+        if api.character.insight_rank() <= api.character.insight_rank(strict=True):
+            return  # no pending rank-up; nothing to do
+
+        current_id = api.character.schools.get_current()
+        if api.data.schools.is_path(current_id):
+            res = api.character.rankadv.leave_path()
+        else:
+            res = api.character.rankadv.advance_rank()
+        if res:
+            api.character.set_dirty_flag(True)
+            api.character.notify_character_refreshed()
+
     # --- merits / flaws ----------------------------------------------
 
     @Slot(result="QVariantList")
@@ -665,6 +729,40 @@ class AppController(QObject):
         Property so mid-session datapack imports show up without a
         restart."""
         return api.character.powers.get_all_buyable_kata()
+
+    # --- kiho --------------------------------------------------------
+
+    @Slot(str)
+    def buyKiho(self, kiho_id):
+        """Purchase a kiho by id. Delegates to the api setter (which owns
+        the dirty flag and applies the free-kiho discount); surfaces the
+        not-enough-XP notice and refreshes derived state on success."""
+        if not kiho_id:
+            return
+        res = api.character.powers.buy_kiho(kiho_id)
+        if res == CMErrors.NOT_ENOUGH_XP:
+            self._show_not_enough_xp()
+            return
+        api.character.notify_character_refreshed()
+
+    @Slot(str)
+    def removeKiho(self, kiho_id):
+        """Unlearn a kiho by id. Delegates to the api setter (which owns
+        the dirty flag), then refreshes derived state on success."""
+        if not kiho_id:
+            return
+        if api.character.powers.remove_kiho(kiho_id):
+            api.character.notify_character_refreshed()
+
+    @Slot(result="QVariantList")
+    def availableKihoToBuy(self):
+        """Catalogue feed for BuyKihoDialog -- the kiho the character may
+        still learn, each with its element / type / mastery / class-scaled
+        cost / path standing / eligibility (see
+        api.character.powers.get_all_buyable_kiho). Slot rather than
+        Property so mid-session datapack imports show up without a
+        restart."""
+        return api.character.powers.get_all_buyable_kiho()
 
     # --- tattoo ------------------------------------------------------
 

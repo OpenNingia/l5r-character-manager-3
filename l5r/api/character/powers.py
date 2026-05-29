@@ -3,8 +3,10 @@ __author__ = 'Daniele'
 
 import l5r.api as api
 import l5r.api.character
+import l5r.api.character.rankadv
 import l5r.api.data
 import l5r.api.data.powers
+import l5r.api.rules
 import l5r.models.advances
 import l5r.models.charsnapshot
 
@@ -233,6 +235,161 @@ def remove_kata(kata_id):
             break
     if target is None:
         log.api.warning(u"remove_kata: character does not own kata %s", kata_id)
+        return False
+    if api.character.remove_advancement(target):
+        api.character.set_dirty_flag(True)
+        return True
+    return False
+
+
+def _kiho_source(kiho_):
+    """'<book>, p.<page>' citation for a kiho DAL row; the book name
+    alone when no page is set, or '' when the source is unknown. Mirrors
+    _kata_source / the legacy KihoDialog.update_book."""
+    try:
+        pack = kiho_.pack
+    except Exception:
+        pack = None
+    if not pack:
+        return u""
+    name = getattr(pack, "display_name", "") or u""
+    page = getattr(kiho_, "page", 0) or 0
+    if name and page:
+        return u"{}, p.{}".format(name, page)
+    return name
+
+
+def get_all_buyable_kiho():
+    """Catalogue of kiho the active character does not yet know, each
+    bundled with everything a chooser needs to present and gate it:
+    element (ring key + localised label), mastery, kiho type (Internal /
+    Martial / Mystical), the class-scaled XP cost, a source citation, the
+    character's standing on the kiho 'paths', and an overall ``eligible``
+    verdict with a human reason when it fails.
+
+    Unlike a kata (gated on requirements + Ring rank), a kiho is gated on
+    *who you are*: only a Monk, Ninja or Shugenja may learn one, and then
+    only when their Ring (Monks/Shugenja) or School rank (Ninja) is at
+    least the kiho's mastery -- exactly the test the legacy KihoDialog
+    enforced via check_kiho_eligibility. Tattoos share kiho storage but
+    are a different concept (free, no element/mastery); they are filtered
+    out here and offered by get_all_buyable_tattoo instead.
+
+    Returns a list of plain dicts (front-end agnostic), sorted by mastery
+    then name."""
+    pc = get_context().pc
+    if pc is None:
+        return []
+
+    owned = set(get_all_kiho())
+
+    # The kiho 'path' is character-wide, not per-kiho -- resolve it once.
+    is_monk, is_brotherhood = api.character.is_monk()
+    is_ninja = api.character.is_ninja()
+    is_shugenja = api.character.is_shugenja()
+    if is_brotherhood:
+        path_kind = "brotherhood"
+    elif is_monk:
+        path_kind = "monk"
+    elif is_ninja:
+        path_kind = "ninja"
+    elif is_shugenja:
+        path_kind = "shugenja"
+    else:
+        path_kind = "none"
+    path_met = path_kind != "none"
+
+    out = []
+    for kiho_ in api.data.powers.kiho():
+        if kiho_.type == 'tattoo' or kiho_.id in owned:
+            continue
+
+        element = (kiho_.element or "void").lower()
+        ring_ = api.data.get_ring(kiho_.element)
+        element_label = ring_.text if ring_ else (kiho_.element or "")
+        mastery = int(kiho_.mastery) if kiho_.mastery is not None else 0
+        kind = (kiho_.type or "").strip()
+
+        eligible, reason_raw = check_kiho_eligibility(kiho_.id)
+        # The Ring/School reason is only meaningful once the path gate is
+        # met; when it isn't, the path line already explains the block, so
+        # surface no rank reason (the front-end says "must be a Monk…").
+        reason = reason_raw if (path_met and not eligible) else u""
+
+        out.append({
+            "id":           kiho_.id,
+            "name":         kiho_.name or kiho_.id,
+            "element":      element,
+            "elementLabel": element_label,
+            "mastery":      mastery,
+            "type":         kind.lower(),
+            "typeLabel":    kind.title(),
+            "cost":         int(api.rules.calculate_kiho_cost(kiho_.id)),
+            "description":  getattr(kiho_, "desc", "") or "",
+            "source":       _kiho_source(kiho_),
+            "path":         {"kind": path_kind, "met": path_met},
+            "eligible":     bool(eligible),
+            "reason":       reason,
+        })
+
+    out.sort(key=lambda r: (r["mastery"], (r["name"] or "").lower()))
+    return out
+
+
+def buy_kiho(kiho_id):
+    """Purchase a kiho for the active character.
+
+    The XP cost is class-scaled (api.rules.calculate_kiho_cost): a Monk
+    of the Brotherhood pays the mastery, other Monks 1.5x, Shugenja and
+    Ninja 2x. A character who has earned free kiho from a School rank
+    spends one of those in place of XP. Lifted from the legacy
+    L5RCMCore.buy_kiho into the api layer so the QWidget and QML
+    front-ends share one purchase path. Returns a ``CMErrors``:
+    INTERNAL_ERROR for an unknown id, NOT_ENOUGH_XP when unaffordable,
+    NO_ERROR on success. Owns the dirty flag per the setter contract."""
+    kiho_ = api.data.powers.get_kiho(kiho_id)
+    if not kiho_:
+        log.api.error(u"kiho not found: %s", kiho_id)
+        return api.data.CMErrors.INTERNAL_ERROR
+
+    cost = api.rules.calculate_kiho_cost(kiho_.id)
+    adv = l5r.models.advances.KihoAdv(kiho_.id, kiho_.id, cost)
+
+    # Monks may earn free kiho from a School rank -- spend one of those
+    # before falling back to the experience pool. Decrementing only when
+    # one is available drives the cost to 0, so the XP gate below always
+    # passes in that case (no rollback path is needed).
+    free_kiho = api.character.rankadv.get_gained_kiho_count()
+    if free_kiho > 0:
+        adv.cost = 0
+        api.character.rankadv.set_gained_kiho_count(free_kiho - 1)
+        log.api.info(u"free kiho left: %d", free_kiho - 1)
+
+    adv.desc = api.tr(u'{0}, Cost: {1} xp').format(kiho_.name, adv.cost)
+
+    res = api.character.purchase_advancement(adv)
+    if res == api.data.CMErrors.NO_ERROR:
+        api.character.set_dirty_flag(True)
+    return res
+
+
+def remove_kiho(kiho_id):
+    """Unlearn a kiho: drop the advancement that granted it. Returns True
+    when an entry was removed. Owns the dirty flag per the setter
+    contract. A character owns any given kiho at most once (the chooser
+    filters out owned ones), so keying removal by id is unambiguous -- the
+    id namespace also tells a proper kiho apart from a tattoo (both are
+    KihoAdv), so no power-type lookup is needed here."""
+    pc = get_context().pc
+    if pc is None:
+        return False
+    target = None
+    for adv in pc.advans or []:
+        if adv.type == 'kiho' and getattr(adv, 'kiho', None) == kiho_id:
+            target = adv
+            break
+    if target is None:
+        log.api.warning(u"remove_kiho: character does not own kiho %s", kiho_id)
         return False
     if api.character.remove_advancement(target):
         api.character.set_dirty_flag(True)

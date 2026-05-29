@@ -27,7 +27,9 @@ from l5r.qmlui.proxies.pc.combat import CombatMixin
 from l5r.qmlui.proxies.pc.flags import FlagsMixin
 from l5r.qmlui.proxies.pc.identity import IdentityMixin
 from l5r.qmlui.proxies.pc.kata import KataMixin
+from l5r.qmlui.proxies.pc.kiho import KihoMixin
 from l5r.qmlui.proxies.pc.notes import NotesMixin
+from l5r.qmlui.proxies.pc.opportunities import OpportunitiesMixin
 from l5r.qmlui.proxies.pc.perks import PerksMixin
 from l5r.qmlui.proxies.pc.session import SessionMixin
 from l5r.qmlui.proxies.pc.skills import SkillsMixin
@@ -46,9 +48,11 @@ class PcProxy(
     SkillsMixin,
     TechniquesMixin,
     KataMixin,
+    KihoMixin,
     TattooMixin,
     AdvancementsMixin,
     PerksMixin,
+    OpportunitiesMixin,
     QObject,
 ):
     def __init__(self, parent=None):
@@ -63,6 +67,8 @@ class PcProxy(
         self._wire_skills(bus)
         self._wire_techniques(bus)
         self._wire_kata(bus)
+        self._wire_kiho(bus)
         self._wire_tattoo(bus)
         self._wire_advancements(bus)
         self._wire_perks(bus)
+        self._wire_opportunities(bus)

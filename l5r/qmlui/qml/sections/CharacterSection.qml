@@ -43,6 +43,11 @@ ColumnLayout {
         })
     readonly property bool _canEditOrigin: appCtrl ? appCtrl.canEditOrigin() : true
 
+    // A pending rank-up (the root opportunity -- every grant flows from
+    // it). Drives the callout below; the matching TOC badge comes from the
+    // same proxy. See [[qml-opportunity-surface]].
+    readonly property bool _canAdvanceRank: pcProxy ? pcProxy.canAdvanceRank : false
+
     // Ring / attribute display metadata. Keys mirror the api side
     // (l5r.models.chmodel) so we can index into pcProxy.rings/attribs.
     readonly property var _ringOrder: [{
@@ -103,6 +108,80 @@ ColumnLayout {
         id: schoolDlg
         parent: Overlay.overlay
         anchors.centerIn: Overlay.overlay
+    }
+    Dialogs.AdvanceRankDialog {
+        id: advanceRankDlg
+    }
+
+    // -----------------------------------------------------------------
+    // Rank-up callout (§6.16 banner). The in-section landing for the
+    // Character TOC badge: shows only when a rank-up is waiting. Accent-
+    // blue per the positive-action language (crimson is reserved for
+    // destructive/unmet), with the 道 path seal and an "Advance Rank" CTA
+    // that opens AdvanceRankDialog. This is the ROOT opportunity -- the
+    // free kiho / spells / skills grants all follow a rank advancement.
+    // -----------------------------------------------------------------
+    Rectangle {
+        Layout.fillWidth: true
+        visible: section._canAdvanceRank
+        implicitHeight: 56
+        color: Theme.secondarySoft
+        border.color: Theme.secondary
+        border.width: 1
+        radius: 2
+
+        RowLayout {
+            anchors.fill: parent
+            anchors.leftMargin: 12
+            anchors.rightMargin: 12
+            spacing: 12
+
+            // 36×36 kanji tile (§6.16: smaller than the dialog's 48px).
+            Rectangle {
+                Layout.preferredWidth: 36
+                Layout.preferredHeight: 36
+                Layout.alignment: Qt.AlignVCenter
+                radius: 4
+                color: Theme.secondary
+                Label {
+                    anchors.centerIn: parent
+                    text: "道"
+                    font.family: Theme.fontKanji
+                    font.pixelSize: 24
+                    color: Theme.whiteWash
+                }
+            }
+
+            ColumnLayout {
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignVCenter
+                spacing: 0
+                Label {
+                    text: qsTr("A NEW RANK AWAITS")
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: Theme.fsHeading2
+                    font.weight: Theme.wSemiBold
+                    font.letterSpacing: 1.4
+                    color: Theme.secondary
+                }
+                Label {
+                    text: qsTr("you have an opportunity to decide your destiny")
+                    font.family: Theme.fontBody
+                    font.italic: true
+                    font.pixelSize: Theme.fsCaption
+                    color: Theme.inkMuted
+                }
+            }
+
+            Widgets.L5RButton {
+                text: qsTr("Advance Rank")
+                glyph: "道"
+                accent: Theme.secondary
+                accentDark: Theme.secondaryDark
+                Layout.alignment: Qt.AlignVCenter
+                onClicked: advanceRankDlg.present()
+            }
+        }
     }
 
     // -----------------------------------------------------------------

@@ -424,26 +424,14 @@ class L5RCMCore(QtWidgets.QMainWindow):
         return res
 
     def buy_kiho(self, kiho):
-        kiho_cost = api.rules.calculate_kiho_cost(kiho.id)
-        adv = models.KihoAdv(kiho.id, kiho.id, kiho_cost)
-        adv.desc = self.tr('{0}, Cost: {1} xp').format(kiho.name, adv.cost)
-
-        # monks can get free kihos
-        free_kiho_ = api.character.rankadv.get_gained_kiho_count()
-
-        if free_kiho_ > 0:
-            adv.cost = 0
-            free_kiho_ -= 1
-            api.character.rankadv.set_gained_kiho_count(free_kiho_)
-            log.app.info(u"free kiho left: %d", free_kiho_)
-
-        if adv.cost > api.character.xp_left():
-            return CMErrors.NOT_ENOUGH_XP
-
-        self.pc.add_advancement(adv)
-        self.update_from_model()
-
-        return CMErrors.NO_ERROR
+        # Delegates to the shared api purchase path so the QWidget and
+        # QML UIs use one implementation (the api setter owns the dirty
+        # flag and the free-kiho discount); we only drive the QWidget
+        # pull-refresh on success.
+        res = api.character.powers.buy_kiho(kiho.id)
+        if res == CMErrors.NO_ERROR:
+            self.update_from_model()
+        return res
 
     def buy_tattoo(self, kiho):
         # Delegates to the shared api purchase path so the QWidget and
