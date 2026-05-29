@@ -30,6 +30,7 @@ from l5r.qmlui.proxies.pc.notes import NotesMixin
 from l5r.qmlui.proxies.pc.perks import PerksMixin
 from l5r.qmlui.proxies.pc.session import SessionMixin
 from l5r.qmlui.proxies.pc.skills import SkillsMixin
+from l5r.qmlui.proxies.pc.techniques import TechniquesMixin
 from l5r.qmlui.proxies.pc.traits import TraitsMixin
 
 
@@ -41,6 +42,7 @@ class PcProxy(
     CombatMixin,
     NotesMixin,
     SkillsMixin,
+    TechniquesMixin,
     AdvancementsMixin,
     PerksMixin,
     QObject,
@@ -55,5 +57,6 @@ class PcProxy(
         self._wire_combat(bus)
         self._wire_notes(bus)
         self._wire_skills(bus)
+        self._wire_techniques(bus)
         self._wire_advancements(bus)
         self._wire_perks(bus)
