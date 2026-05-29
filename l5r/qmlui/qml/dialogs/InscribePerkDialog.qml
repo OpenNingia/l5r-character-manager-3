@@ -447,11 +447,15 @@ Dialog {
                             }
                             dlg._subtype = "";
                             dlg._overrideCost = dlg._suggestedCost;
-                            // No-fixed-cost rules force the manual path
-                            // straight away -- mirrors the Edit dialog so
-                            // the player isn't faced with a 0 XP plaque
-                            // and a locked switch.
-                            dlg._overrideOn = dlg._suggestedCost === 0;
+                            // Always land on the suggested cost. A 0 XP
+                            // suggestion is legitimate -- clan discounts make
+                            // some merits free (e.g. Wealthy for a Crane) --
+                            // so the player can inscribe it straight from the
+                            // plaque, or flip the override switch if they want
+                            // a house cost. (We deliberately do NOT auto-flip
+                            // to manual on a 0 suggestion: that used to strand
+                            // the player on a locked switch.)
+                            dlg._overrideOn = false;
                         }
 
                         background: Rectangle {
@@ -883,11 +887,6 @@ Dialog {
                                 Switch {
                                     id: overrideSwitch
                                     checked: dlg._overrideOn
-                                    // Disable when the rule has no fixed
-                                    // cost: the manual SpinBox is the only
-                                    // valid input, so the toggle would be
-                                    // meaningless. Matches EditPerkDialog.
-                                    enabled: dlg._suggestedCost > 0
                                     onToggled: {
                                         dlg._overrideOn = checked;
                                         if (checked) {
@@ -903,10 +902,8 @@ Dialog {
                                 }
                                 Label {
                                     Layout.fillWidth: true
-                                    text: dlg._suggestedCost === 0
-                                        ? qsTr("This rule has no fixed cost; set one manually.")
-                                        : (dlg._overrideOn ? qsTr("Manual cost — agreed with your GM.")
-                                                           : qsTr("Override the suggested cost"))
+                                    text: dlg._overrideOn ? qsTr("Manual cost — agreed with your GM.")
+                                                          : qsTr("Override the suggested cost")
                                     font.pixelSize: Theme.bodyFont
                                     font.italic: !dlg._overrideOn
                                     color: dlg._overrideOn ? Theme.accent : Theme.ink

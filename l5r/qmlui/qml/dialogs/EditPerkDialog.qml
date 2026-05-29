@@ -81,13 +81,11 @@ Dialog {
         // this way means re-opening edit on a custom-cost perk lands on
         // the SpinBox with the existing figure, not the suggestion.
         var current = data.cost || 0;
-        // Open in override mode either when the existing cost diverges
-        // from the rulebook suggestion, or when there is no rulebook
-        // suggestion at all (manual cost is the only valid input -- the
-        // Switch stays disabled in that case, just locked-on, since
-        // there is no suggestion to flip back to).
-        dlg._overrideOn = dlg.suggestedCost === 0
-            || current !== dlg.suggestedCost;
+        // Open in override mode only when the stored cost diverges from
+        // the rulebook suggestion. A 0 XP suggestion is legitimate (clan
+        // discounts make some merits free), so it no longer forces the
+        // manual path -- the player can still flip the switch by hand.
+        dlg._overrideOn = current !== dlg.suggestedCost;
         dlg._overrideCost = current;
         dlg.open();
     }
@@ -396,11 +394,6 @@ Dialog {
                     Switch {
                         id: overrideSwitch
                         checked: dlg._overrideOn
-                        // Disable when the rulebook suggests 0 (some
-                        // free-by-tag merits): in that case the manual
-                        // value is the only valid input, so the toggle
-                        // would be meaningless.
-                        enabled: dlg.suggestedCost > 0
                         onToggled: {
                             dlg._overrideOn = checked;
                             if (checked && dlg._overrideCost === 0) {
@@ -410,7 +403,7 @@ Dialog {
                     }
                     Label {
                         Layout.fillWidth: true
-                        text: dlg.suggestedCost === 0 ? qsTr("This rule has no fixed cost; set one manually.") : (dlg._overrideOn ? qsTr("Manual cost — agreed with your GM.") : qsTr("Override the suggested cost"))
+                        text: dlg._overrideOn ? qsTr("Manual cost — agreed with your GM.") : qsTr("Override the suggested cost")
                         font.pixelSize: Theme.bodyFont
                         font.italic: !dlg._overrideOn
                         color: dlg._overrideOn ? Theme.accent : Theme.ink
@@ -419,7 +412,7 @@ Dialog {
                     }
                     AbstractButton {
                         id: resetBtn
-                        visible: dlg._overrideOn && dlg.suggestedCost > 0 && dlg._overrideCost !== dlg.suggestedCost
+                        visible: dlg._overrideOn && dlg._overrideCost !== dlg.suggestedCost
                         onClicked: {
                             dlg._overrideCost = dlg.suggestedCost;
                             overrideSpin.value = dlg.suggestedCost;
