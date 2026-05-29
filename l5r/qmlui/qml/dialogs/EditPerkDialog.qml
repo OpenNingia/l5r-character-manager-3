@@ -473,51 +473,16 @@ Dialog {
                 wrapMode: Text.WordWrap
             }
 
-            AbstractButton {
-                id: cancelBtn
-                implicitHeight: 30
-                leftPadding: 18
-                rightPadding: 18
+            Widgets.L5RButton {
+                text: qsTr("Cancel")
+                primary: false
                 onClicked: dlg.reject()
-                background: Rectangle {
-                    radius: 2
-                    color: cancelBtn.down ? Qt.darker(Theme.parchmentBase, 1.05) : (cancelBtn.hovered ? Theme.parchmentBase : "transparent")
-                    border.color: Theme.borderStrong
-                    border.width: 1
-                }
-                contentItem: Label {
-                    text: qsTr("Cancel")
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.fsCaption + 1
-                    font.weight: Font.DemiBold
-                    font.letterSpacing: 1.3
-                    color: Theme.ink
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
             }
-            AbstractButton {
-                id: saveBtn
-                implicitHeight: 30
-                leftPadding: 22
-                rightPadding: 22
+            Widgets.L5RButton {
+                text: qsTr("Save")
+                accent: dlg._accent
+                accentDark: dlg._isFlaw ? Theme.accentMuted : Theme.secondaryDark
                 onClicked: dlg._accept()
-                background: Rectangle {
-                    radius: 2
-                    color: saveBtn.down ? Qt.darker(dlg._accent, 1.25) : dlg._accent
-                    border.color: Qt.darker(dlg._accent, 1.4)
-                    border.width: 1
-                }
-                contentItem: Label {
-                    text: qsTr("Save")
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.fsCaption + 1
-                    font.weight: Font.DemiBold
-                    font.letterSpacing: 1.6
-                    color: Theme.parchmentBase
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
             }
         }
     }

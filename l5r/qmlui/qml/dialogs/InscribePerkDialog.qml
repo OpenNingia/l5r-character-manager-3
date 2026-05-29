@@ -256,38 +256,23 @@ Dialog {
 
                 // Search slug -- magnifier + TextField, fillWidth so it
                 // claims everything the combo doesn't.
-                RowLayout {
+                Widgets.L5RSearchField {
+                    id: searchField
                     Layout.fillWidth: true
-                    spacing: 8
-                    Label {
-                        text: "⌕"
-                        font.pixelSize: 16
-                        color: Theme.heading
-                        opacity: 0.6
-                    }
-                    TextField {
-                        id: searchField
-                        Layout.fillWidth: true
-                        placeholderText: dlg._isFlaw ? qsTr("seek a hardship by name…") : qsTr("seek a blessing by name…")
-                        background: Item {
-                        }   // dissolve into the inkwell
-                        font.pixelSize:Theme.fsBody 
-                        font.italic: text.length === 0
-                        color: Theme.ink
-                        placeholderTextColor: Theme.inkFaint
-                        onTextChanged: dlg._search = text
-                    }
+                    placeholder: dlg._isFlaw ? qsTr("seek a hardship by name…") : qsTr("seek a blessing by name…")
+                    onTextChanged: dlg._search = text
                 }
 
                 // Category combo -- hand-skinned to the parchment
                 // vocabulary. `currentIndex` is bound to the source-of-
                 // truth `_activeCategory`, so present() resetting it to
                 // "" snaps the combo to "All categories" automatically.
-                ComboBox {
+                Widgets.L5RComboBox {
                     id: categoryCombo
                     Layout.preferredWidth: 220
                     visible: dlg._categories.length > 0
                     textRole: "name"
+                    accent: dlg._accent
                     // Sentinel "" id = no category filter; prepended
                     // so the player can always return to the unfiltered
                     // view from inside the combo without a separate
@@ -307,81 +292,6 @@ Dialog {
                     onActivated: function (index) {
                         var rec = categoryCombo.model[index];
                         dlg._activeCategory = rec ? rec.id : "";
-                    }
-
-                    // --- closed-state skin ----------------------------
-                    // Mirrors the RankStepper pill: cream fill (#fbf6e8),
-                    // hairline subtle border, radius 3. 28px tall so the
-                    // combo lines up with the search field's ascent.
-                    background: Rectangle {
-                        color: Theme.parchmentBase
-                        border.color: categoryCombo.activeFocus ? dlg._accent : Theme.borderSubtle
-                        border.width: 1
-                        radius: 3
-                        implicitHeight: 28
-                    }
-                    contentItem: Label {
-                        leftPadding: 10
-                        rightPadding: categoryCombo.indicator.width + 6
-                        text: categoryCombo.displayText
-                        font.pixelSize:Theme.fsBody 
-                        font.weight: Font.DemiBold
-                        color: Theme.ink
-                        verticalAlignment: Text.AlignVCenter
-                        elide: Text.ElideRight
-                    }
-                    // Caret -- a small brushy ▾, brown to match the
-                    // stepper button glyphs. Replaces the OS pixmap.
-                    indicator: Label {
-                        x: categoryCombo.width - width - 8
-                        y: (categoryCombo.height - height) / 2
-                        text: "▾"
-                        font.pixelSize: 12
-                        color: Theme.inkMuted
-                        opacity: categoryCombo.pressed ? 1.0 : 0.85
-                    }
-
-                    // --- open-state popup ----------------------------
-                    // The dropdown panel sits on the parchment palette
-                    // so it never flashes a stock white plate against
-                    // the cream page. Item rows are styled in the
-                    // delegate below.
-                    popup: Popup {
-                        y: categoryCombo.height
-                        width: categoryCombo.width
-                        implicitHeight: contentItem.implicitHeight + 4
-                        padding: 2
-                        background: Rectangle {
-                            color: Theme.parchmentBase
-                            border.color: Theme.borderStrong
-                            border.width: 1
-                            radius: 3
-                        }
-                        contentItem: ListView {
-                            clip: true
-                            implicitHeight: contentHeight
-                            model: categoryCombo.popup.visible ? categoryCombo.delegateModel : null
-                            currentIndex: categoryCombo.highlightedIndex
-                            ScrollIndicator.vertical: ScrollIndicator {
-                            }
-                        }
-                    }
-                    delegate: ItemDelegate {
-                        width: categoryCombo.width
-                        implicitHeight: 26
-                        highlighted: categoryCombo.highlightedIndex === index
-                        background: Rectangle {
-                            color: highlighted ? Qt.rgba(0.690, 0.188, 0.188, 0.12) : "transparent"
-                        }
-                        contentItem: Label {
-                            leftPadding: 10
-                            rightPadding: 6
-                            text: modelData.name
-                            font.pixelSize:Theme.fsBody 
-                            color: Theme.ink
-                            verticalAlignment: Text.AlignVCenter
-                            elide: Text.ElideRight
-                        }
                     }
                 }
             }
@@ -652,45 +562,16 @@ Dialog {
                             Layout.alignment: Qt.AlignTop
                             Layout.topMargin: 6
                         }
-                        Flow {
+                        Widgets.L5RRankSelector {
                             Layout.fillWidth: true
-                            spacing: 6
-                            Repeater {
-                                model: dlg._selected && dlg._selected.ranks ? dlg._selected.ranks : []
-                                delegate: AbstractButton {
-                                    id: rankPip
-                                    readonly property bool _active: dlg._selectedRank === modelData.rank
-                                    implicitWidth: 36
-                                    implicitHeight: 28
-                                    onClicked: {
-                                        dlg._selectedRank = modelData.rank;
-                                        if (!dlg._overrideOn) {
-                                            dlg._overrideCost = dlg._suggestedCost;
-                                        }
-                                    }
-                                    background: Rectangle {
-                                        radius: 2
-                                        color: rankPip._active ? dlg._accent : (rankPip.hovered ? dlg._accentSoft : "transparent")
-                                        border.color: rankPip._active ? dlg._accent : Theme.borderSubtle
-                                        border.width: 1
-                                        Behavior on color  {
-                                            ColorAnimation {
-                                                duration: 100
-                                            }
-                                        }
-                                    }
-                                    contentItem: Label {
-                                        anchors.fill: parent
-                                        text: modelData.rank
-                                        font.family: Theme.fontStat
-                                        font.pixelSize: Theme.fsStatSmall
-                                        font.weight: Theme.wRegular
-                                        font.features: Theme.tabularNumbers
-                                        horizontalAlignment: Text.AlignHCenter
-                                        verticalAlignment: Text.AlignVCenter
-                                        color: rankPip._active ? Theme.parchmentBase : Theme.ink
-                                    }
-                                }
+                            model: dlg._selected && dlg._selected.ranks ? dlg._selected.ranks : []
+                            numberRole: "rank"
+                            currentValue: dlg._selectedRank
+                            accent: dlg._accent
+                            onPicked: function (v) {
+                                dlg._selectedRank = v;
+                                if (!dlg._overrideOn)
+                                    dlg._overrideCost = dlg._suggestedCost;
                             }
                         }
                     }
@@ -986,65 +867,19 @@ Dialog {
                 Layout.fillWidth: true
             }
 
-            AbstractButton {
-                id: cancelBtn
-                implicitHeight: 32
-                leftPadding: 18
-                rightPadding: 18
+            Widgets.L5RButton {
+                text: qsTr("Cancel")
+                primary: false
                 onClicked: dlg.reject()
-                background: Rectangle {
-                    radius: 2
-                    color: cancelBtn.down ? Qt.darker(Theme.parchmentBase, 1.05) : (cancelBtn.hovered ? Theme.parchmentBase : "transparent")
-                    border.color: Theme.borderStrong
-                    border.width: 1
-                }
-                contentItem: Label {
-                    text: qsTr("Cancel")
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.fsCaption + 1
-                    font.weight: Font.DemiBold
-                    font.letterSpacing: 1.3
-                    color: Theme.ink
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
             }
 
-            AbstractButton {
-                id: inscribeBtn
-                implicitHeight: 32
-                leftPadding: 22
-                rightPadding: 22
+            Widgets.L5RButton {
+                text: dlg._isFlaw ? qsTr("Accept") : qsTr("Inscribe")
+                glyph: dlg._seal
+                accent: dlg._accent
+                accentDark: dlg._isFlaw ? Theme.accentMuted : Theme.secondaryDark
                 enabled: dlg._selected !== null
-                opacity: enabled ? 1.0 : 0.45
                 onClicked: dlg._accept()
-
-                background: Rectangle {
-                    radius: 2
-                    color: inscribeBtn.down ? Qt.darker(dlg._accent, 1.25) : dlg._accent
-                    border.color: Qt.darker(dlg._accent, 1.4)
-                    border.width: 1
-                }
-                contentItem: RowLayout {
-                    spacing: 6
-                    Label {
-                        text: dlg._seal
-                        font.family: Theme.fontKanji
-                        font.pixelSize: 16
-                        color: Theme.parchmentBase
-                        opacity: 0.95
-                    }
-                    Label {
-                        text: dlg._isFlaw ? qsTr("Accept") : qsTr("Inscribe")
-                        font.family: Theme.fontDisplay
-                        font.pixelSize: Theme.fsCaption + 1
-                        font.weight: Font.DemiBold
-                        font.letterSpacing: 1.6
-                        color: Theme.parchmentBase
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                }
             }
         }
     }
