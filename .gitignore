@@ -69,3 +69,6 @@ tools/deploy/windows/Output/
 
 # qml backups
 *.qml~
+
+# local documentation
+local_docs/
