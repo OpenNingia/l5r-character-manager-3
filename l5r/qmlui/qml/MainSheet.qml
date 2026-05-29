@@ -7,6 +7,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import "widgets" as Widgets
 import Theme 1.0
+import ClanTheme 1.0
 
 ApplicationWindow {
     id: root
@@ -23,6 +24,20 @@ ApplicationWindow {
     // the panels. The menubar above still follows the OS theme so the
     // window chrome stays native.
     color: Theme.parchment
+
+    // Drive the per-clan accent (design system §5): push the active
+    // character's clan id into the ClanTheme singleton whenever it
+    // changes, so the sidebar accent re-tints while the layout stays
+    // put. Guarded for the null first pass; the Connections covers
+    // File>New / open / family edit (all routed through clanChanged).
+    Component.onCompleted: if (pcProxy)
+        ClanTheme.setClan(pcProxy.clanId)
+    Connections {
+        target: pcProxy
+        function onClanChanged() {
+            ClanTheme.setClan(pcProxy.clanId);
+        }
+    }
 
     menuBar: MenuBar {
         Menu {
@@ -236,7 +251,7 @@ ApplicationWindow {
                                 anchors.top: parent.top
                                 anchors.bottom: parent.bottom
                                 width: 3
-                                color: Theme.accent
+                                color: ClanTheme.primary
                                 visible: tocDelegate.highlighted
                             }
                             contentItem: RowLayout {
@@ -252,7 +267,7 @@ ApplicationWindow {
                                     Layout.leftMargin: 14
                                     Layout.preferredWidth: 28
                                     horizontalAlignment: Text.AlignHCenter
-                                    color: tocDelegate.highlighted ? Theme.accent : palette.windowText
+                                    color: tocDelegate.highlighted ? ClanTheme.primary : palette.windowText
                                     opacity: tocDelegate.highlighted ? 1.0 : 0.7
                                 }
                                 Label {
@@ -260,7 +275,7 @@ ApplicationWindow {
                                     font.pixelSize: 12
                                     Layout.fillWidth: true
                                     elide: Text.ElideRight
-                                    color: tocDelegate.highlighted ? Theme.accent : palette.windowText
+                                    color: tocDelegate.highlighted ? ClanTheme.primary : palette.windowText
                                     font.weight: tocDelegate.highlighted ? Font.DemiBold : Font.Normal
                                 }
                             }

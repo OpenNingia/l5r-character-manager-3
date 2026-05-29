@@ -1,0 +1,2 @@
+module ClanTheme
+singleton ClanTheme 1.0 ClanTheme.qml

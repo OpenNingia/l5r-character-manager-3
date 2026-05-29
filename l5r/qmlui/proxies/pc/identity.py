@@ -76,6 +76,14 @@ class IdentityMixin:
         clan_ = api.data.clans.get(api.character.get_clan())
         return clan_.name if clan_ else ""
 
+    @Property(str, notify=clanChanged)
+    def clanId(self):
+        """Lowercase clan id (e.g. ``crane``), as opposed to ``clan``
+        which is the localized display name. Drives ClanTheme.setClan
+        on the QML side -- the §5 accent lookup keys on the id, not the
+        translated name."""
+        return api.character.get_clan() or ""
+
     @Property(str, notify=schoolChanged)
     def school(self):
         sid = api.character.schools.get_first()
