@@ -61,7 +61,7 @@ def _load_bundled_fonts():
 
 
 def _apply_body_font(qapp):
-    """Make EB Garamond the app-wide default body font.
+    """Make IM Fell English the app-wide default body font.
 
     Cinzel stays the display face (consumed via ``Theme.fontDisplay``
     on headers, ring labels, numerals, dialog titles, the watermark).
@@ -79,7 +79,7 @@ def _apply_body_font(qapp):
     face is part of its designed identity.
     """
     base = qapp.font()
-    body = QFont("EB Garamond")
+    body = QFont("IM Fell English")
     base_size = base.pointSizeF()
     if base_size > 0:
         body.setPointSizeF(base_size + 1.0)
