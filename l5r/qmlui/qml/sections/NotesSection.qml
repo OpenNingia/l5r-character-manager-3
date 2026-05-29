@@ -63,43 +63,46 @@ ColumnLayout {
         }]
 
     // Notes editor ------------------------------------------------------
-    ScrollView {
+    // No inner ScrollView on purpose: a nested scroll area swallows the
+    // mouse wheel whenever the pointer is over it, so the outer sheet
+    // would stop scrolling (and a fixed inner scrollbox fights the "one
+    // long sheet" model anyway). The editor grows with its content and
+    // scrolls as part of the sheet; a standalone TextArea doesn't handle
+    // the wheel itself, so the event propagates up to the sheet's
+    // WheelHandler. minimumHeight keeps a usable editor when empty.
+    TextArea {
+        id: notesEditor
         Layout.fillWidth: true
-        Layout.preferredHeight: 260
-        clip: true
+        Layout.minimumHeight: 160
+        textFormat: TextEdit.RichText
+        wrapMode: TextEdit.Wrap
+        placeholderText: qsTr("Notes...")
+        selectByMouse: true
 
-        TextArea {
-            id: notesEditor
-            textFormat: TextEdit.RichText
-            wrapMode: TextEdit.Wrap
-            placeholderText: qsTr("Notes...")
-            selectByMouse: true
-
-            // Re-sync from the model when it changes (load, new, undo).
-            // Guarded so user typing doesn't ping-pong through the proxy.
-            property bool _syncing: false
-            Connections {
-                target: pcProxy
-                function onNotesChanged() {
-                    if (notesEditor.text !== pcProxy.notesHtml) {
-                        notesEditor._syncing = true;
-                        notesEditor.text = pcProxy.notesHtml;
-                        notesEditor._syncing = false;
-                    }
+        // Re-sync from the model when it changes (load, new, undo).
+        // Guarded so user typing doesn't ping-pong through the proxy.
+        property bool _syncing: false
+        Connections {
+            target: pcProxy
+            function onNotesChanged() {
+                if (notesEditor.text !== pcProxy.notesHtml) {
+                    notesEditor._syncing = true;
+                    notesEditor.text = pcProxy.notesHtml;
+                    notesEditor._syncing = false;
                 }
             }
-            Component.onCompleted: {
-                if (pcProxy) {
-                    _syncing = true;
-                    text = pcProxy.notesHtml;
-                    _syncing = false;
-                }
+        }
+        Component.onCompleted: {
+            if (pcProxy) {
+                _syncing = true;
+                text = pcProxy.notesHtml;
+                _syncing = false;
             }
+        }
 
-            onActiveFocusChanged: {
-                if (!activeFocus && !_syncing && appCtrl) {
-                    appCtrl.setNotes(text);
-                }
+        onActiveFocusChanged: {
+            if (!activeFocus && !_syncing && appCtrl) {
+                appCtrl.setNotes(text);
             }
         }
     }

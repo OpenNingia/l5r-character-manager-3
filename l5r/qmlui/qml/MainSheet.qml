@@ -79,7 +79,11 @@ ApplicationWindow {
 
     function activeSectionFromContentY(y) {
         // 60px lookahead: a section becomes "active" just before its top
-        // hits the viewport top.
+        // hits the viewport top. Reads the live section y's every call,
+        // so it stays correct no matter how the content grew -- skills/
+        // perks/spells added, rows expanded, window resized. Only called
+        // once per scroll, when tocSyncTimer fires at rest, so the live
+        // itemAt(i).y reads cost nothing on the scroll path.
         var probe = y + 60;
         var active = 0;
         for (var i = 0; i < sheetRepeater.count; ++i) {
@@ -97,6 +101,22 @@ ApplicationWindow {
         var maxY = Math.max(0, flick.contentHeight - flick.height);
         scrollAnim.to = Math.min(target, maxY);
         scrollAnim.restart();
+    }
+
+    // Update the active-section highlight when scrolling goes idle, not
+    // during the scroll. Every contentY delta restarts this timer, so
+    // while the wheel/touchpad/flick keeps the sheet moving it never
+    // fires -- zero work mid-scroll, the frame is never starved. It
+    // fires once, ~`interval` ms after the last delta, reading contentY
+    // live at that point so it lands on the true resting position.
+    // Keyed off contentY rather than Flickable.onMovementEnded so it
+    // stays correct for every input type, including mouse-wheel (whose
+    // movement signals are unreliable).
+    Timer {
+        id: tocSyncTimer
+        interval: 120
+        repeat: false
+        onTriggered: toc.currentIndex = root.activeSectionFromContentY(flick.contentY)
     }
 
     NumberAnimation {
@@ -332,15 +352,38 @@ ApplicationWindow {
                 clip: true
                 boundsBehavior: Flickable.StopAtBounds
 
+                // Flickable's built-in wheel handling advances only a tiny
+                // fixed step per notch and ignores the platform wheel
+                // speed, so scrolling crawls next to a browser or console.
+                // This is the long-standing QTBUG-59261. Work around it by
+                // taking the wheel ourselves: a WheelHandler consumes the
+                // event (so Flickable's sliver-step never also runs) and we
+                // advance contentY by a comfortable amount -- the raw
+                // pixelDelta for high-resolution touchpads, or ~one notch
+                // worth of lines for a mouse wheel -- clamped to bounds.
+                readonly property real _wheelNotchPx: 96   // mouse: px per 120-unit notch
+                WheelHandler {
+                    target: null
+                    acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+                    onWheel: function (ev) {
+                        var dy = (ev.pixelDelta.y !== 0) ? ev.pixelDelta.y : ev.angleDelta.y / 120 * flick._wheelNotchPx;
+                        var maxY = Math.max(0, flick.contentHeight - flick.height);
+                        flick.contentY = Math.max(0, Math.min(maxY, flick.contentY - dy));
+                    }
+                }
+
                 ScrollBar.vertical: ScrollBar {
                     policy: ScrollBar.AsNeeded
                 }
 
                 onContentYChanged: {
-                    // Don't fight the user's click-to-jump animation.
-                    if (!scrollAnim.running) {
-                        toc.currentIndex = root.activeSectionFromContentY(contentY);
-                    }
+                    // Defer the TOC highlight to when scrolling settles
+                    // (see tocSyncTimer): restart on every delta so the
+                    // update happens once at rest, never mid-scroll. The
+                    // guard keeps it from firing during a click-to-jump,
+                    // which sets currentIndex directly.
+                    if (!scrollAnim.running)
+                        tocSyncTimer.restart();
                 }
 
                 Column {
