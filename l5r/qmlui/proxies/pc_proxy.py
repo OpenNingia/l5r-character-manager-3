@@ -33,6 +33,7 @@ from l5r.qmlui.proxies.pc.opportunities import OpportunitiesMixin
 from l5r.qmlui.proxies.pc.perks import PerksMixin
 from l5r.qmlui.proxies.pc.session import SessionMixin
 from l5r.qmlui.proxies.pc.skills import SkillsMixin
+from l5r.qmlui.proxies.pc.spells import SpellsMixin
 from l5r.qmlui.proxies.pc.tattoo import TattooMixin
 from l5r.qmlui.proxies.pc.techniques import TechniquesMixin
 from l5r.qmlui.proxies.pc.traits import TraitsMixin
@@ -46,6 +47,7 @@ class PcProxy(
     CombatMixin,
     NotesMixin,
     SkillsMixin,
+    SpellsMixin,
     TechniquesMixin,
     KataMixin,
     KihoMixin,
@@ -65,6 +67,7 @@ class PcProxy(
         self._wire_combat(bus)
         self._wire_notes(bus)
         self._wire_skills(bus)
+        self._wire_spells(bus)
         self._wire_techniques(bus)
         self._wire_kata(bus)
         self._wire_kiho(bus)

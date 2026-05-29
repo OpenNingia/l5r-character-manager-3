@@ -27,6 +27,7 @@ import l5r.api.character.powers
 import l5r.api.character.rankadv
 import l5r.api.character.schools
 import l5r.api.character.skills
+import l5r.api.character.spells
 import l5r.api.data
 import l5r.api.data.clans
 import l5r.api.data.families
@@ -34,6 +35,7 @@ import l5r.api.data.flaws
 import l5r.api.data.merits
 import l5r.api.data.schools
 import l5r.api.data.skills
+import l5r.api.data.spells
 import l5r.api.signals
 import l5r.models
 import l5r.models.advances
@@ -122,6 +124,60 @@ def _family_record(family_dal):
         "trait":  getattr(family_dal, "trait", "") or "",
         "book":   pack_name,
         "page":   int(getattr(family_dal, "page", 0) or 0),
+    }
+
+
+def _spell_catalogue_record(spell):
+    """Serialise a spell DAL row for BuySpellDialog, resolving its
+    eligibility against the active character. Mirrors the gate the
+    legacy free-form SpellAdvDialog applied: a spell is learnable when
+    the character's Insight Rank -- adjusted by elemental affinity and
+    deficiency -- meets the spell's mastery. Ineligible spells are still
+    returned (dimmed in the dialog) with the figures behind the gate."""
+    def ring_text(key):
+        ring_ = api.data.get_ring(key)
+        return ring_.text if ring_ else (key or "").replace("_", " ").title()
+
+    if api.data.spells.is_multi_element(spell.id):
+        element_label = u", ".join(ring_text(x) for x in (spell.elements or []))
+    else:
+        element_label = ring_text(spell.element)
+
+    try:
+        insight = int(api.character.insight_rank())
+        affinity = int(api.character.spells.affinity(spell))
+        deficiency = int(api.character.spells.deficiency(spell))
+    except Exception:
+        insight, affinity, deficiency = 0, 0, 0
+    reach = insight - deficiency + affinity
+
+    try:
+        pack = getattr(spell, "pack", None)
+        pack_name = pack.display_name if pack else ""
+        page = getattr(spell, "page", 0) or 0
+        source = u"{0} p.{1}".format(pack_name, page) if (pack_name and page) else (pack_name or "")
+    except Exception:
+        source = ""
+
+    mastery = int(spell.mastery) if spell.mastery is not None else 0
+    return {
+        "id":           spell.id,
+        "name":         spell.name or spell.id,
+        "element":      (spell.element or "void").lower(),
+        "elementLabel": element_label,
+        "mastery":      mastery,
+        "masteryMod":   affinity - deficiency,
+        "range":        spell.range or "",
+        "area":         spell.area or "",
+        "duration":     spell.duration or "",
+        "raises":       u", ".join(spell.raises or []),
+        "tags":         list(api.data.spells.tags(spell.id)),
+        "source":       source,
+        "description":  getattr(spell, "desc", "") or "",
+        # `reach` is the highest mastery the character can presently
+        # learn; the dialog shows it in the unmet-requirement line.
+        "reach":        reach,
+        "eligible":     reach >= mastery,
     }
 
 
@@ -388,6 +444,106 @@ class AppController(QObject):
                 "trait":    trait_label,
             })
         out.sort(key=lambda r: (r["category"].lower(), r["name"].lower()))
+        return out
+
+    # --- spells -------------------------------------------------------
+
+    @Slot(str)
+    def learnSpell(self, spell_id):
+        """Learn a spell free-form -- a SpellAdv (cost 0), the legacy
+        'Add new spell' action. Free-form spells are not bound to a
+        rank, so there is no XP gate; a missing/unknown id is the only
+        failure mode. The api helper appends the advancement but does
+        not own the dirty flag, so set it here (mirrors inscribePerk)."""
+        if not spell_id:
+            return
+        if api.character.spells.add_spell(spell_id):
+            api.character.set_dirty_flag(True)
+            api.character.notify_character_refreshed()
+
+    @Slot(str)
+    def removeSpell(self, spell_id):
+        """Forget a free-form learned spell by id. Only the free-form
+        SpellAdv is removed: school-granted spells live on a rank
+        advancement (unwound on Advancements) and a memorized spell must
+        be dropped via forgetSpell first. Re-resolves the advancement by
+        scanning the live list, mirroring removePerk."""
+        if not spell_id:
+            return
+        pc = api.character.model()
+        if not pc:
+            return
+        target = None
+        for adv in pc.advans or []:
+            if adv.type == "spell" and getattr(adv, "spell", None) == spell_id:
+                target = adv
+                break
+        if target is None:
+            log.api.warning(u"QML UI: removeSpell: no learned spell %r", spell_id)
+            return
+        if api.character.remove_advancement(target):
+            api.character.set_dirty_flag(True)
+            api.character.notify_character_refreshed()
+
+    @Slot(str)
+    def memorizeSpell(self, spell_id):
+        """Memorize a spell -- a MemoSpellAdv costing XP equal to the
+        spell's mastery (the legacy 'Memorize' toggle). Surfaces the
+        not-enough-XP notice when the character can't afford it; the
+        purchase helper appends the advancement but does not own the
+        dirty flag, so set it on success."""
+        if not spell_id:
+            return
+        res = api.character.spells.purchase_memo_spell(spell_id)
+        if res == CMErrors.NOT_ENOUGH_XP:
+            self._show_not_enough_xp()
+            return
+        if res == CMErrors.NO_ERROR:
+            api.character.set_dirty_flag(True)
+            api.character.notify_character_refreshed()
+
+    @Slot(str)
+    def forgetSpell(self, spell_id):
+        """Drop a memorized spell by id, refunding its XP -- the 'Forget'
+        half of the legacy memorize toggle. Scans for the MemoSpellAdv
+        rather than touching pc directly."""
+        if not spell_id:
+            return
+        pc = api.character.model()
+        if not pc:
+            return
+        target = None
+        for adv in pc.advans or []:
+            if adv.type == "memo_spell" and getattr(adv, "spell", None) == spell_id:
+                target = adv
+                break
+        if target is None:
+            log.api.warning(u"QML UI: forgetSpell: no memorized spell %r", spell_id)
+            return
+        if api.character.remove_advancement(target):
+            api.character.set_dirty_flag(True)
+            api.character.notify_character_refreshed()
+
+    @Slot(result="QVariantList")
+    def availableSpellsToBuy(self):
+        """Catalogue feed for BuySpellDialog -- every spell the character
+        does not already know, each marked eligible/ineligible (the gate
+        the legacy free-form SpellAdvDialog put on 'Finish'). Ineligible
+        spells are included (dimmed) so the player can see what lies just
+        beyond their reach. Slot rather than Property so mid-session
+        datapack imports show up without a restart."""
+        if api.character.model() is None:
+            return []
+        known = set(api.character.spells.get_all())
+        out = []
+        for spell in api.data.spells.all() or []:
+            if spell.id in known:
+                continue
+            out.append(_spell_catalogue_record(spell))
+        # Within-reach first, then by mastery, then name -- the same
+        # reading order the section uses for the known register.
+        out.sort(key=lambda r: (not r["eligible"], r["mastery"],
+                                (r["name"] or "").lower()))
         return out
 
     # --- advancements ------------------------------------------------
