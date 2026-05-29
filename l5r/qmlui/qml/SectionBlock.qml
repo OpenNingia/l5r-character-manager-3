@@ -97,6 +97,8 @@ Item {
                     return skillsBody;
                 case "techniques":
                     return techniquesBody;
+                case "kata":
+                    return kataBody;
                 case "advancements":
                     return advancementsBody;
                 case "perks":
@@ -133,6 +135,12 @@ Item {
             Component {
                 id: techniquesBody
                 Sections.TechniquesSection {
+                }
+            }
+
+            Component {
+                id: kataBody
+                Sections.KataSection {
                 }
             }
 

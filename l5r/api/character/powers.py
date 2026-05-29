@@ -2,7 +2,11 @@
 __author__ = 'Daniele'
 
 import l5r.api as api
+import l5r.api.character
 import l5r.api.data
+import l5r.api.data.powers
+import l5r.models.advances
+import l5r.models.charsnapshot
 
 from l5r.api import get_context
 
@@ -89,3 +93,148 @@ def check_kiho_eligibility(kiho_id):
         return ninja_rank >= kiho_.mastery, api.tr("Your School Rank is not enough")
 
     return False, api.tr("You are not eligible")
+
+
+def _kata_source(kata_):
+    """'<book>, p.<page>' citation for a kata DAL row; the book name
+    alone when no page is set, or '' when the source is unknown. Mirrors
+    the legacy KataDialog.update_book formatting."""
+    try:
+        pack = kata_.pack
+    except Exception:
+        pack = None
+    if not pack:
+        return u""
+    name = getattr(pack, "display_name", "") or u""
+    page = getattr(kata_, "page", 0) or 0
+    if name and page:
+        return u"{}, p.{}".format(name, page)
+    return name
+
+
+def get_all_buyable_kata():
+    """Catalogue of kata the active character does not yet own, each
+    bundled with everything a chooser needs to present and gate it:
+    element (ring key + localised label), mastery, XP cost (== mastery),
+    the Ring-rank gate, the per-requirement met flags, and an overall
+    ``eligible`` verdict.
+
+    Eligibility mirrors the gate the legacy KataDialog enforced on its
+    Buy button: the character must match at least one (non role-play)
+    requirement AND have a Ring rank in the kata's element of at least
+    its mastery. Role-play ('more') requirements are advisory -- they are
+    surfaced but never count toward the gate, exactly as the old
+    RequirementsWidget.match_at_least_one ignored them.
+
+    Returns a list of plain dicts (front-end agnostic), sorted by mastery
+    then name."""
+    pc = get_context().pc
+    if pc is None:
+        return []
+
+    owned = set(get_all_kata())
+    # One snapshot for the whole catalogue -- requirement matching is
+    # read-only against it, so we don't rebuild it per kata.
+    snap = l5r.models.charsnapshot.CharacterSnapshot(pc)
+    dstore = api.data.model()
+
+    out = []
+    for kata_ in api.data.powers.kata():
+        if kata_.id in owned:
+            continue
+
+        element = (kata_.element or "void").lower()
+        ring_ = api.data.get_ring(kata_.element)
+        element_label = ring_.text if ring_ else (kata_.element or "")
+        mastery = int(kata_.mastery) if kata_.mastery is not None else 0
+
+        have = api.character.ring_rank(kata_.element)
+        ring_met = have >= mastery
+
+        requirements = []
+        any_testable = False
+        any_met = False
+        for r in kata_.require or []:
+            roleplay = (r.type == 'more')
+            met = False
+            if not roleplay:
+                any_testable = True
+                met = bool(r.match(snap, dstore))
+                if met:
+                    any_met = True
+            requirements.append({
+                "text":     r.text or "",
+                "met":      met,
+                "roleplay": roleplay,
+            })
+        # No testable requirement => the "at least one" gate passes by
+        # default, matching RequirementsWidget.match_at_least_one.
+        reqs_ok = (not any_testable) or any_met
+
+        out.append({
+            "id":           kata_.id,
+            "name":         kata_.name or kata_.id,
+            "element":      element,
+            "elementLabel": element_label,
+            "mastery":      mastery,
+            "cost":         mastery,
+            "description":  getattr(kata_, "desc", "") or "",
+            "source":       _kata_source(kata_),
+            "requirements": requirements,
+            "ringNeed": {
+                "element": element,
+                "label":   element_label,
+                "needed":  mastery,
+                "have":    int(have),
+                "met":     ring_met,
+            },
+            "eligible":     ring_met and reqs_ok,
+        })
+
+    out.sort(key=lambda r: (r["mastery"], (r["name"] or "").lower()))
+    return out
+
+
+def buy_kata(kata_id):
+    """Purchase a kata for the active character.
+
+    The XP cost equals the kata's mastery (4e RAW). Lifted from the
+    legacy L5RCMCore.buy_kata into the api layer so the QWidget and QML
+    front-ends share one purchase path. Returns a ``CMErrors``:
+    INTERNAL_ERROR for an unknown id, NOT_ENOUGH_XP when unaffordable,
+    NO_ERROR on success. Owns the dirty flag per the setter contract."""
+    kata_ = api.data.powers.get_kata(kata_id)
+    if not kata_:
+        log.api.error(u"kata not found: %s", kata_id)
+        return api.data.CMErrors.INTERNAL_ERROR
+
+    adv = l5r.models.advances.KataAdv(kata_.id, kata_.id, kata_.mastery)
+    adv.desc = api.tr(u'{0}, Cost: {1} xp').format(kata_.name, adv.cost)
+
+    res = api.character.purchase_advancement(adv)
+    if res == api.data.CMErrors.NO_ERROR:
+        api.character.set_dirty_flag(True)
+    return res
+
+
+def remove_kata(kata_id):
+    """Unlearn a kata: drop the advancement that granted it. Returns True
+    when an entry was removed. Owns the dirty flag per the setter
+    contract. A character owns any given kata at most once (the chooser
+    filters out owned kata), so keying removal by kata id is unambiguous
+    -- no opaque advancement handle needs to cross the UI boundary."""
+    pc = get_context().pc
+    if pc is None:
+        return False
+    target = None
+    for adv in pc.advans or []:
+        if adv.type == 'kata' and getattr(adv, 'kata', None) == kata_id:
+            target = adv
+            break
+    if target is None:
+        log.api.warning(u"remove_kata: character does not own kata %s", kata_id)
+        return False
+    if api.character.remove_advancement(target):
+        api.character.set_dirty_flag(True)
+        return True
+    return False

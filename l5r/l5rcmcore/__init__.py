@@ -41,6 +41,7 @@ import l5r.api as api
 import l5r.api.data
 import l5r.api.data.families
 import l5r.api.character
+import l5r.api.character.powers
 import l5r.api.rules
 from l5r.api.data import CMErrors
 from l5r.l5rcmcore.qtsignalsutils import (
@@ -414,16 +415,13 @@ class L5RCMCore(QtWidgets.QMainWindow):
         QtGui.QDesktopServices.openUrl(donate_url)
 
     def buy_kata(self, kata):
-        adv = models.KataAdv(kata.id, kata.id, kata.mastery)
-        adv.desc = self.tr('{0}, Cost: {1} xp').format(kata.name, adv.cost)
-
-        if adv.cost > api.character.xp_left():
-            return CMErrors.NOT_ENOUGH_XP
-
-        self.pc.add_advancement(adv)
-        self.update_from_model()
-
-        return CMErrors.NO_ERROR
+        # Delegates to the shared api purchase path so the QWidget and
+        # QML UIs use one implementation (the api setter owns the dirty
+        # flag); we only drive the QWidget pull-refresh on success.
+        res = api.character.powers.buy_kata(kata.id)
+        if res == CMErrors.NO_ERROR:
+            self.update_from_model()
+        return res
 
     def buy_kiho(self, kiho):
         kiho_cost = api.rules.calculate_kiho_cost(kiho.id)

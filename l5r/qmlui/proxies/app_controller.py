@@ -23,6 +23,7 @@ from qtpy.QtWidgets import QFileDialog, QMessageBox
 
 import l5r.api as api
 import l5r.api.character
+import l5r.api.character.powers
 import l5r.api.character.schools
 import l5r.api.character.skills
 import l5r.api.data
@@ -630,6 +631,39 @@ class AppController(QObject):
 
         api.character.set_dirty_flag(True)
         api.character.notify_character_refreshed()
+
+    # --- kata --------------------------------------------------------
+
+    @Slot(str)
+    def buyKata(self, kata_id):
+        """Purchase a kata by id. Delegates to the api setter (which
+        owns the dirty flag); surfaces the not-enough-XP notice and
+        refreshes derived state on success."""
+        if not kata_id:
+            return
+        res = api.character.powers.buy_kata(kata_id)
+        if res == CMErrors.NOT_ENOUGH_XP:
+            self._show_not_enough_xp()
+            return
+        api.character.notify_character_refreshed()
+
+    @Slot(str)
+    def removeKata(self, kata_id):
+        """Unlearn a kata by id. Delegates to the api setter (which owns
+        the dirty flag), then refreshes derived state on success."""
+        if not kata_id:
+            return
+        if api.character.powers.remove_kata(kata_id):
+            api.character.notify_character_refreshed()
+
+    @Slot(result="QVariantList")
+    def availableKataToBuy(self):
+        """Catalogue feed for BuyKataDialog -- the kata the character may
+        still learn, each with its element / mastery / cost / eligibility
+        (see api.character.powers.get_all_buyable_kata). Slot rather than
+        Property so mid-session datapack imports show up without a
+        restart."""
+        return api.character.powers.get_all_buyable_kata()
 
     # --- clan / family / school choosers -----------------------------
 
