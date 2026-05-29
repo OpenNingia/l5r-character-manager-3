@@ -216,6 +216,23 @@ QtObject {
         }
     }
 
+    // Helper: pick a recognizable hue per weapon category so the rack
+    // rails and the Add-Weapon catalogue colour-code at a glance. Reuses
+    // existing palette tokens (no new hues): the warrior's crimson for
+    // melee, distance-blue for ranged, an amber for arrows.
+    function weaponCategoryColor(key) {
+        switch (key) {
+        case "melee":
+            return accent;
+        case "ranged":
+            return secondary;
+        case "arrow":
+            return warning;
+        default:
+            return accent;
+        }
+    }
+
     // Helper: pick the matching ring colour by key.
     function ringColor(key) {
         switch (key) {

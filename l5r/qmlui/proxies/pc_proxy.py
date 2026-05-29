@@ -37,6 +37,7 @@ from l5r.qmlui.proxies.pc.spells import SpellsMixin
 from l5r.qmlui.proxies.pc.tattoo import TattooMixin
 from l5r.qmlui.proxies.pc.techniques import TechniquesMixin
 from l5r.qmlui.proxies.pc.traits import TraitsMixin
+from l5r.qmlui.proxies.pc.weapons import WeaponsMixin
 
 
 class PcProxy(
@@ -54,6 +55,7 @@ class PcProxy(
     TattooMixin,
     AdvancementsMixin,
     PerksMixin,
+    WeaponsMixin,
     OpportunitiesMixin,
     QObject,
 ):
@@ -74,4 +76,5 @@ class PcProxy(
         self._wire_tattoo(bus)
         self._wire_advancements(bus)
         self._wire_perks(bus)
+        self._wire_weapons(bus)
         self._wire_opportunities(bus)

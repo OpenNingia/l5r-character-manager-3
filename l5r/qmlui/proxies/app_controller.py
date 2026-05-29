@@ -28,14 +28,17 @@ import l5r.api.character.rankadv
 import l5r.api.character.schools
 import l5r.api.character.skills
 import l5r.api.character.spells
+import l5r.api.character.weapons
 import l5r.api.data
 import l5r.api.data.clans
 import l5r.api.data.families
 import l5r.api.data.flaws
 import l5r.api.data.merits
+import l5r.api.data.outfit
 import l5r.api.data.schools
 import l5r.api.data.skills
 import l5r.api.data.spells
+import l5r.api.rules
 import l5r.api.signals
 import l5r.models
 import l5r.models.advances
@@ -108,6 +111,40 @@ def _school_record(school_dal):
         "trait":  getattr(school_dal, "trait", "") or "",
         "book":   pack_name,
         "page":   int(getattr(school_dal, "page", 0) or 0),
+    }
+
+
+def _wstr(value):
+    """Stringify a datapack weapon stat for QML (None -> "")."""
+    return "" if value is None else str(value)
+
+
+def _weapon_catalogue_record(weapon):
+    """Serialise a datapack weapon for the QML weapon dialogs -- both the
+    AddWeaponDialog catalogue and the CustomWeaponDialog base-template
+    prefill consume this shape. `categories` mirrors the proxy's combat
+    partition so the dialog can show a melee/ranged/arrow dot."""
+    try:
+        sk = api.data.skills.get(weapon.skill)
+        skill_name = sk.name if sk else ""
+    except Exception:
+        skill_name = ""
+    effect_ = api.data.outfit.get_effect(weapon.effectid)
+    effect_tx = effect_.text if effect_ is not None else ""
+    tags = list(getattr(weapon, "tags", None) or [])
+    categories = [c for c in ("melee", "ranged", "arrow") if c in tags]
+    return {
+        "name":       weapon.name,
+        "skill":      skill_name,
+        "categories": categories,
+        "tags":       tags,
+        "dr":         _wstr(weapon.dr),
+        "drAlt":      _wstr(weapon.dr2),
+        "range":      _wstr(weapon.range),
+        "strength":   _wstr(weapon.strength),
+        "minStr":     _wstr(weapon.min_strength),
+        "cost":       _wstr(weapon.cost),
+        "effect":     effect_tx,
     }
 
 
@@ -1075,6 +1112,130 @@ class AppController(QObject):
         Property so mid-session datapack imports show up without a
         restart."""
         return api.character.powers.get_all_buyable_tattoo()
+
+    # --- weapons -----------------------------------------------------
+    # A weapon is a plain WeaponOutfit on pc.weapons (no XP, no rank
+    # history), so these slots delegate to api.character.weapons -- which
+    # owns the dirty flag + refresh -- rather than to the advancement
+    # machinery. The proxy emits a session-stable str(id(weapon)) handle
+    # for each row; edit / remove / qty re-resolve the live item by
+    # scanning the list (mirrors removePerk). Replaces the legacy
+    # WeaponsSink (add / add-custom / edit / remove / qty).
+
+    @Slot(result="QVariantList")
+    def availableWeapons(self):
+        """Catalogue feed for AddWeaponDialog (browse) and the
+        CustomWeaponDialog base-template dropdown, sorted by skill then
+        name. Slot rather than Property so mid-session datapack imports
+        show up without a restart."""
+        out = [_weapon_catalogue_record(w)
+               for w in (api.data.outfit.get_weapons() or [])]
+        out.sort(key=lambda r: ((r["skill"] or "").lower(),
+                                (r["name"] or "").lower()))
+        return out
+
+    @Slot(str)
+    def addWeapon(self, weapon_name):
+        """Add a catalogue weapon by name (the legacy ChooseItemDialog
+        weapon path). weapon_outfit_from_db resolves all of its stats,
+        skill and tags from the datapack, so the category partition and
+        roll calculations land correctly with no further input."""
+        if not weapon_name:
+            return
+        if api.data.outfit.get_weapon(weapon_name) is None:
+            log.api.warning(u"QML UI: addWeapon: unknown weapon %r",
+                            weapon_name)
+            return
+        item = l5r.models.weapon_outfit_from_db(weapon_name)
+        if item is not None:
+            api.character.weapons.add(item)
+
+    @Slot("QVariantMap")
+    def addCustomWeapon(self, data):
+        """Add a custom weapon (the legacy CustomWeaponDialog add path).
+        `data.base` is the catalogue weapon the build started from -- it
+        seeds the skill, trait and category tags so the new weapon still
+        rolls and files correctly; the editable fields then override the
+        stats. Mirrors CustomWeaponDialog, which always begins from a
+        base template."""
+        base = (data.get("base") or "").strip()
+        if base and api.data.outfit.get_weapon(base) is not None:
+            item = l5r.models.weapon_outfit_from_db(base)
+        else:
+            item = l5r.models.WeaponOutfit()
+        self._apply_weapon_fields(item, data)
+        if not item.name:
+            log.api.warning(u"QML UI: addCustomWeapon: refused unnamed weapon")
+            return
+        api.character.weapons.add(item)
+
+    @Slot(str, "QVariantMap")
+    def editWeapon(self, weapon_id, data):
+        """Edit a weapon's stats in place (the legacy CustomWeaponDialog
+        edit mode). Skill, trait and category tags stay fixed -- changing
+        those is semantically a remove + re-add -- so only the editable
+        fields are rewritten, then the character is flagged dirty and
+        re-projected."""
+        item = self._resolve_weapon(weapon_id)
+        if item is None:
+            log.api.warning(u"QML UI: editWeapon: no weapon %r", weapon_id)
+            return
+        self._apply_weapon_fields(item, data)
+        api.character.weapons.touch()
+
+    @Slot(str)
+    def removeWeapon(self, weapon_id):
+        """Remove a weapon by its session-stable id."""
+        item = self._resolve_weapon(weapon_id)
+        if item is None:
+            log.api.warning(u"QML UI: removeWeapon: no weapon %r", weapon_id)
+            return
+        api.character.weapons.remove(item)
+
+    @Slot(str, int)
+    def changeWeaponQty(self, weapon_id, delta):
+        """Bump a weapon's quantity by `delta` (the arrow stepper). The
+        api setter clamps to [1, 9999]."""
+        item = self._resolve_weapon(weapon_id)
+        if item is None:
+            return
+        current = int(getattr(item, "qty", 1) or 1)
+        api.character.weapons.set_quantity(item, current + int(delta))
+
+    def _resolve_weapon(self, weapon_id):
+        """Re-resolve the live WeaponOutfit for a proxy-emitted id."""
+        if not weapon_id:
+            return None
+        pc = api.character.model()
+        if not pc:
+            return None
+        for w in pc.get_weapons() or []:
+            if str(id(w)) == weapon_id:
+                return w
+        return None
+
+    def _apply_weapon_fields(self, item, data):
+        """Write the editable custom-weapon fields onto `item`, mirroring
+        CustomWeaponDialog.on_accept: ints for strength / min-strength,
+        DR coerced through the roll-and-keep parser, name / range / notes
+        verbatim."""
+        def _int(v):
+            try:
+                return int(v)
+            except (TypeError, ValueError):
+                return 0
+
+        def _dr(v):
+            r, k = api.rules.parse_rtk(str(v or ""))
+            return api.rules.format_rtk(r, k)
+
+        item.strength = _int(data.get("strength"))
+        item.min_str = _int(data.get("minStr"))
+        item.dr = _dr(data.get("dr")) or self.tr("N/A")
+        item.dr_alt = _dr(data.get("drAlt")) or self.tr("N/A")
+        item.range = data.get("range") or ""
+        item.name = (data.get("name") or "").strip()
+        item.desc = data.get("notes") or ""
 
     # --- clan / family / school choosers -----------------------------
 

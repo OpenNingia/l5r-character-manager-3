@@ -109,6 +109,8 @@ Item {
                     return advancementsBody;
                 case "perks":
                     return perksBody;
+                case "weapons":
+                    return weaponsBody;
                 default:
                     return placeholderBody;
                 }
@@ -177,6 +179,12 @@ Item {
             Component {
                 id: perksBody
                 Sections.PerksSection {
+                }
+            }
+
+            Component {
+                id: weaponsBody
+                Sections.WeaponsSection {
                 }
             }
 
