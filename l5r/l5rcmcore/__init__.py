@@ -270,7 +270,7 @@ class L5RCMCore(QtWidgets.QMainWindow):
         elif is_monk:
             self.write_pdf('sheet_monk.pdf', exporters.FDFExporterMonk())
         elif is_courtier:
-            self.write_pdf('sheet_bushi.pdf', exporters.FDFExporterCourtier())
+            self.write_pdf('sheet_courtier.pdf', exporters.FDFExporterCourtier())
 
         if kiho_count > 0:
             self.write_pdf('sheet_monk.pdf', exporters.FDFExporterMonk())
