@@ -6,6 +6,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Theme 1.0
+import "../widgets" as Widgets
 
 ColumnLayout {
     id: about
@@ -71,9 +72,32 @@ ColumnLayout {
         text: qsTr("<p><a href=\"%1\">%2</a></p>" + "<p>Report bugs and send in your ideas <a href=\"%3\">here</a>.</p>" + "<p>To learn more about Legend of the Five Rings, visit " + "<a href=\"%4\">the L5R RPG home page</a>.</p>" + "<p>All rights on Legend of the Five Rings RPG belong to " + "<a href=\"%5\">Fantasy Flight Games</a>.</p>" + "<p>Get the latest data packs " + "<a href=\"%6\">on GitHub</a>.</p>").arg(about.info.projectPage).arg(about.info.projectPageName).arg(about.info.bugtraq).arg(about.info.l5rRpgHome).arg(about.info.companyHome).arg(about.info.dataPacks)
     }
 
+    // Support / donate call to action.
+    ColumnLayout {
+        Layout.fillWidth: true
+        spacing: 8
+
+        Label {
+            text: qsTr("Enjoying L5RCM? You can support its development.")
+            font.family: Theme.fontBody
+            font.italic: true
+            font.pixelSize: Theme.fsCaption
+            color: Theme.inkMuted
+            Layout.fillWidth: true
+            wrapMode: Text.WordWrap
+        }
+
+        Widgets.L5RButton {
+            text: qsTr("Donate")
+            glyph: "施"
+            Layout.alignment: Qt.AlignLeft
+            onClicked: Qt.openUrlExternally(about.info.donateUrl)
+        }
+    }
+
     Label {
         Layout.fillWidth: true
-        text: qsTr("© 2015 %1").arg(about.info.author)
+        text: qsTr("© 2014–%1 %2").arg(new Date().getFullYear()).arg(about.info.author)
         opacity: 0.55
         font.pixelSize: 11
     }

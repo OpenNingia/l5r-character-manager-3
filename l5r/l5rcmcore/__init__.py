@@ -71,6 +71,7 @@ AUTHOR_NAME = 'Daniele Simonetti'
 L5R_RPG_HOME_PAGE = 'https://www.legendofthefiverings.com/products/roleplaying-games/legend-of-the-five-rings/'
 COMPANY_HOME_PAGE = 'https://www.fantasyflightgames.com/'
 DATA_PACKS_DOWNLOADS_LINK = 'https://github.com/OpenNingia/l5rcm-data-packs/releases/latest'
+DONATE_LINK = 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=Q87Q5BVS3ZKTE&lc=US&item_name=Daniele%20Simonetti&item_number=l5rcm_donate&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted'
 
 
 class L5RCMCore(QtWidgets.QMainWindow):
@@ -410,9 +411,7 @@ class L5RCMCore(QtWidgets.QMainWindow):
         settings.app.data_pack_blacklist = api.data.get_blacklist()
 
     def please_donate(self):
-        donate_url = QtCore.QUrl(
-            "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=Q87Q5BVS3ZKTE&lc=US&item_name=Daniele%20Simonetti&item_number=l5rcm_donate&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted")
-        QtGui.QDesktopServices.openUrl(donate_url)
+        QtGui.QDesktopServices.openUrl(QtCore.QUrl(DONATE_LINK))
 
     def buy_kata(self, kata):
         # Delegates to the shared api purchase path so the QWidget and

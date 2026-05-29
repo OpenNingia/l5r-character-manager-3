@@ -49,6 +49,7 @@ from l5r.l5rcmcore import (
     BUGTRAQ_LINK,
     DATA_PACKS_DOWNLOADS_LINK,
     DB_VERSION,
+    DONATE_LINK,
     L5R_RPG_HOME_PAGE,
     PROJECT_PAGE_LINK,
     PROJECT_PAGE_NAME,
@@ -213,6 +214,7 @@ class AppController(QObject):
             "l5rRpgHome": L5R_RPG_HOME_PAGE,
             "companyHome": COMPANY_HOME_PAGE,
             "dataPacks": DATA_PACKS_DOWNLOADS_LINK,
+            "donateUrl": DONATE_LINK,
             "author": AUTHOR_NAME,
             "iconUrl": Path(icon_path).as_uri() if icon_path else "",
         }
