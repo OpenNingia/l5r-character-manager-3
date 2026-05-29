@@ -41,12 +41,14 @@ from l5r.util import log
 
 
 # tabIds whose opportunity has a working destination CTA today. Grow this
-# as flows are ported: "skills" (granted skills picker), "spells" (free
-# spells). Until a tabId is listed here its opportunity is computed but
-# not badged -- no dead-end badges.
+# as flows are ported: "spells" (free spells) is still pending. Until a
+# tabId is listed here its opportunity is computed but not badged -- no
+# dead-end badges.
 #   pc_info  -- rank advancement (Character section "Advance Rank" CTA)
 #   kiho     -- rank-granted free kiho (Kiho section)
-_SURFACED_OPPORTUNITIES = {"pc_info", "kiho"}
+#   skills   -- school-granted wildcard skill/emphasis picks (Skills section
+#               "Choose Skills" CTA + ChooseSchoolSkillsDialog)
+_SURFACED_OPPORTUNITIES = {"pc_info", "kiho", "skills"}
 
 
 class OpportunitiesMixin:
@@ -126,6 +128,22 @@ class OpportunitiesMixin:
         if api.character.model() is None:
             return False
         return self._can_advance_rank()
+
+    @Property(int, notify=opportunitiesChanged)
+    def schoolSkillChoiceCount(self):
+        """School-granted skill/emphasis picks still pending -- drives the
+        Skills section's 'Choose Skills' callout and the count it shows.
+        A dedicated count (not the 'skills' badge) so the callout stays
+        correct if another opportunity is ever mapped to the Skills section
+        too. Mirrors the legacy AdvanceMixin.check_new_skills nicebar
+        (api.character.rankadv.has_granted_skills_to_choose) and the same
+        sum computed in _compute_opportunities."""
+        if api.character.model() is None:
+            return 0
+        rank_ = api.character.rankadv.get_last()
+        if not rank_:
+            return 0
+        return len(rank_.skills_to_choose or []) + len(rank_.emphases_to_choose or [])
 
     @Property(int, notify=opportunitiesChanged)
     def freeKihoCount(self):

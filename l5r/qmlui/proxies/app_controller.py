@@ -446,6 +446,129 @@ class AppController(QObject):
         out.sort(key=lambda r: (r["category"].lower(), r["name"].lower()))
         return out
 
+    # --- school skill choices (PlayerChoose) -------------------------
+    # When a character joins their first school, the datapack may grant a
+    # set of *wildcard* skill picks (the school XML's <PlayerChoose>, parsed
+    # by l5rdal into school.skills_pc and copied onto the rank-1 advancement
+    # as rank_.skills_to_choose). The player must resolve each set by
+    # choosing one concrete skill that matches it. These two slots replace
+    # the legacy SelWcSkills dialog (l5r/dialogs/advdlg.py) + the
+    # AdvanceMixin.act_choose_skills / clear_skills_to_choose flow.
+
+    def _wildcard_prompt(self, wc_set):
+        """Human prompt for one wildcard set, e.g. 'Any High skill (rank 1):'
+        or 'Any High, but Lore (rank 1):'. Ported verbatim from
+        SelWcSkills.build_ui -- the wildcard value is read as a skill
+        *category* id for the label (get_category), while option resolution
+        below reads it as a skill *tag* (get_by_tag)."""
+        wl = wc_set.wildcards or []
+        rank = int(wc_set.rank or 1)
+        if not wl:
+            return self.tr("Any skill (rank {0}):").format(rank)
+
+        inclusive = api.data.skills.get_inclusive_tags(wl)
+        exclusive = api.data.skills.get_exclusive_tags(wl)
+        inc_names = [c.name for c in
+                     (api.data.skills.get_category(t) for t in inclusive)
+                     if c is not None]
+        exc_names = [c.name for c in
+                     (api.data.skills.get_category(t) for t in exclusive)
+                     if c is not None]
+        sw1 = u", ".join(inc_names)
+        sw2 = u", ".join(exc_names)
+        if wl[0].value == 'any':
+            sw1 = self.tr("skill")
+        if exclusive:
+            return self.tr("Any {0}, but {1} (rank {2}):").format(sw1, sw2, rank)
+        return self.tr("Any {0} skill (rank {1}):").format(sw1, rank)
+
+    def _wildcard_options(self, wc_set):
+        """Concrete, still-unowned skills that satisfy one wildcard set --
+        the chooser's option list. Ported from SelWcSkills.load_data:
+        'any' opens the whole catalogue, an 'or' wildcard unions its tag's
+        skills in, a 'not' wildcard removes them. Owned skills are dropped
+        (you can't pick what you already have) and the result deduped."""
+        owned = set(api.character.skills.get_all() or [])
+        outcome = []
+        for w_ in (wc_set.wildcards or []):
+            if w_.value == 'any':
+                outcome += api.data.skills.all()
+            else:
+                by_tag = api.data.skills.get_by_tag(w_.value)
+                if not w_.modifier or w_.modifier == 'or':
+                    outcome += by_tag
+                elif w_.modifier == 'not':
+                    outcome = [x for x in outcome if x not in by_tag]
+
+        out, seen = [], set()
+        for sk in outcome:
+            if sk.id in owned or sk.id in seen:
+                continue
+            seen.add(sk.id)
+            out.append({"id": sk.id, "name": sk.name})
+        out.sort(key=lambda r: (r["name"] or "").lower())
+        return out
+
+    @Slot(result="QVariantMap")
+    def schoolSkillChoices(self):
+        """Resolve the pending school-granted wildcard skill/emphasis picks
+        into a QML-friendly structure for ChooseSchoolSkillsDialog:
+            { skills:   [{label, rank, options:[{id, name}, ...]}, ...],
+              emphases: [{skillId, skillName}, ...] }
+        one entry per wildcard set, plus one per emphasis-to-choose.
+        Mirrors SelWcSkills.build_ui / load_data."""
+        if api.character.model() is None:
+            return {"skills": [], "emphases": []}
+
+        skills = []
+        for wc_set in api.character.rankadv.get_starting_skills_to_choose():
+            skills.append({
+                "label":   self._wildcard_prompt(wc_set),
+                "rank":    int(wc_set.rank or 1),
+                "options": self._wildcard_options(wc_set),
+            })
+
+        emphases = []
+        for sid in api.character.rankadv.get_starting_emphases_to_choose():
+            sk = api.data.skills.get(sid)
+            if sk is None:
+                continue
+            emphases.append({"skillId": sk.id, "skillName": sk.name})
+
+        return {"skills": skills, "emphases": emphases}
+
+    @Slot("QVariantList", "QVariantList")
+    def applySchoolSkillChoices(self, skill_picks, emph_picks):
+        """Apply the player's school-skill choices: grant each picked skill
+        at its set's rank, add each chosen emphasis, then clear the pending
+        list so the opportunity resolves. Mirrors SelWcSkills.on_accept +
+        AdvanceMixin.act_choose_skills. The api helpers (add_starting_skill,
+        clear_skills_to_choose) append to the rank advancement but do not own
+        the dirty flag, so set it here (like learnSpell / inscribePerk).
+
+        Distinctness / unowned validation is enforced by the dialog
+        (acceptEnabled); the options were already filtered to unowned, so
+        this trusts the picks and applies them faithfully."""
+        if api.character.model() is None:
+            return
+
+        for pick in (skill_picks or []):
+            sid = pick.get("id")
+            if not sid:
+                continue
+            rank = int(pick.get("rank", 1) or 1)
+            api.character.skills.add_starting_skill(sid, rank)
+
+        for pick in (emph_picks or []):
+            sid = pick.get("skillId")
+            text = (pick.get("text") or "").strip()
+            if sid and text:
+                api.character.skills.add_starting_skill(sid, emph=text)
+
+        api.character.rankadv.clear_skills_to_choose()
+        api.character.set_dirty_flag(True)
+        api.character.notify_character_refreshed()
+
     # --- spells -------------------------------------------------------
 
     @Slot(str)

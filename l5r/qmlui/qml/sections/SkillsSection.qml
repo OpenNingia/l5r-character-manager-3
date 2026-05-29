@@ -49,6 +49,12 @@ ColumnLayout {
     readonly property var _skills: pcProxy ? pcProxy.skills : []
     readonly property bool _canEdit: !pcProxy || pcProxy.canEdit !== false
 
+    // Pending school-granted wildcard skill/emphasis picks (the datapack's
+    // <PlayerChoose>, surfaced as the "skills" opportunity). Drives the
+    // callout below; the matching TOC badge comes from the same proxy.
+    // See [[qml-opportunity-surface]].
+    readonly property int _schoolSkillChoices: pcProxy ? pcProxy.schoolSkillChoiceCount : 0
+
     // Display order mirrors the Rings & Attributes block in
     // CharacterSection.qml so the eye is already trained for it.
     readonly property var _ringOrder: [{
@@ -167,6 +173,88 @@ ColumnLayout {
                 Layout.fillWidth: true
                 placeholderText: qsTr("e.g. Katana, Falconry, Goblin…")
                 onAccepted: emphDlg.accept()
+            }
+        }
+    }
+
+    // ----------------------------------------------------------------
+    // School-granted skill chooser -- resolves the "skills" opportunity
+    // (rank_.skills_to_choose / emphases_to_choose). Replaces the legacy
+    // SelWcSkills dialog.
+    // ----------------------------------------------------------------
+    Dialogs.ChooseSchoolSkillsDialog {
+        id: chooseSchoolSkillsDlg
+        parent: Overlay.overlay
+        anchors.centerIn: Overlay.overlay
+    }
+
+    // ----------------------------------------------------------------
+    // Opportunity callout (§6.16 banner). The in-section landing for the
+    // Skills TOC badge: shows only while the school still owes the player
+    // a skill choice. Accent-blue per the positive-action language
+    // (crimson is reserved for destructive/unmet), with the 技 skills seal
+    // and a "Choose Skills" CTA that opens ChooseSchoolSkillsDialog.
+    // ----------------------------------------------------------------
+    Rectangle {
+        Layout.fillWidth: true
+        visible: section._schoolSkillChoices > 0
+        implicitHeight: 56
+        color: Theme.secondarySoft
+        border.color: Theme.secondary
+        border.width: 1
+        radius: 2
+
+        RowLayout {
+            anchors.fill: parent
+            anchors.leftMargin: 12
+            anchors.rightMargin: 12
+            spacing: 12
+
+            // 36×36 kanji tile (§6.16: smaller than the dialog's 48px).
+            Rectangle {
+                Layout.preferredWidth: 36
+                Layout.preferredHeight: 36
+                Layout.alignment: Qt.AlignVCenter
+                radius: 4
+                color: Theme.secondary
+                Label {
+                    anchors.centerIn: parent
+                    text: "技"
+                    font.family: Theme.fontKanji
+                    font.pixelSize: 24
+                    color: Theme.whiteWash
+                }
+            }
+
+            ColumnLayout {
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignVCenter
+                spacing: 0
+                Label {
+                    text: qsTr("YOUR SCHOOL GRANTS A CHOICE")
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: Theme.fsHeading2
+                    font.weight: Theme.wSemiBold
+                    font.letterSpacing: 1.4
+                    color: Theme.secondary
+                }
+                Label {
+                    text: qsTr("choose the skills your training emphasised")
+                    font.family: Theme.fontBody
+                    font.italic: true
+                    font.pixelSize: Theme.fsCaption
+                    color: Theme.inkMuted
+                }
+            }
+
+            Widgets.L5RButton {
+                text: qsTr("Choose Skills")
+                glyph: "技"
+                accent: Theme.secondary
+                accentDark: Theme.secondaryDark
+                enabled: section._canEdit
+                Layout.alignment: Qt.AlignVCenter
+                onClicked: chooseSchoolSkillsDlg.present()
             }
         }
     }
