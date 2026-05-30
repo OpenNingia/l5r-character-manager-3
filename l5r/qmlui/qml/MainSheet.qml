@@ -21,10 +21,10 @@ ApplicationWindow {
     // every launch.
     title: pcProxy ? pcProxy.displayTitle : ""
     // The whole client area is parchment now -- no OS-grey desk under
-    // the panels. The menubar above still follows the OS theme so the
-    // window chrome stays native. The parchment carries a faint wash of
-    // the active clan's accent (ClanTheme.paper) so the whole sheet reads
-    // in the clan's hue.
+    // the panels. The menubar above is a parchment band too (L5RMenuBar),
+    // so the only OS chrome left is the native window frame. The parchment
+    // carries a faint wash of the active clan's accent (ClanTheme.paper) so
+    // the whole sheet reads in the clan's hue.
     color: ClanTheme.paper
 
     // Drive the per-clan accent (design system §5): push the active
@@ -41,28 +41,28 @@ ApplicationWindow {
         }
     }
 
-    menuBar: MenuBar {
-        Menu {
+    menuBar: Widgets.L5RMenuBar {
+        Widgets.L5RMenu {
             title: qsTr("&File")
-            MenuItem {
+            Widgets.L5RMenuItem {
                 text: qsTr("&New")
                 onTriggered: appCtrl.fileNew()
             }
-            MenuItem {
+            Widgets.L5RMenuItem {
                 text: qsTr("&Open...")
                 onTriggered: appCtrl.fileOpenDialog()
             }
-            MenuItem {
+            Widgets.L5RMenuItem {
                 text: qsTr("&Save")
                 onTriggered: appCtrl.fileSave()
             }
-            MenuItem {
+            Widgets.L5RMenuItem {
                 text: qsTr("Save &As...")
                 onTriggered: appCtrl.fileSaveAs()
             }
-            MenuSeparator {
+            Widgets.L5RMenuSeparator {
             }
-            MenuItem {
+            Widgets.L5RMenuItem {
                 text: qsTr("&Quit")
                 onTriggered: appCtrl.fileQuit()
             }
