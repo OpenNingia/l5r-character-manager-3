@@ -59,6 +59,7 @@ from l5r.l5rcmcore import (
     PROJECT_PAGE_LINK,
     PROJECT_PAGE_NAME,
 )
+from l5r.qmlui.proxies.pc import opportunities
 from l5r.exporters.model_form import ModelExportForm
 from l5r.util import log, names
 from l5r.util.fsutil import get_app_file, get_app_icon_path
@@ -265,6 +266,15 @@ class AppController(QObject):
     # PDF export outcome -- (ok, path). Drives the QML toast; the file is
     # opened from here on success (see _on_export_ok).
     exportFinished = Signal(bool, str)
+    # Emitted when a rank-up is requested but the current rank still has
+    # unresolved opportunities (school skills, free kiho, ...). Drives a
+    # reminder toast (the message is built QML-side, where the rest of the
+    # QML strings live).
+    advanceRankBlocked = Signal()
+    # Emitted when a requested rank-up is clear to proceed -- the QML side
+    # then opens the AdvanceRankDialog. Keeps the "may I advance?" decision
+    # in the controller while the dialog stays a pure view concern.
+    advanceRankReady = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -959,6 +969,25 @@ class AppController(QObject):
         }
 
     @Slot()
+    def requestAdvanceRank(self):
+        """Entry point for the outer 'Advance Rank' button. Decides whether
+        the rank-up may proceed BEFORE the dialog opens: if the player still
+        has unresolved opportunities (school skills, free kiho, ...) it
+        nudges with a reminder toast (advanceRankBlocked) and stops;
+        otherwise it signals the view to open the dialog (advanceRankReady).
+
+        The blocking set is the surfaced opportunities minus the rank-up
+        itself (see opportunities.has_blocking_opportunities) -- so it scales
+        with the allow-list and never dead-locks on a grant that has no QML
+        resolution yet."""
+        if api.character.model() is None:
+            return
+        if opportunities.has_blocking_opportunities():
+            self.advanceRankBlocked.emit()
+            return
+        self.advanceRankReady.emit()
+
+    @Slot()
     def advanceRank(self):
         """Advance in the current school, or resume the former school when
         on an alternate path -- the legacy NextRankDlg 'go on' branch.
@@ -969,6 +998,15 @@ class AppController(QObject):
             return
         if api.character.insight_rank() <= api.character.insight_rank(strict=True):
             return  # no pending rank-up; nothing to do
+
+        # Defence in depth: the outer button (requestAdvanceRank) already
+        # gates on this, but refuse here too so advancing can never silently
+        # orphan an unresolved opportunity. Advancing appends a new Rank that
+        # becomes the 'last' one and the choice getters read only the last
+        # rank, so the pending grant would be lost. Nudge with a toast.
+        if opportunities.has_blocking_opportunities():
+            self.advanceRankBlocked.emit()
+            return
 
         current_id = api.character.schools.get_current()
         if api.data.schools.is_path(current_id):

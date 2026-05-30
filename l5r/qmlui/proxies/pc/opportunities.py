@@ -20,7 +20,7 @@
 # the actual call-to-action button. So the map is keyed by **tabId** ->
 # count.
 #
-# `_compute_opportunities` builds the *complete* truth (every opportunity
+# `compute_opportunities` builds the *complete* truth (every opportunity
 # with a home section). `opportunityBadges` then surfaces only those whose
 # destination section already has a working CTA in the QML UI, via the
 # `_SURFACED_OPPORTUNITIES` allow-list -- so we never badge a section that
@@ -51,6 +51,88 @@ from l5r.util import log
 _SURFACED_OPPORTUNITIES = {"pc_info", "kiho", "skills"}
 
 
+def _can_advance_rank():
+    """True when the character's potential Insight Rank outruns the rank
+    actually taken -- i.e. a rank-up is waiting. Shared by the badge map and
+    the `canAdvanceRank` property so both agree."""
+    try:
+        return api.character.insight_rank() > api.character.insight_rank(strict=True)
+    except Exception:
+        return False
+
+
+def compute_opportunities():
+    """Full map of pending opportunities, keyed by the tabId of the section
+    that resolves each, to a count. Pure reads; mirrors the legacy NiceBar
+    checks in l5r/ui/advance.py. (Affinity/deficiency choice has no ported
+    home section yet, so it is omitted here rather than badged nowhere.)"""
+    pc = api.character.model()
+    if not pc:
+        return {}
+
+    out = {}
+    try:
+        # Reached a new Insight Rank -> the ROOT opportunity, resolved in
+        # the Character section. Every grant below (free kiho / spells /
+        # skills / affinity) is applied *by* this rank-up, so it is listed
+        # first. It lives on Character -- a forward-looking "decide your
+        # destiny" choice belongs on the dashboard, not the Advancements
+        # ledger (which is history).
+        if _can_advance_rank():
+            out["pc_info"] = out.get("pc_info", 0) + 1
+
+        rank_ = api.character.rankadv.get_last()
+
+        # School-granted skills / emphases to choose -> Skills.
+        if rank_:
+            wc = len(rank_.skills_to_choose or []) + len(rank_.emphases_to_choose or [])
+            if wc:
+                out["skills"] = out.get("skills", 0) + wc
+
+        # School-granted free spells (shugenja) -> Spells.
+        if api.character.rankadv.has_granted_free_spells():
+            out["spells"] = out.get("spells", 0) + 1
+
+        # Rank-granted free kiho (monks) -> Kiho.
+        free_kiho = int(api.character.rankadv.get_gained_kiho_count() or 0)
+        if free_kiho:
+            out["kiho"] = out.get("kiho", 0) + free_kiho
+    except Exception:
+        # An opportunity probe should never break the whole sheet; degrade
+        # to whatever was computed before the failure.
+        log.api.debug(u"opportunity probe failed", exc_info=1)
+
+    return out
+
+
+def surfaced_opportunities():
+    """compute_opportunities() filtered to those whose destination section
+    has a working CTA today (the _SURFACED_OPPORTUNITIES allow-list) -- so we
+    never surface a dead-end."""
+    full = compute_opportunities()
+    return {k: v for k, v in full.items() if k in _SURFACED_OPPORTUNITIES}
+
+
+def blocking_opportunities():
+    """The surfaced opportunities that must be resolved BEFORE advancing
+    rank: every surfaced one except the rank-up itself (pc_info), which *is*
+    the advancement. Advancing appends a new 'last' rank and the choice
+    getters read only the last rank, so these would be silently orphaned.
+
+    This reuses the same allow-list as the badges, so it scales: each flow
+    added to _SURFACED_OPPORTUNITIES (as it gains a QML CTA) starts blocking
+    automatically, and a grant with no resolution path yet (e.g. free
+    spells, affinity/deficiency) is *not* in the list, so it never
+    dead-locks the advance."""
+    return {k: v for k, v in surfaced_opportunities().items() if k != "pc_info"}
+
+
+def has_blocking_opportunities():
+    """True if any surfaced opportunity other than the rank-up itself is
+    still unresolved -- the rank-advance gate (see blocking_opportunities)."""
+    return bool(blocking_opportunities())
+
+
 class OpportunitiesMixin:
     opportunitiesChanged = Signal()
 
@@ -61,63 +143,9 @@ class OpportunitiesMixin:
     def _on_opportunities_changed(self):
         self.opportunitiesChanged.emit()
 
-    def _can_advance_rank(self):
-        """True when the character's potential Insight Rank outruns the
-        rank actually taken -- i.e. a rank-up is waiting. Shared by the
-        badge map and the `canAdvanceRank` property so both agree."""
-        try:
-            return api.character.insight_rank() > api.character.insight_rank(strict=True)
-        except Exception:
-            return False
-
-    def _compute_opportunities(self):
-        """Full map of pending opportunities, keyed by the tabId of the
-        section that resolves each, to a count. Pure reads; mirrors the
-        legacy NiceBar checks in l5r/ui/advance.py. (Affinity/deficiency
-        choice has no ported home section yet, so it is omitted here
-        rather than badged nowhere.)"""
-        pc = api.character.model()
-        if not pc:
-            return {}
-
-        out = {}
-        try:
-            # Reached a new Insight Rank -> the ROOT opportunity, resolved
-            # in the Character section. Every grant below (free kiho /
-            # spells / skills / affinity) is applied *by* this rank-up, so
-            # it is listed first. It lives on Character -- a forward-looking
-            # "decide your destiny" choice belongs on the dashboard, not
-            # the Advancements ledger (which is history).
-            if self._can_advance_rank():
-                out["pc_info"] = out.get("pc_info", 0) + 1
-
-            rank_ = api.character.rankadv.get_last()
-
-            # School-granted skills / emphases to choose -> Skills.
-            if rank_:
-                wc = len(rank_.skills_to_choose or []) + len(rank_.emphases_to_choose or [])
-                if wc:
-                    out["skills"] = out.get("skills", 0) + wc
-
-            # School-granted free spells (shugenja) -> Spells.
-            if api.character.rankadv.has_granted_free_spells():
-                out["spells"] = out.get("spells", 0) + 1
-
-            # Rank-granted free kiho (monks) -> Kiho.
-            free_kiho = int(api.character.rankadv.get_gained_kiho_count() or 0)
-            if free_kiho:
-                out["kiho"] = out.get("kiho", 0) + free_kiho
-        except Exception:
-            # An opportunity probe should never break the whole sheet;
-            # degrade to whatever was computed before the failure.
-            log.api.debug(u"opportunity probe failed", exc_info=1)
-
-        return out
-
     @Property("QVariantMap", notify=opportunitiesChanged)
     def opportunityBadges(self):
-        full = self._compute_opportunities()
-        return {k: v for k, v in full.items() if k in _SURFACED_OPPORTUNITIES}
+        return surfaced_opportunities()
 
     @Property(bool, notify=opportunitiesChanged)
     def canAdvanceRank(self):
@@ -127,7 +155,18 @@ class OpportunitiesMixin:
         mapped to the Character section too."""
         if api.character.model() is None:
             return False
-        return self._can_advance_rank()
+        return _can_advance_rank()
+
+    @Property(bool, notify=opportunitiesChanged)
+    def hasPendingOpportunities(self):
+        """Whether the player still has surfaced opportunities to resolve
+        before advancing rank (school skills, free kiho, ... -- everything
+        except the rank-up itself). Drives the outer 'Advance Rank' button,
+        which nudges with a reminder toast instead of opening the dialog
+        while any remain, so advancing never silently orphans a grant."""
+        if api.character.model() is None:
+            return False
+        return has_blocking_opportunities()
 
     @Property(int, notify=opportunitiesChanged)
     def schoolSkillChoiceCount(self):
@@ -137,7 +176,7 @@ class OpportunitiesMixin:
         correct if another opportunity is ever mapped to the Skills section
         too. Mirrors the legacy AdvanceMixin.check_new_skills nicebar
         (api.character.rankadv.has_granted_skills_to_choose) and the same
-        sum computed in _compute_opportunities."""
+        sum computed in compute_opportunities."""
         if api.character.model() is None:
             return 0
         rank_ = api.character.rankadv.get_last()

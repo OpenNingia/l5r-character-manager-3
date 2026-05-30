@@ -119,6 +119,14 @@ ColumnLayout {
         id: joinSchoolDlg
     }
 
+    // The controller gates the rank-up at the outer button: it only opens
+    // the dialog once there are no unresolved opportunities left (it emits
+    // advanceRankBlocked -> reminder toast otherwise, handled in MainSheet).
+    Connections {
+        target: appCtrl
+        function onAdvanceRankReady() { advanceRankDlg.present(); }
+    }
+
     // -----------------------------------------------------------------
     // Rank-up callout (§6.16 banner). The in-section landing for the
     // Character TOC badge: shows only when a rank-up is waiting. Accent-
@@ -185,7 +193,9 @@ ColumnLayout {
                 accent: Theme.secondary
                 accentDark: Theme.secondaryDark
                 Layout.alignment: Qt.AlignVCenter
-                onClicked: advanceRankDlg.present()
+                // Route through the controller so it can block (with a
+                // reminder toast) while opportunities are still pending.
+                onClicked: if (appCtrl) appCtrl.requestAdvanceRank()
             }
         }
     }

@@ -444,5 +444,11 @@ ApplicationWindow {
         function onExportFinished(ok, path) {
             toast.show(ok ? qsTr("Sheet exported.") : qsTr("PDF export failed."));
         }
+        // Rank advancement was refused: the player still has unresolved
+        // opportunities (school skills, free kiho, ...) which advancing
+        // would discard. Remind them to resolve those first.
+        function onAdvanceRankBlocked() {
+            toast.show(qsTr("Resolve your pending opportunities before advancing rank."));
+        }
     }
 }
