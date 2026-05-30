@@ -13,12 +13,13 @@
 # the surface keeps growing -- for now organised by `# --- section`
 # comment blocks.
 
+import os
 from pathlib import Path
 
 from asq.initiators import query
 from asq.selectors import a_
-from qtpy.QtCore import QObject, Property, QT_TRANSLATE_NOOP, Signal, Slot
-from qtpy.QtGui import QGuiApplication
+from qtpy.QtCore import QObject, Property, QT_TRANSLATE_NOOP, QThreadPool, QUrl, Signal, Slot
+from qtpy.QtGui import QDesktopServices, QGuiApplication
 from qtpy.QtWidgets import QFileDialog, QMessageBox
 
 import l5r.api as api
@@ -57,9 +58,11 @@ from l5r.l5rcmcore import (
     PROJECT_PAGE_LINK,
     PROJECT_PAGE_NAME,
 )
+from l5r.exporters.model_form import ModelExportForm
 from l5r.util import log, names
 from l5r.util.fsutil import get_app_file, get_app_icon_path
 from l5r.util.settings import L5RCMSettings
+from l5r.util.worker import Worker
 
 
 # Single-kanji glyphs lean on the system CJK font (no bundled face) --
@@ -258,10 +261,17 @@ class AppController(QObject):
     """Top-level controller exposed to QML."""
 
     saveRequested = Signal(str)
+    # PDF export outcome -- (ok, path). Drives the QML toast; the file is
+    # opened from here on success (see _on_export_ok).
+    exportFinished = Signal(bool, str)
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self._save_path = ""
+        # Holds the running export Worker so the QRunnable + its signals
+        # outlive exportPdf's stack frame until the thread finishes.
+        self._export_worker = None
+        self._export_path = ""
 
     # --- tab list -----------------------------------------------------
 
@@ -357,6 +367,73 @@ class AppController(QObject):
     @Slot()
     def fileQuit(self):
         QGuiApplication.instance().quit()
+
+    @Slot()
+    def exportPdfDialog(self):
+        """Pick a destination and export the active character sheet to PDF.
+
+        The fill / flatten / merge is the shared l5r.exporters.sheet path
+        (one implementation for both front-ends). It runs on a worker thread
+        so the sheet stays responsive; exportFinished(ok, path) drives the
+        QML toast, and the finished file is opened on success.
+        """
+        settings = L5RCMSettings()
+        last_dir = settings.app.last_open_dir or ""
+        # Pre-fill "<Family> <Name>.pdf" in the last-used directory, like the
+        # QWidget's select_export_file / get_character_full_name.
+        full_name = self._character_full_name()
+        suggested = "{}.pdf".format(full_name) if full_name else ""
+        proposed = os.path.join(last_dir, suggested)
+
+        path, _ = QFileDialog.getSaveFileName(
+            None,
+            self.tr("Export Character Sheet"),
+            proposed,
+            self.tr("PDF Documents (*.pdf);;All Files (*)"),
+        )
+        if not path:
+            return
+        if not path.lower().endswith(".pdf"):
+            path += ".pdf"
+        settings.app.last_open_dir = os.path.dirname(path)
+
+        # Build the form on the GUI thread (it constructs Qt view-models);
+        # the worker only reads their items + does file IO.
+        form = ModelExportForm()
+        worker = Worker(self._run_pdf_export, path, form)
+        worker.signals.result.connect(self._on_export_ok)
+        worker.signals.error.connect(self._on_export_error)
+        self._export_path = path
+        self._export_worker = worker
+        QThreadPool.globalInstance().start(worker)
+
+    @staticmethod
+    def _run_pdf_export(path, form):
+        from l5r.exporters import sheet
+        sheet.export_pdf(path, form)
+        return path
+
+    def _on_export_ok(self, path):
+        self._export_worker = None
+        log.app.info(u"QML UI: exported character sheet to %s", path)
+        self.exportFinished.emit(True, path)
+        QDesktopServices.openUrl(QUrl.fromLocalFile(path))
+
+    def _on_export_error(self, err):
+        self._export_worker = None
+        log.app.error(u"QML UI: PDF export failed: %s", err)
+        self.exportFinished.emit(False, self._export_path)
+
+    @staticmethod
+    def _character_full_name():
+        """`<Family Name> <name>` (e.g. "Hida Hiroshi"), or just the name
+        when the character has no family -- mirrors L5RCMCore."""
+        pc = api.character.model()
+        name = pc.name if pc else ""
+        family_ = api.data.families.get(api.character.get_family())
+        if family_:
+            return "{} {}".format(family_.name, name)
+        return name
 
     # --- notes / personal info ---------------------------------------
 

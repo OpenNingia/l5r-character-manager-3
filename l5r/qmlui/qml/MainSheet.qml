@@ -63,6 +63,12 @@ ApplicationWindow {
             Widgets.L5RMenuSeparator {
             }
             Widgets.L5RMenuItem {
+                text: qsTr("Ex&port as PDF...")
+                onTriggered: appCtrl.exportPdfDialog()
+            }
+            Widgets.L5RMenuSeparator {
+            }
+            Widgets.L5RMenuItem {
                 text: qsTr("&Quit")
                 onTriggered: appCtrl.fileQuit()
             }
@@ -424,6 +430,15 @@ ApplicationWindow {
         target: appSettings
         function onReloadRequired(message) {
             toast.show(message);
+        }
+    }
+
+    // PDF export feedback. The file itself is opened from the controller on
+    // success; here we just surface a transient notice on the sheet.
+    Connections {
+        target: appCtrl
+        function onExportFinished(ok, path) {
+            toast.show(ok ? qsTr("Character sheet exported.") : qsTr("PDF export failed."));
         }
     }
 }
