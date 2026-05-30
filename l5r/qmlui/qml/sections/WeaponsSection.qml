@@ -1,23 +1,31 @@
 // Copyright (C) 2014-2026 Daniele Simonetti
-// Weapons section (刀 -- tō, "blade") -- replaces the legacy three-table
-// l5r/ui/tabs/weapons.py (melee / ranged / arrows).
+// Arms & Armor section (刀 -- tō, "blade") -- replaces the legacy
+// three-table l5r/ui/tabs/weapons.py (melee / ranged / arrows) and folds
+// in the armour worn (the legacy "Outfit" menu's Wear Armor / Custom
+// Armor), since the QML taxonomy groups all combat gear here.
 //
 // Design intent: "The Weapon Rack." A samurai's arms are laid out by
-// the way they are used -- the blades drawn in close, the bows loosed at
-// range, and the arrows that feed them. So the page reads as a rack with
-// three labelled rails. Each weapon is a card: the crimson rail of the
-// warrior down its left edge, the name and its governing skill at the
-// top, and on the right the figures the player actually shouts at the
-// table -- the attack and damage rolls (in gold, recomputed live from
-// traits + skill + modifiers), the damage rating, range and strength.
-// Arrows carry a quantity stepper instead. Click a card to read its
-// effect text inline.
+// the way they are used -- the armour worn, then the blades drawn in
+// close, the bows loosed at range, and the arrows that feed them. So the
+// page reads as a rack with labelled rails. Each weapon is a card: the
+// crimson rail of the warrior down its left edge, the name and its
+// governing skill at the top, and on the right the figures the player
+// actually shouts at the table -- the attack and damage rolls (in gold,
+// recomputed live from traits + skill + modifiers), the damage rating,
+// range and strength. Arrows carry a quantity stepper instead. Click a
+// card to read its effect text inline.
 //
-// Two affordances head the rack, mirroring the legacy toolbar:
-//   "＋ Add Weapon"    -> AddWeaponDialog   (browse the armoury catalogue)
-//   "＋ Custom"        -> CustomWeaponDialog (forge / re-stat a weapon)
-// Each non-arrow card carries a hover-revealed edit handle (re-opens the
-// custom dialog seeded with that weapon) and every card a remove handle.
+// The armour rail heads the rack: a character wears at most one armour,
+// shown as an earth-toned card with its TN bonus and reduction, an edit
+// handle, and a take-off (remove) handle (issue #379). When unarmoured the
+// rail shows a quiet hint.
+//
+// Affordances mirror the legacy toolbar/menu:
+//   "＋ Wear" / "＋ Custom"  (armour rail) -> AddArmorDialog / CustomArmorDialog
+//   "＋ Add Weapon"          -> AddWeaponDialog   (browse the armoury catalogue)
+//   "＋ Custom"              -> CustomWeaponDialog (forge / re-stat a weapon)
+// Each non-arrow weapon card carries a hover-revealed edit handle (re-opens
+// the custom dialog seeded with that weapon) and every card a remove handle.
 //
 // Data contract expected from the proxy (degrades to the empty-state):
 //   pcProxy.weapons: [
@@ -41,6 +49,11 @@
 //   changeWeaponQty(id, delta)
 //   availableWeapons() -> [{ name, skill, categories, dr, drAlt, range,
 //                            strength, minStr, cost, effect }]  (dialogs)
+// Armour contract:
+//   pcProxy.armor: { worn: bool, name, tn:int, rd:int, desc }
+//   availableArmors() -> [{ name, tn, rd, cost, effect }]  (dialogs)
+//   wearArmor(name)   wearCustomArmor({name,tn,rd,notes})
+//   editArmor({name,tn,rd,notes})   removeArmor()
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -58,6 +71,16 @@ ColumnLayout {
     // -----------------------------------------------------------------
     readonly property var _weapons: (pcProxy && pcProxy.weapons) ? pcProxy.weapons : []
     readonly property bool _hasWeapons: _weapons.length > 0
+
+    // The worn armour (at most one). Earth-toned, heads the rack.
+    readonly property var _armor: (pcProxy && pcProxy.armor) ? pcProxy.armor : ({
+                                                                                    "worn": false,
+                                                                                    "name": "",
+                                                                                    "tn": 0,
+                                                                                    "rd": 0,
+                                                                                    "desc": ""
+                                                                                })
+    property bool _armorExpanded: false
 
     // The three combat rails, in reading order. A weapon appears on every
     // rail whose key is in its `categories` (faithful to the legacy, where
@@ -116,14 +139,28 @@ ColumnLayout {
             customWeaponDlg.presentEdit(item);
     }
 
+    function _requestRemoveArmor() {
+        if (appCtrl)
+            appCtrl.removeArmor();
+    }
+    function _requestEditArmor() {
+        customArmorDlg.presentEdit(section._armor);
+    }
+
     // -----------------------------------------------------------------
-    // Dialogs -- both authored fresh in QML (no QWidget reuse).
+    // Dialogs -- all authored fresh in QML (no QWidget reuse).
     // -----------------------------------------------------------------
     Dialogs.AddWeaponDialog {
         id: addWeaponDlg
     }
     Dialogs.CustomWeaponDialog {
         id: customWeaponDlg
+    }
+    Dialogs.AddArmorDialog {
+        id: addArmorDlg
+    }
+    Dialogs.CustomArmorDialog {
+        id: customArmorDlg
     }
 
     // -----------------------------------------------------------------
@@ -133,7 +170,7 @@ ColumnLayout {
     // -----------------------------------------------------------------
     Widgets.SheetPanel {
         Layout.fillWidth: true
-        title: qsTr("Weapons")
+        title: qsTr("Arms & Armor")
 
         ColumnLayout {
             width: parent.width
@@ -178,6 +215,81 @@ ColumnLayout {
                 Layout.fillWidth: true
                 ruleColor: Theme.heading
                 ruleOpacity: 0.30
+            }
+
+            // ---- Armor rail (always shown; one worn armour at most) --
+            ColumnLayout {
+                Layout.fillWidth: true
+                Layout.topMargin: 2
+                spacing: 4
+
+                // Earth-toned rail banner + Wear / Custom affordances.
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: Theme.s2
+                    Rectangle {
+                        Layout.preferredWidth: 18
+                        Layout.preferredHeight: 10
+                        color: Theme.ringEarth
+                    }
+                    Label {
+                        text: qsTr("Armor").toUpperCase()
+                        font.family: Theme.fontDisplay
+                        font.pixelSize: Theme.fsBody
+                        font.weight: Theme.headingWeight
+                        font.letterSpacing: 2.4
+                        color: Theme.ringEarth
+                    }
+                    Rectangle {
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 1
+                        color: Theme.ringEarth
+                        opacity: 0.30
+                    }
+                    AddAffordance {
+                        text: qsTr("＋  Wear")
+                        onTriggered: addArmorDlg.present()
+                    }
+                    AddAffordance {
+                        text: qsTr("＋  Custom")
+                        onTriggered: customArmorDlg.presentAdd()
+                    }
+                }
+
+                // Worn armour card.
+                ArmorCard {
+                    Layout.fillWidth: true
+                    visible: section._armor.worn
+                }
+
+                // Unarmoured hint.
+                Rectangle {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 40
+                    visible: !section._armor.worn
+                    color: Theme.parchmentInset
+                    border.color: Theme.borderSubtle
+                    border.width: 1
+                    radius: 2
+                    Rectangle {
+                        anchors.left: parent.left
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        width: 3
+                        color: Theme.ringEarth
+                        opacity: 0.45
+                    }
+                    Label {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 14
+                        text: qsTr("No armour worn — you fight unarmored.")
+                        font.italic: true
+                        font.pixelSize: Theme.fsBody
+                        color: Theme.ink
+                        opacity: 0.6
+                    }
+                }
             }
 
             // ---- Empty state -----------------------------------------
@@ -412,6 +524,216 @@ ColumnLayout {
             }
             ToolTip.visible: tip.length > 0 && cellHover.hovered
             ToolTip.text: tip
+        }
+    }
+
+    // =================================================================
+    // ArmorCard -- the single worn armour. Earth-toned to set it apart
+    // from the weapon rails; shows its TN bonus + reduction, a
+    // hover-revealed edit handle (re-stat), and a take-off handle that
+    // returns the character to unarmoured (issue #379). Click to read its
+    // notes inline.
+    // =================================================================
+    component ArmorCard: Rectangle {
+        id: acard
+        readonly property color _c: Theme.ringEarth
+        readonly property string _name: section._armor.name && section._armor.name.length > 0 ? section._armor.name : qsTr("(unnamed armour)")
+        readonly property string _desc: section._armor.desc || ""
+        readonly property bool _hasDesc: _desc.length > 0
+        readonly property bool _expanded: section._armorExpanded
+
+        implicitHeight: acardBody.implicitHeight + 18
+        color: acHover.hovered || _expanded ? Theme.parchmentBase : Theme.parchmentInset
+        border.color: acHover.hovered || _expanded ? Qt.darker(_c, 1.2) : Theme.borderSubtle
+        border.width: 1
+        radius: 2
+
+        Behavior on color {
+            ColorAnimation {
+                duration: 120
+            }
+        }
+        Behavior on border.color {
+            ColorAnimation {
+                duration: 120
+            }
+        }
+
+        Rectangle {
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            width: 3
+            color: acard._c
+            opacity: 0.9
+        }
+
+        HoverHandler {
+            id: acHover
+            cursorShape: acard._hasDesc ? Qt.PointingHandCursor : Qt.ArrowCursor
+        }
+        TapHandler {
+            enabled: acard._hasDesc
+            onTapped: section._armorExpanded = !section._armorExpanded
+        }
+
+        ColumnLayout {
+            id: acardBody
+            anchors.fill: parent
+            anchors.margins: 9
+            anchors.leftMargin: 13
+            spacing: 6
+
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: Theme.s4
+
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignVCenter
+                    spacing: 2
+                    Label {
+                        Layout.fillWidth: true
+                        text: acard._name
+                        font.pixelSize: Theme.fsBody + 2
+                        font.weight: Theme.wRegular
+                        color: Theme.ink
+                        wrapMode: Text.WordWrap
+                    }
+                    Label {
+                        text: qsTr("Worn").toUpperCase()
+                        font.family: Theme.fontDisplay
+                        font.pixelSize: Theme.fsCaption
+                        font.weight: Theme.wSemiBold
+                        font.letterSpacing: 1.4
+                        color: acard._c
+                        opacity: 0.9
+                    }
+                }
+
+                // TN + reduction figures.
+                RowLayout {
+                    Layout.alignment: Qt.AlignVCenter
+                    spacing: Theme.s4
+                    StatCell {
+                        label: qsTr("Armor TN")
+                        value: "+" + (section._armor.tn || 0)
+                        roll: false
+                        Layout.minimumWidth: 34
+                    }
+                    StatCell {
+                        label: qsTr("Reduction")
+                        value: "" + (section._armor.rd || 0)
+                        roll: false
+                        Layout.minimumWidth: 34
+                    }
+                }
+
+                // Expand chevron.
+                Label {
+                    visible: acard._hasDesc
+                    Layout.alignment: Qt.AlignVCenter
+                    text: acard._expanded ? "▲" : "▼"
+                    font.pixelSize: 9
+                    color: Theme.ink
+                    opacity: 0.45
+                }
+
+                // Edit handle.
+                Item {
+                    Layout.preferredWidth: 22
+                    Layout.preferredHeight: 22
+                    Layout.alignment: Qt.AlignVCenter
+                    AbstractButton {
+                        id: armorEditBtn
+                        anchors.fill: parent
+                        visible: acHover.hovered || armorEditBtn.hovered
+                        onClicked: section._requestEditArmor()
+                        background: Rectangle {
+                            radius: 11
+                            color: armorEditBtn.hovered ? Theme.heading : "transparent"
+                            border.color: Theme.heading
+                            border.width: 1
+                            opacity: armorEditBtn.hovered ? 1.0 : 0.55
+                            Behavior on opacity {
+                                NumberAnimation {
+                                    duration: 120
+                                }
+                            }
+                        }
+                        contentItem: Label {
+                            text: "✎"
+                            font.pixelSize: 12
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            color: armorEditBtn.hovered ? Theme.whiteWash : Theme.heading
+                        }
+                        ToolTip.visible: hovered
+                        ToolTip.delay: 400
+                        ToolTip.text: qsTr("Edit this armour")
+                    }
+                }
+
+                // Take-off handle (issue #379).
+                Item {
+                    Layout.preferredWidth: 22
+                    Layout.preferredHeight: 22
+                    Layout.alignment: Qt.AlignVCenter
+                    AbstractButton {
+                        id: armorRemoveBtn
+                        anchors.fill: parent
+                        visible: acHover.hovered || armorRemoveBtn.hovered
+                        onClicked: section._requestRemoveArmor()
+                        background: Rectangle {
+                            radius: 11
+                            color: armorRemoveBtn.hovered ? Theme.accent : "transparent"
+                            border.color: Theme.accent
+                            border.width: 1
+                            opacity: armorRemoveBtn.hovered ? 1.0 : 0.55
+                            Behavior on opacity {
+                                NumberAnimation {
+                                    duration: 120
+                                }
+                            }
+                        }
+                        contentItem: Label {
+                            text: "✕"
+                            font.pixelSize: 12
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            color: armorRemoveBtn.hovered ? Theme.whiteWash : Theme.accent
+                        }
+                        ToolTip.visible: hovered
+                        ToolTip.delay: 400
+                        ToolTip.text: qsTr("Take off this armour")
+                    }
+                }
+            }
+
+            // Expanded notes.
+            ColumnLayout {
+                Layout.fillWidth: true
+                visible: acard._expanded && acard._hasDesc
+                spacing: 4
+                Rectangle {
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 4
+                    Layout.preferredHeight: 1
+                    color: acard._c
+                    opacity: 0.25
+                }
+                Label {
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 4
+                    Layout.bottomMargin: 2
+                    text: acard._desc
+                    textFormat: Text.PlainText
+                    font.pixelSize: Theme.fsBody
+                    color: Theme.ink
+                    wrapMode: Text.WordWrap
+                    opacity: 0.92
+                }
+            }
         }
     }
 

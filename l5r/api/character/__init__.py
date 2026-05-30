@@ -458,6 +458,24 @@ def get_armor_desc():
     return get_context().pc.armor.desc if get_context().pc.armor is not None else u""
 
 
+def get_armor():
+    """return the worn armor (an ArmorOutfit) or None."""
+    return get_context().pc.armor
+
+
+def set_armor(item):
+    """wear an armor -- a character wears at most one (owns the dirty
+    flag). Replaces the legacy dialogs' direct ``pc.armor = item``."""
+    get_context().pc.armor = item
+    set_dirty_flag(True)
+
+
+def clear_armor():
+    """take off the worn armor (owns the dirty flag)."""
+    get_context().pc.armor = None
+    set_dirty_flag(True)
+
+
 def append_advancement(adv):
     """append an advancement to the advancement list"""
     if get_context().pc:

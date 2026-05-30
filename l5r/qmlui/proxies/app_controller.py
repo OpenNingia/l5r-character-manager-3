@@ -1272,6 +1272,91 @@ class AppController(QObject):
         item.name = (data.get("name") or "").strip()
         item.desc = data.get("notes") or ""
 
+    # --- armor -------------------------------------------------------
+    # A character wears at most one armour (the model's single pc.armor),
+    # so these slots set/clear that one item via api.character.set_armor /
+    # clear_armor (which own the dirty flag) rather than poking pc. Armour
+    # is grouped with weapons in the QML "Arms & Armor" section. Replaces
+    # the legacy ChooseItemDialog('armor') + CustomArmorDialog.
+
+    @Slot(result="QVariantList")
+    def availableArmors(self):
+        """Catalogue feed for AddArmorDialog (browse) and the
+        CustomArmorDialog base-template dropdown. Slot rather than Property
+        so mid-session datapack imports show up without a restart."""
+        out = []
+        for a in (api.data.outfit.get_armors() or []):
+            effect_ = api.data.outfit.get_effect(a.effectid)
+            out.append({
+                "name":   a.name,
+                "tn":     int(a.tn or 0),
+                "rd":     int(a.rd or 0),
+                "cost":   _wstr(a.cost),
+                "effect": effect_.text if effect_ is not None else "",
+            })
+        out.sort(key=lambda r: (r["name"] or "").lower())
+        return out
+
+    @Slot(str)
+    def wearArmor(self, armor_name):
+        """Wear a catalogue armour by name (the legacy 'Wear Armor' path).
+        armor_outfit_from_db resolves its TN / RD / effect from the
+        datapack."""
+        if not armor_name:
+            return
+        if api.data.outfit.get_armor(armor_name) is None:
+            log.api.warning(u"QML UI: wearArmor: unknown armor %r", armor_name)
+            return
+        item = l5r.models.armor_outfit_from_db(armor_name)
+        if item is not None:
+            api.character.set_armor(item)
+            api.character.notify_character_refreshed()
+
+    @Slot("QVariantMap")
+    def wearCustomArmor(self, data):
+        """Wear a custom armour (the legacy CustomArmorDialog add path)."""
+        item = l5r.models.ArmorOutfit()
+        self._apply_armor_fields(item, data)
+        if not item.name:
+            log.api.warning(u"QML UI: wearCustomArmor: refused unnamed armor")
+            return
+        api.character.set_armor(item)
+        api.character.notify_character_refreshed()
+
+    @Slot("QVariantMap")
+    def editArmor(self, data):
+        """Re-stat the worn armour in place (the legacy CustomArmorDialog
+        edit path -- it pre-loaded pc.armor). Re-sets the same item so the
+        dirty flag is owned by the api setter."""
+        item = api.character.get_armor()
+        if item is None:
+            log.api.warning(u"QML UI: editArmor: no armor worn")
+            return
+        self._apply_armor_fields(item, data)
+        api.character.set_armor(item)
+        api.character.notify_character_refreshed()
+
+    @Slot()
+    def removeArmor(self):
+        """Take off the worn armour."""
+        api.character.clear_armor()
+        api.character.notify_character_refreshed()
+
+    def _apply_armor_fields(self, item, data):
+        """Write the editable custom-armour fields onto `item`, mirroring
+        CustomArmorDialog.on_accept: ints for TN / RD, name / notes
+        verbatim."""
+        def _int(v):
+            try:
+                return int(v)
+            except (TypeError, ValueError):
+                return 0
+
+        item.tn = _int(data.get("tn"))
+        item.rd = _int(data.get("rd"))
+        item.name = (data.get("name") or "").strip()
+        item.desc = data.get("notes") or ""
+
     # --- miscellanea: modifiers --------------------------------------
     # Custom roll/stat modifiers (the legacy ModifiersTableViewModel +
     # ModifierDialog). A modifier is a plain ModifierModel on pc.modifiers

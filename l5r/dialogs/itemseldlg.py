@@ -101,6 +101,11 @@ class ChooseItemDialog(QtWidgets.QDialog):
         if self.tag == 'armor':
             self.cb.clear()
 
+            # issue #379: a "No Armor" / Clothing entry at the top returns
+            # the character to an unarmored state (None data is the
+            # sentinel the select/accept handlers branch on).
+            self.cb.addItem(self.tr("No Armor (Clothing)"), None)
+
             for armor in api.data.outfit.get_armors():
                 self.cb.addItem(armor.name, armor.name)
 
@@ -126,6 +131,14 @@ class ChooseItemDialog(QtWidgets.QDialog):
         if selected < 0:
             return
         armor_uuid = self.cb.itemData(selected)
+        if armor_uuid is None:
+            # "No Armor": clears the worn armour on accept.
+            self.item = None
+            self.stats.setText("<p><i>%s</i></p>" % self.tr(
+                "Unarmored — only your reflexes and bearing turn a blow."))
+            self.stats.setSizePolicy(QtWidgets.QSizePolicy.Minimum,
+                                     QtWidgets.QSizePolicy.Minimum)
+            return
         self.item = models.armor_outfit_from_db(armor_uuid)
 
         stats_text = """<p><pre>%-20s %s</pre></p>
@@ -194,8 +207,13 @@ class ChooseItemDialog(QtWidgets.QDialog):
     def on_accept(self):
         done = True
 
-        if self.tag == 'armor' and self.item is not None:
-            self.pc.armor = self.item
+        if self.tag == 'armor':
+            selected = self.cb.currentIndex()
+            if selected >= 0 and self.cb.itemData(selected) is None:
+                # "No Armor" selected -> take off the worn armour (#379).
+                self.pc.armor = None
+            elif self.item is not None:
+                self.pc.armor = self.item
         elif self.tag == 'weapon' and self.item is not None:
             self.pc.add_weapon(self.item)
 

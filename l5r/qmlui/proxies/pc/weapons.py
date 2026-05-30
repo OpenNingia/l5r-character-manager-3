@@ -34,6 +34,14 @@
 #     baseAtk:     str    modAtk: str   (attack roll, pre/post modifiers)
 #     baseDmg:     str    modDmg: str   (damage roll, pre/post modifiers)
 #     description: str    (effect / notes prose) }
+#
+# The same slice also carries the character's worn armor, since the QML
+# taxonomy groups armour with weapons (one "Arms & Armor" section). A
+# character wears at most one armour (the model's single `pc.armor`), so
+# `armor` is a QVariantMap, not a list, shaped for the section's armour
+# rail:
+#   { worn: bool, name: str, tn: int (the armour's own TN bonus),
+#     rd: int (its reduction), desc: str }
 
 from qtpy.QtCore import Property, Signal
 
@@ -122,3 +130,26 @@ class WeaponsMixin:
                 "description": getattr(w, "desc", "") or "",
             })
         return rows
+
+    @Property("QVariantMap", notify=weaponsChanged)
+    def armor(self):
+        pc = api.character.model()
+        if not pc:
+            return {"worn": False, "name": "", "tn": 0, "rd": 0, "desc": ""}
+        a = api.character.get_armor()
+        if a is None:
+            return {"worn": False, "name": "", "tn": 0, "rd": 0, "desc": ""}
+
+        def _int(v):
+            try:
+                return int(v)
+            except (TypeError, ValueError):
+                return 0
+
+        return {
+            "worn": True,
+            "name": getattr(a, "name", "") or "",
+            "tn":   _int(getattr(a, "tn", 0)),
+            "rd":   _int(getattr(a, "rd", 0)),
+            "desc": getattr(a, "desc", "") or "",
+        }
