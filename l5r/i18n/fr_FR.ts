@@ -6,7 +6,7 @@
     <message>
         <location filename="../ui/tabs/about.py" line="75"/>
         <source>About</source>
-        <translation type="unfinished">À Propos</translation>
+        <translation>À Propos</translation>
     </message>
 </context>
 <context>
@@ -14,83 +14,83 @@
     <message>
         <location filename="../ui/advance.py" line="48"/>
         <source>You reached the next rank, you have an opportunity to decide your destiny.</source>
-        <translation type="unfinished">Vous avez atteint le rang suivant, vous pouvez maintenant décider de votre destin.</translation>
+        <translation>Vous avez atteint le rang suivant, vous pouvez maintenant décider de votre destin.</translation>
     </message>
     <message>
         <location filename="../ui/advance.py" line="50"/>
         <source>Advance rank</source>
-        <translation type="unfinished">Avancer en Rang</translation>
+        <translation>Avancer en Rang</translation>
     </message>
     <message>
         <location filename="../ui/advance.py" line="63"/>
         <source>You now fit the requirements to learn other Spells</source>
-        <translation type="unfinished">Vous avez maintenant les pré-requis pour apprendre d&apos;autre sorts</translation>
+        <translation>Vous avez maintenant les pré-requis pour apprendre d&apos;autre sorts</translation>
     </message>
     <message>
         <location filename="../ui/advance.py" line="64"/>
         <source>Learn Spells</source>
-        <translation type="unfinished">Apprendre des sorts</translation>
+        <translation>Apprendre des sorts</translation>
     </message>
     <message>
         <location filename="../ui/advance.py" line="77"/>
         <source>You can learn {0} kihos for free</source>
-        <translation type="unfinished">Vous pouvez apprendre gratuitement {0} kihos</translation>
+        <translation>Vous pouvez apprendre gratuitement {0} kihos</translation>
     </message>
     <message>
         <location filename="../ui/advance.py" line="78"/>
         <source>Learn Kihos</source>
-        <translation type="unfinished">Apprendre un Kiho</translation>
+        <translation>Apprendre un Kiho</translation>
     </message>
     <message>
         <location filename="../ui/advance.py" line="91"/>
         <source>Your school gives you the choice of certain skills</source>
-        <translation type="unfinished">Votre école vous donne le choix de certaines compétences</translation>
+        <translation>Votre école vous donne le choix de certaines compétences</translation>
     </message>
     <message>
         <location filename="../ui/advance.py" line="92"/>
         <source>Choose Skills</source>
-        <translation type="unfinished">Choisir des compétences</translation>
+        <translation>Choisir des compétences</translation>
     </message>
     <message>
         <location filename="../ui/advance.py" line="112"/>
         <source>You school grant you to choose an elemental affinity.</source>
-        <translation type="unfinished">Votre école vous donne le droit de choisir une affinité élémentaire.</translation>
+        <translation>Votre école vous donne le droit de choisir une affinité élémentaire.</translation>
     </message>
     <message>
         <location filename="../ui/advance.py" line="113"/>
         <source>Choose Affinity</source>
-        <translation type="unfinished">Choisir une Affinité</translation>
+        <translation>Choisir une Affinité</translation>
     </message>
     <message>
         <location filename="../ui/advance.py" line="120"/>
         <source>You school grant you to choose an elemental deficiency.</source>
-        <translation type="unfinished">You school grant you to choose an elemental deficiency.</translation>
+        <translation>You school grant you to choose an elemental deficiency.</translation>
     </message>
     <message>
         <location filename="../ui/advance.py" line="121"/>
         <source>Choose Deficiency</source>
-        <translation type="unfinished">Choisir une Deficience</translation>
+        <translation>Choisir une Deficience</translation>
     </message>
     <message>
         <location filename="../ui/advance.py" line="129"/>
         <source>Choose School Spells</source>
-        <translation type="unfinished">Choisir les sorts de votre école</translation>
+        <translation>Choisir les sorts de votre école</translation>
     </message>
     <message>
         <location filename="../ui/advance.py" line="130"/>
         <source>&lt;center&gt;&lt;h2&gt;Your school has granted you                                      the right to choose some spells.&lt;/h2&gt;                                      &lt;h3&gt;&lt;i&gt;Choose with care.&lt;/i&gt;&lt;/h3&gt;&lt;/center&gt;</source>
-        <translation type="unfinished">&lt;center&gt;&lt;h2&gt;Votre École vous permet de choisir certains sorts.&lt;/h2&gt;
+        <translation>&lt;center&gt;&lt;h2&gt;Votre École vous permet de choisir certains sorts.&lt;/h2&gt;
 &lt;h3&gt;&lt;i&gt;Choisissez avec soin.&lt;/i&gt;&lt;/h3&gt;&lt;/center&gt;</translation>
     </message>
     <message>
         <location filename="../ui/advance.py" line="163"/>
         <source>Select your elemental affinity</source>
-        <translation type="unfinished">Sélectionner votre affinité élémentaire</translation>
+        <translation>Sélectionner votre affinité élémentaire</translation>
     </message>
     <message>
         <location filename="../ui/advance.py" line="191"/>
         <source>Select your elemental deficiency</source>
-        <translation type="unfinished">Sélectionner votre déficience élémentaire</translation>
+        <translation>Sélectionner votre déficience élémentaire</translation>
     </message>
 </context>
 <context>
@@ -103,7 +103,7 @@
     <message>
         <location filename="../models/advances.py" line="129"/>
         <source>Cost</source>
-        <translation type="unfinished">Coût</translation>
+        <translation>Coût</translation>
     </message>
     <message>
         <location filename="../models/advances.py" line="130"/>
@@ -121,21 +121,21 @@
     <message>
         <location filename="../ui/tabs/advancements.py" line="52"/>
         <source>Advancements refund.</source>
-        <translation type="unfinished">Redistribution des points</translation>
+        <translation>Redistribution des points</translation>
     </message>
     <message>
         <location filename="../ui/tabs/advancements.py" line="53"/>
         <source>If this advancement is required from other ones
 removing it might lean to incoherences in your character.
 Continue anyway?</source>
-        <translation type="unfinished">Si cet avancement est requis par d&apos;autres,
+        <translation>Si cet avancement est requis par d&apos;autres,
 le supprimer risque d&apos;amener à des incohérences dans le personnage.
 Voulez-vous continuer quand même ?</translation>
     </message>
     <message>
         <location filename="../ui/tabs/advancements.py" line="59"/>
         <source>Do not prompt again</source>
-        <translation type="unfinished">Ne plus me poser la question</translation>
+        <translation>Ne plus me poser la question</translation>
     </message>
 </context>
 <context>
@@ -143,17 +143,17 @@ Voulez-vous continuer quand même ?</translation>
     <message>
         <location filename="../ui/tabs/advancements.py" line="104"/>
         <source>&lt;p&gt;&lt;i&gt;Select the advancement to refund and hit the button&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;&lt;i&gt;Sélectionnez l&apos;élément à annuler et cliquez sur le bouton&lt;/i&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;i&gt;Sélectionnez l&apos;élément à annuler et cliquez sur le bouton&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../ui/tabs/advancements.py" line="105"/>
         <source>Refund</source>
-        <translation type="unfinished">Remboursement</translation>
+        <translation>Remboursement</translation>
     </message>
     <message>
         <location filename="../ui/tabs/advancements.py" line="126"/>
         <source>Advancements</source>
-        <translation type="unfinished">Évolution</translation>
+        <translation>Évolution</translation>
     </message>
 </context>
 <context>
@@ -161,54 +161,54 @@ Voulez-vous continuer quand même ?</translation>
     <message>
         <location filename="../ui/advise.py" line="29"/>
         <source>{0} data pack(s) imported succesfully.</source>
-        <translation type="unfinished">{0} datapack(s) importé(s) avec succès.</translation>
+        <translation>{0} datapack(s) importé(s) avec succès.</translation>
     </message>
     <message>
         <location filename="../ui/advise.py" line="31"/>
         <source>Do not prompt again</source>
-        <translation type="unfinished">Ne plus me poser la question</translation>
+        <translation>Ne plus me poser la question</translation>
     </message>
     <message>
         <location filename="../ui/advise.py" line="80"/>
         <source>The character has been modified.</source>
-        <translation type="unfinished">Le personnage a été modifié.</translation>
+        <translation>Le personnage a été modifié.</translation>
     </message>
     <message>
         <location filename="../ui/advise.py" line="81"/>
         <source>Do you want to save your changes?</source>
-        <translation type="unfinished">Voulez vous sauvegarder les changements ?</translation>
+        <translation>Voulez vous sauvegarder les changements ?</translation>
     </message>
     <message>
         <location filename="../ui/advise.py" line="92"/>
         <source>L5R: CM v%s is available for download.</source>
-        <translation type="unfinished">L5R: CM v%s est disponible en téléchargement.</translation>
+        <translation>L5R: CM v%s est disponible en téléchargement.</translation>
     </message>
     <message>
         <location filename="../ui/advise.py" line="94"/>
         <source>Do you want to open the download page?</source>
-        <translation type="unfinished">Voulez-vous ouvrir la page de téléchargement ?</translation>
+        <translation>Voulez-vous ouvrir la page de téléchargement ?</translation>
     </message>
     <message>
         <location filename="../ui/advise.py" line="103"/>
         <source>Not enough XP</source>
-        <translation type="unfinished">XP insuffisant</translation>
+        <translation>XP insuffisant</translation>
     </message>
     <message>
         <location filename="../ui/advise.py" line="104"/>
         <source>Cannot purchase.
 You&apos;ve reached the XP Limit.</source>
-        <translation type="unfinished">Achat Impossible.
+        <translation>Achat Impossible.
 Vous avez atteint votre limite d&apos;XP</translation>
     </message>
     <message>
         <location filename="../ui/advise.py" line="108"/>
         <source>&lt;h3&gt;Missing books&lt;/h3&gt;</source>
-        <translation type="unfinished">&lt;h3&gt;Livres manquant&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;Livres manquant&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../ui/advise.py" line="109"/>
         <source>&lt;p&gt;To load this character you need this additional books:&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;Pour charger ce personnage, vous avez besoin des livres suivants :&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Pour charger ce personnage, vous avez besoin des livres suivants :&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -625,7 +625,7 @@ Vous avez atteint votre limite d&apos;XP</translation>
     <message>
         <location filename="../ui/tabs/equipment.py" line="34"/>
         <source>Doubleclick to edit</source>
-        <translation type="unfinished">Double-cliquer pour modifier</translation>
+        <translation>Double-cliquer pour modifier</translation>
     </message>
 </context>
 <context>
@@ -633,18 +633,18 @@ Vous avez atteint votre limite d&apos;XP</translation>
     <message>
         <location filename="../ui/tabs/equipment.py" line="94"/>
         <source>Add equipment</source>
-        <translation type="unfinished">Ajouter un équipement</translation>
+        <translation>Ajouter un équipement</translation>
     </message>
     <message>
         <location filename="../ui/tabs/equipment.py" line="96"/>
         <source>Remove equipment</source>
-        <translation type="unfinished">Supprimer un équipement</translation>
+        <translation>Supprimer un équipement</translation>
     </message>
     <message>
         <location filename="../ui/tabs/equipment.py" line="122"/>
         <location filename="../ui/tabs/equipment.py" line="104"/>
         <source>Equipment</source>
-        <translation type="unfinished">Équipement</translation>
+        <translation>Équipement</translation>
     </message>
 </context>
 <context>
@@ -652,17 +652,17 @@ Vous avez atteint votre limite d&apos;XP</translation>
     <message>
         <location filename="../widgets/familychooser.py" line="52"/>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location filename="../widgets/familychooser.py" line="53"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../widgets/familychooser.py" line="76"/>
         <source>Clan and Family</source>
-        <translation type="unfinished">Clan et famille</translation>
+        <translation>Clan et famille</translation>
     </message>
     <message>
         <location filename="../widgets/familychooser.py" line="88"/>
@@ -672,7 +672,7 @@ Vous avez atteint votre limite d&apos;XP</translation>
 &lt;p style=&quot;color: #666&quot;&gt;a Samurai should serve its clan first and foremost&lt;/p&gt;
 &lt;/center&gt;
         </source>
-        <translation type="unfinished">
+        <translation>
 &lt;center&gt;
 &lt;h1&gt;Sélectionner le clan et la famille&lt;/h1&gt;
 &lt;p style=&quot;color: #666&quot;&gt;un samouraï doit servir son clan avant tout&lt;/p&gt;
@@ -685,27 +685,27 @@ Vous avez atteint votre limite d&apos;XP</translation>
     <message>
         <location filename="../widgets/familychooser.py" line="125"/>
         <source>Clan:</source>
-        <translation type="unfinished">Clan :</translation>
+        <translation>Clan :</translation>
     </message>
     <message>
         <location filename="../widgets/familychooser.py" line="126"/>
         <source>Family:</source>
-        <translation type="unfinished">Famille :</translation>
+        <translation>Famille :</translation>
     </message>
     <message>
         <location filename="../widgets/familychooser.py" line="127"/>
         <source>Source:</source>
-        <translation type="unfinished">Source :</translation>
+        <translation>Source :</translation>
     </message>
     <message>
         <location filename="../widgets/familychooser.py" line="129"/>
         <source>Bonus:</source>
-        <translation type="unfinished">Bonus :</translation>
+        <translation>Bonus :</translation>
     </message>
     <message>
         <location filename="../widgets/familychooser.py" line="162"/>
         <source>No Clan</source>
-        <translation type="unfinished">Pas de Clan</translation>
+        <translation>Pas de Clan</translation>
     </message>
 </context>
 <context>
@@ -746,37 +746,37 @@ Vous avez atteint votre limite d&apos;XP</translation>
     <message>
         <location filename="../ui/health.py" line="25"/>
         <source>Healthy</source>
-        <translation type="unfinished">Indemne</translation>
+        <translation>Indemne</translation>
     </message>
     <message>
         <location filename="../ui/health.py" line="26"/>
         <source>Nicked</source>
-        <translation type="unfinished">Égratigné</translation>
+        <translation>Égratigné</translation>
     </message>
     <message>
         <location filename="../ui/health.py" line="27"/>
         <source>Grazed</source>
-        <translation type="unfinished">Légèrement Blessé</translation>
+        <translation>Légèrement Blessé</translation>
     </message>
     <message>
         <location filename="../ui/health.py" line="28"/>
         <source>Hurt</source>
-        <translation type="unfinished">Blessé</translation>
+        <translation>Blessé</translation>
     </message>
     <message>
         <location filename="../ui/health.py" line="29"/>
         <source>Injured</source>
-        <translation type="unfinished">Gravement Blessé</translation>
+        <translation>Gravement Blessé</translation>
     </message>
     <message>
         <location filename="../ui/health.py" line="30"/>
         <source>Crippled</source>
-        <translation type="unfinished">Impotent</translation>
+        <translation>Impotent</translation>
     </message>
     <message>
         <location filename="../ui/health.py" line="31"/>
         <source>Down</source>
-        <translation type="unfinished">Épuisé</translation>
+        <translation>Épuisé</translation>
     </message>
 </context>
 <context>
@@ -1799,153 +1799,153 @@ Vous avez atteint votre limite d&apos;XP</translation>
     <message>
         <location filename="../ui/menu.py" line="144"/>
         <source>&amp;New Character</source>
-        <translation type="unfinished">&amp;Nouveau Personnage</translation>
+        <translation>&amp;Nouveau Personnage</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="145"/>
         <source>&amp;Open Character...</source>
-        <translation type="unfinished">&amp;Charger un Personnage...</translation>
+        <translation>&amp;Charger un Personnage...</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="146"/>
         <source>&amp;Save Character...</source>
-        <translation type="unfinished">&amp;Sauvegarder un Personnage...</translation>
+        <translation>&amp;Sauvegarder un Personnage...</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="147"/>
         <source>Ex&amp;port as PDF...</source>
-        <translation type="unfinished">Exp&amp;orter en tant que PDF...</translation>
+        <translation>Exp&amp;orter en tant que PDF...</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="148"/>
         <source>Export NPC sheet...</source>
-        <translation type="unfinished">Exporter la feuille de PNJ...</translation>
+        <translation>Exporter la feuille de PNJ...</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="149"/>
         <source>E&amp;xit</source>
-        <translation type="unfinished">Q&amp;uitter</translation>
+        <translation>Q&amp;uitter</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="166"/>
         <source>&amp;Reset advancements</source>
-        <translation type="unfinished">&amp;Annuler les dépenses</translation>
+        <translation>&amp;Annuler les dépenses</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="167"/>
         <source>Refund last advancement</source>
-        <translation type="unfinished">Rembourser la dernière dépense</translation>
+        <translation>Rembourser la dernière dépense</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="176"/>
         <source>Wear Armor...</source>
-        <translation type="unfinished">Porter une Armure...</translation>
+        <translation>Porter une Armure...</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="178"/>
         <source>Wear Custom Armor...</source>
-        <translation type="unfinished">Porter une Armure Personnalisée...</translation>
+        <translation>Porter une Armure Personnalisée...</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="179"/>
         <source>Add Weapon...</source>
-        <translation type="unfinished">Ajouter une Arme...</translation>
+        <translation>Ajouter une Arme...</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="181"/>
         <source>Add Custom Weapon...</source>
-        <translation type="unfinished">Ajouter une Arme personnalisée...</translation>
+        <translation>Ajouter une Arme personnalisée...</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="190"/>
         <source>Set Health Multiplier...</source>
-        <translation type="unfinished">Définir le multiplicateur de santé...</translation>
+        <translation>Définir le multiplicateur de santé...</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="192"/>
         <source>Cure/Inflict Damage...</source>
-        <translation type="unfinished">Soigner/Infliger des Dommages...</translation>
+        <translation>Soigner/Infliger des Dommages...</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="196"/>
         <source>Insight Calculation</source>
-        <translation type="unfinished">Calcul de la Réputation</translation>
+        <translation>Calcul de la Réputation</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="217"/>
         <location filename="../ui/menu.py" line="199"/>
         <source>Default</source>
-        <translation type="unfinished">Par défaut</translation>
+        <translation>Par défaut</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="201"/>
         <source>Ignore Rank 1 Skills</source>
-        <translation type="unfinished">Ignorer les compétences de Rang 1</translation>
+        <translation>Ignorer les compétences de Rang 1</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="203"/>
         <source>Account Rank 1 School Skills</source>
-        <translation type="unfinished">Prendre en compte les Compétences d’École de Rang 1</translation>
+        <translation>Prendre en compte les Compétences d’École de Rang 1</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="215"/>
         <source>Health Display</source>
-        <translation type="unfinished">Montrer la santé</translation>
+        <translation>Montrer la santé</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="218"/>
         <source>Health left</source>
-        <translation type="unfinished">Santé restante</translation>
+        <translation>Santé restante</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="219"/>
         <source>Total wounds</source>
-        <translation type="unfinished">Blessures totales</translation>
+        <translation>Blessures totales</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="236"/>
         <source>Import Data pack...</source>
-        <translation type="unfinished">Importer un Datapack...</translation>
+        <translation>Importer un Datapack...</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="238"/>
         <source>Manage Data packs...</source>
-        <translation type="unfinished">Gérer les Datapacks...</translation>
+        <translation>Gérer les Datapacks...</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="239"/>
         <source>Reload data</source>
-        <translation type="unfinished">Recharger les Datapacks</translation>
+        <translation>Recharger les Datapacks</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="243"/>
         <source>Options</source>
-        <translation type="unfinished">Options</translation>
+        <translation>Options</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="248"/>
         <source>Toggle banner display</source>
-        <translation type="unfinished">Affichage de la bannière</translation>
+        <translation>Affichage de la bannière</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="250"/>
         <source>Free Shopping</source>
-        <translation type="unfinished">Shopping gratuit</translation>
+        <translation>Shopping gratuit</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="252"/>
         <source>Open Data Directory</source>
-        <translation type="unfinished">Ouvrir le répertoire des Datapacks</translation>
+        <translation>Ouvrir le répertoire des Datapacks</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="254"/>
         <source>Dice &amp;Roller...</source>
-        <translation type="unfinished">Jeter des &amp;Dés...</translation>
+        <translation>Jeter des &amp;Dés...</translation>
     </message>
     <message>
         <location filename="../ui/menu.py" line="337"/>
         <source>You can donate to the project by clicking on the button</source>
-        <translation type="unfinished">Vous pouvez faire un don au projet en cliquant sur le bouton</translation>
+        <translation>Vous pouvez faire un don au projet en cliquant sur le bouton</translation>
     </message>
 </context>
 <context>
@@ -1953,7 +1953,7 @@ Vous avez atteint votre limite d&apos;XP</translation>
     <message>
         <location filename="../ui/refresh.py" line="78"/>
         <source>Health / Wounds (x%d)</source>
-        <translation type="unfinished">Santé / Blessures (x%d)</translation>
+        <translation>Santé / Blessures (x%d)</translation>
     </message>
 </context>
 <context>
@@ -2029,23 +2029,23 @@ Vous avez atteint votre limite d&apos;XP</translation>
     <message>
         <location filename="../ui/tabs/modifiers.py" line="78"/>
         <source>Add modifier</source>
-        <translation type="unfinished">Ajouter un modificateur</translation>
+        <translation>Ajouter un modificateur</translation>
     </message>
     <message>
         <location filename="../ui/tabs/modifiers.py" line="80"/>
         <source>Edit modifier</source>
-        <translation type="unfinished">Éditer le modificateur</translation>
+        <translation>Éditer le modificateur</translation>
     </message>
     <message>
         <location filename="../ui/tabs/modifiers.py" line="82"/>
         <source>Remove modifier</source>
-        <translation type="unfinished">Supprimer le modificateur</translation>
+        <translation>Supprimer le modificateur</translation>
     </message>
     <message>
         <location filename="../ui/tabs/modifiers.py" line="97"/>
         <location filename="../ui/tabs/modifiers.py" line="90"/>
         <source>Modifiers</source>
-        <translation type="unfinished">Modificateurs</translation>
+        <translation>Modificateurs</translation>
     </message>
 </context>
 <context>
@@ -2130,77 +2130,77 @@ que souhaitez-vous faire ?</translation>
     <message>
         <location filename="../ui/tabs/notes.py" line="30"/>
         <source>Personal Informations</source>
-        <translation type="unfinished">Informations Personnelles</translation>
+        <translation>Informations Personnelles</translation>
     </message>
     <message>
         <location filename="../ui/tabs/notes.py" line="48"/>
         <source>Sex</source>
-        <translation type="unfinished">Sexe</translation>
+        <translation>Sexe</translation>
     </message>
     <message>
         <location filename="../ui/tabs/notes.py" line="49"/>
         <source>Age</source>
-        <translation type="unfinished">Âge</translation>
+        <translation>Âge</translation>
     </message>
     <message>
         <location filename="../ui/tabs/notes.py" line="50"/>
         <source>Height</source>
-        <translation type="unfinished">Taille</translation>
+        <translation>Taille</translation>
     </message>
     <message>
         <location filename="../ui/tabs/notes.py" line="51"/>
         <source>Weight</source>
-        <translation type="unfinished">Poids</translation>
+        <translation>Poids</translation>
     </message>
     <message>
         <location filename="../ui/tabs/notes.py" line="52"/>
         <source>Hair</source>
-        <translation type="unfinished">Cheveux</translation>
+        <translation>Cheveux</translation>
     </message>
     <message>
         <location filename="../ui/tabs/notes.py" line="53"/>
         <source>Eyes</source>
-        <translation type="unfinished">Yeux</translation>
+        <translation>Yeux</translation>
     </message>
     <message>
         <location filename="../ui/tabs/notes.py" line="71"/>
         <source>Father</source>
-        <translation type="unfinished">Père</translation>
+        <translation>Père</translation>
     </message>
     <message>
         <location filename="../ui/tabs/notes.py" line="72"/>
         <source>Mother</source>
-        <translation type="unfinished">Mère</translation>
+        <translation>Mère</translation>
     </message>
     <message>
         <location filename="../ui/tabs/notes.py" line="73"/>
         <source>Brothers</source>
-        <translation type="unfinished">Frères</translation>
+        <translation>Frères</translation>
     </message>
     <message>
         <location filename="../ui/tabs/notes.py" line="74"/>
         <source>Sisters</source>
-        <translation type="unfinished">Sœurs</translation>
+        <translation>Sœurs</translation>
     </message>
     <message>
         <location filename="../ui/tabs/notes.py" line="75"/>
         <source>Marital Status</source>
-        <translation type="unfinished">Statut Marital</translation>
+        <translation>Statut Marital</translation>
     </message>
     <message>
         <location filename="../ui/tabs/notes.py" line="76"/>
         <source>Spouse</source>
-        <translation type="unfinished">Épouse</translation>
+        <translation>Épouse</translation>
     </message>
     <message>
         <location filename="../ui/tabs/notes.py" line="77"/>
         <source>Children</source>
-        <translation type="unfinished">Enfants</translation>
+        <translation>Enfants</translation>
     </message>
     <message>
         <location filename="../ui/tabs/notes.py" line="107"/>
         <source>Notes</source>
-        <translation type="unfinished">Notes</translation>
+        <translation>Notes</translation>
     </message>
 </context>
 <context>
@@ -2241,230 +2241,230 @@ que souhaitez-vous faire ?</translation>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="81"/>
         <source>Character</source>
-        <translation type="unfinished">Personnage</translation>
+        <translation>Personnage</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="106"/>
         <source>Edit character first school</source>
-        <translation type="unfinished">Modifier l&apos;Ecole principale du personnage</translation>
+        <translation>Modifier l&apos;Ecole principale du personnage</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="110"/>
         <source>School</source>
-        <translation type="unfinished">École </translation>
+        <translation>École </translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="115"/>
         <source>Edit character family and clan</source>
-        <translation type="unfinished">Modifier la Famille et le Clan du personnage</translation>
+        <translation>Modifier la Famille et le Clan du personnage</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="122"/>
         <source>Family</source>
-        <translation type="unfinished">Famille</translation>
+        <translation>Famille</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="376"/>
         <location filename="../ui/tabs/pc_info.py" line="126"/>
         <source>Name</source>
-        <translation type="unfinished">Nom</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="134"/>
         <source>Random male name</source>
-        <translation type="unfinished">Nom masculin au hasard</translation>
+        <translation>Nom masculin au hasard</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="136"/>
         <source>Random female name</source>
-        <translation type="unfinished">Nom féminin au hasard</translation>
+        <translation>Nom féminin au hasard</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="149"/>
         <source>Clan</source>
-        <translation type="unfinished">Clan</translation>
+        <translation>Clan</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="160"/>
         <source>Exp. Points</source>
-        <translation type="unfinished">Points d&apos;XP</translation>
+        <translation>Points d&apos;XP</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="162"/>
         <source>Edit experience points</source>
-        <translation type="unfinished">Modifier les points d&apos;XP</translation>
+        <translation>Modifier les points d&apos;XP</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="168"/>
         <source>Rank</source>
-        <translation type="unfinished">Rang</translation>
+        <translation>Rang</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="170"/>
         <source>Insight</source>
-        <translation type="unfinished">Réputation</translation>
+        <translation>Réputation</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="197"/>
         <source>Rings and Attributes</source>
-        <translation type="unfinished">Anneaux et Attributs</translation>
+        <translation>Anneaux et Attributs</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="202"/>
         <source>Earth</source>
-        <translation type="unfinished">Terre</translation>
+        <translation>Terre</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="202"/>
         <source>Air</source>
-        <translation type="unfinished">Air</translation>
+        <translation>Air</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="203"/>
         <source>Water</source>
-        <translation type="unfinished">Eau</translation>
+        <translation>Eau</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="203"/>
         <source>Fire</source>
-        <translation type="unfinished">Feu</translation>
+        <translation>Feu</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="204"/>
         <source>Void</source>
-        <translation type="unfinished">Vide</translation>
+        <translation>Vide</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="226"/>
         <source>Stamina</source>
-        <translation type="unfinished">Constitution</translation>
+        <translation>Constitution</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="227"/>
         <source>Willpower</source>
-        <translation type="unfinished">Volonté</translation>
+        <translation>Volonté</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="231"/>
         <source>Reflexes</source>
-        <translation type="unfinished">Réflexes</translation>
+        <translation>Réflexes</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="232"/>
         <source>Awareness</source>
-        <translation type="unfinished">Intuition</translation>
+        <translation>Intuition</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="236"/>
         <source>Strength</source>
-        <translation type="unfinished">Force</translation>
+        <translation>Force</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="237"/>
         <source>Perception</source>
-        <translation type="unfinished">Perception</translation>
+        <translation>Perception</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="241"/>
         <source>Agility</source>
-        <translation type="unfinished">Agilité</translation>
+        <translation>Agilité</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="242"/>
         <source>Intelligence</source>
-        <translation type="unfinished">Intelligence</translation>
+        <translation>Intelligence</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="274"/>
         <source>&lt;b&gt;Void Points&lt;/b&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Points de Vide&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Points de Vide&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="287"/>
         <source>Honor</source>
-        <translation type="unfinished">Honneur</translation>
+        <translation>Honneur</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="287"/>
         <source>Glory</source>
-        <translation type="unfinished">Gloire</translation>
+        <translation>Gloire</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="288"/>
         <source>Status</source>
-        <translation type="unfinished">Statut</translation>
+        <translation>Statut</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="288"/>
         <source>Shadowland Taint</source>
-        <translation type="unfinished">Souillure de l&apos;Outremonde</translation>
+        <translation>Souillure de l&apos;Outremonde</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="289"/>
         <source>Infamy</source>
-        <translation type="unfinished">Infamie</translation>
+        <translation>Infamie</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="341"/>
         <source>Initiative</source>
-        <translation type="unfinished">Initiative</translation>
+        <translation>Initiative</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="377"/>
         <location filename="../ui/tabs/pc_info.py" line="353"/>
         <source>Base</source>
-        <translation type="unfinished">Base</translation>
+        <translation>Base</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="354"/>
         <source>Modifier</source>
-        <translation type="unfinished">Modificateur</translation>
+        <translation>Modificateur</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="380"/>
         <location filename="../ui/tabs/pc_info.py" line="355"/>
         <source>Current</source>
-        <translation type="unfinished">Actuel</translation>
+        <translation>Actuel</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="360"/>
         <source>Armor TN</source>
-        <translation type="unfinished">ND d&apos;Armure</translation>
+        <translation>ND d&apos;Armure</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="378"/>
         <source>Armor</source>
-        <translation type="unfinished">Armure</translation>
+        <translation>Armure</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="379"/>
         <source>Reduction</source>
-        <translation type="unfinished">Modificateur</translation>
+        <translation>Modificateur</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="385"/>
         <source>Wounds</source>
-        <translation type="unfinished">Blessures</translation>
+        <translation>Blessures</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="397"/>
         <source>Out</source>
-        <translation type="unfinished">Hors de Combat</translation>
+        <translation>Hors de Combat</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="505"/>
         <source>No Clan</source>
-        <translation type="unfinished">Pas de Clan</translation>
+        <translation>Pas de Clan</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="513"/>
         <source>No Family</source>
-        <translation type="unfinished">Pas de famille</translation>
+        <translation>Pas de famille</translation>
     </message>
     <message>
         <location filename="../ui/tabs/pc_info.py" line="521"/>
         <source>No School</source>
-        <translation type="unfinished">Pas d&apos;école</translation>
+        <translation>Pas d&apos;école</translation>
     </message>
 </context>
 <context>
@@ -2490,32 +2490,32 @@ que souhaitez-vous faire ?</translation>
     <message>
         <location filename="../ui/tabs/perks.py" line="122"/>
         <source>Add Perk</source>
-        <translation type="unfinished">Ajouter un élément</translation>
+        <translation>Ajouter un élément</translation>
     </message>
     <message>
         <location filename="../ui/tabs/perks.py" line="126"/>
         <source>Edit Perk</source>
-        <translation type="unfinished">Éditer un élément</translation>
+        <translation>Éditer un élément</translation>
     </message>
     <message>
         <location filename="../ui/tabs/perks.py" line="130"/>
         <source>Remove Perk</source>
-        <translation type="unfinished">Retirer un élément</translation>
+        <translation>Retirer un élément</translation>
     </message>
     <message>
         <location filename="../ui/tabs/perks.py" line="160"/>
         <source>Advantages</source>
-        <translation type="unfinished">Avantages</translation>
+        <translation>Avantages</translation>
     </message>
     <message>
         <location filename="../ui/tabs/perks.py" line="176"/>
         <source>Disadvantages</source>
-        <translation type="unfinished">Désavantages</translation>
+        <translation>Désavantages</translation>
     </message>
     <message>
         <location filename="../ui/tabs/perks.py" line="183"/>
         <source>Perks</source>
-        <translation type="unfinished">Perks</translation>
+        <translation>Perks</translation>
     </message>
 </context>
 <context>
@@ -2523,43 +2523,43 @@ que souhaitez-vous faire ?</translation>
     <message>
         <location filename="../ui/persistence.py" line="164"/>
         <source>Save Character</source>
-        <translation type="unfinished">Sauvegarder le personnage</translation>
+        <translation>Sauvegarder le personnage</translation>
     </message>
     <message>
         <location filename="../ui/persistence.py" line="190"/>
         <location filename="../ui/persistence.py" line="166"/>
         <source>L5R Character files (*.l5r)</source>
-        <translation type="unfinished">L5R Character files (*.l5r)</translation>
+        <translation>L5R Character files (*.l5r)</translation>
     </message>
     <message>
         <location filename="../ui/persistence.py" line="188"/>
         <source>Load Character</source>
-        <translation type="unfinished">Charger un Personnage</translation>
+        <translation>Charger un Personnage</translation>
     </message>
     <message>
         <location filename="../ui/persistence.py" line="205"/>
         <source>PDF Files(*.pdf)</source>
-        <translation type="unfinished">PDF Files(*.pdf)</translation>
+        <translation>PDF Files(*.pdf)</translation>
     </message>
     <message>
         <location filename="../ui/persistence.py" line="214"/>
         <source>Export Character</source>
-        <translation type="unfinished">Exporter le Personnage</translation>
+        <translation>Exporter le Personnage</translation>
     </message>
     <message>
         <location filename="../ui/persistence.py" line="234"/>
         <source>L5R:CM Data Pack(*.l5rcmpack *.zip)</source>
-        <translation type="unfinished">L5R:CM Datapack(*.l5rcmpack *.zip)</translation>
+        <translation>L5R:CM Datapack(*.l5rcmpack *.zip)</translation>
     </message>
     <message>
         <location filename="../ui/persistence.py" line="235"/>
         <source>Zip Archive(*.zip)</source>
-        <translation type="unfinished">Zip Archive(*.zip)</translation>
+        <translation>Zip Archive(*.zip)</translation>
     </message>
     <message>
         <location filename="../ui/persistence.py" line="242"/>
         <source>Load data pack</source>
-        <translation type="unfinished">Charger le Datapack</translation>
+        <translation>Charger le Datapack</translation>
     </message>
 </context>
 <context>
@@ -2567,7 +2567,7 @@ que souhaitez-vous faire ?</translation>
     <message>
         <location filename="../ui/persistence.py" line="52"/>
         <source>Cannot save pdf sheet.</source>
-        <translation type="unfinished">Problème de sauvegarde de la feuille PDF</translation>
+        <translation>Problème de sauvegarde de la feuille PDF</translation>
     </message>
 </context>
 <context>
@@ -2588,42 +2588,42 @@ que souhaitez-vous faire ?</translation>
     <message>
         <location filename="../ui/tabs/powers.py" line="122"/>
         <source>Powers</source>
-        <translation type="unfinished">Pouvoirs</translation>
+        <translation>Pouvoirs</translation>
     </message>
     <message>
         <location filename="../ui/tabs/powers.py" line="125"/>
         <source>Kata</source>
-        <translation type="unfinished">Kata</translation>
+        <translation>Kata</translation>
     </message>
     <message>
         <location filename="../ui/tabs/powers.py" line="142"/>
         <source>Add new Kata</source>
-        <translation type="unfinished">Ajouter un Kata</translation>
+        <translation>Ajouter un Kata</translation>
     </message>
     <message>
         <location filename="../ui/tabs/powers.py" line="146"/>
         <source>Remove Kata</source>
-        <translation type="unfinished">Supprimer le Kata</translation>
+        <translation>Supprimer le Kata</translation>
     </message>
     <message>
         <location filename="../ui/tabs/powers.py" line="177"/>
         <source>Kiho</source>
-        <translation type="unfinished">Kiho</translation>
+        <translation>Kiho</translation>
     </message>
     <message>
         <location filename="../ui/tabs/powers.py" line="195"/>
         <source>Add new Kiho</source>
-        <translation type="unfinished">Ajouter un Kiho</translation>
+        <translation>Ajouter un Kiho</translation>
     </message>
     <message>
         <location filename="../ui/tabs/powers.py" line="199"/>
         <source>Add new Tattoo</source>
-        <translation type="unfinished">Ajouter un nouveau Tatouage</translation>
+        <translation>Ajouter un nouveau Tatouage</translation>
     </message>
     <message>
         <location filename="../ui/tabs/powers.py" line="203"/>
         <source>Remove Kiho</source>
-        <translation type="unfinished">Supprimer le Kiho</translation>
+        <translation>Supprimer le Kiho</translation>
     </message>
 </context>
 <context>
@@ -2822,7 +2822,7 @@ Si vous souhaitez rejoindre une École Avancée ou une Voie Alternative, vérifi
     <message>
         <location filename="../ui/tabs/settings_tab.py" line="20"/>
         <source>Settings</source>
-        <translation type="unfinished">Configuration</translation>
+        <translation>Configuration</translation>
     </message>
 </context>
 <context>
@@ -2964,7 +2964,7 @@ Si vous souhaitez rejoindre une École Avancée ou une Voie Alternative, vérifi
     <message>
         <location filename="../widgets/simpledescr.py" line="79"/>
         <source>Close</source>
-        <translation type="unfinished">Fermer</translation>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
@@ -3056,27 +3056,27 @@ Voulez-vous continuer quand même ?</translation>
     <message>
         <location filename="../ui/tabs/skills.py" line="75"/>
         <source>Add skill rank</source>
-        <translation type="unfinished">Ajouter un rang de Compétence</translation>
+        <translation>Ajouter un rang de Compétence</translation>
     </message>
     <message>
         <location filename="../ui/tabs/skills.py" line="77"/>
         <source>Buy skill emphasys</source>
-        <translation type="unfinished">Acheter une Spécialisation</translation>
+        <translation>Acheter une Spécialisation</translation>
     </message>
     <message>
         <location filename="../ui/tabs/skills.py" line="79"/>
         <source>Buy another skill</source>
-        <translation type="unfinished">Acheter une autre Compétence</translation>
+        <translation>Acheter une autre Compétence</translation>
     </message>
     <message>
         <location filename="../ui/tabs/skills.py" line="92"/>
         <source>Mastery Abilities</source>
-        <translation type="unfinished">Capacités de Maîtrise</translation>
+        <translation>Capacités de Maîtrise</translation>
     </message>
     <message>
         <location filename="../ui/tabs/skills.py" line="105"/>
         <source>Skills</source>
-        <translation type="unfinished">Compétences</translation>
+        <translation>Compétences</translation>
     </message>
 </context>
 <context>
@@ -3390,58 +3390,58 @@ Voulez-vous continuer quand même ?</translation>
     <message>
         <location filename="../ui/tabs/techniques.py" line="78"/>
         <source>Techniques</source>
-        <translation type="unfinished">Techniques</translation>
+        <translation>Techniques</translation>
     </message>
     <message>
         <location filename="../ui/tabs/techniques.py" line="81"/>
         <source>Spells</source>
-        <translation type="unfinished">Sorts</translation>
+        <translation>Sorts</translation>
     </message>
     <message>
         <location filename="../ui/tabs/techniques.py" line="99"/>
         <source>Add new spell</source>
-        <translation type="unfinished">Ajouter un Nouveau Sort</translation>
+        <translation>Ajouter un Nouveau Sort</translation>
     </message>
     <message>
         <location filename="../ui/tabs/techniques.py" line="103"/>
         <source>Remove spell</source>
-        <translation type="unfinished">Supprimer un Sort</translation>
+        <translation>Supprimer un Sort</translation>
     </message>
     <message>
         <location filename="../ui/tabs/techniques.py" line="107"/>
         <source>Memorize/Forget spell</source>
-        <translation type="unfinished">Mémoriser/Oublier un Sort</translation>
+        <translation>Mémoriser/Oublier un Sort</translation>
     </message>
     <message>
         <location filename="../ui/tabs/techniques.py" line="130"/>
         <location filename="../ui/tabs/techniques.py" line="129"/>
         <source>None</source>
-        <translation type="unfinished">Aucun</translation>
+        <translation>Aucun</translation>
     </message>
     <message>
         <location filename="../ui/tabs/techniques.py" line="136"/>
         <source>&lt;b&gt;&lt;i&gt;Affinity&lt;/i&gt;&lt;/b&gt;</source>
-        <translation type="unfinished">&lt;b&gt;&lt;i&gt;Affinité&lt;/i&gt;&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;&lt;i&gt;Affinité&lt;/i&gt;&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../ui/tabs/techniques.py" line="137"/>
         <source>&lt;b&gt;&lt;i&gt;Deficiency&lt;/i&gt;&lt;/b&gt;</source>
-        <translation type="unfinished">&lt;b&gt;&lt;i&gt;Déficience&lt;/i&gt;&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;&lt;i&gt;Déficience&lt;/i&gt;&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../ui/tabs/techniques.py" line="154"/>
         <source>Techs</source>
-        <translation type="unfinished">Techniques</translation>
+        <translation>Techniques</translation>
     </message>
     <message>
         <location filename="../ui/tabs/techniques.py" line="203"/>
         <source>Add New Spell</source>
-        <translation type="unfinished">Ajouter un Sort</translation>
+        <translation>Ajouter un Sort</translation>
     </message>
     <message>
         <location filename="../ui/tabs/techniques.py" line="205"/>
         <source>&lt;center&gt;&lt;h2&gt;Select the spell to learn&lt;/h2&gt;&lt;/center&gt;</source>
-        <translation type="unfinished">&lt;center&gt;&lt;h2&gt;Choisir le sort à apprendre&lt;/h2&gt;&lt;/center&gt;</translation>
+        <translation>&lt;center&gt;&lt;h2&gt;Choisir le sort à apprendre&lt;/h2&gt;&lt;/center&gt;</translation>
     </message>
 </context>
 <context>
@@ -3512,52 +3512,52 @@ Voulez-vous continuer quand même ?</translation>
     <message>
         <location filename="../ui/tabs/weapons.py" line="139"/>
         <source>Add weapon</source>
-        <translation type="unfinished">Ajouter une Arme</translation>
+        <translation>Ajouter une Arme</translation>
     </message>
     <message>
         <location filename="../ui/tabs/weapons.py" line="142"/>
         <source>Add custom weapon</source>
-        <translation type="unfinished">Ajouter une Arme Personnalisée</translation>
+        <translation>Ajouter une Arme Personnalisée</translation>
     </message>
     <message>
         <location filename="../ui/tabs/weapons.py" line="145"/>
         <source>Edit weapon</source>
-        <translation type="unfinished">Éditer l&apos;Arme</translation>
+        <translation>Éditer l&apos;Arme</translation>
     </message>
     <message>
         <location filename="../ui/tabs/weapons.py" line="147"/>
         <source>Remove weapon</source>
-        <translation type="unfinished">Supprimer l&apos;Arme</translation>
+        <translation>Supprimer l&apos;Arme</translation>
     </message>
     <message>
         <location filename="../ui/tabs/weapons.py" line="150"/>
         <source>Increase Quantity</source>
-        <translation type="unfinished">Augmenter la Quantité</translation>
+        <translation>Augmenter la Quantité</translation>
     </message>
     <message>
         <location filename="../ui/tabs/weapons.py" line="152"/>
         <source>Decrease Quantity</source>
-        <translation type="unfinished">Diminue la Quantité</translation>
+        <translation>Diminue la Quantité</translation>
     </message>
     <message>
         <location filename="../ui/tabs/weapons.py" line="162"/>
         <source>Melee Weapons</source>
-        <translation type="unfinished">Arme de Mêlée</translation>
+        <translation>Arme de Mêlée</translation>
     </message>
     <message>
         <location filename="../ui/tabs/weapons.py" line="163"/>
         <source>Ranged Weapons</source>
-        <translation type="unfinished">Arme à Distance</translation>
+        <translation>Arme à Distance</translation>
     </message>
     <message>
         <location filename="../ui/tabs/weapons.py" line="164"/>
         <source>Arrows</source>
-        <translation type="unfinished">Flèches</translation>
+        <translation>Flèches</translation>
     </message>
     <message>
         <location filename="../ui/tabs/weapons.py" line="173"/>
         <source>Weapons</source>
-        <translation type="unfinished">Armes</translation>
+        <translation>Armes</translation>
     </message>
 </context>
 <context>
