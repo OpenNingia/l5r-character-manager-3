@@ -222,7 +222,7 @@
     </message>
     <message>
         <source>Advancing from this path means joining a new school — not available here yet.</source>
-        <translation>Advancing from this path means joining a new school — not available here yet.</translation>
+        <translation type="vanished">Advancing from this path means joining a new school — not available here yet.</translation>
     </message>
     <message>
         <source>You may continue your training as a %1, rising to Insight Rank %2.</source>
@@ -234,11 +234,27 @@
     </message>
     <message>
         <source>You walk the path of %1. Advancing from here means joining a new school.</source>
-        <translation>You walk the path of %1. Advancing from here means joining a new school.</translation>
+        <translation type="vanished">You walk the path of %1. Advancing from here means joining a new school.</translation>
     </message>
     <message>
         <source>Its blessings — a new technique, and perhaps spells or kiho — follow once you decide.</source>
         <translation>Its blessings — a new technique, and perhaps spells or kiho — follow once you decide.</translation>
+    </message>
+    <message>
+        <source>You walk the path of %1. To rise further you must join a new school.</source>
+        <translation>You walk the path of %1. To rise further you must join a new school.</translation>
+    </message>
+    <message>
+        <source>Walk a different path</source>
+        <translation>Walk a different path</translation>
+    </message>
+    <message>
+        <source>enter a new school, an advanced school, or an alternate path</source>
+        <translation>enter a new school, an advanced school, or an alternate path</translation>
+    </message>
+    <message>
+        <source>Join a new school</source>
+        <translation>Join a new school</translation>
     </message>
 </context>
 <context>
@@ -1528,6 +1544,101 @@
     </message>
 </context>
 <context>
+    <name>JoinSchoolDialog</name>
+    <message>
+        <source>Join a New School</source>
+        <translation>Join a New School</translation>
+    </message>
+    <message>
+        <source>choose where your training turns next</source>
+        <translation>choose where your training turns next</translation>
+    </message>
+    <message>
+        <source>Join</source>
+        <translation>Join</translation>
+    </message>
+    <message>
+        <source>Choose a school to join.</source>
+        <translation>Choose a school to join.</translation>
+    </message>
+    <message>
+        <source>Some requirements are not met.</source>
+        <translation>Some requirements are not met.</translation>
+    </message>
+    <message>
+        <source>Confirm the role-playing requirements to continue.</source>
+        <translation>Confirm the role-playing requirements to continue.</translation>
+    </message>
+    <message>
+        <source>Joins — but you cannot yet afford Multiple Schools.</source>
+        <translation>Joins — but you cannot yet afford Multiple Schools.</translation>
+    </message>
+    <message>
+        <source>Joins the school and grants its Rank 1 technique.</source>
+        <translation>Joins the school and grants its Rank 1 technique.</translation>
+    </message>
+    <message>
+        <source>New school</source>
+        <translation>New school</translation>
+    </message>
+    <message>
+        <source>Advanced school</source>
+        <translation>Advanced school</translation>
+    </message>
+    <message>
+        <source>Alternate path</source>
+        <translation>Alternate path</translation>
+    </message>
+    <message>
+        <source>Clan:</source>
+        <translation>Clan:</translation>
+    </message>
+    <message>
+        <source>No Clan</source>
+        <translation>No Clan</translation>
+    </message>
+    <message>
+        <source>School:</source>
+        <translation>School:</translation>
+    </message>
+    <message>
+        <source>Source:</source>
+        <translation>Source:</translation>
+    </message>
+    <message>
+        <source>%1, page %2</source>
+        <translation>%1, page %2</translation>
+    </message>
+    <message>
+        <source>Bonus:</source>
+        <translation>Bonus:</translation>
+    </message>
+    <message>
+        <source>+1 %1</source>
+        <translation>+1 %1</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>None</translation>
+    </message>
+    <message>
+        <source>Requirements</source>
+        <translation>Requirements</translation>
+    </message>
+    <message>
+        <source>Buy the “Multiple Schools” advantage</source>
+        <translation>Buy the “Multiple Schools” advantage</translation>
+    </message>
+    <message>
+        <source>not enough XP — costs %1</source>
+        <translation>not enough XP — costs %1</translation>
+    </message>
+    <message>
+        <source>costs %1 XP</source>
+        <translation>costs %1 XP</translation>
+    </message>
+</context>
+<context>
     <name>KataSection</name>
     <message>
         <source>Kata</source>
@@ -1690,6 +1801,22 @@
         <source>No School</source>
         <translation>No School</translation>
     </message>
+    <message>
+        <source>Ex&amp;port as PDF...</source>
+        <translation>Ex&amp;port as PDF...</translation>
+    </message>
+    <message>
+        <source>Export &amp;NPC Sheet...</source>
+        <translation>Export &amp;NPC Sheet...</translation>
+    </message>
+    <message>
+        <source>Sheet exported.</source>
+        <translation>Sheet exported.</translation>
+    </message>
+    <message>
+        <source>PDF export failed.</source>
+        <translation>PDF export failed.</translation>
+    </message>
 </context>
 <context>
     <name>MiscSection</name>
@@ -1763,7 +1890,7 @@
     </message>
     <message>
         <source>Record any standing bonus or penalty the rules don&apos;t track for you — an edge from a technique, a situational advantage, a house rule.</source>
-        <translation>Record any standing bonus or penalty the rules don't track for you — an edge from a technique, a situational advantage, a house rule.</translation>
+        <translation>Record any standing bonus or penalty the rules don&apos;t track for you — an edge from a technique, a situational advantage, a house rule.</translation>
     </message>
     <message>
         <source>SCHOOL</source>

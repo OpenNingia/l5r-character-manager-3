@@ -40,11 +40,11 @@
     </message>
     <message>
         <source>Remove Armor</source>
-        <translation>Retirer l'armure</translation>
+        <translation>Retirer l&apos;armure</translation>
     </message>
     <message>
         <source>Wear Armor</source>
-        <translation>Port d'Armure</translation>
+        <translation>Port d&apos;Armure</translation>
     </message>
     <message>
         <source>Choose an armour to wear.</source>
@@ -52,7 +52,7 @@
     </message>
     <message>
         <source>Return to wearing no armour.</source>
-        <translation>Revenez à l'absence d'armure.</translation>
+        <translation>Revenez à l&apos;absence d&apos;armure.</translation>
     </message>
     <message>
         <source>Wear the %1.</source>
@@ -80,7 +80,7 @@
     </message>
     <message>
         <source>the armoury is empty — import a datapack</source>
-        <translation>l'armurerie est vide — importe un datapack</translation>
+        <translation>l&apos;armurerie est vide — importe un datapack</translation>
     </message>
     <message>
         <source>nothing matches that brushstroke</source>
@@ -92,7 +92,7 @@
     </message>
     <message>
         <source>Its TN and reduction fold into your defence the moment you put it on.</source>
-        <translation>Son ND et sa réduction s'ajoutent à votre défense dès que vous la revêtez.</translation>
+        <translation>Son ND et sa réduction s&apos;ajoutent à votre défense dès que vous la revêtez.</translation>
     </message>
     <message>
         <source>Cost: %1</source>
@@ -100,7 +100,7 @@
     </message>
     <message>
         <source>Armor TN</source>
-        <translation>ND d'Armure</translation>
+        <translation>ND d&apos;Armure</translation>
     </message>
     <message>
         <source>Reduction</source>
@@ -222,7 +222,7 @@
     </message>
     <message>
         <source>Advancing from this path means joining a new school — not available here yet.</source>
-        <translation>Avancer depuis cette voie signifie rejoindre une nouvelle école — pas encore disponible ici.</translation>
+        <translation type="vanished">Avancer depuis cette voie signifie rejoindre une nouvelle école — pas encore disponible ici.</translation>
     </message>
     <message>
         <source>You may continue your training as a %1, rising to Insight Rank %2.</source>
@@ -234,11 +234,27 @@
     </message>
     <message>
         <source>You walk the path of %1. Advancing from here means joining a new school.</source>
-        <translation>Tu suis la voie de %1. Avancer d&apos;ici signifie rejoindre une nouvelle école.</translation>
+        <translation type="vanished">Tu suis la voie de %1. Avancer d&apos;ici signifie rejoindre une nouvelle école.</translation>
     </message>
     <message>
         <source>Its blessings — a new technique, and perhaps spells or kiho — follow once you decide.</source>
         <translation>Ses bienfaits — une nouvelle technique, et peut-être des sorts ou des kiho — suivront une fois ta décision prise.</translation>
+    </message>
+    <message>
+        <source>You walk the path of %1. To rise further you must join a new school.</source>
+        <translation>Tu suis la voie de %1. Pour progresser encore, tu dois rejoindre une nouvelle école.</translation>
+    </message>
+    <message>
+        <source>Walk a different path</source>
+        <translation>Suis une autre voie</translation>
+    </message>
+    <message>
+        <source>enter a new school, an advanced school, or an alternate path</source>
+        <translation>rejoins une nouvelle école, une école avancée ou une voie alternative</translation>
+    </message>
+    <message>
+        <source>Join a new school</source>
+        <translation>Rejoindre une nouvelle école</translation>
     </message>
 </context>
 <context>
@@ -1069,7 +1085,7 @@
     <name>CustomArmorDialog</name>
     <message>
         <source>Edit Armor</source>
-        <translation>Modifier l'armure</translation>
+        <translation>Modifier l&apos;armure</translation>
     </message>
     <message>
         <source>Forge Armor</source>
@@ -1077,7 +1093,7 @@
     </message>
     <message>
         <source>re-stat the harness you wear</source>
-        <translation>redéfinissez l'armure que vous portez</translation>
+        <translation>redéfinissez l&apos;armure que vous portez</translation>
     </message>
     <message>
         <source>temper a harness to your own measure</source>
@@ -1117,7 +1133,7 @@
     </message>
     <message>
         <source>Armor TN</source>
-        <translation>ND d'Armure</translation>
+        <translation>ND d&apos;Armure</translation>
     </message>
     <message>
         <source>e.g. 5</source>
@@ -1528,6 +1544,101 @@
     </message>
 </context>
 <context>
+    <name>JoinSchoolDialog</name>
+    <message>
+        <source>Join a New School</source>
+        <translation>Rejoindre une Nouvelle École</translation>
+    </message>
+    <message>
+        <source>choose where your training turns next</source>
+        <translation>choisis la voie que prend ton entraînement</translation>
+    </message>
+    <message>
+        <source>Join</source>
+        <translation>Rejoindre</translation>
+    </message>
+    <message>
+        <source>Choose a school to join.</source>
+        <translation>Choisis une école à rejoindre.</translation>
+    </message>
+    <message>
+        <source>Some requirements are not met.</source>
+        <translation>Certains pré-requis ne sont pas remplis.</translation>
+    </message>
+    <message>
+        <source>Confirm the role-playing requirements to continue.</source>
+        <translation>Confirme les pré-requis de jeu de rôle pour continuer.</translation>
+    </message>
+    <message>
+        <source>Joins — but you cannot yet afford Multiple Schools.</source>
+        <translation>Tu rejoins — mais tu ne peux pas encore te permettre Écoles Multiples.</translation>
+    </message>
+    <message>
+        <source>Joins the school and grants its Rank 1 technique.</source>
+        <translation>Tu rejoins l'école et obtiens sa technique de Rang 1.</translation>
+    </message>
+    <message>
+        <source>New school</source>
+        <translation>Nouvelle école</translation>
+    </message>
+    <message>
+        <source>Advanced school</source>
+        <translation>École avancée</translation>
+    </message>
+    <message>
+        <source>Alternate path</source>
+        <translation>Voie alternative</translation>
+    </message>
+    <message>
+        <source>Clan:</source>
+        <translation>Clan :</translation>
+    </message>
+    <message>
+        <source>No Clan</source>
+        <translation>Aucun clan</translation>
+    </message>
+    <message>
+        <source>School:</source>
+        <translation>École :</translation>
+    </message>
+    <message>
+        <source>Source:</source>
+        <translation>Source :</translation>
+    </message>
+    <message>
+        <source>%1, page %2</source>
+        <translation>%1, page %2</translation>
+    </message>
+    <message>
+        <source>Bonus:</source>
+        <translation>Bonus :</translation>
+    </message>
+    <message>
+        <source>+1 %1</source>
+        <translation>+1 %1</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>Aucune</translation>
+    </message>
+    <message>
+        <source>Requirements</source>
+        <translation>Pré-requis</translation>
+    </message>
+    <message>
+        <source>Buy the “Multiple Schools” advantage</source>
+        <translation>Acheter l'avantage “Écoles Multiples”</translation>
+    </message>
+    <message>
+        <source>not enough XP — costs %1</source>
+        <translation>XP insuffisants — coûte %1</translation>
+    </message>
+    <message>
+        <source>costs %1 XP</source>
+        <translation>coûte %1 XP</translation>
+    </message>
+</context>
+<context>
     <name>KataSection</name>
     <message>
         <source>Kata</source>
@@ -1690,6 +1801,22 @@
         <source>No School</source>
         <translation>Aucune école</translation>
     </message>
+    <message>
+        <source>Ex&amp;port as PDF...</source>
+        <translation>Ex&amp;porter en PDF...</translation>
+    </message>
+    <message>
+        <source>Export &amp;NPC Sheet...</source>
+        <translation>Exporter la feuille de &amp;PNJ...</translation>
+    </message>
+    <message>
+        <source>Sheet exported.</source>
+        <translation>Feuille exportée.</translation>
+    </message>
+    <message>
+        <source>PDF export failed.</source>
+        <translation>Échec de l'export PDF.</translation>
+    </message>
 </context>
 <context>
     <name>MiscSection</name>
@@ -1763,7 +1890,7 @@
     </message>
     <message>
         <source>Record any standing bonus or penalty the rules don&apos;t track for you — an edge from a technique, a situational advantage, a house rule.</source>
-        <translation>Notez tout bonus ou malus permanent que les règles ne suivent pas pour vous — un avantage tiré d'une technique, un atout situationnel, une règle maison.</translation>
+        <translation>Notez tout bonus ou malus permanent que les règles ne suivent pas pour vous — un avantage tiré d&apos;une technique, un atout situationnel, une règle maison.</translation>
     </message>
     <message>
         <source>SCHOOL</source>
@@ -1826,11 +1953,11 @@
     </message>
     <message>
         <source>Name the %1 this modifier applies to.</source>
-        <translation>Indiquez le %1 auquel s'applique ce modificateur.</translation>
+        <translation>Indiquez le %1 auquel s&apos;applique ce modificateur.</translation>
     </message>
     <message>
         <source>A modifier is figured into your rolls only while it is applied.</source>
-        <translation>Un modificateur n'entre dans vos jets que tant qu'il est appliqué.</translation>
+        <translation>Un modificateur n&apos;entre dans vos jets que tant qu&apos;il est appliqué.</translation>
     </message>
     <message>
         <source>MODIFIES</source>
@@ -2560,7 +2687,7 @@
     </message>
     <message>
         <source>Armor TN</source>
-        <translation>ND d'Armure</translation>
+        <translation>ND d&apos;Armure</translation>
     </message>
     <message>
         <source>Reduction</source>

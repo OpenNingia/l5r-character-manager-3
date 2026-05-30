@@ -222,7 +222,7 @@
     </message>
     <message>
         <source>Advancing from this path means joining a new school — not available here yet.</source>
-        <translation>Avanzar desde esta senda significa unirse a una nueva escuela — todavía no disponible aquí.</translation>
+        <translation type="vanished">Avanzar desde esta senda significa unirse a una nueva escuela — todavía no disponible aquí.</translation>
     </message>
     <message>
         <source>You may continue your training as a %1, rising to Insight Rank %2.</source>
@@ -234,11 +234,27 @@
     </message>
     <message>
         <source>You walk the path of %1. Advancing from here means joining a new school.</source>
-        <translation>Recorres la senda de %1. Avanzar desde aquí significa unirse a una nueva escuela.</translation>
+        <translation type="vanished">Recorres la senda de %1. Avanzar desde aquí significa unirse a una nueva escuela.</translation>
     </message>
     <message>
         <source>Its blessings — a new technique, and perhaps spells or kiho — follow once you decide.</source>
         <translation>Sus dones — una nueva técnica, y quizá hechizos o kiho — llegarán una vez que decidas.</translation>
+    </message>
+    <message>
+        <source>You walk the path of %1. To rise further you must join a new school.</source>
+        <translation>Recorres la senda de %1. Para ascender más debes unirte a una nueva escuela.</translation>
+    </message>
+    <message>
+        <source>Walk a different path</source>
+        <translation>Recorre otra senda</translation>
+    </message>
+    <message>
+        <source>enter a new school, an advanced school, or an alternate path</source>
+        <translation>entra en una nueva escuela, una escuela avanzada o una senda alternativa</translation>
+    </message>
+    <message>
+        <source>Join a new school</source>
+        <translation>Únete a una nueva escuela</translation>
     </message>
 </context>
 <context>
@@ -1528,6 +1544,101 @@
     </message>
 </context>
 <context>
+    <name>JoinSchoolDialog</name>
+    <message>
+        <source>Join a New School</source>
+        <translation>Únete a una Nueva Escuela</translation>
+    </message>
+    <message>
+        <source>choose where your training turns next</source>
+        <translation>elige el rumbo de tu entrenamiento</translation>
+    </message>
+    <message>
+        <source>Join</source>
+        <translation>Unirse</translation>
+    </message>
+    <message>
+        <source>Choose a school to join.</source>
+        <translation>Elige una escuela a la que unirte.</translation>
+    </message>
+    <message>
+        <source>Some requirements are not met.</source>
+        <translation>No se cumplen algunos requisitos.</translation>
+    </message>
+    <message>
+        <source>Confirm the role-playing requirements to continue.</source>
+        <translation>Confirma los requisitos de interpretación para continuar.</translation>
+    </message>
+    <message>
+        <source>Joins — but you cannot yet afford Multiple Schools.</source>
+        <translation>Te unes — pero aún no puedes permitirte Múltiples Escuelas.</translation>
+    </message>
+    <message>
+        <source>Joins the school and grants its Rank 1 technique.</source>
+        <translation>Te unes a la escuela y obtienes su técnica de Rango 1.</translation>
+    </message>
+    <message>
+        <source>New school</source>
+        <translation>Nueva escuela</translation>
+    </message>
+    <message>
+        <source>Advanced school</source>
+        <translation>Escuela avanzada</translation>
+    </message>
+    <message>
+        <source>Alternate path</source>
+        <translation>Senda alternativa</translation>
+    </message>
+    <message>
+        <source>Clan:</source>
+        <translation>Clan:</translation>
+    </message>
+    <message>
+        <source>No Clan</source>
+        <translation>Sin clan</translation>
+    </message>
+    <message>
+        <source>School:</source>
+        <translation>Escuela:</translation>
+    </message>
+    <message>
+        <source>Source:</source>
+        <translation>Fuente:</translation>
+    </message>
+    <message>
+        <source>%1, page %2</source>
+        <translation>%1, página %2</translation>
+    </message>
+    <message>
+        <source>Bonus:</source>
+        <translation>Bonificación:</translation>
+    </message>
+    <message>
+        <source>+1 %1</source>
+        <translation>+1 %1</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>Ninguna</translation>
+    </message>
+    <message>
+        <source>Requirements</source>
+        <translation>Requisitos</translation>
+    </message>
+    <message>
+        <source>Buy the “Multiple Schools” advantage</source>
+        <translation>Adquirir la ventaja “Múltiples Escuelas”</translation>
+    </message>
+    <message>
+        <source>not enough XP — costs %1</source>
+        <translation>XP insuficientes — cuesta %1</translation>
+    </message>
+    <message>
+        <source>costs %1 XP</source>
+        <translation>cuesta %1 XP</translation>
+    </message>
+</context>
+<context>
     <name>KataSection</name>
     <message>
         <source>Kata</source>
@@ -1689,6 +1800,22 @@
     <message>
         <source>No School</source>
         <translation>Sin escuela</translation>
+    </message>
+    <message>
+        <source>Ex&amp;port as PDF...</source>
+        <translation>Ex&amp;portar como PDF...</translation>
+    </message>
+    <message>
+        <source>Export &amp;NPC Sheet...</source>
+        <translation>Exportar hoja &amp;PNJ...</translation>
+    </message>
+    <message>
+        <source>Sheet exported.</source>
+        <translation>Hoja exportada.</translation>
+    </message>
+    <message>
+        <source>PDF export failed.</source>
+        <translation>Error al exportar a PDF.</translation>
     </message>
 </context>
 <context>

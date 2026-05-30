@@ -48,7 +48,7 @@
     </message>
     <message>
         <source>Choose an armour to wear.</source>
-        <translation>Scegli un'armatura da indossare.</translation>
+        <translation>Scegli un&apos;armatura da indossare.</translation>
     </message>
     <message>
         <source>Return to wearing no armour.</source>
@@ -68,7 +68,7 @@
     </message>
     <message>
         <source>seek an armour by name…</source>
-        <translation>cerca un'armatura per nome…</translation>
+        <translation>cerca un&apos;armatura per nome…</translation>
     </message>
     <message>
         <source>(unnamed)</source>
@@ -80,7 +80,7 @@
     </message>
     <message>
         <source>the armoury is empty — import a datapack</source>
-        <translation>l'armeria è vuota — importa un datapack</translation>
+        <translation>l&apos;armeria è vuota — importa un datapack</translation>
     </message>
     <message>
         <source>nothing matches that brushstroke</source>
@@ -88,7 +88,7 @@
     </message>
     <message>
         <source>Choose an armour from the list at your left.</source>
-        <translation>Scegli un'armatura dall'elenco a sinistra.</translation>
+        <translation>Scegli un&apos;armatura dall&apos;elenco a sinistra.</translation>
     </message>
     <message>
         <source>Its TN and reduction fold into your defence the moment you put it on.</source>
@@ -222,7 +222,7 @@
     </message>
     <message>
         <source>Advancing from this path means joining a new school — not available here yet.</source>
-        <translation>Avanzare da questo percorso significa unirsi a una nuova scuola — non ancora disponibile qui.</translation>
+        <translation type="vanished">Avanzare da questo percorso significa unirsi a una nuova scuola — non ancora disponibile qui.</translation>
     </message>
     <message>
         <source>You may continue your training as a %1, rising to Insight Rank %2.</source>
@@ -234,11 +234,27 @@
     </message>
     <message>
         <source>You walk the path of %1. Advancing from here means joining a new school.</source>
-        <translation>Cammini sul percorso di %1. Avanzare da qui significa unirsi a una nuova scuola.</translation>
+        <translation type="vanished">Cammini sul percorso di %1. Avanzare da qui significa unirsi a una nuova scuola.</translation>
     </message>
     <message>
         <source>Its blessings — a new technique, and perhaps spells or kiho — follow once you decide.</source>
         <translation>Le sue benedizioni — una nuova tecnica, e forse incantesimi o kiho — seguiranno una volta deciso.</translation>
+    </message>
+    <message>
+        <source>You walk the path of %1. To rise further you must join a new school.</source>
+        <translation>Cammini sul percorso di %1. Per salire ancora devi unirti a una nuova scuola.</translation>
+    </message>
+    <message>
+        <source>Walk a different path</source>
+        <translation>Segui un percorso diverso</translation>
+    </message>
+    <message>
+        <source>enter a new school, an advanced school, or an alternate path</source>
+        <translation>entra in una nuova scuola, una scuola avanzata o un percorso alternativo</translation>
+    </message>
+    <message>
+        <source>Join a new school</source>
+        <translation>Unisciti a una nuova scuola</translation>
     </message>
 </context>
 <context>
@@ -1097,7 +1113,7 @@
     </message>
     <message>
         <source>A custom armour replaces whatever you now wear.</source>
-        <translation>Un'armatura personalizzata sostituisce quella che indossi ora.</translation>
+        <translation>Un&apos;armatura personalizzata sostituisce quella che indossi ora.</translation>
     </message>
     <message>
         <source>BASE ARMOR</source>
@@ -1528,6 +1544,101 @@
     </message>
 </context>
 <context>
+    <name>JoinSchoolDialog</name>
+    <message>
+        <source>Join a New School</source>
+        <translation>Unisciti a una Nuova Scuola</translation>
+    </message>
+    <message>
+        <source>choose where your training turns next</source>
+        <translation>scegli dove prosegue il tuo addestramento</translation>
+    </message>
+    <message>
+        <source>Join</source>
+        <translation>Unisciti</translation>
+    </message>
+    <message>
+        <source>Choose a school to join.</source>
+        <translation>Scegli una scuola a cui unirti.</translation>
+    </message>
+    <message>
+        <source>Some requirements are not met.</source>
+        <translation>Alcuni requisiti non sono soddisfatti.</translation>
+    </message>
+    <message>
+        <source>Confirm the role-playing requirements to continue.</source>
+        <translation>Conferma i requisiti di gioco di ruolo per continuare.</translation>
+    </message>
+    <message>
+        <source>Joins — but you cannot yet afford Multiple Schools.</source>
+        <translation>Ti unisci — ma non puoi ancora permetterti Multiple Schools.</translation>
+    </message>
+    <message>
+        <source>Joins the school and grants its Rank 1 technique.</source>
+        <translation>Ti unisci alla scuola e ottieni la sua tecnica di Rango 1.</translation>
+    </message>
+    <message>
+        <source>New school</source>
+        <translation>Nuova scuola</translation>
+    </message>
+    <message>
+        <source>Advanced school</source>
+        <translation>Scuola avanzata</translation>
+    </message>
+    <message>
+        <source>Alternate path</source>
+        <translation>Percorso alternativo</translation>
+    </message>
+    <message>
+        <source>Clan:</source>
+        <translation>Clan:</translation>
+    </message>
+    <message>
+        <source>No Clan</source>
+        <translation>Nessun Clan</translation>
+    </message>
+    <message>
+        <source>School:</source>
+        <translation>Scuola:</translation>
+    </message>
+    <message>
+        <source>Source:</source>
+        <translation>Fonte:</translation>
+    </message>
+    <message>
+        <source>%1, page %2</source>
+        <translation>%1, pagina %2</translation>
+    </message>
+    <message>
+        <source>Bonus:</source>
+        <translation>Bonus:</translation>
+    </message>
+    <message>
+        <source>+1 %1</source>
+        <translation>+1 %1</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>Nessuno</translation>
+    </message>
+    <message>
+        <source>Requirements</source>
+        <translation>Requisiti</translation>
+    </message>
+    <message>
+        <source>Buy the “Multiple Schools” advantage</source>
+        <translation>Compra il vantaggio “Multiple Schools”</translation>
+    </message>
+    <message>
+        <source>not enough XP — costs %1</source>
+        <translation>PE insufficienti — costa %1</translation>
+    </message>
+    <message>
+        <source>costs %1 XP</source>
+        <translation>costa %1 PE</translation>
+    </message>
+</context>
+<context>
     <name>KataSection</name>
     <message>
         <source>Kata</source>
@@ -1690,6 +1801,22 @@
         <source>No School</source>
         <translation>Nessuna Scuola</translation>
     </message>
+    <message>
+        <source>Ex&amp;port as PDF...</source>
+        <translation>Es&amp;porta come PDF...</translation>
+    </message>
+    <message>
+        <source>Export &amp;NPC Sheet...</source>
+        <translation>Esporta scheda &amp;PNG...</translation>
+    </message>
+    <message>
+        <source>Sheet exported.</source>
+        <translation>Scheda esportata.</translation>
+    </message>
+    <message>
+        <source>PDF export failed.</source>
+        <translation>Esportazione PDF non riuscita.</translation>
+    </message>
 </context>
 <context>
     <name>MiscSection</name>
@@ -1699,7 +1826,7 @@
     </message>
     <message>
         <source>the gear you carry into the field</source>
-        <translation>l'equipaggiamento che porti sul campo</translation>
+        <translation>l&apos;equipaggiamento che porti sul campo</translation>
     </message>
     <message>
         <source>1 item</source>

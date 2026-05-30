@@ -221,10 +221,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Advancing from this path means joining a new school — not available here yet.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>You may continue your training as a %1, rising to Insight Rank %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -233,11 +229,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You walk the path of %1. Advancing from here means joining a new school.</source>
+        <source>Its blessings — a new technique, and perhaps spells or kiho — follow once you decide.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Its blessings — a new technique, and perhaps spells or kiho — follow once you decide.</source>
+        <source>You walk the path of %1. To rise further you must join a new school.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Walk a different path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>enter a new school, an advanced school, or an alternate path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Join a new school</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1129,7 +1137,7 @@
     </message>
     <message>
         <source>e.g. 3</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">напр. 3</translation>
     </message>
     <message>
         <source>NOTES</source>
@@ -1212,7 +1220,7 @@
     </message>
     <message>
         <source>e.g. 250&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">напр. 250&apos;</translation>
     </message>
     <message>
         <source>Weapon Strength</source>
@@ -1220,7 +1228,7 @@
     </message>
     <message>
         <source>e.g. 3</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">напр. 3</translation>
     </message>
     <message>
         <source>Minimum Strength</source>
@@ -1228,7 +1236,7 @@
     </message>
     <message>
         <source>e.g. 2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">напр. 2</translation>
     </message>
     <message>
         <source>NOTES</source>
@@ -1528,6 +1536,101 @@
     </message>
 </context>
 <context>
+    <name>JoinSchoolDialog</name>
+    <message>
+        <source>Join a New School</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>choose where your training turns next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose a school to join.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Some requirements are not met.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm the role-playing requirements to continue.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Joins — but you cannot yet afford Multiple Schools.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Joins the school and grants its Rank 1 technique.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New school</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advanced school</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alternate path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clan:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No Clan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>School:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1, page %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bonus:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>+1 %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Requirements</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buy the “Multiple Schools” advantage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>not enough XP — costs %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>costs %1 XP</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>KataSection</name>
     <message>
         <source>Kata</source>
@@ -1688,6 +1791,22 @@
     </message>
     <message>
         <source>No School</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ex&amp;port as PDF...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export &amp;NPC Sheet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sheet exported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF export failed.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

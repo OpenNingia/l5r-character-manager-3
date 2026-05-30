@@ -45,7 +45,7 @@ Widgets.L5RDialog {
     // enough that the secondary "join a new school" action sits beside
     // its heading without overflowing once the labels are translated
     // (e.g. the Italian button is ~2x the English width). -----
-    width: Math.min(Overlay.overlay ? Overlay.overlay.width - 120 : 580, 580)
+    width: Math.min(Overlay.overlay ? Overlay.overlay.width - 120 : 520, 520)
     padding: Theme.s5
 
     // --- chrome (via L5RDialog) -----------------------------------
