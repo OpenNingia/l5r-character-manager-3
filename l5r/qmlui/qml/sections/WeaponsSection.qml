@@ -176,51 +176,10 @@ ColumnLayout {
             width: parent.width
             spacing: Theme.s3
 
-            // ---- Header row: subtitle + count + add affordances ------
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.topMargin: -4
-                spacing: Theme.s2
-
-                Label {
-                    text: qsTr("the arms you carry, ready to be drawn")
-                    font.italic: true
-                    font.pixelSize: Theme.fsCaption
-                    color: Theme.ink
-                    opacity: 0.6
-                }
-                Item {
-                    Layout.fillWidth: true
-                }
-                Label {
-                    visible: section._hasWeapons
-                    text: section._weapons.length === 1 ? qsTr("1 weapon") : qsTr("%1 weapons").arg(section._weapons.length)
-                    font.italic: true
-                    font.pixelSize: Theme.fsCaption
-                    color: Theme.ink
-                    opacity: 0.55
-                }
-
-                AddAffordance {
-                    text: qsTr("＋  Add Weapon")
-                    onTriggered: addWeaponDlg.present()
-                }
-                AddAffordance {
-                    text: qsTr("＋  Custom")
-                    onTriggered: customWeaponDlg.presentAdd()
-                }
-            }
-
-            Widgets.OrnateDivider {
-                Layout.fillWidth: true
-                ruleColor: Theme.heading
-                ruleOpacity: 0.30
-            }
-
-            // ---- Armor rail (always shown; one worn armour at most) --
+            // ===== ARMOR section. Its Wear / Custom actions ride the rail
+            // banner, directly above the worn-armour card. =====
             ColumnLayout {
                 Layout.fillWidth: true
-                Layout.topMargin: 2
                 spacing: 4
 
                 // Earth-toned rail banner + Wear / Custom affordances.
@@ -289,6 +248,48 @@ ColumnLayout {
                         color: Theme.ink
                         opacity: 0.6
                     }
+                }
+            }
+
+            // ---- Separator between the armour and weapons sections ---
+            Widgets.OrnateDivider {
+                Layout.fillWidth: true
+                Layout.topMargin: 6
+                ruleColor: Theme.heading
+                ruleOpacity: 0.30
+            }
+
+            // ===== WEAPONS section. Its Add Weapon / Custom actions sit
+            // on the header row above the rails. =====
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: Theme.s2
+
+                Label {
+                    text: qsTr("the arms you carry, ready to be drawn")
+                    font.italic: true
+                    font.pixelSize: Theme.fsCaption
+                    color: Theme.ink
+                    opacity: 0.6
+                }
+                Item {
+                    Layout.fillWidth: true
+                }
+                Label {
+                    visible: section._hasWeapons
+                    text: section._weapons.length === 1 ? qsTr("1 weapon") : qsTr("%1 weapons").arg(section._weapons.length)
+                    font.italic: true
+                    font.pixelSize: Theme.fsCaption
+                    color: Theme.ink
+                    opacity: 0.55
+                }
+                AddAffordance {
+                    text: qsTr("＋  Add Weapon")
+                    onTriggered: addWeaponDlg.present()
+                }
+                AddAffordance {
+                    text: qsTr("＋  Custom")
+                    onTriggered: customWeaponDlg.presentAdd()
                 }
             }
 
