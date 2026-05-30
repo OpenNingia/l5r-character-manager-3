@@ -435,6 +435,73 @@ class AppController(QObject):
             return "{} {}".format(family_.name, name)
         return name
 
+    @Slot()
+    def exportNpcDialog(self):
+        """Pick up to two .l5r character files and render them onto a single
+        two-NPC sheet (l5r.exporters.sheet.export_npc).
+
+        FDFExporterTwoNPC swaps the active model to each NPC as it fills the
+        fields, so the export runs inside an ISOLATED api context (see
+        _run_npc_export) -- otherwise it would leave the session showing the
+        last NPC instead of the player's character.
+        """
+        settings = L5RCMSettings()
+        last_dir = settings.app.last_open_dir or ""
+
+        paths, _ = QFileDialog.getOpenFileNames(
+            None,
+            self.tr("Select NPC Characters (up to two)"),
+            last_dir,
+            self.tr("L5R Character (*.l5r);;All Files (*)"),
+        )
+        paths = [p for p in paths if p]
+        if not paths:
+            return
+        if len(paths) > 2:
+            QMessageBox.information(
+                None,
+                self.tr("NPC Sheet"),
+                self.tr("Only the first two characters fit on an NPC sheet."))
+            paths = paths[:2]
+
+        out, _ = QFileDialog.getSaveFileName(
+            None,
+            self.tr("Export NPC Sheet"),
+            os.path.join(last_dir, "npc.pdf"),
+            self.tr("PDF Documents (*.pdf);;All Files (*)"),
+        )
+        if not out:
+            return
+        if not out.lower().endswith(".pdf"):
+            out += ".pdf"
+        settings.app.last_open_dir = os.path.dirname(out)
+
+        worker = Worker(self._run_npc_export, paths, out)
+        worker.signals.result.connect(self._on_export_ok)
+        worker.signals.error.connect(self._on_export_error)
+        self._export_path = out
+        self._export_worker = worker
+        QThreadPool.globalInstance().start(worker)
+
+    @staticmethod
+    def _run_npc_export(paths, out_path):
+        # Isolate the per-NPC model swaps from the live session: a throwaway
+        # context shares the data store / locale but gets its own `pc`, so
+        # set_model inside FDFExporterTwoNPC never touches the production
+        # context the QML proxies read.
+        import l5r.api.context as ctxmod
+        from l5r.exporters import sheet
+
+        cur = ctxmod.get_context()
+        iso = ctxmod.L5RCMContext()
+        iso.ds = cur.ds
+        iso.locale = cur.locale
+        iso.blacklist = cur.blacklist
+        iso.translation_provider = cur.translation_provider
+        with ctxmod.use(iso):
+            sheet.export_npc(paths, out_path)
+        return out_path
+
     # --- notes / personal info ---------------------------------------
 
     @Slot(str)

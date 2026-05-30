@@ -66,6 +66,10 @@ ApplicationWindow {
                 text: qsTr("Ex&port as PDF...")
                 onTriggered: appCtrl.exportPdfDialog()
             }
+            Widgets.L5RMenuItem {
+                text: qsTr("Export &NPC Sheet...")
+                onTriggered: appCtrl.exportNpcDialog()
+            }
             Widgets.L5RMenuSeparator {
             }
             Widgets.L5RMenuItem {
@@ -438,7 +442,7 @@ ApplicationWindow {
     Connections {
         target: appCtrl
         function onExportFinished(ok, path) {
-            toast.show(ok ? qsTr("Character sheet exported.") : qsTr("PDF export failed."));
+            toast.show(ok ? qsTr("Sheet exported.") : qsTr("PDF export failed."));
         }
     }
 }

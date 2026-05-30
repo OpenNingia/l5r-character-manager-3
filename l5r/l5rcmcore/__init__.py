@@ -16,13 +16,10 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import os
-import shutil
-from tempfile import mkstemp
 
 from qtpy import QtCore, QtGui, QtWidgets
 
 import l5r.models as models
-import l5r.exporters as exporters
 
 import l5rdal as dal
 import l5rdal.dataimport
@@ -53,10 +50,6 @@ from l5r.util.settings import L5RCMSettings
 
 from qtpy.QtGui import QDesktopServices
 from qtpy.QtCore import QUrl
-
-# PyPDF
-from pypdf import PdfReader, PdfWriter
-from pypdf.generic import ArrayObject, NameObject
 
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
