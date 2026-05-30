@@ -76,6 +76,7 @@ SOURCES = __init__.py \
           qmlui/proxies/pc/identity.py \
           qmlui/proxies/pc/kata.py \
           qmlui/proxies/pc/kiho.py \
+          qmlui/proxies/pc/misc.py \
           qmlui/proxies/pc/notes.py \
           qmlui/proxies/pc/opportunities.py \
           qmlui/proxies/pc/perks.py \
@@ -136,6 +137,8 @@ SOURCES = __init__.py \
           widgets/verticaltoolbar.py
 
 TRANSLATIONS = i18n/en.ts \
+               i18n/en_GB.ts \
+               i18n/en_US.ts \
                i18n/es_ES.ts \
                i18n/fr_FR.ts \
                i18n/it_IT.ts \
