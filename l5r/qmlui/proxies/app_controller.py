@@ -105,6 +105,32 @@ _FLAG_SETTERS = {
 }
 
 
+# Modifier kinds offered by the Miscellanea section's add/edit dialog.
+# Mirrors l5r.models.modifiers.MOD_TYPES / MOD_DTLS (the legacy
+# ModifierDialog source of truth) -- key, label, the kind of "detail" the
+# modifier takes ("none" => the detail field is disabled), and the detail
+# field's prompt. Labels are wrapped in QT_TRANSLATE_NOOP("AppController")
+# -- the same trick _TAB_DEFS uses -- so pylupdate6 extracts them for the
+# context self.tr() resolves against (the table values are read through a
+# variable below, which the extractor cannot see). The "none"/spell-casting
+# placeholder rows of MOD_TYPES are intentionally omitted (the legacy
+# dialog skipped them too).
+_MODIFIER_TYPE_DEFS = [
+    # (key,    label,                                                detailKind, detailLabel)
+    ("wdmg", QT_TRANSLATE_NOOP("AppController", "Damage Roll"),    "aweap", QT_TRANSLATE_NOOP("AppController", "Weapon")),
+    ("anyr", QT_TRANSLATE_NOOP("AppController", "Any Roll"),       "none",  ""),
+    ("skir", QT_TRANSLATE_NOOP("AppController", "Skill Roll"),     "skill", QT_TRANSLATE_NOOP("AppController", "Skill")),
+    ("atkr", QT_TRANSLATE_NOOP("AppController", "Attack Roll"),    "aweap", QT_TRANSLATE_NOOP("AppController", "Weapon")),
+    ("trat", QT_TRANSLATE_NOOP("AppController", "Trait Roll"),     "trait", QT_TRANSLATE_NOOP("AppController", "Trait")),
+    ("ring", QT_TRANSLATE_NOOP("AppController", "Ring Roll"),      "ring",  QT_TRANSLATE_NOOP("AppController", "Ring")),
+    ("hrnk", QT_TRANSLATE_NOOP("AppController", "Health Rank"),    "none",  ""),
+    ("artn", QT_TRANSLATE_NOOP("AppController", "Armor TN"),       "none",  ""),
+    ("arrd", QT_TRANSLATE_NOOP("AppController", "Armor RD"),       "none",  ""),
+    ("init", QT_TRANSLATE_NOOP("AppController", "Initiative"),     "none",  ""),
+    ("wpen", QT_TRANSLATE_NOOP("AppController", "Wound Penalty"),  "none",  ""),
+]
+
+
 def _school_record(school_dal):
     """Serialise a school DAL row for QML consumption."""
     if school_dal is None:
@@ -1245,6 +1271,142 @@ class AppController(QObject):
         item.range = data.get("range") or ""
         item.name = (data.get("name") or "").strip()
         item.desc = data.get("notes") or ""
+
+    # --- miscellanea: modifiers --------------------------------------
+    # Custom roll/stat modifiers (the legacy ModifiersTableViewModel +
+    # ModifierDialog). A modifier is a plain ModifierModel on pc.modifiers
+    # (no XP, no rank history), so these slots delegate to the
+    # api.character modifier setters -- which own the dirty flag -- rather
+    # than poking pc directly. The proxy emits a session-stable
+    # str(id(modifier)) handle per row; edit / remove / toggle re-resolve
+    # the live item by scanning the list (mirrors removeWeapon).
+
+    @Slot(result="QVariantList")
+    def modifierTypes(self):
+        """The modifier kinds offered by the add/edit dialog -- key, the
+        translated label, the detail field's kind ("none" => disabled),
+        and its prompt. Mirrors the legacy ModifierDialog combo."""
+        return [{"key": key,
+                 "label": self.tr(label),
+                 "detailKind": detail_kind,
+                 "detailLabel": self.tr(detail_label) if detail_label else ""}
+                for (key, label, detail_kind, detail_label) in _MODIFIER_TYPE_DEFS]
+
+    @Slot(str, str, str, str, bool)
+    def addModifier(self, type_key, detail, value, reason, active):
+        """Add a custom modifier. `value` is a roll-and-keep+bonus string
+        (e.g. "+2", "1k0", "2k1+3"), parsed to the (roll, keep, bonus)
+        tuple the rules engine sums; an unparseable value collapses to
+        the zero tuple, same as the legacy dialog."""
+        item = l5r.models.ModifierModel()
+        item.type = type_key or "none"
+        item.dtl = (detail or "").strip()
+        item.value = api.rules.parse_rtk_with_bonus(value or "0k0")
+        item.reason = (reason or "").strip()
+        item.active = bool(active)
+        api.character.add_modifier(item)
+        api.character.notify_character_refreshed()
+
+    @Slot(str, str, str, str, str, bool)
+    def editModifier(self, mod_id, type_key, detail, value, reason, active):
+        """Re-key an existing modifier in place (the legacy dialog's edit
+        path). Re-resolves the live ModifierModel by its session id."""
+        item = self._resolve_modifier(mod_id)
+        if item is None:
+            log.api.warning(u"QML UI: editModifier: no modifier %r", mod_id)
+            return
+        item.type = type_key or "none"
+        item.dtl = (detail or "").strip()
+        item.value = api.rules.parse_rtk_with_bonus(value or "0k0")
+        item.reason = (reason or "").strip()
+        item.active = bool(active)
+        api.character.touch_modifiers()
+        api.character.notify_character_refreshed()
+
+    @Slot(str, bool)
+    def setModifierActive(self, mod_id, active):
+        """Toggle whether a modifier is currently applied (the legacy
+        table's checkbox column)."""
+        item = self._resolve_modifier(mod_id)
+        if item is None:
+            return
+        item.active = bool(active)
+        api.character.touch_modifiers()
+        api.character.notify_character_refreshed()
+
+    @Slot(str)
+    def removeModifier(self, mod_id):
+        """Remove a modifier by its session-stable id."""
+        item = self._resolve_modifier(mod_id)
+        if item is None:
+            log.api.warning(u"QML UI: removeModifier: no modifier %r", mod_id)
+            return
+        api.character.remove_modifier(item)
+        api.character.notify_character_refreshed()
+
+    def _resolve_modifier(self, mod_id):
+        """Re-resolve the live ModifierModel for a proxy-emitted id."""
+        if not mod_id:
+            return None
+        pc = api.character.model()
+        if not pc:
+            return None
+        for m in pc.get_modifiers() or []:
+            if str(id(m)) == mod_id:
+                return m
+        return None
+
+    # --- miscellanea: equipment + money ------------------------------
+    # The starting outfit (school-granted) and the free-form equipment
+    # list are both flat lists of plain strings; the proxy addresses each
+    # entry by (kind, index). The api setters own the dirty flag, so these
+    # slots rebuild the target list and hand it back rather than mutating
+    # pc directly. Money is a (koku, bu, zeni) tuple via set_money (which
+    # stores it as a delta from the school's starting money).
+
+    @Slot(str)
+    def addEquipment(self, text):
+        """Append one free-form equipment entry."""
+        api.character.add_equipment(text or self.tr("New item"))
+        api.character.notify_character_refreshed()
+
+    @Slot(str, int, str)
+    def setEquipmentText(self, kind, index, text):
+        """Re-key one equipment entry in place (inline edit)."""
+        text = text or ""
+        if kind == "starting":
+            items = list(api.character.get_starting_outfit() or [])
+            if 0 <= index < len(items):
+                items[index] = text
+                api.character.set_starting_outfit(items)
+        else:
+            items = list(api.character.get_equipment() or [])
+            if 0 <= index < len(items):
+                items[index] = text
+                api.character.set_equipment(items)
+        api.character.notify_character_refreshed()
+
+    @Slot(str, int)
+    def removeEquipment(self, kind, index):
+        """Drop one equipment entry by its (kind, index)."""
+        if kind == "starting":
+            items = list(api.character.get_starting_outfit() or [])
+            if 0 <= index < len(items):
+                del items[index]
+                api.character.set_starting_outfit(items)
+        else:
+            items = list(api.character.get_equipment() or [])
+            if 0 <= index < len(items):
+                del items[index]
+                api.character.set_equipment(items)
+        api.character.notify_character_refreshed()
+
+    @Slot(int, int, int)
+    def setMoney(self, koku, bu, zeni):
+        """Set the character's purse. set_money stores the figure as a
+        delta from the school's starting money and owns the dirty flag."""
+        api.character.set_money((int(koku), int(bu), int(zeni)))
+        api.character.notify_character_refreshed()
 
     # --- clan / family / school choosers -----------------------------
 

@@ -777,3 +777,51 @@ def set_starting_outfit(outfit):
     first_rank_ = api.character.rankadv.get_first()
     if first_rank_:
         first_rank_.outfit = outfit
+        set_dirty_flag(True)
+
+
+def get_equipment():
+    """return the character's free-form (non-school) equipment list."""
+    return get_context().pc.get_property('equip', [])
+
+
+def set_equipment(items):
+    """replace the free-form equipment list (owns the dirty flag)."""
+    get_context().pc.set_property('equip', list(items))
+    set_dirty_flag(True)
+
+
+def add_equipment(text):
+    """append one free-form equipment entry (owns the dirty flag)."""
+    items = get_context().pc.get_property('equip', [])
+    items.append(text)
+    set_dirty_flag(True)
+
+
+def get_modifiers():
+    """return the character's custom roll/stat modifiers."""
+    return get_context().pc.get_modifiers()
+
+
+def add_modifier(item):
+    """add a custom modifier (owns the dirty flag)."""
+    get_context().pc.add_modifier(item)
+    set_dirty_flag(True)
+
+
+def remove_modifier(item):
+    """remove a custom modifier (owns the dirty flag)."""
+    mods = get_context().pc.get_modifiers()
+    if item in mods:
+        mods.remove(item)
+        set_dirty_flag(True)
+
+
+def touch_modifiers():
+    """flag the character dirty after an in-place modifier edit/toggle.
+
+    Modifier rows are mutated in place by the caller (the Qt-side edit
+    dialog / active toggle resolves the live ModifierModel and writes its
+    fields); this is the setter that owns the dirty flag for that path,
+    mirroring api.character.weapons.touch()."""
+    set_dirty_flag(True)

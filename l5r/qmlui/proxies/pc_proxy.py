@@ -28,6 +28,7 @@ from l5r.qmlui.proxies.pc.flags import FlagsMixin
 from l5r.qmlui.proxies.pc.identity import IdentityMixin
 from l5r.qmlui.proxies.pc.kata import KataMixin
 from l5r.qmlui.proxies.pc.kiho import KihoMixin
+from l5r.qmlui.proxies.pc.misc import MiscMixin
 from l5r.qmlui.proxies.pc.notes import NotesMixin
 from l5r.qmlui.proxies.pc.opportunities import OpportunitiesMixin
 from l5r.qmlui.proxies.pc.perks import PerksMixin
@@ -56,6 +57,7 @@ class PcProxy(
     AdvancementsMixin,
     PerksMixin,
     WeaponsMixin,
+    MiscMixin,
     OpportunitiesMixin,
     QObject,
 ):
@@ -77,4 +79,5 @@ class PcProxy(
         self._wire_advancements(bus)
         self._wire_perks(bus)
         self._wire_weapons(bus)
+        self._wire_misc(bus)
         self._wire_opportunities(bus)
