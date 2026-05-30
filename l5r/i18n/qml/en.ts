@@ -1160,7 +1160,7 @@
     <name>FamilyChooserDialog</name>
     <message>
         <source>Clan and Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Clan and Family</translation>
     </message>
     <message>
         <source>a Samurai should serve its clan first and foremost</source>
