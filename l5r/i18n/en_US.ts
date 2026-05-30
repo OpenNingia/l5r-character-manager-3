@@ -285,78 +285,78 @@ You've reached the XP Limit.</translation>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="120" />
       <source>Damage Roll</source>
-      <translation type="unfinished" />
+      <translation>Damage Roll</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="123" />
       <location filename="../qmlui/proxies/app_controller.py" line="120" />
       <source>Weapon</source>
-      <translation type="unfinished">Weapon</translation>
+      <translation>Weapon</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="121" />
       <source>Any Roll</source>
-      <translation type="unfinished" />
+      <translation>Any Roll</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="122" />
       <source>Skill Roll</source>
-      <translation type="unfinished" />
+      <translation>Skill Roll</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="122" />
       <source>Skill</source>
-      <translation type="unfinished">Skill</translation>
+      <translation>Skill</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="123" />
       <source>Attack Roll</source>
-      <translation type="unfinished" />
+      <translation>Attack Roll</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="124" />
       <source>Trait Roll</source>
-      <translation type="unfinished" />
+      <translation>Trait Roll</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="124" />
       <source>Trait</source>
-      <translation type="unfinished">Trait</translation>
+      <translation>Trait</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="125" />
       <source>Ring Roll</source>
-      <translation type="unfinished" />
+      <translation>Ring Roll</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="125" />
       <source>Ring</source>
-      <translation type="unfinished">Ring</translation>
+      <translation>Ring</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="126" />
       <source>Health Rank</source>
-      <translation type="unfinished" />
+      <translation>Health Rank</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="127" />
       <source>Armor TN</source>
-      <translation type="unfinished">Armor TN</translation>
+      <translation>Armor TN</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="128" />
       <source>Armor RD</source>
-      <translation type="unfinished" />
+      <translation>Armor RD</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="129" />
       <source>Initiative</source>
-      <translation type="unfinished">Initiative</translation>
+      <translation>Initiative</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="130" />
       <source>Wound Penalty</source>
-      <translation type="unfinished" />
+      <translation>Wound Penalty</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="307" />
@@ -430,7 +430,7 @@ You've reached the XP Limit.</translation>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="1455" />
       <source>New item</source>
-      <translation type="unfinished" />
+      <translation>New item</translation>
     </message>
   </context>
   <context>
@@ -630,12 +630,12 @@ You've reached the XP Limit.</translation>
     <message>
       <location filename="../dialogs/itemseldlg.py" line="107" />
       <source>No Armor (Clothing)</source>
-      <translation type="unfinished" />
+      <translation>No Armor (Clothing)</translation>
     </message>
     <message>
       <location filename="../dialogs/itemseldlg.py" line="137" />
       <source>Unarmored — only your reflexes and bearing turn a blow.</source>
-      <translation type="unfinished" />
+      <translation>Unarmored — only your reflexes and bearing turn a blow.</translation>
     </message>
     <message>
       <location filename="../dialogs/itemseldlg.py" line="148" />

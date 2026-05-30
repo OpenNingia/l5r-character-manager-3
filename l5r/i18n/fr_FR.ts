@@ -216,222 +216,222 @@ Vous avez atteint votre limite d'XP</translation>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="82" />
       <source>Character</source>
-      <translation type="unfinished">Personnage</translation>
+      <translation>Personnage</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="83" />
       <source>Skills</source>
-      <translation type="unfinished">Compétences</translation>
+      <translation>Compétences</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="84" />
       <source>Merits/Flaws</source>
-      <translation type="unfinished" />
+      <translation>Avantages/Désavantages</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="85" />
       <source>Techniques</source>
-      <translation type="unfinished">Techniques</translation>
+      <translation>Techniques</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="86" />
       <source>Spells</source>
-      <translation type="unfinished">Sorts</translation>
+      <translation>Sorts</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="87" />
       <source>Kata</source>
-      <translation type="unfinished">Kata</translation>
+      <translation>Kata</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="88" />
       <source>Kiho</source>
-      <translation type="unfinished">Kiho</translation>
+      <translation>Kiho</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="89" />
       <source>Tattoos</source>
-      <translation type="unfinished" />
+      <translation>Tatouages</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="90" />
       <source>Advancements</source>
-      <translation type="unfinished">Évolution</translation>
+      <translation>Évolution</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="91" />
       <source>Weapons</source>
-      <translation type="unfinished">Armes</translation>
+      <translation>Armes</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="92" />
       <source>Miscellanea</source>
-      <translation type="unfinished" />
+      <translation>Divers</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="93" />
       <source>Notes</source>
-      <translation type="unfinished">Notes</translation>
+      <translation>Notes</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="94" />
       <source>Settings</source>
-      <translation type="unfinished">Configuration</translation>
+      <translation>Configuration</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="95" />
       <source>About</source>
-      <translation type="unfinished">À Propos</translation>
+      <translation>À Propos</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="120" />
       <source>Damage Roll</source>
-      <translation type="unfinished" />
+      <translation>Jet de dégâts</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="123" />
       <location filename="../qmlui/proxies/app_controller.py" line="120" />
       <source>Weapon</source>
-      <translation type="unfinished">Arme</translation>
+      <translation>Arme</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="121" />
       <source>Any Roll</source>
-      <translation type="unfinished" />
+      <translation>N'importe quel jet</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="122" />
       <source>Skill Roll</source>
-      <translation type="unfinished" />
+      <translation>Jet de compétence</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="122" />
       <source>Skill</source>
-      <translation type="unfinished">Compétence</translation>
+      <translation>Compétence</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="123" />
       <source>Attack Roll</source>
-      <translation type="unfinished" />
+      <translation>Jet d'attaque</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="124" />
       <source>Trait Roll</source>
-      <translation type="unfinished" />
+      <translation>Jet de trait</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="124" />
       <source>Trait</source>
-      <translation type="unfinished">Trait</translation>
+      <translation>Trait</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="125" />
       <source>Ring Roll</source>
-      <translation type="unfinished" />
+      <translation>Jet d'anneau</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="125" />
       <source>Ring</source>
-      <translation type="unfinished">Anneau</translation>
+      <translation>Anneau</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="126" />
       <source>Health Rank</source>
-      <translation type="unfinished" />
+      <translation>Rang de Santé</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="127" />
       <source>Armor TN</source>
-      <translation type="unfinished">ND d'Armure</translation>
+      <translation>ND d'Armure</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="128" />
       <source>Armor RD</source>
-      <translation type="unfinished" />
+      <translation>RD d'Armure</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="129" />
       <source>Initiative</source>
-      <translation type="unfinished">Initiative</translation>
+      <translation>Initiative</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="130" />
       <source>Wound Penalty</source>
-      <translation type="unfinished" />
+      <translation>Malus de blessure</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="307" />
       <source>Open Character</source>
-      <translation type="unfinished" />
+      <translation>Ouvrir un personnage</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="338" />
       <location filename="../qmlui/proxies/app_controller.py" line="309" />
       <source>L5R Character (*.l5r);;All Files (*)</source>
-      <translation type="unfinished" />
+      <translation>Personnage L5R (*.l5r);;Tous les fichiers (*)</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="336" />
       <source>Save Character</source>
-      <translation type="unfinished">Sauvegarder le personnage</translation>
+      <translation>Sauvegarder le personnage</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="423" />
       <source>Not enough XP</source>
-      <translation type="unfinished">XP insuffisant</translation>
+      <translation>XP insuffisant</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="424" />
       <source>You don't have enough experience points to complete this purchase.</source>
-      <translation type="unfinished" />
+      <translation>Vous n'avez pas assez de points d'expérience pour effectuer cet achat.</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="491" />
       <source>{0}, Skill {1}. Cost: {2} xp</source>
-      <translation type="unfinished">{0}, Compétence {1}. Coût: {2} XP</translation>
+      <translation>{0}, Compétence {1}. Coût: {2} XP</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="541" />
       <source>Any skill (rank {0}):</source>
-      <translation type="unfinished" />
+      <translation>N'importe quelle compétence (rang {0}) :</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="554" />
       <source>skill</source>
-      <translation type="unfinished">compétence</translation>
+      <translation>compétence</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="556" />
       <source>Any {0}, but {1} (rank {2}):</source>
-      <translation type="unfinished">N'importe quel {0}, mais {1} (rang {2}):</translation>
+      <translation>N'importe quel {0}, mais {1} (rang {2}):</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="557" />
       <source>Any {0} skill (rank {1}):</source>
-      <translation type="unfinished">N'importe quelle compétence de {0} (rang {1}):</translation>
+      <translation>N'importe quelle compétence de {0} (rang {1}):</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="1044" />
       <location filename="../qmlui/proxies/app_controller.py" line="959" />
       <source>{0} Rank {1}, XP Gain: {2}</source>
-      <translation type="unfinished">{0} Rang {1}, Gain d'XP : {2}</translation>
+      <translation>{0} Rang {1}, Gain d'XP : {2}</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="1047" />
       <location filename="../qmlui/proxies/app_controller.py" line="962" />
       <source>{0} Rank {1}, XP Cost: {2}</source>
-      <translation type="unfinished">{0} Rang {1}, Coût en XP : {2}</translation>
+      <translation>{0} Rang {1}, Coût en XP : {2}</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="1270" />
       <location filename="../qmlui/proxies/app_controller.py" line="1269" />
       <source>N/A</source>
-      <translation type="unfinished">N/A</translation>
+      <translation>N/A</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="1455" />
       <source>New item</source>
-      <translation type="unfinished" />
+      <translation>Nouvel objet</translation>
     </message>
   </context>
   <context>
@@ -631,12 +631,12 @@ Vous avez atteint votre limite d'XP</translation>
     <message>
       <location filename="../dialogs/itemseldlg.py" line="107" />
       <source>No Armor (Clothing)</source>
-      <translation type="unfinished" />
+      <translation>Sans armure (vêtements)</translation>
     </message>
     <message>
       <location filename="../dialogs/itemseldlg.py" line="137" />
       <source>Unarmored — only your reflexes and bearing turn a blow.</source>
-      <translation type="unfinished" />
+      <translation>Sans armure — seuls vos réflexes et votre maintien détournent un coup.</translation>
     </message>
     <message>
       <location filename="../dialogs/itemseldlg.py" line="148" />
@@ -3056,17 +3056,17 @@ Si vous souhaitez rejoindre une École Avancée ou une Voie Alternative, vérifi
       <location filename="../qmlui/proxies/settings_proxy.py" line="122" />
       <location filename="../qmlui/proxies/settings_proxy.py" line="111" />
       <source>The language will change the next time you start the app.</source>
-      <translation type="unfinished" />
+      <translation>La langue changera au prochain démarrage de l'application.</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/settings_proxy.py" line="183" />
       <source>Restart the app to keep using the new interface.</source>
-      <translation type="unfinished" />
+      <translation>Redémarrez l'application pour continuer à utiliser la nouvelle interface.</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/settings_proxy.py" line="185" />
       <source>Restart the app to switch back to the classic interface.</source>
-      <translation type="unfinished" />
+      <translation>Redémarrez l'application pour revenir à l'interface classique.</translation>
     </message>
   </context>
   <context>

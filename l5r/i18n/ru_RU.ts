@@ -212,27 +212,27 @@ You've reached the XP Limit.</source>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="82" />
       <source>Character</source>
-      <translation type="unfinished">Персонаж</translation>
+      <translation>Персонаж</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="83" />
       <source>Skills</source>
-      <translation type="unfinished">Умения</translation>
+      <translation>Умения</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="84" />
       <source>Merits/Flaws</source>
-      <translation type="unfinished" />
+      <translation>Достоинства/Недостатки</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="85" />
       <source>Techniques</source>
-      <translation type="unfinished">Техники</translation>
+      <translation>Техники</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="86" />
       <source>Spells</source>
-      <translation type="unfinished">Заклинания</translation>
+      <translation>Заклинания</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="87" />
@@ -247,27 +247,27 @@ You've reached the XP Limit.</source>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="89" />
       <source>Tattoos</source>
-      <translation type="unfinished" />
+      <translation>Татуировки</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="90" />
       <source>Advancements</source>
-      <translation type="unfinished">Улучшения</translation>
+      <translation>Улучшения</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="91" />
       <source>Weapons</source>
-      <translation type="unfinished">Оружие</translation>
+      <translation>Оружие</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="92" />
       <source>Miscellanea</source>
-      <translation type="unfinished" />
+      <translation>Разное</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="93" />
       <source>Notes</source>
-      <translation type="unfinished">Заметки</translation>
+      <translation>Заметки</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="94" />
@@ -277,28 +277,28 @@ You've reached the XP Limit.</source>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="95" />
       <source>About</source>
-      <translation type="unfinished">Справка</translation>
+      <translation>Справка</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="120" />
       <source>Damage Roll</source>
-      <translation type="unfinished" />
+      <translation>Бросок урона</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="123" />
       <location filename="../qmlui/proxies/app_controller.py" line="120" />
       <source>Weapon</source>
-      <translation type="unfinished">Оружие</translation>
+      <translation>Оружие</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="121" />
       <source>Any Roll</source>
-      <translation type="unfinished" />
+      <translation>Любой бросок</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="122" />
       <source>Skill Roll</source>
-      <translation type="unfinished" />
+      <translation>Бросок навыка</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="122" />
@@ -308,12 +308,12 @@ You've reached the XP Limit.</source>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="123" />
       <source>Attack Roll</source>
-      <translation type="unfinished" />
+      <translation>Бросок атаки</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="124" />
       <source>Trait Roll</source>
-      <translation type="unfinished" />
+      <translation>Бросок черты</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="124" />
@@ -323,7 +323,7 @@ You've reached the XP Limit.</source>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="125" />
       <source>Ring Roll</source>
-      <translation type="unfinished" />
+      <translation>Бросок кольца</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="125" />
@@ -333,63 +333,63 @@ You've reached the XP Limit.</source>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="126" />
       <source>Health Rank</source>
-      <translation type="unfinished" />
+      <translation>Ранг здоровья</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="127" />
       <source>Armor TN</source>
-      <translation type="unfinished">УС Брони</translation>
+      <translation>УС Брони</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="128" />
       <source>Armor RD</source>
-      <translation type="unfinished" />
+      <translation>Снижение Брони</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="129" />
       <source>Initiative</source>
-      <translation type="unfinished">Инициатива</translation>
+      <translation>Инициатива</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="130" />
       <source>Wound Penalty</source>
-      <translation type="unfinished" />
+      <translation>Штраф за ранение</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="307" />
       <source>Open Character</source>
-      <translation type="unfinished" />
+      <translation>Открыть персонажа</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="338" />
       <location filename="../qmlui/proxies/app_controller.py" line="309" />
       <source>L5R Character (*.l5r);;All Files (*)</source>
-      <translation type="unfinished" />
+      <translation>Персонаж L5R (*.l5r);;Все файлы (*)</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="336" />
       <source>Save Character</source>
-      <translation type="unfinished">Сохранить Персонажа</translation>
+      <translation>Сохранить Персонажа</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="423" />
       <source>Not enough XP</source>
-      <translation type="unfinished">Недостаточно Опыта</translation>
+      <translation>Недостаточно Опыта</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="424" />
       <source>You don't have enough experience points to complete this purchase.</source>
-      <translation type="unfinished" />
+      <translation>У вас недостаточно очков опыта для совершения этой покупки.</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="491" />
       <source>{0}, Skill {1}. Cost: {2} xp</source>
-      <translation type="unfinished">{0}, Умение {1}. цена: {2} ОО</translation>
+      <translation>{0}, Умение {1}. цена: {2} ОО</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="541" />
       <source>Any skill (rank {0}):</source>
-      <translation type="unfinished" />
+      <translation>Любой навык (ранг {0}):</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="554" />
@@ -416,7 +416,7 @@ You've reached the XP Limit.</source>
       <location filename="../qmlui/proxies/app_controller.py" line="1047" />
       <location filename="../qmlui/proxies/app_controller.py" line="962" />
       <source>{0} Rank {1}, XP Cost: {2}</source>
-      <translation type="unfinished">{0} Ранг {1}, Цена ОО: {2}</translation>
+      <translation>{0} Ранг {1}, Цена ОО: {2}</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="1270" />
@@ -427,7 +427,7 @@ You've reached the XP Limit.</source>
     <message>
       <location filename="../qmlui/proxies/app_controller.py" line="1455" />
       <source>New item</source>
-      <translation type="unfinished" />
+      <translation>Новый предмет</translation>
     </message>
   </context>
   <context>
@@ -625,12 +625,12 @@ You've reached the XP Limit.</source>
     <message>
       <location filename="../dialogs/itemseldlg.py" line="107" />
       <source>No Armor (Clothing)</source>
-      <translation type="unfinished" />
+      <translation>Без доспеха (одежда)</translation>
     </message>
     <message>
       <location filename="../dialogs/itemseldlg.py" line="137" />
       <source>Unarmored — only your reflexes and bearing turn a blow.</source>
-      <translation type="unfinished" />
+      <translation>Без доспеха — лишь ваши рефлексы и осанка отводят удар.</translation>
     </message>
     <message>
       <location filename="../dialogs/itemseldlg.py" line="148" />
@@ -871,7 +871,7 @@ You've reached the XP Limit.</source>
       <location filename="../ui/tabs/equipment.py" line="122" />
       <location filename="../ui/tabs/equipment.py" line="104" />
       <source>Equipment</source>
-      <translation type="unfinished" />
+      <translation>Снаряжение</translation>
     </message>
   </context>
   <context>
@@ -1932,17 +1932,17 @@ You've reached the XP Limit.</source>
     <message>
       <location filename="../dialogs/modifiersdlg.py" line="70" />
       <source>Detail</source>
-      <translation type="unfinished" />
+      <translation>Детали</translation>
     </message>
     <message>
       <location filename="../dialogs/modifiersdlg.py" line="71" />
       <source>Value</source>
-      <translation type="unfinished" />
+      <translation>Значение</translation>
     </message>
     <message>
       <location filename="../dialogs/modifiersdlg.py" line="72" />
       <source>Reason</source>
-      <translation type="unfinished" />
+      <translation>Причина</translation>
     </message>
     <message>
       <location filename="../dialogs/modifiersdlg.py" line="87" />
@@ -2014,17 +2014,17 @@ You've reached the XP Limit.</source>
     <message>
       <location filename="../models/modifiers.py" line="75" />
       <source>Detail</source>
-      <translation type="unfinished" />
+      <translation>Детали</translation>
     </message>
     <message>
       <location filename="../models/modifiers.py" line="76" />
       <source>Value</source>
-      <translation type="unfinished" />
+      <translation>Значение</translation>
     </message>
     <message>
       <location filename="../models/modifiers.py" line="77" />
       <source>Reason</source>
-      <translation type="unfinished" />
+      <translation>Причина</translation>
     </message>
   </context>
   <context>
@@ -2032,17 +2032,17 @@ You've reached the XP Limit.</source>
     <message>
       <location filename="../widgets/moneywidget.py" line="43" />
       <source>Koku</source>
-      <translation type="unfinished" />
+      <translation>Коку</translation>
     </message>
     <message>
       <location filename="../widgets/moneywidget.py" line="45" />
       <source>Bu</source>
-      <translation type="unfinished" />
+      <translation>Бу</translation>
     </message>
     <message>
       <location filename="../widgets/moneywidget.py" line="47" />
       <source>Zeni</source>
-      <translation type="unfinished" />
+      <translation>Дзэни</translation>
     </message>
   </context>
   <context>
@@ -2432,7 +2432,7 @@ what would you want to do?
     <message>
       <location filename="../models/perkviewmodel.py" line="53" />
       <source>Value</source>
-      <translation type="unfinished" />
+      <translation>Значение</translation>
     </message>
   </context>
   <context>
@@ -2766,17 +2766,17 @@ If you choose an advanced school or alternative path be sure to check the requir
       <location filename="../qmlui/proxies/settings_proxy.py" line="122" />
       <location filename="../qmlui/proxies/settings_proxy.py" line="111" />
       <source>The language will change the next time you start the app.</source>
-      <translation type="unfinished" />
+      <translation>Язык изменится при следующем запуске приложения.</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/settings_proxy.py" line="183" />
       <source>Restart the app to keep using the new interface.</source>
-      <translation type="unfinished" />
+      <translation>Перезапустите приложение, чтобы продолжить пользоваться новым интерфейсом.</translation>
     </message>
     <message>
       <location filename="../qmlui/proxies/settings_proxy.py" line="185" />
       <source>Restart the app to switch back to the classic interface.</source>
-      <translation type="unfinished" />
+      <translation>Перезапустите приложение, чтобы вернуться к классическому интерфейсу.</translation>
     </message>
   </context>
   <context>

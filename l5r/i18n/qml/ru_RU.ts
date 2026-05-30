@@ -32,43 +32,43 @@
     <name>AddArmorDialog</name>
     <message>
         <source>Don Armor</source>
-        <translation type="unfinished"></translation>
+        <translation>Надеть доспех</translation>
     </message>
     <message>
         <source>take up the harness that will turn a blow</source>
-        <translation type="unfinished"></translation>
+        <translation>наденьте доспех, что отведёт удар</translation>
     </message>
     <message>
         <source>Remove Armor</source>
-        <translation type="unfinished"></translation>
+        <translation>Снять доспех</translation>
     </message>
     <message>
         <source>Wear Armor</source>
-        <translation type="unfinished"></translation>
+        <translation>Надеть доспех</translation>
     </message>
     <message>
         <source>Choose an armour to wear.</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите доспех, который наденете.</translation>
     </message>
     <message>
         <source>Return to wearing no armour.</source>
-        <translation type="unfinished"></translation>
+        <translation>Вернитесь к ношению без доспеха.</translation>
     </message>
     <message>
         <source>Wear the %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Наденьте %1.</translation>
     </message>
     <message>
         <source>No Armor (Clothing)</source>
-        <translation type="unfinished"></translation>
+        <translation>Без доспеха (одежда)</translation>
     </message>
     <message>
         <source>Unarmored — only your reflexes and bearing turn a blow.</source>
-        <translation type="unfinished"></translation>
+        <translation>Без доспеха — лишь ваши рефлексы и осанка отводят удар.</translation>
     </message>
     <message>
         <source>seek an armour by name…</source>
-        <translation type="unfinished"></translation>
+        <translation>ищите доспех по названию…</translation>
     </message>
     <message>
         <source>(unnamed)</source>
@@ -76,7 +76,7 @@
     </message>
     <message>
         <source>TN +%1 · RD %2</source>
-        <translation type="unfinished"></translation>
+        <translation>УС +%1 · Сн %2</translation>
     </message>
     <message>
         <source>the armoury is empty — import a datapack</source>
@@ -88,11 +88,11 @@
     </message>
     <message>
         <source>Choose an armour from the list at your left.</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите доспех из списка слева.</translation>
     </message>
     <message>
         <source>Its TN and reduction fold into your defence the moment you put it on.</source>
-        <translation type="unfinished"></translation>
+        <translation>Её УС и снижение входят в вашу защиту, как только вы её наденете.</translation>
     </message>
     <message>
         <source>Cost: %1</source>
@@ -100,11 +100,11 @@
     </message>
     <message>
         <source>Armor TN</source>
-        <translation type="unfinished"></translation>
+        <translation>УС Брони</translation>
     </message>
     <message>
         <source>Reduction</source>
-        <translation type="unfinished"></translation>
+        <translation>Снижение</translation>
     </message>
     <message>
         <source>No special effect recorded in the datapack.</source>
@@ -1069,19 +1069,19 @@
     <name>CustomArmorDialog</name>
     <message>
         <source>Edit Armor</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменить доспех</translation>
     </message>
     <message>
         <source>Forge Armor</source>
-        <translation type="unfinished"></translation>
+        <translation>Выковать доспех</translation>
     </message>
     <message>
         <source>re-stat the harness you wear</source>
-        <translation type="unfinished"></translation>
+        <translation>перенастройте доспех, что носите</translation>
     </message>
     <message>
         <source>temper a harness to your own measure</source>
-        <translation type="unfinished"></translation>
+        <translation>выкуйте доспех по своей мерке</translation>
     </message>
     <message>
         <source>Save</source>
@@ -1089,23 +1089,23 @@
     </message>
     <message>
         <source>Wear</source>
-        <translation type="unfinished"></translation>
+        <translation>Надеть</translation>
     </message>
     <message>
         <source>Save your changes to this armour.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохраните изменения этого доспеха.</translation>
     </message>
     <message>
         <source>A custom armour replaces whatever you now wear.</source>
-        <translation type="unfinished"></translation>
+        <translation>Своя броня заменит ту, что вы сейчас носите.</translation>
     </message>
     <message>
         <source>BASE ARMOR</source>
-        <translation type="unfinished"></translation>
+        <translation>БАЗОВЫЙ ДОСПЕХ</translation>
     </message>
     <message>
         <source>Seeds the figures below — change them freely.</source>
-        <translation type="unfinished"></translation>
+        <translation>Заполняет значения ниже — меняйте их свободно.</translation>
     </message>
     <message>
         <source>Name</source>
@@ -1113,19 +1113,19 @@
     </message>
     <message>
         <source>name your armour…</source>
-        <translation type="unfinished"></translation>
+        <translation>назовите свой доспех…</translation>
     </message>
     <message>
         <source>Armor TN</source>
-        <translation type="unfinished"></translation>
+        <translation>УС Брони</translation>
     </message>
     <message>
         <source>e.g. 5</source>
-        <translation type="unfinished"></translation>
+        <translation>напр. 5</translation>
     </message>
     <message>
         <source>Reduction</source>
-        <translation type="unfinished"></translation>
+        <translation>Снижение</translation>
     </message>
     <message>
         <source>e.g. 3</source>
@@ -1137,7 +1137,7 @@
     </message>
     <message>
         <source>special qualities, provenance…</source>
-        <translation type="unfinished"></translation>
+        <translation>особые свойства, происхождение…</translation>
     </message>
 </context>
 <context>
@@ -1695,75 +1695,75 @@
     <name>MiscSection</name>
     <message>
         <source>Equipment</source>
-        <translation type="unfinished"></translation>
+        <translation>Снаряжение</translation>
     </message>
     <message>
         <source>the gear you carry into the field</source>
-        <translation type="unfinished"></translation>
+        <translation>снаряжение, что вы берёте в поход</translation>
     </message>
     <message>
         <source>1 item</source>
-        <translation type="unfinished"></translation>
+        <translation>1 предмет</translation>
     </message>
     <message>
         <source>%1 items</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 предметов</translation>
     </message>
     <message>
         <source>＋  Add Item</source>
-        <translation type="unfinished"></translation>
+        <translation>＋  Добавить предмет</translation>
     </message>
     <message>
         <source>Your pack is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ваша поклажа пуста.</translation>
     </message>
     <message>
         <source>Note down the everyday effects your samurai carries — travelling clothes, a bedroll, a writing kit, whatever the journey calls for.</source>
-        <translation type="unfinished"></translation>
+        <translation>Запишите повседневные вещи, что носит ваш самурай, — дорожную одежду, спальный коврик, письменные принадлежности, всё, что требует путь.</translation>
     </message>
     <message>
         <source>the coin you carry</source>
-        <translation type="unfinished"></translation>
+        <translation>монеты, что при вас</translation>
     </message>
     <message>
         <source>Koku</source>
-        <translation type="unfinished"></translation>
+        <translation>Коку</translation>
     </message>
     <message>
         <source>Bu</source>
-        <translation type="unfinished"></translation>
+        <translation>Бу</translation>
     </message>
     <message>
         <source>Zeni</source>
-        <translation type="unfinished"></translation>
+        <translation>Дзэни</translation>
     </message>
     <message>
         <source>Modifiers</source>
-        <translation type="unfinished"></translation>
+        <translation>Модификаторы</translation>
     </message>
     <message>
         <source>bonuses and penalties you bring to your rolls</source>
-        <translation type="unfinished"></translation>
+        <translation>бонусы и штрафы, что вы вносите в свои броски</translation>
     </message>
     <message>
         <source>1 modifier</source>
-        <translation type="unfinished"></translation>
+        <translation>1 модификатор</translation>
     </message>
     <message>
         <source>%1 modifiers</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 модификаторов</translation>
     </message>
     <message>
         <source>＋  Add Modifier</source>
-        <translation type="unfinished"></translation>
+        <translation>＋  Добавить модификатор</translation>
     </message>
     <message>
         <source>No modifiers set.</source>
-        <translation type="unfinished"></translation>
+        <translation>Модификаторы не заданы.</translation>
     </message>
     <message>
         <source>Record any standing bonus or penalty the rules don&apos;t track for you — an edge from a technique, a situational advantage, a house rule.</source>
-        <translation type="unfinished"></translation>
+        <translation>Запишите любой постоянный бонус или штраф, который правила не учитывают за вас, — преимущество от приёма, ситуативную выгоду, домашнее правило.</translation>
     </message>
     <message>
         <source>SCHOOL</source>
@@ -1771,50 +1771,50 @@
     </message>
     <message>
         <source>name this item…</source>
-        <translation type="unfinished"></translation>
+        <translation>назовите этот предмет…</translation>
     </message>
     <message>
         <source>Discard this item</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбросить этот предмет</translation>
     </message>
     <message>
         <source>(unnamed modifier)</source>
-        <translation type="unfinished"></translation>
+        <translation>(модификатор без названия)</translation>
     </message>
     <message>
         <source>VALUE</source>
-        <translation type="unfinished"></translation>
+        <translation>ЗНАЧЕНИЕ</translation>
     </message>
     <message>
         <source>APPLIED</source>
-        <translation type="unfinished"></translation>
+        <translation>ПРИМЕНЁН</translation>
     </message>
     <message>
         <source>Edit this modifier</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменить этот модификатор</translation>
     </message>
     <message>
         <source>Remove this modifier</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить этот модификатор</translation>
     </message>
 </context>
 <context>
     <name>ModifierDialog</name>
     <message>
         <source>Edit Modifier</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменить модификатор</translation>
     </message>
     <message>
         <source>Add a Modifier</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить модификатор</translation>
     </message>
     <message>
         <source>re-key a bonus or penalty you carry</source>
-        <translation type="unfinished"></translation>
+        <translation>перезадайте бонус или штраф, что при вас</translation>
     </message>
     <message>
         <source>note a bonus or penalty to your rolls</source>
-        <translation type="unfinished"></translation>
+        <translation>запишите бонус или штраф к вашим броскам</translation>
     </message>
     <message>
         <source>Save</source>
@@ -1826,51 +1826,51 @@
     </message>
     <message>
         <source>Name the %1 this modifier applies to.</source>
-        <translation type="unfinished"></translation>
+        <translation>Укажите %1, к которому применяется этот модификатор.</translation>
     </message>
     <message>
         <source>A modifier is figured into your rolls only while it is applied.</source>
-        <translation type="unfinished"></translation>
+        <translation>Модификатор учитывается в бросках, только пока он применён.</translation>
     </message>
     <message>
         <source>MODIFIES</source>
-        <translation type="unfinished"></translation>
+        <translation>ИЗМЕНЯЕТ</translation>
     </message>
     <message>
         <source>Detail</source>
-        <translation type="unfinished"></translation>
+        <translation>Детали</translation>
     </message>
     <message>
         <source>name the %1…</source>
-        <translation type="unfinished"></translation>
+        <translation>укажите %1…</translation>
     </message>
     <message>
         <source>not needed for this modifier</source>
-        <translation type="unfinished"></translation>
+        <translation>не требуется для этого модификатора</translation>
     </message>
     <message>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Значение</translation>
     </message>
     <message>
         <source>e.g. +2 or 1k0</source>
-        <translation type="unfinished"></translation>
+        <translation>напр. +2 или 1k0</translation>
     </message>
     <message>
         <source>Reason</source>
-        <translation type="unfinished"></translation>
+        <translation>Причина</translation>
     </message>
     <message>
         <source>why you have this edge…</source>
-        <translation type="unfinished"></translation>
+        <translation>почему у вас есть это преимущество…</translation>
     </message>
     <message>
         <source>Value is roll-and-keep with an optional flat bonus — “+2”, “1k0”, or “2k1+3”.</source>
-        <translation type="unfinished"></translation>
+        <translation>Значение — в формате «бросить и оставить» с необязательным фиксированным бонусом — “+2”, “1k0” или “2k1+3”.</translation>
     </message>
     <message>
         <source>APPLY NOW</source>
-        <translation type="unfinished"></translation>
+        <translation>ПРИМЕНИТЬ</translation>
     </message>
 </context>
 <context>
@@ -2342,7 +2342,7 @@
     <name>TattooSection</name>
     <message>
         <source>Tattoos</source>
-        <translation type="unfinished"></translation>
+        <translation>Татуировки</translation>
     </message>
     <message>
         <source>the living marks borne by the Togashi Order</source>
@@ -2532,43 +2532,43 @@
     </message>
     <message>
         <source>Arms &amp; Armor</source>
-        <translation type="unfinished"></translation>
+        <translation>Оружие и броня</translation>
     </message>
     <message>
         <source>Armor</source>
-        <translation type="unfinished"></translation>
+        <translation>Броня</translation>
     </message>
     <message>
         <source>＋  Wear</source>
-        <translation type="unfinished"></translation>
+        <translation>＋  Надеть</translation>
     </message>
     <message>
         <source>No armour worn — you fight unarmored.</source>
-        <translation type="unfinished"></translation>
+        <translation>Доспех не надет — вы сражаетесь без защиты.</translation>
     </message>
     <message>
         <source>(unnamed armour)</source>
-        <translation type="unfinished"></translation>
+        <translation>(доспех без названия)</translation>
     </message>
     <message>
         <source>Worn</source>
-        <translation type="unfinished"></translation>
+        <translation>Надет</translation>
     </message>
     <message>
         <source>Armor TN</source>
-        <translation type="unfinished"></translation>
+        <translation>УС Брони</translation>
     </message>
     <message>
         <source>Reduction</source>
-        <translation type="unfinished"></translation>
+        <translation>Снижение</translation>
     </message>
     <message>
         <source>Edit this armour</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменить этот доспех</translation>
     </message>
     <message>
         <source>Take off this armour</source>
-        <translation type="unfinished"></translation>
+        <translation>Снять этот доспех</translation>
     </message>
 </context>
 <context>

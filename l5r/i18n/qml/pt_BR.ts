@@ -32,83 +32,83 @@
     <name>AddArmorDialog</name>
     <message>
         <source>Don Armor</source>
-        <translation type="unfinished"></translation>
+        <translation>Vestir armadura</translation>
     </message>
     <message>
         <source>take up the harness that will turn a blow</source>
-        <translation type="unfinished"></translation>
+        <translation>vista a couraça que desviará um golpe</translation>
     </message>
     <message>
         <source>Remove Armor</source>
-        <translation type="unfinished"></translation>
+        <translation>Remover armadura</translation>
     </message>
     <message>
         <source>Wear Armor</source>
-        <translation type="unfinished"></translation>
+        <translation>Vestir Armadura</translation>
     </message>
     <message>
         <source>Choose an armour to wear.</source>
-        <translation type="unfinished"></translation>
+        <translation>Escolha uma armadura para vestir.</translation>
     </message>
     <message>
         <source>Return to wearing no armour.</source>
-        <translation type="unfinished"></translation>
+        <translation>Volte a não usar armadura.</translation>
     </message>
     <message>
         <source>Wear the %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vista %1.</translation>
     </message>
     <message>
         <source>No Armor (Clothing)</source>
-        <translation type="unfinished"></translation>
+        <translation>Sem armadura (roupas)</translation>
     </message>
     <message>
         <source>Unarmored — only your reflexes and bearing turn a blow.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sem armadura — apenas seus reflexos e sua postura desviam um golpe.</translation>
     </message>
     <message>
         <source>seek an armour by name…</source>
-        <translation type="unfinished"></translation>
+        <translation>busque uma armadura pelo nome…</translation>
     </message>
     <message>
         <source>(unnamed)</source>
-        <translation type="unfinished">(sem nome)</translation>
+        <translation>(sem nome)</translation>
     </message>
     <message>
         <source>TN +%1 · RD %2</source>
-        <translation type="unfinished"></translation>
+        <translation>NA +%1 · RD %2</translation>
     </message>
     <message>
         <source>the armoury is empty — import a datapack</source>
-        <translation type="unfinished">o arsenal está vazio — importe um datapack</translation>
+        <translation>o arsenal está vazio — importe um datapack</translation>
     </message>
     <message>
         <source>nothing matches that brushstroke</source>
-        <translation type="unfinished">nada corresponde a essa pincelada</translation>
+        <translation>nada corresponde a essa pincelada</translation>
     </message>
     <message>
         <source>Choose an armour from the list at your left.</source>
-        <translation type="unfinished"></translation>
+        <translation>Escolha uma armadura na lista à esquerda.</translation>
     </message>
     <message>
         <source>Its TN and reduction fold into your defence the moment you put it on.</source>
-        <translation type="unfinished"></translation>
+        <translation>Seu NA e sua redução entram na sua defesa assim que você a veste.</translation>
     </message>
     <message>
         <source>Cost: %1</source>
-        <translation type="unfinished">Custo: %1</translation>
+        <translation>Custo: %1</translation>
     </message>
     <message>
         <source>Armor TN</source>
-        <translation type="unfinished"></translation>
+        <translation>NA de Armadura</translation>
     </message>
     <message>
         <source>Reduction</source>
-        <translation type="unfinished"></translation>
+        <translation>Redução</translation>
     </message>
     <message>
         <source>No special effect recorded in the datapack.</source>
-        <translation type="unfinished">Nenhum efeito especial registrado no datapack.</translation>
+        <translation>Nenhum efeito especial registrado no datapack.</translation>
     </message>
 </context>
 <context>
@@ -1069,75 +1069,75 @@
     <name>CustomArmorDialog</name>
     <message>
         <source>Edit Armor</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar armadura</translation>
     </message>
     <message>
         <source>Forge Armor</source>
-        <translation type="unfinished"></translation>
+        <translation>Forjar armadura</translation>
     </message>
     <message>
         <source>re-stat the harness you wear</source>
-        <translation type="unfinished"></translation>
+        <translation>redefina a couraça que você veste</translation>
     </message>
     <message>
         <source>temper a harness to your own measure</source>
-        <translation type="unfinished"></translation>
+        <translation>tempere uma couraça à sua medida</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished">Salvar</translation>
+        <translation>Salvar</translation>
     </message>
     <message>
         <source>Wear</source>
-        <translation type="unfinished"></translation>
+        <translation>Vestir</translation>
     </message>
     <message>
         <source>Save your changes to this armour.</source>
-        <translation type="unfinished"></translation>
+        <translation>Salve suas alterações nesta armadura.</translation>
     </message>
     <message>
         <source>A custom armour replaces whatever you now wear.</source>
-        <translation type="unfinished"></translation>
+        <translation>Uma armadura personalizada substitui a que você veste agora.</translation>
     </message>
     <message>
         <source>BASE ARMOR</source>
-        <translation type="unfinished"></translation>
+        <translation>ARMADURA BASE</translation>
     </message>
     <message>
         <source>Seeds the figures below — change them freely.</source>
-        <translation type="unfinished"></translation>
+        <translation>Preenche os valores abaixo — altere-os à vontade.</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Nome</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <source>name your armour…</source>
-        <translation type="unfinished"></translation>
+        <translation>dê um nome à sua armadura…</translation>
     </message>
     <message>
         <source>Armor TN</source>
-        <translation type="unfinished"></translation>
+        <translation>NA de Armadura</translation>
     </message>
     <message>
         <source>e.g. 5</source>
-        <translation type="unfinished">ex.: 5</translation>
+        <translation>ex.: 5</translation>
     </message>
     <message>
         <source>Reduction</source>
-        <translation type="unfinished"></translation>
+        <translation>Redução</translation>
     </message>
     <message>
         <source>e.g. 3</source>
-        <translation type="unfinished">ex.: 3</translation>
+        <translation>ex.: 3</translation>
     </message>
     <message>
         <source>NOTES</source>
-        <translation type="unfinished">NOTAS</translation>
+        <translation>NOTAS</translation>
     </message>
     <message>
         <source>special qualities, provenance…</source>
-        <translation type="unfinished"></translation>
+        <translation>qualidades especiais, procedência…</translation>
     </message>
 </context>
 <context>
@@ -1695,182 +1695,182 @@
     <name>MiscSection</name>
     <message>
         <source>Equipment</source>
-        <translation type="unfinished"></translation>
+        <translation>Equipamento</translation>
     </message>
     <message>
         <source>the gear you carry into the field</source>
-        <translation type="unfinished"></translation>
+        <translation>o equipamento que você leva a campo</translation>
     </message>
     <message>
         <source>1 item</source>
-        <translation type="unfinished"></translation>
+        <translation>1 item</translation>
     </message>
     <message>
         <source>%1 items</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 itens</translation>
     </message>
     <message>
         <source>＋  Add Item</source>
-        <translation type="unfinished"></translation>
+        <translation>＋  Adicionar item</translation>
     </message>
     <message>
         <source>Your pack is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sua mochila está vazia.</translation>
     </message>
     <message>
         <source>Note down the everyday effects your samurai carries — travelling clothes, a bedroll, a writing kit, whatever the journey calls for.</source>
-        <translation type="unfinished"></translation>
+        <translation>Anote os pertences do dia a dia que seu samurai carrega — roupas de viagem, uma cama de dormir, um kit de escrita, o que a jornada exigir.</translation>
     </message>
     <message>
         <source>the coin you carry</source>
-        <translation type="unfinished"></translation>
+        <translation>o dinheiro que você carrega</translation>
     </message>
     <message>
         <source>Koku</source>
-        <translation type="unfinished"></translation>
+        <translation>Koku</translation>
     </message>
     <message>
         <source>Bu</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu</translation>
     </message>
     <message>
         <source>Zeni</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeni</translation>
     </message>
     <message>
         <source>Modifiers</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificadores</translation>
     </message>
     <message>
         <source>bonuses and penalties you bring to your rolls</source>
-        <translation type="unfinished"></translation>
+        <translation>bônus e penalidades que você aplica às suas rolagens</translation>
     </message>
     <message>
         <source>1 modifier</source>
-        <translation type="unfinished"></translation>
+        <translation>1 modificador</translation>
     </message>
     <message>
         <source>%1 modifiers</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 modificadores</translation>
     </message>
     <message>
         <source>＋  Add Modifier</source>
-        <translation type="unfinished"></translation>
+        <translation>＋  Adicionar modificador</translation>
     </message>
     <message>
         <source>No modifiers set.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nenhum modificador definido.</translation>
     </message>
     <message>
         <source>Record any standing bonus or penalty the rules don&apos;t track for you — an edge from a technique, a situational advantage, a house rule.</source>
-        <translation type="unfinished"></translation>
+        <translation>Registre qualquer bônus ou penalidade permanente que as regras não controlam por você — uma vantagem de uma técnica, um benefício situacional, uma regra da casa.</translation>
     </message>
     <message>
         <source>SCHOOL</source>
-        <translation type="unfinished">ESCOLA</translation>
+        <translation>ESCOLA</translation>
     </message>
     <message>
         <source>name this item…</source>
-        <translation type="unfinished"></translation>
+        <translation>dê um nome a este item…</translation>
     </message>
     <message>
         <source>Discard this item</source>
-        <translation type="unfinished"></translation>
+        <translation>Descartar este item</translation>
     </message>
     <message>
         <source>(unnamed modifier)</source>
-        <translation type="unfinished"></translation>
+        <translation>(modificador sem nome)</translation>
     </message>
     <message>
         <source>VALUE</source>
-        <translation type="unfinished"></translation>
+        <translation>VALOR</translation>
     </message>
     <message>
         <source>APPLIED</source>
-        <translation type="unfinished"></translation>
+        <translation>APLICADO</translation>
     </message>
     <message>
         <source>Edit this modifier</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar este modificador</translation>
     </message>
     <message>
         <source>Remove this modifier</source>
-        <translation type="unfinished"></translation>
+        <translation>Remover este modificador</translation>
     </message>
 </context>
 <context>
     <name>ModifierDialog</name>
     <message>
         <source>Edit Modifier</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar modificador</translation>
     </message>
     <message>
         <source>Add a Modifier</source>
-        <translation type="unfinished"></translation>
+        <translation>Adicionar um modificador</translation>
     </message>
     <message>
         <source>re-key a bonus or penalty you carry</source>
-        <translation type="unfinished"></translation>
+        <translation>redefina um bônus ou penalidade que você carrega</translation>
     </message>
     <message>
         <source>note a bonus or penalty to your rolls</source>
-        <translation type="unfinished"></translation>
+        <translation>anote um bônus ou penalidade às suas rolagens</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished">Salvar</translation>
+        <translation>Salvar</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Adicionar</translation>
+        <translation>Adicionar</translation>
     </message>
     <message>
         <source>Name the %1 this modifier applies to.</source>
-        <translation type="unfinished"></translation>
+        <translation>Indique o %1 ao qual este modificador se aplica.</translation>
     </message>
     <message>
         <source>A modifier is figured into your rolls only while it is applied.</source>
-        <translation type="unfinished"></translation>
+        <translation>Um modificador entra nas suas rolagens apenas enquanto está aplicado.</translation>
     </message>
     <message>
         <source>MODIFIES</source>
-        <translation type="unfinished"></translation>
+        <translation>MODIFICA</translation>
     </message>
     <message>
         <source>Detail</source>
-        <translation type="unfinished"></translation>
+        <translation>Detalhe</translation>
     </message>
     <message>
         <source>name the %1…</source>
-        <translation type="unfinished"></translation>
+        <translation>indique o %1…</translation>
     </message>
     <message>
         <source>not needed for this modifier</source>
-        <translation type="unfinished"></translation>
+        <translation>não necessário para este modificador</translation>
     </message>
     <message>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Valor</translation>
     </message>
     <message>
         <source>e.g. +2 or 1k0</source>
-        <translation type="unfinished"></translation>
+        <translation>ex.: +2 ou 1k0</translation>
     </message>
     <message>
         <source>Reason</source>
-        <translation type="unfinished"></translation>
+        <translation>Razão</translation>
     </message>
     <message>
         <source>why you have this edge…</source>
-        <translation type="unfinished"></translation>
+        <translation>por que você tem essa vantagem…</translation>
     </message>
     <message>
         <source>Value is roll-and-keep with an optional flat bonus — “+2”, “1k0”, or “2k1+3”.</source>
-        <translation type="unfinished"></translation>
+        <translation>O valor é em rolar-e-manter com um bônus fixo opcional — “+2”, “1k0” ou “2k1+3”.</translation>
     </message>
     <message>
         <source>APPLY NOW</source>
-        <translation type="unfinished"></translation>
+        <translation>APLICAR AGORA</translation>
     </message>
 </context>
 <context>
@@ -2536,43 +2536,43 @@
     </message>
     <message>
         <source>Arms &amp; Armor</source>
-        <translation type="unfinished"></translation>
+        <translation>Armas &amp; Armadura</translation>
     </message>
     <message>
         <source>Armor</source>
-        <translation type="unfinished"></translation>
+        <translation>Armadura</translation>
     </message>
     <message>
         <source>＋  Wear</source>
-        <translation type="unfinished"></translation>
+        <translation>＋  Vestir</translation>
     </message>
     <message>
         <source>No armour worn — you fight unarmored.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nenhuma armadura vestida — você luta sem proteção.</translation>
     </message>
     <message>
         <source>(unnamed armour)</source>
-        <translation type="unfinished"></translation>
+        <translation>(armadura sem nome)</translation>
     </message>
     <message>
         <source>Worn</source>
-        <translation type="unfinished"></translation>
+        <translation>Vestida</translation>
     </message>
     <message>
         <source>Armor TN</source>
-        <translation type="unfinished"></translation>
+        <translation>NA de Armadura</translation>
     </message>
     <message>
         <source>Reduction</source>
-        <translation type="unfinished"></translation>
+        <translation>Redução</translation>
     </message>
     <message>
         <source>Edit this armour</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar esta armadura</translation>
     </message>
     <message>
         <source>Take off this armour</source>
-        <translation type="unfinished"></translation>
+        <translation>Remover esta armadura</translation>
     </message>
 </context>
 <context>
