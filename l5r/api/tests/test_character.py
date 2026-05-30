@@ -158,3 +158,48 @@ class TestCharacterBll(unittest.TestCase):
                 'test_tech_1',
             ]
         )
+
+    def test_join_new_school(self):
+        """rankadv.join_new adds a SECOND school (multiclass): both schools
+        are tracked, the current school becomes the newly joined one, and
+        its school rank is 1. This is the branch the QML joinNewSchool slot
+        drives -- joinNewSchool simply calls join_new (+ an optional merit).
+        """
+        import l5r.api.character.rankadv
+        import l5r.api.character.schools
+
+        # a second basic school the character can multiclass into
+        second = School()
+        second.id = 'test_school_2'
+        second.name = u'test_school_2'
+        second.clanid = 'test_clan_2'
+        second.trait = 'reflexes'
+        second.affinity = None
+        second.deficiency = None
+        second.honor = 0.0
+        second.kihos = SchoolKiho()
+        second.tattoos = SchoolTattoo()
+        s2_tech = SchoolTech()
+        s2_tech.id = 'test_tech_s2_1'
+        s2_tech.rank = 1
+        second.tags = []
+        second.skills = []
+        second.skills_pc = []
+        second.techs = [s2_tech]
+        second.spells = []
+        second.spells_pc = []
+        second.outfit = []
+        second.money = [0] * 3
+        second.require = []
+        second.perks = []
+        api.data.model().schools.append(second)
+
+        api.character.schools.set_first('test_school_1')
+        api.character.rankadv.join_new('test_school_2')
+
+        self.assertEqual(
+            sorted(['test_school_1', 'test_school_2']),
+            sorted(api.character.schools.get_all()))
+        self.assertEqual('test_school_2', api.character.schools.get_current())
+        self.assertEqual(1, api.character.schools.get_school_rank('test_school_2'))
+        self.assertEqual(1, api.character.schools.get_school_rank('test_school_1'))

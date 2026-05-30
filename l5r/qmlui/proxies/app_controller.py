@@ -24,6 +24,7 @@ from qtpy.QtWidgets import QFileDialog, QMessageBox
 
 import l5r.api as api
 import l5r.api.character
+import l5r.api.character.merits
 import l5r.api.character.powers
 import l5r.api.character.rankadv
 import l5r.api.character.schools
@@ -917,11 +918,11 @@ class AppController(QObject):
     def advanceRankInfo(self):
         """Drives the QML AdvanceRankDialog's confirmation copy -- the
         legacy NextRankDlg 'go on' branch: advance in the current school,
-        or (when on an alternate path) resume the former school. Multiclass
-        ('join a new school') is not surfaced here yet, so when the only
-        way forward is to join a new school -- on a path with no former
-        school to return to -- `canContinue` is False and the dialog
-        explains why advancing is unavailable."""
+        or (when on an alternate path) resume the former school.
+        `canContinue` is False only on a path with no former (non-path)
+        school to fall back to -- the dialog then disables Advance but
+        still offers the join-a-new-school path (`canJoinNewSchool`),
+        which is always available."""
         pc = api.character.model()
         if pc is None:
             return {}
@@ -946,20 +947,24 @@ class AppController(QObject):
         can_continue = (not on_path) or (former is not None)
 
         return {
-            "nextRank":      next_rank,
-            "onPath":        on_path,
-            "currentSchool": current_name,
-            "formerSchool":  former_name,
-            "canContinue":   can_continue,
+            "nextRank":         next_rank,
+            "onPath":           on_path,
+            "currentSchool":    current_name,
+            "formerSchool":     former_name,
+            "canContinue":      can_continue,
+            # Multiclass is always an option at a rank boundary -- the
+            # dialog offers it as a secondary path even in the dead-end
+            # case above (a path with no former school to resume).
+            "canJoinNewSchool": True,
         }
 
     @Slot()
     def advanceRank(self):
         """Advance in the current school, or resume the former school when
         on an alternate path -- the legacy NextRankDlg 'go on' branch.
-        Multiclass is deferred. Guards on availability (advance_rank assumes
-        a pending rank-up) and owns the dirty flag (the rankadv helpers
-        append the advancement directly and do not)."""
+        Guards on availability (advance_rank assumes a pending rank-up)
+        and owns the dirty flag (the rankadv helpers append the
+        advancement directly and do not)."""
         if api.character.model() is None:
             return
         if api.character.insight_rank() <= api.character.insight_rank(strict=True):
@@ -973,6 +978,86 @@ class AppController(QObject):
         if res:
             api.character.set_dirty_flag(True)
             api.character.notify_character_refreshed()
+
+    @Slot(str, str, result="QVariantList")
+    def schoolsForJoin(self, clan_id, category):
+        """School records for the QML JoinSchoolDialog, bucketed by the
+        category the player chose: 'base' (a new school), 'advanced' (an
+        advanced school) or 'path' (an alternate path). Mirrors the legacy
+        SchoolChooserWidget.get_filtered_school_list, but the QML flow
+        picks ONE category up front rather than toggling three checkboxes.
+        Filtered by clan when one is given and serialised with
+        _school_record (the same shape FirstSchoolChooserDialog consumes)."""
+        if api.character.model() is None:
+            return []
+        if category == "advanced":
+            schools = api.data.schools.get_advanced()
+        elif category == "path":
+            schools = api.data.schools.get_paths()
+        else:
+            schools = api.data.schools.get_base()
+        if clan_id:
+            schools = [s for s in schools if s.clanid == clan_id]
+        return [_school_record(s)
+                for s in sorted(schools, key=lambda x: x.name)]
+
+    @Slot(str, result="QVariantList")
+    def schoolRequirements(self, school_id):
+        """The join requirements for a school, as a checklist for the QML
+        JoinSchoolDialog: each entry is {text, satisfied, rolePlay}. Hard
+        requirements (a prior school rank, a trait minimum, ...) are
+        evaluated read-only against the live character (✓/✗); 'more'
+        requirements are role-play notes the player must acknowledge by
+        hand (rolePlay True, satisfied starts False so the dialog can gate
+        Accept on the player ticking them). Same evaluation as
+        RequirementsWidget.set_requirements -- Requirement.match(snapshot,
+        datastore) over a CharacterSnapshot."""
+        pc = api.character.model()
+        if pc is None or not school_id:
+            return []
+        snap = l5r.models.CharacterSnapshot(pc)
+        ds = api.data.model()
+        out = []
+        for r in api.data.schools.get_requirements(school_id) or []:
+            role_play = (r.type == 'more')
+            out.append({
+                "text":      r.text or "",
+                "rolePlay":  role_play,
+                "satisfied": False if role_play else bool(r.match(snap, ds)),
+            })
+        return out
+
+    @Slot(result="QVariantMap")
+    def multipleSchoolsInfo(self):
+        """Cost + affordability of the optional 'Multiple Schools'
+        advantage the player may buy alongside a multiclass join (the
+        legacy SchoolChooserWidget option). Soft data only: the QML shows
+        the cost and a gentle 'not enough XP' note but, per the
+        house-rules-friendly philosophy of the QML UI (same as
+        inscribePerk and spell memorization), does not block the join."""
+        cost = int(api.data.merits.get_rank_cost('multiple_schools', 1) or 0)
+        return {
+            "cost":       cost,
+            "affordable": api.character.xp_left() >= cost,
+        }
+
+    @Slot(str, bool)
+    def joinNewSchool(self, school_id, buy_multiple_schools):
+        """Join a new school (multiclass) -- the legacy SchoolChooserDialog
+        'Join a new school' branch. rankadv.join_new grants the new
+        school's rank-1 technique plus its spell/kiho bonus and
+        affinity/deficiency (and, for an alternate path, records the school
+        it replaces); the optional 'Multiple Schools' advantage is bought
+        alongside it. The rankadv helper appends the advancement but does
+        not own the dirty flag (like advanceRank), so set it here once both
+        mutations are in."""
+        if api.character.model() is None or not school_id:
+            return
+        api.character.rankadv.join_new(school_id)
+        if buy_multiple_schools:
+            api.character.merits.add('multiple_schools')
+        api.character.set_dirty_flag(True)
+        api.character.notify_character_refreshed()
 
     # --- merits / flaws ----------------------------------------------
 

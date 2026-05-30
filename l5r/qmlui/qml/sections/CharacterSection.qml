@@ -111,6 +111,12 @@ ColumnLayout {
     }
     Dialogs.AdvanceRankDialog {
         id: advanceRankDlg
+        // Multiclass is its own larger flow; the rank-up confirm hands off
+        // to the school chooser rather than carrying it inline.
+        onRequestJoinSchool: joinSchoolDlg.present()
+    }
+    Dialogs.JoinSchoolDialog {
+        id: joinSchoolDlg
     }
 
     // -----------------------------------------------------------------
