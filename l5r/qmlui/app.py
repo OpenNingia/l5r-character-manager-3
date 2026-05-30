@@ -13,7 +13,7 @@
 import os
 from pathlib import Path
 
-from qtpy.QtCore import QUrl
+from qtpy.QtCore import QTranslator, QUrl
 from qtpy.QtGui import QFont, QFontDatabase
 from qtpy.QtQml import QQmlApplicationEngine
 
@@ -23,6 +23,7 @@ from l5r.qmlui.proxies.app_controller import AppController
 from l5r.qmlui.proxies.pc_proxy import PcProxy
 from l5r.qmlui.proxies.settings_proxy import SettingsProxy
 from l5r.util import log
+from l5r.util.fsutil import get_app_file
 from l5r.util.settings import L5RCMSettings
 
 
@@ -94,6 +95,29 @@ def _apply_body_font(qapp):
     qapp.setFont(body)
 
 
+def _install_qml_translator(qapp, locale):
+    """Install the QML UI's translations.
+
+    QML ``qsTr()`` strings resolve against translators installed on the
+    QApplication. ``l5r.main.main()`` already installed the legacy
+    ``<locale>.qm`` (which covers the Python ``tr()`` / ``api.tr()``
+    strings); this adds the QML-only ``qml_<locale>.qm`` produced by
+    ``tools/scripts/update_translations.py``. The two are kept separate
+    because their lupdate extractors disagree on translation contexts.
+
+    A missing or empty file is harmless: ``load()`` returns False and
+    ``qsTr`` falls back to the source (English) text. The translator is
+    pinned on ``qapp`` so it outlives this call.
+    """
+    translator = QTranslator(qapp)
+    if translator.load(get_app_file(u"i18n/qml_{0}".format(locale))):
+        qapp.installTranslator(translator)
+        qapp._l5r_qml_translator = translator
+        log.app.debug(u"QML UI: loaded QML translations for %s", locale)
+    else:
+        log.app.debug(u"QML UI: no QML translations for %s (qsTr -> source)", locale)
+
+
 def run_qml_app(qapp, locale, startup_action):
     """Launch the QML UI.
 
@@ -127,6 +151,7 @@ def run_qml_app(qapp, locale, startup_action):
     os.environ["QT_QUICK_CONTROLS_STYLE"] = "Fusion"
 
     api.set_translation_context(qapp)
+    _install_qml_translator(qapp, locale)
     _load_bundled_fonts()
     _apply_body_font(qapp)
     _bootstrap_data(locale)
