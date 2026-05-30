@@ -1054,7 +1054,7 @@
     </message>
     <message>
         <source>e.g. 250&apos;</source>
-        <translation>p. ej. 250'</translation>
+        <translation>p. ej. 250&apos;</translation>
     </message>
     <message>
         <source>Weapon Strength</source>

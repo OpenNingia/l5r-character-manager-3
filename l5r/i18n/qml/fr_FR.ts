@@ -9,7 +9,7 @@
     </message>
     <message>
         <source>&lt;p&gt;&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Report bugs and send in your ideas &lt;a href=&quot;%3&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;To learn more about Legend of the Five Rings, visit &lt;a href=&quot;%4&quot;&gt;the L5R RPG home page&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;All rights on Legend of the Five Rings RPG belong to &lt;a href=&quot;%5&quot;&gt;Fantasy Flight Games&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Get the latest data packs &lt;a href=&quot;%6&quot;&gt;on GitHub&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Signalez des bugs et envoyez-nous vos idées &lt;a href=&quot;%3&quot;&gt;ici&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Pour en savoir plus sur Legend of the Five Rings, visitez &lt;a href=&quot;%4&quot;&gt;la page d'accueil du JdR L5R&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Tous les droits sur le JdR Legend of the Five Rings appartiennent à &lt;a href=&quot;%5&quot;&gt;Fantasy Flight Games&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Téléchargez les derniers data packs &lt;a href=&quot;%6&quot;&gt;sur GitHub&lt;/a&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Signalez des bugs et envoyez-nous vos idées &lt;a href=&quot;%3&quot;&gt;ici&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Pour en savoir plus sur Legend of the Five Rings, visitez &lt;a href=&quot;%4&quot;&gt;la page d&apos;accueil du JdR L5R&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Tous les droits sur le JdR Legend of the Five Rings appartiennent à &lt;a href=&quot;%5&quot;&gt;Fantasy Flight Games&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Téléchargez les derniers data packs &lt;a href=&quot;%6&quot;&gt;sur GitHub&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Enjoying L5RCM? You can support its development.</source>
@@ -52,7 +52,7 @@
     </message>
     <message>
         <source>draw from the armoury what your hand can hold</source>
-        <translation>prends à l'armurerie ce que ta main peut tenir</translation>
+        <translation>prends à l&apos;armurerie ce que ta main peut tenir</translation>
     </message>
     <message>
         <source>Add Weapon</source>
@@ -64,7 +64,7 @@
     </message>
     <message>
         <source>Choose a weapon from the armoury.</source>
-        <translation>Choisis une arme dans l'armurerie.</translation>
+        <translation>Choisis une arme dans l&apos;armurerie.</translation>
     </message>
     <message>
         <source>Arrow</source>
@@ -80,7 +80,7 @@
     </message>
     <message>
         <source>the armoury is empty — import a datapack</source>
-        <translation>l'armurerie est vide — importe un datapack</translation>
+        <translation>l&apos;armurerie est vide — importe un datapack</translation>
     </message>
     <message>
         <source>nothing matches that brushstroke</source>
@@ -88,11 +88,11 @@
     </message>
     <message>
         <source>Choose a weapon from the armoury at your left.</source>
-        <translation>Choisis une arme dans l'armurerie à ta gauche.</translation>
+        <translation>Choisis une arme dans l&apos;armurerie à ta gauche.</translation>
     </message>
     <message>
         <source>Its attack and damage rolls are figured from your traits and the weapon&apos;s skill once it is on your rack.</source>
-        <translation>Ses jets d'attaque et de dégâts se calculent d'après tes traits et la compétence de l'arme, une fois posée sur ton râtelier.</translation>
+        <translation>Ses jets d&apos;attaque et de dégâts se calculent d&apos;après tes traits et la compétence de l&apos;arme, une fois posée sur ton râtelier.</translation>
     </message>
     <message>
         <source>Cost: %1</source>
@@ -151,7 +151,7 @@
     </message>
     <message>
         <source>You walk the path of %1. Advancing from here means joining a new school.</source>
-        <translation>Tu suis la voie de %1. Avancer d'ici signifie rejoindre une nouvelle école.</translation>
+        <translation>Tu suis la voie de %1. Avancer d&apos;ici signifie rejoindre une nouvelle école.</translation>
     </message>
     <message>
         <source>Its blessings — a new technique, and perhaps spells or kiho — follow once you decide.</source>
@@ -226,7 +226,7 @@
     </message>
     <message>
         <source>Ledger of Training</source>
-        <translation>Registre de l'entraînement</translation>
+        <translation>Registre de l&apos;entraînement</translation>
     </message>
     <message>
         <source>EXPERIENCE SPENT</source>
@@ -242,7 +242,7 @@
     </message>
     <message>
         <source>inked since the brush was first lifted</source>
-        <translation>couchées à l'encre depuis le premier coup de pinceau</translation>
+        <translation>couchées à l&apos;encre depuis le premier coup de pinceau</translation>
     </message>
     <message>
         <source>CURRENT RANK</source>
@@ -270,7 +270,7 @@
     </message>
     <message>
         <source>No advancements have yet been recorded for this samurai. Purchase a trait, skill, or technique on its own tab and the entry will appear here, atop the stack.</source>
-        <translation>Aucune progression n'a encore été consignée pour ce samouraï. Achète un trait, une compétence ou une technique dans l'onglet correspondant et l'entrée apparaîtra ici, en haut de la pile.</translation>
+        <translation>Aucune progression n&apos;a encore été consignée pour ce samouraï. Achète un trait, une compétence ou une technique dans l&apos;onglet correspondant et l&apos;entrée apparaîtra ici, en haut de la pile.</translation>
     </message>
     <message>
         <source>LATEST</source>
@@ -325,7 +325,7 @@
     </message>
     <message>
         <source>a form is yours only when body and spirit are ready for it</source>
-        <translation>une forme n'est tienne que lorsque le corps et l'esprit y sont prêts</translation>
+        <translation>une forme n&apos;est tienne que lorsque le corps et l&apos;esprit y sont prêts</translation>
     </message>
     <message>
         <source>Learn</source>
@@ -369,7 +369,7 @@
     </message>
     <message>
         <source>Dimmed forms lie beyond your present mastery — deepen the Ring they draw upon, or earn their requirements first.</source>
-        <translation>Les formes grisées sont au-delà de ta maîtrise actuelle — approfondis l'Anneau dont elles relèvent, ou remplis-en d'abord les conditions.</translation>
+        <translation>Les formes grisées sont au-delà de ta maîtrise actuelle — approfondis l&apos;Anneau dont elles relèvent, ou remplis-en d&apos;abord les conditions.</translation>
     </message>
     <message>
         <source>Mastery %1</source>
@@ -412,7 +412,7 @@
     </message>
     <message>
         <source>the disciplines of breath and spirit, kept by the devoted</source>
-        <translation>les disciplines du souffle et de l'esprit, gardées par les dévots</translation>
+        <translation>les disciplines du souffle et de l&apos;esprit, gardées par les dévots</translation>
     </message>
     <message>
         <source>Learn</source>
@@ -444,7 +444,7 @@
     </message>
     <message>
         <source>You follow none of the paths that may learn kiho</source>
-        <translation>Tu ne suis aucune des voies qui permettent d'apprendre des kiho</translation>
+        <translation>Tu ne suis aucune des voies qui permettent d&apos;apprendre des kiho</translation>
     </message>
     <message>
         <source>Only Monks, Ninja, and Shugenja may learn kiho.</source>
@@ -452,7 +452,7 @@
     </message>
     <message>
         <source>Your Ring or School rank is not yet deep enough.</source>
-        <translation>Ton rang d'Anneau ou d'École n'est pas encore assez élevé.</translation>
+        <translation>Ton rang d&apos;Anneau ou d&apos;École n&apos;est pas encore assez élevé.</translation>
     </message>
     <message>
         <source>seek a kiho by name…</source>
@@ -480,7 +480,7 @@
     </message>
     <message>
         <source>Dimmed kiho lie beyond your present discipline — walk the right path, deepen the Ring they draw upon, or rise in School rank first.</source>
-        <translation>Les kiho grisés sont au-delà de ta discipline actuelle — suis la bonne voie, approfondis l'Anneau dont ils relèvent, ou monte d'abord en rang d'École.</translation>
+        <translation>Les kiho grisés sont au-delà de ta discipline actuelle — suis la bonne voie, approfondis l&apos;Anneau dont ils relèvent, ou monte d&apos;abord en rang d&apos;École.</translation>
     </message>
     <message>
         <source>Mastery %1</source>
@@ -500,11 +500,11 @@
     </message>
     <message>
         <source>Granted free by your School rank.</source>
-        <translation>Accordé gratuitement par ton rang d'École.</translation>
+        <translation>Accordé gratuitement par ton rang d&apos;École.</translation>
     </message>
     <message>
         <source>Granted free by your School rank — %1 remaining.</source>
-        <translation>Accordé gratuitement par ton rang d'École — %1 restant(s).</translation>
+        <translation>Accordé gratuitement par ton rang d&apos;École — %1 restant(s).</translation>
     </message>
     <message>
         <source>Only Monks, Ninja, and Shugenja may learn kiho</source>
@@ -523,7 +523,7 @@
     </message>
     <message>
         <source>the first rank of any unknown skill costs experience</source>
-        <translation>le premier rang de toute compétence inconnue coûte de l'expérience</translation>
+        <translation>le premier rang de toute compétence inconnue coûte de l&apos;expérience</translation>
     </message>
     <message>
         <source>Add</source>
@@ -531,7 +531,7 @@
     </message>
     <message>
         <source>No further skills are available to learn.</source>
-        <translation>Aucune autre compétence n'est disponible à l'apprentissage.</translation>
+        <translation>Aucune autre compétence n&apos;est disponible à l&apos;apprentissage.</translation>
     </message>
     <message>
         <source>Skill</source>
@@ -594,7 +594,7 @@
     </message>
     <message>
         <source>a spell is yours to inscribe only when your understanding runs deep enough</source>
-        <translation>un sort n'est tien à inscrire que lorsque ta compréhension est assez profonde</translation>
+        <translation>un sort n&apos;est tien à inscrire que lorsque ta compréhension est assez profonde</translation>
     </message>
     <message>
         <source>Learn</source>
@@ -634,7 +634,7 @@
     </message>
     <message>
         <source>Dimmed spells lie beyond your present understanding — advance your Insight, or deepen the affinity your school grants, to bring them within reach.</source>
-        <translation>Les sorts grisés sont au-delà de ta compréhension actuelle — fais progresser ta Réputation, ou approfondis l'affinité que ton école accorde, pour les mettre à ta portée.</translation>
+        <translation>Les sorts grisés sont au-delà de ta compréhension actuelle — fais progresser ta Réputation, ou approfondis l&apos;affinité que ton école accorde, pour les mettre à ta portée.</translation>
     </message>
     <message>
         <source>Mastery %1</source>
@@ -670,7 +670,7 @@
     </message>
     <message>
         <source>WHAT IT REQUIRES</source>
-        <translation>CE QU'IL EXIGE</translation>
+        <translation>CE QU&apos;IL EXIGE</translation>
     </message>
     <message>
         <source>Mastery %1 — your understanding presently reaches Mastery %2</source>
@@ -717,7 +717,7 @@
     </message>
     <message>
         <source>Each mark is carved into living flesh and wakes to serve its bearer. They cost no experience to receive.</source>
-        <translation>Chaque marque est gravée dans la chair vive et s'éveille pour servir son porteur. Les recevoir ne coûte aucune expérience.</translation>
+        <translation>Chaque marque est gravée dans la chair vive et s&apos;éveille pour servir son porteur. Les recevoir ne coûte aucune expérience.</translation>
     </message>
     <message>
         <source>彫  SACRED MARK</source>
@@ -796,7 +796,7 @@
     </message>
     <message>
         <source>Shadowland Taint</source>
-        <translation>Souillure des Terres de l'Ombre</translation>
+        <translation>Souillure des Terres de l&apos;Ombre</translation>
     </message>
     <message>
         <source>Infamy</source>
@@ -808,7 +808,7 @@
     </message>
     <message>
         <source>you have an opportunity to decide your destiny</source>
-        <translation>tu as l'occasion de décider de ta destinée</translation>
+        <translation>tu as l&apos;occasion de décider de ta destinée</translation>
     </message>
     <message>
         <source>Advance Rank</source>
@@ -844,11 +844,11 @@
     </message>
     <message>
         <source>Exp. Points</source>
-        <translation>Points d'exp.</translation>
+        <translation>Points d&apos;exp.</translation>
     </message>
     <message>
         <source>Edit XP limit</source>
-        <translation>Modifier la limite d'XP</translation>
+        <translation>Modifier la limite d&apos;XP</translation>
     </message>
     <message>
         <source>Family</source>
@@ -916,7 +916,7 @@
     </message>
     <message>
         <source>ARMOR TN</source>
-        <translation>ND D'ARMURE</translation>
+        <translation>ND D&apos;ARMURE</translation>
     </message>
     <message>
         <source>armor</source>
@@ -928,7 +928,7 @@
     </message>
     <message>
         <source>Set Experience Limit</source>
-        <translation>Définir la limite d'expérience</translation>
+        <translation>Définir la limite d&apos;expérience</translation>
     </message>
     <message>
         <source>the ceiling the chronicle may spend</source>
@@ -940,18 +940,18 @@
     </message>
     <message>
         <source>XP limit</source>
-        <translation>limite d'XP</translation>
+        <translation>limite d&apos;XP</translation>
     </message>
 </context>
 <context>
     <name>ChooseSchoolSkillsDialog</name>
     <message>
         <source>Choose School Skills</source>
-        <translation>Choisir les compétences d'école</translation>
+        <translation>Choisir les compétences d&apos;école</translation>
     </message>
     <message>
         <source>your school grants you the choice of certain skills</source>
-        <translation>ton école t'accorde le choix de certaines compétences</translation>
+        <translation>ton école t&apos;accorde le choix de certaines compétences</translation>
     </message>
     <message>
         <source>Confirm</source>
@@ -963,11 +963,11 @@
     </message>
     <message>
         <source>Choose with care — these become your school skills.</source>
-        <translation>Choisis avec soin — ce seront tes compétences d'école.</translation>
+        <translation>Choisis avec soin — ce seront tes compétences d&apos;école.</translation>
     </message>
     <message>
         <source>There are no school skills left to choose.</source>
-        <translation>Il ne reste aucune compétence d'école à choisir.</translation>
+        <translation>Il ne reste aucune compétence d&apos;école à choisir.</translation>
     </message>
     <message>
         <source>No eligible skills remain for this choice.</source>
@@ -986,7 +986,7 @@
     <name>CustomWeaponDialog</name>
     <message>
         <source>Edit Weapon</source>
-        <translation>Modifier l'arme</translation>
+        <translation>Modifier l&apos;arme</translation>
     </message>
     <message>
         <source>Forge a Weapon</source>
@@ -994,7 +994,7 @@
     </message>
     <message>
         <source>re-stat a weapon already on your rack</source>
-        <translation>redéfinis les stats d'une arme déjà sur ton râtelier</translation>
+        <translation>redéfinis les stats d&apos;une arme déjà sur ton râtelier</translation>
     </message>
     <message>
         <source>temper a weapon to your own measure</source>
@@ -1054,11 +1054,11 @@
     </message>
     <message>
         <source>e.g. 250&apos;</source>
-        <translation>p. ex. 250'</translation>
+        <translation>p. ex. 250&apos;</translation>
     </message>
     <message>
         <source>Weapon Strength</source>
-        <translation>Force de l'arme</translation>
+        <translation>Force de l&apos;arme</translation>
     </message>
     <message>
         <source>e.g. 3</source>
@@ -1133,11 +1133,11 @@
     </message>
     <message>
         <source>experience the gods will grant in return</source>
-        <translation>l'expérience que les dieux accorderont en retour</translation>
+        <translation>l&apos;expérience que les dieux accorderont en retour</translation>
     </message>
     <message>
         <source>experience the chronicle will require</source>
-        <translation>l'expérience que la chronique exigera</translation>
+        <translation>l&apos;expérience que la chronique exigera</translation>
     </message>
     <message>
         <source>XP</source>
@@ -1314,7 +1314,7 @@
     </message>
     <message>
         <source>The rulebook will suggest the proper cost; you may override it if your table has agreed to a different price.</source>
-        <translation>Le livre de règles suggérera le coût approprié ; tu peux le remplacer si ta table a convenu d'un prix différent.</translation>
+        <translation>Le livre de règles suggérera le coût approprié ; tu peux le remplacer si ta table a convenu d&apos;un prix différent.</translation>
     </message>
     <message>
         <source>No description provided in the datapack.</source>
@@ -1346,11 +1346,11 @@
     </message>
     <message>
         <source>experience the gods will grant in return</source>
-        <translation>l'expérience que les dieux accorderont en retour</translation>
+        <translation>l&apos;expérience que les dieux accorderont en retour</translation>
     </message>
     <message>
         <source>experience the chronicle will require</source>
-        <translation>l'expérience que la chronique exigera</translation>
+        <translation>l&apos;expérience que la chronique exigera</translation>
     </message>
     <message>
         <source>XP</source>
@@ -1393,15 +1393,15 @@
     </message>
     <message>
         <source>No kata learned yet.</source>
-        <translation>Aucun kata appris pour l'instant.</translation>
+        <translation>Aucun kata appris pour l&apos;instant.</translation>
     </message>
     <message>
         <source>A kata is a perfected form of movement. Deepen the Ring it draws upon, then commit the form to memory.</source>
-        <translation>Un kata est une forme de mouvement perfectionnée. Approfondis l'Anneau dont il relève, puis confie la forme à ta mémoire.</translation>
+        <translation>Un kata est une forme de mouvement perfectionnée. Approfondis l&apos;Anneau dont il relève, puis confie la forme à ta mémoire.</translation>
     </message>
     <message>
         <source>%1 experience committed to muscle and memory</source>
-        <translation>%1 d'expérience confiée au muscle et à la mémoire</translation>
+        <translation>%1 d&apos;expérience confiée au muscle et à la mémoire</translation>
     </message>
     <message>
         <source>(unnamed kata)</source>
@@ -1452,15 +1452,15 @@
     </message>
     <message>
         <source>No kiho learned yet.</source>
-        <translation>Aucun kiho appris pour l'instant.</translation>
+        <translation>Aucun kiho appris pour l&apos;instant.</translation>
     </message>
     <message>
         <source>A kiho channels the elements through disciplined breath. Walk the path of a Monk, Shugenja, or Ninja, deepen the Ring it draws upon, then make the technique your own.</source>
-        <translation>Un kiho canalise les éléments par un souffle discipliné. Suis la voie d'un Moine, d'un Shugenja ou d'un Ninja, approfondis l'Anneau dont il relève, puis fais tienne la technique.</translation>
+        <translation>Un kiho canalise les éléments par un souffle discipliné. Suis la voie d&apos;un Moine, d&apos;un Shugenja ou d&apos;un Ninja, approfondis l&apos;Anneau dont il relève, puis fais tienne la technique.</translation>
     </message>
     <message>
         <source>%1 experience drawn through breath and spirit</source>
-        <translation>%1 d'expérience puisée par le souffle et l'esprit</translation>
+        <translation>%1 d&apos;expérience puisée par le souffle et l&apos;esprit</translation>
     </message>
     <message>
         <source>(unnamed kiho)</source>
@@ -1600,7 +1600,7 @@
     <name>PerksSection</name>
     <message>
         <source>The Ledger of Fortune &amp; Misfortune</source>
-        <translation>Le Registre de la Fortune et de l'Infortune</translation>
+        <translation>Le Registre de la Fortune et de l&apos;Infortune</translation>
     </message>
     <message>
         <source>INVESTED IN BLESSINGS</source>
@@ -1608,15 +1608,15 @@
     </message>
     <message>
         <source>points laid down for advantage</source>
-        <translation>points dépensés pour l'avantage</translation>
+        <translation>points dépensés pour l&apos;avantage</translation>
     </message>
     <message>
         <source>NET BURDEN ON THE SOUL</source>
-        <translation>FARDEAU NET SUR L'ÂME</translation>
+        <translation>FARDEAU NET SUR L&apos;ÂME</translation>
     </message>
     <message>
         <source>NET GIFT TO THE SOUL</source>
-        <translation>DON NET À L'ÂME</translation>
+        <translation>DON NET À L&apos;ÂME</translation>
     </message>
     <message>
         <source>the cost of grace, after the gods take their due</source>
@@ -1624,7 +1624,7 @@
     </message>
     <message>
         <source>favour earned by accepting hardship</source>
-        <translation>faveur gagnée en acceptant l'épreuve</translation>
+        <translation>faveur gagnée en acceptant l&apos;épreuve</translation>
     </message>
     <message>
         <source>GRANTED BY BURDENS</source>
@@ -1636,7 +1636,7 @@
     </message>
     <message>
         <source>paid back for hardship accepted</source>
-        <translation>remboursé pour l'épreuve acceptée</translation>
+        <translation>remboursé pour l&apos;épreuve acceptée</translation>
     </message>
     <message>
         <source>Advantages</source>
@@ -1644,7 +1644,7 @@
     </message>
     <message>
         <source>blessings inscribed upon the soul</source>
-        <translation>bénédictions inscrites sur l'âme</translation>
+        <translation>bénédictions inscrites sur l&apos;âme</translation>
     </message>
     <message>
         <source>1 blessing</source>
@@ -1656,7 +1656,7 @@
     </message>
     <message>
         <source>No favour has yet been claimed.</source>
-        <translation>Aucune faveur n'a encore été réclamée.</translation>
+        <translation>Aucune faveur n&apos;a encore été réclamée.</translation>
     </message>
     <message>
         <source>Choose what gifts your samurai has been granted — fortunes of birth, sworn allies, a sharp eye, a long memory.</source>
@@ -1680,11 +1680,11 @@
     </message>
     <message>
         <source>No hardship has been sworn.</source>
-        <translation>Aucune épreuve n'a été jurée.</translation>
+        <translation>Aucune épreuve n&apos;a été jurée.</translation>
     </message>
     <message>
         <source>A samurai who accepts a flaw is granted experience to compensate. Choose the burdens you carry, and the gods will balance the scale.</source>
-        <translation>Un samouraï qui accepte un défaut reçoit de l'expérience en compensation. Choisis les fardeaux que tu portes, et les dieux rééquilibreront la balance.</translation>
+        <translation>Un samouraï qui accepte un défaut reçoit de l&apos;expérience en compensation. Choisis les fardeaux que tu portes, et les dieux rééquilibreront la balance.</translation>
     </message>
     <message>
         <source>Accept a Burden</source>
@@ -1757,7 +1757,7 @@
     </message>
     <message>
         <source>Changing the language takes effect the next time you start the app.</source>
-        <translation>Le changement de langue prend effet au prochain démarrage de l'application.</translation>
+        <translation>Le changement de langue prend effet au prochain démarrage de l&apos;application.</translation>
     </message>
     <message>
         <source>Rules</source>
@@ -1769,7 +1769,7 @@
     </message>
     <message>
         <source>Changes how your Insight Rank is worked out. Applies immediately.</source>
-        <translation>Modifie le calcul de ton Rang de Réputation. S'applique immédiatement.</translation>
+        <translation>Modifie le calcul de ton Rang de Réputation. S&apos;applique immédiatement.</translation>
     </message>
     <message>
         <source>Character Sheet</source>
@@ -1793,7 +1793,7 @@
     </message>
     <message>
         <source>Turn this off to return to the classic interface. Takes effect after a restart.</source>
-        <translation>Désactive ceci pour revenir à l'interface classique. Prend effet après un redémarrage.</translation>
+        <translation>Désactive ceci pour revenir à l&apos;interface classique. Prend effet après un redémarrage.</translation>
     </message>
 </context>
 <context>
@@ -1832,7 +1832,7 @@
     </message>
     <message>
         <source>YOUR SCHOOL GRANTS A CHOICE</source>
-        <translation>TON ÉCOLE T'ACCORDE UN CHOIX</translation>
+        <translation>TON ÉCOLE T&apos;ACCORDE UN CHOIX</translation>
     </message>
     <message>
         <source>choose the skills your training emphasised</source>
@@ -1856,7 +1856,7 @@
     </message>
     <message>
         <source>— no %1 skills yet —</source>
-        <translation>— aucune compétence %1 pour l'instant —</translation>
+        <translation>— aucune compétence %1 pour l&apos;instant —</translation>
     </message>
     <message>
         <source>%1 mastery abilities at hand</source>
@@ -1880,7 +1880,7 @@
     </message>
     <message>
         <source>This skill has no mastery abilities.</source>
-        <translation>Cette compétence n'a aucune capacité de maîtrise.</translation>
+        <translation>Cette compétence n&apos;a aucune capacité de maîtrise.</translation>
     </message>
 </context>
 <context>
@@ -1891,7 +1891,7 @@
     </message>
     <message>
         <source>the incantations you may call upon the kami to grant</source>
-        <translation>les incantations que tu peux demander aux kami d'accorder</translation>
+        <translation>les incantations que tu peux demander aux kami d&apos;accorder</translation>
     </message>
     <message>
         <source>1 spell</source>
@@ -1915,11 +1915,11 @@
     </message>
     <message>
         <source>No spells known yet.</source>
-        <translation>Aucun sort connu pour l'instant.</translation>
+        <translation>Aucun sort connu pour l&apos;instant.</translation>
     </message>
     <message>
         <source>As your Insight deepens, the kami grant you their spells. Learn one whose mastery lies within your reach.</source>
-        <translation>À mesure que ta Réputation s'approfondit, les kami t'accordent leurs sorts. Apprends-en un dont la maîtrise est à ta portée.</translation>
+        <translation>À mesure que ta Réputation s&apos;approfondit, les kami t&apos;accordent leurs sorts. Apprends-en un dont la maîtrise est à ta portée.</translation>
     </message>
     <message>
         <source>Spells are the province of shugenja, though a rare soul may memorize a single scroll. Learn one whose mastery lies within your reach.</source>
@@ -1927,7 +1927,7 @@
     </message>
     <message>
         <source>%1 spells known · %2 experience spent memorizing</source>
-        <translation>%1 sorts connus · %2 d'expérience dépensée à mémoriser</translation>
+        <translation>%1 sorts connus · %2 d&apos;expérience dépensée à mémoriser</translation>
     </message>
     <message>
         <source>%1 spells inscribed in your library</source>
@@ -2006,7 +2006,7 @@
     </message>
     <message>
         <source>the living marks borne by the Togashi Order</source>
-        <translation>les marques vivantes portées par l'Ordre Togashi</translation>
+        <translation>les marques vivantes portées par l&apos;Ordre Togashi</translation>
     </message>
     <message>
         <source>1 mark</source>
@@ -2022,11 +2022,11 @@
     </message>
     <message>
         <source>No tattoos yet.</source>
-        <translation>Aucun tatouage pour l'instant.</translation>
+        <translation>Aucun tatouage pour l&apos;instant.</translation>
     </message>
     <message>
         <source>The ise zumi of the Togashi Order bear living tattoos that wake to serve them. Receive your first mark when your path allows it.</source>
-        <translation>Les ise zumi de l'Ordre Togashi portent des tatouages vivants qui s'éveillent pour les servir. Reçois ta première marque quand ta voie le permet.</translation>
+        <translation>Les ise zumi de l&apos;Ordre Togashi portent des tatouages vivants qui s&apos;éveillent pour les servir. Reçois ta première marque quand ta voie le permet.</translation>
     </message>
     <message>
         <source>one mark carved into living flesh</source>
@@ -2069,7 +2069,7 @@
     </message>
     <message>
         <source>No techniques learned yet.</source>
-        <translation>Aucune technique apprise pour l'instant.</translation>
+        <translation>Aucune technique apprise pour l&apos;instant.</translation>
     </message>
     <message>
         <source>Join a school and advance through its ranks — its techniques are granted to you one rung at a time.</source>
@@ -2089,7 +2089,7 @@
     </message>
     <message>
         <source>School Rank %1</source>
-        <translation>Rang d'École %1</translation>
+        <translation>Rang d&apos;École %1</translation>
     </message>
 </context>
 <context>
@@ -2132,11 +2132,11 @@
     </message>
     <message>
         <source>Your weapon rack stands empty.</source>
-        <translation>Ton râtelier d'armes est vide.</translation>
+        <translation>Ton râtelier d&apos;armes est vide.</translation>
     </message>
     <message>
         <source>Draw a blade from the armoury, or forge one of your own. Its attack and damage rolls are figured from your traits and skill.</source>
-        <translation>Dégaine une lame de l'armurerie, ou forges-en une à toi. Ses jets d'attaque et de dégâts se calculent d'après tes traits et ta compétence.</translation>
+        <translation>Dégaine une lame de l&apos;armurerie, ou forges-en une à toi. Ses jets d&apos;attaque et de dégâts se calculent d&apos;après tes traits et ta compétence.</translation>
     </message>
     <message>
         <source>one weapon at the ready</source>
@@ -2251,7 +2251,7 @@ Formula: HEALTHY = Earth × 5; next levels add Earth × multiplier
 Click a card to jump there · ± with the stepper · shift+click to reset</source>
         <translation>Disposition de la cellule : nom · seuil · pénalité de ND · blessures dans le niveau
 Formule : INDEMNE = Terre × 5 ; les niveaux suivants ajoutent Terre × multiplicateur
-Clique une carte pour t'y rendre · ± avec le sélecteur · maj+clic pour réinitialiser</translation>
+Clique une carte pour t&apos;y rendre · ± avec le sélecteur · maj+clic pour réinitialiser</translation>
     </message>
     <message>
         <source>Earth %1</source>

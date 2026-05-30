@@ -1054,7 +1054,7 @@
     </message>
     <message>
         <source>e.g. 250&apos;</source>
-        <translation>ex.: 250'</translation>
+        <translation>ex.: 250&apos;</translation>
     </message>
     <message>
         <source>Weapon Strength</source>
@@ -1742,7 +1742,7 @@
     <name>SectionBlock</name>
     <message>
         <source>Section &apos;%1&apos; content coming soon</source>
-        <translation>O conteúdo da seção '%1' chega em breve</translation>
+        <translation>O conteúdo da seção &apos;%1&apos; chega em breve</translation>
     </message>
 </context>
 <context>

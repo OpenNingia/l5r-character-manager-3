@@ -48,11 +48,11 @@
     </message>
     <message>
         <source>Add a Weapon</source>
-        <translation>Aggiungi un'Arma</translation>
+        <translation>Aggiungi un&apos;Arma</translation>
     </message>
     <message>
         <source>draw from the armoury what your hand can hold</source>
-        <translation>prendi dall'armeria ciò che la tua mano può reggere</translation>
+        <translation>prendi dall&apos;armeria ciò che la tua mano può reggere</translation>
     </message>
     <message>
         <source>Add Weapon</source>
@@ -64,7 +64,7 @@
     </message>
     <message>
         <source>Choose a weapon from the armoury.</source>
-        <translation>Scegli un'arma dall'armeria.</translation>
+        <translation>Scegli un&apos;arma dall&apos;armeria.</translation>
     </message>
     <message>
         <source>Arrow</source>
@@ -72,7 +72,7 @@
     </message>
     <message>
         <source>seek a weapon by name or skill…</source>
-        <translation>cerca un'arma per nome o abilità…</translation>
+        <translation>cerca un&apos;arma per nome o abilità…</translation>
     </message>
     <message>
         <source>(unnamed)</source>
@@ -80,7 +80,7 @@
     </message>
     <message>
         <source>the armoury is empty — import a datapack</source>
-        <translation>l'armeria è vuota — importa un datapack</translation>
+        <translation>l&apos;armeria è vuota — importa un datapack</translation>
     </message>
     <message>
         <source>nothing matches that brushstroke</source>
@@ -88,11 +88,11 @@
     </message>
     <message>
         <source>Choose a weapon from the armoury at your left.</source>
-        <translation>Scegli un'arma dall'armeria alla tua sinistra.</translation>
+        <translation>Scegli un&apos;arma dall&apos;armeria alla tua sinistra.</translation>
     </message>
     <message>
         <source>Its attack and damage rolls are figured from your traits and the weapon&apos;s skill once it is on your rack.</source>
-        <translation>I suoi tiri di attacco e danno si calcolano dai tuoi tratti e dall'abilità dell'arma, una volta posta sulla rastrelliera.</translation>
+        <translation>I suoi tiri di attacco e danno si calcolano dai tuoi tratti e dall&apos;abilità dell&apos;arma, una volta posta sulla rastrelliera.</translation>
     </message>
     <message>
         <source>Cost: %1</source>
@@ -226,7 +226,7 @@
     </message>
     <message>
         <source>Ledger of Training</source>
-        <translation>Registro dell'Addestramento</translation>
+        <translation>Registro dell&apos;Addestramento</translation>
     </message>
     <message>
         <source>EXPERIENCE SPENT</source>
@@ -270,7 +270,7 @@
     </message>
     <message>
         <source>No advancements have yet been recorded for this samurai. Purchase a trait, skill, or technique on its own tab and the entry will appear here, atop the stack.</source>
-        <translation>Nessun avanzamento è ancora stato registrato per questo samurai. Acquista un tratto, un'abilità o una tecnica nella rispettiva scheda e la voce comparirà qui, in cima alla pila.</translation>
+        <translation>Nessun avanzamento è ancora stato registrato per questo samurai. Acquista un tratto, un&apos;abilità o una tecnica nella rispettiva scheda e la voce comparirà qui, in cima alla pila.</translation>
     </message>
     <message>
         <source>LATEST</source>
@@ -294,7 +294,7 @@
     </message>
     <message>
         <source>Only the most recent advancement may be refunded.</source>
-        <translation>Solo l'avanzamento più recente può essere rimborsato.</translation>
+        <translation>Solo l&apos;avanzamento più recente può essere rimborsato.</translation>
     </message>
     <message>
         <source>Refund this advancement?</source>
@@ -369,7 +369,7 @@
     </message>
     <message>
         <source>Dimmed forms lie beyond your present mastery — deepen the Ring they draw upon, or earn their requirements first.</source>
-        <translation>Le forme in ombra sono oltre la tua attuale maestria — approfondisci l'Anello a cui attingono, o soddisfane prima i requisiti.</translation>
+        <translation>Le forme in ombra sono oltre la tua attuale maestria — approfondisci l&apos;Anello a cui attingono, o soddisfane prima i requisiti.</translation>
     </message>
     <message>
         <source>Mastery %1</source>
@@ -480,7 +480,7 @@
     </message>
     <message>
         <source>Dimmed kiho lie beyond your present discipline — walk the right path, deepen the Ring they draw upon, or rise in School rank first.</source>
-        <translation>I kiho in ombra sono oltre la tua attuale disciplina — segui il percorso giusto, approfondisci l'Anello a cui attingono, o sali prima di rango di Scuola.</translation>
+        <translation>I kiho in ombra sono oltre la tua attuale disciplina — segui il percorso giusto, approfondisci l&apos;Anello a cui attingono, o sali prima di rango di Scuola.</translation>
     </message>
     <message>
         <source>Mastery %1</source>
@@ -634,7 +634,7 @@
     </message>
     <message>
         <source>Dimmed spells lie beyond your present understanding — advance your Insight, or deepen the affinity your school grants, to bring them within reach.</source>
-        <translation>Gli incantesimi in ombra sono oltre la tua attuale comprensione — avanza nella tua Introspezione, o approfondisci l'affinità che la tua scuola concede, per portarli alla tua portata.</translation>
+        <translation>Gli incantesimi in ombra sono oltre la tua attuale comprensione — avanza nella tua Introspezione, o approfondisci l&apos;affinità che la tua scuola concede, per portarli alla tua portata.</translation>
     </message>
     <message>
         <source>Mastery %1</source>
@@ -796,7 +796,7 @@
     </message>
     <message>
         <source>Shadowland Taint</source>
-        <translation>Corruzione delle Terre dell'Ombra</translation>
+        <translation>Corruzione delle Terre dell&apos;Ombra</translation>
     </message>
     <message>
         <source>Infamy</source>
@@ -808,7 +808,7 @@
     </message>
     <message>
         <source>you have an opportunity to decide your destiny</source>
-        <translation>hai l'opportunità di decidere il tuo destino</translation>
+        <translation>hai l&apos;opportunità di decidere il tuo destino</translation>
     </message>
     <message>
         <source>Advance Rank</source>
@@ -975,7 +975,7 @@
     </message>
     <message>
         <source>%1 — choose an emphasis</source>
-        <translation>%1 — scegli un'enfasi</translation>
+        <translation>%1 — scegli un&apos;enfasi</translation>
     </message>
     <message>
         <source>e.g. Katana, Falconry, Goblin…</source>
@@ -990,15 +990,15 @@
     </message>
     <message>
         <source>Forge a Weapon</source>
-        <translation>Forgia un'Arma</translation>
+        <translation>Forgia un&apos;Arma</translation>
     </message>
     <message>
         <source>re-stat a weapon already on your rack</source>
-        <translation>ridefinisci le statistiche di un'arma già sulla rastrelliera</translation>
+        <translation>ridefinisci le statistiche di un&apos;arma già sulla rastrelliera</translation>
     </message>
     <message>
         <source>temper a weapon to your own measure</source>
-        <translation>tempra un'arma a tua misura</translation>
+        <translation>tempra un&apos;arma a tua misura</translation>
     </message>
     <message>
         <source>Save</source>
@@ -1010,11 +1010,11 @@
     </message>
     <message>
         <source>Save your changes to this weapon.</source>
-        <translation>Salva le modifiche a quest'arma.</translation>
+        <translation>Salva le modifiche a quest&apos;arma.</translation>
     </message>
     <message>
         <source>A custom weapon keeps the skill and class of its base.</source>
-        <translation>Un'arma personalizzata mantiene l'abilità e la classe della sua base.</translation>
+        <translation>Un&apos;arma personalizzata mantiene l&apos;abilità e la classe della sua base.</translation>
     </message>
     <message>
         <source>BASE WEAPON</source>
@@ -1022,7 +1022,7 @@
     </message>
     <message>
         <source>Seeds the figures below — and fixes the skill and class your weapon rolls with.</source>
-        <translation>Imposta i valori qui sotto — e fissa l'abilità e la classe con cui la tua arma tira.</translation>
+        <translation>Imposta i valori qui sotto — e fissa l&apos;abilità e la classe con cui la tua arma tira.</translation>
     </message>
     <message>
         <source>Name</source>
@@ -1054,11 +1054,11 @@
     </message>
     <message>
         <source>e.g. 250&apos;</source>
-        <translation>es. 250'</translation>
+        <translation>es. 250&apos;</translation>
     </message>
     <message>
         <source>Weapon Strength</source>
-        <translation>Forza dell'Arma</translation>
+        <translation>Forza dell&apos;Arma</translation>
     </message>
     <message>
         <source>e.g. 3</source>
@@ -1133,11 +1133,11 @@
     </message>
     <message>
         <source>experience the gods will grant in return</source>
-        <translation>l'esperienza che gli dèi concederanno in cambio</translation>
+        <translation>l&apos;esperienza che gli dèi concederanno in cambio</translation>
     </message>
     <message>
         <source>experience the chronicle will require</source>
-        <translation>l'esperienza che la cronaca richiederà</translation>
+        <translation>l&apos;esperienza che la cronaca richiederà</translation>
     </message>
     <message>
         <source>XP</source>
@@ -1286,7 +1286,7 @@
     </message>
     <message>
         <source>seek a hardship by name…</source>
-        <translation>cerca un'avversità per nome…</translation>
+        <translation>cerca un&apos;avversità per nome…</translation>
     </message>
     <message>
         <source>seek a blessing by name…</source>
@@ -1306,7 +1306,7 @@
     </message>
     <message>
         <source>Choose a hardship from the register at your left.</source>
-        <translation>Scegli un'avversità dal registro alla tua sinistra.</translation>
+        <translation>Scegli un&apos;avversità dal registro alla tua sinistra.</translation>
     </message>
     <message>
         <source>Choose a gift from the register at your left.</source>
@@ -1346,11 +1346,11 @@
     </message>
     <message>
         <source>experience the gods will grant in return</source>
-        <translation>l'esperienza che gli dèi concederanno in cambio</translation>
+        <translation>l&apos;esperienza che gli dèi concederanno in cambio</translation>
     </message>
     <message>
         <source>experience the chronicle will require</source>
-        <translation>l'esperienza che la cronaca richiederà</translation>
+        <translation>l&apos;esperienza che la cronaca richiederà</translation>
     </message>
     <message>
         <source>XP</source>
@@ -1397,7 +1397,7 @@
     </message>
     <message>
         <source>A kata is a perfected form of movement. Deepen the Ring it draws upon, then commit the form to memory.</source>
-        <translation>Un kata è una forma di movimento perfezionata. Approfondisci l'Anello a cui attinge, poi affida la forma alla memoria.</translation>
+        <translation>Un kata è una forma di movimento perfezionata. Approfondisci l&apos;Anello a cui attinge, poi affida la forma alla memoria.</translation>
     </message>
     <message>
         <source>%1 experience committed to muscle and memory</source>
@@ -1456,7 +1456,7 @@
     </message>
     <message>
         <source>A kiho channels the elements through disciplined breath. Walk the path of a Monk, Shugenja, or Ninja, deepen the Ring it draws upon, then make the technique your own.</source>
-        <translation>Un kiho incanala gli elementi attraverso un respiro disciplinato. Segui il percorso di un Monaco, Shugenja o Ninja, approfondisci l'Anello a cui attinge, poi fai tua la tecnica.</translation>
+        <translation>Un kiho incanala gli elementi attraverso un respiro disciplinato. Segui il percorso di un Monaco, Shugenja o Ninja, approfondisci l&apos;Anello a cui attinge, poi fai tua la tecnica.</translation>
     </message>
     <message>
         <source>%1 experience drawn through breath and spirit</source>
@@ -1612,11 +1612,11 @@
     </message>
     <message>
         <source>NET BURDEN ON THE SOUL</source>
-        <translation>FARDELLO NETTO SULL'ANIMA</translation>
+        <translation>FARDELLO NETTO SULL&apos;ANIMA</translation>
     </message>
     <message>
         <source>NET GIFT TO THE SOUL</source>
-        <translation>DONO NETTO ALL'ANIMA</translation>
+        <translation>DONO NETTO ALL&apos;ANIMA</translation>
     </message>
     <message>
         <source>the cost of grace, after the gods take their due</source>
@@ -1644,7 +1644,7 @@
     </message>
     <message>
         <source>blessings inscribed upon the soul</source>
-        <translation>benedizioni trascritte sull'anima</translation>
+        <translation>benedizioni trascritte sull&apos;anima</translation>
     </message>
     <message>
         <source>1 blessing</source>
@@ -1742,7 +1742,7 @@
     <name>SectionBlock</name>
     <message>
         <source>Section &apos;%1&apos; content coming soon</source>
-        <translation>Il contenuto della sezione '%1' sarà presto disponibile</translation>
+        <translation>Il contenuto della sezione &apos;%1&apos; sarà presto disponibile</translation>
     </message>
 </context>
 <context>
@@ -1757,7 +1757,7 @@
     </message>
     <message>
         <source>Changing the language takes effect the next time you start the app.</source>
-        <translation>Il cambio di lingua avrà effetto al prossimo avvio dell'app.</translation>
+        <translation>Il cambio di lingua avrà effetto al prossimo avvio dell&apos;app.</translation>
     </message>
     <message>
         <source>Rules</source>
@@ -1765,7 +1765,7 @@
     </message>
     <message>
         <source>Insight calculation</source>
-        <translation>Calcolo dell'Introspezione</translation>
+        <translation>Calcolo dell&apos;Introspezione</translation>
     </message>
     <message>
         <source>Changes how your Insight Rank is worked out. Applies immediately.</source>
@@ -1793,7 +1793,7 @@
     </message>
     <message>
         <source>Turn this off to return to the classic interface. Takes effect after a restart.</source>
-        <translation>Disattivalo per tornare all'interfaccia classica. Ha effetto dopo un riavvio.</translation>
+        <translation>Disattivalo per tornare all&apos;interfaccia classica. Ha effetto dopo un riavvio.</translation>
     </message>
 </context>
 <context>
@@ -2006,7 +2006,7 @@
     </message>
     <message>
         <source>the living marks borne by the Togashi Order</source>
-        <translation>i marchi viventi portati dall'Ordine Togashi</translation>
+        <translation>i marchi viventi portati dall&apos;Ordine Togashi</translation>
     </message>
     <message>
         <source>1 mark</source>
@@ -2026,7 +2026,7 @@
     </message>
     <message>
         <source>The ise zumi of the Togashi Order bear living tattoos that wake to serve them. Receive your first mark when your path allows it.</source>
-        <translation>Gli ise zumi dell'Ordine Togashi portano tatuaggi viventi che si destano per servirli. Ricevi il tuo primo marchio quando il tuo percorso lo consente.</translation>
+        <translation>Gli ise zumi dell&apos;Ordine Togashi portano tatuaggi viventi che si destano per servirli. Ricevi il tuo primo marchio quando il tuo percorso lo consente.</translation>
     </message>
     <message>
         <source>one mark carved into living flesh</source>
@@ -2136,11 +2136,11 @@
     </message>
     <message>
         <source>Draw a blade from the armoury, or forge one of your own. Its attack and damage rolls are figured from your traits and skill.</source>
-        <translation>Sguaina una lama dall'armeria, o forgiane una tua. I suoi tiri di attacco e danno si calcolano dai tuoi tratti e dall'abilità.</translation>
+        <translation>Sguaina una lama dall&apos;armeria, o forgiane una tua. I suoi tiri di attacco e danno si calcolano dai tuoi tratti e dall&apos;abilità.</translation>
     </message>
     <message>
         <source>one weapon at the ready</source>
-        <translation>un'arma pronta</translation>
+        <translation>un&apos;arma pronta</translation>
     </message>
     <message>
         <source>%1 weapons at the ready</source>
@@ -2188,11 +2188,11 @@
     </message>
     <message>
         <source>Edit this weapon</source>
-        <translation>Modifica quest'arma</translation>
+        <translation>Modifica quest&apos;arma</translation>
     </message>
     <message>
         <source>Discard this weapon</source>
-        <translation>Scarta quest'arma</translation>
+        <translation>Scarta quest&apos;arma</translation>
     </message>
 </context>
 <context>

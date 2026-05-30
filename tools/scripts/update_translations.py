@@ -76,9 +76,16 @@ PRO_FILE = L5R_DIR / "l5rcm.pro"
 QML_QM_PREFIX = "qml_"
 
 # Path components that exclude a .py from the Python translation surface.
-# qmlui is excluded because its strings belong to the QML surface (qsTr in .qml);
 # share holds only assets and __init__ stubs (no tr() strings).
-PY_EXCLUDE_PARTS = {"__pycache__", "tests", "qmlui", "share"}
+#
+# Note we do NOT exclude "qmlui": only the QML *markup* (qsTr in .qml) is the
+# QML surface -- the qmlui *Python* proxies (app_controller.py, settings_proxy.py,
+# pc/*.py, ...) use self.tr() and so belong to this Python/pylupdate6 surface,
+# compiled into the legacy <locale>.qm the first QTranslator loads. Only .py
+# files are scanned and l5r/qmlui/qml/ holds none, so the QML markup can't leak
+# in here. (Excluding qmlui wholesale silently dropped every proxy string --
+# the QML sidebar tab titles among them.)
+PY_EXCLUDE_PARTS = {"__pycache__", "tests", "share"}
 
 # Tool resolution order matters: on Debian/Ubuntu /usr/bin/lupdate is often a Qt5
 # qtchooser shim (or a broken alternatives symlink) that fails to exec, while the

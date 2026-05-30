@@ -65,6 +65,29 @@ SOURCES = __init__.py \
           models/sortproxymodel.py \
           models/spellmodel.py \
           models/techviewmodel.py \
+          qmlui/__init__.py \
+          qmlui/app.py \
+          qmlui/proxies/__init__.py \
+          qmlui/proxies/app_controller.py \
+          qmlui/proxies/pc/__init__.py \
+          qmlui/proxies/pc/advancements.py \
+          qmlui/proxies/pc/combat.py \
+          qmlui/proxies/pc/flags.py \
+          qmlui/proxies/pc/identity.py \
+          qmlui/proxies/pc/kata.py \
+          qmlui/proxies/pc/kiho.py \
+          qmlui/proxies/pc/notes.py \
+          qmlui/proxies/pc/opportunities.py \
+          qmlui/proxies/pc/perks.py \
+          qmlui/proxies/pc/session.py \
+          qmlui/proxies/pc/skills.py \
+          qmlui/proxies/pc/spells.py \
+          qmlui/proxies/pc/tattoo.py \
+          qmlui/proxies/pc/techniques.py \
+          qmlui/proxies/pc/traits.py \
+          qmlui/proxies/pc/weapons.py \
+          qmlui/proxies/pc_proxy.py \
+          qmlui/proxies/settings_proxy.py \
           tools/__init__.py \
           ui/__init__.py \
           ui/advance.py \
@@ -114,7 +137,6 @@ SOURCES = __init__.py \
 
 TRANSLATIONS = i18n/en.ts \
                i18n/es_ES.ts \
-               i18n/fr.ts \
                i18n/fr_FR.ts \
                i18n/it_IT.ts \
                i18n/pt_BR.ts \

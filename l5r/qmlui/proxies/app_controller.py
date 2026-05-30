@@ -17,7 +17,7 @@ from pathlib import Path
 
 from asq.initiators import query
 from asq.selectors import a_
-from qtpy.QtCore import QObject, Property, Signal, Slot
+from qtpy.QtCore import QObject, Property, QT_TRANSLATE_NOOP, Signal, Slot
 from qtpy.QtGui import QGuiApplication
 from qtpy.QtWidgets import QFileDialog, QMessageBox
 
@@ -69,21 +69,30 @@ from l5r.util.settings import L5RCMSettings
 # mon for about/clan crest, etc.). On a host with no CJK font installed
 # the fallback box is ugly -- that's the known trade vs. the previous
 # universal Unicode symbols.
+#
+# Titles are wrapped in QT_TRANSLATE_NOOP rather than left as bare
+# literals: the `tabs` property translates them at runtime with
+# self.tr(title), but `title` is a variable there, so pylupdate6 can't
+# see the source text through that call. QT_TRANSLATE_NOOP marks each
+# literal for extraction into the "AppController" context (it returns the
+# string unchanged at runtime) -- the same context self.tr() resolves
+# against, so the harvested translation is the one that gets used. Keep
+# the context string in sync with this class's name.
 _TAB_DEFS = [
-    ("pc_info",       "Character",     "侍"),  # samurai
-    ("skills",        "Skills",        "技"),  # gi -- technique / skill
-    ("perks",         "Merits/Flaws",  "縁"),  # en -- bond / karma (neutral)
-    ("techniques",    "Techniques",    "流"),  # ryū -- school / style
-    ("spells",        "Spells",        "呪"),  # ju -- spell / incantation
-    ("kata",          "Kata",          "型"),  # kata -- form
-    ("kiho",          "Kiho",          "気"),  # ki -- spirit / breath
-    ("tattoo",        "Tattoos",       "彫"),  # chō -- carve / engrave (irezumi)
-    ("advancements",  "Advancements",  "道"),  # dō -- way / path
-    ("weapons",       "Weapons",       "刀"),  # tō -- katana / blade
-    ("misc",          "Miscellanea",   "雑"),  # zatsu -- miscellaneous (modifiers + equipment)
-    ("notes",         "Notes",         "記"),  # ki -- record / note
-    ("settings",      "Settings",      "設"),  # setsu -- setup
-    ("about",         "About",         "紋"),  # mon -- clan crest
+    ("pc_info",       QT_TRANSLATE_NOOP("AppController", "Character"),    "侍"),  # samurai
+    ("skills",        QT_TRANSLATE_NOOP("AppController", "Skills"),       "技"),  # gi -- technique / skill
+    ("perks",         QT_TRANSLATE_NOOP("AppController", "Merits/Flaws"), "縁"),  # en -- bond / karma (neutral)
+    ("techniques",    QT_TRANSLATE_NOOP("AppController", "Techniques"),   "流"),  # ryū -- school / style
+    ("spells",        QT_TRANSLATE_NOOP("AppController", "Spells"),       "呪"),  # ju -- spell / incantation
+    ("kata",          QT_TRANSLATE_NOOP("AppController", "Kata"),         "型"),  # kata -- form
+    ("kiho",          QT_TRANSLATE_NOOP("AppController", "Kiho"),         "気"),  # ki -- spirit / breath
+    ("tattoo",        QT_TRANSLATE_NOOP("AppController", "Tattoos"),      "彫"),  # chō -- carve / engrave (irezumi)
+    ("advancements",  QT_TRANSLATE_NOOP("AppController", "Advancements"), "道"),  # dō -- way / path
+    ("weapons",       QT_TRANSLATE_NOOP("AppController", "Weapons"),      "刀"),  # tō -- katana / blade
+    ("misc",          QT_TRANSLATE_NOOP("AppController", "Miscellanea"),  "雑"),  # zatsu -- miscellaneous (modifiers + equipment)
+    ("notes",         QT_TRANSLATE_NOOP("AppController", "Notes"),        "記"),  # ki -- record / note
+    ("settings",      QT_TRANSLATE_NOOP("AppController", "Settings"),     "設"),  # setsu -- setup
+    ("about",         QT_TRANSLATE_NOOP("AppController", "About"),        "紋"),  # mon -- clan crest
 ]
 
 
