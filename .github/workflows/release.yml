@@ -231,7 +231,7 @@ jobs:
     # Only attach to a GitHub Release when triggered by a tag push, or when
     # workflow_dispatch was invoked with an explicit tag_name input.
     needs: [windows, deb, appimage]
-    if: ${{ startsWith(github.ref, 'refs/tags/v3.') || (github.event_name == 'workflow_dispatch' && inputs.tag_name != '') }}
+    if: ${{ startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && inputs.tag_name != '') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v5
