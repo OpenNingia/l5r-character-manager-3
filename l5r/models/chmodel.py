@@ -102,6 +102,36 @@ class MyJsonEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
+def _wildcard_set_from_dict(value):
+    """Rebuild a SchoolSkillWildcardSet from its JSON dict representation.
+
+    Pending skill choices stored on a rank advancement are
+    ``SchoolSkillWildcardSet`` instances. They are serialised to plain dicts
+    by ``MyJsonEncoder`` and would stay dicts on load, breaking attribute
+    access such as ``ws.wildcards``. Anything that is not a dict (e.g. an
+    already-rebuilt object) is returned unchanged.
+    """
+    if not isinstance(value, dict):
+        return value
+
+    wc_set = l5rdal.school.SchoolSkillWildcardSet()
+    for k, v in value.items():
+        setattr(wc_set, k, v)
+
+    wildcards = []
+    for wc in value.get('wildcards', []) or []:
+        if isinstance(wc, dict):
+            wildcard = l5rdal.school.SchoolSkillWildcard()
+            for k, v in wc.items():
+                setattr(wildcard, k, v)
+            wildcards.append(wildcard)
+        else:
+            wildcards.append(wc)
+    wc_set.wildcards = wildcards
+
+    return wc_set
+
+
 class AdvancedPcModel(object):
 
     def __init__(self):
@@ -235,6 +265,16 @@ class AdvancedPcModel(object):
             for ad in obj['advans']:
                 a = adv.Advancement(None, None)
                 _load_obj(deepcopy(ad), a)
+                # ``skills_to_choose`` on a rank advancement holds
+                # SchoolSkillWildcardSet objects. JSON serialisation turns
+                # them into plain dicts, so restore them to objects here;
+                # otherwise reading ``ws.wildcards`` later raises
+                # AttributeError on the loaded character.
+                if getattr(a, 'type', None) == 'rank':
+                    a.skills_to_choose = [
+                        _wildcard_set_from_dict(ws)
+                        for ws in getattr(a, 'skills_to_choose', [])
+                    ]
                 self.advans.append(a)
 
             # armor
