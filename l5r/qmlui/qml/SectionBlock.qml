@@ -113,6 +113,8 @@ Item {
                     return weaponsBody;
                 case "misc":
                     return miscBody;
+                case "library":
+                    return libraryBody;
                 case "settings":
                     return settingsBody;
                 default:
@@ -195,6 +197,12 @@ Item {
             Component {
                 id: miscBody
                 Sections.MiscSection {
+                }
+            }
+
+            Component {
+                id: libraryBody
+                Sections.LibrarySection {
                 }
             }
 

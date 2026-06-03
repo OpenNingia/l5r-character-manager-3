@@ -20,6 +20,7 @@ from qtpy.QtQml import QQmlApplicationEngine
 import l5r.api as api
 import l5r.api.data
 from l5r.qmlui.proxies.app_controller import AppController
+from l5r.qmlui.proxies.datapack_proxy import DatapackProxy
 from l5r.qmlui.proxies.pc_proxy import PcProxy
 from l5r.qmlui.proxies.settings_proxy import SettingsProxy
 from l5r.util import log
@@ -159,6 +160,7 @@ def run_qml_app(qapp, locale, startup_action):
     pc_proxy = PcProxy()
     controller = AppController()
     settings_proxy = SettingsProxy()
+    datapack_proxy = DatapackProxy()
 
     # Resume the last working character from the autosave session store
     # (unsaved recovery snapshot, or the .l5r last open). Falls back to a
@@ -183,6 +185,7 @@ def run_qml_app(qapp, locale, startup_action):
     engine.rootContext().setContextProperty("pcProxy", pc_proxy)
     engine.rootContext().setContextProperty("appCtrl", controller)
     engine.rootContext().setContextProperty("appSettings", settings_proxy)
+    engine.rootContext().setContextProperty("datapacks", datapack_proxy)
 
     qml_main = qml_dir / "MainSheet.qml"
     engine.load(QUrl.fromLocalFile(str(qml_main)))
@@ -196,6 +199,7 @@ def run_qml_app(qapp, locale, startup_action):
     qapp._l5r_pc_proxy = pc_proxy
     qapp._l5r_app_controller = controller
     qapp._l5r_settings_proxy = settings_proxy
+    qapp._l5r_datapack_proxy = datapack_proxy
 
     if startup_action is not None:
         controller.apply_startup(*startup_action)

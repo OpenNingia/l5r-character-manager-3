@@ -36,6 +36,7 @@ import l5r.api.data.clans
 import l5r.api.data.families
 import l5r.api.data.flaws
 import l5r.api.data.merits
+import l5r.api.data.datapacks
 import l5r.api.data.outfit
 import l5r.api.data.schools
 import l5r.api.data.skills
@@ -96,6 +97,7 @@ _TAB_DEFS = [
     ("weapons",       QT_TRANSLATE_NOOP("AppController", "Weapons"),      "刀"),  # tō -- katana / blade
     ("misc",          QT_TRANSLATE_NOOP("AppController", "Miscellanea"),  "雑"),  # zatsu -- miscellaneous (modifiers + equipment)
     ("notes",         QT_TRANSLATE_NOOP("AppController", "Notes"),        "記"),  # ki -- record / note
+    ("library",       QT_TRANSLATE_NOOP("AppController", "Library"),      "蔵"),  # kura -- storehouse (datapacks; cf. 蔵書 "collection")
     ("settings",      QT_TRANSLATE_NOOP("AppController", "Settings"),     "設"),  # setsu -- setup
     ("about",         QT_TRANSLATE_NOOP("AppController", "About"),        "紋"),  # mon -- clan crest
 ]
@@ -2184,35 +2186,7 @@ class AppController(QObject):
         if action == "open" and path:
             self.fileOpen(path)
         elif action == "import" and path:
-            _import_data_pack(path)
+            # Headless ``--import``: delegate to the shared api importer
+            # (same path the Library section uses) and quit.
+            api.data.datapacks.import_pack(path)
             QGuiApplication.instance().quit()
-
-
-def _import_data_pack(data_pack_file):
-    """Headless datapack import; mirrors L5RCMCore.import_data_pack
-    without the QWidget advise_error calls."""
-    import os
-    import l5rdal as dal
-    import l5rdal.dataimport
-    from l5r.l5rcmcore import APP_VERSION
-    from l5r.util import osutil
-
-    try:
-        dal.dataimport.CM_VERSION = APP_VERSION
-        pack = dal.dataimport.DataPack(data_pack_file)
-        if not pack.good():
-            log.app.warning(u"QML UI: invalid data pack: %s", data_pack_file)
-            return False
-        dest = osutil.get_user_data_path()
-        if pack.id == 'core':
-            dest = os.path.join(dest, 'core.data')
-        elif pack.language:
-            dest = os.path.join(dest, 'data.' + pack.language)
-        else:
-            dest = os.path.join(dest, 'data')
-        pack.export_to(dest)
-        log.app.info(u"QML UI: imported data pack to %s", dest)
-        return True
-    except Exception:
-        log.app.exception(u"QML UI: failed to import data pack")
-        return False

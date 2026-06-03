@@ -32,8 +32,16 @@ ApplicationWindow {
     // changes, so the sidebar accent re-tints while the layout stays
     // put. Guarded for the null first pass; the Connections covers
     // File>New / open / family edit (all routed through clanChanged).
-    Component.onCompleted: if (pcProxy)
-        ClanTheme.setClan(pcProxy.clanId)
+    Component.onCompleted: {
+        if (pcProxy)
+            ClanTheme.setClan(pcProxy.clanId);
+        // First-run nudge: with no datapacks the app is near-useless, so
+        // land the user on the Library section (which foregrounds the Core
+        // download). Deferred so the section layout has settled and jumpTo
+        // reads accurate section y's.
+        if (datapacks && !datapacks.hasPacks)
+            Qt.callLater(root.jumpToLibrary);
+    }
     Connections {
         target: pcProxy
         function onClanChanged() {
@@ -117,6 +125,25 @@ ApplicationWindow {
         var maxY = Math.max(0, flick.contentHeight - flick.height);
         scrollAnim.to = Math.min(target, maxY);
         scrollAnim.restart();
+    }
+
+    // Index of the Library section in appCtrl.tabs (-1 if absent). Scanned
+    // rather than hard-coded so tab reordering can't desync the nudge.
+    function libraryIndex() {
+        var tabs = appCtrl ? appCtrl.tabs : [];
+        for (var i = 0; i < tabs.length; ++i) {
+            if (tabs[i].id === "library")
+                return i;
+        }
+        return -1;
+    }
+
+    function jumpToLibrary() {
+        var i = libraryIndex();
+        if (i >= 0) {
+            toc.currentIndex = i;
+            jumpTo(i);
+        }
     }
 
     // Update the active-section highlight when scrolling goes idle, not
@@ -440,6 +467,71 @@ ApplicationWindow {
         target: appSettings
         function onReloadRequired(message) {
             toast.show(message);
+        }
+    }
+
+    // Datapack operation feedback (install / enable / disable / delete /
+    // download). Same transient-toast channel as the settings notices.
+    Connections {
+        target: datapacks
+        function onOperationFinished(ok, message) {
+            toast.show(message);
+        }
+    }
+
+    // Persistent empty-state nudge. Shown whenever no datapack is loaded
+    // (active) -- so it also covers "every pack disabled", not just a fresh
+    // install. Pinned across the top of the sheet area (past the fixed
+    // 220px TOC + 1px divider) so it stays visible while the user scrolls,
+    // and bound to datapacks.hasPacks so it vanishes the instant a pack is
+    // installed/enabled. Crimson left stripe: important, but informational
+    // (it points the way) rather than an error. Parchment-opaque so the
+    // sheet scrolls cleanly behind it.
+    Rectangle {
+        id: nudgeBanner
+        z: 900
+        visible: datapacks ? !datapacks.hasPacks : false
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.leftMargin: 221
+        height: visible ? 44 : 0
+        color: Theme.parchmentSidebar
+
+        Rectangle {
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            width: 3
+            color: Theme.accent
+        }
+        Rectangle {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            height: 1
+            color: Theme.borderSubtle
+        }
+
+        RowLayout {
+            anchors.fill: parent
+            anchors.leftMargin: Theme.s4 + 3
+            anchors.rightMargin: Theme.s4
+            spacing: Theme.s3
+
+            Label {
+                Layout.fillWidth: true
+                text: qsTr("No datapacks installed — the app needs at least the Core datapack to be useful.")
+                font.family: Theme.fontBody
+                font.pixelSize: Theme.fsBody
+                color: Theme.ink
+                elide: Text.ElideRight
+            }
+            Widgets.L5RButton {
+                text: qsTr("Open Library")
+                primary: false
+                onClicked: root.jumpToLibrary()
+            }
         }
     }
 
