@@ -10,6 +10,7 @@ on:
   push:
     tags:
       - "v3.*"
+      - "v4.*"
 
 permissions:
   contents: write
