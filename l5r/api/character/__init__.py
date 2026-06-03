@@ -210,6 +210,28 @@ def refund_last_advancement():
     l5r.api.signals.bus().character_refreshed.emit()
     return adv
 
+
+def reset_advancements():
+    """Clear the whole advancement stack, refunding all spent XP and
+    returning the character to its freshly-created (rank 1) state.
+    Family and school (set at creation, not advancements) are kept.
+
+    Returns the number of entries removed (0 when there was nothing to
+    reset). Owns the dirty-flag contract (CLAUDE.md: api-level setters
+    set the dirty flag) and emits character_refreshed so QML bindings
+    re-evaluate.
+    """
+    pc = get_context().pc
+    if not pc or not pc.advans:
+        return 0
+    count = len(pc.advans)
+    pc.advans = []
+    log.api.info(u"reset advancements: cleared %d entries", count)
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
+    return count
+
+
 def get_xp_gained_from_flaws():
     """returns the experience gained from disadvantages"""
     return sum([-x.cost for x in get_context().pc.advans if x.type == 'perk' and x.tag == 'flaw'])

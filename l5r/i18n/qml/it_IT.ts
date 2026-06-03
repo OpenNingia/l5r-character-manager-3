@@ -415,6 +415,34 @@
         <source>Refund</source>
         <translation>Rimborsa</translation>
     </message>
+    <message>
+        <source>Reset all</source>
+        <translation>Azzera tutto</translation>
+    </message>
+    <message>
+        <source>Clear the entire advancement history</source>
+        <translation>Cancella l'intera cronologia degli avanzamenti</translation>
+    </message>
+    <message>
+        <source>Reset all advancements?</source>
+        <translation>Azzerare tutti gli avanzamenti?</translation>
+    </message>
+    <message>
+        <source>Wipe the training ledger</source>
+        <translation>Cancella il registro dell'addestramento</translation>
+    </message>
+    <message>
+        <source>Reset everything</source>
+        <translation>Azzera tutto</translation>
+    </message>
+    <message>
+        <source>Keep history</source>
+        <translation>Mantieni la cronologia</translation>
+    </message>
+    <message>
+        <source>This clears every advancement in the chronicle and refunds all spent experience, returning the character to its freshly-created state. Family and school are kept. This cannot be undone.</source>
+        <translation>Cancella ogni avanzamento nella cronaca e rimborsa tutta l'esperienza spesa, riportando il personaggio al suo stato iniziale appena creato. Famiglia e scuola vengono mantenute. L'operazione non può essere annullata.</translation>
+    </message>
 </context>
 <context>
     <name>BuyKataDialog</name>
@@ -1046,7 +1074,7 @@
     <name>ChooseElementDialog</name>
     <message>
         <source>Awaken an Affinity</source>
-        <translation>Risveglia un'affinità</translation>
+        <translation>Risveglia un&apos;affinità</translation>
     </message>
     <message>
         <source>Embrace a Deficiency</source>
@@ -1054,11 +1082,11 @@
     </message>
     <message>
         <source>the element your prayers command with ease</source>
-        <translation>l'elemento che le tue preghiere comandano con facilità</translation>
+        <translation>l&apos;elemento che le tue preghiere comandano con facilità</translation>
     </message>
     <message>
         <source>the element whose kami resist your call</source>
-        <translation>l'elemento i cui kami resistono al tuo richiamo</translation>
+        <translation>l&apos;elemento i cui kami resistono al tuo richiamo</translation>
     </message>
     <message>
         <source>Choose</source>
@@ -1066,11 +1094,11 @@
     </message>
     <message>
         <source>Choose the element you resonate with.</source>
-        <translation>Scegli l'elemento con cui sei in sintonia.</translation>
+        <translation>Scegli l&apos;elemento con cui sei in sintonia.</translation>
     </message>
     <message>
         <source>Choose the element that resists you.</source>
-        <translation>Scegli l'elemento che ti resiste.</translation>
+        <translation>Scegli l&apos;elemento che ti resiste.</translation>
     </message>
     <message>
         <source>This element&apos;s spells come more readily — Mastery within reach rises by one.</source>
@@ -1082,7 +1110,7 @@
     </message>
     <message>
         <source>There is no elemental choice to make.</source>
-        <translation>Non c'è alcuna scelta elementale da fare.</translation>
+        <translation>Non c&apos;è alcuna scelta elementale da fare.</translation>
     </message>
 </context>
 <context>
@@ -1243,7 +1271,7 @@
     </message>
     <message>
         <source>Every spell shown lies within your reach. Switch slots with the tabs above and fill them in whatever order you please.</source>
-        <translation>Ogni incantesimo mostrato è alla tua portata. Cambia slot con le schede in alto e riempili nell'ordine che preferisci.</translation>
+        <translation>Ogni incantesimo mostrato è alla tua portata. Cambia slot con le schede in alto e riempili nell&apos;ordine che preferisci.</translation>
     </message>
     <message>
         <source>Mastery %1</source>
@@ -1980,7 +2008,7 @@
     </message>
     <message>
         <source>Without a datapack the app can&apos;t do much. Start with the Core datapack — it carries the base rules, clans, schools and skills.</source>
-        <translation>Senza un pacchetto dati l'app può fare poco. Inizia con il pacchetto Core — contiene le regole base, i clan, le scuole e le abilità.</translation>
+        <translation>Senza un pacchetto dati l&apos;app può fare poco. Inizia con il pacchetto Core — contiene le regole base, i clan, le scuole e le abilità.</translation>
     </message>
     <message>
         <source>Download the Core datapack</source>
@@ -2016,7 +2044,7 @@
     </message>
     <message>
         <source>Loading the datapack list…</source>
-        <translation>Caricamento dell'elenco dei pacchetti dati…</translation>
+        <translation>Caricamento dell&apos;elenco dei pacchetti dati…</translation>
     </message>
     <message>
         <source>Couldn&apos;t reach the datapack repository. Check your connection and try again.</source>
@@ -2024,11 +2052,11 @@
     </message>
     <message>
         <source>GitHub is rate-limiting requests right now (it allows a limited number per hour). Please try again later.</source>
-        <translation>GitHub sta limitando le richieste in questo momento (ne consente un numero limitato all'ora). Riprova più tardi.</translation>
+        <translation>GitHub sta limitando le richieste in questo momento (ne consente un numero limitato all&apos;ora). Riprova più tardi.</translation>
     </message>
     <message>
         <source>Couldn&apos;t load the datapack list. Please try again.</source>
-        <translation>Impossibile caricare l'elenco dei pacchetti dati. Riprova.</translation>
+        <translation>Impossibile caricare l&apos;elenco dei pacchetti dati. Riprova.</translation>
     </message>
     <message>
         <source>installed v%1</source>
@@ -2036,7 +2064,7 @@
     </message>
     <message>
         <source>No datapacks were found in the latest release.</source>
-        <translation>Nessun pacchetto dati trovato nell'ultima release.</translation>
+        <translation>Nessun pacchetto dati trovato nell&apos;ultima release.</translation>
     </message>
     <message>
         <source>Delete datapack?</source>
@@ -2048,7 +2076,7 @@
     </message>
     <message>
         <source>Core holds the base rules — deleting it leaves the app unusable until you reinstall it. Delete &quot;%1&quot; from disk?</source>
-        <translation>Core contiene le regole base — eliminarlo rende l'app inutilizzabile finché non lo reinstalli. Eliminare &quot;%1&quot; dal disco?</translation>
+        <translation>Core contiene le regole base — eliminarlo rende l&apos;app inutilizzabile finché non lo reinstalli. Eliminare &quot;%1&quot; dal disco?</translation>
     </message>
     <message>
         <source>This removes &quot;%1&quot; and its content from disk. You can reinstall it later. Continue?</source>
@@ -2072,7 +2100,7 @@
     </message>
     <message>
         <source>Disabling Core hides the base rules, clans, schools and skills; the app will be unusable until you re-enable it. Continue?</source>
-        <translation>Disabilitare Core nasconde le regole base, i clan, le scuole e le abilità; l'app sarà inutilizzabile finché non lo riabiliti. Continuare?</translation>
+        <translation>Disabilitare Core nasconde le regole base, i clan, le scuole e le abilità; l&apos;app sarà inutilizzabile finché non lo riabiliti. Continuare?</translation>
     </message>
 </context>
 <context>
@@ -2135,7 +2163,7 @@
     </message>
     <message>
         <source>No datapacks installed — the app needs at least the Core datapack to be useful.</source>
-        <translation>Nessun pacchetto dati installato — l'app necessita almeno del pacchetto Core per essere utile.</translation>
+        <translation>Nessun pacchetto dati installato — l&apos;app necessita almeno del pacchetto Core per essere utile.</translation>
     </message>
     <message>
         <source>Open Library</source>
@@ -2283,6 +2311,33 @@
     <message>
         <source>Remove this modifier</source>
         <translation>Rimuovi questo modificatore</translation>
+    </message>
+</context>
+<context>
+    <name>MissingBooksDialog</name>
+    <message>
+        <source>Missing datapacks</source>
+        <translation>Pacchetti dati mancanti</translation>
+    </message>
+    <message>
+        <source>This character cannot be loaded</source>
+        <translation>Impossibile caricare questo personaggio</translation>
+    </message>
+    <message>
+        <source>Open Library</source>
+        <translation type="unfinished">Apri Libreria</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annulla</translation>
+    </message>
+    <message>
+        <source>This character references datapacks that are not installed or enabled. Install or enable them in the Library, then open the character again.</source>
+        <translation>Questo personaggio fa riferimento a pacchetti dati che non sono installati o abilitati. Installali o abilitali nella Libreria, poi riapri il personaggio.</translation>
+    </message>
+    <message>
+        <source>v%1 or later</source>
+        <translation>v%1 o successiva</translation>
     </message>
 </context>
 <context>
@@ -2622,6 +2677,14 @@
         <source>Turn this off to return to the classic interface. Takes effect after a restart.</source>
         <translation>Disattivalo per tornare all&apos;interfaccia classica. Ha effetto dopo un riavvio.</translation>
     </message>
+    <message>
+        <source>Free shopping</source>
+        <translation>Acquisti gratuiti</translation>
+    </message>
+    <message>
+        <source>Buy advancements with no experience cost — an aid for GMs and quick builds. Affects new purchases only, and switches itself off when you restart the app.</source>
+        <translation>Acquista avanzamenti senza costo in esperienza — un aiuto per i GM e le build veloci. Vale solo per i nuovi acquisti e si disattiva al riavvio dell'app.</translation>
+    </message>
 </context>
 <context>
     <name>SkillsSection</name>
@@ -2826,11 +2889,11 @@
     </message>
     <message>
         <source>YOUR SCHOOL AWAKENS AN AFFINITY</source>
-        <translation>LA TUA SCUOLA RISVEGLIA UN'AFFINITÀ</translation>
+        <translation>LA TUA SCUOLA RISVEGLIA UN&apos;AFFINITÀ</translation>
     </message>
     <message>
         <source>choose the element your prayers command with ease</source>
-        <translation>scegli l'elemento che le tue preghiere comandano con facilità</translation>
+        <translation>scegli l&apos;elemento che le tue preghiere comandano con facilità</translation>
     </message>
     <message>
         <source>Choose Affinity</source>
@@ -2842,7 +2905,7 @@
     </message>
     <message>
         <source>choose the element whose kami resist your call</source>
-        <translation>scegli l'elemento i cui kami resistono al tuo richiamo</translation>
+        <translation>scegli l&apos;elemento i cui kami resistono al tuo richiamo</translation>
     </message>
     <message>
         <source>Choose Deficiency</source>

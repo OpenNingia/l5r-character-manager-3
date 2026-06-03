@@ -145,6 +145,41 @@ ColumnLayout {
                 color: Theme.inkMuted
                 wrapMode: Text.WordWrap
             }
+
+            Widgets.OrnateDivider {
+                Layout.fillWidth: true
+                Layout.topMargin: Theme.s2
+                Layout.bottomMargin: Theme.s2
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Label {
+                    text: qsTr("Free shopping")
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: Theme.fsLabel
+                    font.weight: Theme.wSemiBold
+                    color: Theme.ink
+                    Layout.fillWidth: true
+                }
+                Widgets.L5RToggle {
+                    checked: appSettings ? appSettings.buyForFree : false
+                    onToggled: if (appSettings)
+                        appSettings.setBuyForFree(checked)
+                }
+            }
+
+            Label {
+                Layout.fillWidth: true
+                text: qsTr("Buy advancements with no experience cost — an aid for "
+                    + "GMs and quick builds. Affects new purchases only, and "
+                    + "switches itself off when you restart the app.")
+                font.family: Theme.fontBody
+                font.pixelSize: Theme.fsCaption
+                font.italic: true
+                color: Theme.inkMuted
+                wrapMode: Text.WordWrap
+            }
         }
     }
 

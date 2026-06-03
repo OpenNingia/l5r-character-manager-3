@@ -6,7 +6,10 @@ import unittest
 
 import l5r.api as api
 import l5r.api.character
+import l5r.api.character.books
 import l5r.api.data
+import l5r.models
+import l5r.models.advances
 from l5r.api.context import L5RCMContext, use
 
 import l5rdal as dal
@@ -273,3 +276,49 @@ class TestCharacterBll(unittest.TestCase):
         self.assertIn('spell_b', school_spells)
         self.assertEqual(0, api.character.rankadv.get_pending_spells_count())
         self.assertEqual([], api.character.rankadv.get_starting_spells_to_choose())
+
+    # --- reset advancements (QML resetAdvancements slot) --------------
+
+    def test_reset_advancements(self):
+        """reset_advancements clears the whole stack, marks the model dirty,
+        and reports how many entries were removed."""
+        pc = api.character.model()
+        pc.add_advancement(l5r.models.advances.AttribAdv('strength', 4))
+        pc.add_advancement(l5r.models.advances.AttribAdv('agility', 4))
+        self.assertEqual(2, len(pc.advans))
+
+        removed = api.character.reset_advancements()
+
+        self.assertEqual(2, removed)
+        self.assertEqual([], pc.advans)
+        self.assertTrue(pc.unsaved)
+
+    def test_reset_advancements_empty(self):
+        """reset_advancements is a no-op (returns 0) on a character with no
+        advancements -- nothing to clear, nothing to dirty."""
+        pc = api.character.model()
+        pc.unsaved = False
+        self.assertEqual(0, api.character.reset_advancements())
+        self.assertFalse(pc.unsaved)
+
+    # --- missing datapack dependencies (QML Open gate) ----------------
+
+    def test_missing_dependencies_for_pc(self):
+        """get_missing_dependencies(pc) reads the references off the given
+        character (not the active one) and yields those whose datapack is
+        not loaded -- the gate the QML fileOpen applies before set_model."""
+        pc = l5r.models.AdvancedPcModel()
+        pc.pack_refs = [
+            {'id': 'ghost_pack', 'name': 'Ghost Tome', 'version': '1.0'}]
+
+        missing = list(api.character.books.get_missing_dependencies(pc))
+
+        self.assertEqual(1, len(missing))
+        self.assertEqual('ghost_pack', missing[0].id)
+        self.assertFalse(api.character.books.fulfills_dependencies(pc))
+
+    def test_no_missing_dependencies_for_pc(self):
+        """A character with no references fulfils its dependencies."""
+        pc = l5r.models.AdvancedPcModel()
+        pc.pack_refs = []
+        self.assertTrue(api.character.books.fulfills_dependencies(pc))

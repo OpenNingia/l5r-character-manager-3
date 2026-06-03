@@ -415,6 +415,34 @@
         <source>Refund</source>
         <translation>Refund</translation>
     </message>
+    <message>
+        <source>Reset all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear the entire advancement history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset all advancements?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wipe the training ledger</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset everything</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keep history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This clears every advancement in the chronicle and refunds all spent experience, returning the character to its freshly-created state. Family and school are kept. This cannot be undone.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>BuyKataDialog</name>
@@ -2286,6 +2314,33 @@
     </message>
 </context>
 <context>
+    <name>MissingBooksDialog</name>
+    <message>
+        <source>Missing datapacks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This character cannot be loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <source>This character references datapacks that are not installed or enabled. Install or enable them in the Library, then open the character again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>v%1 or later</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ModifierDialog</name>
     <message>
         <source>Edit Modifier</source>
@@ -2621,6 +2676,14 @@
     <message>
         <source>Turn this off to return to the classic interface. Takes effect after a restart.</source>
         <translation>Turn this off to return to the classic interface. Takes effect after a restart.</translation>
+    </message>
+    <message>
+        <source>Free shopping</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buy advancements with no experience cost — an aid for GMs and quick builds. Affects new purchases only, and switches itself off when you restart the app.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -6,6 +6,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import "widgets" as Widgets
+import "dialogs" as Dialogs
 import Theme 1.0
 import ClanTheme 1.0
 
@@ -556,6 +557,13 @@ ApplicationWindow {
             discardConfirmDlg.pendingAction = action;
             discardConfirmDlg.open();
         }
+        // An Open was refused because the character's datapacks/books are
+        // missing or disabled. List them and point the player at the
+        // Library; the working character was left untouched.
+        function onLoadFailedMissingBooks(books, path) {
+            missingBooksDlg.books = books;
+            missingBooksDlg.open();
+        }
     }
 
     // Unsaved-changes guard for the destructive File actions. New and Open
@@ -602,5 +610,15 @@ ApplicationWindow {
             font.pixelSize: Theme.fsBody
             color: Theme.ink
         }
+    }
+
+    // Missing-datapack guard for File > Open. When a character references
+    // datapacks/books that are not installed or active, the controller
+    // refuses the load (keeping the working character) and fires
+    // loadFailedMissingBooks; this lists them and routes the player to the
+    // Library to install/enable, then re-open.
+    Dialogs.MissingBooksDialog {
+        id: missingBooksDlg
+        onAccepted: root.jumpToLibrary()
     }
 }

@@ -31,6 +31,7 @@ from qtpy.QtCore import QObject, Property, Signal, Slot
 
 import l5r.api as api
 import l5r.api.character
+import l5r.models
 
 from l5r.util import log
 from l5r.util.settings import L5RCMSettings
@@ -67,6 +68,7 @@ class SettingsProxy(QObject):
     insightCalculationChanged = Signal()
     firstPageSkillsChanged = Signal()
     useQmlUiChanged = Signal()
+    buyForFreeChanged = Signal()
 
     # Emitted when a setting was persisted but cannot take effect until the
     # app is restarted (language, front-end switch). Carries the message
@@ -149,6 +151,26 @@ class SettingsProxy(QObject):
             api.character.set_insight_calculation_method(value)
             api.character.notify_character_refreshed()
         self.insightCalculationChanged.emit()
+
+    # --- free shopping (GM/build aid, session-only) ------------------
+    # The legacy "Free Shopping" Options toggle: while on, every NEW
+    # advancement is created at 0 XP (l5r.models.Advancement reads the
+    # class flag in its __init__). It is a session-only switch -- NOT
+    # persisted to QSettings -- matching the legacy menu, which defaults
+    # off at every launch. Persisting "everything is free" across runs
+    # would be a footgun, so the flag deliberately resets on restart.
+
+    @Property(bool, notify=buyForFreeChanged)
+    def buyForFree(self):
+        return bool(l5r.models.Advancement.get_buy_for_free())
+
+    @Slot(bool)
+    def setBuyForFree(self, value):
+        value = bool(value)
+        if value == self.buyForFree:
+            return
+        l5r.models.Advancement.set_buy_for_free(value)
+        self.buyForFreeChanged.emit()
 
     # --- PDF export (read by the exporter at export time) ------------
 

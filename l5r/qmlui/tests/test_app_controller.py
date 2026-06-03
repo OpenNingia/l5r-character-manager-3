@@ -175,3 +175,88 @@ class TestAdvanceRankGuard(unittest.TestCase):
         self.assertEqual(
             ranks_before + 1, len(api.character.rankadv.get_all()),
             "advancement did not happen after resolving the choices")
+
+
+class TestControllerActions(unittest.TestCase):
+    """resetAdvancements slot, the File>Open missing-datapack gate, and the
+    session-only Free Shopping toggle."""
+
+    def setUp(self):
+        self._stack = contextlib.ExitStack()
+        self.addCleanup(self._stack.close)
+        self._stack.enter_context(use(L5RCMContext()))
+
+        data_ = dal.Data([], [])
+        api.data.set_model(data_)
+        data_.clans.append(test_clan_1)
+        data_.families.append(test_family_1)
+        data_.schools.append(test_school_1)
+        data_.skcategs.append(test_skill_categ_1)
+        data_.skills.append(test_skill_1)
+
+        api.character.new()
+        self.ctrl = AppController()
+
+    # --- reset advancements ------------------------------------------
+
+    def test_reset_advancements_clears_stack(self):
+        """The slot delegates to api.character.reset_advancements: the
+        chronicle is emptied and the model is left dirty."""
+        import l5r.models.advances
+        pc = api.character.model()
+        pc.add_advancement(l5r.models.advances.AttribAdv('strength', 4))
+        self.assertEqual(1, len(pc.advans))
+
+        self.ctrl.resetAdvancements()
+
+        self.assertEqual([], pc.advans)
+        self.assertTrue(pc.unsaved)
+
+    # --- File > Open missing-datapack gate ---------------------------
+
+    def test_file_open_refused_on_missing_books(self):
+        """A character whose referenced datapack is not loaded must NOT be
+        opened: the controller emits loadFailedMissingBooks and leaves the
+        working character untouched (never calls set_model)."""
+        import l5r.models
+        before = api.character.model()
+
+        def fake_load(self_pc, path):
+            self_pc.pack_refs = [
+                {'id': 'ghost', 'name': 'Ghost Tome', 'version': '1.0'}]
+            return True
+
+        self._stack.enter_context(
+            mock.patch.object(l5r.models.AdvancedPcModel, 'load_from',
+                              fake_load))
+        fired = []
+        self.ctrl.loadFailedMissingBooks.connect(
+            lambda books, path: fired.append((books, path)))
+
+        self.ctrl.fileOpen('whatever.l5r')
+
+        self.assertEqual(1, len(fired), "missing-books signal not emitted")
+        books, path = fired[0]
+        self.assertEqual('whatever.l5r', path)
+        self.assertEqual(1, len(books))
+        self.assertIs(before, api.character.model(),
+                      "active model was swapped despite missing books")
+
+    # --- Free Shopping (SettingsProxy, session-only) -----------------
+
+    def test_buy_for_free_toggle(self):
+        """setBuyForFree flips the global Advancement flag and the property
+        reflects it; it is session-only, so the test resets it on teardown."""
+        import l5r.models
+        from l5r.qmlui.proxies.settings_proxy import SettingsProxy
+        self.addCleanup(l5r.models.Advancement.set_buy_for_free, False)
+
+        proxy = SettingsProxy()
+        self.assertFalse(proxy.buyForFree)
+
+        proxy.setBuyForFree(True)
+        self.assertTrue(proxy.buyForFree)
+        self.assertTrue(l5r.models.Advancement.get_buy_for_free())
+
+        proxy.setBuyForFree(False)
+        self.assertFalse(l5r.models.Advancement.get_buy_for_free())

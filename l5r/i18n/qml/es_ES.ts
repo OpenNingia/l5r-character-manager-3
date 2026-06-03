@@ -415,6 +415,34 @@
         <source>Refund</source>
         <translation>Reembolsar</translation>
     </message>
+    <message>
+        <source>Reset all</source>
+        <translation>Restablecer todo</translation>
+    </message>
+    <message>
+        <source>Clear the entire advancement history</source>
+        <translation>Borrar todo el historial de avances</translation>
+    </message>
+    <message>
+        <source>Reset all advancements?</source>
+        <translation>¿Restablecer todos los avances?</translation>
+    </message>
+    <message>
+        <source>Wipe the training ledger</source>
+        <translation>Borrar el registro de entrenamiento</translation>
+    </message>
+    <message>
+        <source>Reset everything</source>
+        <translation>Restablecer todo</translation>
+    </message>
+    <message>
+        <source>Keep history</source>
+        <translation>Conservar el historial</translation>
+    </message>
+    <message>
+        <source>This clears every advancement in the chronicle and refunds all spent experience, returning the character to its freshly-created state. Family and school are kept. This cannot be undone.</source>
+        <translation>Borra todos los avances de la crónica y reembolsa toda la experiencia gastada, devolviendo al personaje a su estado recién creado. La familia y la escuela se conservan. Esto no se puede deshacer.</translation>
+    </message>
 </context>
 <context>
     <name>BuyKataDialog</name>
@@ -2286,6 +2314,33 @@
     </message>
 </context>
 <context>
+    <name>MissingBooksDialog</name>
+    <message>
+        <source>Missing datapacks</source>
+        <translation>Paquetes de datos faltantes</translation>
+    </message>
+    <message>
+        <source>This character cannot be loaded</source>
+        <translation>No se puede cargar este personaje</translation>
+    </message>
+    <message>
+        <source>Open Library</source>
+        <translation type="unfinished">Abrir Biblioteca</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
+        <source>This character references datapacks that are not installed or enabled. Install or enable them in the Library, then open the character again.</source>
+        <translation>Este personaje hace referencia a paquetes de datos que no están instalados o habilitados. Instálalos o actívalos en la Biblioteca y vuelve a abrir el personaje.</translation>
+    </message>
+    <message>
+        <source>v%1 or later</source>
+        <translation>v%1 o posterior</translation>
+    </message>
+</context>
+<context>
     <name>ModifierDialog</name>
     <message>
         <source>Edit Modifier</source>
@@ -2621,6 +2676,14 @@
     <message>
         <source>Turn this off to return to the classic interface. Takes effect after a restart.</source>
         <translation>Desactiva esto para volver a la interfaz clásica. Tiene efecto tras reiniciar.</translation>
+    </message>
+    <message>
+        <source>Free shopping</source>
+        <translation>Compra gratuita</translation>
+    </message>
+    <message>
+        <source>Buy advancements with no experience cost — an aid for GMs and quick builds. Affects new purchases only, and switches itself off when you restart the app.</source>
+        <translation>Compra avances sin coste de experiencia — una ayuda para directores de juego y creaciones rápidas. Solo afecta a las compras nuevas y se desactiva al reiniciar la aplicación.</translation>
     </message>
 </context>
 <context>

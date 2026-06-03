@@ -22,6 +22,7 @@
 //   pcProxy.advancementsXpSpent: number       // sum of costs
 //   pcProxy.advancementsCount:   number       // length of the list
 //   appCtrl.refundLastAdvancement(): void
+//   appCtrl.resetAdvancements():     void      // clears the whole stack
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -747,22 +748,51 @@ ColumnLayout {
                 }
             }
 
-            // ---- Footer caption -------------------------------------
-            // A quiet margin note answering the only question the
-            // section UX raises: "where's the refund button on the
-            // older cards?" The rationale (cost-cascade) is intentional
-            // implementation detail and lives in code comments, not on
-            // screen.
-            Label {
+            // ---- Footer: margin note + reset-all --------------------
+            // The caption answers the only question the section UX
+            // raises ("where's the refund button on the older cards?").
+            // The reset-all control sits opposite it: a quiet ghost
+            // button until hovered, crimson per §6.16 (destructive),
+            // gated behind resetDlg so a slip can't wipe the chronicle.
+            RowLayout {
                 Layout.fillWidth: true
                 Layout.topMargin: 8
                 visible: section._hasItems
-                horizontalAlignment: Text.AlignRight
-                text: qsTr("Only the most recent advancement may be refunded.")
-                font.italic: true
-                font.pixelSize: Theme.fsCaption
-                opacity: 0.55
-                wrapMode: Text.WordWrap
+                spacing: 12
+
+                Label {
+                    Layout.fillWidth: true
+                    horizontalAlignment: Text.AlignLeft
+                    text: qsTr("Only the most recent advancement may be refunded.")
+                    font.italic: true
+                    font.pixelSize: Theme.fsCaption
+                    opacity: 0.55
+                    wrapMode: Text.WordWrap
+                }
+
+                Button {
+                    id: resetButton
+                    text: qsTr("Reset all")
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Clear the entire advancement history")
+                    onClicked: resetDlg.open()
+                    background: Rectangle {
+                        radius: 2
+                        color: resetButton.down ? Theme.accentMuted : (resetButton.hovered ? Theme.accent : "transparent")
+                        border.color: Theme.accent
+                        border.width: 1
+                    }
+                    contentItem: Label {
+                        text: resetButton.text
+                        font.family: Theme.fontDisplay
+                        font.pixelSize: Theme.fsCaption
+                        font.weight: Font.DemiBold
+                        font.letterSpacing: 1.4
+                        color: resetButton.hovered ? Theme.parchmentBase : Theme.accent
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
             }
         }
     }
@@ -887,6 +917,40 @@ ColumnLayout {
                     }
                 }
             }
+        }
+    }
+
+    // -----------------------------------------------------------------
+    // Reset-all confirmation -- design-system dialog shell (L5RDialog).
+    // Distinct from the refund flow: this wipes the WHOLE chronicle, so
+    // it always confirms (no "do not prompt again") and reads in crimson
+    // (§6.16, destructive). Family and school survive the reset (they are
+    // set at creation, not as advancements). 捨 (sutu) -- discard / let go.
+    // -----------------------------------------------------------------
+    Widgets.L5RDialog {
+        id: resetDlg
+        title: qsTr("Reset all advancements?")
+        tagline: qsTr("Wipe the training ledger")
+        seal: "捨"
+        accent: Theme.accent
+        accentDark: Theme.accentMuted
+        padding: Theme.s6
+        acceptText: qsTr("Reset everything")
+        acceptGlyph: "捨"
+        cancelText: qsTr("Keep history")
+        onAccepted: if (appCtrl)
+            appCtrl.resetAdvancements()
+
+        Label {
+            width: 380
+            text: qsTr("This clears every advancement in the chronicle and "
+                + "refunds all spent experience, returning the character to "
+                + "its freshly-created state. Family and school are kept. "
+                + "This cannot be undone.")
+            wrapMode: Text.WordWrap
+            font.family: Theme.fontBody
+            font.pixelSize: Theme.fsBody
+            color: Theme.ink
         }
     }
 }

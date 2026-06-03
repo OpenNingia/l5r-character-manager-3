@@ -407,6 +407,34 @@
         <source>Refund</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Reset all</source>
+        <translation>Сбросить всё</translation>
+    </message>
+    <message>
+        <source>Clear the entire advancement history</source>
+        <translation>Очистить всю историю улучшений</translation>
+    </message>
+    <message>
+        <source>Reset all advancements?</source>
+        <translation>Сбросить все улучшения?</translation>
+    </message>
+    <message>
+        <source>Wipe the training ledger</source>
+        <translation>Очистить журнал обучения</translation>
+    </message>
+    <message>
+        <source>Reset everything</source>
+        <translation>Сбросить всё</translation>
+    </message>
+    <message>
+        <source>Keep history</source>
+        <translation>Сохранить историю</translation>
+    </message>
+    <message>
+        <source>This clears every advancement in the chronicle and refunds all spent experience, returning the character to its freshly-created state. Family and school are kept. This cannot be undone.</source>
+        <translation>Удаляет все улучшения в хронике и возвращает весь потраченный опыт, возвращая персонажа в исходное только что созданное состояние. Семья и школа сохраняются. Это действие нельзя отменить.</translation>
+    </message>
 </context>
 <context>
     <name>BuyKataDialog</name>
@@ -2132,7 +2160,7 @@
     </message>
     <message>
         <source>Open Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть библиотеку</translation>
     </message>
     <message>
         <source>Resolve your pending opportunities before advancing rank.</source>
@@ -2276,6 +2304,33 @@
     <message>
         <source>Remove this modifier</source>
         <translation>Удалить этот модификатор</translation>
+    </message>
+</context>
+<context>
+    <name>MissingBooksDialog</name>
+    <message>
+        <source>Missing datapacks</source>
+        <translation>Отсутствуют пакеты данных</translation>
+    </message>
+    <message>
+        <source>This character cannot be loaded</source>
+        <translation>Не удалось загрузить этого персонажа</translation>
+    </message>
+    <message>
+        <source>Open Library</source>
+        <translation>Открыть библиотеку</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This character references datapacks that are not installed or enabled. Install or enable them in the Library, then open the character again.</source>
+        <translation>Этот персонаж ссылается на пакеты данных, которые не установлены или не включены. Установите или включите их в библиотеке, затем снова откройте персонажа.</translation>
+    </message>
+    <message>
+        <source>v%1 or later</source>
+        <translation>v%1 или новее</translation>
     </message>
 </context>
 <context>
@@ -2614,6 +2669,14 @@
     <message>
         <source>Turn this off to return to the classic interface. Takes effect after a restart.</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Free shopping</source>
+        <translation>Бесплатные покупки</translation>
+    </message>
+    <message>
+        <source>Buy advancements with no experience cost — an aid for GMs and quick builds. Affects new purchases only, and switches itself off when you restart the app.</source>
+        <translation>Покупайте улучшения без затрат опыта — помощь для мастеров и быстрого создания персонажей. Влияет только на новые покупки и отключается при перезапуске приложения.</translation>
     </message>
 </context>
 <context>

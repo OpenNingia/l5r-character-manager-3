@@ -24,6 +24,7 @@ from qtpy.QtWidgets import QFileDialog, QMessageBox
 
 import l5r.api as api
 import l5r.api.character
+import l5r.api.character.books
 import l5r.api.character.merits
 import l5r.api.character.powers
 import l5r.api.character.rankadv
@@ -381,6 +382,14 @@ class AppController(QObject):
     # confirmation and dispatch to the right slot on accept. Clean models
     # skip straight to the action (no prompt).
     confirmDiscardChanges = Signal(str)
+    # Emitted when an Open was refused because the character references
+    # datapacks/books that are not installed or active -- loading it would
+    # silently drop its schools/skills/spells (the legacy
+    # warn_about_missing_books gate). Carries the missing book list
+    # ([{name, version}, ...]) and the rejected path so the QML side can
+    # list them and point the player at the Library. The working character
+    # is left untouched.
+    loadFailedMissingBooks = Signal("QVariantList", str)
 
     # Debounce window for the recovery autosave: coalesce a burst of
     # edits (dragging a spinbox, typing a name) into one write, fired
@@ -495,6 +504,21 @@ class AppController(QObject):
         pc = l5r.models.AdvancedPcModel()
         if not pc.load_from(path):
             log.app.warning(u"QML UI: failed to load character: %s", path)
+            return
+        # Refuse to load a character whose referenced datapacks are missing
+        # or disabled (the legacy warn_about_missing_books gate): loading it
+        # would silently drop its schools/skills/spells. Evaluated against
+        # the just-loaded `pc` BEFORE set_model, so the working character is
+        # left intact when the gate trips.
+        missing = list(api.character.books.get_missing_dependencies(pc))
+        if missing:
+            log.app.warning(
+                u"QML UI: refusing to load %s -- %d missing dependencies",
+                path, len(missing))
+            self.loadFailedMissingBooks.emit(
+                [{"name": b.name, "version": str(b.version or "")}
+                 for b in missing],
+                path)
             return
         api.character.set_model(pc)
         api.character.set_dirty_flag(False)
@@ -1257,6 +1281,17 @@ class AppController(QObject):
         ones beneath it (see project-advancement-stack-semantics).
         The api setter owns the dirty-flag + refresh contract."""
         api.character.refund_last_advancement()
+
+    @Slot()
+    def resetAdvancements(self):
+        """Clear the entire advancement chronicle (the legacy 'Reset
+        advancements' menu action), refunding all spent XP and returning
+        the character to its freshly-created state. The api setter owns
+        the dirty flag; refresh the QML bindings on success."""
+        if api.character.model() is None:
+            return
+        if api.character.reset_advancements():
+            api.character.notify_character_refreshed()
 
     @Slot(result=bool)
     def refundWarningEnabled(self):

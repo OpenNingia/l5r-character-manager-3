@@ -415,6 +415,34 @@
         <source>Refund</source>
         <translation>Rembourser</translation>
     </message>
+    <message>
+        <source>Reset all</source>
+        <translation>Tout réinitialiser</translation>
+    </message>
+    <message>
+        <source>Clear the entire advancement history</source>
+        <translation>Effacer tout l'historique des progressions</translation>
+    </message>
+    <message>
+        <source>Reset all advancements?</source>
+        <translation>Réinitialiser toutes les progressions ?</translation>
+    </message>
+    <message>
+        <source>Wipe the training ledger</source>
+        <translation>Effacer le registre d'entraînement</translation>
+    </message>
+    <message>
+        <source>Reset everything</source>
+        <translation>Tout réinitialiser</translation>
+    </message>
+    <message>
+        <source>Keep history</source>
+        <translation>Conserver l'historique</translation>
+    </message>
+    <message>
+        <source>This clears every advancement in the chronicle and refunds all spent experience, returning the character to its freshly-created state. Family and school are kept. This cannot be undone.</source>
+        <translation>Efface toutes les progressions de la chronique et rembourse toute l'expérience dépensée, ramenant le personnage à son état initial. La famille et l'école sont conservées. Cette action est irréversible.</translation>
+    </message>
 </context>
 <context>
     <name>BuyKataDialog</name>
@@ -1054,11 +1082,11 @@
     </message>
     <message>
         <source>the element your prayers command with ease</source>
-        <translation>l'élément que vos prières commandent avec aisance</translation>
+        <translation>l&apos;élément que vos prières commandent avec aisance</translation>
     </message>
     <message>
         <source>the element whose kami resist your call</source>
-        <translation>l'élément dont les kami résistent à votre appel</translation>
+        <translation>l&apos;élément dont les kami résistent à votre appel</translation>
     </message>
     <message>
         <source>Choose</source>
@@ -1066,11 +1094,11 @@
     </message>
     <message>
         <source>Choose the element you resonate with.</source>
-        <translation>Choisissez l'élément avec lequel vous résonnez.</translation>
+        <translation>Choisissez l&apos;élément avec lequel vous résonnez.</translation>
     </message>
     <message>
         <source>Choose the element that resists you.</source>
-        <translation>Choisissez l'élément qui vous résiste.</translation>
+        <translation>Choisissez l&apos;élément qui vous résiste.</translation>
     </message>
     <message>
         <source>This element&apos;s spells come more readily — Mastery within reach rises by one.</source>
@@ -1082,7 +1110,7 @@
     </message>
     <message>
         <source>There is no elemental choice to make.</source>
-        <translation>Il n'y a aucun choix élémentaire à faire.</translation>
+        <translation>Il n&apos;y a aucun choix élémentaire à faire.</translation>
     </message>
 </context>
 <context>
@@ -1160,11 +1188,11 @@
     </message>
     <message>
         <source>Choose School Spells</source>
-        <translation>Choisir les sorts d'école</translation>
+        <translation>Choisir les sorts d&apos;école</translation>
     </message>
     <message>
         <source>your school grants these prayers — fill each in any order</source>
-        <translation>votre école accorde ces prières — attribuez-les dans l'ordre de votre choix</translation>
+        <translation>votre école accorde ces prières — attribuez-les dans l&apos;ordre de votre choix</translation>
     </message>
     <message>
         <source>Inscribe</source>
@@ -1184,11 +1212,11 @@
     </message>
     <message>
         <source>any spell but %1</source>
-        <translation>n'importe quel sort sauf %1</translation>
+        <translation>n&apos;importe quel sort sauf %1</translation>
     </message>
     <message>
         <source>any spell</source>
-        <translation>n'importe quel sort</translation>
+        <translation>n&apos;importe quel sort</translation>
     </message>
     <message>
         <source>, Maho only</source>
@@ -1235,7 +1263,7 @@
     </message>
     <message>
         <source>no spell answers this slot&apos;s calling</source>
-        <translation>aucun sort ne répond à l'appel de cet emplacement</translation>
+        <translation>aucun sort ne répond à l&apos;appel de cet emplacement</translation>
     </message>
     <message>
         <source>Choose a spell for this slot from the register at your left.</source>
@@ -1243,7 +1271,7 @@
     </message>
     <message>
         <source>Every spell shown lies within your reach. Switch slots with the tabs above and fill them in whatever order you please.</source>
-        <translation>Tous les sorts affichés sont à votre portée. Changez d'emplacement avec les onglets ci-dessus et remplissez-les dans l'ordre qu'il vous plaît.</translation>
+        <translation>Tous les sorts affichés sont à votre portée. Changez d&apos;emplacement avec les onglets ci-dessus et remplissez-les dans l&apos;ordre qu&apos;il vous plaît.</translation>
     </message>
     <message>
         <source>Mastery %1</source>
@@ -1976,11 +2004,11 @@
     </message>
     <message>
         <source>No datapacks yet</source>
-        <translation>Aucun pack de données pour l'instant</translation>
+        <translation>Aucun pack de données pour l&apos;instant</translation>
     </message>
     <message>
         <source>Without a datapack the app can&apos;t do much. Start with the Core datapack — it carries the base rules, clans, schools and skills.</source>
-        <translation>Sans pack de données, l'application ne peut pas faire grand-chose. Commencez par le pack Core — il contient les règles de base, les clans, les écoles et les compétences.</translation>
+        <translation>Sans pack de données, l&apos;application ne peut pas faire grand-chose. Commencez par le pack Core — il contient les règles de base, les clans, les écoles et les compétences.</translation>
     </message>
     <message>
         <source>Download the Core datapack</source>
@@ -2020,7 +2048,7 @@
     </message>
     <message>
         <source>Couldn&apos;t reach the datapack repository. Check your connection and try again.</source>
-        <translation>Impossible d'accéder au dépôt de packs de données. Vérifiez votre connexion et réessayez.</translation>
+        <translation>Impossible d&apos;accéder au dépôt de packs de données. Vérifiez votre connexion et réessayez.</translation>
     </message>
     <message>
         <source>GitHub is rate-limiting requests right now (it allows a limited number per hour). Please try again later.</source>
@@ -2048,7 +2076,7 @@
     </message>
     <message>
         <source>Core holds the base rules — deleting it leaves the app unusable until you reinstall it. Delete &quot;%1&quot; from disk?</source>
-        <translation>Core contient les règles de base — le supprimer rend l'application inutilisable jusqu'à ce que vous le réinstalliez. Supprimer &quot;%1&quot; du disque ?</translation>
+        <translation>Core contient les règles de base — le supprimer rend l&apos;application inutilisable jusqu&apos;à ce que vous le réinstalliez. Supprimer &quot;%1&quot; du disque ?</translation>
     </message>
     <message>
         <source>This removes &quot;%1&quot; and its content from disk. You can reinstall it later. Continue?</source>
@@ -2072,7 +2100,7 @@
     </message>
     <message>
         <source>Disabling Core hides the base rules, clans, schools and skills; the app will be unusable until you re-enable it. Continue?</source>
-        <translation>Désactiver Core masque les règles de base, les clans, les écoles et les compétences ; l'application sera inutilisable jusqu'à ce que vous le réactiviez. Continuer ?</translation>
+        <translation>Désactiver Core masque les règles de base, les clans, les écoles et les compétences ; l&apos;application sera inutilisable jusqu&apos;à ce que vous le réactiviez. Continuer ?</translation>
     </message>
 </context>
 <context>
@@ -2135,7 +2163,7 @@
     </message>
     <message>
         <source>No datapacks installed — the app needs at least the Core datapack to be useful.</source>
-        <translation>Aucun pack de données installé — l'application a besoin d'au moins le pack Core pour être utile.</translation>
+        <translation>Aucun pack de données installé — l&apos;application a besoin d&apos;au moins le pack Core pour être utile.</translation>
     </message>
     <message>
         <source>Open Library</source>
@@ -2167,7 +2195,7 @@
     </message>
     <message>
         <source>Keep editing</source>
-        <translation>Continuer l'édition</translation>
+        <translation>Continuer l&apos;édition</translation>
     </message>
     <message>
         <source>This character has changes that are not saved to a .l5r file. Opening another character will discard them. Continue?</source>
@@ -2283,6 +2311,33 @@
     <message>
         <source>Remove this modifier</source>
         <translation>Supprimer ce modificateur</translation>
+    </message>
+</context>
+<context>
+    <name>MissingBooksDialog</name>
+    <message>
+        <source>Missing datapacks</source>
+        <translation>Packs de données manquants</translation>
+    </message>
+    <message>
+        <source>This character cannot be loaded</source>
+        <translation>Ce personnage ne peut pas être chargé</translation>
+    </message>
+    <message>
+        <source>Open Library</source>
+        <translation type="unfinished">Ouvrir la bibliothèque</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>This character references datapacks that are not installed or enabled. Install or enable them in the Library, then open the character again.</source>
+        <translation>Ce personnage fait référence à des packs de données qui ne sont pas installés ou activés. Installez-les ou activez-les dans la bibliothèque, puis rouvrez le personnage.</translation>
+    </message>
+    <message>
+        <source>v%1 or later</source>
+        <translation>v%1 ou ultérieure</translation>
     </message>
 </context>
 <context>
@@ -2622,6 +2677,14 @@
         <source>Turn this off to return to the classic interface. Takes effect after a restart.</source>
         <translation>Désactive ceci pour revenir à l&apos;interface classique. Prend effet après un redémarrage.</translation>
     </message>
+    <message>
+        <source>Free shopping</source>
+        <translation>Achats gratuits</translation>
+    </message>
+    <message>
+        <source>Buy advancements with no experience cost — an aid for GMs and quick builds. Affects new purchases only, and switches itself off when you restart the app.</source>
+        <translation>Achetez des progressions sans coût en expérience — une aide pour les MJ et les créations rapides. N'affecte que les nouveaux achats et se désactive au redémarrage de l'application.</translation>
+    </message>
 </context>
 <context>
     <name>SkillsSection</name>
@@ -2830,7 +2893,7 @@
     </message>
     <message>
         <source>choose the element your prayers command with ease</source>
-        <translation>choisissez l'élément que vos prières commandent avec aisance</translation>
+        <translation>choisissez l&apos;élément que vos prières commandent avec aisance</translation>
     </message>
     <message>
         <source>Choose Affinity</source>
@@ -2842,7 +2905,7 @@
     </message>
     <message>
         <source>choose the element whose kami resist your call</source>
-        <translation>choisissez l'élément dont les kami résistent à votre appel</translation>
+        <translation>choisissez l&apos;élément dont les kami résistent à votre appel</translation>
     </message>
     <message>
         <source>Choose Deficiency</source>
