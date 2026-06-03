@@ -343,3 +343,30 @@ def has_granted_deficiencies_to_choose():
     if rank_:
         return len(rank_.deficiencies_to_choose) > 0
     return False
+
+
+def choose_affinity(ring_id):
+    """commit a chosen elemental affinity on the current rank advancement.
+
+    Consumes one pending `any`/`nonvoid` slot (mirrors the legacy
+    AdvanceMixin.show_select_affinity: pop the spec, append the chosen ring).
+    Returns False when nothing was pending. The dirty flag is owned by the
+    caller (the appCtrl slot), like advance_rank/join_new."""
+    rank_ = get_last()
+    if not rank_ or not rank_.affinities_to_choose:
+        return False
+    rank_.affinities_to_choose.pop()
+    rank_.affinities.append(ring_id)
+    return True
+
+
+def choose_deficiency(ring_id):
+    """commit a chosen elemental deficiency on the current rank advancement.
+
+    The deficiency counterpart of choose_affinity."""
+    rank_ = get_last()
+    if not rank_ or not rank_.deficiencies_to_choose:
+        return False
+    rank_.deficiencies_to_choose.pop()
+    rank_.deficiencies.append(ring_id)
+    return True

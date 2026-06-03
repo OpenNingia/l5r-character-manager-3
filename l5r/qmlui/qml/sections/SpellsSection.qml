@@ -72,6 +72,14 @@ ColumnLayout {
     readonly property var _deficiencies: (pcProxy && pcProxy.spellDeficiencies) ? pcProxy.spellDeficiencies : []
     readonly property bool _isShugenja: (pcProxy && pcProxy.isShugenja) ? pcProxy.isShugenja : false
 
+    // Pending shugenja choices the school grants -- all resolved here. They
+    // surface as §6.16 callouts in priority order (affinity -> deficiency ->
+    // free spells): the elemental leanings set which masteries lie within
+    // reach, so they are chosen before the spells judged against them.
+    readonly property int _affinityChoices: (pcProxy && pcProxy.affinityChoiceCount) ? pcProxy.affinityChoiceCount : 0
+    readonly property int _deficiencyChoices: (pcProxy && pcProxy.deficiencyChoiceCount) ? pcProxy.deficiencyChoiceCount : 0
+    readonly property bool _freeSpellPending: (pcProxy && pcProxy.freeSpellChoicePending) ? pcProxy.freeSpellChoicePending : false
+
     // The header strip of elemental leanings is meaningful only when the
     // school grants one or the character is a priest -- a bushi who has
     // merely memorized a scroll has no affinity to report.
@@ -125,6 +133,54 @@ ColumnLayout {
     // -----------------------------------------------------------------
     Dialogs.BuySpellDialog {
         id: buySpellDlg
+    }
+
+    // -----------------------------------------------------------------
+    // Bounded choosers for the school-granted opportunities: the tabbed
+    // spell picker (free spells) and the shared element picker (affinity /
+    // deficiency). Replace the legacy bounded SpellAdvDialog and the bare
+    // affinity/deficiency QInputDialogs.
+    // -----------------------------------------------------------------
+    Dialogs.ChooseSchoolSpellsDialog {
+        id: chooseSchoolSpellsDlg
+    }
+    Dialogs.ChooseElementDialog {
+        id: chooseElementDlg
+    }
+
+    // -----------------------------------------------------------------
+    // Opportunity callouts (§6.16). The in-section landing for the Spells
+    // TOC badge -- shown one at a time in priority order so the player fixes
+    // the elemental leanings before choosing spells against them. Accent-blue
+    // per the positive-action language (crimson is reserved for
+    // destructive/unmet).
+    // -----------------------------------------------------------------
+    SpellCallout {
+        Layout.fillWidth: true
+        visible: section._affinityChoices > 0
+        seal: "氣"
+        heading: qsTr("YOUR SCHOOL AWAKENS AN AFFINITY")
+        subtitle: qsTr("choose the element your prayers command with ease")
+        action: qsTr("Choose Affinity")
+        onActivated: chooseElementDlg.present("affinity")
+    }
+    SpellCallout {
+        Layout.fillWidth: true
+        visible: section._affinityChoices === 0 && section._deficiencyChoices > 0
+        seal: "氣"
+        heading: qsTr("YOUR SCHOOL EXACTS A DEFICIENCY")
+        subtitle: qsTr("choose the element whose kami resist your call")
+        action: qsTr("Choose Deficiency")
+        onActivated: chooseElementDlg.present("deficiency")
+    }
+    SpellCallout {
+        Layout.fillWidth: true
+        visible: section._affinityChoices === 0 && section._deficiencyChoices === 0 && section._freeSpellPending
+        seal: "呪"
+        heading: qsTr("YOUR SCHOOL GRANTS SPELLS")
+        subtitle: qsTr("the kami offer their prayers — choose those within your reach")
+        action: qsTr("Choose Spells")
+        onActivated: chooseSchoolSpellsDlg.present()
     }
 
     // -----------------------------------------------------------------
@@ -364,6 +420,79 @@ ColumnLayout {
                         color: leaning.accent
                     }
                 }
+            }
+        }
+    }
+
+    // =================================================================
+    // SpellCallout -- a §6.16 opportunity banner (36×36 kanji tile + two
+    // lines + a CTA). One shape for all three school-granted prompts; the
+    // host sets seal / heading / subtitle / action and handles activated().
+    // =================================================================
+    component SpellCallout: Rectangle {
+        id: callout
+        property string seal: ""
+        property string heading: ""
+        property string subtitle: ""
+        property string action: ""
+        signal activated
+
+        implicitHeight: 56
+        color: Theme.secondarySoft
+        border.color: Theme.secondary
+        border.width: 1
+        radius: 2
+
+        RowLayout {
+            anchors.fill: parent
+            anchors.leftMargin: 12
+            anchors.rightMargin: 12
+            spacing: 12
+
+            // 36×36 kanji tile (§6.16: smaller than the dialog's 48px).
+            Rectangle {
+                Layout.preferredWidth: 36
+                Layout.preferredHeight: 36
+                Layout.alignment: Qt.AlignVCenter
+                radius: 4
+                color: Theme.secondary
+                Label {
+                    anchors.centerIn: parent
+                    text: callout.seal
+                    font.family: Theme.fontKanji
+                    font.pixelSize: 24
+                    color: Theme.whiteWash
+                }
+            }
+            ColumnLayout {
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignVCenter
+                spacing: 0
+                Label {
+                    text: callout.heading
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: Theme.fsHeading2
+                    font.weight: Theme.wSemiBold
+                    font.letterSpacing: 1.4
+                    color: Theme.secondary
+                }
+                Label {
+                    Layout.fillWidth: true
+                    text: callout.subtitle
+                    font.family: Theme.fontBody
+                    font.italic: true
+                    font.pixelSize: Theme.fsCaption
+                    color: Theme.inkMuted
+                    wrapMode: Text.WordWrap
+                }
+            }
+            Widgets.L5RButton {
+                text: callout.action
+                glyph: callout.seal
+                accent: Theme.secondary
+                accentDark: Theme.secondaryDark
+                Layout.alignment: Qt.AlignVCenter
+                onClicked: callout.activated()
             }
         }
     }

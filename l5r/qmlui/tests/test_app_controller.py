@@ -20,6 +20,7 @@ import l5r.api as api
 import l5r.api.character
 import l5r.api.character.rankadv
 import l5r.api.character.schools
+import l5r.api.character.spells
 import l5r.api.data
 from l5r.api.context import L5RCMContext, use
 
@@ -118,6 +119,33 @@ class TestAdvanceRankGuard(unittest.TestCase):
 
         self.assertEqual([True], self._blocked)
         self.assertEqual([], self._ready)
+
+    def test_request_blocked_by_pending_affinity(self):
+        """The shugenja elemental-affinity choice now surfaces on the Spells
+        section, so an unresolved one blocks the rank-up like any other."""
+        api.character.rankadv.clear_skills_to_choose()
+        api.character.rankadv.get_last().affinities_to_choose = ['nonvoid']
+
+        self.ctrl.requestAdvanceRank()
+
+        self.assertEqual([True], self._blocked)
+        self.assertEqual([], self._ready)
+
+    def test_choose_affinity_resolves_the_block(self):
+        """chooseAffinity commits the ring and clears the pending choice, so
+        the rank-up is no longer blocked afterwards."""
+        api.character.rankadv.clear_skills_to_choose()
+        rank_ = api.character.rankadv.get_last()
+        rank_.affinities_to_choose = ['nonvoid']
+
+        self.ctrl.chooseAffinity('fire')
+
+        self.assertEqual([], rank_.affinities_to_choose)
+        self.assertIn('fire', api.character.spells.affinities())
+
+        self.ctrl.requestAdvanceRank()
+        self.assertEqual([True], self._ready)
+        self.assertEqual([], self._blocked)
 
     # --- dialog accept (advanceRank), defence in depth ----------------
 

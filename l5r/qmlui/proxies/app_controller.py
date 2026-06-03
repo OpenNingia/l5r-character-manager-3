@@ -259,6 +259,103 @@ def _spell_catalogue_record(spell):
     }
 
 
+def _ring_element_text(key):
+    """Localised display name for a ring key, falling back to a Title-cased
+    key (the same convention _spell_catalogue_record uses)."""
+    ring_ = api.data.get_ring(key)
+    return ring_.text if ring_ else (key or "").replace("_", " ").title()
+
+
+def _spell_slot_specs():
+    """Expand the pending free-spell grants on the current rank advancement
+    into per-slot specs, mirroring the legacy SpellAdvDialog.setup(): each
+    `spells_to_choose` entry -- a tuple (element, qty[, tag]) copied from the
+    school's <PlayerChoose> spells -- yields `qty` restricted slots; then
+    unrestricted slots are appended until the total reaches
+    `gained_spells_count` (the legacy max(idx, page_count)).
+
+    `element` is matched as a substring, exactly as the legacy did:
+      - 'maho' present  -> Maho-only slot, no element restriction
+      - 'any' present   -> no element restriction
+      - 'nodefic'       -> ignore the caster's deficiency when judging reach
+      - '!x'            -> any element but x
+      - otherwise       -> that exact element
+    """
+    slots = []
+    for wc in api.character.rankadv.get_starting_spells_to_choose() or []:
+        element = wc[0] if len(wc) >= 1 else None
+        qty = wc[1] if len(wc) >= 2 else 0
+        tag = wc[2] if len(wc) >= 3 else None
+        only_maho = bool(element) and 'maho' in element
+        no_defic = bool(element) and 'nodefic' in element
+        # No element restriction for any/maho slots (mirrors setup()).
+        restriction = (None if (only_maho or not element or 'any' in element)
+                       else element)
+        for _ in range(int(qty or 0)):
+            slots.append({
+                "element": restriction,
+                "maho":    only_maho,
+                "noDefic": no_defic,
+                "tag":     tag,
+            })
+    free = int(api.character.rankadv.get_pending_spells_count() or 0)
+    while len(slots) < free:
+        slots.append({"element": None, "maho": False,
+                      "noDefic": False, "tag": None})
+    return slots
+
+
+def _spell_slot_options(spec):
+    """Eligible, not-yet-known spells for one bounded slot, as catalogue
+    records. Mirrors SpellItemSelection.update_spell_list + can_learn: filter
+    by element / Maho / tag restriction and by learnability (honouring the
+    slot's no-deficiency flag), excluding spells the character already knows.
+    Every returned record is `eligible: True` -- it has already passed the
+    slot's mastery-reach gate, so the dialog never dims a pickable spell."""
+    known = set(api.character.spells.get_all())
+    current_school = api.character.schools.get_current()
+    try:
+        insight = int(api.character.insight_rank())
+    except Exception:
+        insight = 0
+
+    elem = spec.get("element")          # exact ring, "!x", or None
+    only_maho = bool(spec.get("maho"))
+    no_defic = bool(spec.get("noDefic"))
+    tag = spec.get("tag")
+
+    out = []
+    for spell in api.data.spells.all() or []:
+        if spell.id in known:
+            continue
+        # element restriction (exact, or "!x" exclusion)
+        if elem:
+            if elem[0] == '!':
+                if spell.element == elem[1:]:
+                    continue
+            elif spell.element != elem:
+                continue
+        # Maho restriction
+        if only_maho and not api.data.spells.has_tag(spell.id, 'maho', current_school):
+            continue
+        # tag restriction
+        if tag and not api.data.spells.has_tag(spell.id, tag, current_school):
+            continue
+        # learnability -- Insight + affinity, minus deficiency unless waived
+        try:
+            aff = int(api.character.spells.affinity(spell))
+            dfc = 0 if no_defic else int(api.character.spells.deficiency(spell))
+        except Exception:
+            aff = dfc = 0
+        if insight + aff - dfc < (int(spell.mastery) if spell.mastery is not None else 0):
+            continue
+        rec = _spell_catalogue_record(spell)
+        rec["eligible"] = True
+        out.append(rec)
+    out.sort(key=lambda r: (r["mastery"], (r["name"] or "").lower()))
+    return out
+
+
 class AppController(QObject):
     """Top-level controller exposed to QML."""
 
@@ -897,6 +994,116 @@ class AppController(QObject):
         out.sort(key=lambda r: (not r["eligible"], r["mastery"],
                                 (r["name"] or "").lower()))
         return out
+
+    # --- school spell grant (shugenja) -------------------------------
+
+    @Slot(result="QVariantMap")
+    def schoolSpellChoices(self):
+        """Per-slot feed for ChooseSchoolSpellsDialog -- the bounded version
+        of the spell catalogue. Replaces the legacy 'bounded' SpellAdvDialog
+        wizard: each free spell the school grants becomes one slot, with its
+        own pre-filtered list of legal, learnable, not-yet-known spells (the
+        dialog's tabs let the player fill them in any order). Restricted slots
+        (a specific element, Maho-only, a tag) carry only the spells that
+        satisfy them; unrestricted slots carry every learnable spell.
+
+        Shape: { "slots": [ { index, elementLabel, excludeLabel, maho,
+                              noDefic, tag, options:[catalogue record,...] } ] }
+        elementLabel/excludeLabel are localised ring names ("" when not
+        applicable); the QML composes the player-facing restriction copy from
+        these flags so all wording stays on the QML translation surface."""
+        if api.character.model() is None:
+            return {"slots": []}
+        slots = []
+        for i, spec in enumerate(_spell_slot_specs()):
+            elem = spec.get("element")
+            exact = elem if (elem and not elem.startswith('!')) else None
+            excl = elem[1:] if (elem and elem.startswith('!')) else None
+            slots.append({
+                "index":        i,
+                "elementLabel": _ring_element_text(exact) if exact else "",
+                "excludeLabel": _ring_element_text(excl) if excl else "",
+                "maho":         bool(spec.get("maho")),
+                "noDefic":      bool(spec.get("noDefic")),
+                "tag":          spec.get("tag") or "",
+                "options":      _spell_slot_options(spec),
+            })
+        return {"slots": slots}
+
+    @Slot("QVariantList")
+    def applySchoolSpellChoices(self, spell_ids):
+        """Commit the player's bounded spell picks and clear the pending grant
+        -- the legacy 'learn_next_school_spells' accept path (add_school_spell
+        per pick, then clear_spells_to_choose). Validates that there is one
+        distinct pick per granted slot; bails (committing nothing) otherwise,
+        so a malformed call cannot half-resolve the grant. add_school_spell /
+        clear_spells_to_choose mutate the rank directly and do not own the
+        dirty flag, so this slot does (like advanceRank / joinNewSchool)."""
+        if api.character.model() is None:
+            return
+        ids = [str(x) for x in (spell_ids or []) if x]
+        expected = len(_spell_slot_specs())
+        if not ids or len(ids) != expected or len(set(ids)) != len(ids):
+            log.api.error(
+                u"applySchoolSpellChoices: rejected picks "
+                u"(%d given, %d expected, distinct=%s)",
+                len(ids), expected, len(set(ids)) == len(ids))
+            return
+        for sid in ids:
+            api.character.spells.add_school_spell(sid)
+        api.character.rankadv.clear_spells_to_choose()
+        api.character.set_dirty_flag(True)
+        api.character.notify_character_refreshed()
+
+    # --- elemental affinity / deficiency choice (shugenja) -----------
+
+    @Slot(str, result="QVariantMap")
+    def elementChoice(self, kind):
+        """The element options for the affinity OR deficiency choice a school
+        grants as `any`/`nonvoid` (kind is "affinity" or "deficiency"). Feeds
+        ChooseElementDialog. Mirrors the legacy show_select_affinity /
+        show_select_deficiency: all five rings, minus Void when the school's
+        spec says `nonvoid`. Returns { pending, kind, options:[{id,name}] }."""
+        empty = {"pending": False, "kind": kind, "options": []}
+        if api.character.model() is None:
+            return empty
+        rank_ = api.character.rankadv.get_last()
+        if not rank_:
+            return empty
+        specs = (rank_.affinities_to_choose if kind == "affinity"
+                 else rank_.deficiencies_to_choose)
+        if not specs:
+            return empty
+        # choose_* pops the last spec, so the last one is the next to resolve.
+        spec = specs[-1]
+        exclude_void = isinstance(spec, str) and 'nonvoid' in spec
+        options = []
+        for r in api.data.rings() or []:
+            if exclude_void and r == 'void':
+                continue
+            options.append({"id": r, "name": _ring_element_text(r)})
+        return {"pending": True, "kind": kind, "options": options}
+
+    @Slot(str)
+    def chooseAffinity(self, ring_id):
+        """Commit the chosen elemental affinity (the legacy
+        show_select_affinity). rankadv.choose_affinity mutates the rank and
+        does not own the dirty flag, so this slot does."""
+        if api.character.model() is None or not ring_id:
+            return
+        if api.character.rankadv.choose_affinity(ring_id):
+            api.character.set_dirty_flag(True)
+            api.character.notify_character_refreshed()
+
+    @Slot(str)
+    def chooseDeficiency(self, ring_id):
+        """Commit the chosen elemental deficiency (the legacy
+        show_select_deficiency)."""
+        if api.character.model() is None or not ring_id:
+            return
+        if api.character.rankadv.choose_deficiency(ring_id):
+            api.character.set_dirty_flag(True)
+            api.character.notify_character_refreshed()
 
     # --- advancements ------------------------------------------------
 

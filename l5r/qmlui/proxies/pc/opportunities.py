@@ -40,15 +40,17 @@ import l5r.api.character.rankadv
 from l5r.util import log
 
 
-# tabIds whose opportunity has a working destination CTA today. Grow this
-# as flows are ported: "spells" (free spells) is still pending. Until a
+# tabIds whose opportunity has a working destination CTA today. Until a
 # tabId is listed here its opportunity is computed but not badged -- no
 # dead-end badges.
 #   pc_info  -- rank advancement (Character section "Advance Rank" CTA)
 #   kiho     -- rank-granted free kiho (Kiho section)
 #   skills   -- school-granted wildcard skill/emphasis picks (Skills section
 #               "Choose Skills" CTA + ChooseSchoolSkillsDialog)
-_SURFACED_OPPORTUNITIES = {"pc_info", "kiho", "skills"}
+#   spells   -- school-granted free spells AND the elemental affinity/
+#               deficiency choice (Spells section CTAs + ChooseSchoolSpells
+#               Dialog / ChooseElementDialog). All three resolve there.
+_SURFACED_OPPORTUNITIES = {"pc_info", "kiho", "skills", "spells"}
 
 
 def _can_advance_rank():
@@ -64,8 +66,9 @@ def _can_advance_rank():
 def compute_opportunities():
     """Full map of pending opportunities, keyed by the tabId of the section
     that resolves each, to a count. Pure reads; mirrors the legacy NiceBar
-    checks in l5r/ui/advance.py. (Affinity/deficiency choice has no ported
-    home section yet, so it is omitted here rather than badged nowhere.)"""
+    checks in l5r/ui/advance.py. The shugenja choices (free spells, elemental
+    affinity, elemental deficiency) all resolve on the Spells section, so they
+    accumulate into a single "spells" count."""
     pc = api.character.model()
     if not pc:
         return {}
@@ -89,9 +92,18 @@ def compute_opportunities():
             if wc:
                 out["skills"] = out.get("skills", 0) + wc
 
-        # School-granted free spells (shugenja) -> Spells.
+        # Shugenja choices, all resolved on the Spells section:
+        #   - free spells granted by the school rank,
+        #   - an elemental affinity to choose (school grants `any`/`nonvoid`),
+        #   - an elemental deficiency to choose.
+        # They share the "spells" tabId so the TOC badge counts every pending
+        # shugenja decision at once. Resolving any one re-fires this probe.
         if api.character.rankadv.has_granted_free_spells():
             out["spells"] = out.get("spells", 0) + 1
+        if rank_:
+            elem = len(rank_.affinities_to_choose or []) + len(rank_.deficiencies_to_choose or [])
+            if elem:
+                out["spells"] = out.get("spells", 0) + elem
 
         # Rank-granted free kiho (monks) -> Kiho.
         free_kiho = int(api.character.rankadv.get_gained_kiho_count() or 0)
@@ -191,3 +203,41 @@ class OpportunitiesMixin:
         zero-cost display in BuyKihoDialog; the discount itself is applied
         by api.character.powers.buy_kiho."""
         return int(api.character.rankadv.get_gained_kiho_count() or 0)
+
+    # --- shugenja choices, all resolved on the Spells section ---------
+    # Three dedicated flags (not the shared "spells" badge count) so each
+    # Spells-section callout shows/hides independently. They are surfaced in
+    # priority order in the QML (affinity -> deficiency -> free spells) so the
+    # player fixes the elemental leanings -- which set which masteries are in
+    # reach -- before choosing spells against them. Mirrors the legacy
+    # AdvanceMixin.check_affinity_wc / check_school_new_spells nicebars.
+
+    @Property(int, notify=opportunitiesChanged)
+    def affinityChoiceCount(self):
+        """Pending elemental-affinity choices on the current rank advancement
+        (school grants `any`/`nonvoid`). Drives the Spells section's 'awakens
+        an affinity' callout."""
+        if api.character.model() is None:
+            return 0
+        rank_ = api.character.rankadv.get_last()
+        return len(rank_.affinities_to_choose or []) if rank_ else 0
+
+    @Property(int, notify=opportunitiesChanged)
+    def deficiencyChoiceCount(self):
+        """Pending elemental-deficiency choices on the current rank
+        advancement. Drives the Spells section's 'exacts a deficiency'
+        callout."""
+        if api.character.model() is None:
+            return 0
+        rank_ = api.character.rankadv.get_last()
+        return len(rank_.deficiencies_to_choose or []) if rank_ else 0
+
+    @Property(bool, notify=opportunitiesChanged)
+    def freeSpellChoicePending(self):
+        """Whether the character has school-granted free spells still to
+        choose (shugenja). Drives the Spells section's 'grants spells' callout
+        and gates the ChooseSchoolSpellsDialog -- mirrors
+        api.character.rankadv.has_granted_free_spells."""
+        if api.character.model() is None:
+            return False
+        return api.character.rankadv.has_granted_free_spells()
