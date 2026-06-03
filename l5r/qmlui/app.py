@@ -160,11 +160,19 @@ def run_qml_app(qapp, locale, startup_action):
     controller = AppController()
     settings_proxy = SettingsProxy()
 
-    # Start with a fresh, in-memory character so pcProxy.* getters never
-    # see ctx.pc == None. The QWidget path does the same via
-    # L5RMain.create_new_character().
-    api.character.new()
-    api.character.set_dirty_flag(False)
+    # Resume the last working character from the autosave session store
+    # (unsaved recovery snapshot, or the .l5r last open). Falls back to a
+    # fresh, in-memory character so pcProxy.* getters never see
+    # ctx.pc == None -- the QWidget path does the same via
+    # L5RMain.create_new_character(). An explicit startup_action (open a
+    # file from argv) overrides the restore further below.
+    if not controller.restore_session():
+        api.character.new()
+        api.character.set_dirty_flag(False)
+
+    # Flush a pending autosave on shutdown so a close inside the debounce
+    # window doesn't lose the last edits.
+    qapp.aboutToQuit.connect(controller.flush_autosave)
 
     engine = QQmlApplicationEngine()
     # Make `import Theme 1.0` resolvable everywhere via the qml/Theme

@@ -46,11 +46,17 @@ ApplicationWindow {
             title: qsTr("&File")
             Widgets.L5RMenuItem {
                 text: qsTr("&New")
-                onTriggered: appCtrl.fileNew()
+                // requestFileNew gates on unsaved changes: New discards the
+                // autosave recovery file, so a dirty model pops newConfirmDlg
+                // first (via fileNewRequiresConfirm) instead of dropping work.
+                onTriggered: appCtrl.requestFileNew()
             }
             Widgets.L5RMenuItem {
                 text: qsTr("&Open...")
-                onTriggered: appCtrl.fileOpenDialog()
+                // requestFileOpen gates on unsaved changes: opening replaces
+                // the working character and discards the recovery file, so a
+                // dirty model confirms first (via confirmDiscardChanges).
+                onTriggered: appCtrl.requestFileOpen()
             }
             Widgets.L5RMenuItem {
                 text: qsTr("&Save")
@@ -449,6 +455,60 @@ ApplicationWindow {
         // would discard. Remind them to resolve those first.
         function onAdvanceRankBlocked() {
             toast.show(qsTr("Resolve your pending opportunities before advancing rank."));
+        }
+        // A destructive File action (New / Open) was requested on a dirty
+        // model: both discard the autosave recovery snapshot, so confirm
+        // before dropping the unsaved work. The action id picks the wording
+        // and the slot dispatched on accept.
+        function onConfirmDiscardChanges(action) {
+            discardConfirmDlg.pendingAction = action;
+            discardConfirmDlg.open();
+        }
+    }
+
+    // Unsaved-changes guard for the destructive File actions. New and Open
+    // both replace the working character and discard the autosave recovery
+    // file, so on a dirty model the menu routes through
+    // appCtrl.requestFileNew()/requestFileOpen(), which fire
+    // confirmDiscardChanges(action) to pop this. Crimson accent per §6.16
+    // (destructive action). The body wording, header seal and primary
+    // button adapt to the pending action; accepting dispatches to the
+    // matching controller slot (which clears / repoints the session store).
+    Widgets.L5RDialog {
+        id: discardConfirmDlg
+        // "new" | "open" -- set by the confirmDiscardChanges handler.
+        property string pendingAction: "new"
+        readonly property bool _isOpen: pendingAction === "open"
+
+        title: qsTr("Discard unsaved changes?")
+        tagline: _isOpen ? qsTr("Open another character")
+                         : qsTr("Start a new character")
+        seal: _isOpen ? "開" : "新"
+        accent: Theme.accent
+        accentDark: Theme.accentMuted
+        padding: Theme.s6
+        acceptText: _isOpen ? qsTr("Discard & Open") : qsTr("Discard & New")
+        cancelText: qsTr("Keep editing")
+        onAccepted: {
+            if (discardConfirmDlg._isOpen)
+                appCtrl.fileOpenDialog();
+            else
+                appCtrl.fileNew();
+        }
+
+        Label {
+            width: 360
+            text: discardConfirmDlg._isOpen
+                ? qsTr("This character has changes that are not saved to a "
+                    + ".l5r file. Opening another character will discard "
+                    + "them. Continue?")
+                : qsTr("This character has changes that are not saved to a "
+                    + ".l5r file. Starting a new character will discard "
+                    + "them. Continue?")
+            wrapMode: Text.WordWrap
+            font.family: Theme.fontBody
+            font.pixelSize: Theme.fsBody
+            color: Theme.ink
         }
     }
 }

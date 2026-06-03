@@ -280,8 +280,13 @@ class AdvancedPcModel(object):
 
 # LOAD AND SAVE METHODS ###
 
-    def save_to(self, file):
-        self.unsaved = False
+    def save_to(self, file, clear_dirty=True):
+        # Autosave to the recovery file passes clear_dirty=False: the
+        # work is mirrored to the recovery file but NOT to the
+        # character's real .l5r, so the in-memory unsaved flag must
+        # survive (the session still counts as having unsaved changes).
+        if clear_dirty:
+            self.unsaved = False
 
         fp = open(file, 'wt')
         if fp:

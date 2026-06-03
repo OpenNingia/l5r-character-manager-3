@@ -18,7 +18,7 @@ from pathlib import Path
 
 from asq.initiators import query
 from asq.selectors import a_
-from qtpy.QtCore import QObject, Property, QT_TRANSLATE_NOOP, QThreadPool, QUrl, Signal, Slot
+from qtpy.QtCore import QObject, Property, QT_TRANSLATE_NOOP, QThreadPool, QTimer, QUrl, Signal, Slot
 from qtpy.QtGui import QDesktopServices, QGuiApplication
 from qtpy.QtWidgets import QFileDialog, QMessageBox
 
@@ -61,7 +61,7 @@ from l5r.l5rcmcore import (
 )
 from l5r.qmlui.proxies.pc import opportunities
 from l5r.exporters.model_form import ModelExportForm
-from l5r.util import log, names
+from l5r.util import log, names, session
 from l5r.util.fsutil import get_app_file, get_app_icon_path
 from l5r.util.settings import L5RCMSettings
 from l5r.util.worker import Worker
@@ -372,6 +372,18 @@ class AppController(QObject):
     # then opens the AdvanceRankDialog. Keeps the "may I advance?" decision
     # in the controller while the dialog stays a pure view concern.
     advanceRankReady = Signal()
+    # Emitted when a destructive action is requested on a dirty model --
+    # File > New and File > Open both replace the working character and
+    # discard the autosave recovery snapshot. The argument names the
+    # pending action ("new" | "open") so the QML side can word the
+    # confirmation and dispatch to the right slot on accept. Clean models
+    # skip straight to the action (no prompt).
+    confirmDiscardChanges = Signal(str)
+
+    # Debounce window for the recovery autosave: coalesce a burst of
+    # edits (dragging a spinbox, typing a name) into one write, fired
+    # this many ms after the last change settles.
+    _AUTOSAVE_DEBOUNCE_MS = 1500
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -380,6 +392,16 @@ class AppController(QObject):
         # outlive exportPdf's stack frame until the thread finishes.
         self._export_worker = None
         self._export_path = ""
+
+        # Recovery autosave: a single-shot debounce timer restarted on
+        # every dirty edit; when it fires, the working character is
+        # mirrored to the recovery file (see l5r.util.session). The real
+        # .l5r is never touched here -- only on an explicit Save.
+        self._autosave_timer = QTimer(self)
+        self._autosave_timer.setSingleShot(True)
+        self._autosave_timer.setInterval(self._AUTOSAVE_DEBOUNCE_MS)
+        self._autosave_timer.timeout.connect(self._flush_autosave)
+        api.signals.bus().dirty_changed.connect(self._on_dirty_changed)
 
     # --- tab list -----------------------------------------------------
 
@@ -411,12 +433,48 @@ class AppController(QObject):
 
     # --- file menu ----------------------------------------------------
 
+    def _has_unsaved_changes(self):
+        pc = api.character.model()
+        return pc is not None and bool(pc.unsaved)
+
+    @Slot()
+    def requestFileNew(self):
+        """Entry point for File > New. New is destructive -- it discards
+        the autosave recovery snapshot -- so on a dirty model this asks
+        the view to confirm first (confirmDiscardChanges) rather than
+        dropping the work outright. On a clean model it just proceeds.
+        Mirrors the requestAdvanceRank gate pattern."""
+        if self._has_unsaved_changes():
+            self.confirmDiscardChanges.emit("new")
+            return
+        self.fileNew()
+
     @Slot()
     def fileNew(self):
         log.app.info(u"QML UI: File > New")
         self._save_path = ""
         api.character.new()
         api.character.set_dirty_flag(False)
+        # Discard the unsaved recovery snapshot and start a fresh, clean
+        # session pointer (the user explicitly chose to drop in-progress
+        # work). The new blank character autosaves a fresh recovery file
+        # on its first edit.
+        self._autosave_timer.stop()
+        session.clear()
+        session.write_pointer("", dirty=False)
+
+    @Slot()
+    def requestFileOpen(self):
+        """Entry point for File > Open. Opening replaces the working
+        character and discards the autosave recovery snapshot, so on a
+        dirty model this confirms first (confirmDiscardChanges) before
+        the file picker; a clean model goes straight to it. Confirming
+        BEFORE the picker spares the user picking a file only to be
+        warned afterwards."""
+        if self._has_unsaved_changes():
+            self.confirmDiscardChanges.emit("open")
+            return
+        self.fileOpenDialog()
 
     @Slot()
     def fileOpenDialog(self):
@@ -439,6 +497,12 @@ class AppController(QObject):
         api.character.set_model(pc)
         api.character.set_dirty_flag(False)
         self._save_path = path
+        # The work now lives in `path`: drop any stale recovery snapshot
+        # and point the session at the opened file so the next launch
+        # reopens it.
+        self._autosave_timer.stop()
+        session.remove_recovery()
+        session.write_pointer(path, dirty=False)
 
     @Slot()
     def fileSave(self):
@@ -468,6 +532,12 @@ class AppController(QObject):
         if pc.save_to(path):
             self._save_path = path
             api.character.set_dirty_flag(False)
+            # The work is now committed to the real .l5r: drop the
+            # recovery snapshot and mark the session clean, pointing at
+            # this file so the next launch reopens it.
+            self._autosave_timer.stop()
+            session.remove_recovery()
+            session.write_pointer(path, dirty=False)
             log.app.info(u"QML UI: saved character to %s", path)
         else:
             log.app.warning(u"QML UI: failed to save character to %s", path)
@@ -475,6 +545,77 @@ class AppController(QObject):
     @Slot()
     def fileQuit(self):
         QGuiApplication.instance().quit()
+
+    # --- autosave / session recovery ---------------------------------
+
+    def _on_dirty_changed(self, value):
+        """React to the api dirty-flag bus signal: (re)start the debounce
+        timer while there are unsaved edits, stop it once the model goes
+        clean (an explicit Save / New / Open already handled the session
+        store in that case)."""
+        if value:
+            self._autosave_timer.start()
+        else:
+            self._autosave_timer.stop()
+
+    def _flush_autosave(self):
+        """Mirror the working character to the recovery file if it has
+        unsaved edits. Driven by the debounce timer and by aboutToQuit
+        (so a close inside the debounce window doesn't lose the last
+        edits). Never writes the real .l5r -- that is Save's job."""
+        pc = api.character.model()
+        if pc is None or not pc.unsaved:
+            return
+        session.write_recovery(pc, self._save_path, dirty=True)
+
+    def flush_autosave(self):
+        """Public flush hook for app shutdown (qApp.aboutToQuit)."""
+        self._autosave_timer.stop()
+        self._flush_autosave()
+
+    def restore_session(self):
+        """Resume the last working character from the session pointer.
+
+        Returns True when a character was restored (the caller then skips
+        creating a blank one), False to fall back to a fresh character.
+
+          dirty  -> unsaved edits live in the recovery file: load it and
+                    re-associate the real path so a later Save targets the
+                    right file; the session stays marked unsaved.
+          clean  -> reload the real .l5r the session pointed at.
+        """
+        ptr = session.read_pointer()
+        if not ptr:
+            return False
+        path = ptr.get("path") or ""
+        dirty = bool(ptr.get("dirty"))
+
+        if dirty:
+            rec = session.recovery_path()
+            pc = l5r.models.AdvancedPcModel()
+            if os.path.exists(rec) and pc.load_from(rec):
+                api.character.set_model(pc)
+                self._save_path = path
+                # load_from clears unsaved; the work is NOT in the real
+                # .l5r yet, so re-mark the session dirty.
+                api.character.set_dirty_flag(True)
+                log.app.info(
+                    u"QML UI: restored unsaved session (path=%r)", path)
+                return True
+            log.app.warning(u"QML UI: recovery file missing/unreadable")
+            return False
+
+        if path and os.path.exists(path):
+            pc = l5r.models.AdvancedPcModel()
+            if pc.load_from(path):
+                api.character.set_model(pc)
+                self._save_path = path
+                api.character.set_dirty_flag(False)
+                log.app.info(u"QML UI: reopened last character %s", path)
+                return True
+            log.app.warning(
+                u"QML UI: could not reopen last character %s", path)
+        return False
 
     @Slot()
     def exportPdfDialog(self):
