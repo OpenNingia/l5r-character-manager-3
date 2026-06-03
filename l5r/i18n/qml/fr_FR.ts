@@ -1043,6 +1043,49 @@
     </message>
 </context>
 <context>
+    <name>ChooseElementDialog</name>
+    <message>
+        <source>Awaken an Affinity</source>
+        <translation>Éveiller une affinité</translation>
+    </message>
+    <message>
+        <source>Embrace a Deficiency</source>
+        <translation>Accepter une déficience</translation>
+    </message>
+    <message>
+        <source>the element your prayers command with ease</source>
+        <translation>l'élément que vos prières commandent avec aisance</translation>
+    </message>
+    <message>
+        <source>the element whose kami resist your call</source>
+        <translation>l'élément dont les kami résistent à votre appel</translation>
+    </message>
+    <message>
+        <source>Choose</source>
+        <translation>Choisir</translation>
+    </message>
+    <message>
+        <source>Choose the element you resonate with.</source>
+        <translation>Choisissez l'élément avec lequel vous résonnez.</translation>
+    </message>
+    <message>
+        <source>Choose the element that resists you.</source>
+        <translation>Choisissez l'élément qui vous résiste.</translation>
+    </message>
+    <message>
+        <source>This element&apos;s spells come more readily — Mastery within reach rises by one.</source>
+        <translation>Les sorts de cet élément vous viennent plus aisément — la Maîtrise à votre portée augmente de un.</translation>
+    </message>
+    <message>
+        <source>This element&apos;s spells come harder — Mastery within reach falls by one.</source>
+        <translation>Les sorts de cet élément vous viennent plus difficilement — la Maîtrise à votre portée diminue de un.</translation>
+    </message>
+    <message>
+        <source>There is no elemental choice to make.</source>
+        <translation>Il n'y a aucun choix élémentaire à faire.</translation>
+    </message>
+</context>
+<context>
     <name>ChooseSchoolSkillsDialog</name>
     <message>
         <source>Choose School Skills</source>
@@ -1079,6 +1122,160 @@
     <message>
         <source>e.g. Katana, Falconry, Goblin…</source>
         <translation>p. ex. Katana, Fauconnerie, Gobelin…</translation>
+    </message>
+</context>
+<context>
+    <name>ChooseSchoolSpellsDialog</name>
+    <message>
+        <source>All Elements</source>
+        <translation type="unfinished">Tous les éléments</translation>
+    </message>
+    <message>
+        <source>Earth</source>
+        <translation type="unfinished">Terre</translation>
+    </message>
+    <message>
+        <source>Air</source>
+        <translation type="unfinished">Air</translation>
+    </message>
+    <message>
+        <source>Water</source>
+        <translation type="unfinished">Eau</translation>
+    </message>
+    <message>
+        <source>Fire</source>
+        <translation type="unfinished">Feu</translation>
+    </message>
+    <message>
+        <source>Void</source>
+        <translation type="unfinished">Vide</translation>
+    </message>
+    <message>
+        <source>Multi-Element</source>
+        <translation type="unfinished">Multi-élément</translation>
+    </message>
+    <message>
+        <source>Dragon</source>
+        <translation type="unfinished">Dragon</translation>
+    </message>
+    <message>
+        <source>Choose School Spells</source>
+        <translation>Choisir les sorts d'école</translation>
+    </message>
+    <message>
+        <source>your school grants these prayers — fill each in any order</source>
+        <translation>votre école accorde ces prières — attribuez-les dans l'ordre de votre choix</translation>
+    </message>
+    <message>
+        <source>Inscribe</source>
+        <translation type="unfinished">Inscrire</translation>
+    </message>
+    <message>
+        <source>MAHO</source>
+        <translation>MAHO</translation>
+    </message>
+    <message>
+        <source>ANY</source>
+        <translation>TOUS</translation>
+    </message>
+    <message>
+        <source>a %1 spell</source>
+        <translation>un sort de %1</translation>
+    </message>
+    <message>
+        <source>any spell but %1</source>
+        <translation>n'importe quel sort sauf %1</translation>
+    </message>
+    <message>
+        <source>any spell</source>
+        <translation>n'importe quel sort</translation>
+    </message>
+    <message>
+        <source>, Maho only</source>
+        <translation>, Maho uniquement</translation>
+    </message>
+    <message>
+        <source>, deficiency set aside</source>
+        <translation>, déficience mise de côté</translation>
+    </message>
+    <message>
+        <source>There are no spells left to choose.</source>
+        <translation>Il ne reste aucun sort à choisir.</translation>
+    </message>
+    <message numerus="yes">
+        <source>Choose %n more spell(s) to continue.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Your prayers are chosen — inscribe them into your library.</source>
+        <translation>Vos prières sont choisies — inscrivez-les dans votre grimoire.</translation>
+    </message>
+    <message>
+        <source>choose…</source>
+        <translation>choisir…</translation>
+    </message>
+    <message>
+        <source>This slot wants %1.</source>
+        <translation>Cet emplacement requiert %1.</translation>
+    </message>
+    <message>
+        <source>seek a spell by name…</source>
+        <translation type="unfinished">cherche un sort par nom…</translation>
+    </message>
+    <message>
+        <source>(unnamed)</source>
+        <translation type="unfinished">(sans nom)</translation>
+    </message>
+    <message>
+        <source>M%1</source>
+        <translation type="unfinished">M%1</translation>
+    </message>
+    <message>
+        <source>no spell answers this slot&apos;s calling</source>
+        <translation>aucun sort ne répond à l'appel de cet emplacement</translation>
+    </message>
+    <message>
+        <source>Choose a spell for this slot from the register at your left.</source>
+        <translation>Choisissez un sort pour cet emplacement dans le registre à votre gauche.</translation>
+    </message>
+    <message>
+        <source>Every spell shown lies within your reach. Switch slots with the tabs above and fill them in whatever order you please.</source>
+        <translation>Tous les sorts affichés sont à votre portée. Changez d'emplacement avec les onglets ci-dessus et remplissez-les dans l'ordre qu'il vous plaît.</translation>
+    </message>
+    <message>
+        <source>Mastery %1</source>
+        <translation type="unfinished">Maîtrise %1</translation>
+    </message>
+    <message>
+        <source>AFFINITY +%1</source>
+        <translation type="unfinished">AFFINITÉ +%1</translation>
+    </message>
+    <message>
+        <source>DEFICIENCY %1</source>
+        <translation type="unfinished">DÉFICIENCE %1</translation>
+    </message>
+    <message>
+        <source>RANGE</source>
+        <translation type="unfinished">PORTÉE</translation>
+    </message>
+    <message>
+        <source>AREA</source>
+        <translation type="unfinished">ZONE</translation>
+    </message>
+    <message>
+        <source>DURATION</source>
+        <translation type="unfinished">DURÉE</translation>
+    </message>
+    <message>
+        <source>RAISES</source>
+        <translation type="unfinished">RELANCES</translation>
+    </message>
+    <message>
+        <source>No description provided in the datapack.</source>
+        <translation type="unfinished">Aucune description fournie dans le datapack.</translation>
     </message>
 </context>
 <context>
@@ -1575,7 +1772,7 @@
     </message>
     <message>
         <source>Joins the school and grants its Rank 1 technique.</source>
-        <translation>Tu rejoins l'école et obtiens sa technique de Rang 1.</translation>
+        <translation>Tu rejoins l&apos;école et obtiens sa technique de Rang 1.</translation>
     </message>
     <message>
         <source>New school</source>
@@ -1627,7 +1824,7 @@
     </message>
     <message>
         <source>Buy the “Multiple Schools” advantage</source>
-        <translation>Acheter l'avantage “Écoles Multiples”</translation>
+        <translation>Acheter l&apos;avantage “Écoles Multiples”</translation>
     </message>
     <message>
         <source>not enough XP — costs %1</source>
@@ -1760,6 +1957,125 @@
     </message>
 </context>
 <context>
+    <name>LibrarySection</name>
+    <message>
+        <source>Installed</source>
+        <translation>Installé</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>Mettre à jour</translation>
+    </message>
+    <message>
+        <source>Install</source>
+        <translation>Installer</translation>
+    </message>
+    <message>
+        <source>Installed Datapacks</source>
+        <translation>Packs de données installés</translation>
+    </message>
+    <message>
+        <source>No datapacks yet</source>
+        <translation>Aucun pack de données pour l'instant</translation>
+    </message>
+    <message>
+        <source>Without a datapack the app can&apos;t do much. Start with the Core datapack — it carries the base rules, clans, schools and skills.</source>
+        <translation>Sans pack de données, l'application ne peut pas faire grand-chose. Commencez par le pack Core — il contient les règles de base, les clans, les écoles et les compétences.</translation>
+    </message>
+    <message>
+        <source>Download the Core datapack</source>
+        <translation>Télécharger le pack Core</translation>
+    </message>
+    <message>
+        <source>Install from file…</source>
+        <translation>Installer depuis un fichier…</translation>
+    </message>
+    <message>
+        <source>v%1</source>
+        <translation>v%1</translation>
+    </message>
+    <message>
+        <source>All languages</source>
+        <translation>Toutes les langues</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Supprimer</translation>
+    </message>
+    <message>
+        <source>Get Datapacks</source>
+        <translation>Obtenir des packs de données</translation>
+    </message>
+    <message>
+        <source>Refresh list</source>
+        <translation>Actualiser la liste</translation>
+    </message>
+    <message>
+        <source>Refresh to see the datapacks available from the official repository.</source>
+        <translation>Actualisez pour voir les packs de données disponibles dans le dépôt officiel.</translation>
+    </message>
+    <message>
+        <source>Loading the datapack list…</source>
+        <translation>Chargement de la liste des packs de données…</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t reach the datapack repository. Check your connection and try again.</source>
+        <translation>Impossible d'accéder au dépôt de packs de données. Vérifiez votre connexion et réessayez.</translation>
+    </message>
+    <message>
+        <source>GitHub is rate-limiting requests right now (it allows a limited number per hour). Please try again later.</source>
+        <translation>GitHub limite les requêtes en ce moment (il en autorise un nombre limité par heure). Veuillez réessayer plus tard.</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t load the datapack list. Please try again.</source>
+        <translation>Impossible de charger la liste des packs de données. Veuillez réessayer.</translation>
+    </message>
+    <message>
+        <source>installed v%1</source>
+        <translation>installé v%1</translation>
+    </message>
+    <message>
+        <source>No datapacks were found in the latest release.</source>
+        <translation>Aucun pack de données trouvé dans la dernière version.</translation>
+    </message>
+    <message>
+        <source>Delete datapack?</source>
+        <translation>Supprimer le pack de données ?</translation>
+    </message>
+    <message>
+        <source>Keep</source>
+        <translation>Conserver</translation>
+    </message>
+    <message>
+        <source>Core holds the base rules — deleting it leaves the app unusable until you reinstall it. Delete &quot;%1&quot; from disk?</source>
+        <translation>Core contient les règles de base — le supprimer rend l'application inutilisable jusqu'à ce que vous le réinstalliez. Supprimer &quot;%1&quot; du disque ?</translation>
+    </message>
+    <message>
+        <source>This removes &quot;%1&quot; and its content from disk. You can reinstall it later. Continue?</source>
+        <translation>Cela supprime &quot;%1&quot; et son contenu du disque. Vous pourrez le réinstaller plus tard. Continuer ?</translation>
+    </message>
+    <message>
+        <source>Disable the Core datapack?</source>
+        <translation>Désactiver le pack Core ?</translation>
+    </message>
+    <message>
+        <source>The base rules will be hidden</source>
+        <translation>Les règles de base seront masquées</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>Désactiver</translation>
+    </message>
+    <message>
+        <source>Keep enabled</source>
+        <translation>Garder activé</translation>
+    </message>
+    <message>
+        <source>Disabling Core hides the base rules, clans, schools and skills; the app will be unusable until you re-enable it. Continue?</source>
+        <translation>Désactiver Core masque les règles de base, les clans, les écoles et les compétences ; l'application sera inutilisable jusqu'à ce que vous le réactiviez. Continuer ?</translation>
+    </message>
+</context>
+<context>
     <name>MainSheet</name>
     <message>
         <source>&amp;File</source>
@@ -1815,7 +2131,51 @@
     </message>
     <message>
         <source>PDF export failed.</source>
-        <translation>Échec de l'export PDF.</translation>
+        <translation>Échec de l&apos;export PDF.</translation>
+    </message>
+    <message>
+        <source>No datapacks installed — the app needs at least the Core datapack to be useful.</source>
+        <translation>Aucun pack de données installé — l'application a besoin d'au moins le pack Core pour être utile.</translation>
+    </message>
+    <message>
+        <source>Open Library</source>
+        <translation>Ouvrir la bibliothèque</translation>
+    </message>
+    <message>
+        <source>Resolve your pending opportunities before advancing rank.</source>
+        <translation>Résolvez vos opportunités en attente avant de monter de rang.</translation>
+    </message>
+    <message>
+        <source>Discard unsaved changes?</source>
+        <translation>Abandonner les modifications non enregistrées ?</translation>
+    </message>
+    <message>
+        <source>Open another character</source>
+        <translation>Ouvrir un autre personnage</translation>
+    </message>
+    <message>
+        <source>Start a new character</source>
+        <translation>Créer un nouveau personnage</translation>
+    </message>
+    <message>
+        <source>Discard &amp; Open</source>
+        <translation>Abandonner et ouvrir</translation>
+    </message>
+    <message>
+        <source>Discard &amp; New</source>
+        <translation>Abandonner et nouveau</translation>
+    </message>
+    <message>
+        <source>Keep editing</source>
+        <translation>Continuer l'édition</translation>
+    </message>
+    <message>
+        <source>This character has changes that are not saved to a .l5r file. Opening another character will discard them. Continue?</source>
+        <translation>Ce personnage comporte des modifications non enregistrées dans un fichier .l5r. Ouvrir un autre personnage les abandonnera. Continuer ?</translation>
+    </message>
+    <message>
+        <source>This character has changes that are not saved to a .l5r file. Starting a new character will discard them. Continue?</source>
+        <translation>Ce personnage comporte des modifications non enregistrées dans un fichier .l5r. Créer un nouveau personnage les abandonnera. Continuer ?</translation>
     </message>
 </context>
 <context>
@@ -2463,6 +2823,42 @@
     <message>
         <source>RAISES</source>
         <translation>RELANCES</translation>
+    </message>
+    <message>
+        <source>YOUR SCHOOL AWAKENS AN AFFINITY</source>
+        <translation>VOTRE ÉCOLE ÉVEILLE UNE AFFINITÉ</translation>
+    </message>
+    <message>
+        <source>choose the element your prayers command with ease</source>
+        <translation>choisissez l'élément que vos prières commandent avec aisance</translation>
+    </message>
+    <message>
+        <source>Choose Affinity</source>
+        <translation>Choisir une affinité</translation>
+    </message>
+    <message>
+        <source>YOUR SCHOOL EXACTS A DEFICIENCY</source>
+        <translation>VOTRE ÉCOLE IMPOSE UNE DÉFICIENCE</translation>
+    </message>
+    <message>
+        <source>choose the element whose kami resist your call</source>
+        <translation>choisissez l'élément dont les kami résistent à votre appel</translation>
+    </message>
+    <message>
+        <source>Choose Deficiency</source>
+        <translation>Choisir une déficience</translation>
+    </message>
+    <message>
+        <source>YOUR SCHOOL GRANTS SPELLS</source>
+        <translation>VOTRE ÉCOLE ACCORDE DES SORTS</translation>
+    </message>
+    <message>
+        <source>the kami offer their prayers — choose those within your reach</source>
+        <translation>les kami offrent leurs prières — choisissez celles qui sont à votre portée</translation>
+    </message>
+    <message>
+        <source>Choose Spells</source>
+        <translation>Choisir des sorts</translation>
     </message>
 </context>
 <context>

@@ -1043,6 +1043,49 @@
     </message>
 </context>
 <context>
+    <name>ChooseElementDialog</name>
+    <message>
+        <source>Awaken an Affinity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Embrace a Deficiency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>the element your prayers command with ease</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>the element whose kami resist your call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose the element you resonate with.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose the element that resists you.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This element&apos;s spells come more readily — Mastery within reach rises by one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This element&apos;s spells come harder — Mastery within reach falls by one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There is no elemental choice to make.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ChooseSchoolSkillsDialog</name>
     <message>
         <source>Choose School Skills</source>
@@ -1079,6 +1122,160 @@
     <message>
         <source>e.g. Katana, Falconry, Goblin…</source>
         <translation>e.g. Katana, Falconry, Goblin…</translation>
+    </message>
+</context>
+<context>
+    <name>ChooseSchoolSpellsDialog</name>
+    <message>
+        <source>All Elements</source>
+        <translation type="unfinished">All Elements</translation>
+    </message>
+    <message>
+        <source>Earth</source>
+        <translation type="unfinished">Earth</translation>
+    </message>
+    <message>
+        <source>Air</source>
+        <translation type="unfinished">Air</translation>
+    </message>
+    <message>
+        <source>Water</source>
+        <translation type="unfinished">Water</translation>
+    </message>
+    <message>
+        <source>Fire</source>
+        <translation type="unfinished">Fire</translation>
+    </message>
+    <message>
+        <source>Void</source>
+        <translation type="unfinished">Void</translation>
+    </message>
+    <message>
+        <source>Multi-Element</source>
+        <translation type="unfinished">Multi-Element</translation>
+    </message>
+    <message>
+        <source>Dragon</source>
+        <translation type="unfinished">Dragon</translation>
+    </message>
+    <message>
+        <source>Choose School Spells</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>your school grants these prayers — fill each in any order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inscribe</source>
+        <translation type="unfinished">Inscribe</translation>
+    </message>
+    <message>
+        <source>MAHO</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ANY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>a %1 spell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>any spell but %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>any spell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>, Maho only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>, deficiency set aside</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There are no spells left to choose.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Choose %n more spell(s) to continue.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Your prayers are chosen — inscribe them into your library.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>choose…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This slot wants %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>seek a spell by name…</source>
+        <translation type="unfinished">seek a spell by name…</translation>
+    </message>
+    <message>
+        <source>(unnamed)</source>
+        <translation type="unfinished">(unnamed)</translation>
+    </message>
+    <message>
+        <source>M%1</source>
+        <translation type="unfinished">M%1</translation>
+    </message>
+    <message>
+        <source>no spell answers this slot&apos;s calling</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose a spell for this slot from the register at your left.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Every spell shown lies within your reach. Switch slots with the tabs above and fill them in whatever order you please.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mastery %1</source>
+        <translation type="unfinished">Mastery %1</translation>
+    </message>
+    <message>
+        <source>AFFINITY +%1</source>
+        <translation type="unfinished">AFFINITY +%1</translation>
+    </message>
+    <message>
+        <source>DEFICIENCY %1</source>
+        <translation type="unfinished">DEFICIENCY %1</translation>
+    </message>
+    <message>
+        <source>RANGE</source>
+        <translation type="unfinished">RANGE</translation>
+    </message>
+    <message>
+        <source>AREA</source>
+        <translation type="unfinished">AREA</translation>
+    </message>
+    <message>
+        <source>DURATION</source>
+        <translation type="unfinished">DURATION</translation>
+    </message>
+    <message>
+        <source>RAISES</source>
+        <translation type="unfinished">RAISES</translation>
+    </message>
+    <message>
+        <source>No description provided in the datapack.</source>
+        <translation type="unfinished">No description provided in the datapack.</translation>
     </message>
 </context>
 <context>
@@ -1760,6 +1957,125 @@
     </message>
 </context>
 <context>
+    <name>LibrarySection</name>
+    <message>
+        <source>Installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Install</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Installed Datapacks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No datapacks yet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Without a datapack the app can&apos;t do much. Start with the Core datapack — it carries the base rules, clans, schools and skills.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download the Core datapack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Install from file…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>v%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All languages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Get Datapacks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh to see the datapacks available from the official repository.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading the datapack list…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t reach the datapack repository. Check your connection and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GitHub is rate-limiting requests right now (it allows a limited number per hour). Please try again later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t load the datapack list. Please try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>installed v%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No datapacks were found in the latest release.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete datapack?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keep</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Core holds the base rules — deleting it leaves the app unusable until you reinstall it. Delete &quot;%1&quot; from disk?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This removes &quot;%1&quot; and its content from disk. You can reinstall it later. Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable the Core datapack?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The base rules will be hidden</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keep enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disabling Core hides the base rules, clans, schools and skills; the app will be unusable until you re-enable it. Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainSheet</name>
     <message>
         <source>&amp;File</source>
@@ -1816,6 +2132,50 @@
     <message>
         <source>PDF export failed.</source>
         <translation>PDF export failed.</translation>
+    </message>
+    <message>
+        <source>No datapacks installed — the app needs at least the Core datapack to be useful.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resolve your pending opportunities before advancing rank.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Discard unsaved changes?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open another character</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start a new character</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Discard &amp; Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Discard &amp; New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keep editing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This character has changes that are not saved to a .l5r file. Opening another character will discard them. Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This character has changes that are not saved to a .l5r file. Starting a new character will discard them. Continue?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2463,6 +2823,42 @@
     <message>
         <source>RAISES</source>
         <translation>RAISES</translation>
+    </message>
+    <message>
+        <source>YOUR SCHOOL AWAKENS AN AFFINITY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>choose the element your prayers command with ease</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose Affinity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>YOUR SCHOOL EXACTS A DEFICIENCY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>choose the element whose kami resist your call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose Deficiency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>YOUR SCHOOL GRANTS SPELLS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>the kami offer their prayers — choose those within your reach</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose Spells</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

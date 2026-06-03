@@ -214,222 +214,259 @@ Hai raggiunto il limite in PX.</translation>
   <context>
     <name>AppController</name>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="82" />
+      <location filename="../qmlui/proxies/app_controller.py" line="88" />
       <source>Character</source>
       <translation>Personaggio</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="83" />
+      <location filename="../qmlui/proxies/app_controller.py" line="89" />
       <source>Skills</source>
       <translation>Abilità</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="84" />
+      <location filename="../qmlui/proxies/app_controller.py" line="90" />
       <source>Merits/Flaws</source>
       <translation>Vantaggi/Difetti</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="85" />
+      <location filename="../qmlui/proxies/app_controller.py" line="91" />
       <source>Techniques</source>
       <translation>Tecniche</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="86" />
+      <location filename="../qmlui/proxies/app_controller.py" line="92" />
       <source>Spells</source>
       <translation>Incantesimi</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="87" />
+      <location filename="../qmlui/proxies/app_controller.py" line="93" />
       <source>Kata</source>
       <translation>Kata</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="88" />
+      <location filename="../qmlui/proxies/app_controller.py" line="94" />
       <source>Kiho</source>
       <translation>Kiho</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="89" />
+      <location filename="../qmlui/proxies/app_controller.py" line="95" />
       <source>Tattoos</source>
       <translation>Tatuaggi</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="90" />
+      <location filename="../qmlui/proxies/app_controller.py" line="96" />
       <source>Advancements</source>
       <translation>Avanzamenti</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="91" />
+      <location filename="../qmlui/proxies/app_controller.py" line="97" />
       <source>Weapons</source>
       <translation>Armi</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="92" />
+      <location filename="../qmlui/proxies/app_controller.py" line="98" />
       <source>Miscellanea</source>
       <translation>Varie</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="93" />
+      <location filename="../qmlui/proxies/app_controller.py" line="99" />
       <source>Notes</source>
       <translation>Note</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="94" />
+      <location filename="../qmlui/proxies/app_controller.py" line="100" />
+      <source>Library</source>
+      <translation>Libreria</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/app_controller.py" line="101" />
       <source>Settings</source>
       <translation>Impostazioni</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="95" />
+      <location filename="../qmlui/proxies/app_controller.py" line="102" />
       <source>About</source>
       <translation>Info</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="120" />
+      <location filename="../qmlui/proxies/app_controller.py" line="127" />
       <source>Damage Roll</source>
       <translation>Tiro dei danni</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="123" />
-      <location filename="../qmlui/proxies/app_controller.py" line="120" />
+      <location filename="../qmlui/proxies/app_controller.py" line="130" />
+      <location filename="../qmlui/proxies/app_controller.py" line="127" />
       <source>Weapon</source>
       <translation>Arma</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="121" />
+      <location filename="../qmlui/proxies/app_controller.py" line="128" />
       <source>Any Roll</source>
       <translation>Qualsiasi tiro</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="122" />
+      <location filename="../qmlui/proxies/app_controller.py" line="129" />
       <source>Skill Roll</source>
       <translation>Tiro di abilità</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="122" />
+      <location filename="../qmlui/proxies/app_controller.py" line="129" />
       <source>Skill</source>
       <translation>Abilità</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="123" />
+      <location filename="../qmlui/proxies/app_controller.py" line="130" />
       <source>Attack Roll</source>
       <translation>Tiro d'attacco</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="124" />
+      <location filename="../qmlui/proxies/app_controller.py" line="131" />
       <source>Trait Roll</source>
       <translation>Tiro di tratto</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="124" />
+      <location filename="../qmlui/proxies/app_controller.py" line="131" />
       <source>Trait</source>
       <translation>Tratto</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="125" />
+      <location filename="../qmlui/proxies/app_controller.py" line="132" />
       <source>Ring Roll</source>
       <translation>Tiro di anello</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="125" />
+      <location filename="../qmlui/proxies/app_controller.py" line="132" />
       <source>Ring</source>
       <translation>Anello</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="126" />
+      <location filename="../qmlui/proxies/app_controller.py" line="133" />
       <source>Health Rank</source>
       <translation>Rango di Salute</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="127" />
+      <location filename="../qmlui/proxies/app_controller.py" line="134" />
       <source>Armor TN</source>
       <translation>TN Armatura</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="128" />
+      <location filename="../qmlui/proxies/app_controller.py" line="135" />
       <source>Armor RD</source>
       <translation>RD Armatura</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="129" />
+      <location filename="../qmlui/proxies/app_controller.py" line="136" />
       <source>Initiative</source>
       <translation>Iniziativa</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="130" />
+      <location filename="../qmlui/proxies/app_controller.py" line="137" />
       <source>Wound Penalty</source>
       <translation>Penalità da ferita</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="307" />
+      <location filename="../qmlui/proxies/app_controller.py" line="485" />
       <source>Open Character</source>
       <translation>Apri personaggio</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="338" />
-      <location filename="../qmlui/proxies/app_controller.py" line="309" />
+      <location filename="../qmlui/proxies/app_controller.py" line="706" />
+      <location filename="../qmlui/proxies/app_controller.py" line="522" />
+      <location filename="../qmlui/proxies/app_controller.py" line="487" />
       <source>L5R Character (*.l5r);;All Files (*)</source>
       <translation>Personaggio L5R (*.l5r);;Tutti i file (*)</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="336" />
+      <location filename="../qmlui/proxies/app_controller.py" line="520" />
       <source>Save Character</source>
       <translation>Salva personaggio</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="423" />
+      <location filename="../qmlui/proxies/app_controller.py" line="641" />
+      <source>Export Character Sheet</source>
+      <translation>Esporta scheda del personaggio</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/app_controller.py" line="722" />
+      <location filename="../qmlui/proxies/app_controller.py" line="643" />
+      <source>PDF Documents (*.pdf);;All Files (*)</source>
+      <translation>Documenti PDF (*.pdf);;Tutti i file (*)</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/app_controller.py" line="704" />
+      <source>Select NPC Characters (up to two)</source>
+      <translation>Seleziona personaggi NPC (fino a due)</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/app_controller.py" line="714" />
+      <source>NPC Sheet</source>
+      <translation>Scheda NPC</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/app_controller.py" line="715" />
+      <source>Only the first two characters fit on an NPC sheet.</source>
+      <translation>In una scheda NPC entrano solo i primi due personaggi.</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/app_controller.py" line="720" />
+      <source>Export NPC Sheet</source>
+      <translation>Esporta scheda NPC</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/app_controller.py" line="818" />
       <source>Not enough XP</source>
       <translation>PX insufficienti</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="424" />
+      <location filename="../qmlui/proxies/app_controller.py" line="819" />
       <source>You don't have enough experience points to complete this purchase.</source>
       <translation>Non hai abbastanza punti esperienza per completare questo acquisto.</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="491" />
+      <location filename="../qmlui/proxies/app_controller.py" line="886" />
       <source>{0}, Skill {1}. Cost: {2} xp</source>
       <translation>{0}, Abilità {1}. Costo: {2} px</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="541" />
+      <location filename="../qmlui/proxies/app_controller.py" line="936" />
       <source>Any skill (rank {0}):</source>
       <translation>Qualsiasi abilità (rango {0}):</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="554" />
+      <location filename="../qmlui/proxies/app_controller.py" line="949" />
       <source>skill</source>
       <translation>abilità</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="556" />
+      <location filename="../qmlui/proxies/app_controller.py" line="951" />
       <source>Any {0}, but {1} (rank {2}):</source>
       <translation>Qualunque {0} tranne {1} (grado {2}):</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="557" />
+      <location filename="../qmlui/proxies/app_controller.py" line="952" />
       <source>Any {0} skill (rank {1}):</source>
       <translation>Qualsiasi abilità {0}, (grado {1}):</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1044" />
-      <location filename="../qmlui/proxies/app_controller.py" line="959" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1661" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1576" />
       <source>{0} Rank {1}, XP Gain: {2}</source>
       <translation>{0} Grado {1}, PX Ottenuti: {2}</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1047" />
-      <location filename="../qmlui/proxies/app_controller.py" line="962" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1664" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1579" />
       <source>{0} Rank {1}, XP Cost: {2}</source>
       <translation>{0} Grado {1}, Costo in PX: {2}</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1270" />
-      <location filename="../qmlui/proxies/app_controller.py" line="1269" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1887" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1886" />
       <source>N/A</source>
       <translation>N/D</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1455" />
+      <location filename="../qmlui/proxies/app_controller.py" line="2072" />
       <source>New item</source>
       <translation>Nuovo oggetto</translation>
     </message>
@@ -854,6 +891,90 @@ Hai raggiunto il limite dei PX utilizzabili.</translation>
     </message>
   </context>
   <context>
+    <name>DatapackProxy</name>
+    <message>
+      <location filename="../qmlui/proxies/datapack_proxy.py" line="217" />
+      <source>"{0}" is already installed (same or newer version).</source>
+      <translation>&quot;{0}&quot; è già installato (versione uguale o più recente).</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/datapack_proxy.py" line="220" />
+      <source>"{0}" needs a newer version of L5R: CM.</source>
+      <translation>&quot;{0}&quot; richiede una versione più recente di L5R: CM.</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/datapack_proxy.py" line="222" />
+      <source>That file is not a valid datapack.</source>
+      <translation>Quel file non è un pacchetto dati valido.</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/datapack_proxy.py" line="223" />
+      <source>Could not install the datapack.</source>
+      <translation>Impossibile installare il pacchetto dati.</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/datapack_proxy.py" line="232" />
+      <source>Install Datapack</source>
+      <translation>Installa pacchetto dati</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/datapack_proxy.py" line="234" />
+      <source>L5R Datapack (*.l5rcmpack *.zip);;All Files (*)</source>
+      <translation>Pacchetto dati L5R (*.l5rcmpack *.zip);;Tutti i file (*)</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/datapack_proxy.py" line="365" />
+      <location filename="../qmlui/proxies/datapack_proxy.py" line="248" />
+      <source>Installed "{0}".</source>
+      <translation>&quot;{0}&quot; installato.</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/datapack_proxy.py" line="271" />
+      <source>Datapack enabled.</source>
+      <translation>Pacchetto dati abilitato.</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/datapack_proxy.py" line="272" />
+      <source>Datapack disabled.</source>
+      <translation>Pacchetto dati disabilitato.</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/datapack_proxy.py" line="283" />
+      <source>Removed "{0}".</source>
+      <translation>&quot;{0}&quot; rimosso.</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/datapack_proxy.py" line="286" />
+      <source>Could not remove "{0}".</source>
+      <translation>Impossibile rimuovere &quot;{0}&quot;.</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/datapack_proxy.py" line="309" />
+      <source>That download is not from the official repository.</source>
+      <translation>Questo download non proviene dal repository ufficiale.</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/datapack_proxy.py" line="345" />
+      <source>The Core datapack is not available right now.</source>
+      <translation>Il pacchetto Core non è disponibile al momento.</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/datapack_proxy.py" line="381" />
+      <source>GitHub is rate-limiting requests right now. Please try again later.</source>
+      <translation>GitHub sta limitando le richieste in questo momento. Riprova più tardi.</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/datapack_proxy.py" line="385" />
+      <source>Couldn't reach the datapack repository. Check your connection.</source>
+      <translation>Impossibile raggiungere il repository dei pacchetti dati. Controlla la connessione.</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/datapack_proxy.py" line="387" />
+      <source>Couldn't load the datapack list.</source>
+      <translation>Impossibile caricare l'elenco dei pacchetti dati.</translation>
+    </message>
+  </context>
+  <context>
     <name>EquipmentSink</name>
     <message>
       <location filename="../ui/tabs/equipment.py" line="34" />
@@ -1214,17 +1335,17 @@ Hai raggiunto il limite dei PX utilizzabili.</translation>
   <context>
     <name>L5RCMCore</name>
     <message>
-      <location filename="../l5rcmcore/__init__.py" line="109" />
+      <location filename="../l5rcmcore/__init__.py" line="102" />
       <source>No Datapacks installed</source>
       <translation>Nessun pacchetto dati installato</translation>
     </message>
     <message>
-      <location filename="../l5rcmcore/__init__.py" line="383" />
+      <location filename="../l5rcmcore/__init__.py" line="203" />
       <source>Cannot import data pack.</source>
       <translation>Impossibile importare questo pacchetto dati.</translation>
     </message>
     <message>
-      <location filename="../l5rcmcore/__init__.py" line="390" />
+      <location filename="../l5rcmcore/__init__.py" line="210" />
       <source>Invalid data pack.</source>
       <translation>Pacchetto dati non valido.</translation>
     </message>

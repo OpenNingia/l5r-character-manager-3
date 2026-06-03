@@ -18,6 +18,7 @@ SOURCES = __init__.py \
           api/context.py \
           api/data/__init__.py \
           api/data/clans.py \
+          api/data/datapacks.py \
           api/data/families.py \
           api/data/flaws.py \
           api/data/merits.py \
@@ -45,7 +46,9 @@ SOURCES = __init__.py \
           diceroller/drgui.py \
           exporters/__init__.py \
           exporters/fdfexporter.py \
+          exporters/model_form.py \
           exporters/npc.py \
+          exporters/sheet.py \
           l5rcmcore/__init__.py \
           l5rcmcore/qtsignalsutils.py \
           main.py \
@@ -69,6 +72,7 @@ SOURCES = __init__.py \
           qmlui/app.py \
           qmlui/proxies/__init__.py \
           qmlui/proxies/app_controller.py \
+          qmlui/proxies/datapack_proxy.py \
           qmlui/proxies/pc/__init__.py \
           qmlui/proxies/pc/advancements.py \
           qmlui/proxies/pc/combat.py \
@@ -114,10 +118,12 @@ SOURCES = __init__.py \
           ui/tabs/techniques.py \
           ui/tabs/weapons.py \
           util/__init__.py \
+          util/datapack_catalog.py \
           util/fsutil.py \
           util/log.py \
           util/names.py \
           util/osutil.py \
+          util/session.py \
           util/settings.py \
           util/worker.py \
           widgets/__init__.py \
