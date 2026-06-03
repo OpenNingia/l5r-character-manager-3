@@ -227,12 +227,18 @@ class SettingsWidget(QtWidgets.QWidget):
         self.bt_select_font = QtWidgets.QPushButton(self)
         self.ck_show_banner = QtWidgets.QCheckBox(
             self.tr("Show application banner"), self)
+        # Front-end switch. Mirrors the QML Settings section's "Use the
+        # new UI" toggle and writes the same `ui/use_qml_ui` key; takes
+        # effect on the next launch (the UI is chosen once, at startup).
+        self.ck_use_new_ui = QtWidgets.QCheckBox(
+            self.tr("Use the new UI (restart required)"), self)
 
         vb.addWidget(self.ck_use_system_lang)
         vb.addWidget(self.cb_select_lang)
         vb.addWidget(self.ck_use_system_font)
         vb.addWidget(self.bt_select_font)
         vb.addWidget(self.ck_show_banner)
+        vb.addWidget(self.ck_use_new_ui)
 
         vb.addSpacing(12)
         vb.addWidget(QtWidgets.QLabel(self.tr("<h3>Health display</h3>")))
@@ -343,6 +349,14 @@ class SettingsWidget(QtWidgets.QWidget):
             self.ck_show_banner.stateChanged,
             "checked", "ui/isbannerenabled",
             callback=lambda x: app.menu_sink.set_banner_visibility(x))
+
+        # new UI switch -- no live callback: the front-end is selected once
+        # at startup (l5r.main.main reads ui/use_qml_ui), so this only takes
+        # effect after a restart.
+        QPropertySettingsBinder(
+            self.ck_use_new_ui,
+            self.ck_use_new_ui.stateChanged,
+            "checked", "ui/use_qml_ui")
 
         # health display
         hmethods = [

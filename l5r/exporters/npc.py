@@ -155,7 +155,7 @@ class FDFExporterTwoNPC(FDFExporter):
         # SKILLS
         skills = self.get_skills_sorted(pc, lambda x: x['rank'])
         # divide in 5 lists
-        skill_per_line = max(5, len(skills) / 5)
+        skill_per_line = max(5, len(skills) // 5)
 
         # offset
         off = 0

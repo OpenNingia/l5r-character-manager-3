@@ -31,8 +31,8 @@ dependencies = [
     "qtpy >= 2.4",
     "PyQt6 >= 6.7",
     "pyqtwaitingspinner >= 1.3",
-    "pypdf @ git+https://github.com/OpenNingia/pypdf.git@fix_flatten",
-    "l5rdal @ git+https://github.com/OpenNingia/l5rcm-data-access.git@master",
+    "pypdf @ git+https://github.com/OpenNingia/pypdf.git@fix_escape",
+    "l5rdal @ git+https://github.com/OpenNingia/l5rcm-data-access.git@v1.3.1",
 ]
 dynamic = ["version"]
 
@@ -59,7 +59,7 @@ exclude = ["l5r.tests*", "l5r.api.tests*", "l5r.models.tests*"]
 # Wildcard key applies to every discovered package. We can't list the icon
 # packages explicitly (e.g. "l5r.share.icons.l5rcm.16x16") because their
 # segments start with digits and fail setuptools' module-name validation.
-"*" = ["*.pdf", "*.txt", "*.png", "*.qm"]
+"*" = ["*.pdf", "*.txt", "*.png", "*.qm", "*.qml", "*.ttf", "*.otf"]
 
 [tool.cxfreeze]
 executables = [

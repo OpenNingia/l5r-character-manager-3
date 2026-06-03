@@ -6,7 +6,10 @@ import unittest
 
 import l5r.api as api
 import l5r.api.character
+import l5r.api.character.books
 import l5r.api.data
+import l5r.models
+import l5r.models.advances
 from l5r.api.context import L5RCMContext, use
 
 import l5rdal as dal
@@ -158,3 +161,164 @@ class TestCharacterBll(unittest.TestCase):
                 'test_tech_1',
             ]
         )
+
+    def test_join_new_school(self):
+        """rankadv.join_new adds a SECOND school (multiclass): both schools
+        are tracked, the current school becomes the newly joined one, and
+        its school rank is 1. This is the branch the QML joinNewSchool slot
+        drives -- joinNewSchool simply calls join_new (+ an optional merit).
+        """
+        import l5r.api.character.rankadv
+        import l5r.api.character.schools
+
+        # a second basic school the character can multiclass into
+        second = School()
+        second.id = 'test_school_2'
+        second.name = u'test_school_2'
+        second.clanid = 'test_clan_2'
+        second.trait = 'reflexes'
+        second.affinity = None
+        second.deficiency = None
+        second.honor = 0.0
+        second.kihos = SchoolKiho()
+        second.tattoos = SchoolTattoo()
+        s2_tech = SchoolTech()
+        s2_tech.id = 'test_tech_s2_1'
+        s2_tech.rank = 1
+        second.tags = []
+        second.skills = []
+        second.skills_pc = []
+        second.techs = [s2_tech]
+        second.spells = []
+        second.spells_pc = []
+        second.outfit = []
+        second.money = [0] * 3
+        second.require = []
+        second.perks = []
+        api.data.model().schools.append(second)
+
+        api.character.schools.set_first('test_school_1')
+        api.character.rankadv.join_new('test_school_2')
+
+        self.assertEqual(
+            sorted(['test_school_1', 'test_school_2']),
+            sorted(api.character.schools.get_all()))
+        self.assertEqual('test_school_2', api.character.schools.get_current())
+        self.assertEqual(1, api.character.schools.get_school_rank('test_school_2'))
+        self.assertEqual(1, api.character.schools.get_school_rank('test_school_1'))
+
+    def test_choose_affinity(self):
+        """choose_affinity commits the picked ring onto the rank advancement
+        and consumes the pending `any`/`nonvoid` slot (the QML chooseAffinity
+        slot path)."""
+        import l5r.api.character.rankadv
+        import l5r.api.character.schools
+        import l5r.api.character.spells
+
+        api.character.schools.set_first('test_school_1')
+        rank_ = api.character.rankadv.get_last()
+        rank_.affinities_to_choose = ['nonvoid']
+
+        self.assertTrue(api.character.rankadv.choose_affinity('fire'))
+        self.assertIn('fire', api.character.spells.affinities())
+        self.assertEqual([], rank_.affinities_to_choose)
+
+    def test_choose_affinity_nothing_pending(self):
+        """choose_affinity is a no-op (returns False) when no choice is
+        pending, so a stray call can't invent an affinity."""
+        import l5r.api.character.rankadv
+        import l5r.api.character.schools
+
+        api.character.schools.set_first('test_school_1')
+        api.character.rankadv.get_last().affinities_to_choose = []
+        self.assertFalse(api.character.rankadv.choose_affinity('fire'))
+
+    def test_choose_deficiency(self):
+        """choose_deficiency is the deficiency counterpart of choose_affinity."""
+        import l5r.api.character.rankadv
+        import l5r.api.character.schools
+        import l5r.api.character.spells
+
+        api.character.schools.set_first('test_school_1')
+        rank_ = api.character.rankadv.get_last()
+        rank_.deficiencies_to_choose = ['any']
+
+        self.assertTrue(api.character.rankadv.choose_deficiency('water'))
+        self.assertIn('water', api.character.spells.deficiencies())
+        self.assertEqual([], rank_.deficiencies_to_choose)
+
+    def test_school_spell_commit(self):
+        """The bounded spell-grant commit path (applySchoolSpellChoices):
+        add_school_spell records each pick on the rank, and
+        clear_spells_to_choose wipes the pending grant."""
+        import l5r.api.character.rankadv
+        import l5r.api.character.schools
+        import l5r.api.character.spells
+        from l5rdal.spell import Spell
+
+        s1 = Spell()
+        s1.id, s1.name, s1.element, s1.mastery = 'spell_a', 'Spell A', 'fire', 1
+        s2 = Spell()
+        s2.id, s2.name, s2.element, s2.mastery = 'spell_b', 'Spell B', 'water', 1
+        api.data.model().spells.append(s1)
+        api.data.model().spells.append(s2)
+
+        api.character.schools.set_first('test_school_1')
+        rank_ = api.character.rankadv.get_last()
+        rank_.gained_spells_count = 2
+
+        api.character.spells.add_school_spell('spell_a')
+        api.character.spells.add_school_spell('spell_b')
+        api.character.rankadv.clear_spells_to_choose()
+
+        school_spells = api.character.spells.get_school_spells()
+        self.assertIn('spell_a', school_spells)
+        self.assertIn('spell_b', school_spells)
+        self.assertEqual(0, api.character.rankadv.get_pending_spells_count())
+        self.assertEqual([], api.character.rankadv.get_starting_spells_to_choose())
+
+    # --- reset advancements (QML resetAdvancements slot) --------------
+
+    def test_reset_advancements(self):
+        """reset_advancements clears the whole stack, marks the model dirty,
+        and reports how many entries were removed."""
+        pc = api.character.model()
+        pc.add_advancement(l5r.models.advances.AttribAdv('strength', 4))
+        pc.add_advancement(l5r.models.advances.AttribAdv('agility', 4))
+        self.assertEqual(2, len(pc.advans))
+
+        removed = api.character.reset_advancements()
+
+        self.assertEqual(2, removed)
+        self.assertEqual([], pc.advans)
+        self.assertTrue(pc.unsaved)
+
+    def test_reset_advancements_empty(self):
+        """reset_advancements is a no-op (returns 0) on a character with no
+        advancements -- nothing to clear, nothing to dirty."""
+        pc = api.character.model()
+        pc.unsaved = False
+        self.assertEqual(0, api.character.reset_advancements())
+        self.assertFalse(pc.unsaved)
+
+    # --- missing datapack dependencies (QML Open gate) ----------------
+
+    def test_missing_dependencies_for_pc(self):
+        """get_missing_dependencies(pc) reads the references off the given
+        character (not the active one) and yields those whose datapack is
+        not loaded -- the gate the QML fileOpen applies before set_model."""
+        pc = l5r.models.AdvancedPcModel()
+        pc.pack_refs = [
+            {'id': 'ghost_pack', 'name': 'Ghost Tome', 'version': '1.0'}]
+
+        missing = list(api.character.books.get_missing_dependencies(pc))
+
+        self.assertEqual(1, len(missing))
+        self.assertEqual('ghost_pack', missing[0].id)
+        self.assertFalse(api.character.books.fulfills_dependencies(pc))
+
+    def test_no_missing_dependencies_for_pc(self):
+        """A character with no references fulfils its dependencies."""
+        pc = l5r.models.AdvancedPcModel()
+        pc.pack_refs = []
+        self.assertTrue(api.character.books.fulfills_dependencies(pc))

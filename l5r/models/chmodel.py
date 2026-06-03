@@ -18,6 +18,7 @@
 from . import advances as adv
 from . import outfit as outfit
 from . import modifiers as modifiers
+from .advancements.rank import Rank
 
 import l5r.api.rules
 import l5rdal.school
@@ -100,6 +101,79 @@ class MyJsonEncoder(json.JSONEncoder):
         if isinstance(obj, AdvancedPcModel):
             return obj.__dict__
         return json.JSONEncoder.default(self, obj)
+
+
+# DESERIALIZATION HELPERS ###
+#
+# json.dump flattens every object to its __dict__, so on the way back in a
+# flat `out.__dict__[k] = in[k]` copy cannot rebuild objects *nested inside*
+# another object. Only Rank advancements nest typed sub-objects, and the
+# redeem flows read them by attribute -- so a reloaded character with pending
+# choices would otherwise raise AttributeError (e.g. dict has no 'wildcards').
+# These helpers rehydrate those nested objects to their original types.
+
+
+def _rehydrate_wildcard_set(data):
+    """Rebuild an l5rdal SchoolSkillWildcardSet (with its nested
+    SchoolSkillWildcards) from the plain dict left by the JSON round-trip.
+    A saved Rank stores these under `skills_to_choose`; the redeem flow
+    (api.character.rankadv + the skill choosers, legacy and QML) reads
+    `.wildcards` / `.rank` and each wildcard's `.value` / `.modifier` by
+    attribute, which a bare dict cannot serve."""
+    if not isinstance(data, dict):
+        return data  # fresh, never-saved object: already the right type
+    wc_set = l5rdal.school.SchoolSkillWildcardSet()
+    wc_set.__dict__.update(data)
+    rebuilt = []
+    for w in (wc_set.wildcards or []):
+        if isinstance(w, dict):
+            wc = l5rdal.school.SchoolSkillWildcard()
+            wc.__dict__.update(w)
+            rebuilt.append(wc)
+        else:
+            rebuilt.append(w)
+    wc_set.wildcards = rebuilt
+    return wc_set
+
+
+def _rehydrate_perk(data):
+    """Rebuild a PerkAdv stored inside a Rank's `merits` / `flaws` list
+    (school-granted merits/flaws). Consumers read `.perk` / `.rank` /
+    `.cost` / `.tag` by attribute."""
+    if not isinstance(data, dict):
+        return data
+    perk = adv.PerkAdv(None, None, 0)
+    perk.__dict__.update(data)
+    return perk
+
+
+def _load_advancement(data):
+    """Reconstruct a single advancement from its serialized dict.
+
+    Rank advancements are the only ones nesting typed sub-objects
+    (`skills_to_choose` wildcard sets, `merits` / `flaws` PerkAdvs); a flat
+    __dict__ copy leaves those as plain dicts and every path that reads them
+    by attribute then raises on a reloaded character. So a rank is rebuilt as
+    a real Rank() -- which also back-fills defaults for fields a pre-feature
+    save predates -- and its nested objects rehydrated. All other
+    advancements carry only flat attributes, so the duck-typed generic
+    Advancement the consumers already rely on is enough."""
+    if data.get('type') == 'rank':
+        a = Rank()
+        a.__dict__.update(data)
+        a.skills_to_choose = [_rehydrate_wildcard_set(x)
+                              for x in (a.skills_to_choose or [])]
+        a.merits = [_rehydrate_perk(x) for x in (a.merits or [])]
+        a.flaws = [_rehydrate_perk(x) for x in (a.flaws or [])]
+        # spells_to_choose entries are (element, count, tag) tuples; JSON
+        # round-trips them to lists. Restore the tuple shape so the reloaded
+        # rank is identical to the freshly-built one.
+        a.spells_to_choose = [tuple(x) if isinstance(x, list) else x
+                              for x in (a.spells_to_choose or [])]
+        return a
+    a = adv.Advancement(None, None)
+    a.__dict__.update(data)
+    return a
 
 
 class AdvancedPcModel(object):
@@ -193,7 +267,7 @@ class AdvancedPcModel(object):
 
     # properties
     def has_property(self, name):
-        return name not in self.properties
+        return name in self.properties
 
     def get_property(self, name, default=''):
         if name not in self.properties:
@@ -206,8 +280,13 @@ class AdvancedPcModel(object):
 
 # LOAD AND SAVE METHODS ###
 
-    def save_to(self, file):
-        self.unsaved = False
+    def save_to(self, file, clear_dirty=True):
+        # Autosave to the recovery file passes clear_dirty=False: the
+        # work is mirrored to the recovery file but NOT to the
+        # character's real .l5r, so the in-memory unsaved flag must
+        # survive (the session still counts as having unsaved changes).
+        if clear_dirty:
+            self.unsaved = False
 
         fp = open(file, 'wt')
         if fp:
@@ -233,9 +312,7 @@ class AdvancedPcModel(object):
 
             self.advans = []
             for ad in obj['advans']:
-                a = adv.Advancement(None, None)
-                _load_obj(deepcopy(ad), a)
-                self.advans.append(a)
+                self.advans.append(_load_advancement(deepcopy(ad)))
 
             # armor
             self.armor = outfit.ArmorOutfit()

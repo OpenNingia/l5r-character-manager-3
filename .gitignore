@@ -66,3 +66,9 @@ docs/_build/
 
 # inno setup output
 tools/deploy/windows/Output/
+
+# qml backups
+*.qml~
+
+# local documentation
+local_docs/

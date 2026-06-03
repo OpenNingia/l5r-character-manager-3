@@ -16,13 +16,10 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import os
-import shutil
-from tempfile import mkstemp
 
 from qtpy import QtCore, QtGui, QtWidgets
 
 import l5r.models as models
-import l5r.exporters as exporters
 
 import l5rdal as dal
 import l5rdal.dataimport
@@ -41,6 +38,7 @@ import l5r.api as api
 import l5r.api.data
 import l5r.api.data.families
 import l5r.api.character
+import l5r.api.character.powers
 import l5r.api.rules
 from l5r.api.data import CMErrors
 from l5r.l5rcmcore.qtsignalsutils import (
@@ -53,13 +51,9 @@ from l5r.util.settings import L5RCMSettings
 from qtpy.QtGui import QDesktopServices
 from qtpy.QtCore import QUrl
 
-# PyPDF
-from pypdf import PdfReader, PdfWriter
-from pypdf.generic import ArrayObject, NameObject
-
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
-APP_VERSION = '3.20.0'
+APP_VERSION = '4.0.0'
 DB_VERSION = '3.20'
 APP_ORG = 'openningia'
 
@@ -67,9 +61,10 @@ PROJECT_PAGE_LINK = 'https://github.com/OpenNingia/l5r-character-manager-3'
 BUGTRAQ_LINK = 'https://github.com/OpenNingia/l5r-character-manager-3/issues'
 PROJECT_PAGE_NAME = 'Project Page'
 AUTHOR_NAME = 'Daniele Simonetti'
-L5R_RPG_HOME_PAGE = 'http://www.l5r.com/rpg/'
-ALDERAC_HOME_PAGE = 'http://www.alderac.com/'
+L5R_RPG_HOME_PAGE = 'https://www.legendofthefiverings.com/products/roleplaying-games/legend-of-the-five-rings/'
+COMPANY_HOME_PAGE = 'https://www.fantasyflightgames.com/'
 DATA_PACKS_DOWNLOADS_LINK = 'https://github.com/OpenNingia/l5rcm-data-packs/releases/latest'
+DONATE_LINK = 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=Q87Q5BVS3ZKTE&lc=US&item_name=Daniele%20Simonetti&item_number=l5rcm_donate&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted'
 
 
 class L5RCMCore(QtWidgets.QMainWindow):
@@ -123,192 +118,19 @@ class L5RCMCore(QtWidgets.QMainWindow):
         #    exporter.export(f)
         #f.close()
 
-    def create_form_fields(self, exporter):
-        exporter.set_form(self)
-        exporter.set_model(self.pc)
-        return exporter.get_fields()
-
-
-    def fill_pdf(self, form_fields, source_pdf, target_pdf, target_suffix=None):
-        basen = os.path.splitext(os.path.basename(target_pdf))[0]
-        based = os.path.dirname(target_pdf)
-
-        if target_suffix:
-            target_pdf = os.path.join(based, basen) + '_%s.pdf' % target_suffix
-        else:
-            target_pdf = os.path.join(based, basen) + '.pdf'
-
-        try:
-            reader = PdfReader(source_pdf)
-            writer = PdfWriter()
-            writer.append(reader)
-
-            writer.update_page_form_field_values(
-                None,
-                form_fields,
-                auto_regenerate=False,
-                flatten=True,
-            )
-
-            self._strip_form_widgets(writer)
-
-            with open(target_pdf, "wb") as output_stream:
-                writer.write(output_stream)
-
-            log.app.info('created pdf %s', target_pdf)
-            return True
-        finally:
-            pass
-        #except Exception as ex:
-        #    log.app.error('could not generate output pdf. exception: %s', ex)
-        #    return False
-
-    @staticmethod
-    def _strip_form_widgets(writer):
-        """Remove form widget annotations and /AcroForm from a flattened PDF.
-
-        pypdf's ``update_page_form_field_values(..., flatten=True)`` bakes the
-        appearance stream into the page contents but leaves the widget
-        annotations in place, so the now-empty field overlays still render on
-        top. Drop them to get a truly flattened, no-form output.
-        """
-        for p in writer.pages:
-            if "/Annots" not in p:
-                continue
-            kept = [
-                a for a in p["/Annots"]
-                if a.get_object().get("/Subtype") != "/Widget"
-            ]
-            p[NameObject("/Annots")] = ArrayObject(kept)
-        if "/AcroForm" in writer._root_object:
-            del writer._root_object[NameObject("/AcroForm")]
-
-    def merge_pdf(self, input_files, output_file):
-        try:
-            merger = PdfWriter()
-
-            for pdf in input_files:
-                merger.append(pdf)
-
-            merger.write(output_file)
-            merger.close()
-        finally:
-            for f in input_files:
-                self.try_remove(f)
-
-    def try_remove(self, fpath):
-        try:
-            os.remove(fpath)
-            log.app.debug('deleted temp file: {0}'.format(fpath))
-        except:
-            log.app.error('cannot delete temp file: {0}'.format(fpath), exc_info=1, stack_info=True)
-
-    def write_pdf(self, source, exporter):
-        source_pdf = get_app_file(source)
-        form_fields = self.create_form_fields(exporter)
-
-        fd, fpath = mkstemp(suffix='.pdf')
-        os.fdopen(fd, 'wb').close()
-        self.fill_pdf(form_fields, source_pdf, fpath)
-        self.temp_files.append(fpath)
-
-    def commit_pdf_export(self, export_file):
-        if os.path.exists(export_file):
-            os.remove(export_file)
-
-        if len(self.temp_files) > 1:
-            self.merge_pdf(self.temp_files, export_file)
-        elif len(self.temp_files) == 1:
-            shutil.move(self.temp_files[0], export_file)
-
     def export_npc_characters(self, npc_files, export_file):
-        self.temp_files = []
-
-        pcs = []
-        for f in npc_files:
-            c = l5r.models.AdvancedPcModel()
-            if c.load_from(f):
-                pcs.append(c)
-
-        self.write_pdf(
-            'sheet_npc.pdf', exporters.FDFExporterTwoNPC(pcs))
-        self.commit_pdf_export(export_file)
+        # Shared, UI-agnostic implementation lives in l5r.exporters.sheet so
+        # the QWidget and QML front-ends export through one code path. We pass
+        # `self` as the form -- its live view-models / labels feed the FDF
+        # exporters; the QML UI hands a ModelExportForm instead.
+        from l5r.exporters import sheet
+        sheet.export_npc(npc_files, export_file, self)
 
     def export_as_pdf(self, export_file):
-        self.temp_files = []
-
-        # GENERIC SHEET
-        source_pdf = get_app_file('sheet_all.pdf')
-        form_fields = self.create_form_fields(exporters.FDFExporterAll())
-        fd, fpath = mkstemp(suffix='.pdf')
-        os.fdopen(fd, 'wb').close()
-
-        self.fill_pdf(form_fields, source_pdf, fpath)
-        self.temp_files.append(fpath)
-
-        # SAMURAI MONKS ALSO FITS IN THE BUSHI CHARACTER SHEET
-        is_monk, is_brotherhood = api.character.is_monk()
-        is_samurai_monk = is_monk and not is_brotherhood
-        is_shugenja = api.character.is_shugenja()
-        is_bushi = api.character.is_bushi()
-        is_courtier = api.character.is_courtier()
-        is_ninja = api.character.is_ninja()
-        spell_offset = 0
-        spell_count = len(api.character.spells.get_all())
-        kihos = api.character.powers.get_all_kiho()
-        kiho_count = min(12, len(kihos))
-
-        # SHUGENJA/BUSHI/MONK SHEET
-        if is_shugenja:
-            self.write_pdf('sheet_shugenja.pdf', exporters.FDFExporterShugenja())
-        elif is_bushi:
-            self.write_pdf('sheet_bushi.pdf', exporters.FDFExporterBushi())
-        elif is_ninja:
-            self.write_pdf('sheet_bushi.pdf', exporters.FDFExporterBushi())            
-        elif is_samurai_monk:
-            self.write_pdf('sheet_bushi.pdf', exporters.FDFExporterBushi())
-        elif is_monk:
-            self.write_pdf('sheet_monk.pdf', exporters.FDFExporterMonk())
-        elif is_courtier:
-            self.write_pdf('sheet_courtier.pdf', exporters.FDFExporterCourtier())
-
-        if kiho_count > 0:
-            self.write_pdf('sheet_monk.pdf', exporters.FDFExporterMonk())
-
-        # SPELLS
-        # we use as many extra spells sheet as needed
-
-        if is_shugenja:
-            # spell_count = api.character.spells.get_all()
-            # spell_offset = 0
-
-            while spell_count > 0:
-                _exporter = exporters.FDFExporterSpells(spell_offset)
-                self.write_pdf('sheet_spells.pdf', _exporter)
-                spell_offset += _exporter.spell_per_page
-                spell_count -= _exporter.spell_per_page
-
-        # DEDICATED SKILL SHEET
-        skill_count = len(api.character.skills.get_all())
-        skill_offset = 0
-
-        while skill_count > 0:
-            _exporter = exporters.FDFExporterSkills(skill_offset)
-            self.write_pdf('sheet_skill.pdf', _exporter)
-            skill_offset += _exporter.skills_per_page
-            skill_count -= _exporter.skills_per_page
-
-        # WEAPONS
-        weapons_count = len(self.pc.weapons)
-        weapons_offset = 0
-        if weapons_count > 2:
-            while weapons_count > 0:
-                _exporter = exporters.FDFExporterWeapons(weapons_offset)
-                self.write_pdf('sheet_weapons.pdf', _exporter)
-                weapons_offset += _exporter.weapons_per_page
-                weapons_count -= _exporter.weapons_per_page
-
-        self.commit_pdf_export(export_file)           
+        # Shared implementation in l5r.exporters.sheet (see
+        # export_npc_characters for the form rationale).
+        from l5r.exporters import sheet
+        sheet.export_pdf(export_file, self)
 
     def remove_advancement_item(self, adv_itm):
         if api.character.remove_advancement(adv_itm):
@@ -335,12 +157,7 @@ class L5RCMCore(QtWidgets.QMainWindow):
         self.update_from_model()
 
     def damage_health(self, val):
-        self.pc.wounds += val
-        if self.pc.wounds < 0:
-            self.pc.wounds = 0
-        if self.pc.wounds > api.rules.get_max_wounds():
-            self.pc.wounds = api.rules.get_max_wounds()
-
+        api.character.damage_health(val)
         self.update_from_model()
 
     def buy_next_skill_rank(self, skill_id):
@@ -414,52 +231,35 @@ class L5RCMCore(QtWidgets.QMainWindow):
         settings.app.data_pack_blacklist = api.data.get_blacklist()
 
     def please_donate(self):
-        donate_url = QtCore.QUrl(
-            "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=Q87Q5BVS3ZKTE&lc=US&item_name=Daniele%20Simonetti&item_number=l5rcm_donate&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted")
-        QtGui.QDesktopServices.openUrl(donate_url)
+        QtGui.QDesktopServices.openUrl(QtCore.QUrl(DONATE_LINK))
 
     def buy_kata(self, kata):
-        adv = models.KataAdv(kata.id, kata.id, kata.mastery)
-        adv.desc = self.tr('{0}, Cost: {1} xp').format(kata.name, adv.cost)
-
-        if adv.cost > api.character.xp_left():
-            return CMErrors.NOT_ENOUGH_XP
-
-        self.pc.add_advancement(adv)
-        self.update_from_model()
-
-        return CMErrors.NO_ERROR
+        # Delegates to the shared api purchase path so the QWidget and
+        # QML UIs use one implementation (the api setter owns the dirty
+        # flag); we only drive the QWidget pull-refresh on success.
+        res = api.character.powers.buy_kata(kata.id)
+        if res == CMErrors.NO_ERROR:
+            self.update_from_model()
+        return res
 
     def buy_kiho(self, kiho):
-        kiho_cost = api.rules.calculate_kiho_cost(kiho.id)
-        adv = models.KihoAdv(kiho.id, kiho.id, kiho_cost)
-        adv.desc = self.tr('{0}, Cost: {1} xp').format(kiho.name, adv.cost)
-
-        # monks can get free kihos
-        free_kiho_ = api.character.rankadv.get_gained_kiho_count()
-
-        if free_kiho_ > 0:
-            adv.cost = 0
-            free_kiho_ -= 1
-            api.character.rankadv.set_gained_kiho_count(free_kiho_)
-            log.app.info(u"free kiho left: %d", free_kiho_)
-
-        if adv.cost > api.character.xp_left():
-            return CMErrors.NOT_ENOUGH_XP
-
-        self.pc.add_advancement(adv)
-        self.update_from_model()
-
-        return CMErrors.NO_ERROR
+        # Delegates to the shared api purchase path so the QWidget and
+        # QML UIs use one implementation (the api setter owns the dirty
+        # flag and the free-kiho discount); we only drive the QWidget
+        # pull-refresh on success.
+        res = api.character.powers.buy_kiho(kiho.id)
+        if res == CMErrors.NO_ERROR:
+            self.update_from_model()
+        return res
 
     def buy_tattoo(self, kiho):
-        adv = models.KihoAdv(kiho.id, kiho.id, 0)
-        adv.desc = self.tr('{0} Tattoo').format(kiho.name)
-
-        self.pc.add_advancement(adv)
-        self.update_from_model()
-
-        return CMErrors.NO_ERROR
+        # Delegates to the shared api purchase path so the QWidget and
+        # QML UIs use one implementation (the api setter owns the dirty
+        # flag); we only drive the QWidget pull-refresh on success.
+        res = api.character.powers.buy_tattoo(kiho.id)
+        if res == CMErrors.NO_ERROR:
+            self.update_from_model()
+        return res
 
     def get_character_full_name(self):
 

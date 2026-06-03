@@ -21,6 +21,7 @@ import operator
 import l5r.api as api
 import l5r.api.data
 import l5r.api.rules
+import l5r.api.signals
 import l5r.models
 
 from l5r.api import get_context
@@ -42,11 +43,73 @@ def new():
     get_context().pc.load_default()
 
     log.api.info("Created new character")
+    l5r.api.signals.bus().model_replaced.emit()
 
 
 def set_model(value):
     """set character model"""
     get_context().pc = value
+    l5r.api.signals.bus().model_replaced.emit()
+
+
+def set_name(value):
+    """set the character name (canonical setter; emits on the bus)"""
+    get_context().pc.name = value
+    set_dirty_flag(True)
+    l5r.api.signals.bus().name_changed.emit(value)
+    log.api.info(u"set character name: %s", value)
+
+
+def get_notes():
+    """return the character extra notes (rich-text HTML)"""
+    pc = get_context().pc
+    return pc.extra_notes if pc else ""
+
+
+def set_notes(value):
+    """set the character extra notes (canonical setter; emits on the bus)"""
+    pc = get_context().pc
+    if pc is None:
+        return
+    value = value or ""
+    if pc.extra_notes == value:
+        return
+    pc.extra_notes = value
+    set_dirty_flag(True)
+    l5r.api.signals.bus().notes_changed.emit(value)
+
+
+_PERSONAL_INFO_KEYS = (
+    "sex", "age", "height", "weight", "hair", "eyes",
+    "father", "mother", "brothers", "sisters",
+    "marsta", "spouse", "childr",
+)
+
+
+def personal_info_keys():
+    """return the canonical anagraphic/family property keys"""
+    return _PERSONAL_INFO_KEYS
+
+
+def get_personal_info(key):
+    """return a single anagraphic/family property as a string"""
+    pc = get_context().pc
+    if pc is None:
+        return ""
+    return pc.get_property(key, "") or ""
+
+
+def set_personal_info(key, value):
+    """set a single anagraphic/family property (canonical setter)"""
+    pc = get_context().pc
+    if pc is None:
+        return
+    value = value or ""
+    if pc.get_property(key, "") == value:
+        return
+    pc.set_property(key, value)
+    set_dirty_flag(True)
+    l5r.api.signals.bus().personal_info_changed.emit()
 
 
 def get_family_tags():
@@ -122,6 +185,53 @@ def remove_advancement(adv):
     log.api.info(u"removed advancement: %s", adv.desc)
     return True
 
+
+def refund_last_advancement():
+    """Pop the head of the advancement stack (the most recently
+    purchased entry), refunding its XP cost. Returns the popped
+    Advancement instance, or None when the stack is empty.
+
+    Stack-LIFO is the only safe refund order: L5R 4e advancement
+    costs scale with the current rank of the trait/skill, so each
+    entry's recorded cost is valid only against the state produced
+    by every entry beneath it. Removing a non-head entry would
+    leave subsequent entries with stale costs.
+
+    Owns the dirty-flag contract (CLAUDE.md: api-level setters set
+    the dirty flag) and emits character_refreshed so QML bindings
+    re-evaluate.
+    """
+    pc = get_context().pc
+    if not pc or not pc.advans:
+        return None
+    adv = pc.advans.pop()
+    log.api.info(u"refunded advancement: %s (cost %s)", adv.desc, adv.cost)
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
+    return adv
+
+
+def reset_advancements():
+    """Clear the whole advancement stack, refunding all spent XP and
+    returning the character to its freshly-created (rank 1) state.
+    Family and school (set at creation, not advancements) are kept.
+
+    Returns the number of entries removed (0 when there was nothing to
+    reset). Owns the dirty-flag contract (CLAUDE.md: api-level setters
+    set the dirty flag) and emits character_refreshed so QML bindings
+    re-evaluate.
+    """
+    pc = get_context().pc
+    if not pc or not pc.advans:
+        return 0
+    count = len(pc.advans)
+    pc.advans = []
+    log.api.info(u"reset advancements: cleared %d entries", count)
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
+    return count
+
+
 def get_xp_gained_from_flaws():
     """returns the experience gained from disadvantages"""
     return sum([-x.cost for x in get_context().pc.advans if x.type == 'perk' and x.tag == 'flaw'])
@@ -162,6 +272,8 @@ def honor():
 def set_honor(value):
     """store the character honor as difference with the starting value"""
     get_context().pc.honor = value - get_starting_honor()
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
 
 
 def get_starting_glory():
@@ -182,6 +294,8 @@ def glory():
 def set_glory(value):
     """store the character glory as difference with the starting value"""
     get_context().pc.glory = value - get_starting_glory()
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
 
 
 def get_starting_status():
@@ -199,6 +313,8 @@ def status():
 def set_status(value):
     """store the character status as difference with the starting value"""
     get_context().pc.status = value - get_starting_status()
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
 
 
 def get_starting_infamy():
@@ -214,6 +330,8 @@ def infamy():
 def set_infamy(value):
     """store the character infamy as difference with the starting value"""
     get_context().pc.infamy = value - get_starting_infamy()
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
 
 
 def get_starting_taint():
@@ -229,6 +347,8 @@ def taint():
 def set_taint(value):
     """store the character taint as difference with the starting value"""
     get_context().pc.taint = value - get_starting_taint()
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
 
 
 def trait_rank(trait_id):
@@ -360,6 +480,24 @@ def get_armor_desc():
     return get_context().pc.armor.desc if get_context().pc.armor is not None else u""
 
 
+def get_armor():
+    """return the worn armor (an ArmorOutfit) or None."""
+    return get_context().pc.armor
+
+
+def set_armor(item):
+    """wear an armor -- a character wears at most one (owns the dirty
+    flag). Replaces the legacy dialogs' direct ``pc.armor = item``."""
+    get_context().pc.armor = item
+    set_dirty_flag(True)
+
+
+def clear_armor():
+    """take off the worn armor (owns the dirty flag)."""
+    get_context().pc.armor = None
+    set_dirty_flag(True)
+
+
 def append_advancement(adv):
     """append an advancement to the advancement list"""
     if get_context().pc:
@@ -473,6 +611,8 @@ def set_family(family_id):
         get_context().pc.clan = family_.clanid
 
         log.api.info(u"set family: %s, clan: %s", family_.id, family_.clanid)
+        l5r.api.signals.bus().family_changed.emit(family_.id)
+        l5r.api.signals.bus().clan_changed.emit(family_.clanid)
     else:
         log.api.warning(u"family not found: %s", family_id)
 
@@ -546,6 +686,43 @@ def is_courtier():
 def set_dirty_flag(value):
     """set the character dirty flag"""
     get_context().pc.unsaved = value
+    l5r.api.signals.bus().dirty_changed.emit(bool(value))
+
+
+def notify_character_refreshed():
+    """Coarse 'character recomputed' notification. Use after mutations
+    that change derived state lacking a dedicated bus signal -- trait
+    purchases, void purchases, school changes -- so the QML proxy
+    re-emits its bundle signals. A no-op for the QWidget UI, which uses
+    a pull (update_from_model) refresh instead."""
+    l5r.api.signals.bus().character_refreshed.emit()
+
+
+def set_exp_limit(value):
+    """set the character's experience-point limit (canonical setter)"""
+    pc = get_context().pc
+    if pc is None:
+        return
+    value = int(value)
+    if pc.exp_limit == value:
+        return
+    pc.exp_limit = value
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
+    log.api.info(u"set exp limit: %d", value)
+
+
+def set_void_points(value):
+    """set the character's current Void-points pool (canonical setter)"""
+    pc = get_context().pc
+    if pc is None:
+        return
+    value = int(value)
+    if pc.void_points == value:
+        return
+    pc.set_void_points(value)
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
 
 
 def get_health_multiplier():
@@ -569,7 +746,37 @@ def set_health_multiplier(value):
         return
     pc.health_multiplier = value
     set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
     log.api.info("set health multiplier to: %d", value)
+
+
+def get_wounds_taken():
+    """return the total wounds (HP damage) currently on the character."""
+    pc = get_context().pc
+    return int(pc.wounds) if pc else 0
+
+
+def set_wounds_taken(value):
+    """set the total wounds on the character, clamped to [0, max].
+
+    Canonical wounds setter -- mutations here own the dirty flag and the
+    character_refreshed signal so the QML proxy and QWidget UI both pick
+    up the change. The max is api.rules.get_max_wounds() (the "Out"
+    threshold), which depends on Earth ring and health multiplier."""
+    pc = get_context().pc
+    if pc is None:
+        return
+    value = max(0, min(int(value), int(api.rules.get_max_wounds())))
+    if int(pc.wounds) == value:
+        return
+    pc.wounds = value
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
+
+
+def damage_health(delta):
+    """add ``delta`` to the wounds total (negative heals), clamped."""
+    set_wounds_taken(get_wounds_taken() + int(delta))
 
 
 def get_starting_money():
@@ -610,3 +817,51 @@ def set_starting_outfit(outfit):
     first_rank_ = api.character.rankadv.get_first()
     if first_rank_:
         first_rank_.outfit = outfit
+        set_dirty_flag(True)
+
+
+def get_equipment():
+    """return the character's free-form (non-school) equipment list."""
+    return get_context().pc.get_property('equip', [])
+
+
+def set_equipment(items):
+    """replace the free-form equipment list (owns the dirty flag)."""
+    get_context().pc.set_property('equip', list(items))
+    set_dirty_flag(True)
+
+
+def add_equipment(text):
+    """append one free-form equipment entry (owns the dirty flag)."""
+    items = get_context().pc.get_property('equip', [])
+    items.append(text)
+    set_dirty_flag(True)
+
+
+def get_modifiers():
+    """return the character's custom roll/stat modifiers."""
+    return get_context().pc.get_modifiers()
+
+
+def add_modifier(item):
+    """add a custom modifier (owns the dirty flag)."""
+    get_context().pc.add_modifier(item)
+    set_dirty_flag(True)
+
+
+def remove_modifier(item):
+    """remove a custom modifier (owns the dirty flag)."""
+    mods = get_context().pc.get_modifiers()
+    if item in mods:
+        mods.remove(item)
+        set_dirty_flag(True)
+
+
+def touch_modifiers():
+    """flag the character dirty after an in-place modifier edit/toggle.
+
+    Modifier rows are mutated in place by the caller (the Qt-side edit
+    dialog / active toggle resolves the live ModifierModel and writes its
+    fields); this is the setter that owns the dirty flag for that path,
+    mirroring api.character.weapons.touch()."""
+    set_dirty_flag(True)

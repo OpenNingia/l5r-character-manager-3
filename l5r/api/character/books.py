@@ -74,12 +74,19 @@ def get_dependencies():
     return get_context().pc.pack_refs
 
 
-def get_missing_dependencies():
-    """returns the dependencies that are referenced in the character file but are not loaded"""
+def get_missing_dependencies(pc=None):
+    """returns the dependencies that are referenced in the character file but are not loaded
+
+    When `pc` is given the references are read from that character (so a
+    just-loaded model can be checked BEFORE it is made the active one);
+    otherwise the active character's dependencies are used.
+    """
 
     BookReferenceType = namedtuple('BookReference', ['id', 'name', 'version'])
 
-    for d in get_dependencies():
+    deps = (pc.pack_refs if pc is not None else get_dependencies()) or []
+
+    for d in deps:
 
         br = BookReferenceType(id=d['id'], name=d['name'], version=d['version'])
 
@@ -96,6 +103,7 @@ def get_missing_dependencies():
             yield br
 
 
-def fulfills_dependencies():
-    """returns True if all the dependencies are loaded"""
-    return sum(1 for x in get_missing_dependencies()) == 0
+def fulfills_dependencies(pc=None):
+    """returns True if all the dependencies are loaded (see
+    get_missing_dependencies for the `pc` argument)"""
+    return sum(1 for x in get_missing_dependencies(pc)) == 0

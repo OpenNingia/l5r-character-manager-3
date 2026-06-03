@@ -405,7 +405,7 @@ class FDFExporterShugenja(FDFExporter):
                     fields['DEFICIENCY.%d' % (i + 1)] = deficiencies_str_
                     fields['SCHOOL_TECH.%d' % (i + 1)] = tech.desc
             else:
-                log.app.error('cannot export character school: %s'.format(str(schools[i])))
+                log.app.error(f'cannot export character school: {schools[i]}')
 
         return fields
 

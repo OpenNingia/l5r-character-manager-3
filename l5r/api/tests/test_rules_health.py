@@ -9,7 +9,12 @@ import l5rdal as dal
 import l5r.api as api
 import l5r.api.character
 import l5r.api.data
+# api.character.trait_rank reaches into api.data.families.get_family_trait;
+# the parent package doesn't pull submodules in, so importing it here
+# wires up the lookup before any rule that walks Earth/Stamina runs.
+import l5r.api.data.families  # noqa: F401
 import l5r.api.rules
+import l5r.api.signals
 from l5r.api.context import L5RCMContext, use
 
 from l5r.tests.fakedata import (
@@ -164,3 +169,232 @@ class TestHealthMultiplier(unittest.TestCase):
         earth = api.character.ring_rank('earth')
         api.character.set_health_multiplier(5)
         self.assertEqual(earth * 5 + 7 * earth * 5, api.rules.get_max_wounds())
+
+    def test_setter_emits_character_refreshed_on_change(self):
+        """The QML proxy listens on api.signals.bus().character_refreshed to
+        rebroadcast combatChanged; without this emit, healthMultiplier
+        would still update the model but the UI would freeze on the old
+        wound table until something else refreshed it."""
+        events = _record_signal(self, api.signals.bus().character_refreshed)
+        api.character.set_health_multiplier(3)
+        self.assertEqual(1, len(events))
+
+    def test_setter_no_op_does_not_emit(self):
+        pc = api.character.model()
+        events = _record_signal(self, api.signals.bus().character_refreshed)
+        api.character.set_health_multiplier(pc.health_multiplier)
+        self.assertEqual(0, len(events))
+
+    # --- effects on wound table & resilience -----------------------------
+
+    def test_changing_multiplier_resizes_buckets_below_healthy(self):
+        """Bumping the multiplier widens NICKED..OUT (Earth*mult each)
+        but must leave HEALTHY (Earth*5) untouched. Regression for the
+        per-bucket increment that the WoundsBlock card grid shows in
+        each card's corner -- the proxy reads it straight from the
+        rules layer, so the rules layer must keep delivering it."""
+        earth = api.character.ring_rank('earth')
+        api.character.set_health_multiplier(2)
+        table = api.rules.get_wounds_table()
+        self.assertEqual(earth * 5, table[0][0])
+        for idx in range(1, 8):
+            self.assertEqual(earth * 2, table[idx][0])
+
+        api.character.set_health_multiplier(4)
+        table = api.rules.get_wounds_table()
+        self.assertEqual(earth * 5, table[0][0])
+        for idx in range(1, 8):
+            self.assertEqual(earth * 4, table[idx][0])
+
+    def test_lowering_multiplier_does_not_clamp_existing_wounds(self):
+        """Multiplier change does *not* re-clamp pc.wounds, by design --
+        the value lives independently in the model, and the wound-table
+        rendering handles the overflow via min(stacked, tot_wounds).
+        If you ever decide to clamp on multiplier change, this test
+        should flip to `assertEqual(new_max, pc.wounds)`; pinning the
+        current behaviour here makes the choice explicit."""
+        api.character.set_health_multiplier(4)
+        max_at_4 = api.rules.get_max_wounds()
+        api.character.set_wounds_taken(max_at_4 - 2)
+        before = api.character.get_wounds_taken()
+
+        api.character.set_health_multiplier(1)
+        new_max = api.rules.get_max_wounds()
+        self.assertLess(new_max, before)
+        self.assertEqual(before, api.character.get_wounds_taken())
+
+    def test_max_wounds_grows_with_multiplier(self):
+        """The card-grid 'TOTAL' number and the RankStepper's `to` upper
+        bound both consume get_max_wounds; verify monotonicity so the
+        stepper can't outrun the model."""
+        earth = api.character.ring_rank('earth')
+        previous = 0
+        for mult in (1, 2, 3, 4, 5):
+            api.character.set_health_multiplier(mult)
+            current = api.rules.get_max_wounds()
+            self.assertGreater(current, previous,
+                               "max wounds must grow with multiplier")
+            self.assertEqual(earth * 5 + 7 * earth * mult, current)
+            previous = current
+
+
+# ---------------------------------------------------------------------------
+# Wound-table edge cases the QML proxy depends on. These document quiet
+# invariants that bit us when porting the wounds panel to QML.
+# ---------------------------------------------------------------------------
+
+class TestWoundPenaltiesRange(unittest.TestCase):
+    """get_wound_penalties only knows about levels 0..6 (Healthy..Down).
+    Out (idx 7) is unconscious / fatal, not a TN penalty — looking it up
+    must raise so accidental callers fail loudly. The QML wounds() proxy
+    guards on idx < 7 because of this constraint; if you ever extend the
+    table, update both."""
+
+    def setUp(self):
+        self._stack = contextlib.ExitStack()
+        self.addCleanup(self._stack.close)
+        self._stack.enter_context(use(L5RCMContext()))
+        api.data.set_model(dal.Data([], []))
+        api.character.new()
+
+    def test_penalty_for_known_levels(self):
+        # Spot-check the canonical 4e values so any reshuffle of the
+        # WOUND_PENALTIES_VALUES table is caught here.
+        self.assertEqual(0,  api.rules.get_wound_penalties(0))   # Healthy
+        self.assertEqual(3,  api.rules.get_wound_penalties(1))   # Nicked
+        self.assertEqual(5,  api.rules.get_wound_penalties(2))
+        self.assertEqual(10, api.rules.get_wound_penalties(3))
+        self.assertEqual(15, api.rules.get_wound_penalties(4))
+        self.assertEqual(20, api.rules.get_wound_penalties(5))
+        self.assertEqual(40, api.rules.get_wound_penalties(6))   # Down
+
+    def test_penalty_for_out_raises(self):
+        with self.assertRaises(IndexError):
+            api.rules.get_wound_penalties(7)
+
+
+# ---------------------------------------------------------------------------
+# Wounds setters: get_wounds_taken / set_wounds_taken / damage_health.
+# These live next to set_health_multiplier in api.character and follow
+# the same shape (clamp + dirty flag + character_refreshed emit).
+# ---------------------------------------------------------------------------
+
+class TestWoundsSetters(unittest.TestCase):
+
+    def setUp(self):
+        self._stack = contextlib.ExitStack()
+        self.addCleanup(self._stack.close)
+        self._stack.enter_context(use(L5RCMContext()))
+
+        data_ = dal.Data([], [])
+        api.data.set_model(data_)
+        data_.clans.append(test_clan_1)
+        data_.families.append(test_family_1)
+        data_.schools.append(test_school_1)
+        data_.skcategs.append(test_skill_categ_1)
+        data_.skills.append(test_skill_1)
+
+        api.character.new()
+        # Fresh PC: Earth 2, mult 2 -> max wounds = 38, current wounds = 0.
+        self.max_wounds = api.rules.get_max_wounds()
+        self.assertEqual(38, self.max_wounds)
+
+    # --- get_wounds_taken --------------------------------------------------
+
+    def test_get_wounds_default_zero(self):
+        self.assertEqual(0, api.character.get_wounds_taken())
+
+    def test_get_wounds_reads_model_value(self):
+        api.character.model().wounds = 12
+        self.assertEqual(12, api.character.get_wounds_taken())
+
+    # --- set_wounds_taken --------------------------------------------------
+
+    def test_set_updates_model(self):
+        api.character.set_wounds_taken(7)
+        self.assertEqual(7, api.character.model().wounds)
+        self.assertEqual(7, api.character.get_wounds_taken())
+
+    def test_set_marks_dirty(self):
+        pc = api.character.model()
+        pc.unsaved = False
+        api.character.set_wounds_taken(5)
+        self.assertTrue(pc.unsaved)
+
+    def test_set_no_op_does_not_dirty(self):
+        """Idempotent setter: assigning the same value must not flip the
+        unsaved flag, otherwise re-opening a clean character and not
+        touching the wounds counter would still prompt to save."""
+        pc = api.character.model()
+        pc.wounds = 5
+        pc.unsaved = False
+        api.character.set_wounds_taken(5)
+        self.assertFalse(pc.unsaved)
+
+    def test_set_clamps_below_zero(self):
+        api.character.set_wounds_taken(-10)
+        self.assertEqual(0, api.character.get_wounds_taken())
+
+    def test_set_clamps_above_max(self):
+        api.character.set_wounds_taken(self.max_wounds + 50)
+        self.assertEqual(self.max_wounds, api.character.get_wounds_taken())
+
+    def test_set_coerces_int(self):
+        api.character.set_wounds_taken("9")
+        self.assertEqual(9, api.character.get_wounds_taken())
+
+    def test_set_emits_character_refreshed_on_change(self):
+        events = _record_signal(self, api.signals.bus().character_refreshed)
+        api.character.set_wounds_taken(4)
+        self.assertEqual(1, len(events))
+
+    def test_set_no_op_does_not_emit(self):
+        events = _record_signal(self, api.signals.bus().character_refreshed)
+        api.character.set_wounds_taken(0)   # already 0
+        self.assertEqual(0, len(events))
+
+    # --- damage_health -----------------------------------------------------
+
+    def test_damage_adds_positive_delta(self):
+        api.character.set_wounds_taken(5)
+        api.character.damage_health(3)
+        self.assertEqual(8, api.character.get_wounds_taken())
+
+    def test_damage_negative_delta_heals(self):
+        api.character.set_wounds_taken(10)
+        api.character.damage_health(-4)
+        self.assertEqual(6, api.character.get_wounds_taken())
+
+    def test_damage_clamps_at_zero(self):
+        api.character.set_wounds_taken(3)
+        api.character.damage_health(-50)
+        self.assertEqual(0, api.character.get_wounds_taken())
+
+    def test_damage_clamps_at_max(self):
+        api.character.set_wounds_taken(self.max_wounds - 2)
+        api.character.damage_health(99)
+        self.assertEqual(self.max_wounds, api.character.get_wounds_taken())
+
+    def test_damage_zero_delta_is_a_no_op(self):
+        pc = api.character.model()
+        pc.wounds = 5
+        pc.unsaved = False
+        events = _record_signal(self, api.signals.bus().character_refreshed)
+        api.character.damage_health(0)
+        self.assertEqual(5, pc.wounds)
+        self.assertFalse(pc.unsaved)
+        self.assertEqual(0, len(events))
+
+
+def _record_signal(test_case, signal):
+    """Subscribe a counter handler to ``signal`` and auto-disconnect on
+    test teardown. ``api.signals.bus()`` is a process-wide singleton, so
+    leaking subscribers across tests would make assertions flaky."""
+    events = []
+
+    def _handler(*args, **kwargs):
+        events.append(args)
+
+    signal.connect(_handler)
+    test_case.addCleanup(signal.disconnect, _handler)
+    return events
