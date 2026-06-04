@@ -578,6 +578,11 @@ ColumnLayout {
         readonly property string _detail: (item && item.detail) ? item.detail : ""
         readonly property bool _hasDetail: card._detail.length > 0
         readonly property string _value: (item && item.value) ? item.value : ""
+        // datapack-granted modifiers are read-only; only `when`-gated ones can
+        // be toggled. A non-toggleable granted modifier is always-on.
+        readonly property bool _readonly: !!(item && item.readonly)
+        readonly property bool _toggleable: !item || (item.toggleable !== false)
+        readonly property string _source: (item && item.source) ? item.source : ""
 
         implicitHeight: cardBody.implicitHeight + 18
         color: cardHover.hovered ? Theme.parchmentBase : Theme.parchmentInset
@@ -635,6 +640,23 @@ ColumnLayout {
                 RowLayout {
                     Layout.fillWidth: true
                     spacing: 6
+                    // granted marker -- distinguishes datapack-derived
+                    // modifiers from the player's own (which are editable).
+                    Label {
+                        visible: card._readonly
+                        text: "⛩"
+                        font.pixelSize: Theme.fsCaption
+                        color: Theme.accent
+                        opacity: 0.9
+                        ToolTip.visible: grantedHover.hovered
+                        ToolTip.delay: 400
+                        ToolTip.text: card._source.length > 0
+                                      ? qsTr("Granted by %1").arg(card._source)
+                                      : qsTr("Granted automatically")
+                        HoverHandler {
+                            id: grantedHover
+                        }
+                    }
                     Label {
                         text: card._typeLabel.toUpperCase()
                         visible: text.length > 0
@@ -702,8 +724,16 @@ ColumnLayout {
                 Widgets.L5RToggle {
                     Layout.alignment: Qt.AlignHCenter
                     checked: card._active
+                    // always-on granted modifiers are locked; user and
+                    // `when`-gated granted modifiers can be flipped.
+                    enabled: card._toggleable
+                    opacity: card._toggleable ? 1.0 : 0.6
                     onToggled: {
-                        if (card.item && appCtrl)
+                        if (!card.item || !appCtrl)
+                            return;
+                        if (card._readonly)
+                            appCtrl.setDynamicModifierActive(card.item.id, checked);
+                        else
                             appCtrl.setModifierActive(card.item.id, checked);
                     }
                 }
@@ -717,7 +747,7 @@ ColumnLayout {
                 AbstractButton {
                     id: modEditBtn
                     anchors.fill: parent
-                    visible: cardHover.hovered || modEditBtn.hovered
+                    visible: !card._readonly && (cardHover.hovered || modEditBtn.hovered)
                     onClicked: {
                         if (card.item)
                             modifierDlg.presentEdit(card.item);
@@ -755,7 +785,7 @@ ColumnLayout {
                 AbstractButton {
                     id: modRemoveBtn
                     anchors.fill: parent
-                    visible: cardHover.hovered || modRemoveBtn.hovered
+                    visible: !card._readonly && (cardHover.hovered || modRemoveBtn.hovered)
                     onClicked: section._removeModifier(card.item)
                     background: Rectangle {
                         radius: 11
