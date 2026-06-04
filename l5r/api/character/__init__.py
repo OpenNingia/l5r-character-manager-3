@@ -450,10 +450,21 @@ def get_armor_tn_mod():
     return sum(x.value[2] for x in _effective_modifiers('artn') if x.active and len(x.value) > 2)
 
 
+def _datapack_provides(slug):
+    """True if a loaded datapack supplies a <ModifierDef> for this slug. The
+    legacy hardcode then yields to the dynamic modifier to avoid double-counting
+    (see docs/MODIFIERS_SCHEMA.md section 17)."""
+    import l5rdal.query
+    ds = get_context().ds
+    return bool(ds is not None and l5rdal.query.get_modifiers_for(ds, slug))
+
+
 def get_base_rd():
     """returns the base RD"""
-    if has_rule('crab_the_mountain_does_not_move'):
-        return ring_rank('earth')
+    # legacy fallback: fires only while no datapack has taken over this effect
+    if not _datapack_provides('crab_the_mountain_does_not_move'):
+        if has_rule('crab_the_mountain_does_not_move'):
+            return ring_rank('earth')
     return 0
 
 
