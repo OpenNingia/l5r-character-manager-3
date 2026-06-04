@@ -450,44 +450,42 @@ class PcInfoTabMixin:
         if hasattr(w, 'link'):
             self.pc.set_property(w.link, w.text())
 
+    # Honor/Glory/Status/Taint/Infamy are tracked in 0.1 increments. The
+    # API setter for each flag, keyed by its index in the flag widget lists.
+    _flag_setters = (
+        api.character.set_honor,
+        api.character.set_glory,
+        api.character.set_status,
+        api.character.set_taint,
+        api.character.set_infamy,
+    )
+
+    def _flag_value(self, idx):
+        """Combine the free-text rank field and the 0.1-step points widget
+        for flag *idx* into a single float.
+
+        The rank field is plain text, so tolerate a decimal entry such as
+        ``"2.5"`` instead of crashing on ``int(...)`` (issue #380). When the
+        user types a fractional value directly, it is authoritative and the
+        points widget is ignored; otherwise the two are combined."""
+        try:
+            rank = float(self.pc_flags_rank[idx].text())
+        except (ValueError, TypeError):
+            rank = 0.0
+        if rank != int(rank):
+            return rank
+        points = self.pc_flags_points[idx].value
+        return rank + float(points) / 10
+
     def on_flag_points_change(self):
         fl = self.sender()
-        pt = fl.value
-
-        if fl == self.pc_flags_points[0]:
-            val = int(self.pc_flags_rank[0].text())
-            api.character.set_honor(float(val + float(pt) / 10))
-        elif fl == self.pc_flags_points[1]:
-            val = int(self.pc_flags_rank[1].text())
-            api.character.set_glory(float(val + float(pt) / 10))
-        elif fl == self.pc_flags_points[2]:
-            val = int(self.pc_flags_rank[2].text())
-            api.character.set_status(float(val + float(pt) / 10))
-        elif fl == self.pc_flags_points[3]:
-            val = int(self.pc_flags_rank[3].text())
-            api.character.set_taint(float(val + float(pt) / 10))
-        else:
-            val = int(self.pc_flags_rank[4].text())
-            api.character.set_infamy(float(val + float(pt) / 10))
+        idx = self.pc_flags_points.index(fl)
+        self._flag_setters[idx](self._flag_value(idx))
 
     def on_flag_rank_change(self):
         fl = self.sender()
-        val = int(fl.text())
-        if fl == self.pc_flags_rank[0]:
-            pt = self.pc_flags_points[0].value
-            api.character.set_honor(float(val + float(pt) / 10))
-        elif fl == self.pc_flags_rank[1]:
-            pt = self.pc_flags_points[1].value
-            api.character.set_glory(float(val + float(pt) / 10))
-        elif fl == self.pc_flags_rank[2]:
-            pt = self.pc_flags_points[2].value
-            api.character.set_status(float(val + float(pt) / 10))
-        elif fl == self.pc_flags_rank[3]:
-            pt = self.pc_flags_points[3].value
-            api.character.set_taint(float(val + float(pt) / 10))
-        else:
-            pt = self.pc_flags_points[4].value
-            api.character.set_infamy(float(val + float(pt) / 10))
+        idx = self.pc_flags_rank.index(fl)
+        self._flag_setters[idx](self._flag_value(idx))
 
     def on_void_points_change(self):
         val = self.void_points.value
