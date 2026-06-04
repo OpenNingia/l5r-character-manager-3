@@ -85,16 +85,17 @@ class MiscMixin:
         # Their `key` is the session-stable toggle handle; only `when`-gated
         # ones are toggleable, the rest are always-on.
         for dm in l5r.api.rules.modifiers.build_dynamic_modifiers():
+            name = dm.label or _pretty_source(getattr(dm, "source", ""))
             rows.append({
                 "id":         dm.key,
                 "type":       dm.type or "",
                 "detail":     dm.dtl or "",
                 "value":      api.rules.format_rtk_t(dm.value),
-                "reason":     dm.reason or _pretty_source(getattr(dm, "source", "")),
+                "reason":     dm.reason or name,
                 "active":     bool(dm.active),
                 "readonly":   True,
                 "toggleable": bool(dm.toggleable),
-                "source":     _pretty_source(getattr(dm, "source", "")),
+                "source":     name,
             })
         return rows
 
