@@ -67,6 +67,11 @@ class L5RCMContext:
         # translation provider (anything with a .tr() method, typically the QApplication)
         self.translation_provider = app
 
+        # session-only on/off state for `when`-gated dynamic stat modifiers,
+        # keyed by the modifier's stable key. NOT serialized: these track
+        # transient combat state (stances, maneuvers) the user toggles.
+        self.runtime_modifier_state = {}
+
     def reload(self, get_user_data_path):
         """Rebuild self.ds from the user's datapack directories.
 

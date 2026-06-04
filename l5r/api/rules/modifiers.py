@@ -343,3 +343,208 @@ def safe_evaluate_predicate(expr, bindings=None, facade=None, default=False):
     except Exception as exc:
         log.api.warning("modifier predicate '%s' failed to evaluate: %s", expr, exc)
         return default
+
+
+# --------------------------------------------------------------------------- #
+# Runtime (dynamic) modifiers: materialize ModifierModel-shaped objects from the
+# datapack <ModifierDef> records the character currently owns.
+# --------------------------------------------------------------------------- #
+
+from l5r.api import get_context  # noqa: E402
+import l5r.api.character.merits   # noqa: E402
+import l5r.api.character.flaws    # noqa: E402
+import l5r.api.character.schools  # noqa: E402
+import l5r.api.character.rankadv  # noqa: E402
+import l5rdal.query               # noqa: E402
+
+# schema `affects` -> internal ModifierModel.type code. The first block reuses
+# the existing engine codes; the second adds new scalar targets (consumed in
+# api.rules / api.character).
+AFFECTS_TO_TYPE = {
+    "any_roll": "anyr", "skill_roll": "skir", "attack_roll": "atkr",
+    "damage_roll": "wdmg", "trait_roll": "trat", "ring_roll": "ring",
+    "armor_tn": "artn", "reduction": "arrd", "initiative": "init",
+    "wound_penalty": "wpen", "health_rank": "hrnk",
+    "insight": "insight", "honor": "honor", "glory": "glory",
+    "status": "status", "void_max": "void_max",
+    "trait_rank": "trait_rank", "ring_rank": "ring_rank",
+    "spell_tn_self": "spell_tn_self",
+}
+_ROLL_AFFECTS = {"any_roll", "skill_roll", "attack_roll", "damage_roll",
+                 "trait_roll", "ring_roll", "initiative"}
+_DETAIL_PREFIXES = ("skill:", "weapon:", "trait:", "ring:")
+
+
+class DynamicModifier(object):
+    """A ModifierModel-shaped, datapack-derived modifier.
+
+    Duck-typed to what the rules engine reads (`type`, `dtl`, `value`,
+    `active`, `reason`). `value` is a live property recomputed from the source
+    expressions on each access, so it tracks the current character. These are
+    never serialized; `readonly` marks them for the UI, and `toggleable`
+    flags the `when`-gated ones whose `active` the user may flip.
+    """
+
+    def __init__(self, type, dtl, reason, roll_typed, exprs, bindings,
+                 when, active, key):
+        self.type = type
+        self.dtl = dtl
+        self.reason = reason
+        self.when = when
+        self.active = active
+        self.key = key
+        self.readonly = True
+        self.toggleable = (when != "auto")
+        self._roll = roll_typed
+        self._exprs = exprs
+        self._bindings = bindings
+
+    @property
+    def value(self):
+        f = _make_facade()
+        if self._roll:
+            return (int(safe_evaluate(self._exprs.get("roll") or "0", self._bindings, f)),
+                    int(safe_evaluate(self._exprs.get("keep") or "0", self._bindings, f)),
+                    int(safe_evaluate(self._exprs.get("bonus") or "0", self._bindings, f)))
+        v = int(safe_evaluate(self._exprs.get("value") or "0", self._bindings, f))
+        # The engine stores wound-penalty modifiers as a *reduction* amount
+        # (it does `result - value[2]`), whereas the schema value is in the
+        # natural direction (negative = reduction). Negate at the boundary.
+        if self.type == "wpen":
+            v = -v
+        return (0, 0, v)
+
+
+def _make_facade():
+    """Facade factory (indirection so tests can inject a fake)."""
+    return LiveFacade()
+
+
+def _mod_key(target, kind, affects, detail, when):
+    return "{0}|{1}|{2}|{3}|{4}".format(target, kind, affects, detail or "", when)
+
+
+def _owns(target, kind):
+    import l5r.api.character as character
+    import l5r.api.character.powers as powers
+    if kind in ("tech", "path"):
+        return character.has_rule(target)
+    if kind == "kata":
+        return powers.has_kata(target)
+    if kind == "kiho":
+        return powers.has_kiho(target)
+    if kind == "tattoo":
+        return target in set(powers.get_all_tattoo())
+    if kind in ("merit", "ancestor"):
+        return target in {getattr(p, "perk", None) for p in character.merits.get_all()}
+    if kind == "flaw":
+        return target in {getattr(p, "perk", None) for p in character.flaws.get_all()}
+    # mastery / weapon_effect / armor: not yet tracked -> never owned (MVP)
+    return False
+
+
+def _school_rank_for(target, kind):
+    """Best-effort 'School Rank' binding for the source's expressions."""
+    ds = get_context().ds
+    if kind in ("tech", "path") and ds is not None:
+        try:
+            school, _tech = l5rdal.query.get_tech(ds, target)
+            if school is not None:
+                return api.character.schools.get_school_rank(school.id)
+        except Exception:
+            pass
+    return _primary_school_rank()
+
+
+def _primary_school_rank():
+    try:
+        schools = {r.school for r in api.character.rankadv.get_all() if getattr(r, "school", None)}
+        ranks = [api.character.schools.get_school_rank(s) for s in schools]
+        if ranks:
+            return max(ranks)
+    except Exception:
+        pass
+    try:
+        return api.character.insight_rank()
+    except Exception:
+        return 0
+
+
+def _resolve_detail(detail):
+    """Return (dtl, ok). ok=False means the detail cannot be honored by the MVP
+    engine (e.g. a tag: selector) and the modifier should be skipped."""
+    if detail is None:
+        return None, True
+    for pfx in _DETAIL_PREFIXES:
+        if detail.startswith(pfx):
+            return detail[len(pfx):], True
+    if detail.startswith("tag:"):
+        return None, False   # tag-scoped roll mods not representable yet
+    return detail, True       # bare/legacy detail -> use as-is
+
+
+def _make_dynamic(ms, mod, bindings):
+    if (mod.op or "add") != "add":
+        log.api.debug("skip modifier on %s: op=%s not supported yet", ms.target, mod.op)
+        return None
+    affects = mod.affects
+    type_ = AFFECTS_TO_TYPE.get(affects)
+    if type_ is None:
+        log.api.debug("skip modifier on %s: unknown affects %s", ms.target, affects)
+        return None
+    if mod.requires and not safe_evaluate_predicate(mod.requires, bindings):
+        return None
+    dtl, ok = _resolve_detail(mod.detail)
+    if not ok:
+        log.api.debug("skip modifier on %s: detail %s not supported yet", ms.target, mod.detail)
+        return None
+
+    when = mod.when or "auto"
+    key = _mod_key(ms.target, ms.kind, affects, mod.detail, when)
+    if when == "auto":
+        active = True
+    else:
+        active = bool(get_context().runtime_modifier_state.get(key, False))
+
+    roll_typed = affects in _ROLL_AFFECTS and (mod.value is None)
+    if roll_typed:
+        exprs = {"roll": mod.roll, "keep": mod.keep, "bonus": mod.bonus}
+    else:
+        exprs = {"value": mod.value if mod.value is not None else (mod.bonus or "0")}
+
+    reason = mod.reason or ms.target
+    return DynamicModifier(type_, dtl, reason, roll_typed, exprs, bindings,
+                           when, active, key)
+
+
+def build_dynamic_modifiers(filter_type=None):
+    """Materialize every dynamic modifier the active character currently owns.
+
+    Pull-based: called from the modifier-consumption sites, recomputed on demand
+    (the architecture has no central recompute pass). Never serialized.
+    """
+    ctx = get_context()
+    pc, ds = ctx.pc, ctx.ds
+    if pc is None or ds is None:
+        return []
+    out = []
+    for ms in getattr(ds, "modifier_sets", []):
+        if not _owns(ms.target, ms.kind):
+            continue
+        bindings = {"school_rank": _school_rank_for(ms.target, ms.kind)}
+        for p in getattr(ms, "params", []):
+            bindings[p.name] = 0   # player-chosen magnitude: no input UI yet (MVP)
+        for mod in getattr(ms, "mods", []):
+            dm = _make_dynamic(ms, mod, bindings)
+            if dm is not None:
+                out.append(dm)
+        # <OneOf> and <Substitute> are deferred (need choice UI / formula
+        # substitution support in the engine).
+    if filter_type:
+        out = [x for x in out if x.type == filter_type]
+    return out
+
+
+def set_runtime_modifier_active(key, active):
+    """Flip the session on/off state of a `when`-gated dynamic modifier."""
+    get_context().runtime_modifier_state[key] = bool(active)
