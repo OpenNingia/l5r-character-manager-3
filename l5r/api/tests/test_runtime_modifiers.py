@@ -9,9 +9,19 @@ import contextlib
 import unittest
 
 import l5rdal as dal
+import l5r.api.character
 from l5r.api.context import L5RCMContext, use
 from l5r.api.rules import modifiers as M
 from l5r.api.tests.test_modifier_eval import FakeFacade
+
+
+class FakePc(object):
+    """Minimal stand-in: presence is what the builder checks, and the engine
+    asks it for static modifiers."""
+    armor = None
+
+    def get_modifiers(self, filter_type=None):
+        return []
 
 
 MODS_XML = """<L5RCM>
@@ -49,7 +59,7 @@ class TestBuildDynamicModifiers(unittest.TestCase):
         ds = dal.Data([], [])
         ds.from_string(MODS_XML)
         ctx.ds = ds
-        ctx.pc = object()          # presence is all the builder checks
+        ctx.pc = FakePc()
         self._stack.enter_context(use(ctx))
         self.ctx = ctx
 
@@ -116,6 +126,12 @@ class TestBuildDynamicModifiers(unittest.TestCase):
         self.assertEqual([], self._by_reason(mods, "ranged"))
         # op=set not supported yet -> lame produces nothing
         self.assertEqual([], self._by_reason(mods, "lame"))
+
+    def test_wiring_into_engine(self):
+        # the api consumers must now pick up (and sum) the dynamic modifiers
+        # kitsuki (+perception=5) + bamboo (2*school_rank+5 = 11) = 16
+        self.assertEqual(16, l5r.api.character.get_armor_tn_mod())
+        self.assertEqual(3, l5r.api.character.get_armor_rd_mod())    # mountain: +earth
 
 
 if __name__ == "__main__":

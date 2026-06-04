@@ -545,6 +545,17 @@ def build_dynamic_modifiers(filter_type=None):
     return out
 
 
+def effective_modifiers(filter_type=None, pc=None):
+    """Return user-defined (static) modifiers plus the datapack-derived dynamic
+    ones, optionally filtered by type. This is what the rules engine should
+    consume; the editable Modifiers UI keeps using ``pc.get_modifiers`` (static)
+    and shows the dynamic ones read-only via ``build_dynamic_modifiers``."""
+    if pc is None:
+        pc = get_context().pc
+    static = pc.get_modifiers(filter_type) if pc is not None else []
+    return list(static) + build_dynamic_modifiers(filter_type)
+
+
 def set_runtime_modifier_active(key, active):
     """Flip the session on/off state of a `when`-gated dynamic modifier."""
     get_context().runtime_modifier_state[key] = bool(active)

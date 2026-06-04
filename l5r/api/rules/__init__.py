@@ -26,6 +26,13 @@ from l5r.api import get_context
 from l5r.util import log
 
 
+def _effective_modifiers(filter_type=None, pc=None):
+    """Static (user) modifiers + datapack-derived dynamic modifiers, for the
+    active character. Lazy import to avoid an import cycle with the builder."""
+    from l5r.api.rules.modifiers import effective_modifiers
+    return effective_modifiers(filter_type, pc)
+
+
 def get_trait_cost(trait_nm):
     """return the base multiplier to purchase the given trait"""
     if not get_context().pc:
@@ -229,23 +236,23 @@ def calculate_mod_attack_roll(pc, weap):
     flat_bonus = 0
 
     # any roll bonuses
-    anyr = pc.get_modifiers('anyr')
+    anyr = _effective_modifiers('anyr', pc)
     for x in anyr:
         if x.active:
             r_mod += x.value[0]
             k_mod += x.value[1]
 
-    # skill roll bonuses
-    skir = pc.get_modifiers('skir')
+    # skill roll bonuses (no detail == applies to every skill)
+    skir = _effective_modifiers('skir', pc)
     for x in skir:
-        if x.active and x.dtl == weap.skill_nm:
+        if x.active and (not x.dtl or x.dtl == weap.skill_nm):
             r_mod += x.value[0]
             k_mod += x.value[1]
 
-    # weapon only modifiers to attack roll
-    atkr = pc.get_modifiers('atkr')
+    # attack roll modifiers (no detail == applies to every weapon)
+    atkr = _effective_modifiers('atkr', pc)
     for x in atkr:
-        if x.active and x.dtl == weap.name:
+        if x.active and (not x.dtl or x.dtl == weap.name):
             r_mod += x.value[0]
             k_mod += x.value[1]
             flat_bonus += x.value[2]
@@ -287,16 +294,16 @@ def calculate_mod_damage_roll(pc, weap):
     flat_bonus = 0
 
     # any roll bonuses
-    anyr = pc.get_modifiers('anyr')
+    anyr = _effective_modifiers('anyr', pc)
     for x in anyr:
         if x.active:
             r_mod += x.value[0]
             k_mod += x.value[1]
 
-    # damage roll bonuses
-    wdmg = pc.get_modifiers('wdmg')
+    # damage roll bonuses (no detail == applies to every weapon)
+    wdmg = _effective_modifiers('wdmg', pc)
     for x in wdmg:
-        if x.active and x.dtl == weap.name:
+        if x.active and (not x.dtl or x.dtl == weap.name):
             r_mod += x.value[0]
             k_mod += x.value[1]
             flat_bonus += x.value[2]
@@ -324,9 +331,9 @@ def calculate_mod_skill_roll(pc, skill):
 
     base_roll = calculate_base_skill_roll(pc, skill)
 
-    smod = pc.get_modifiers('skir')
+    smod = _effective_modifiers('skir', pc)
     for x in smod:
-        if x.active and x.dtl == skill.name:
+        if x.active and (not x.dtl or x.dtl == skill.name):
             m = DicePool().from_tuple(x.value)
             base_roll += m
     return base_roll
@@ -443,7 +450,7 @@ def get_init_modifiers():
     """returns initiative modifiers"""
     r, k, b = 0, 0, 0
     mods = [x for x in
-            get_context().pc.get_modifiers('anyr') + get_context().pc.get_modifiers('init')
+            _effective_modifiers('anyr') + _effective_modifiers('init')
             if x.active]
     for m in mods:
         r += m.value[0]
@@ -474,7 +481,7 @@ def get_wound_penalties(index):
         reduction = (api.character.insight_rank() * 2) + api.character.trait_rank('willpower')
         result = max(0, result-reduction)
 
-    for x in get_context().pc.get_modifiers('wpen'):
+    for x in _effective_modifiers('wpen'):
         if x.active:
             result = max(0, result - x.value[2])
 
@@ -495,7 +502,7 @@ def get_health_rank_mod():
     if api.character.has_rule('crane_the_force_of_honor'):
         mod = max(1, int(api.character.honor() - 4))
 
-    for x in get_context().pc.get_modifiers('hrnk'):
+    for x in _effective_modifiers('hrnk'):
         if x.active and len(x.value) > 2:
             mod += x.value[2]
     return mod
