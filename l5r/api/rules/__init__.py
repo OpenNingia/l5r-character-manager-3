@@ -472,11 +472,13 @@ def get_wound_penalties(index):
     WOUND_PENALTIES_VALUES = [0, 3, 5, 10, 15, 20, 40]
     result = WOUND_PENALTIES_VALUES[index]
 
-    if api.character.has_rule('strength_of_earth'):
+    if (not api.character._datapack_provides('strength_of_earth')
+            and api.character.has_rule('strength_of_earth')):
         # Advantage: Strength of Earh (Core, pg154)
         result = max(0, result-3)
 
-    if api.character.has_rule('monkey_tokus_lesson'):
+    if (not api.character._datapack_provides('monkey_tokus_lesson')
+            and api.character.has_rule('monkey_tokus_lesson')):
         # Technique: Toku's Lesson (Core, pg222)
         reduction = (api.character.insight_rank() * 2) + api.character.trait_rank('willpower')
         result = max(0, result-reduction)
@@ -499,7 +501,8 @@ def get_health_rank(idx):
 def get_health_rank_mod():
     """return health rank modifiers"""
     mod = 0
-    if api.character.has_rule('crane_the_force_of_honor'):
+    if (not api.character._datapack_provides('crane_the_force_of_honor')
+            and api.character.has_rule('crane_the_force_of_honor')):
         mod = max(1, int(api.character.honor() - 4))
 
     for x in _effective_modifiers('hrnk'):

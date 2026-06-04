@@ -134,5 +134,46 @@ class TestBuildDynamicModifiers(unittest.TestCase):
         self.assertEqual(3, l5r.api.character.get_armor_rd_mod())    # mountain: +earth
 
 
+GATE_XML = """<L5RCM>
+  <ModifierDef target="crab_the_mountain_does_not_move" kind="tech">
+    <Mod affects="reduction" value="rings.earth"/>
+  </ModifierDef>
+</L5RCM>"""
+
+
+class TestGateFallback(unittest.TestCase):
+    """The legacy hardcode must yield to a datapack ModifierDef (no double-count)."""
+
+    def setUp(self):
+        self._stack = contextlib.ExitStack()
+        self.addCleanup(self._stack.close)
+        self.ctx = L5RCMContext()
+        self.ctx.pc = FakePc()
+        self._stack.enter_context(use(self.ctx))
+
+    def _patch(self, obj, name, value):
+        old = getattr(obj, name)
+        setattr(obj, name, value)
+        self.addCleanup(lambda: setattr(obj, name, old))
+
+    def test_no_datapack_entry(self):
+        self.ctx.ds = dal.Data([], [])   # empty: no ModifierDef
+        self.assertFalse(l5r.api.character._datapack_provides('crab_the_mountain_does_not_move'))
+
+    def test_datapack_entry_gates_hardcode(self):
+        ds = dal.Data([], [])
+        ds.from_string(GATE_XML)
+        self.ctx.ds = ds
+        self._patch(M, "_owns", lambda target, kind: True)
+        self._patch(M, "_school_rank_for", lambda target, kind: 1)
+        self._patch(M, "_make_facade", lambda: FakeFacade(rings={"earth": 3}))
+
+        # gate sees the datapack entry -> base RD hardcode yields (0) ...
+        self.assertTrue(l5r.api.character._datapack_provides('crab_the_mountain_does_not_move'))
+        self.assertEqual(0, l5r.api.character.get_base_rd())
+        # ... and the effect is applied exactly once, via the dynamic modifier.
+        self.assertEqual(3, l5r.api.character.get_armor_rd_mod())
+
+
 if __name__ == "__main__":
     unittest.main()
