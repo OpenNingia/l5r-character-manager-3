@@ -105,13 +105,29 @@ class L5RMain(AboutTabMixin, AdvancementsTabMixin, AdvanceMixin, AdviseMixin,
         self.tabs.setIconSize(QtCore.QSize(24, 24))
         tabs_icons = ['samurai', 'music', 'burn', 'powers', 'userinfo', 'book',
                       'katana', 'disk', 'text', 'bag', 'dragonball']
+
+        tabs_names = [self.tr('Character'),
+                      self.tr('Skills'),
+                      self.tr('Spells/Techniques'),
+                      self.tr('Kata/Kiho'),
+                      self.tr('Merits/Flaws'),
+                      self.tr('Advancements'),
+                      self.tr('Weapons'),
+                      self.tr('Modifiers'),
+                      self.tr('Notes/Personal Info'),
+                      self.tr('Equipment'),
+                      self.tr('Settings')]
+
         for i in range(0, self.num_tabs):
             self.tabs.setTabIcon(i, QtGui.QIcon(get_tab_icon(tabs_icons[i])))
             self.tabs.setTabText(i, '')
+            self.tabs.setTabToolTip(i,tabs_names[i])
+
 
         # about = app_icon
         self.tabs.setTabIcon(self.num_tabs, QtGui.QIcon(get_app_icon_path()))
         self.tabs.setTabText(self.num_tabs, '')
+        self.tabs.setTabToolTip(self.num_tabs,self.tr('About'))
 
         # donate button
         self.setup_donate_button()
