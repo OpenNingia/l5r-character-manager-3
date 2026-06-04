@@ -390,8 +390,9 @@ class DynamicModifier(object):
         self.type = type
         self.dtl = dtl
         self.reason = reason
-        self.source = source     # originating record slug (for UI labelling)
+        self.source = source     # originating record slug
         self.kind = kind
+        self.label = None        # resolved display name of the source record
         self.when = when
         self.active = active
         self.key = key
@@ -420,6 +421,32 @@ class DynamicModifier(object):
 def _make_facade():
     """Facade factory (indirection so tests can inject a fake)."""
     return LiveFacade()
+
+
+def _record_name(ms):
+    """Resolve the human display name of the record a ModifierDef targets, so
+    the UI shows e.g. 'Kitsuki's Method' rather than the raw slug. None when it
+    cannot be resolved."""
+    ds = get_context().ds
+    if ds is None:
+        return None
+    try:
+        if ms.kind in ("tech", "path"):
+            _school, tech = l5rdal.query.get_tech(ds, ms.target)
+            return tech.name if tech else None
+        if ms.kind == "kata":
+            r = l5rdal.query.get_kata(ds, ms.target)
+        elif ms.kind in ("kiho", "tattoo"):
+            r = l5rdal.query.get_kiho(ds, ms.target)
+        elif ms.kind in ("merit", "ancestor"):
+            r = l5rdal.query.get_merit(ds, ms.target)
+        elif ms.kind == "flaw":
+            r = l5rdal.query.get_flaw(ds, ms.target)
+        else:
+            return None
+        return getattr(r, "name", None) if r else None
+    except Exception:
+        return None
 
 
 def _mod_key(target, kind, affects, detail, when):
@@ -535,9 +562,11 @@ def build_dynamic_modifiers(filter_type=None):
         bindings = {"school_rank": _school_rank_for(ms.target, ms.kind)}
         for p in getattr(ms, "params", []):
             bindings[p.name] = 0   # player-chosen magnitude: no input UI yet (MVP)
+        label = _record_name(ms)
         for mod in getattr(ms, "mods", []):
             dm = _make_dynamic(ms, mod, bindings)
             if dm is not None:
+                dm.label = label
                 out.append(dm)
         # <OneOf> and <Substitute> are deferred (need choice UI / formula
         # substitution support in the engine).
