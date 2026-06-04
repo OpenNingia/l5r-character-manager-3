@@ -60,15 +60,16 @@ class CombatMixin:
     def armorTn(self):
         pc = api.character.model()
         if not pc:
-            return {"name": "", "baseTn": 0, "armorTn": 0,
+            return {"name": "", "baseTn": 0, "armorTn": 0, "armorTnMod": 0,
                     "rd": 0, "currentTn": 0, "desc": ""}
         return {
-            "name":      str(api.character.get_armor_name()),
-            "baseTn":    int(api.character.get_base_tn()),
-            "armorTn":   int(api.character.get_armor_tn()),
-            "rd":        int(api.character.get_full_rd()),
-            "currentTn": int(api.character.get_full_tn()),
-            "desc":      str(api.character.get_armor_desc()),
+            "name":       str(api.character.get_armor_name()),
+            "baseTn":     int(api.character.get_base_tn()),
+            "armorTn":    int(api.character.get_armor_tn()),
+            "armorTnMod": int(api.character.get_armor_tn_mod()),
+            "rd":         int(api.character.get_full_rd()),
+            "currentTn":  int(api.character.get_full_tn()),
+            "desc":       str(api.character.get_armor_desc()),
         }
 
     @Property("QVariantList", notify=combatChanged)
