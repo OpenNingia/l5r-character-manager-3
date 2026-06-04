@@ -24,12 +24,12 @@ source .venv/bin/activate
 ```
 
 ### Installing the dependencies
-Before running the program you need to install the dependencies:
-Some of them can be installed using pip:
+Before running the program you need to install the dependencies.
+An editable install pulls in every runtime dependency declared in `pyproject.toml`
+(including the git-only `l5rdal` data-access layer and the forked `pypdf`):
 
 ```bash
-pip install -r requirements.txt
-pip install git+https://github.com/OpenNingia/l5rcm-data-access.git@master
+pip install -e .
 ```
 
 ### Note for Windows users
