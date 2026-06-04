@@ -2678,6 +2678,14 @@
         <source>Buy advancements with no experience cost — an aid for GMs and quick builds. Affects new purchases only, and switches itself off when you restart the app.</source>
         <translation>Покупайте улучшения без затрат опыта — помощь для мастеров и быстрого создания персонажей. Влияет только на новые покупки и отключается при перезапуске приложения.</translation>
     </message>
+    <message>
+        <source>Print the current Armor TN</source>
+        <translation>Печатать текущий УС Брони</translation>
+    </message>
+    <message>
+        <source>The current Armor TN changes constantly during play; leave this off to print a blank field you can fill in by hand.</source>
+        <translation>Текущий УС Брони постоянно меняется во время игры; оставьте этот параметр выключенным, чтобы напечатать пустое поле для заполнения вручную.</translation>
+    </message>
 </context>
 <context>
     <name>SkillsSection</name>

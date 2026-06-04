@@ -171,9 +171,15 @@ class FDFExporterAll(FDFExporter):
         fields['INITIATIVE_MOD'] = f.tx_mod_init .text()
         fields['INITIATIVE_CUR'] = f.tx_cur_init .text()
 
+        settings = L5RCMSettings()
+
         # TN / RD
         fields['TN_BASE'] = api.character.get_base_tn()
-        fields['TN_CUR'] = api.character.get_full_tn()
+        # The current Armor TN changes constantly during play; only pre-print
+        # it when the user opted in (issue #390). Skipping the field leaves it
+        # blank on the exported sheet to be filled in by hand.
+        if settings.pc_export.print_current_armor_tn:
+            fields['TN_CUR'] = api.character.get_full_tn()
         fields['BASE_RD'] = api.character.get_base_rd()
         fields['CUR_RD'] = api.character.get_full_rd()
 
@@ -188,7 +194,6 @@ class FDFExporterAll(FDFExporter):
                     'HURT', 'INJURED', 'CRIPPLED',
                     'DOWN', 'OUT']
 
-        settings = L5RCMSettings()
         method = settings.app.health_method
 
         wounds_table = api.rules.get_wounds_table()

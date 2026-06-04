@@ -168,6 +168,7 @@ class L5RCMSettings_PcExport(object):
 
     def load_defaults(self):
         self.first_page_skills = self.first_page_skills
+        self.print_current_armor_tn = self.print_current_armor_tn
 
     @property
     def first_page_skills(self):
@@ -176,6 +177,16 @@ class L5RCMSettings_PcExport(object):
     @first_page_skills.setter
     def first_page_skills(self, value):
         self._qsettings.setValue('pcexport/first_page_skills', value)
+
+    @property
+    def print_current_armor_tn(self):
+        # The current Armor TN changes constantly during play, so by default
+        # it is left blank on the exported sheet to be filled in by hand.
+        return _is_true(self._qsettings.value('pcexport/print_current_armor_tn', False))
+
+    @print_current_armor_tn.setter
+    def print_current_armor_tn(self, value):
+        self._qsettings.setValue('pcexport/print_current_armor_tn', value)
 
 
 class L5RCMSettings_NpcExport(object):

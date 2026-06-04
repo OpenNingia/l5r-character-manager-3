@@ -218,6 +218,34 @@ ColumnLayout {
                 color: Theme.inkMuted
                 wrapMode: Text.WordWrap
             }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.topMargin: Theme.s2
+                Label {
+                    text: qsTr("Print the current Armor TN")
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: Theme.fsLabel
+                    font.weight: Theme.wSemiBold
+                    color: Theme.ink
+                    Layout.fillWidth: true
+                }
+                Widgets.L5RToggle {
+                    checked: appSettings ? appSettings.printCurrentArmorTn : false
+                    onToggled: if (appSettings)
+                        appSettings.setPrintCurrentArmorTn(checked)
+                }
+            }
+
+            Label {
+                Layout.fillWidth: true
+                text: qsTr("The current Armor TN changes constantly during play; leave this off to print a blank field you can fill in by hand.")
+                font.family: Theme.fontBody
+                font.pixelSize: Theme.fsCaption
+                font.italic: true
+                color: Theme.inkMuted
+                wrapMode: Text.WordWrap
+            }
         }
     }
 
