@@ -40,6 +40,12 @@ from qtpy.QtCore import Property, Signal
 import l5r.api as api
 import l5r.api.character
 import l5r.api.rules
+import l5r.api.rules.modifiers
+
+
+def _pretty_source(slug):
+    """Human-ish label for a datapack record slug used as a fallback name."""
+    return (slug or "").replace("_", " ").strip().title()
 
 
 class MiscMixin:
@@ -65,12 +71,30 @@ class MiscMixin:
             # value is a (roll, keep, bonus) tuple (or a 2-tuple on older
             # data); format_rtk_t renders either as the table string.
             rows.append({
-                "id":     str(id(m)),
-                "type":   getattr(m, "type", "") or "",
-                "detail": getattr(m, "dtl", "") or "",
-                "value":  api.rules.format_rtk_t(getattr(m, "value", (0, 0, 0))),
-                "reason": getattr(m, "reason", "") or "",
-                "active": bool(getattr(m, "active", False)),
+                "id":         str(id(m)),
+                "type":       getattr(m, "type", "") or "",
+                "detail":     getattr(m, "dtl", "") or "",
+                "value":      api.rules.format_rtk_t(getattr(m, "value", (0, 0, 0))),
+                "reason":     getattr(m, "reason", "") or "",
+                "active":     bool(getattr(m, "active", False)),
+                "readonly":   False,   # user modifier: editable / removable
+                "toggleable": True,
+                "source":     "",
+            })
+        # datapack-granted (dynamic) modifiers: read-only, never serialized.
+        # Their `key` is the session-stable toggle handle; only `when`-gated
+        # ones are toggleable, the rest are always-on.
+        for dm in l5r.api.rules.modifiers.build_dynamic_modifiers():
+            rows.append({
+                "id":         dm.key,
+                "type":       dm.type or "",
+                "detail":     dm.dtl or "",
+                "value":      api.rules.format_rtk_t(dm.value),
+                "reason":     dm.reason or _pretty_source(getattr(dm, "source", "")),
+                "active":     bool(dm.active),
+                "readonly":   True,
+                "toggleable": bool(dm.toggleable),
+                "source":     _pretty_source(getattr(dm, "source", "")),
             })
         return rows
 

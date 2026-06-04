@@ -386,10 +386,12 @@ class DynamicModifier(object):
     """
 
     def __init__(self, type, dtl, reason, roll_typed, exprs, bindings,
-                 when, active, key):
+                 when, active, key, source=None, kind=None):
         self.type = type
         self.dtl = dtl
         self.reason = reason
+        self.source = source     # originating record slug (for UI labelling)
+        self.kind = kind
         self.when = when
         self.active = active
         self.key = key
@@ -512,9 +514,8 @@ def _make_dynamic(ms, mod, bindings):
     else:
         exprs = {"value": mod.value if mod.value is not None else (mod.bonus or "0")}
 
-    reason = mod.reason or ms.target
-    return DynamicModifier(type_, dtl, reason, roll_typed, exprs, bindings,
-                           when, active, key)
+    return DynamicModifier(type_, dtl, mod.reason, roll_typed, exprs, bindings,
+                           when, active, key, source=ms.target, kind=ms.kind)
 
 
 def build_dynamic_modifiers(filter_type=None):

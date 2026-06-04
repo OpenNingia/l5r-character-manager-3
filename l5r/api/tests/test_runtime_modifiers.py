@@ -77,7 +77,7 @@ class TestBuildDynamicModifiers(unittest.TestCase):
         self.addCleanup(lambda: setattr(obj, name, old))
 
     def _by_reason(self, mods, target):
-        return [m for m in mods if m.reason == target]
+        return [m for m in mods if m.source == target]
 
     def test_scalar_and_expression(self):
         mods = M.build_dynamic_modifiers()

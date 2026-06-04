@@ -2071,6 +2071,15 @@ class AppController(QObject):
         api.character.touch_modifiers()
         api.character.notify_character_refreshed()
 
+    @Slot(str, bool)
+    def setDynamicModifierActive(self, key, active):
+        """Flip the session on/off state of a `when`-gated datapack-granted
+        (dynamic) modifier. These are not user modifiers and are never saved;
+        the key is the proxy-emitted handle (DynamicModifier.key)."""
+        import l5r.api.rules.modifiers
+        l5r.api.rules.modifiers.set_runtime_modifier_active(key, active)
+        api.character.notify_character_refreshed()
+
     @Slot(str)
     def removeModifier(self, mod_id):
         """Remove a modifier by its session-stable id."""
