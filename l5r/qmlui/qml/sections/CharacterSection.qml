@@ -37,6 +37,7 @@ ColumnLayout {
             "name": "",
             "baseTn": 0,
             "armorTn": 0,
+            "armorTnMod": 0,
             "rd": 0,
             "currentTn": 0,
             "desc": ""
@@ -831,6 +832,27 @@ ColumnLayout {
                     }
                     Label {
                         text: section._armor.armorTn
+                        font.family: Theme.fontStat
+                        font.pixelSize: Theme.fsStatSmall
+                        font.features: Theme.tabularNumbers
+                    }
+                }
+                // Armor-TN modifier ('artn' modifiers). Only shown when
+                // non-zero, otherwise base + armor already equals the
+                // headline ARMOR TN and the row would be noise.
+                RowLayout {
+                    Layout.fillWidth: true
+                    visible: section._armor.armorTnMod !== 0
+                    Label {
+                        text: qsTr("mod")
+                        font.pixelSize: Theme.fsCaption
+                        opacity: 0.65
+                    }
+                    Item {
+                        Layout.fillWidth: true
+                    }
+                    Label {
+                        text: (section._armor.armorTnMod > 0 ? "+" : "") + section._armor.armorTnMod
                         font.family: Theme.fontStat
                         font.pixelSize: Theme.fsStatSmall
                         font.features: Theme.tabularNumbers
