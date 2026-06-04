@@ -278,7 +278,13 @@ class SettingsWidget(QtWidgets.QWidget):
         vb.addWidget(QtWidgets.QLabel(self.tr("<h2>Character sheet</h2>")))
         self.ck_skills_on_first_page = QtWidgets.QCheckBox(
             self.tr("Print skills on first page"), self)
-        vb.addWidget(self.ck_skills_on_first_page)        
+        vb.addWidget(self.ck_skills_on_first_page)
+        self.ck_print_current_armor_tn = QtWidgets.QCheckBox(
+            self.tr("Print current Armor TN"), self)
+        self.ck_print_current_armor_tn.setToolTip(
+            self.tr("The current Armor TN changes constantly during play; "
+                    "leave this off to print a blank field."))
+        vb.addWidget(self.ck_print_current_armor_tn)
 
         fr.setLayout(vb)
 
@@ -419,6 +425,11 @@ class SettingsWidget(QtWidgets.QWidget):
             self.ck_skills_on_first_page,
             self.ck_skills_on_first_page.stateChanged,
             "checked", "pcexport/first_page_skills")
+
+        QPropertySettingsBinder(
+            self.ck_print_current_armor_tn,
+            self.ck_print_current_armor_tn.stateChanged,
+            "checked", "pcexport/print_current_armor_tn")
 
 
 def test():

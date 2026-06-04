@@ -2685,6 +2685,14 @@
         <source>Buy advancements with no experience cost — an aid for GMs and quick builds. Affects new purchases only, and switches itself off when you restart the app.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Print the current Armor TN</source>
+        <translation>Print the current Armour TN</translation>
+    </message>
+    <message>
+        <source>The current Armor TN changes constantly during play; leave this off to print a blank field you can fill in by hand.</source>
+        <translation>The current Armour TN changes constantly during play; leave this off to print a blank field you can fill in by hand.</translation>
+    </message>
 </context>
 <context>
     <name>SkillsSection</name>

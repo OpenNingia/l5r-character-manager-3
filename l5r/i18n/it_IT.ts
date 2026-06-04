@@ -3171,18 +3171,18 @@ Se scegli una scuola avanzata o un percorso alternativo assicurati di controllar
   <context>
     <name>SettingsProxy</name>
     <message>
-      <location filename="../qmlui/proxies/settings_proxy.py" line="124" />
-      <location filename="../qmlui/proxies/settings_proxy.py" line="113" />
+      <location filename="../qmlui/proxies/settings_proxy.py" line="125" />
+      <location filename="../qmlui/proxies/settings_proxy.py" line="114" />
       <source>The language will change the next time you start the app.</source>
       <translation>La lingua cambierà al prossimo avvio dell'applicazione.</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/settings_proxy.py" line="205" />
+      <location filename="../qmlui/proxies/settings_proxy.py" line="219" />
       <source>Restart the app to keep using the new interface.</source>
       <translation>Riavvia l'applicazione per continuare a usare la nuova interfaccia.</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/settings_proxy.py" line="207" />
+      <location filename="../qmlui/proxies/settings_proxy.py" line="221" />
       <source>Restart the app to switch back to the classic interface.</source>
       <translation>Riavvia l'applicazione per tornare all'interfaccia classica.</translation>
     </message>
@@ -3268,63 +3268,73 @@ Se scegli una scuola avanzata o un percorso alternativo assicurati di controllar
       <translation>Stampa abilità in prima pagina</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="295" />
+      <location filename="../widgets/settings.py" line="283" />
+      <source>Print current Armor TN</source>
+      <translation>Stampa il TN Armatura attuale</translation>
+    </message>
+    <message>
+      <location filename="../widgets/settings.py" line="285" />
+      <source>The current Armor TN changes constantly during play; leave this off to print a blank field.</source>
+      <translation>Il TN Armatura attuale cambia di continuo durante il gioco; lascialo disattivato per stampare un campo vuoto.</translation>
+    </message>
+    <message>
+      <location filename="../widgets/settings.py" line="301" />
       <source>US English</source>
       <translation>Inglese Americano</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="296" />
+      <location filename="../widgets/settings.py" line="302" />
       <source>UK English</source>
       <translation>Inglese Britannico</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="297" />
+      <location filename="../widgets/settings.py" line="303" />
       <source>Italian</source>
       <translation>Italiano</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="298" />
+      <location filename="../widgets/settings.py" line="304" />
       <source>Spanish</source>
       <translation>Spagnolo</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="299" />
+      <location filename="../widgets/settings.py" line="305" />
       <source>French</source>
       <translation>Francese</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="300" />
+      <location filename="../widgets/settings.py" line="306" />
       <source>Portoguese (Brasil)</source>
       <translation>Portoghese (Brasile)</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="301" />
+      <location filename="../widgets/settings.py" line="307" />
       <source>Russian</source>
       <translation>Russo</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="377" />
-      <location filename="../widgets/settings.py" line="363" />
+      <location filename="../widgets/settings.py" line="383" />
+      <location filename="../widgets/settings.py" line="369" />
       <source>Default</source>
       <translation>Predefinito</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="364" />
+      <location filename="../widgets/settings.py" line="370" />
       <source>Health left</source>
       <translation>Salute rimasta</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="365" />
+      <location filename="../widgets/settings.py" line="371" />
       <source>Total wounds</source>
       <translation>Totale ferite</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="378" />
+      <location filename="../widgets/settings.py" line="384" />
       <source>Ignore Rank 1 Skills</source>
       <translation>Ignora abilità di grado 1</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="379" />
+      <location filename="../widgets/settings.py" line="385" />
       <source>Account Rank 1 School Skills</source>
       <translation>Conteggia le abilità di scuola di grado 1</translation>
     </message>

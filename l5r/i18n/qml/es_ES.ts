@@ -2685,6 +2685,14 @@
         <source>Buy advancements with no experience cost — an aid for GMs and quick builds. Affects new purchases only, and switches itself off when you restart the app.</source>
         <translation>Compra avances sin coste de experiencia — una ayuda para directores de juego y creaciones rápidas. Solo afecta a las compras nuevas y se desactiva al reiniciar la aplicación.</translation>
     </message>
+    <message>
+        <source>Print the current Armor TN</source>
+        <translation>Imprimir el NO de Armadura actual</translation>
+    </message>
+    <message>
+        <source>The current Armor TN changes constantly during play; leave this off to print a blank field you can fill in by hand.</source>
+        <translation>El NO de Armadura actual cambia constantemente durante el juego; déjalo desactivado para imprimir un campo en blanco que puedas rellenar a mano.</translation>
+    </message>
 </context>
 <context>
     <name>SkillsSection</name>

@@ -3174,18 +3174,18 @@ Si vous souhaitez rejoindre une École Avancée ou une Voie Alternative, vérifi
   <context>
     <name>SettingsProxy</name>
     <message>
-      <location filename="../qmlui/proxies/settings_proxy.py" line="124" />
-      <location filename="../qmlui/proxies/settings_proxy.py" line="113" />
+      <location filename="../qmlui/proxies/settings_proxy.py" line="125" />
+      <location filename="../qmlui/proxies/settings_proxy.py" line="114" />
       <source>The language will change the next time you start the app.</source>
       <translation>La langue changera au prochain démarrage de l'application.</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/settings_proxy.py" line="205" />
+      <location filename="../qmlui/proxies/settings_proxy.py" line="219" />
       <source>Restart the app to keep using the new interface.</source>
       <translation>Redémarrez l'application pour continuer à utiliser la nouvelle interface.</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/settings_proxy.py" line="207" />
+      <location filename="../qmlui/proxies/settings_proxy.py" line="221" />
       <source>Restart the app to switch back to the classic interface.</source>
       <translation>Redémarrez l'application pour revenir à l'interface classique.</translation>
     </message>
@@ -3271,63 +3271,73 @@ Si vous souhaitez rejoindre une École Avancée ou une Voie Alternative, vérifi
       <translation>Imprimer les compétences sur la première page</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="295" />
+      <location filename="../widgets/settings.py" line="283" />
+      <source>Print current Armor TN</source>
+      <translation>Imprimer le ND d'Armure actuel</translation>
+    </message>
+    <message>
+      <location filename="../widgets/settings.py" line="285" />
+      <source>The current Armor TN changes constantly during play; leave this off to print a blank field.</source>
+      <translation>Le ND d'Armure actuel change constamment pendant le jeu ; laissez cette option désactivée pour imprimer un champ vierge.</translation>
+    </message>
+    <message>
+      <location filename="../widgets/settings.py" line="301" />
       <source>US English</source>
       <translation>Anglais (USA]</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="296" />
+      <location filename="../widgets/settings.py" line="302" />
       <source>UK English</source>
       <translation>Anglais (Royaumes-Unis)</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="297" />
+      <location filename="../widgets/settings.py" line="303" />
       <source>Italian</source>
       <translation>Italien</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="298" />
+      <location filename="../widgets/settings.py" line="304" />
       <source>Spanish</source>
       <translation>Espagnol</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="299" />
+      <location filename="../widgets/settings.py" line="305" />
       <source>French</source>
       <translation>Français</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="300" />
+      <location filename="../widgets/settings.py" line="306" />
       <source>Portoguese (Brasil)</source>
       <translation>Portugais (Brésil)</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="301" />
+      <location filename="../widgets/settings.py" line="307" />
       <source>Russian</source>
       <translation>Russe</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="377" />
-      <location filename="../widgets/settings.py" line="363" />
+      <location filename="../widgets/settings.py" line="383" />
+      <location filename="../widgets/settings.py" line="369" />
       <source>Default</source>
       <translation>Par défaut</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="364" />
+      <location filename="../widgets/settings.py" line="370" />
       <source>Health left</source>
       <translation>Santé restante</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="365" />
+      <location filename="../widgets/settings.py" line="371" />
       <source>Total wounds</source>
       <translation>Blessures totales</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="378" />
+      <location filename="../widgets/settings.py" line="384" />
       <source>Ignore Rank 1 Skills</source>
       <translation>Ignorer les compétences de Rang 1</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="379" />
+      <location filename="../widgets/settings.py" line="385" />
       <source>Account Rank 1 School Skills</source>
       <translation>Prendre en compte les Compétences d’École de Rang 1</translation>
     </message>

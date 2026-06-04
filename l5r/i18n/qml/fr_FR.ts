@@ -421,7 +421,7 @@
     </message>
     <message>
         <source>Clear the entire advancement history</source>
-        <translation>Effacer tout l'historique des progressions</translation>
+        <translation>Effacer tout l&apos;historique des progressions</translation>
     </message>
     <message>
         <source>Reset all advancements?</source>
@@ -429,7 +429,7 @@
     </message>
     <message>
         <source>Wipe the training ledger</source>
-        <translation>Effacer le registre d'entraînement</translation>
+        <translation>Effacer le registre d&apos;entraînement</translation>
     </message>
     <message>
         <source>Reset everything</source>
@@ -437,11 +437,11 @@
     </message>
     <message>
         <source>Keep history</source>
-        <translation>Conserver l'historique</translation>
+        <translation>Conserver l&apos;historique</translation>
     </message>
     <message>
         <source>This clears every advancement in the chronicle and refunds all spent experience, returning the character to its freshly-created state. Family and school are kept. This cannot be undone.</source>
-        <translation>Efface toutes les progressions de la chronique et rembourse toute l'expérience dépensée, ramenant le personnage à son état initial. La famille et l'école sont conservées. Cette action est irréversible.</translation>
+        <translation>Efface toutes les progressions de la chronique et rembourse toute l&apos;expérience dépensée, ramenant le personnage à son état initial. La famille et l&apos;école sont conservées. Cette action est irréversible.</translation>
     </message>
 </context>
 <context>
@@ -2683,7 +2683,15 @@
     </message>
     <message>
         <source>Buy advancements with no experience cost — an aid for GMs and quick builds. Affects new purchases only, and switches itself off when you restart the app.</source>
-        <translation>Achetez des progressions sans coût en expérience — une aide pour les MJ et les créations rapides. N'affecte que les nouveaux achats et se désactive au redémarrage de l'application.</translation>
+        <translation>Achetez des progressions sans coût en expérience — une aide pour les MJ et les créations rapides. N&apos;affecte que les nouveaux achats et se désactive au redémarrage de l&apos;application.</translation>
+    </message>
+    <message>
+        <source>Print the current Armor TN</source>
+        <translation>Imprimer le ND d'Armure actuel</translation>
+    </message>
+    <message>
+        <source>The current Armor TN changes constantly during play; leave this off to print a blank field you can fill in by hand.</source>
+        <translation>Le ND d'Armure actuel change constamment pendant le jeu ; laissez cette option désactivée pour imprimer un champ vierge à remplir à la main.</translation>
     </message>
 </context>
 <context>

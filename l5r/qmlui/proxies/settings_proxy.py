@@ -67,6 +67,7 @@ class SettingsProxy(QObject):
     localeChanged = Signal()
     insightCalculationChanged = Signal()
     firstPageSkillsChanged = Signal()
+    printCurrentArmorTnChanged = Signal()
     useQmlUiChanged = Signal()
     buyForFreeChanged = Signal()
 
@@ -186,6 +187,19 @@ class SettingsProxy(QObject):
         self._settings.pc_export.first_page_skills = value
         self._settings.sync()
         self.firstPageSkillsChanged.emit()
+
+    @Property(bool, notify=printCurrentArmorTnChanged)
+    def printCurrentArmorTn(self):
+        return bool(self._settings.pc_export.print_current_armor_tn)
+
+    @Slot(bool)
+    def setPrintCurrentArmorTn(self, value):
+        value = bool(value)
+        if value == self.printCurrentArmorTn:
+            return
+        self._settings.pc_export.print_current_armor_tn = value
+        self._settings.sync()
+        self.printCurrentArmorTnChanged.emit()
 
     # --- front-end switch (honoured at startup) ----------------------
 

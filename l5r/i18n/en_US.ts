@@ -2420,18 +2420,18 @@ If you choose an advanced school or alternative path be sure to check the requir
   <context>
     <name>SettingsProxy</name>
     <message>
-      <location filename="../qmlui/proxies/settings_proxy.py" line="124" />
-      <location filename="../qmlui/proxies/settings_proxy.py" line="113" />
+      <location filename="../qmlui/proxies/settings_proxy.py" line="125" />
+      <location filename="../qmlui/proxies/settings_proxy.py" line="114" />
       <source>The language will change the next time you start the app.</source>
       <translation>The language will change the next time you start the app.</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/settings_proxy.py" line="205" />
+      <location filename="../qmlui/proxies/settings_proxy.py" line="219" />
       <source>Restart the app to keep using the new interface.</source>
       <translation>Restart the app to keep using the new interface.</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/settings_proxy.py" line="207" />
+      <location filename="../qmlui/proxies/settings_proxy.py" line="221" />
       <source>Restart the app to switch back to the classic interface.</source>
       <translation>Restart the app to switch back to the classic interface.</translation>
     </message>
@@ -2517,63 +2517,73 @@ If you choose an advanced school or alternative path be sure to check the requir
       <translation>Print skills on first page</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="295" />
+      <location filename="../widgets/settings.py" line="283" />
+      <source>Print current Armor TN</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../widgets/settings.py" line="285" />
+      <source>The current Armor TN changes constantly during play; leave this off to print a blank field.</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../widgets/settings.py" line="301" />
       <source>US English</source>
       <translation>US English</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="296" />
+      <location filename="../widgets/settings.py" line="302" />
       <source>UK English</source>
       <translation>UK English</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="297" />
+      <location filename="../widgets/settings.py" line="303" />
       <source>Italian</source>
       <translation>Italian</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="298" />
+      <location filename="../widgets/settings.py" line="304" />
       <source>Spanish</source>
       <translation>Spanish</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="299" />
+      <location filename="../widgets/settings.py" line="305" />
       <source>French</source>
       <translation>French</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="300" />
+      <location filename="../widgets/settings.py" line="306" />
       <source>Portoguese (Brasil)</source>
       <translation>Portoguese (Brasil)</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="301" />
+      <location filename="../widgets/settings.py" line="307" />
       <source>Russian</source>
       <translation>Russian</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="377" />
-      <location filename="../widgets/settings.py" line="363" />
+      <location filename="../widgets/settings.py" line="383" />
+      <location filename="../widgets/settings.py" line="369" />
       <source>Default</source>
       <translation>Default</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="364" />
+      <location filename="../widgets/settings.py" line="370" />
       <source>Health left</source>
       <translation>Health left</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="365" />
+      <location filename="../widgets/settings.py" line="371" />
       <source>Total wounds</source>
       <translation>Total wounds</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="378" />
+      <location filename="../widgets/settings.py" line="384" />
       <source>Ignore Rank 1 Skills</source>
       <translation>Ignore Rank 1 Skills</translation>
     </message>
     <message>
-      <location filename="../widgets/settings.py" line="379" />
+      <location filename="../widgets/settings.py" line="385" />
       <source>Account Rank 1 School Skills</source>
       <translation>Account Rank 1 School Skills</translation>
     </message>

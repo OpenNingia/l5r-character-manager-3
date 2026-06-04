@@ -421,7 +421,7 @@
     </message>
     <message>
         <source>Clear the entire advancement history</source>
-        <translation>Cancella l'intera cronologia degli avanzamenti</translation>
+        <translation>Cancella l&apos;intera cronologia degli avanzamenti</translation>
     </message>
     <message>
         <source>Reset all advancements?</source>
@@ -429,7 +429,7 @@
     </message>
     <message>
         <source>Wipe the training ledger</source>
-        <translation>Cancella il registro dell'addestramento</translation>
+        <translation>Cancella il registro dell&apos;addestramento</translation>
     </message>
     <message>
         <source>Reset everything</source>
@@ -441,7 +441,7 @@
     </message>
     <message>
         <source>This clears every advancement in the chronicle and refunds all spent experience, returning the character to its freshly-created state. Family and school are kept. This cannot be undone.</source>
-        <translation>Cancella ogni avanzamento nella cronaca e rimborsa tutta l'esperienza spesa, riportando il personaggio al suo stato iniziale appena creato. Famiglia e scuola vengono mantenute. L'operazione non può essere annullata.</translation>
+        <translation>Cancella ogni avanzamento nella cronaca e rimborsa tutta l&apos;esperienza spesa, riportando il personaggio al suo stato iniziale appena creato. Famiglia e scuola vengono mantenute. L&apos;operazione non può essere annullata.</translation>
     </message>
 </context>
 <context>
@@ -2683,7 +2683,15 @@
     </message>
     <message>
         <source>Buy advancements with no experience cost — an aid for GMs and quick builds. Affects new purchases only, and switches itself off when you restart the app.</source>
-        <translation>Acquista avanzamenti senza costo in esperienza — un aiuto per i GM e le build veloci. Vale solo per i nuovi acquisti e si disattiva al riavvio dell'app.</translation>
+        <translation>Acquista avanzamenti senza costo in esperienza — un aiuto per i GM e le build veloci. Vale solo per i nuovi acquisti e si disattiva al riavvio dell&apos;app.</translation>
+    </message>
+    <message>
+        <source>Print the current Armor TN</source>
+        <translation>Stampa il TN Armatura attuale</translation>
+    </message>
+    <message>
+        <source>The current Armor TN changes constantly during play; leave this off to print a blank field you can fill in by hand.</source>
+        <translation>Il TN Armatura attuale cambia di continuo durante il gioco; lascialo disattivato per stampare un campo vuoto da compilare a mano.</translation>
     </message>
 </context>
 <context>
