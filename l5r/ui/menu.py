@@ -285,7 +285,7 @@ class MenuMixin:
         self.app_menu_tb.setIconSize(QtCore.QSize(32, 32))
         self.app_menu_tb.setIcon(QtGui.QIcon.fromTheme(
             "application-menu", QtGui.QIcon(get_icon_path('gear', (32, 32)))))
-        self.app_menu_tb.setToolTip('Menu')
+        self.app_menu_tb.setToolTip(self.tr('File/Menu'))
         self.app_menu_tb.setArrowType(QtCore.Qt.NoArrow)
 
         # FILE MENU
