@@ -438,9 +438,16 @@ def get_armor_tn():
     return get_context().pc.armor.tn if get_context().pc.armor is not None else 0
 
 
+def _effective_modifiers(filter_type=None):
+    """Static (user) + datapack-derived dynamic modifiers for the active PC.
+    Lazy import to avoid an import cycle with the dynamic-modifier builder."""
+    from l5r.api.rules.modifiers import effective_modifiers
+    return effective_modifiers(filter_type)
+
+
 def get_armor_tn_mod():
     """return armor TN modifers"""
-    return sum(x.value[2] for x in get_context().pc.get_modifiers('artn') if x.active and len(x.value) > 2)
+    return sum(x.value[2] for x in _effective_modifiers('artn') if x.active and len(x.value) > 2)
 
 
 def get_base_rd():
@@ -462,7 +469,7 @@ def get_full_tn():
 
 def get_armor_rd_mod():
     """return armor RD modifers"""
-    return sum(x.value[2] for x in get_context().pc.get_modifiers('arrd') if x.active and len(x.value) > 2)
+    return sum(x.value[2] for x in _effective_modifiers('arrd') if x.active and len(x.value) > 2)
 
 
 def get_full_rd():
