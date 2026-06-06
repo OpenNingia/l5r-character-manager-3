@@ -32,7 +32,7 @@ dependencies = [
     "PyQt6 >= 6.7",
     "pyqtwaitingspinner >= 1.3",
     "pypdf @ git+https://github.com/OpenNingia/pypdf.git@fix_escape",
-    "l5rdal @ git+https://github.com/OpenNingia/l5rcm-data-access.git@v1.3.1",
+    "l5rdal @ git+https://github.com/OpenNingia/l5rcm-data-access.git@v1.4.1",
 ]
 dynamic = ["version"]
 
