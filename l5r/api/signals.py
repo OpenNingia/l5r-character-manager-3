@@ -35,6 +35,13 @@ class _ModelBus(QObject):
     # the QWidget side's update_from_model() pull -- the QML side
     # subscribes once per mixin and re-emits its bundle signals.
     character_refreshed = Signal()
+    # Narrow "wounds / health track changed" event. Wounds (and the rarely
+    # touched health multiplier) only affect the combat slice's wound table
+    # and totals -- no other proxy, and no modifier predicate, depends on
+    # them. Emitting this instead of the coarse character_refreshed keeps a
+    # wounds +/- click from re-projecting the whole sheet (weapons, skills,
+    # spells, ...), which is pure waste.
+    wounds_changed = Signal()
 
 
 _BUS = None

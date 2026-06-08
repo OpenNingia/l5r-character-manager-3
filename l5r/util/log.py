@@ -33,7 +33,7 @@ def log_setup(base_path, base_name):
     root = logging.getLogger('')
 
     # set the level of the root logger
-    root.setLevel(logging.DEBUG)
+    root.setLevel(logging.INFO)
 
     # define the file formatter
     file_fmt = logging.Formatter('%(asctime)s %(name)-12s ' +

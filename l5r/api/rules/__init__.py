@@ -221,8 +221,11 @@ def calculate_base_attack_roll(pc, weap):
     skill = 0
     if weap.skill_id:
         skill = api.character.skills.get_skill_rank(weap.skill_id)
-        log.rules.info(u"calc base atk. trait: {0}, weap: {1}, skill: {2}, rank: {3}"
-                       .format(trait, weap.name, weap.skill_nm, skill))
+        # DEBUG, not INFO: this runs once per weapon on every character
+        # refresh (and the weapons proxy re-projects on each one), so at
+        # INFO it floods the log and adds formatting overhead to a hot path.
+        log.rules.debug(u"calc base atk. trait: {0}, weap: {1}, skill: {2}, rank: {3}"
+                        .format(trait, weap.name, weap.skill_nm, skill))
 
     return trait + skill, trait
 

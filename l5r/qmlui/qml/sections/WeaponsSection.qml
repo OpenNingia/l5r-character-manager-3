@@ -69,7 +69,11 @@ ColumnLayout {
     // Defensive binding -- proxy may be absent on first paint or under
     // the offscreen preview tool (which binds a null pcProxy).
     // -----------------------------------------------------------------
-    readonly property var _weapons: (pcProxy && pcProxy.weapons) ? pcProxy.weapons : []
+    // Read pcProxy.weapons once: the getter rebuilds the whole list (and
+    // recomputes every weapon's attack/damage roll) on each call, so the
+    // old `(pcProxy && pcProxy.weapons) ? pcProxy.weapons : []` form paid
+    // for it twice per re-projection.
+    readonly property var _weapons: pcProxy ? pcProxy.weapons : []
     readonly property bool _hasWeapons: _weapons.length > 0
 
     // The worn armour (at most one). Earth-toned, heads the rack.

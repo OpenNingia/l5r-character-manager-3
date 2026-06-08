@@ -855,6 +855,14 @@ class AppController(QObject):
         setter(float(value))
 
     # --- health ------------------------------------------------------
+    #
+    # The api setters below (set_health_multiplier / set_wounds_taken)
+    # already emit character_refreshed when the value actually changes --
+    # see the CLAUDE.md "setters own the dirty flag" contract. We must NOT
+    # call notify_character_refreshed() again here: doing so doubles the
+    # whole-sheet re-projection (every weapon's attack/damage roll, each
+    # rebuilding the datapack modifier set) on every wounds +/- click,
+    # which is what made the wounds stepper feel like it was looping.
 
     @Slot(int)
     def setHealthMultiplier(self, value):
@@ -862,23 +870,18 @@ class AppController(QObject):
             api.character.set_health_multiplier(int(value))
         except ValueError:
             log.api.warning(u"QML UI: invalid health multiplier %r", value)
-            return
-        api.character.notify_character_refreshed()
 
     @Slot(int)
     def damageHealth(self, delta):
         api.character.damage_health(int(delta))
-        api.character.notify_character_refreshed()
 
     @Slot(int)
     def setWoundsTotal(self, value):
         api.character.set_wounds_taken(int(value))
-        api.character.notify_character_refreshed()
 
     @Slot()
     def resetWounds(self):
         api.character.set_wounds_taken(0)
-        api.character.notify_character_refreshed()
 
     # --- skills ------------------------------------------------------
 
