@@ -764,7 +764,9 @@ def set_health_multiplier(value):
         return
     pc.health_multiplier = value
     set_dirty_flag(True)
-    l5r.api.signals.bus().character_refreshed.emit()
+    # Narrow signal: the multiplier only rescales the wound table (combat
+    # slice). No need to re-project the whole sheet.
+    l5r.api.signals.bus().wounds_changed.emit()
     log.api.info("set health multiplier to: %d", value)
 
 
@@ -789,7 +791,10 @@ def set_wounds_taken(value):
         return
     pc.wounds = value
     set_dirty_flag(True)
-    l5r.api.signals.bus().character_refreshed.emit()
+    # Narrow signal: wounds only affect the combat slice's totals/level.
+    # Nothing else (and no modifier predicate) reads the wound count, so
+    # re-projecting the whole sheet here is wasted work.
+    l5r.api.signals.bus().wounds_changed.emit()
 
 
 def damage_health(delta):

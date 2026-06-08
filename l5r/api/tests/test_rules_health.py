@@ -170,18 +170,20 @@ class TestHealthMultiplier(unittest.TestCase):
         api.character.set_health_multiplier(5)
         self.assertEqual(earth * 5 + 7 * earth * 5, api.rules.get_max_wounds())
 
-    def test_setter_emits_character_refreshed_on_change(self):
-        """The QML proxy listens on api.signals.bus().character_refreshed to
-        rebroadcast combatChanged; without this emit, healthMultiplier
+    def test_setter_emits_wounds_changed_on_change(self):
+        """The QML combat proxy listens on api.signals.bus().wounds_changed
+        to rebroadcast combatChanged; without this emit, healthMultiplier
         would still update the model but the UI would freeze on the old
-        wound table until something else refreshed it."""
-        events = _record_signal(self, api.signals.bus().character_refreshed)
+        wound table until something else refreshed it. The narrow signal
+        (not the coarse character_refreshed) keeps the rest of the sheet
+        from re-projecting."""
+        events = _record_signal(self, api.signals.bus().wounds_changed)
         api.character.set_health_multiplier(3)
         self.assertEqual(1, len(events))
 
     def test_setter_no_op_does_not_emit(self):
         pc = api.character.model()
-        events = _record_signal(self, api.signals.bus().character_refreshed)
+        events = _record_signal(self, api.signals.bus().wounds_changed)
         api.character.set_health_multiplier(pc.health_multiplier)
         self.assertEqual(0, len(events))
 
@@ -343,13 +345,13 @@ class TestWoundsSetters(unittest.TestCase):
         api.character.set_wounds_taken("9")
         self.assertEqual(9, api.character.get_wounds_taken())
 
-    def test_set_emits_character_refreshed_on_change(self):
-        events = _record_signal(self, api.signals.bus().character_refreshed)
+    def test_set_emits_wounds_changed_on_change(self):
+        events = _record_signal(self, api.signals.bus().wounds_changed)
         api.character.set_wounds_taken(4)
         self.assertEqual(1, len(events))
 
     def test_set_no_op_does_not_emit(self):
-        events = _record_signal(self, api.signals.bus().character_refreshed)
+        events = _record_signal(self, api.signals.bus().wounds_changed)
         api.character.set_wounds_taken(0)   # already 0
         self.assertEqual(0, len(events))
 
@@ -379,7 +381,7 @@ class TestWoundsSetters(unittest.TestCase):
         pc = api.character.model()
         pc.wounds = 5
         pc.unsaved = False
-        events = _record_signal(self, api.signals.bus().character_refreshed)
+        events = _record_signal(self, api.signals.bus().wounds_changed)
         api.character.damage_health(0)
         self.assertEqual(5, pc.wounds)
         self.assertFalse(pc.unsaved)

@@ -38,6 +38,9 @@ class CombatMixin:
     def _wire_combat(self, bus):
         bus.character_refreshed.connect(self._on_character_refreshed_combat)
         bus.model_replaced.connect(self._on_model_replaced_combat)
+        # Wounds / health-multiplier changes use a narrow signal so a
+        # wounds +/- click refreshes only this slice, not the whole sheet.
+        bus.wounds_changed.connect(self._on_character_refreshed_combat)
 
     def _on_character_refreshed_combat(self):
         self.combatChanged.emit()
