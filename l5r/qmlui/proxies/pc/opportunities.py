@@ -37,6 +37,7 @@ import l5r.api as api
 import l5r.api.character
 import l5r.api.character.rankadv
 
+from l5r.qmlui.proxies.pc.memo import invalidate, memoize
 from l5r.util import log
 
 
@@ -153,9 +154,11 @@ class OpportunitiesMixin:
         bus.model_replaced.connect(self._on_opportunities_changed)
 
     def _on_opportunities_changed(self):
+        invalidate(self, "opportunityBadges")
         self.opportunitiesChanged.emit()
 
     @Property("QVariantMap", notify=opportunitiesChanged)
+    @memoize
     def opportunityBadges(self):
         return surfaced_opportunities()
 

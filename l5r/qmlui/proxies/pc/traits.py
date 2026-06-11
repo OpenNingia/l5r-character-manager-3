@@ -14,6 +14,8 @@ import l5r.api.data
 
 import l5r.models as models
 
+from l5r.qmlui.proxies.pc.memo import invalidate, memoize
+
 
 class TraitsMixin:
     traitsChanged = Signal()
@@ -23,12 +25,15 @@ class TraitsMixin:
         bus.model_replaced.connect(self._on_model_replaced_traits)
 
     def _on_character_refreshed_traits(self):
+        invalidate(self, "rings", "attribs")
         self.traitsChanged.emit()
 
     def _on_model_replaced_traits(self):
+        invalidate(self, "rings", "attribs")
         self.traitsChanged.emit()
 
     @Property("QVariantMap", notify=traitsChanged)
+    @memoize
     def rings(self):
         pc = api.character.model()
         if not pc:
@@ -36,6 +41,7 @@ class TraitsMixin:
         return {r: api.character.ring_rank(r) for r in models.chmodel.RINGS._ids}
 
     @Property("QVariantMap", notify=traitsChanged)
+    @memoize
     def attribs(self):
         pc = api.character.model()
         if not pc:

@@ -15,6 +15,7 @@ import l5r.api.data
 import l5r.api.data.schools
 
 from l5r.l5rcmcore import APP_DESC, APP_VERSION
+from l5r.qmlui.proxies.pc.memo import invalidate, memoize
 
 
 class IdentityMixin:
@@ -40,6 +41,7 @@ class IdentityMixin:
     def _on_family_changed(self, _value):
         self.familyChanged.emit()
         # Family change recomputes school context-relative bits too.
+        invalidate(self, "progression")
         self.progressionChanged.emit()
 
     def _on_clan_changed(self, _value):
@@ -51,6 +53,7 @@ class IdentityMixin:
 
     def _on_character_refreshed_identity(self):
         self.schoolChanged.emit()
+        invalidate(self, "progression")
         self.progressionChanged.emit()
 
     def _on_model_replaced_identity(self):
@@ -58,6 +61,7 @@ class IdentityMixin:
         self.familyChanged.emit()
         self.clanChanged.emit()
         self.schoolChanged.emit()
+        invalidate(self, "progression")
         self.progressionChanged.emit()
         self.displayTitleChanged.emit()
 
@@ -93,6 +97,7 @@ class IdentityMixin:
         return school_.name if school_ else ""
 
     @Property("QVariantMap", notify=progressionChanged)
+    @memoize
     def progression(self):
         return {
             "insight": api.character.insight(),

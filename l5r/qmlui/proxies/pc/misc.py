@@ -42,6 +42,8 @@ import l5r.api.character
 import l5r.api.rules
 import l5r.api.rules.modifiers
 
+from l5r.qmlui.proxies.pc.memo import invalidate, memoize
+
 
 def _pretty_source(slug):
     """Human-ish label for a datapack record slug used as a fallback name."""
@@ -56,12 +58,15 @@ class MiscMixin:
         bus.model_replaced.connect(self._on_model_replaced_misc)
 
     def _on_character_refreshed_misc(self):
+        invalidate(self, "modifiers", "equipment", "money")
         self.miscChanged.emit()
 
     def _on_model_replaced_misc(self):
+        invalidate(self, "modifiers", "equipment", "money")
         self.miscChanged.emit()
 
     @Property("QVariantList", notify=miscChanged)
+    @memoize
     def modifiers(self):
         pc = api.character.model()
         if not pc:
@@ -100,6 +105,7 @@ class MiscMixin:
         return rows
 
     @Property("QVariantList", notify=miscChanged)
+    @memoize
     def equipment(self):
         pc = api.character.model()
         if not pc:
@@ -114,6 +120,7 @@ class MiscMixin:
         return rows
 
     @Property("QVariantMap", notify=miscChanged)
+    @memoize
     def money(self):
         pc = api.character.model()
         if not pc:

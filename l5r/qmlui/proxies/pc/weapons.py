@@ -50,6 +50,7 @@ import l5r.api.character
 import l5r.api.character.weapons
 import l5r.api.rules
 
+from l5r.qmlui.proxies.pc.memo import invalidate, memoize
 from l5r.util import log
 
 # The three combat categories, in reading order. A weapon shows on every
@@ -79,12 +80,15 @@ class WeaponsMixin:
         bus.model_replaced.connect(self._on_model_replaced_weapons)
 
     def _on_character_refreshed_weapons(self):
+        invalidate(self, "weapons", "armor")
         self.weaponsChanged.emit()
 
     def _on_model_replaced_weapons(self):
+        invalidate(self, "weapons", "armor")
         self.weaponsChanged.emit()
 
     @Property("QVariantList", notify=weaponsChanged)
+    @memoize
     def weapons(self):
         pc = api.character.model()
         if not pc:
@@ -132,6 +136,7 @@ class WeaponsMixin:
         return rows
 
     @Property("QVariantMap", notify=weaponsChanged)
+    @memoize
     def armor(self):
         pc = api.character.model()
         if not pc:

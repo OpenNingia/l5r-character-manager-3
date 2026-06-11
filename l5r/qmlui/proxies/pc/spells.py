@@ -58,6 +58,7 @@ import l5r.api.character.spells
 import l5r.api.data
 import l5r.api.data.spells
 
+from l5r.qmlui.proxies.pc.memo import invalidate, memoize
 from l5r.util import log
 
 
@@ -120,12 +121,15 @@ class SpellsMixin:
         bus.model_replaced.connect(self._on_model_replaced_spells)
 
     def _on_character_refreshed_spells(self):
+        invalidate(self, "spells", "spellAffinities", "spellDeficiencies")
         self.spellsChanged.emit()
 
     def _on_model_replaced_spells(self):
+        invalidate(self, "spells", "spellAffinities", "spellDeficiencies")
         self.spellsChanged.emit()
 
     @Property("QVariantList", notify=spellsChanged)
+    @memoize
     def spells(self):
         pc = api.character.model()
         if not pc:
@@ -196,6 +200,7 @@ class SpellsMixin:
         return rows
 
     @Property("QVariantList", notify=spellsChanged)
+    @memoize
     def spellAffinities(self):
         """Localised elemental affinities granted by the character's
         school(s). Empty list when the character has none."""
@@ -209,6 +214,7 @@ class SpellsMixin:
             return []
 
     @Property("QVariantList", notify=spellsChanged)
+    @memoize
     def spellDeficiencies(self):
         """Localised elemental deficiencies. Empty list when none."""
         if not api.character.model():
