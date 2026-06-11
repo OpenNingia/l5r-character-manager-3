@@ -29,6 +29,9 @@ from l5r.util import log
 import l5r.widgets as widgets
 from qtpy import QtCore, QtGui, QtWidgets
 
+# Allows for detection of local display theme
+import darkdetect
+
 
 def colored_span(col, text):
     """return a span element with colored text"""
@@ -309,7 +312,10 @@ class SpellAdvDialog(QtWidgets.QDialog):
         elif tag_ and tag_[0] == '!':
             o = self.tr("any spell but [{0}]").format(colored_span('orange', tag_[1:]))
         elif tag_ is not None or ring_ is not None:
-            o = self.tr("a [{0}] spell").format(colored_span('navy', tag_ or ring_))
+            if darkdetect.isDark():
+                o = self.tr("a [{0}] spell").format(colored_span('deepskyblue', tag_ or ring_))
+            else:
+                o = self.tr("a [{0}] spell").format(colored_span('navy', tag_ or ring_))
         else:
             o = self.tr("Any spell")
 
