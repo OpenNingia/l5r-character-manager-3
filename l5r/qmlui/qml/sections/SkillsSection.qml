@@ -320,6 +320,17 @@ ColumnLayout {
                 ruleOpacity: 0.30
             }
 
+            Label {
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignRight
+                text: qsTr("click on skill name to see description and mastery")
+                font.italic: true
+                font.pixelSize: Theme.fsCaption
+                opacity: 0.6
+            }
+
+
+
             // ---- Ring clusters -----------------------------------
             Repeater {
                 model: section._ringOrder
