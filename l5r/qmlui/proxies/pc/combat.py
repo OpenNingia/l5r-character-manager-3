@@ -12,6 +12,8 @@ import l5r.api as api
 import l5r.api.character
 import l5r.api.rules
 
+from l5r.qmlui.proxies.pc.memo import invalidate, memoize
+
 
 def _wound_label(idx, name):
     """Friendly label string for one row of the wound table. Mirrors
@@ -43,12 +45,15 @@ class CombatMixin:
         bus.wounds_changed.connect(self._on_character_refreshed_combat)
 
     def _on_character_refreshed_combat(self):
+        invalidate(self, "initiative", "armorTn", "wounds")
         self.combatChanged.emit()
 
     def _on_model_replaced_combat(self):
+        invalidate(self, "initiative", "armorTn", "wounds")
         self.combatChanged.emit()
 
     @Property("QVariantMap", notify=combatChanged)
+    @memoize
     def initiative(self):
         pc = api.character.model()
         if not pc:
@@ -60,6 +65,7 @@ class CombatMixin:
         }
 
     @Property("QVariantMap", notify=combatChanged)
+    @memoize
     def armorTn(self):
         pc = api.character.model()
         if not pc:
@@ -76,6 +82,7 @@ class CombatMixin:
         }
 
     @Property("QVariantList", notify=combatChanged)
+    @memoize
     def wounds(self):
         pc = api.character.model()
         if not pc:

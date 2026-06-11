@@ -16,6 +16,8 @@ from qtpy.QtCore import Property, Signal
 import l5r.api as api
 import l5r.api.character
 
+from l5r.qmlui.proxies.pc.memo import invalidate, memoize
+
 
 class AdvancementsMixin:
     advancementsChanged = Signal()
@@ -25,12 +27,15 @@ class AdvancementsMixin:
         bus.model_replaced.connect(self._on_model_replaced_advancements)
 
     def _on_character_refreshed_advancements(self):
+        invalidate(self, "advancements")
         self.advancementsChanged.emit()
 
     def _on_model_replaced_advancements(self):
+        invalidate(self, "advancements")
         self.advancementsChanged.emit()
 
     @Property("QVariantList", notify=advancementsChanged)
+    @memoize
     def advancements(self):
         pc = api.character.model()
         if not pc or not pc.advans:

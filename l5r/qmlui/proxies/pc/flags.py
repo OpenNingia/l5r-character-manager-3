@@ -11,6 +11,8 @@ from qtpy.QtCore import Property, Signal
 import l5r.api as api
 import l5r.api.character
 
+from l5r.qmlui.proxies.pc.memo import invalidate, memoize
+
 
 class FlagsMixin:
     flagsChanged = Signal()
@@ -20,12 +22,15 @@ class FlagsMixin:
         bus.model_replaced.connect(self._on_model_replaced_flags)
 
     def _on_character_refreshed_flags(self):
+        invalidate(self, "flags")
         self.flagsChanged.emit()
 
     def _on_model_replaced_flags(self):
+        invalidate(self, "flags")
         self.flagsChanged.emit()
 
     @Property("QVariantMap", notify=flagsChanged)
+    @memoize
     def flags(self):
         pc = api.character.model()
         if not pc:

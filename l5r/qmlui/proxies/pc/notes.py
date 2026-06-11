@@ -9,6 +9,8 @@ from qtpy.QtCore import Property, Signal
 import l5r.api as api
 import l5r.api.character
 
+from l5r.qmlui.proxies.pc.memo import invalidate, memoize
+
 
 class NotesMixin:
     notesChanged = Signal()
@@ -23,10 +25,12 @@ class NotesMixin:
         self.notesChanged.emit()
 
     def _on_personal_info_changed(self):
+        invalidate(self, "personalInfo")
         self.personalInfoChanged.emit()
 
     def _on_model_replaced_notes(self):
         self.notesChanged.emit()
+        invalidate(self, "personalInfo")
         self.personalInfoChanged.emit()
 
     @Property(str, notify=notesChanged)
@@ -34,6 +38,7 @@ class NotesMixin:
         return api.character.get_notes()
 
     @Property("QVariantMap", notify=personalInfoChanged)
+    @memoize
     def personalInfo(self):
         return {k: api.character.get_personal_info(k)
                 for k in api.character.personal_info_keys()}

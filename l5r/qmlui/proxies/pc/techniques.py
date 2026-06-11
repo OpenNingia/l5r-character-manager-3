@@ -28,6 +28,7 @@ import l5r.api.character.schools
 import l5r.api.data
 import l5r.api.data.schools
 
+from l5r.qmlui.proxies.pc.memo import invalidate, memoize
 from l5r.util import log
 
 
@@ -44,12 +45,15 @@ class TechniquesMixin:
         bus.model_replaced.connect(self._on_model_replaced_techniques)
 
     def _on_character_refreshed_techniques(self):
+        invalidate(self, "techniques")
         self.techniquesChanged.emit()
 
     def _on_model_replaced_techniques(self):
+        invalidate(self, "techniques")
         self.techniquesChanged.emit()
 
     @Property("QVariantList", notify=techniquesChanged)
+    @memoize
     def techniques(self):
         pc = api.character.model()
         if not pc:

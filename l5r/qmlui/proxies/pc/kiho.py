@@ -39,6 +39,8 @@ import l5r.api.character
 import l5r.api.data
 import l5r.api.data.powers
 
+from l5r.qmlui.proxies.pc.memo import invalidate, memoize
+
 
 class KihoMixin:
     kihoChanged = Signal()
@@ -48,12 +50,15 @@ class KihoMixin:
         bus.model_replaced.connect(self._on_model_replaced_kiho)
 
     def _on_character_refreshed_kiho(self):
+        invalidate(self, "kiho")
         self.kihoChanged.emit()
 
     def _on_model_replaced_kiho(self):
+        invalidate(self, "kiho")
         self.kihoChanged.emit()
 
     @Property("QVariantList", notify=kihoChanged)
+    @memoize
     def kiho(self):
         pc = api.character.model()
         if not pc:

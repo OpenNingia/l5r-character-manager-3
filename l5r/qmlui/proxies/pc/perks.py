@@ -23,6 +23,8 @@ import l5r.api.character.rankadv
 import l5r.api.data.flaws
 import l5r.api.data.merits
 
+from l5r.qmlui.proxies.pc.memo import invalidate, memoize
+
 
 # 4e RAW caps disadvantage XP at 10. The app does not enforce it -- the
 # cap is surfaced cosmetically in the section so the player can see the
@@ -130,18 +132,22 @@ class PerksMixin:
         bus.model_replaced.connect(self._on_model_replaced_perks)
 
     def _on_character_refreshed_perks(self):
+        invalidate(self, "merits", "flaws")
         self.perksChanged.emit()
 
     def _on_model_replaced_perks(self):
+        invalidate(self, "merits", "flaws")
         self.perksChanged.emit()
 
     # ----- live registers ------------------------------------------
 
     @Property("QVariantList", notify=perksChanged)
+    @memoize
     def merits(self):
         return self._collect("merit")
 
     @Property("QVariantList", notify=perksChanged)
+    @memoize
     def flaws(self):
         return self._collect("flaw")
 

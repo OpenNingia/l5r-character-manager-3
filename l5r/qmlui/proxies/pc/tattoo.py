@@ -34,6 +34,8 @@ import l5r.api.character
 import l5r.api.data
 import l5r.api.data.powers
 
+from l5r.qmlui.proxies.pc.memo import invalidate, memoize
+
 
 class TattooMixin:
     tattooChanged = Signal()
@@ -43,12 +45,15 @@ class TattooMixin:
         bus.model_replaced.connect(self._on_model_replaced_tattoo)
 
     def _on_character_refreshed_tattoo(self):
+        invalidate(self, "tattoo")
         self.tattooChanged.emit()
 
     def _on_model_replaced_tattoo(self):
+        invalidate(self, "tattoo")
         self.tattooChanged.emit()
 
     @Property("QVariantList", notify=tattooChanged)
+    @memoize
     def tattoo(self):
         pc = api.character.model()
         if not pc:

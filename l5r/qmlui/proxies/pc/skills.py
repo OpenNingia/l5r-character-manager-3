@@ -19,6 +19,8 @@ import l5r.api.rules
 
 import l5r.models.chmodel as chmodel
 
+from l5r.qmlui.proxies.pc.memo import invalidate, memoize
+
 
 # Attribute -> ring key map. The api side keeps trait_id -> ring lookup
 # in l5r.api.data.get_trait_ring(), but that returns the localised ring
@@ -53,12 +55,15 @@ class SkillsMixin:
         bus.model_replaced.connect(self._on_model_replaced_skills)
 
     def _on_character_refreshed_skills(self):
+        invalidate(self, "skills")
         self.skillsChanged.emit()
 
     def _on_model_replaced_skills(self):
+        invalidate(self, "skills")
         self.skillsChanged.emit()
 
     @Property("QVariantList", notify=skillsChanged)
+    @memoize
     def skills(self):
         pc = api.character.model()
         if not pc:

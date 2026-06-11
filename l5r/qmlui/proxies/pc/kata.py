@@ -29,6 +29,7 @@ import l5r.api.character
 import l5r.api.data
 import l5r.api.data.powers
 
+from l5r.qmlui.proxies.pc.memo import invalidate, memoize
 from l5r.util import log
 
 
@@ -40,12 +41,15 @@ class KataMixin:
         bus.model_replaced.connect(self._on_model_replaced_kata)
 
     def _on_character_refreshed_kata(self):
+        invalidate(self, "kata")
         self.kataChanged.emit()
 
     def _on_model_replaced_kata(self):
+        invalidate(self, "kata")
         self.kataChanged.emit()
 
     @Property("QVariantList", notify=kataChanged)
+    @memoize
     def kata(self):
         pc = api.character.model()
         if not pc:
