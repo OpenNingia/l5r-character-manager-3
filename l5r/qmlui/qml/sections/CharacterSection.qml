@@ -445,10 +445,11 @@ ColumnLayout {
             // they're almost always zero in play and don't deserve the
             // same prominence.
             // Click dot sets value, shift+click bumps rank (resets
-            // points), scroll fine-tunes by 1. Shift+click and clicking
-            // the 10th dot both route through setFlag(rank+1) -- when
-            // the model pushes back the value binding resets the dots
-            // to 0 naturally.
+            // points), scroll fine-tunes by 0.1 and ROLLS OVER at the
+            // rank boundary (5.9 -> 6.0, 6.0 -> 5.9; issue #402). The
+            // dots carry their tenth digit and the combined N.N score
+            // sits big at the left of each track so the rank/decimal
+            // split reads at a glance.
             // -------------------------------------------------------------
             Label {
                 Layout.fillWidth: true
@@ -471,7 +472,7 @@ ColumnLayout {
             Label {
                 Layout.fillWidth: true
                 horizontalAlignment: Text.AlignRight
-                text: qsTr("click dot to set · shift+click to advance rank · scroll to fine-tune")
+                text: qsTr("dots are tenths of a rank · click dot to set · scroll to fine-tune (rolls over) · shift+click to advance rank")
                 font.italic: true
                 font.pixelSize: Theme.fsCaption
                 opacity: 0.6
@@ -515,6 +516,16 @@ ColumnLayout {
                         if (_flagRank < 10)
                             appCtrl.setFlag(_key, _flagRank + 1);
                     }
+                    // Wheel roll-over past the track ends (issue #402):
+                    // up from N.9 lands on (N+1).0, down from N.0 on (N-1).9.
+                    function _wrapRank(direction) {
+                        if (!appCtrl)
+                            return;
+                        if (direction > 0 && _flagRank < 10)
+                            appCtrl.setFlag(_key, _flagRank + 1);
+                        else if (direction < 0 && _flagRank > 0)
+                            appCtrl.setFlag(_key, (_flagRank - 1) + 0.9);
+                    }
 
                     RowLayout {
                         Layout.fillWidth: true
@@ -546,23 +557,40 @@ ColumnLayout {
                         Item {
                             Layout.fillWidth: true
                         }
+                    }
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Layout.leftMargin: 20  // align under the label
+                        spacing: 10
                         Label {
-                            text: qsTr("rank ") + _flagRank + "." + _flagPoints
-                            font.pixelSize: Theme.fsCaption
+                            // The actual score, rank.tenths -- the number
+                            // the table reads. Stat-sized so it doesn't
+                            // fade into the parchment (issue #402).
+                            text: _flagRank + "." + _flagPoints
+                            font.family: Theme.fontStat
+                            font.pixelSize: Theme.fsStatMedium
+                            font.weight: Theme.wMedium
                             font.features: Theme.tabularNumbers
                             color: _flagColor
-                            opacity: 0.9
                         }
-                    }
-                    Widgets.PointTrack {
-                        Layout.leftMargin: 20  // align under the label
-                        count: 9  // points 0..9 within a rank; no roll-over
-                        value: _flagPoints
-                        accent: _flagColor
-                        onValueRequested: function (v) {
-                            _commitPoints(v);
+                        Widgets.PointTrack {
+                            Layout.alignment: Qt.AlignVCenter
+                            count: 9  // tenths 1..9; wheel rolls the rank over
+                            value: _flagPoints
+                            accent: _flagColor
+                            showDigits: true
+                            wrap: true
+                            onValueRequested: function (v) {
+                                _commitPoints(v);
+                            }
+                            onRankBumpRequested: _bumpRank()
+                            onWrapRequested: function (direction) {
+                                _wrapRank(direction);
+                            }
                         }
-                        onRankBumpRequested: _bumpRank()
+                        Item {
+                            Layout.fillWidth: true
+                        }
                     }
                 }
             }
@@ -625,36 +653,53 @@ ColumnLayout {
                                 Layout.fillWidth: true
                                 elide: Text.ElideRight
                             }
+                        }
+                        RowLayout {
+                            Layout.fillWidth: true
+                            spacing: 8
                             Label {
                                 text: _flagRank + "." + _flagPoints
-                                font.pixelSize: Theme.fsCaption
+                                font.family: Theme.fontStat
+                                font.pixelSize: Theme.fsStatSmall
                                 font.features: Theme.tabularNumbers
                                 color: _flagColor
-                                opacity: 0.9
                             }
-                        }
-                        Widgets.PointTrack {
-                            count: 9  // points 0..9 within a rank; no roll-over
-                            dotSize: 10
-                            value: _flagPoints
-                            accent: _flagColor
-                            onValueRequested: function (v) {
-                                if (!appCtrl)
-                                    return;
-                                // Points 0..9 only; dots never roll the rank
-                                // over (shift+click or the stepper does that).
-                                var pts = Math.max(0, Math.min(9, v));
-                                var combined = _flagRank + pts / 10.0;
-                                if (Math.abs(combined - _flagValue) > 0.001) {
-                                    appCtrl.setFlag(_key, combined);
+                            Widgets.PointTrack {
+                                Layout.alignment: Qt.AlignVCenter
+                                count: 9  // tenths 1..9; wheel rolls the rank over
+                                dotSize: 10
+                                value: _flagPoints
+                                accent: _flagColor
+                                wrap: true
+                                onValueRequested: function (v) {
+                                    if (!appCtrl)
+                                        return;
+                                    // Dots edit the tenths only; the wheel
+                                    // (wrap) or shift+click change the rank.
+                                    var pts = Math.max(0, Math.min(9, v));
+                                    var combined = _flagRank + pts / 10.0;
+                                    if (Math.abs(combined - _flagValue) > 0.001) {
+                                        appCtrl.setFlag(_key, combined);
+                                    }
+                                }
+                                onRankBumpRequested: {
+                                    if (!appCtrl)
+                                        return;
+                                    if (_flagRank < 10) {
+                                        appCtrl.setFlag(_key, _flagRank + 1);
+                                    }
+                                }
+                                onWrapRequested: function (direction) {
+                                    if (!appCtrl)
+                                        return;
+                                    if (direction > 0 && _flagRank < 10)
+                                        appCtrl.setFlag(_key, _flagRank + 1);
+                                    else if (direction < 0 && _flagRank > 0)
+                                        appCtrl.setFlag(_key, (_flagRank - 1) + 0.9);
                                 }
                             }
-                            onRankBumpRequested: {
-                                if (!appCtrl)
-                                    return;
-                                if (_flagRank < 10) {
-                                    appCtrl.setFlag(_key, _flagRank + 1);
-                                }
+                            Item {
+                                Layout.fillWidth: true
                             }
                         }
                     }

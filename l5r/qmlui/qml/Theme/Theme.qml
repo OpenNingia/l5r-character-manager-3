@@ -100,6 +100,10 @@ QtObject {
     // 14px with a 4px gap).
     readonly property int pointDotSize: 14
     readonly property int pointDotSpacing: 4
+    // Tenth-digit rendered inside each dot on the social tracks
+    // (design §6.12: the digit spells out that dots are tenths of a
+    // rank). Sized to sit inside the 14px dot with breathing room.
+    readonly property int pointDotDigitSize: 9
 
     // --- font families (design system §3.1) ------------------------
     // Each face is bundled in l5r/share/fonts/ and registered at qmlui

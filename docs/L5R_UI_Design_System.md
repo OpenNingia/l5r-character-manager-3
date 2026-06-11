@@ -394,8 +394,15 @@ Kanji watermark: see Section 3.3; placed bottom-right of each card, white at 12 
 Dot size:        14 × 14 px; border-radius 50 %
 Filled dot:      background --color-success (Honor) | --color-warning (Glory)
 Empty dot:       background transparent; border 1.5px solid respective colour
+Dot digit:       each dot carries its tenth value (1…9) centred inside, EB Garamond 9 px;
+                 paper-coloured on a filled dot, track colour on an empty one — the digit
+                 spells out that the dots are the DECIMAL part of the rank (issue #402)
 Gap between:     4 px
-Row layout:      dots left-aligned; –/value/+ controls right-aligned; "rank N.N" far right
+Row layout:      header row = colour swatch + NAME + –/value/+ stepper;
+                 track row underneath = "N.N" score (EB Garamond, --font-size-stat-medium,
+                 tabular figures, track colour) left of the dots
+Scrolling:       wheel over the track fine-tunes ±0.1 and ROLLS OVER at the rank
+                 boundary: up from N.9 → (N+1).0, down from N.0 → (N−1).9
 ```
 
 ### 6.13 Section Divider / Horizontal Rule
