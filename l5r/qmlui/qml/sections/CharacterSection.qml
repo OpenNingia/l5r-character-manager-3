@@ -297,6 +297,12 @@ ColumnLayout {
                 ToolTip.text: qsTr("Edit XP limit")
                 onClicked: expLimitDlg.openWithCurrent()
             }
+            ToolButton {
+                text: "+"
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Add awarded XP")
+                onClicked: addXpDlg.openFresh()
+            }
         }
 
         RowLayout {
@@ -974,6 +980,49 @@ ColumnLayout {
                 id: xpSpin
                 Layout.fillWidth: true
                 from: 0
+                to: 10000
+                editable: true
+            }
+        }
+    }
+
+    // -----------------------------------------------------------------
+    // Award-XP prompt -- adds the award on top of the current limit so
+    // the user never has to do the math themselves (issue #404).
+    // -----------------------------------------------------------------
+    Widgets.L5RDialog {
+        id: addXpDlg
+        width: 380
+        padding: Theme.s5
+        title: qsTr("Add Experience Points")
+        tagline: qsTr("the chronicle rewards its heroes")
+        seal: "賞"   // shou -- award
+        accent: Theme.secondary
+        accentDark: Theme.secondaryDark
+        acceptText: qsTr("Add")
+
+        function openFresh() {
+            awardSpin.value = 1;
+            open();
+        }
+        onAccepted: if (appCtrl)
+            appCtrl.setExpLimit(section._prog.rawXpLimit + awardSpin.value)
+
+        contentItem: RowLayout {
+            spacing: 12
+            Label {
+                text: qsTr("XP awarded")
+                font.family: Theme.fontDisplay
+                font.pixelSize: Theme.fsCaption
+                font.weight: Theme.headingWeight
+                font.letterSpacing: 1.6
+                color: Theme.heading
+                Layout.alignment: Qt.AlignVCenter
+            }
+            SpinBox {
+                id: awardSpin
+                Layout.fillWidth: true
+                from: 1
                 to: 10000
                 editable: true
             }

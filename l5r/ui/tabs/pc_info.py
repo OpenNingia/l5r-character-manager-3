@@ -57,6 +57,15 @@ class PcInfoSink(QtCore.QObject):
         if ok:
             window.set_exp_limit(val)
 
+    def on_add_exp_points(self):
+        window = self.window
+
+        val, ok = QtWidgets.QInputDialog.getInt(window, 'Add Experience Points',
+                                                "XP awarded:", 1,
+                                                1, 10000, 1)
+        if ok:
+            window.set_exp_limit(window.pc.exp_limit + val)
+
     def on_edit_family(self):
         window = self.window
         dlg = widgets.FamilyChooserDialog(window)
@@ -162,14 +171,20 @@ class PcInfoTabMixin:
             bt_exp.setToolTip(self.tr("Edit experience points"))
             bt_exp.setAutoRaise(True)
             bt_exp.setIcon(QtGui.QIcon(get_icon_path('edit', (16, 16))))
+            bt_add_exp = QtWidgets.QToolButton(self)
+            bt_add_exp.setToolTip(self.tr("Add experience points"))
+            bt_add_exp.setAutoRaise(True)
+            bt_add_exp.setIcon(QtGui.QIcon(get_icon_path('add', (16, 16))))
             hb_exp.addWidget(lb_exp)
             hb_exp.addWidget(bt_exp)
+            hb_exp.addWidget(bt_add_exp)
 
             grid.addWidget(QtWidgets.QLabel(self.tr("Rank"), self), 0, 3)
             grid.addWidget(fr_exp, 1, 3)
             grid.addWidget(QtWidgets.QLabel(self.tr("Insight"), self), 2, 3)
 
             self.bt_set_exp_points = bt_exp
+            self.bt_add_exp_points = bt_add_exp
 
             # 2nd column
             grid.addWidget(self.tx_pc_name, 0, 1, 1, 2)
