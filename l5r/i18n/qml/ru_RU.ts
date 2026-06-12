@@ -30,86 +30,6 @@
 </context>
 <context>
     <name>AddArmorDialog</name>
-    <message>
-        <source>Don Armor</source>
-        <translation>Надеть доспех</translation>
-    </message>
-    <message>
-        <source>take up the harness that will turn a blow</source>
-        <translation>наденьте доспех, что отведёт удар</translation>
-    </message>
-    <message>
-        <source>Remove Armor</source>
-        <translation>Снять доспех</translation>
-    </message>
-    <message>
-        <source>Wear Armor</source>
-        <translation>Надеть доспех</translation>
-    </message>
-    <message>
-        <source>Choose an armour to wear.</source>
-        <translation>Выберите доспех, который наденете.</translation>
-    </message>
-    <message>
-        <source>Return to wearing no armour.</source>
-        <translation>Вернитесь к ношению без доспеха.</translation>
-    </message>
-    <message>
-        <source>Wear the %1.</source>
-        <translation>Наденьте %1.</translation>
-    </message>
-    <message>
-        <source>No Armor (Clothing)</source>
-        <translation>Без доспеха (одежда)</translation>
-    </message>
-    <message>
-        <source>Unarmored — only your reflexes and bearing turn a blow.</source>
-        <translation>Без доспеха — лишь ваши рефлексы и осанка отводят удар.</translation>
-    </message>
-    <message>
-        <source>seek an armour by name…</source>
-        <translation>ищите доспех по названию…</translation>
-    </message>
-    <message>
-        <source>(unnamed)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TN +%1 · RD %2</source>
-        <translation>УС +%1 · Сн %2</translation>
-    </message>
-    <message>
-        <source>the armoury is empty — import a datapack</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>nothing matches that brushstroke</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Choose an armour from the list at your left.</source>
-        <translation>Выберите доспех из списка слева.</translation>
-    </message>
-    <message>
-        <source>Its TN and reduction fold into your defence the moment you put it on.</source>
-        <translation>Её УС и снижение входят в вашу защиту, как только вы её наденете.</translation>
-    </message>
-    <message>
-        <source>Cost: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Armor TN</source>
-        <translation>УС Брони</translation>
-    </message>
-    <message>
-        <source>Reduction</source>
-        <translation>Снижение</translation>
-    </message>
-    <message>
-        <source>No special effect recorded in the datapack.</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>AddWeaponDialog</name>
@@ -230,22 +150,6 @@
     </message>
     <message>
         <source>Its blessings — a new technique, and perhaps spells or kiho — follow once you decide.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You walk the path of %1. To rise further you must join a new school.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Walk a different path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>enter a new school, an advanced school, or an alternate path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Join a new school</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -406,34 +310,6 @@
     <message>
         <source>Refund</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reset all</source>
-        <translation>Сбросить всё</translation>
-    </message>
-    <message>
-        <source>Clear the entire advancement history</source>
-        <translation>Очистить всю историю улучшений</translation>
-    </message>
-    <message>
-        <source>Reset all advancements?</source>
-        <translation>Сбросить все улучшения?</translation>
-    </message>
-    <message>
-        <source>Wipe the training ledger</source>
-        <translation>Очистить журнал обучения</translation>
-    </message>
-    <message>
-        <source>Reset everything</source>
-        <translation>Сбросить всё</translation>
-    </message>
-    <message>
-        <source>Keep history</source>
-        <translation>Сохранить историю</translation>
-    </message>
-    <message>
-        <source>This clears every advancement in the chronicle and refunds all spent experience, returning the character to its freshly-created state. Family and school are kept. This cannot be undone.</source>
-        <translation>Удаляет все улучшения в хронике и возвращает весь потраченный опыт, возвращая персонажа в исходное только что созданное состояние. Семья и школа сохраняются. Это действие нельзя отменить.</translation>
     </message>
 </context>
 <context>
@@ -1053,73 +929,9 @@
         <source>XP limit</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Add awarded XP</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dots are tenths of a rank · click dot to set · scroll to fine-tune (rolls over) · shift+click to advance rank</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add Experience Points</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>the chronicle rewards its heroes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>XP awarded</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ChooseElementDialog</name>
-    <message>
-        <source>Awaken an Affinity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Embrace a Deficiency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>the element your prayers command with ease</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>the element whose kami resist your call</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Choose</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Choose the element you resonate with.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Choose the element that resists you.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This element&apos;s spells come more readily — Mastery within reach rises by one.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This element&apos;s spells come harder — Mastery within reach falls by one.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>There is no elemental choice to make.</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ChooseSchoolSkillsDialog</name>
@@ -1162,233 +974,9 @@
 </context>
 <context>
     <name>ChooseSchoolSpellsDialog</name>
-    <message>
-        <source>All Elements</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Earth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Air</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Water</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Fire</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Void</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Multi-Element</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Dragon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Choose School Spells</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>your school grants these prayers — fill each in any order</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Inscribe</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MAHO</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ANY</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>a %1 spell</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>any spell but %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>any spell</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>, Maho only</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>, deficiency set aside</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>There are no spells left to choose.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message numerus="yes">
-        <source>Choose %n more spell(s) to continue.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Your prayers are chosen — inscribe them into your library.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>choose…</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This slot wants %1.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>seek a spell by name…</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>(unnamed)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>M%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>no spell answers this slot&apos;s calling</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Choose a spell for this slot from the register at your left.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Every spell shown lies within your reach. Switch slots with the tabs above and fill them in whatever order you please.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mastery %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>AFFINITY +%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DEFICIENCY %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RANGE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>AREA</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DURATION</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RAISES</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No description provided in the datapack.</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>CustomArmorDialog</name>
-    <message>
-        <source>Edit Armor</source>
-        <translation>Изменить доспех</translation>
-    </message>
-    <message>
-        <source>Forge Armor</source>
-        <translation>Выковать доспех</translation>
-    </message>
-    <message>
-        <source>re-stat the harness you wear</source>
-        <translation>перенастройте доспех, что носите</translation>
-    </message>
-    <message>
-        <source>temper a harness to your own measure</source>
-        <translation>выкуйте доспех по своей мерке</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Wear</source>
-        <translation>Надеть</translation>
-    </message>
-    <message>
-        <source>Save your changes to this armour.</source>
-        <translation>Сохраните изменения этого доспеха.</translation>
-    </message>
-    <message>
-        <source>A custom armour replaces whatever you now wear.</source>
-        <translation>Своя броня заменит ту, что вы сейчас носите.</translation>
-    </message>
-    <message>
-        <source>BASE ARMOR</source>
-        <translation>БАЗОВЫЙ ДОСПЕХ</translation>
-    </message>
-    <message>
-        <source>Seeds the figures below — change them freely.</source>
-        <translation>Заполняет значения ниже — меняйте их свободно.</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>name your armour…</source>
-        <translation>назовите свой доспех…</translation>
-    </message>
-    <message>
-        <source>Armor TN</source>
-        <translation>УС Брони</translation>
-    </message>
-    <message>
-        <source>e.g. 5</source>
-        <translation>напр. 5</translation>
-    </message>
-    <message>
-        <source>Reduction</source>
-        <translation>Снижение</translation>
-    </message>
-    <message>
-        <source>e.g. 3</source>
-        <translation type="unfinished">напр. 3</translation>
-    </message>
-    <message>
-        <source>NOTES</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>special qualities, provenance…</source>
-        <translation>особые свойства, происхождение…</translation>
-    </message>
 </context>
 <context>
     <name>CustomWeaponDialog</name>
@@ -1462,7 +1050,7 @@
     </message>
     <message>
         <source>e.g. 250&apos;</source>
-        <translation type="unfinished">напр. 250&apos;</translation>
+        <translation>напр. 250&apos;</translation>
     </message>
     <message>
         <source>Weapon Strength</source>
@@ -1470,7 +1058,7 @@
     </message>
     <message>
         <source>e.g. 3</source>
-        <translation type="unfinished">напр. 3</translation>
+        <translation>напр. 3</translation>
     </message>
     <message>
         <source>Minimum Strength</source>
@@ -1478,7 +1066,7 @@
     </message>
     <message>
         <source>e.g. 2</source>
-        <translation type="unfinished">напр. 2</translation>
+        <translation>напр. 2</translation>
     </message>
     <message>
         <source>NOTES</source>
@@ -1779,98 +1367,6 @@
 </context>
 <context>
     <name>JoinSchoolDialog</name>
-    <message>
-        <source>Join a New School</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>choose where your training turns next</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Join</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Choose a school to join.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Some requirements are not met.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Confirm the role-playing requirements to continue.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Joins — but you cannot yet afford Multiple Schools.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Joins the school and grants its Rank 1 technique.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New school</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Advanced school</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Alternate path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clan:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No Clan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>School:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Source:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1, page %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bonus:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>+1 %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Requirements</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Buy the “Multiple Schools” advantage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>not enough XP — costs %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>costs %1 XP</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>KataSection</name>
@@ -1995,122 +1491,6 @@
 </context>
 <context>
     <name>LibrarySection</name>
-    <message>
-        <source>Installed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Install</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Installed Datapacks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No datapacks yet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Without a datapack the app can&apos;t do much. Start with the Core datapack — it carries the base rules, clans, schools and skills.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Download the Core datapack</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Install from file…</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>v%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>All languages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Get Datapacks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Refresh list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Refresh to see the datapacks available from the official repository.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Loading the datapack list…</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t reach the datapack repository. Check your connection and try again.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>GitHub is rate-limiting requests right now (it allows a limited number per hour). Please try again later.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t load the datapack list. Please try again.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>installed v%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No datapacks were found in the latest release.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete datapack?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Keep</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Core holds the base rules — deleting it leaves the app unusable until you reinstall it. Delete &quot;%1&quot; from disk?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This removes &quot;%1&quot; and its content from disk. You can reinstall it later. Continue?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Disable the Core datapack?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The base rules will be hidden</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Disable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Keep enabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Disabling Core hides the base rules, clans, schools and skills; the app will be unusable until you re-enable it. Continue?</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>MainSheet</name>
@@ -2154,283 +1534,15 @@
         <source>No School</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Ex&amp;port as PDF...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export &amp;NPC Sheet...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sheet exported.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PDF export failed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No datapacks installed — the app needs at least the Core datapack to be useful.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open Library</source>
-        <translation>Открыть библиотеку</translation>
-    </message>
-    <message>
-        <source>Resolve your pending opportunities before advancing rank.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Discard unsaved changes?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open another character</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start a new character</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Discard &amp; Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Discard &amp; New</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Keep editing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This character has changes that are not saved to a .l5r file. Opening another character will discard them. Continue?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This character has changes that are not saved to a .l5r file. Starting a new character will discard them. Continue?</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>MiscSection</name>
-    <message>
-        <source>Equipment</source>
-        <translation>Снаряжение</translation>
-    </message>
-    <message>
-        <source>the gear you carry into the field</source>
-        <translation>снаряжение, что вы берёте в поход</translation>
-    </message>
-    <message>
-        <source>1 item</source>
-        <translation>1 предмет</translation>
-    </message>
-    <message>
-        <source>%1 items</source>
-        <translation>%1 предметов</translation>
-    </message>
-    <message>
-        <source>＋  Add Item</source>
-        <translation>＋  Добавить предмет</translation>
-    </message>
-    <message>
-        <source>Your pack is empty.</source>
-        <translation>Ваша поклажа пуста.</translation>
-    </message>
-    <message>
-        <source>Note down the everyday effects your samurai carries — travelling clothes, a bedroll, a writing kit, whatever the journey calls for.</source>
-        <translation>Запишите повседневные вещи, что носит ваш самурай, — дорожную одежду, спальный коврик, письменные принадлежности, всё, что требует путь.</translation>
-    </message>
-    <message>
-        <source>the coin you carry</source>
-        <translation>монеты, что при вас</translation>
-    </message>
-    <message>
-        <source>Koku</source>
-        <translation>Коку</translation>
-    </message>
-    <message>
-        <source>Bu</source>
-        <translation>Бу</translation>
-    </message>
-    <message>
-        <source>Zeni</source>
-        <translation>Дзэни</translation>
-    </message>
-    <message>
-        <source>Modifiers</source>
-        <translation>Модификаторы</translation>
-    </message>
-    <message>
-        <source>bonuses and penalties you bring to your rolls</source>
-        <translation>бонусы и штрафы, что вы вносите в свои броски</translation>
-    </message>
-    <message>
-        <source>1 modifier</source>
-        <translation>1 модификатор</translation>
-    </message>
-    <message>
-        <source>%1 modifiers</source>
-        <translation>%1 модификаторов</translation>
-    </message>
-    <message>
-        <source>＋  Add Modifier</source>
-        <translation>＋  Добавить модификатор</translation>
-    </message>
-    <message>
-        <source>No modifiers set.</source>
-        <translation>Модификаторы не заданы.</translation>
-    </message>
-    <message>
-        <source>Record any standing bonus or penalty the rules don&apos;t track for you — an edge from a technique, a situational advantage, a house rule.</source>
-        <translation>Запишите любой постоянный бонус или штраф, который правила не учитывают за вас, — преимущество от приёма, ситуативную выгоду, домашнее правило.</translation>
-    </message>
-    <message>
-        <source>SCHOOL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>name this item…</source>
-        <translation>назовите этот предмет…</translation>
-    </message>
-    <message>
-        <source>Discard this item</source>
-        <translation>Выбросить этот предмет</translation>
-    </message>
-    <message>
-        <source>(unnamed modifier)</source>
-        <translation>(модификатор без названия)</translation>
-    </message>
-    <message>
-        <source>VALUE</source>
-        <translation>ЗНАЧЕНИЕ</translation>
-    </message>
-    <message>
-        <source>APPLIED</source>
-        <translation>ПРИМЕНЁН</translation>
-    </message>
-    <message>
-        <source>Edit this modifier</source>
-        <translation>Изменить этот модификатор</translation>
-    </message>
-    <message>
-        <source>Remove this modifier</source>
-        <translation>Удалить этот модификатор</translation>
-    </message>
-    <message>
-        <source>Granted by %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Granted automatically</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>MissingBooksDialog</name>
-    <message>
-        <source>Missing datapacks</source>
-        <translation>Отсутствуют пакеты данных</translation>
-    </message>
-    <message>
-        <source>This character cannot be loaded</source>
-        <translation>Не удалось загрузить этого персонажа</translation>
-    </message>
-    <message>
-        <source>Open Library</source>
-        <translation>Открыть библиотеку</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This character references datapacks that are not installed or enabled. Install or enable them in the Library, then open the character again.</source>
-        <translation>Этот персонаж ссылается на пакеты данных, которые не установлены или не включены. Установите или включите их в библиотеке, затем снова откройте персонажа.</translation>
-    </message>
-    <message>
-        <source>v%1 or later</source>
-        <translation>v%1 или новее</translation>
-    </message>
 </context>
 <context>
     <name>ModifierDialog</name>
-    <message>
-        <source>Edit Modifier</source>
-        <translation>Изменить модификатор</translation>
-    </message>
-    <message>
-        <source>Add a Modifier</source>
-        <translation>Добавить модификатор</translation>
-    </message>
-    <message>
-        <source>re-key a bonus or penalty you carry</source>
-        <translation>перезадайте бонус или штраф, что при вас</translation>
-    </message>
-    <message>
-        <source>note a bonus or penalty to your rolls</source>
-        <translation>запишите бонус или штраф к вашим броскам</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Name the %1 this modifier applies to.</source>
-        <translation>Укажите %1, к которому применяется этот модификатор.</translation>
-    </message>
-    <message>
-        <source>A modifier is figured into your rolls only while it is applied.</source>
-        <translation>Модификатор учитывается в бросках, только пока он применён.</translation>
-    </message>
-    <message>
-        <source>MODIFIES</source>
-        <translation>ИЗМЕНЯЕТ</translation>
-    </message>
-    <message>
-        <source>Detail</source>
-        <translation>Детали</translation>
-    </message>
-    <message>
-        <source>name the %1…</source>
-        <translation>укажите %1…</translation>
-    </message>
-    <message>
-        <source>not needed for this modifier</source>
-        <translation>не требуется для этого модификатора</translation>
-    </message>
-    <message>
-        <source>Value</source>
-        <translation>Значение</translation>
-    </message>
-    <message>
-        <source>e.g. +2 or 1k0</source>
-        <translation>напр. +2 или 1k0</translation>
-    </message>
-    <message>
-        <source>Reason</source>
-        <translation>Причина</translation>
-    </message>
-    <message>
-        <source>why you have this edge…</source>
-        <translation>почему у вас есть это преимущество…</translation>
-    </message>
-    <message>
-        <source>Value is roll-and-keep with an optional flat bonus — “+2”, “1k0”, or “2k1+3”.</source>
-        <translation>Значение — в формате «бросить и оставить» с необязательным фиксированным бонусом — “+2”, “1k0” или “2k1+3”.</translation>
-    </message>
-    <message>
-        <source>APPLY NOW</source>
-        <translation>ПРИМЕНИТЬ</translation>
-    </message>
 </context>
 <context>
     <name>NotesSection</name>
@@ -2694,22 +1806,6 @@
         <source>Turn this off to return to the classic interface. Takes effect after a restart.</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Free shopping</source>
-        <translation>Бесплатные покупки</translation>
-    </message>
-    <message>
-        <source>Buy advancements with no experience cost — an aid for GMs and quick builds. Affects new purchases only, and switches itself off when you restart the app.</source>
-        <translation>Покупайте улучшения без затрат опыта — помощь для мастеров и быстрого создания персонажей. Влияет только на новые покупки и отключается при перезапуске приложения.</translation>
-    </message>
-    <message>
-        <source>Print the current Armor TN</source>
-        <translation>Печатать текущий УС Брони</translation>
-    </message>
-    <message>
-        <source>The current Armor TN changes constantly during play; leave this off to print a blank field you can fill in by hand.</source>
-        <translation>Текущий УС Брони постоянно меняется во время игры; оставьте этот параметр выключенным, чтобы напечатать пустое поле для заполнения вручную.</translation>
-    </message>
 </context>
 <context>
     <name>SkillsSection</name>
@@ -2912,42 +2008,6 @@
         <source>RAISES</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>YOUR SCHOOL AWAKENS AN AFFINITY</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>choose the element your prayers command with ease</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Choose Affinity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>YOUR SCHOOL EXACTS A DEFICIENCY</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>choose the element whose kami resist your call</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Choose Deficiency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>YOUR SCHOOL GRANTS SPELLS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>the kami offer their prayers — choose those within your reach</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Choose Spells</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>TattooSection</name>
@@ -3140,46 +2200,6 @@
     <message>
         <source>Discard this weapon</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Arms &amp; Armor</source>
-        <translation>Оружие и броня</translation>
-    </message>
-    <message>
-        <source>Armor</source>
-        <translation>Броня</translation>
-    </message>
-    <message>
-        <source>＋  Wear</source>
-        <translation>＋  Надеть</translation>
-    </message>
-    <message>
-        <source>No armour worn — you fight unarmored.</source>
-        <translation>Доспех не надет — вы сражаетесь без защиты.</translation>
-    </message>
-    <message>
-        <source>(unnamed armour)</source>
-        <translation>(доспех без названия)</translation>
-    </message>
-    <message>
-        <source>Worn</source>
-        <translation>Надет</translation>
-    </message>
-    <message>
-        <source>Armor TN</source>
-        <translation>УС Брони</translation>
-    </message>
-    <message>
-        <source>Reduction</source>
-        <translation>Снижение</translation>
-    </message>
-    <message>
-        <source>Edit this armour</source>
-        <translation>Изменить этот доспех</translation>
-    </message>
-    <message>
-        <source>Take off this armour</source>
-        <translation>Снять этот доспех</translation>
     </message>
 </context>
 <context>
