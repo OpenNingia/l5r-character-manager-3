@@ -32,7 +32,8 @@ only copy lives in the compiled .qm.
 
 Commands:
   extract   scan sources -> merge into per-locale .ts (existing translations
-            preserved, new strings added, removed ones marked obsolete)
+            preserved, new strings added, removed ones marked obsolete;
+            pass --no-obsolete to drop the vanished/obsolete entries instead)
   compile   lrelease each per-locale .ts -> shipped .qm
   all       extract then compile
   pro       (re)generate l5r/l5rcm.pro from the current Python source scan
@@ -201,28 +202,31 @@ def _print_stats(label, locales, ts_dir):
               f"({untr} to do)  {ts.relative_to(REPO_ROOT)}")
 
 
-def extract_python(locales):
+def extract_python(locales, no_obsolete=False):
     pylupdate = find_tool(PYLUPDATE_CANDIDATES, "pylupdate6",
                           env_var="L5R_PYLUPDATE", hint="pip install pyqt6")
     PY_TS_DIR.mkdir(parents=True, exist_ok=True)
     sources = [str(f) for f in python_sources()]
+    # pylupdate6 spells it with a double dash, unlike Qt's lupdate.
+    extra = ["--no-obsolete"] if no_obsolete else []
     ts_args = []
     for loc in locales:
         ts_args += ["-ts", str(PY_TS_DIR / f"{loc}.ts")]
-    run([pylupdate, *sources, *ts_args])
+    run([pylupdate, *extra, *sources, *ts_args])
     _print_stats("python", locales, PY_TS_DIR)
 
 
-def extract_qml(locales, locations):
+def extract_qml(locales, locations, no_obsolete=False):
     lupdate = find_tool(LUPDATE_CANDIDATES, "lupdate", env_var="L5R_LUPDATE")
     QML_TS_DIR.mkdir(parents=True, exist_ok=True)
     sources = [str(f) for f in qml_sources()]
+    extra = ["-no-obsolete"] if no_obsolete else []
     ts_args = []
     for loc in locales:
         ts_args += ["-ts", str(QML_TS_DIR / f"{loc}.ts")]
     # -locations none keeps source line numbers out of the .ts so git diffs stay
     # about actual string changes, not churn from QML line shifts.
-    run([lupdate, "-locations", locations, *sources, *ts_args])
+    run([lupdate, "-locations", locations, *extra, *sources, *ts_args])
     _print_stats("qml", locales, QML_TS_DIR)
 
 
@@ -262,11 +266,11 @@ def regenerate_pro(locales):
 
 def cmd_extract(args):
     if args.surface in ("python", "both"):
-        extract_python(args.locales)
+        extract_python(args.locales, args.no_obsolete)
         if not args.no_pro:
             regenerate_pro(args.locales)
     if args.surface in ("qml", "both"):
-        extract_qml(args.locales, args.locations)
+        extract_qml(args.locales, args.locations, args.no_obsolete)
 
 
 def cmd_compile(args):
@@ -307,6 +311,12 @@ def main(argv=None):
     common.add_argument(
         "--no-pro", action="store_true",
         help="do not regenerate l5rcm.pro during a python extract",
+    )
+    common.add_argument(
+        "--no-obsolete", action="store_true",
+        help="during extract, drop vanished/obsolete entries from the .ts "
+             "instead of keeping them parked (passes -no-obsolete to the "
+             "extractors). Translations of removed strings are lost for good.",
     )
 
     parser = argparse.ArgumentParser(

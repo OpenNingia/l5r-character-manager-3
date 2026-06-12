@@ -221,20 +221,12 @@
         <translation>Avanzar</translation>
     </message>
     <message>
-        <source>Advancing from this path means joining a new school — not available here yet.</source>
-        <translation type="vanished">Avanzar desde esta senda significa unirse a una nueva escuela — todavía no disponible aquí.</translation>
-    </message>
-    <message>
         <source>You may continue your training as a %1, rising to Insight Rank %2.</source>
         <translation>Puedes continuar tu adiestramiento como %1, ascendiendo al Rango de Reconocimiento %2.</translation>
     </message>
     <message>
         <source>You may leave the path of %1 and resume %2, rising to Insight Rank %3.</source>
         <translation>Puedes abandonar la senda de %1 y retomar %2, ascendiendo al Rango de Reconocimiento %3.</translation>
-    </message>
-    <message>
-        <source>You walk the path of %1. Advancing from here means joining a new school.</source>
-        <translation type="vanished">Recorres la senda de %1. Avanzar desde aquí significa unirse a una nueva escuela.</translation>
     </message>
     <message>
         <source>Its blessings — a new technique, and perhaps spells or kiho — follow once you decide.</source>
@@ -1018,14 +1010,6 @@
         <translation>Social / Espiritual</translation>
     </message>
     <message>
-        <source>click dot to set · shift+click to advance rank · scroll to fine-tune</source>
-        <translation>clic en un punto para fijar · mayús+clic para subir de rango · rueda para ajustar</translation>
-    </message>
-    <message>
-        <source>rank </source>
-        <translation>rango </translation>
-    </message>
-    <message>
         <source>Combat</source>
         <translation>Combate</translation>
     </message>
@@ -1068,6 +1052,30 @@
     <message>
         <source>XP limit</source>
         <translation>límite de XP</translation>
+    </message>
+    <message>
+        <source>Add awarded XP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dots are tenths of a rank · click dot to set · scroll to fine-tune (rolls over) · shift+click to advance rank</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Experience Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>the chronicle rewards its heroes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Añadir</translation>
+    </message>
+    <message>
+        <source>XP awarded</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2312,6 +2320,14 @@
         <source>Remove this modifier</source>
         <translation>Eliminar este modificador</translation>
     </message>
+    <message>
+        <source>Granted by %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Granted automatically</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MissingBooksDialog</name>
@@ -3039,10 +3055,6 @@
     <message>
         <source>Arrows</source>
         <translation>Flechas</translation>
-    </message>
-    <message>
-        <source>Weapons</source>
-        <translation type="vanished">Armas</translation>
     </message>
     <message>
         <source>the arms you carry, ready to be drawn</source>
