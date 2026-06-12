@@ -221,20 +221,12 @@
         <translation>Avancer</translation>
     </message>
     <message>
-        <source>Advancing from this path means joining a new school — not available here yet.</source>
-        <translation type="vanished">Avancer depuis cette voie signifie rejoindre une nouvelle école — pas encore disponible ici.</translation>
-    </message>
-    <message>
         <source>You may continue your training as a %1, rising to Insight Rank %2.</source>
         <translation>Tu peux poursuivre ton entraînement en tant que %1, et atteindre le Rang de Réputation %2.</translation>
     </message>
     <message>
         <source>You may leave the path of %1 and resume %2, rising to Insight Rank %3.</source>
         <translation>Tu peux quitter la voie de %1 et reprendre %2, et atteindre le Rang de Réputation %3.</translation>
-    </message>
-    <message>
-        <source>You walk the path of %1. Advancing from here means joining a new school.</source>
-        <translation type="vanished">Tu suis la voie de %1. Avancer d&apos;ici signifie rejoindre une nouvelle école.</translation>
     </message>
     <message>
         <source>Its blessings — a new technique, and perhaps spells or kiho — follow once you decide.</source>
@@ -1018,14 +1010,6 @@
         <translation>Social / Spirituel</translation>
     </message>
     <message>
-        <source>click dot to set · shift+click to advance rank · scroll to fine-tune</source>
-        <translation>clique un point pour régler · maj+clic pour monter de rang · défile pour ajuster</translation>
-    </message>
-    <message>
-        <source>rank </source>
-        <translation>rang </translation>
-    </message>
-    <message>
         <source>Combat</source>
         <translation>Combat</translation>
     </message>
@@ -1068,6 +1052,30 @@
     <message>
         <source>XP limit</source>
         <translation>limite d&apos;XP</translation>
+    </message>
+    <message>
+        <source>Add awarded XP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dots are tenths of a rank · click dot to set · scroll to fine-tune (rolls over) · shift+click to advance rank</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Experience Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>the chronicle rewards its heroes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>XP awarded</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2312,6 +2320,14 @@
         <source>Remove this modifier</source>
         <translation>Supprimer ce modificateur</translation>
     </message>
+    <message>
+        <source>Granted by %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Granted automatically</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MissingBooksDialog</name>
@@ -2687,11 +2703,11 @@
     </message>
     <message>
         <source>Print the current Armor TN</source>
-        <translation>Imprimer le ND d'Armure actuel</translation>
+        <translation>Imprimer le ND d&apos;Armure actuel</translation>
     </message>
     <message>
         <source>The current Armor TN changes constantly during play; leave this off to print a blank field you can fill in by hand.</source>
-        <translation>Le ND d'Armure actuel change constamment pendant le jeu ; laissez cette option désactivée pour imprimer un champ vierge à remplir à la main.</translation>
+        <translation>Le ND d&apos;Armure actuel change constamment pendant le jeu ; laissez cette option désactivée pour imprimer un champ vierge à remplir à la main.</translation>
     </message>
 </context>
 <context>
@@ -3039,10 +3055,6 @@
     <message>
         <source>Arrows</source>
         <translation>Flèches</translation>
-    </message>
-    <message>
-        <source>Weapons</source>
-        <translation type="vanished">Armes</translation>
     </message>
     <message>
         <source>the arms you carry, ready to be drawn</source>

@@ -1010,14 +1010,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>click dot to set · shift+click to advance rank · scroll to fine-tune</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>rank </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Combat</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1059,6 +1051,30 @@
     </message>
     <message>
         <source>XP limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add awarded XP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dots are tenths of a rank · click dot to set · scroll to fine-tune (rolls over) · shift+click to advance rank</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Experience Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>the chronicle rewards its heroes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>XP awarded</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2304,6 +2320,14 @@
     <message>
         <source>Remove this modifier</source>
         <translation>Удалить этот модификатор</translation>
+    </message>
+    <message>
+        <source>Granted by %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Granted automatically</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -422,50 +422,50 @@ You've reached the XP Limit.</translation>
       <translation>You don't have enough experience points to complete this purchase.</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="910" />
+      <location filename="../qmlui/proxies/app_controller.py" line="913" />
       <source>{0}, Skill {1}. Cost: {2} xp</source>
       <translation>{0}, Skill {1}. Cost: {2} xp</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="960" />
+      <location filename="../qmlui/proxies/app_controller.py" line="963" />
       <source>Any skill (rank {0}):</source>
       <translation>Any skill (rank {0}):</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="973" />
+      <location filename="../qmlui/proxies/app_controller.py" line="976" />
       <source>skill</source>
       <translation>skill</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="975" />
+      <location filename="../qmlui/proxies/app_controller.py" line="978" />
       <source>Any {0}, but {1} (rank {2}):</source>
       <translation>Any {0}, but {1} (rank {2}):</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="976" />
+      <location filename="../qmlui/proxies/app_controller.py" line="979" />
       <source>Any {0} skill (rank {1}):</source>
       <translation>Any {0} skill (rank {1}):</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1696" />
-      <location filename="../qmlui/proxies/app_controller.py" line="1611" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1699" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1614" />
       <source>{0} Rank {1}, XP Gain: {2}</source>
       <translation>{0} Rank {1}, XP Gain: {2}</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1699" />
-      <location filename="../qmlui/proxies/app_controller.py" line="1614" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1702" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1617" />
       <source>{0} Rank {1}, XP Cost: {2}</source>
       <translation>{0} Rank {1}, XP Cost: {2}</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1922" />
-      <location filename="../qmlui/proxies/app_controller.py" line="1921" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1925" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1924" />
       <source>N/A</source>
       <translation>N/A</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="2107" />
+      <location filename="../qmlui/proxies/app_controller.py" line="2119" />
       <source>New item</source>
       <translation>New item</translation>
     </message>
@@ -1353,6 +1353,69 @@ You've reached the XP Limit.</translation>
     </message>
   </context>
   <context>
+    <name>L5RMain</name>
+    <message>
+      <location filename="../main.py" line="109" />
+      <source>Character</source>
+      <translation type="unfinished">Character</translation>
+    </message>
+    <message>
+      <location filename="../main.py" line="110" />
+      <source>Skills</source>
+      <translation type="unfinished">Skills</translation>
+    </message>
+    <message>
+      <location filename="../main.py" line="111" />
+      <source>Spells/Techniques</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../main.py" line="112" />
+      <source>Kata/Kiho</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../main.py" line="113" />
+      <source>Merits/Flaws</source>
+      <translation type="unfinished">Merits/Flaws</translation>
+    </message>
+    <message>
+      <location filename="../main.py" line="114" />
+      <source>Advancements</source>
+      <translation type="unfinished">Advancements</translation>
+    </message>
+    <message>
+      <location filename="../main.py" line="115" />
+      <source>Weapons</source>
+      <translation type="unfinished">Weapons</translation>
+    </message>
+    <message>
+      <location filename="../main.py" line="116" />
+      <source>Modifiers</source>
+      <translation type="unfinished">Modifiers</translation>
+    </message>
+    <message>
+      <location filename="../main.py" line="117" />
+      <source>Notes/Personal Info</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../main.py" line="118" />
+      <source>Equipment</source>
+      <translation type="unfinished">Equipment</translation>
+    </message>
+    <message>
+      <location filename="../main.py" line="119" />
+      <source>Settings</source>
+      <translation type="unfinished">Settings</translation>
+    </message>
+    <message>
+      <location filename="../main.py" line="130" />
+      <source>About</source>
+      <translation type="unfinished">About</translation>
+    </message>
+  </context>
+  <context>
     <name>MaViewModel</name>
     <message>
       <location filename="../models/maviewmodel.py" line="45" />
@@ -1542,7 +1605,12 @@ You've reached the XP Limit.</translation>
       <translation>Dice &amp;Roller...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="337" />
+      <location filename="../ui/menu.py" line="288" />
+      <source>File/Menu</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../ui/menu.py" line="338" />
       <source>You can donate to the project by clicking on the button</source>
       <translation>You can donate to the project by clicking on the button</translation>
     </message>
@@ -1839,230 +1907,235 @@ what would you want to do?
   <context>
     <name>PcInfoTabMixin</name>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="81" />
+      <location filename="../ui/tabs/pc_info.py" line="90" />
       <source>Character</source>
       <translation>Character</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="106" />
+      <location filename="../ui/tabs/pc_info.py" line="115" />
       <source>Edit character first school</source>
       <translation>Edit character first school</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="110" />
+      <location filename="../ui/tabs/pc_info.py" line="119" />
       <source>School</source>
       <translation>School</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="115" />
+      <location filename="../ui/tabs/pc_info.py" line="124" />
       <source>Edit character family and clan</source>
       <translation>Edit character family and clan</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="122" />
+      <location filename="../ui/tabs/pc_info.py" line="131" />
       <source>Family</source>
       <translation>Family</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="376" />
-      <location filename="../ui/tabs/pc_info.py" line="126" />
+      <location filename="../ui/tabs/pc_info.py" line="391" />
+      <location filename="../ui/tabs/pc_info.py" line="135" />
       <source>Name</source>
       <translation>Name</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="134" />
+      <location filename="../ui/tabs/pc_info.py" line="143" />
       <source>Random male name</source>
       <translation>Random male name</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="136" />
+      <location filename="../ui/tabs/pc_info.py" line="145" />
       <source>Random female name</source>
       <translation>Random female name</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="149" />
+      <location filename="../ui/tabs/pc_info.py" line="158" />
       <source>Clan</source>
       <translation>Clan</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="160" />
+      <location filename="../ui/tabs/pc_info.py" line="169" />
       <source>Exp. Points</source>
       <translation>Exp. Points</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="162" />
+      <location filename="../ui/tabs/pc_info.py" line="171" />
       <source>Edit experience points</source>
       <translation>Edit experience points</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="168" />
+      <location filename="../ui/tabs/pc_info.py" line="175" />
+      <source>Add experience points</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../ui/tabs/pc_info.py" line="182" />
       <source>Rank</source>
       <translation>Rank</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="170" />
+      <location filename="../ui/tabs/pc_info.py" line="184" />
       <source>Insight</source>
       <translation>Insight</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="197" />
+      <location filename="../ui/tabs/pc_info.py" line="212" />
       <source>Rings and Attributes</source>
       <translation>Rings and Attributes</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="202" />
+      <location filename="../ui/tabs/pc_info.py" line="217" />
       <source>Earth</source>
       <translation>Earth</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="202" />
+      <location filename="../ui/tabs/pc_info.py" line="217" />
       <source>Air</source>
       <translation>Air</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="203" />
+      <location filename="../ui/tabs/pc_info.py" line="218" />
       <source>Water</source>
       <translation>Water</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="203" />
+      <location filename="../ui/tabs/pc_info.py" line="218" />
       <source>Fire</source>
       <translation>Fire</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="204" />
+      <location filename="../ui/tabs/pc_info.py" line="219" />
       <source>Void</source>
       <translation>Void</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="226" />
+      <location filename="../ui/tabs/pc_info.py" line="241" />
       <source>Stamina</source>
       <translation>Stamina</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="227" />
+      <location filename="../ui/tabs/pc_info.py" line="242" />
       <source>Willpower</source>
       <translation>Willpower</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="231" />
+      <location filename="../ui/tabs/pc_info.py" line="246" />
       <source>Reflexes</source>
       <translation>Reflexes</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="232" />
+      <location filename="../ui/tabs/pc_info.py" line="247" />
       <source>Awareness</source>
       <translation>Awareness</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="236" />
+      <location filename="../ui/tabs/pc_info.py" line="251" />
       <source>Strength</source>
       <translation>Strength</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="237" />
+      <location filename="../ui/tabs/pc_info.py" line="252" />
       <source>Perception</source>
       <translation>Perception</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="241" />
+      <location filename="../ui/tabs/pc_info.py" line="256" />
       <source>Agility</source>
       <translation>Agility</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="242" />
+      <location filename="../ui/tabs/pc_info.py" line="257" />
       <source>Intelligence</source>
       <translation>Intelligence</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="274" />
+      <location filename="../ui/tabs/pc_info.py" line="289" />
       <source>&lt;b&gt;Void Points&lt;/b&gt;</source>
       <translation>&lt;b&gt;Void Points&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="287" />
+      <location filename="../ui/tabs/pc_info.py" line="302" />
       <source>Honor</source>
       <translation>Honor</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="287" />
+      <location filename="../ui/tabs/pc_info.py" line="302" />
       <source>Glory</source>
       <translation>Glory</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="288" />
+      <location filename="../ui/tabs/pc_info.py" line="303" />
       <source>Status</source>
       <translation>Status</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="288" />
+      <location filename="../ui/tabs/pc_info.py" line="303" />
       <source>Shadowland Taint</source>
       <translation>Shadowland Taint</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="289" />
+      <location filename="../ui/tabs/pc_info.py" line="304" />
       <source>Infamy</source>
       <translation>Infamy</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="341" />
+      <location filename="../ui/tabs/pc_info.py" line="356" />
       <source>Initiative</source>
       <translation>Initiative</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="377" />
-      <location filename="../ui/tabs/pc_info.py" line="353" />
+      <location filename="../ui/tabs/pc_info.py" line="392" />
+      <location filename="../ui/tabs/pc_info.py" line="368" />
       <source>Base</source>
       <translation>Base</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="354" />
+      <location filename="../ui/tabs/pc_info.py" line="369" />
       <source>Modifier</source>
       <translation>Modifier</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="380" />
-      <location filename="../ui/tabs/pc_info.py" line="355" />
+      <location filename="../ui/tabs/pc_info.py" line="395" />
+      <location filename="../ui/tabs/pc_info.py" line="370" />
       <source>Current</source>
       <translation>Current</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="360" />
+      <location filename="../ui/tabs/pc_info.py" line="375" />
       <source>Armor TN</source>
       <translation>Armor TN</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="378" />
+      <location filename="../ui/tabs/pc_info.py" line="393" />
       <source>Armor</source>
       <translation>Armor</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="379" />
+      <location filename="../ui/tabs/pc_info.py" line="394" />
       <source>Reduction</source>
       <translation>Reduction</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="385" />
+      <location filename="../ui/tabs/pc_info.py" line="400" />
       <source>Wounds</source>
       <translation>Wounds</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="397" />
+      <location filename="../ui/tabs/pc_info.py" line="412" />
       <source>Out</source>
       <translation>Out</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="505" />
+      <location filename="../ui/tabs/pc_info.py" line="518" />
       <source>No Clan</source>
       <translation>No Clan</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="513" />
+      <location filename="../ui/tabs/pc_info.py" line="526" />
       <source>No Family</source>
       <translation>No Family</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="521" />
+      <location filename="../ui/tabs/pc_info.py" line="534" />
       <source>No School</source>
       <translation>No School</translation>
     </message>
@@ -2673,100 +2746,101 @@ If you choose an advanced school or alternative path be sure to check the requir
   <context>
     <name>SpellAdvDialog</name>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="200" />
-      <location filename="../dialogs/spelldlg.py" line="87" />
+      <location filename="../dialogs/spelldlg.py" line="203" />
+      <location filename="../dialogs/spelldlg.py" line="90" />
       <source>Next</source>
       <translation>Next</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="88" />
+      <location filename="../dialogs/spelldlg.py" line="91" />
       <source>Back</source>
       <translation>Back</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="104" />
+      <location filename="../dialogs/spelldlg.py" line="107" />
       <source>School:</source>
       <translation>School:</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="111" />
+      <location filename="../dialogs/spelldlg.py" line="114" />
       <source>Affinities:</source>
       <translation>Affinities:</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="117" />
+      <location filename="../dialogs/spelldlg.py" line="120" />
       <source>Deficiencies:</source>
       <translation>Deficiencies:</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="123" />
-      <location filename="../dialogs/spelldlg.py" line="121" />
+      <location filename="../dialogs/spelldlg.py" line="126" />
+      <location filename="../dialogs/spelldlg.py" line="124" />
       <source>See school description</source>
       <translation>See school description</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="126" />
+      <location filename="../dialogs/spelldlg.py" line="129" />
       <source>Restrictions</source>
       <translation>Restrictions</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="137" />
+      <location filename="../dialogs/spelldlg.py" line="140" />
       <source>Maho</source>
       <translation>Maho</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="140" />
+      <location filename="../dialogs/spelldlg.py" line="143" />
       <source>Allow Maho</source>
       <translation>Allow Maho</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="141" />
+      <location filename="../dialogs/spelldlg.py" line="144" />
       <source>No Maho</source>
       <translation>No Maho</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="142" />
+      <location filename="../dialogs/spelldlg.py" line="145" />
       <source>Only Maho</source>
       <translation>Only Maho</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="198" />
+      <location filename="../dialogs/spelldlg.py" line="201" />
       <source>Finish</source>
       <translation>Finish</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="265" />
+      <location filename="../dialogs/spelldlg.py" line="268" />
       <source>Page {0} of {1}</source>
       <translation>Page {0} of {1}</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="310" />
-      <location filename="../dialogs/spelldlg.py" line="308" />
+      <location filename="../dialogs/spelldlg.py" line="313" />
+      <location filename="../dialogs/spelldlg.py" line="311" />
       <source>any spell but [{0}]</source>
       <translation>any spell but [{0}]</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="312" />
+      <location filename="../dialogs/spelldlg.py" line="318" />
+      <location filename="../dialogs/spelldlg.py" line="316" />
       <source>a [{0}] spell</source>
       <translation>a [{0}] spell</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="314" />
+      <location filename="../dialogs/spelldlg.py" line="320" />
       <source>Any spell</source>
       <translation>Any spell</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="317" />
+      <location filename="../dialogs/spelldlg.py" line="323" />
       <source>but Maho spells</source>
       <translation>but Maho spells</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="319" />
+      <location filename="../dialogs/spelldlg.py" line="325" />
       <source>only Maho spells</source>
       <translation>only Maho spells</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="322" />
+      <location filename="../dialogs/spelldlg.py" line="328" />
       <source>Excluded deficiency</source>
       <translation>Excluded deficiency</translation>
     </message>
