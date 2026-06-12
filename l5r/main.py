@@ -255,6 +255,7 @@ class L5RMain(AboutTabMixin, AdvancementsTabMixin, AdvanceMixin, AdviseMixin,
         self.bt_edit_school.clicked.connect(self.pc_info_sink.on_edit_first_school)
 
         self.bt_set_exp_points.clicked.connect(self.pc_info_sink.on_set_exp_limit)
+        self.bt_add_exp_points.clicked.connect(self.pc_info_sink.on_add_exp_points)
 
     def closeEvent(self, ev):
         # update interface last time, to set unsaved states
