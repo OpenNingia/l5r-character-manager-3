@@ -422,50 +422,50 @@ Você atingiu o limite de XP.</translation>
       <translation>Você não tem pontos de experiência suficientes para concluir esta compra.</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="910" />
+      <location filename="../qmlui/proxies/app_controller.py" line="913" />
       <source>{0}, Skill {1}. Cost: {2} xp</source>
       <translation>{0}, Perícia {1}. Custo: {2} exp</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="960" />
+      <location filename="../qmlui/proxies/app_controller.py" line="963" />
       <source>Any skill (rank {0}):</source>
       <translation>Qualquer perícia (nível {0}):</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="973" />
+      <location filename="../qmlui/proxies/app_controller.py" line="976" />
       <source>skill</source>
       <translation>perícia</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="975" />
+      <location filename="../qmlui/proxies/app_controller.py" line="978" />
       <source>Any {0}, but {1} (rank {2}):</source>
       <translation>Qualquer {0}, exceto {1} (posto {2}):</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="976" />
+      <location filename="../qmlui/proxies/app_controller.py" line="979" />
       <source>Any {0} skill (rank {1}):</source>
       <translation>Qualquer perícia de {0} (posto {1}):</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1696" />
-      <location filename="../qmlui/proxies/app_controller.py" line="1611" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1699" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1614" />
       <source>{0} Rank {1}, XP Gain: {2}</source>
       <translation>{0} Nível {1}, Ganho EXP: {2}</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1699" />
-      <location filename="../qmlui/proxies/app_controller.py" line="1614" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1702" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1617" />
       <source>{0} Rank {1}, XP Cost: {2}</source>
       <translation>{0} Nível {1}, Custo EXP: {2}</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1922" />
-      <location filename="../qmlui/proxies/app_controller.py" line="1921" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1925" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1924" />
       <source>N/A</source>
       <translation>N/A</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="2107" />
+      <location filename="../qmlui/proxies/app_controller.py" line="2119" />
       <source>New item</source>
       <translation>Novo item</translation>
     </message>
@@ -1351,540 +1351,68 @@ Você atingiu o limite de XP.</translation>
       <source>Invalid data pack.</source>
       <translation>Data pack inválido.</translation>
     </message>
-    <message>
-      <source>{0}, Cost: {1} xp</source>
-      <translation type="vanished">{0}, Custo: {1} exp</translation>
-    </message>
   </context>
   <context>
     <name>L5RMain</name>
     <message>
+      <location filename="../main.py" line="109" />
       <source>Character</source>
-      <translation type="vanished">Personagem</translation>
+      <translation>Personagem</translation>
     </message>
     <message>
-      <source>School</source>
-      <translation type="vanished">Escola</translation>
-    </message>
-    <message>
-      <source>Family</source>
-      <translation type="vanished">Família</translation>
-    </message>
-    <message>
-      <source>Name</source>
-      <translation type="vanished">Nome</translation>
-    </message>
-    <message>
-      <source>Clan</source>
-      <translation type="vanished">Clã</translation>
-    </message>
-    <message>
-      <source>Exp. Points</source>
-      <translation type="vanished">Pontos de EXP</translation>
-    </message>
-    <message>
-      <source>Rank</source>
-      <translation type="vanished">Nível</translation>
-    </message>
-    <message>
-      <source>Insight</source>
-      <translation type="vanished">Discernimento</translation>
-    </message>
-    <message>
-      <source>Rings and Attributes</source>
-      <translation type="vanished">Anéis e Atributos</translation>
-    </message>
-    <message>
-      <source>Earth</source>
-      <translation type="vanished">Terra</translation>
-    </message>
-    <message>
-      <source>Air</source>
-      <translation type="vanished">Ar</translation>
-    </message>
-    <message>
-      <source>Water</source>
-      <translation type="vanished">Água</translation>
-    </message>
-    <message>
-      <source>Fire</source>
-      <translation type="vanished">Fogo</translation>
-    </message>
-    <message>
-      <source>Void</source>
-      <translation type="vanished">Vazio</translation>
-    </message>
-    <message>
-      <source>Stamina</source>
-      <translation type="vanished">Vigor</translation>
-    </message>
-    <message>
-      <source>Willpower</source>
-      <translation type="vanished">Vontade</translation>
-    </message>
-    <message>
-      <source>Reflexes</source>
-      <translation type="vanished">Reflexos</translation>
-    </message>
-    <message>
-      <source>Strength</source>
-      <translation type="vanished">Força</translation>
-    </message>
-    <message>
-      <source>Perception</source>
-      <translation type="vanished">Percepção</translation>
-    </message>
-    <message>
-      <source>Agility</source>
-      <translation type="vanished">Agilidade</translation>
-    </message>
-    <message>
-      <source>Intelligence</source>
-      <translation type="vanished">Inteligência</translation>
-    </message>
-    <message>
-      <source>&lt;b&gt;Void Points&lt;/b&gt;</source>
-      <translation type="vanished">&lt;b&gt;Pontos de Vazio&lt;/b&gt;</translation>
-    </message>
-    <message>
-      <source>Honor</source>
-      <translation type="vanished">Honra</translation>
-    </message>
-    <message>
-      <source>Glory</source>
-      <translation type="vanished">Glória</translation>
-    </message>
-    <message>
-      <source>Status</source>
-      <translation type="vanished">Posição</translation>
-    </message>
-    <message>
-      <source>Shadowland Taint</source>
-      <translation type="vanished">Mácula das Terras Sombrias</translation>
-    </message>
-    <message>
-      <source>Infamy</source>
-      <translation type="vanished">Infâmia</translation>
-    </message>
-    <message>
-      <source>Initiative</source>
-      <translation type="vanished">Iniciativa</translation>
-    </message>
-    <message>
-      <source>Base</source>
-      <translation type="vanished">Base</translation>
-    </message>
-    <message>
-      <source>Modifier</source>
-      <translation type="vanished">Modificador</translation>
-    </message>
-    <message>
-      <source>Current</source>
-      <translation type="vanished">Atual</translation>
-    </message>
-    <message>
-      <source>Armor TN</source>
-      <translation type="vanished">NA de Armadura</translation>
-    </message>
-    <message>
-      <source>Armor</source>
-      <translation type="vanished">Armadura</translation>
-    </message>
-    <message>
-      <source>Reduction</source>
-      <translation type="vanished">Redução</translation>
-    </message>
-    <message>
-      <source>Wounds</source>
-      <translation type="vanished">Ferimentos</translation>
-    </message>
-    <message>
-      <source>Out</source>
-      <translation type="vanished">Inconsciente</translation>
-    </message>
-    <message>
-      <source>Spells</source>
-      <translation type="vanished">Magias</translation>
-    </message>
-    <message>
-      <source>Add new spell</source>
-      <translation type="vanished">Adicionar nova magia</translation>
-    </message>
-    <message>
-      <source>Remove spell</source>
-      <translation type="vanished">Remover magia</translation>
-    </message>
-    <message>
-      <source>&lt;b&gt;&lt;i&gt;Affinity&lt;/i&gt;&lt;/b&gt;</source>
-      <translation type="vanished">&lt;b&gt;&lt;i&gt;Afinidade&lt;/i&gt;&lt;/b&gt;</translation>
-    </message>
-    <message>
-      <source>&lt;b&gt;&lt;i&gt;Deficiency&lt;/i&gt;&lt;/b&gt;</source>
-      <translation type="vanished">&lt;b&gt;&lt;i&gt;Deficiência&lt;/i&gt;&lt;/b&gt;</translation>
-    </message>
-    <message>
-      <source>Kata</source>
-      <translation type="vanished">Kata</translation>
-    </message>
-    <message>
-      <source>Add new Kata</source>
-      <translation type="vanished">Adicionar novo Kata</translation>
-    </message>
-    <message>
-      <source>Remove Kata</source>
-      <translation type="vanished">Remover Kata</translation>
-    </message>
-    <message>
-      <source>Kiho</source>
-      <translation type="vanished">Kiho</translation>
-    </message>
-    <message>
-      <source>Add new Kiho</source>
-      <translation type="vanished">Adicionar novo Kiho</translation>
-    </message>
-    <message>
-      <source>Remove Kiho</source>
-      <translation type="vanished">Remover Kiho</translation>
-    </message>
-    <message>
-      <source>Add skill rank</source>
-      <translation type="vanished">Adicionar nível de Perícia</translation>
-    </message>
-    <message>
-      <source>Buy skill emphasys</source>
-      <translation type="vanished">Comprar Ênfase em Perícia</translation>
-    </message>
-    <message>
-      <source>Buy another skill</source>
-      <translation type="vanished">Comprar outra perícia</translation>
-    </message>
-    <message>
-      <source>Mastery Abilities</source>
-      <translation type="vanished">Habilidades de Domínio</translation>
-    </message>
-    <message>
+      <location filename="../main.py" line="110" />
       <source>Skills</source>
-      <translation type="vanished">Perícias</translation>
+      <translation>Perícias</translation>
     </message>
     <message>
-      <source>Techniques</source>
-      <translation type="vanished">Técnicas</translation>
+      <location filename="../main.py" line="111" />
+      <source>Spells/Techniques</source>
+      <translation type="unfinished" />
     </message>
     <message>
-      <source>Powers</source>
-      <translation type="vanished">Poderes</translation>
+      <location filename="../main.py" line="112" />
+      <source>Kata/Kiho</source>
+      <translation type="unfinished" />
     </message>
     <message>
-      <source>Add Perk</source>
-      <translation type="vanished">Adicionar Complicação</translation>
+      <location filename="../main.py" line="113" />
+      <source>Merits/Flaws</source>
+      <translation type="unfinished">Vantagens/Desvantagens</translation>
     </message>
     <message>
-      <source>Edit Perk</source>
-      <translation type="vanished">Editar Complicação</translation>
+      <location filename="../main.py" line="114" />
+      <source>Advancements</source>
+      <translation type="unfinished">Avanços</translation>
     </message>
     <message>
-      <source>Remove Perk</source>
-      <translation type="vanished">Remover Complicação</translation>
-    </message>
-    <message>
-      <source>Advantages</source>
-      <translation type="vanished">Vantagens</translation>
-    </message>
-    <message>
-      <source>Disadvantages</source>
-      <translation type="vanished">Desvantagens</translation>
-    </message>
-    <message>
-      <source>Perks</source>
-      <translation type="vanished">Complicações</translation>
-    </message>
-    <message>
-      <source>Add weapon</source>
-      <translation type="vanished">Adicionar Arma</translation>
-    </message>
-    <message>
-      <source>Add custom weapon</source>
-      <translation type="vanished">Adicionar Arma Personalizada</translation>
-    </message>
-    <message>
-      <source>Edit weapon</source>
-      <translation type="vanished">Editar Arma</translation>
-    </message>
-    <message>
-      <source>Remove weapon</source>
-      <translation type="vanished">Remover Arma</translation>
-    </message>
-    <message>
-      <source>Increase Quantity</source>
-      <translation type="vanished">Aumentar Quantidade</translation>
-    </message>
-    <message>
-      <source>Decrease Quantity</source>
-      <translation type="vanished">Diminuir Quantidade</translation>
-    </message>
-    <message>
-      <source>Melee Weapons</source>
-      <translation type="vanished">Armas Corpo-a-Corpo</translation>
-    </message>
-    <message>
-      <source>Ranged Weapons</source>
-      <translation type="vanished">Armas à Distância</translation>
-    </message>
-    <message>
-      <source>Arrows</source>
-      <translation type="vanished">Flechas</translation>
-    </message>
-    <message>
+      <location filename="../main.py" line="115" />
       <source>Weapons</source>
-      <translation type="vanished">Armas</translation>
+      <translation>Armas</translation>
     </message>
     <message>
-      <source>Add modifier</source>
-      <translation type="vanished">Adicionar Modificador</translation>
-    </message>
-    <message>
-      <source>Remove modifier</source>
-      <translation type="vanished">Remover Modificador</translation>
-    </message>
-    <message>
+      <location filename="../main.py" line="116" />
       <source>Modifiers</source>
-      <translation type="vanished">Modificadores</translation>
+      <translation>Modificadores</translation>
     </message>
     <message>
-      <source>Personal Informations</source>
-      <translation type="vanished">Informações Pessoais</translation>
+      <location filename="../main.py" line="117" />
+      <source>Notes/Personal Info</source>
+      <translation type="unfinished" />
     </message>
     <message>
-      <source>Sex</source>
-      <translation type="vanished">Sexo</translation>
-    </message>
-    <message>
-      <source>Age</source>
-      <translation type="vanished">Idade</translation>
-    </message>
-    <message>
-      <source>Height</source>
-      <translation type="vanished">Altura</translation>
-    </message>
-    <message>
-      <source>Weight</source>
-      <translation type="vanished">Peso</translation>
-    </message>
-    <message>
-      <source>Hair</source>
-      <translation type="vanished">Cabelos</translation>
-    </message>
-    <message>
-      <source>Eyes</source>
-      <translation type="vanished">Olhos</translation>
-    </message>
-    <message>
-      <source>Father</source>
-      <translation type="vanished">Pai</translation>
-    </message>
-    <message>
-      <source>Mother</source>
-      <translation type="vanished">Mãe</translation>
-    </message>
-    <message>
-      <source>Marital Status</source>
-      <translation type="vanished">Estado Civil</translation>
-    </message>
-    <message>
-      <source>Spouse</source>
-      <translation type="vanished">Cônjuge</translation>
-    </message>
-    <message>
-      <source>Children</source>
-      <translation type="vanished">Filhos</translation>
-    </message>
-    <message>
-      <source>Notes</source>
-      <translation type="vanished">Anotações</translation>
-    </message>
-    <message>
-      <source>Add equipment</source>
-      <translation type="vanished">Adicionar Equipamento</translation>
-    </message>
-    <message>
-      <source>Remove equipment</source>
-      <translation type="vanished">Remover Equipamento</translation>
-    </message>
-    <message>
+      <location filename="../main.py" line="118" />
       <source>Equipment</source>
-      <translation type="vanished">Equipamento</translation>
+      <translation>Equipamento</translation>
     </message>
     <message>
+      <location filename="../main.py" line="119" />
+      <source>Settings</source>
+      <translation type="unfinished">Configurações</translation>
+    </message>
+    <message>
+      <location filename="../main.py" line="130" />
       <source>About</source>
-      <translation type="vanished">Sobre</translation>
-    </message>
-    <message>
-      <source>&amp;New Character</source>
-      <translation type="vanished">&amp;Novo Personagem</translation>
-    </message>
-    <message>
-      <source>&amp;Open Character...</source>
-      <translation type="vanished">&amp;Abrir Personagem...</translation>
-    </message>
-    <message>
-      <source>&amp;Save Character...</source>
-      <translation type="vanished">&amp;Salvar Personagem...</translation>
-    </message>
-    <message>
-      <source>Wear Armor...</source>
-      <translation type="vanished">Vestir Armadura</translation>
-    </message>
-    <message>
-      <source>Wear Custom Armor...</source>
-      <translation type="vanished">Vestir Armadura Personalizada</translation>
-    </message>
-    <message>
-      <source>Add Weapon...</source>
-      <translation type="vanished">Adicionar Arma</translation>
-    </message>
-    <message>
-      <source>Add Custom Weapon...</source>
-      <translation type="vanished">Adicionar Arma Personalizada</translation>
-    </message>
-    <message>
-      <source>Set Health Multiplier...</source>
-      <translation type="vanished">Ajustar Multiplicador de Vitalidade</translation>
-    </message>
-    <message>
-      <source>Cure/Inflict Damage...</source>
-      <translation type="vanished">Curar/Infligir Dano</translation>
-    </message>
-    <message>
-      <source>Insight Calculation</source>
-      <translation type="vanished">Cálculo de Discernimento</translation>
-    </message>
-    <message>
-      <source>Default</source>
-      <translation type="vanished">Padrão</translation>
-    </message>
-    <message>
-      <source>Ignore Rank 1 Skills</source>
-      <translation type="vanished">Ignorar perícias Nível 1</translation>
-    </message>
-    <message>
-      <source>Account Rank 1 School Skills</source>
-      <translation type="vanished">Considerar perícias nível 1</translation>
-    </message>
-    <message>
-      <source>Free Shopping</source>
-      <translation type="vanished">Compra Livre</translation>
-    </message>
-    <message>
-      <source>Add New Spell</source>
-      <translation type="vanished">Adicionar Nova Magia</translation>
-    </message>
-    <message>
-      <source>You reached the next rank, you have an opportunity to decide your destiny.</source>
-      <translation type="vanished">Você atingiu o próximo nível, você tem a oportunidade de escolher seu destino.</translation>
-    </message>
-    <message>
-      <source>Advance rank</source>
-      <translation type="vanished">Avance de nível</translation>
-    </message>
-    <message>
-      <source>You now fit the requirements to learn other Spells</source>
-      <translation type="vanished">Agora você cumpre os requisitos para aprender outras magias</translation>
-    </message>
-    <message>
-      <source>Learn Spells</source>
-      <translation type="vanished">Aprender Magias</translation>
-    </message>
-    <message>
-      <source>Learn Kihos</source>
-      <translation type="vanished">Aprender Kiho</translation>
-    </message>
-    <message>
-      <source>You school grant you to choose an elemental affinity.</source>
-      <translation type="vanished">Sua Escola lhe garante a escolha de uma afinidade elemental.</translation>
-    </message>
-    <message>
-      <source>Choose Affinity</source>
-      <translation type="vanished">Escolha uma Afinidade</translation>
-    </message>
-    <message>
-      <source>You school grant you to choose an elemental deficiency.</source>
-      <translation type="vanished">Sua Escola lhe garante a escolha de uma deficiência elemental.</translation>
-    </message>
-    <message>
-      <source>Choose Deficiency</source>
-      <translation type="vanished">Escolha Deficiência</translation>
-    </message>
-    <message>
-      <source>Choose School Spells</source>
-      <translation type="vanished">Escolher Magias de Escola</translation>
-    </message>
-    <message>
-      <source>Select your elemental affinity</source>
-      <translation type="vanished">Selecione sua afinidade elemental</translation>
-    </message>
-    <message>
-      <source>Select your elemental deficiency</source>
-      <translation type="vanished">Selecione sua deficiência elemental</translation>
-    </message>
-    <message>
-      <source>No Clan</source>
-      <translation type="vanished">Sem clã</translation>
-    </message>
-    <message>
-      <source>No Family</source>
-      <translation type="vanished">Sem Família</translation>
-    </message>
-    <message>
-      <source>No School</source>
-      <translation type="vanished">Sem Escola</translation>
-    </message>
-    <message>
-      <source>Health / Wounds (x%d)</source>
-      <translation type="vanished">Vitalidade / Ferimentos (x%d)</translation>
-    </message>
-    <message>
-      <source>Healthy</source>
-      <translation type="vanished">Saudável</translation>
-    </message>
-    <message>
-      <source>Nicked</source>
-      <translation type="vanished">Atingido</translation>
-    </message>
-    <message>
-      <source>Grazed</source>
-      <translation type="vanished">Escoriado</translation>
-    </message>
-    <message>
-      <source>Hurt</source>
-      <translation type="vanished">Machucado</translation>
-    </message>
-    <message>
-      <source>Injured</source>
-      <translation type="vanished">Ferido</translation>
-    </message>
-    <message>
-      <source>Crippled</source>
-      <translation type="vanished">Aleijado</translation>
-    </message>
-    <message>
-      <source>Down</source>
-      <translation type="vanished">Incapacitado</translation>
-    </message>
-    <message>
-      <source>Not enough XP</source>
-      <translation type="vanished">EXP Insuficiente</translation>
-    </message>
-    <message>
-      <source>Save Character</source>
-      <translation type="vanished">Salvar Personagem</translation>
-    </message>
-    <message>
-      <source>Load Character</source>
-      <translation type="vanished">Carregar Personagem</translation>
-    </message>
-    <message>
-      <source>Export Character</source>
-      <translation type="vanished">Exportar Personagem</translation>
+      <translation>Sobre</translation>
     </message>
   </context>
   <context>
@@ -2077,7 +1605,12 @@ Você atingiu o limite de XP.</translation>
       <translation>&amp;Rolador de dados...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="337" />
+      <location filename="../ui/menu.py" line="288" />
+      <source>File/Menu</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../ui/menu.py" line="338" />
       <source>You can donate to the project by clicking on the button</source>
       <translation>Você pode doar ao projeto clicando no botão</translation>
     </message>
@@ -2374,230 +1907,235 @@ o que deseja fazer?
   <context>
     <name>PcInfoTabMixin</name>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="81" />
+      <location filename="../ui/tabs/pc_info.py" line="90" />
       <source>Character</source>
       <translation>Personagem</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="106" />
+      <location filename="../ui/tabs/pc_info.py" line="115" />
       <source>Edit character first school</source>
       <translation>Editar a primeira escola do personagem</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="110" />
+      <location filename="../ui/tabs/pc_info.py" line="119" />
       <source>School</source>
       <translation>Escola</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="115" />
+      <location filename="../ui/tabs/pc_info.py" line="124" />
       <source>Edit character family and clan</source>
       <translation>Editar a família e o clã do personagem</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="122" />
+      <location filename="../ui/tabs/pc_info.py" line="131" />
       <source>Family</source>
       <translation>Família</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="376" />
-      <location filename="../ui/tabs/pc_info.py" line="126" />
+      <location filename="../ui/tabs/pc_info.py" line="391" />
+      <location filename="../ui/tabs/pc_info.py" line="135" />
       <source>Name</source>
       <translation>Nome</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="134" />
+      <location filename="../ui/tabs/pc_info.py" line="143" />
       <source>Random male name</source>
       <translation>Nome masculino aleatório</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="136" />
+      <location filename="../ui/tabs/pc_info.py" line="145" />
       <source>Random female name</source>
       <translation>Nome feminino aleatório</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="149" />
+      <location filename="../ui/tabs/pc_info.py" line="158" />
       <source>Clan</source>
       <translation>Clã</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="160" />
+      <location filename="../ui/tabs/pc_info.py" line="169" />
       <source>Exp. Points</source>
       <translation>Pontos de EXP</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="162" />
+      <location filename="../ui/tabs/pc_info.py" line="171" />
       <source>Edit experience points</source>
       <translation>Editar pontos de experiência</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="168" />
+      <location filename="../ui/tabs/pc_info.py" line="175" />
+      <source>Add experience points</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../ui/tabs/pc_info.py" line="182" />
       <source>Rank</source>
       <translation>Nível</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="170" />
+      <location filename="../ui/tabs/pc_info.py" line="184" />
       <source>Insight</source>
       <translation>Discernimento</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="197" />
+      <location filename="../ui/tabs/pc_info.py" line="212" />
       <source>Rings and Attributes</source>
       <translation>Anéis e Atributos</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="202" />
+      <location filename="../ui/tabs/pc_info.py" line="217" />
       <source>Earth</source>
       <translation>Terra</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="202" />
+      <location filename="../ui/tabs/pc_info.py" line="217" />
       <source>Air</source>
       <translation>Ar</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="203" />
+      <location filename="../ui/tabs/pc_info.py" line="218" />
       <source>Water</source>
       <translation>Água</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="203" />
+      <location filename="../ui/tabs/pc_info.py" line="218" />
       <source>Fire</source>
       <translation>Fogo</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="204" />
+      <location filename="../ui/tabs/pc_info.py" line="219" />
       <source>Void</source>
       <translation>Vazio</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="226" />
+      <location filename="../ui/tabs/pc_info.py" line="241" />
       <source>Stamina</source>
       <translation>Vigor</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="227" />
+      <location filename="../ui/tabs/pc_info.py" line="242" />
       <source>Willpower</source>
       <translation>Vontade</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="231" />
+      <location filename="../ui/tabs/pc_info.py" line="246" />
       <source>Reflexes</source>
       <translation>Reflexos</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="232" />
+      <location filename="../ui/tabs/pc_info.py" line="247" />
       <source>Awareness</source>
       <translation>Consciência</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="236" />
+      <location filename="../ui/tabs/pc_info.py" line="251" />
       <source>Strength</source>
       <translation>Força</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="237" />
+      <location filename="../ui/tabs/pc_info.py" line="252" />
       <source>Perception</source>
       <translation>Percepção</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="241" />
+      <location filename="../ui/tabs/pc_info.py" line="256" />
       <source>Agility</source>
       <translation>Agilidade</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="242" />
+      <location filename="../ui/tabs/pc_info.py" line="257" />
       <source>Intelligence</source>
       <translation>Inteligência</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="274" />
+      <location filename="../ui/tabs/pc_info.py" line="289" />
       <source>&lt;b&gt;Void Points&lt;/b&gt;</source>
       <translation>&lt;b&gt;Pontos de Vazio&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="287" />
+      <location filename="../ui/tabs/pc_info.py" line="302" />
       <source>Honor</source>
       <translation>Honra</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="287" />
+      <location filename="../ui/tabs/pc_info.py" line="302" />
       <source>Glory</source>
       <translation>Glória</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="288" />
+      <location filename="../ui/tabs/pc_info.py" line="303" />
       <source>Status</source>
       <translation>Posição</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="288" />
+      <location filename="../ui/tabs/pc_info.py" line="303" />
       <source>Shadowland Taint</source>
       <translation>Mácula das Terras Sombrias</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="289" />
+      <location filename="../ui/tabs/pc_info.py" line="304" />
       <source>Infamy</source>
       <translation>Infâmia</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="341" />
+      <location filename="../ui/tabs/pc_info.py" line="356" />
       <source>Initiative</source>
       <translation>Iniciativa</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="377" />
-      <location filename="../ui/tabs/pc_info.py" line="353" />
+      <location filename="../ui/tabs/pc_info.py" line="392" />
+      <location filename="../ui/tabs/pc_info.py" line="368" />
       <source>Base</source>
       <translation>Base</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="354" />
+      <location filename="../ui/tabs/pc_info.py" line="369" />
       <source>Modifier</source>
       <translation>Modificador</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="380" />
-      <location filename="../ui/tabs/pc_info.py" line="355" />
+      <location filename="../ui/tabs/pc_info.py" line="395" />
+      <location filename="../ui/tabs/pc_info.py" line="370" />
       <source>Current</source>
       <translation>Atual</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="360" />
+      <location filename="../ui/tabs/pc_info.py" line="375" />
       <source>Armor TN</source>
       <translation>NA de Armadura</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="378" />
+      <location filename="../ui/tabs/pc_info.py" line="393" />
       <source>Armor</source>
       <translation>Armadura</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="379" />
+      <location filename="../ui/tabs/pc_info.py" line="394" />
       <source>Reduction</source>
       <translation>Redução</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="385" />
+      <location filename="../ui/tabs/pc_info.py" line="400" />
       <source>Wounds</source>
       <translation>Ferimentos</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="397" />
+      <location filename="../ui/tabs/pc_info.py" line="412" />
       <source>Out</source>
       <translation>Inconsciente</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="505" />
+      <location filename="../ui/tabs/pc_info.py" line="518" />
       <source>No Clan</source>
       <translation>Sem clã</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="513" />
+      <location filename="../ui/tabs/pc_info.py" line="526" />
       <source>No Family</source>
       <translation>Sem Família</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="521" />
+      <location filename="../ui/tabs/pc_info.py" line="534" />
       <source>No School</source>
       <translation>Sem Escola</translation>
     </message>
@@ -3208,100 +2746,101 @@ Se escolher uma escola avançada ou um caminho alternativo, verifique os requisi
   <context>
     <name>SpellAdvDialog</name>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="200" />
-      <location filename="../dialogs/spelldlg.py" line="87" />
+      <location filename="../dialogs/spelldlg.py" line="203" />
+      <location filename="../dialogs/spelldlg.py" line="90" />
       <source>Next</source>
       <translation>Próximo</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="88" />
+      <location filename="../dialogs/spelldlg.py" line="91" />
       <source>Back</source>
       <translation>Voltar</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="104" />
+      <location filename="../dialogs/spelldlg.py" line="107" />
       <source>School:</source>
       <translation>Escola:</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="111" />
+      <location filename="../dialogs/spelldlg.py" line="114" />
       <source>Affinities:</source>
       <translation>Afinidades:</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="117" />
+      <location filename="../dialogs/spelldlg.py" line="120" />
       <source>Deficiencies:</source>
       <translation>Deficiências:</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="123" />
-      <location filename="../dialogs/spelldlg.py" line="121" />
+      <location filename="../dialogs/spelldlg.py" line="126" />
+      <location filename="../dialogs/spelldlg.py" line="124" />
       <source>See school description</source>
       <translation>Ver descrição da escola</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="126" />
+      <location filename="../dialogs/spelldlg.py" line="129" />
       <source>Restrictions</source>
       <translation>Restrições</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="137" />
+      <location filename="../dialogs/spelldlg.py" line="140" />
       <source>Maho</source>
       <translation>Maho</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="140" />
+      <location filename="../dialogs/spelldlg.py" line="143" />
       <source>Allow Maho</source>
       <translation>Permitir Maho</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="141" />
+      <location filename="../dialogs/spelldlg.py" line="144" />
       <source>No Maho</source>
       <translation>Proibir Maho</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="142" />
+      <location filename="../dialogs/spelldlg.py" line="145" />
       <source>Only Maho</source>
       <translation>Apenas Maho</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="198" />
+      <location filename="../dialogs/spelldlg.py" line="201" />
       <source>Finish</source>
       <translation>Finalizar</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="265" />
+      <location filename="../dialogs/spelldlg.py" line="268" />
       <source>Page {0} of {1}</source>
       <translation>Página {0} de {1}</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="310" />
-      <location filename="../dialogs/spelldlg.py" line="308" />
+      <location filename="../dialogs/spelldlg.py" line="313" />
+      <location filename="../dialogs/spelldlg.py" line="311" />
       <source>any spell but [{0}]</source>
       <translation>qualquer magia exceto [{0}]</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="312" />
+      <location filename="../dialogs/spelldlg.py" line="318" />
+      <location filename="../dialogs/spelldlg.py" line="316" />
       <source>a [{0}] spell</source>
       <translation>uma magia [{0}]</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="314" />
+      <location filename="../dialogs/spelldlg.py" line="320" />
       <source>Any spell</source>
       <translation>Qualquer magia</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="317" />
+      <location filename="../dialogs/spelldlg.py" line="323" />
       <source>but Maho spells</source>
       <translation>exceto magias Maho</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="319" />
+      <location filename="../dialogs/spelldlg.py" line="325" />
       <source>only Maho spells</source>
       <translation>apenas magias Maho</translation>
     </message>
     <message>
-      <location filename="../dialogs/spelldlg.py" line="322" />
+      <location filename="../dialogs/spelldlg.py" line="328" />
       <source>Excluded deficiency</source>
       <translation>Deficiência excluída</translation>
     </message>
@@ -3692,13 +3231,6 @@ Se escolher uma escola avançada ou um caminho alternativo, verifique os requisi
       <location filename="../widgets/cost_selection.py" line="27" />
       <source>XP</source>
       <translation>EXP</translation>
-    </message>
-  </context>
-  <context>
-    <name>__api</name>
-    <message>
-      <source>{0} Rank {1}, XP Cost: {2}</source>
-      <translation type="vanished">{0} Nível {1}, Custo EXP: {2}</translation>
     </message>
   </context>
 </TS>

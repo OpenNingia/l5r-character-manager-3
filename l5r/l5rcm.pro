@@ -28,6 +28,7 @@ SOURCES = __init__.py \
           api/data/skills.py \
           api/data/spells.py \
           api/rules/__init__.py \
+          api/rules/modifiers.py \
           api/signals.py \
           dialogs/__init__.py \
           dialogs/advdlg.py \
@@ -80,6 +81,7 @@ SOURCES = __init__.py \
           qmlui/proxies/pc/identity.py \
           qmlui/proxies/pc/kata.py \
           qmlui/proxies/pc/kiho.py \
+          qmlui/proxies/pc/memo.py \
           qmlui/proxies/pc/misc.py \
           qmlui/proxies/pc/notes.py \
           qmlui/proxies/pc/opportunities.py \
