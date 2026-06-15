@@ -42,7 +42,7 @@ ColumnLayout {
             "currentTn": 0,
             "desc": ""
         })
-    readonly property bool _canEditOrigin: appCtrl ? appCtrl.canEditOrigin() : true
+    readonly property bool _canEditOrigin: pcProxy ? pcProxy.canEditOrigin : true
 
     // A pending rank-up (the root opportunity -- every grant flows from
     // it). Drives the callout below; the matching TOC badge comes from the
