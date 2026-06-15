@@ -25,6 +25,7 @@ class IdentityMixin:
     schoolChanged = Signal()
     progressionChanged = Signal()
     displayTitleChanged = Signal()
+    canEditOriginChanged = Signal()
 
     def _wire_identity(self, bus):
         bus.name_changed.connect(self._on_name_changed)
@@ -43,6 +44,7 @@ class IdentityMixin:
         # Family change recomputes school context-relative bits too.
         invalidate(self, "progression")
         self.progressionChanged.emit()
+        self.canEditOriginChanged.emit()
 
     def _on_clan_changed(self, _value):
         self.clanChanged.emit()
@@ -55,6 +57,7 @@ class IdentityMixin:
         self.schoolChanged.emit()
         invalidate(self, "progression")
         self.progressionChanged.emit()
+        self.canEditOriginChanged.emit()
 
     def _on_model_replaced_identity(self):
         self.nameChanged.emit()
@@ -64,6 +67,7 @@ class IdentityMixin:
         invalidate(self, "progression")
         self.progressionChanged.emit()
         self.displayTitleChanged.emit()
+        self.canEditOriginChanged.emit()
 
     @Property(str, notify=nameChanged)
     def name(self):
@@ -95,6 +99,16 @@ class IdentityMixin:
             return ""
         school_ = api.data.schools.get(sid)
         return school_.name if school_ else ""
+
+    @Property(bool, notify=canEditOriginChanged)
+    def canEditOrigin(self):
+        """Origin (family/school) edits are blocked once any advancement
+        has been recorded -- mirrors the QWidget side's disabled edit
+        buttons. Exposed as a NOTIFY property (not a one-shot Slot call)
+        so the Family/School edit icons re-enable/disable when the active
+        character is replaced or refreshed (issue #433)."""
+        pc = api.character.model()
+        return bool(pc and len(pc.advans) == 0)
 
     @Property("QVariantMap", notify=progressionChanged)
     @memoize
