@@ -5,7 +5,7 @@
 // pcProxy, and routes mutations through appCtrl.damageHealth /
 // setWoundsTotal / resetWounds (so the dirty flag stays correct).
 // Interactions:
-//   * stepper [- N +]  -> appCtrl.damageHealth(+/-1)
+//   * Heal/Damage btn  -> DamageHealDialog -> appCtrl.damageHealth(+/-N)
 //   * click card       -> appCtrl.setWoundsTotal(bucketStart) ; HEALTHY = 0
 //   * shift+click card -> appCtrl.resetWounds() (heals to zero)
 // A header tooltip carries the legend (cell layout / formula / interaction)
@@ -16,6 +16,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Theme 1.0
 import ClanTheme 1.0
+
+import "../dialogs" as Dialogs
 
 Pane {
     id: panel
@@ -152,21 +154,15 @@ Pane {
                 }
             }
             Item {
-                Layout.preferredWidth: 8
+                Layout.preferredWidth: 12
             }
-            Label {
-                text: qsTr("current")
-                font.pixelSize: Theme.fsCaption
-                opacity: 0.6
-            }
-            RankStepper {
-                value: panel._cur
-                from: 0
-                to: Math.max(0, panel._max)
-                onValueModified: function (v) {
-                    if (appCtrl)
-                        appCtrl.setWoundsTotal(v);
-                }
+            // Heal/Damage opens a dialog to apply a *batch* of wounds at
+            // once (the game inflicts many wounds per hit, not one click at
+            // a time). Defaults to "inflict"; the dialog flips to heal.
+            L5RButton {
+                text: qsTr("Heal / Damage")
+                glyph: "傷"
+                onClicked: damageHealDlg.present(false)
             }
         }
 
@@ -352,5 +348,11 @@ Pane {
                 }
             }
         }
+    }
+
+    // Batch heal/damage entry. Self-contained here since it only acts on
+    // the wounds total; opened by the header button (default: inflict).
+    Dialogs.DamageHealDialog {
+        id: damageHealDlg
     }
 }
