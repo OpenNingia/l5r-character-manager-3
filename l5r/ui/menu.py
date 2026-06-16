@@ -39,11 +39,31 @@ class MenuSink(QtCore.QObject):
 
     def on_set_wnd_mult(self):
         window = self.window
-        val, ok = QtWidgets.QInputDialog.getInt(window, 'Set Health Multiplier',
-                                                "Multiplier:", window.pc.health_multiplier,
-                                                2, 5, 1)
-        if ok:
-            window.set_health_multiplier(val)
+
+        dlg = QtWidgets.QDialog(window)
+        dlg.setWindowTitle('Health Levels')
+        form = QtWidgets.QFormLayout(dlg)
+
+        base_sb = QtWidgets.QSpinBox(dlg)
+        base_sb.setRange(1, 20)
+        base_sb.setValue(api.character.get_base_health_multiplier())
+        form.addRow('Healthy level (Earth ×):', base_sb)
+
+        mult_sb = QtWidgets.QSpinBox(dlg)
+        mult_sb.setRange(1, 10)
+        mult_sb.setValue(window.pc.health_multiplier)
+        form.addRow('Per-level multiplier (Earth ×):', mult_sb)
+
+        buttons = QtWidgets.QDialogButtonBox(
+            QtWidgets.QDialogButtonBox.StandardButton.Ok |
+            QtWidgets.QDialogButtonBox.StandardButton.Cancel, dlg)
+        buttons.accepted.connect(dlg.accept)
+        buttons.rejected.connect(dlg.reject)
+        form.addRow(buttons)
+
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            window.set_base_health_multiplier(base_sb.value())
+            window.set_health_multiplier(mult_sb.value())
 
     def on_damage_act(self):
         window = self.window
@@ -187,7 +207,7 @@ class MenuMixin:
 
         # Rules menu
         set_wound_mult_act = QtWidgets.QAction(
-            self.tr("Set Health Multiplier..."), self)
+            self.tr("Set Health Levels..."), self)
         damage_act = QtWidgets.QAction(
             self.tr("Cure/Inflict Damage..."), self)
 

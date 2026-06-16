@@ -5,7 +5,7 @@
 // pcProxy, and routes mutations through appCtrl.damageHealth /
 // setWoundsTotal / resetWounds (so the dirty flag stays correct).
 // Interactions:
-//   * stepper [- N +]  -> appCtrl.damageHealth(+/-1)
+//   * Heal/Damage btn  -> DamageHealDialog -> appCtrl.damageHealth(+/-N)
 //   * click card       -> appCtrl.setWoundsTotal(bucketStart) ; HEALTHY = 0
 //   * shift+click card -> appCtrl.resetWounds() (heals to zero)
 // A header tooltip carries the legend (cell layout / formula / interaction)
@@ -17,12 +17,13 @@ import QtQuick.Layouts
 import Theme 1.0
 import ClanTheme 1.0
 
+import "../dialogs" as Dialogs
+
 Pane {
     id: panel
 
     // pcProxy + appCtrl are root context properties injected by app.py.
     readonly property var _wounds: pcProxy ? pcProxy.wounds : []
-    readonly property int _hm: pcProxy ? pcProxy.healthMultiplier : 2
     readonly property int _cur: pcProxy ? pcProxy.currentWounds : 0
     readonly property int _max: pcProxy ? pcProxy.maxWounds : 0
     readonly property int _lvl: pcProxy ? pcProxy.currentWoundLevel : 0
@@ -119,7 +120,7 @@ Pane {
                 }
                 ToolTip.visible: titleHover.hovered
                 ToolTip.delay: 300
-                ToolTip.text: qsTr("Cell layout: name · threshold · TN penalty · wounds in level\n" + "Formula: HEALTHY = Earth × 5; next levels add Earth × multiplier\n" + "Click a card to jump there · ± with the stepper · shift+click to reset")
+                ToolTip.text: qsTr("Cell layout: name · threshold · TN penalty · wounds in level\n" + "Formula: HEALTHY = Earth × base; next levels add Earth × multiplier (edit via Levels)\n" + "Click a card to jump there · ± with the stepper · shift+click to reset")
             }
             Label {
                 text: qsTr("Earth %1").arg(panel._rings.earth || 0)
@@ -131,42 +132,26 @@ Pane {
                 Layout.fillWidth: true
             }
 
-            // The two right-hand steppers use the same parchment-pill
-            // RankStepper as the social-flag rows above -- one UI shape
-            // for every "tweak a small integer" interaction on the sheet.
-            // `multiplier` is rarely changed (it's a campaign setting,
-            // not in-session damage), but having it inline beats hunting
-            // through a Gear menu.
-            Label {
-                text: qsTr("multiplier")
-                font.pixelSize: Theme.fsCaption
-                opacity: 0.6
-            }
-            RankStepper {
-                value: panel._hm
-                from: 1
-                to: 10
-                onValueModified: function (v) {
-                    if (appCtrl)
-                        appCtrl.setHealthMultiplier(v);
-                }
+            // The wound-table multipliers (Healthy base + per-rank) are
+            // campaign settings, not in-session mutations, so they live in
+            // a small consolidated dialog rather than as always-visible
+            // steppers cluttering the header. A quiet secondary button
+            // opens it; Heal/Damage stays the primary action beside it.
+            L5RButton {
+                text: qsTr("Levels")
+                primary: false
+                onClicked: healthLevelsDlg.present()
             }
             Item {
-                Layout.preferredWidth: 8
+                Layout.preferredWidth: 12
             }
-            Label {
-                text: qsTr("current")
-                font.pixelSize: Theme.fsCaption
-                opacity: 0.6
-            }
-            RankStepper {
-                value: panel._cur
-                from: 0
-                to: Math.max(0, panel._max)
-                onValueModified: function (v) {
-                    if (appCtrl)
-                        appCtrl.setWoundsTotal(v);
-                }
+            // Heal/Damage opens a dialog to apply a *batch* of wounds at
+            // once (the game inflicts many wounds per hit, not one click at
+            // a time). Defaults to "inflict"; the dialog flips to heal.
+            L5RButton {
+                text: qsTr("Heal / Damage")
+                glyph: "傷"
+                onClicked: damageHealDlg.present(false)
             }
         }
 
@@ -352,5 +337,17 @@ Pane {
                 }
             }
         }
+    }
+
+    // Batch heal/damage entry. Self-contained here since it only acts on
+    // the wounds total; opened by the header button (default: inflict).
+    Dialogs.DamageHealDialog {
+        id: damageHealDlg
+    }
+
+    // Wound-table multipliers (Healthy base + per-rank). Campaign settings,
+    // so kept off the header in a small form; opened by the "Levels" button.
+    Dialogs.HealthLevelsDialog {
+        id: healthLevelsDlg
     }
 }

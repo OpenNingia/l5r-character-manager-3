@@ -186,3 +186,32 @@ class CMErrors(object):
     NO_ERROR = 'no_error'
     NOT_ENOUGH_XP = 'not_enough_xp'
     INTERNAL_ERROR = 'internal_error'
+
+
+# Public submodules reached via attribute access (e.g. ``api.data.families``).
+# They are resolved lazily on first access so they are always available
+# regardless of import order — running a single test module in isolation no
+# longer fails with ``module 'l5r.api.data' has no attribute 'families'``.
+# Lazy (PEP 562) rather than eager imports here to avoid the circular import
+# between these submodules and ``l5r.models.chmodel`` during package init.
+_SUBMODULES = frozenset((
+    'clans',
+    'datapacks',
+    'families',
+    'flaws',
+    'merits',
+    'outfit',
+    'powers',
+    'schools',
+    'skills',
+    'spells',
+))
+
+
+def __getattr__(name):
+    if name in _SUBMODULES:
+        import importlib
+        mod = importlib.import_module(f'{__name__}.{name}')
+        globals()[name] = mod
+        return mod
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

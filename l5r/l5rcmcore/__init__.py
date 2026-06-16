@@ -156,6 +156,10 @@ class L5RCMCore(QtWidgets.QMainWindow):
         api.character.set_health_multiplier(val)
         self.update_from_model()
 
+    def set_base_health_multiplier(self, val):
+        api.character.set_base_health_multiplier(val)
+        self.update_from_model()
+
     def damage_health(self, val):
         api.character.damage_health(val)
         self.update_from_model()

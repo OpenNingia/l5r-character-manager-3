@@ -161,6 +161,14 @@ def _load_advancement(data):
     if data.get('type') == 'rank':
         a = Rank()
         a.__dict__.update(data)
+        # backwards compatibility: characters saved before school_rank was
+        # tracked on the Rank advancement (commit 22b28a1) load it as 0. Those
+        # old versions matched the technique on the insight rank directly, so
+        # back-fill school_rank with the insight rank, correcting the save in
+        # place (it persists on the next save). Mirrors the read-time fallback
+        # in api.character.schools.get_tech_by_rank.
+        if not a.school_rank:
+            a.school_rank = a.rank
         a.skills_to_choose = [_rehydrate_wildcard_set(x)
                               for x in (a.skills_to_choose or [])]
         a.merits = [_rehydrate_perk(x) for x in (a.merits or [])]
@@ -211,6 +219,7 @@ class AdvancedPcModel(object):
         self.attrib_costs = [4, 4, 4, 4, 4, 4, 4, 4]
         self.void_cost = 6
         self.health_multiplier = 2
+        self.health_base_multiplier = 5
         self.spells_per_rank = 3
         self.exp_limit = 40
         self.wounds = 0

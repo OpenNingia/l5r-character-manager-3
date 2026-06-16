@@ -1489,6 +1489,49 @@
     </message>
 </context>
 <context>
+    <name>DamageHealDialog</name>
+    <message>
+        <source>Heal Wounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inflict Wounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bind the body&apos;s hurts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>the strike lands and the flesh remembers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Heal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inflict</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wounds: %1 → %2 of %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter how many wounds to apply.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AMOUNT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>number of wounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EditPerkDialog</name>
     <message>
         <source>Edit Burden</source>
@@ -1655,6 +1698,45 @@
     <message>
         <source>+1 %1</source>
         <translation>+1 %1</translation>
+    </message>
+</context>
+<context>
+    <name>HealthLevelsDialog</name>
+    <message>
+        <source>Health Levels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>how the body&apos;s endurance is measured</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Healthy = Earth × %1   ·   later levels add Earth × %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>HEALTHY LEVEL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Earth × %1 = %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LEVEL MULTIPLIER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>each later level adds Earth × %1 = %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>reset to default</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2211,6 +2293,18 @@
     </message>
     <message>
         <source>This character has changes that are not saved to a .l5r file. Starting a new character will discard them. Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide section</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2796,6 +2890,10 @@
         <source>This skill has no mastery abilities.</source>
         <translation>This skill has no mastery abilities.</translation>
     </message>
+    <message>
+        <source>click on skill name to see description and mastery</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SpellsSection</name>
@@ -3232,24 +3330,8 @@
         <translation>WOUNDS</translation>
     </message>
     <message>
-        <source>Cell layout: name · threshold · TN penalty · wounds in level
-Formula: HEALTHY = Earth × 5; next levels add Earth × multiplier
-Click a card to jump there · ± with the stepper · shift+click to reset</source>
-        <translation>Cell layout: name · threshold · TN penalty · wounds in level
-Formula: HEALTHY = Earth × 5; next levels add Earth × multiplier
-Click a card to jump there · ± with the stepper · shift+click to reset</translation>
-    </message>
-    <message>
         <source>Earth %1</source>
         <translation>Earth %1</translation>
-    </message>
-    <message>
-        <source>multiplier</source>
-        <translation>multiplier</translation>
-    </message>
-    <message>
-        <source>current</source>
-        <translation>current</translation>
     </message>
     <message>
         <source>· +%1 TN to all rolls</source>
@@ -3274,6 +3356,20 @@ Click a card to jump there · ± with the stepper · shift+click to reset</trans
     <message>
         <source>+%1</source>
         <translation>+%1</translation>
+    </message>
+    <message>
+        <source>Heal / Damage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cell layout: name · threshold · TN penalty · wounds in level
+Formula: HEALTHY = Earth × base; next levels add Earth × multiplier (edit via Levels)
+Click a card to jump there · ± with the stepper · shift+click to reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Levels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

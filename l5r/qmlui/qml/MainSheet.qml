@@ -92,6 +92,39 @@ ApplicationWindow {
                 onTriggered: appCtrl.fileQuit()
             }
         }
+
+        // View: one checkable row per hideable section (checked = shown),
+        // a discoverable alternative to the sidebar eye. Built from
+        // appCtrl.tabs so it can't drift from the section list; the fixed
+        // sections (pc_info / about) get no row.
+        Widgets.L5RMenu {
+            id: viewMenu
+            title: qsTr("&View")
+            Instantiator {
+                model: appCtrl ? appCtrl.tabs : []
+                delegate: Widgets.L5RMenuItem {
+                    id: viewItem
+                    visible: !root.sectionFixed(modelData.id)
+                    height: visible ? implicitHeight : 0
+                    text: modelData.title
+                    checkable: true
+                    checked: !root.sectionHidden(modelData.id)
+                    onTriggered: appCtrl.setSectionHidden(modelData.id, !checked)
+                    // The auto-toggle on click writes `checked` imperatively,
+                    // breaking the binding above; re-assert it on every
+                    // hiddenSectionsChanged so the tick stays correct whether
+                    // toggled here or from the sidebar eye.
+                    Connections {
+                        target: appCtrl
+                        function onHiddenSectionsChanged() {
+                            viewItem.checked = !root.sectionHidden(modelData.id);
+                        }
+                    }
+                }
+                onObjectAdded: (index, object) => viewMenu.insertItem(index, object)
+                onObjectRemoved: (index, object) => viewMenu.removeItem(object)
+            }
+        }
     }
 
     // Children of `sheetColumn` are SectionBlock items in the same order
@@ -126,6 +159,16 @@ ApplicationWindow {
         var maxY = Math.max(0, flick.contentHeight - flick.height);
         scrollAnim.to = Math.min(target, maxY);
         scrollAnim.restart();
+    }
+
+    // Per-character section visibility (the sidebar eye / View menu).
+    // Both read appCtrl's notifyable lists, so every binding that calls
+    // them re-evaluates when hiddenSectionsChanged fires.
+    function sectionHidden(id) {
+        return appCtrl ? appCtrl.hiddenSections.indexOf(id) >= 0 : false;
+    }
+    function sectionFixed(id) {
+        return appCtrl ? appCtrl.fixedSections.indexOf(id) >= 0 : false;
     }
 
     // Index of the Library section in appCtrl.tabs (-1 if absent). Scanned
@@ -294,7 +337,15 @@ ApplicationWindow {
                             width: ListView.view.width
                             height: 38
                             highlighted: ListView.isCurrentItem
+                            // Re-evaluate when appCtrl.hiddenSections changes.
+                            readonly property bool sectionIsHidden: root.sectionHidden(modelData.id)
+                            readonly property bool sectionIsFixed: root.sectionFixed(modelData.id)
                             onClicked: {
+                                // A hidden row is inert, like a disabled
+                                // control: clicking its body does nothing.
+                                // Only the eye toggle brings it back.
+                                if (tocDelegate.sectionIsHidden)
+                                    return;
                                 toc.currentIndex = index;
                                 root.jumpTo(index);
                             }
@@ -306,7 +357,10 @@ ApplicationWindow {
                             // (lighter parchment), idle is fully transparent
                             // so the sidebar texture shows through.
                             background: Rectangle {
-                                color: tocDelegate.hovered ? Qt.lighter(ClanTheme.paperSidebar, 1.07) : "transparent"
+                                // No hover wash on a hidden row -- it's inert,
+                                // so it shouldn't invite a click (the eye has
+                                // its own hover feedback).
+                                color: (tocDelegate.hovered && !tocDelegate.sectionIsHidden) ? Qt.lighter(ClanTheme.paperSidebar, 1.07) : "transparent"
                             }
 
                             // Active item: accent stripe on the left, accent
@@ -334,7 +388,9 @@ ApplicationWindow {
                                     Layout.preferredWidth: 28
                                     horizontalAlignment: Text.AlignHCenter
                                     color: tocDelegate.highlighted ? ClanTheme.primary : palette.windowText
-                                    opacity: tocDelegate.highlighted ? 1.0 : 0.7
+                                    // Dim a hidden section's row so it reads
+                                    // as "off" yet stays available to re-show.
+                                    opacity: tocDelegate.sectionIsHidden ? 0.35 : (tocDelegate.highlighted ? 1.0 : 0.7)
                                 }
                                 Label {
                                     text: modelData.title
@@ -343,6 +399,7 @@ ApplicationWindow {
                                     elide: Text.ElideRight
                                     color: tocDelegate.highlighted ? ClanTheme.primary : palette.windowText
                                     font.weight: tocDelegate.highlighted ? Font.DemiBold : Font.Normal
+                                    opacity: tocDelegate.sectionIsHidden ? 0.35 : 1.0
                                 }
 
                                 // Opportunity badge -- a count of pending
@@ -372,6 +429,37 @@ ApplicationWindow {
                                         font.features: Theme.tabularNumbers
                                         color: Theme.whiteWash
                                     }
+                                }
+
+                                // Visibility toggle: a brush 見 ("view")
+                                // glyph, matching the kanji section icons.
+                                // Shown on hover, or always while the row is
+                                // hidden so it can be brought back. Never on
+                                // the fixed sections (pc_info / about).
+                                ToolButton {
+                                    id: eyeBtn
+                                    visible: !tocDelegate.sectionIsFixed && (tocDelegate.hovered || tocDelegate.sectionIsHidden)
+                                    Layout.rightMargin: 12
+                                    Layout.alignment: Qt.AlignVCenter
+                                    implicitWidth: 22
+                                    implicitHeight: 22
+                                    padding: 0
+                                    background: Rectangle {
+                                        radius: 4
+                                        color: eyeBtn.hovered ? Qt.lighter(ClanTheme.paperSidebar, 1.12) : "transparent"
+                                    }
+                                    contentItem: Label {
+                                        text: "見"
+                                        font.family: Theme.fontKanji
+                                        font.pixelSize: 15
+                                        horizontalAlignment: Text.AlignHCenter
+                                        verticalAlignment: Text.AlignVCenter
+                                        color: tocDelegate.highlighted ? ClanTheme.primary : palette.windowText
+                                        opacity: tocDelegate.sectionIsHidden ? 0.9 : (eyeBtn.hovered ? 1.0 : 0.5)
+                                    }
+                                    onClicked: appCtrl.setSectionHidden(modelData.id, !tocDelegate.sectionIsHidden)
+                                    ToolTip.visible: hovered
+                                    ToolTip.text: tocDelegate.sectionIsHidden ? qsTr("Show section") : qsTr("Hide section")
                                 }
                             }
                         }
@@ -445,6 +533,10 @@ ApplicationWindow {
                             tabId: modelData.id
                             title: modelData.title
                             icon: modelData.icon
+                            // Hidden sections collapse out of the scroll; the
+                            // Column positioner skips invisible children, so
+                            // the spacing closes up too.
+                            visible: !root.sectionHidden(modelData.id)
                         }
                     }
                 }

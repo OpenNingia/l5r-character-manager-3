@@ -1055,19 +1055,19 @@
     </message>
     <message>
         <source>Add awarded XP</source>
-        <translation type="unfinished"></translation>
+        <translation>Начислить опыт</translation>
     </message>
     <message>
         <source>dots are tenths of a rank · click dot to set · scroll to fine-tune (rolls over) · shift+click to advance rank</source>
-        <translation type="unfinished"></translation>
+        <translation>точки — это десятые доли ранга · щёлкните точку, чтобы задать · прокрутка для точной настройки (по кругу) · shift+щелчок для повышения ранга</translation>
     </message>
     <message>
         <source>Add Experience Points</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить очки опыта</translation>
     </message>
     <message>
         <source>the chronicle rewards its heroes</source>
-        <translation type="unfinished"></translation>
+        <translation>хроника вознаграждает своих героев</translation>
     </message>
     <message>
         <source>Add</source>
@@ -1075,7 +1075,7 @@
     </message>
     <message>
         <source>XP awarded</source>
-        <translation type="unfinished"></translation>
+        <translation>Начислено опыта</translation>
     </message>
 </context>
 <context>
@@ -1490,6 +1490,49 @@
     </message>
 </context>
 <context>
+    <name>DamageHealDialog</name>
+    <message>
+        <source>Heal Wounds</source>
+        <translation>Исцелить ранения</translation>
+    </message>
+    <message>
+        <source>Inflict Wounds</source>
+        <translation>Нанести ранения</translation>
+    </message>
+    <message>
+        <source>bind the body&apos;s hurts</source>
+        <translation>перевяжи раны тела</translation>
+    </message>
+    <message>
+        <source>the strike lands and the flesh remembers</source>
+        <translation>удар достигает цели, и плоть помнит</translation>
+    </message>
+    <message>
+        <source>Heal</source>
+        <translation>Исцелить</translation>
+    </message>
+    <message>
+        <source>Inflict</source>
+        <translation>Нанести</translation>
+    </message>
+    <message>
+        <source>Wounds: %1 → %2 of %3</source>
+        <translation>Ранения: %1 → %2 из %3</translation>
+    </message>
+    <message>
+        <source>Enter how many wounds to apply.</source>
+        <translation>Укажите, сколько ранений применить.</translation>
+    </message>
+    <message>
+        <source>AMOUNT</source>
+        <translation>КОЛИЧЕСТВО</translation>
+    </message>
+    <message>
+        <source>number of wounds</source>
+        <translation>число ранений</translation>
+    </message>
+</context>
+<context>
     <name>EditPerkDialog</name>
     <message>
         <source>Edit Burden</source>
@@ -1656,6 +1699,45 @@
     <message>
         <source>+1 %1</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HealthLevelsDialog</name>
+    <message>
+        <source>Health Levels</source>
+        <translation>Уровни здоровья</translation>
+    </message>
+    <message>
+        <source>how the body&apos;s endurance is measured</source>
+        <translation>как измеряется выносливость тела</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation>Применить</translation>
+    </message>
+    <message>
+        <source>Healthy = Earth × %1   ·   later levels add Earth × %2</source>
+        <translation>Здоров = Земля × %1   ·   следующие уровни добавляют Земля × %2</translation>
+    </message>
+    <message>
+        <source>HEALTHY LEVEL</source>
+        <translation>УРОВЕНЬ «ЗДОРОВ»</translation>
+    </message>
+    <message>
+        <source>Earth × %1 = %2</source>
+        <translation>Земля × %1 = %2</translation>
+    </message>
+    <message>
+        <source>LEVEL MULTIPLIER</source>
+        <translation>МНОЖИТЕЛЬ УРОВНЯ</translation>
+    </message>
+    <message>
+        <source>each later level adds Earth × %1 = %2</source>
+        <translation>каждый следующий уровень добавляет Земля × %1 = %2</translation>
+    </message>
+    <message>
+        <source>reset to default</source>
+        <translation>сбросить по умолчанию</translation>
     </message>
 </context>
 <context>
@@ -2214,6 +2296,18 @@
         <source>This character has changes that are not saved to a .l5r file. Starting a new character will discard them. Continue?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;View</source>
+        <translation>&amp;Вид</translation>
+    </message>
+    <message>
+        <source>Show section</source>
+        <translation>Показать раздел</translation>
+    </message>
+    <message>
+        <source>Hide section</source>
+        <translation>Скрыть раздел</translation>
+    </message>
 </context>
 <context>
     <name>MiscSection</name>
@@ -2323,11 +2417,11 @@
     </message>
     <message>
         <source>Granted by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Предоставлено: %1</translation>
     </message>
     <message>
         <source>Granted automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Предоставляется автоматически</translation>
     </message>
 </context>
 <context>
@@ -2797,6 +2891,10 @@
         <source>This skill has no mastery abilities.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>click on skill name to see description and mastery</source>
+        <translation>щёлкните по названию умения, чтобы увидеть описание и мастерство</translation>
+    </message>
 </context>
 <context>
     <name>SpellsSection</name>
@@ -3233,21 +3331,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cell layout: name · threshold · TN penalty · wounds in level
-Formula: HEALTHY = Earth × 5; next levels add Earth × multiplier
-Click a card to jump there · ± with the stepper · shift+click to reset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Earth %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>multiplier</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>current</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3273,6 +3357,22 @@ Click a card to jump there · ± with the stepper · shift+click to reset</sourc
     <message>
         <source>+%1</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Heal / Damage</source>
+        <translation>Исцеление / Урон</translation>
+    </message>
+    <message>
+        <source>Cell layout: name · threshold · TN penalty · wounds in level
+Formula: HEALTHY = Earth × base; next levels add Earth × multiplier (edit via Levels)
+Click a card to jump there · ± with the stepper · shift+click to reset</source>
+        <translation>Расположение ячейки: имя · порог · штраф TN · ранения на уровне
+Формула: ЗДОРОВ = Земля × база; следующие уровни добавляют Земля × множитель (изменить через «Уровни»)
+Щёлкните карточку, чтобы перейти · ± с помощью счётчика · shift+щелчок для сброса</translation>
+    </message>
+    <message>
+        <source>Levels</source>
+        <translation>Уровни</translation>
     </message>
 </context>
 </TS>
