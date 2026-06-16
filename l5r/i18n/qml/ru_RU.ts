@@ -1702,6 +1702,45 @@
     </message>
 </context>
 <context>
+    <name>HealthLevelsDialog</name>
+    <message>
+        <source>Health Levels</source>
+        <translation>Уровни здоровья</translation>
+    </message>
+    <message>
+        <source>how the body&apos;s endurance is measured</source>
+        <translation>как измеряется выносливость тела</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation>Применить</translation>
+    </message>
+    <message>
+        <source>Healthy = Earth × %1   ·   later levels add Earth × %2</source>
+        <translation>Здоров = Земля × %1   ·   следующие уровни добавляют Земля × %2</translation>
+    </message>
+    <message>
+        <source>HEALTHY LEVEL</source>
+        <translation>УРОВЕНЬ «ЗДОРОВ»</translation>
+    </message>
+    <message>
+        <source>Earth × %1 = %2</source>
+        <translation>Земля × %1 = %2</translation>
+    </message>
+    <message>
+        <source>LEVEL MULTIPLIER</source>
+        <translation>МНОЖИТЕЛЬ УРОВНЯ</translation>
+    </message>
+    <message>
+        <source>each later level adds Earth × %1 = %2</source>
+        <translation>каждый следующий уровень добавляет Земля × %1 = %2</translation>
+    </message>
+    <message>
+        <source>reset to default</source>
+        <translation>сбросить по умолчанию</translation>
+    </message>
+</context>
+<context>
     <name>InscribePerkDialog</name>
     <message>
         <source>Accept a Burden</source>
@@ -3292,17 +3331,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cell layout: name · threshold · TN penalty · wounds in level
-Formula: HEALTHY = Earth × 5; next levels add Earth × multiplier
-Click a card to jump there · ± with the stepper · shift+click to reset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Earth %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>multiplier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3332,6 +3361,18 @@ Click a card to jump there · ± with the stepper · shift+click to reset</sourc
     <message>
         <source>Heal / Damage</source>
         <translation>Исцеление / Урон</translation>
+    </message>
+    <message>
+        <source>Cell layout: name · threshold · TN penalty · wounds in level
+Formula: HEALTHY = Earth × base; next levels add Earth × multiplier (edit via Levels)
+Click a card to jump there · ± with the stepper · shift+click to reset</source>
+        <translation>Расположение ячейки: имя · порог · штраф TN · ранения на уровне
+Формула: ЗДОРОВ = Земля × база; следующие уровни добавляют Земля × множитель (изменить через «Уровни»)
+Щёлкните карточку, чтобы перейти · ± с помощью счётчика · shift+щелчок для сброса</translation>
+    </message>
+    <message>
+        <source>Levels</source>
+        <translation>Уровни</translation>
     </message>
 </context>
 </TS>

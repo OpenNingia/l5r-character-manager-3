@@ -240,6 +240,94 @@ class TestHealthMultiplier(unittest.TestCase):
             previous = current
 
 
+class TestBaseHealthMultiplier(unittest.TestCase):
+    """Cover the Healthy-level (idx 0) base multiplier, editable via
+    api.character.set_base_health_multiplier. RAW is Earth*5; sagas with
+    modified starting health (#389) change the base, the rest of the wound
+    table is untouched."""
+
+    def setUp(self):
+        self._stack = contextlib.ExitStack()
+        self.addCleanup(self._stack.close)
+        self._stack.enter_context(use(L5RCMContext()))
+
+        data_ = dal.Data([], [])
+        api.data.set_model(data_)
+        data_.clans.append(test_clan_1)
+        data_.families.append(test_family_1)
+        data_.schools.append(test_school_1)
+        data_.skcategs.append(test_skill_categ_1)
+        data_.skills.append(test_skill_1)
+
+        api.character.new()
+        # Fresh PC: Earth 2, base 5, per-rank mult 2.
+
+    def test_default_base_is_five(self):
+        self.assertEqual(5, api.character.model().health_base_multiplier)
+        self.assertEqual(5, api.character.get_base_health_multiplier())
+
+    def test_healthy_level_uses_base_multiplier(self):
+        earth = api.character.ring_rank('earth')
+        for base in (1, 3, 5, 8):
+            api.character.set_base_health_multiplier(base)
+            self.assertEqual(earth * base, api.rules.get_health_rank(0))
+
+    def test_base_does_not_affect_penalty_levels(self):
+        """Changing the Healthy base must leave levels 1..7 (Earth*mult)
+        untouched."""
+        earth = api.character.ring_rank('earth')
+        api.character.set_base_health_multiplier(8)
+        for idx in range(1, 8):
+            self.assertEqual(earth * 2, api.rules.get_health_rank(idx))
+
+    def test_setter_updates_model_and_marks_dirty(self):
+        pc = api.character.model()
+        pc.unsaved = False
+        api.character.set_base_health_multiplier(7)
+        self.assertEqual(7, pc.health_base_multiplier)
+        self.assertTrue(pc.unsaved)
+
+    def test_setter_no_op_does_not_dirty(self):
+        pc = api.character.model()
+        pc.unsaved = False
+        api.character.set_base_health_multiplier(pc.health_base_multiplier)
+        self.assertFalse(pc.unsaved)
+
+    def test_setter_rejects_below_one(self):
+        with self.assertRaises(ValueError):
+            api.character.set_base_health_multiplier(0)
+
+    def test_setter_coerces_int(self):
+        api.character.set_base_health_multiplier("6")
+        self.assertEqual(6, api.character.model().health_base_multiplier)
+
+    def test_setter_emits_wounds_changed_on_change(self):
+        events = _record_signal(self, api.signals.bus().wounds_changed)
+        api.character.set_base_health_multiplier(3)
+        self.assertEqual(1, len(events))
+
+    def test_setter_no_op_does_not_emit(self):
+        pc = api.character.model()
+        events = _record_signal(self, api.signals.bus().wounds_changed)
+        api.character.set_base_health_multiplier(pc.health_base_multiplier)
+        self.assertEqual(0, len(events))
+
+    def test_max_wounds_uses_base(self):
+        """Earth=2: base 5 -> 38; base 3 -> 2*3 + 7*(2*2) = 6 + 28 = 34."""
+        earth = api.character.ring_rank('earth')
+        api.character.set_base_health_multiplier(3)
+        self.assertEqual(earth * 3 + 7 * earth * 2, api.rules.get_max_wounds())
+
+    def test_missing_attr_defaults_to_five(self):
+        """Characters saved before #389 have no health_base_multiplier;
+        the rules layer and getter must fall back to RAW (5)."""
+        pc = api.character.model()
+        del pc.health_base_multiplier
+        earth = api.character.ring_rank('earth')
+        self.assertEqual(5, api.character.get_base_health_multiplier())
+        self.assertEqual(earth * 5, api.rules.get_health_rank(0))
+
+
 # ---------------------------------------------------------------------------
 # Wound-table edge cases the QML proxy depends on. These document quiet
 # invariants that bit us when porting the wounds panel to QML.

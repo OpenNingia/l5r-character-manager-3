@@ -497,7 +497,8 @@ def get_health_rank(idx):
     """return the value for the given health rank"""
     earth_rank = api.character.ring_rank('earth')
     if idx == 0:
-        return earth_rank * 5 + get_health_rank_mod()
+        base_mult = getattr(get_context().pc, 'health_base_multiplier', 5)
+        return earth_rank * base_mult + get_health_rank_mod()
     return earth_rank * get_context().pc.health_multiplier + get_health_rank_mod()
 
 

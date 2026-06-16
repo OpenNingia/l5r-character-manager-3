@@ -1701,6 +1701,45 @@
     </message>
 </context>
 <context>
+    <name>HealthLevelsDialog</name>
+    <message>
+        <source>Health Levels</source>
+        <translation>Niveles de Salud</translation>
+    </message>
+    <message>
+        <source>how the body&apos;s endurance is measured</source>
+        <translation>cómo se mide la resistencia del cuerpo</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation>Aplicar</translation>
+    </message>
+    <message>
+        <source>Healthy = Earth × %1   ·   later levels add Earth × %2</source>
+        <translation>Saludable = Tierra × %1   ·   los niveles posteriores añaden Tierra × %2</translation>
+    </message>
+    <message>
+        <source>HEALTHY LEVEL</source>
+        <translation>NIVEL SALUDABLE</translation>
+    </message>
+    <message>
+        <source>Earth × %1 = %2</source>
+        <translation>Tierra × %1 = %2</translation>
+    </message>
+    <message>
+        <source>LEVEL MULTIPLIER</source>
+        <translation>MULTIPLICADOR DE NIVEL</translation>
+    </message>
+    <message>
+        <source>each later level adds Earth × %1 = %2</source>
+        <translation>cada nivel posterior añade Tierra × %1 = %2</translation>
+    </message>
+    <message>
+        <source>reset to default</source>
+        <translation>restablecer valores predeterminados</translation>
+    </message>
+</context>
+<context>
     <name>InscribePerkDialog</name>
     <message>
         <source>Accept a Burden</source>
@@ -3291,24 +3330,8 @@
         <translation>HERIDAS</translation>
     </message>
     <message>
-        <source>Cell layout: name · threshold · TN penalty · wounds in level
-Formula: HEALTHY = Earth × 5; next levels add Earth × multiplier
-Click a card to jump there · ± with the stepper · shift+click to reset</source>
-        <translation>Disposición de la celda: nombre · umbral · penalización al NO · heridas en el nivel
-Fórmula: SALUDABLE = Tierra × 5; los niveles siguientes añaden Tierra × multiplicador
-Haz clic en una carta para saltar ahí · ± con el selector · mayús+clic para reiniciar</translation>
-    </message>
-    <message>
         <source>Earth %1</source>
         <translation>Tierra %1</translation>
-    </message>
-    <message>
-        <source>multiplier</source>
-        <translation>multiplicador</translation>
-    </message>
-    <message>
-        <source>current</source>
-        <translation type="vanished">actual</translation>
     </message>
     <message>
         <source>· +%1 TN to all rolls</source>
@@ -3337,6 +3360,18 @@ Haz clic en una carta para saltar ahí · ± con el selector · mayús+clic para
     <message>
         <source>Heal / Damage</source>
         <translation>Curar / Daño</translation>
+    </message>
+    <message>
+        <source>Cell layout: name · threshold · TN penalty · wounds in level
+Formula: HEALTHY = Earth × base; next levels add Earth × multiplier (edit via Levels)
+Click a card to jump there · ± with the stepper · shift+click to reset</source>
+        <translation>Disposición de celda: nombre · umbral · penalización NO · heridas en el nivel
+Fórmula: SALUDABLE = Tierra × base; los niveles siguientes añaden Tierra × multiplicador (editar con Niveles)
+Haz clic en una tarjeta para saltar · ± con el selector · shift+clic para reiniciar</translation>
+    </message>
+    <message>
+        <source>Levels</source>
+        <translation>Niveles</translation>
     </message>
 </context>
 </TS>
