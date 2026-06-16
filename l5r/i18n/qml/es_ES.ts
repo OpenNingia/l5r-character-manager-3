@@ -1055,19 +1055,19 @@
     </message>
     <message>
         <source>Add awarded XP</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir XP otorgados</translation>
     </message>
     <message>
         <source>dots are tenths of a rank · click dot to set · scroll to fine-tune (rolls over) · shift+click to advance rank</source>
-        <translation type="unfinished"></translation>
+        <translation>los puntos son décimas de rango · haz clic en un punto para fijarlo · desplázate para ajustar (da la vuelta) · mayús+clic para subir de rango</translation>
     </message>
     <message>
         <source>Add Experience Points</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir puntos de experiencia</translation>
     </message>
     <message>
         <source>the chronicle rewards its heroes</source>
-        <translation type="unfinished"></translation>
+        <translation>la crónica recompensa a sus héroes</translation>
     </message>
     <message>
         <source>Add</source>
@@ -1075,7 +1075,7 @@
     </message>
     <message>
         <source>XP awarded</source>
-        <translation type="unfinished"></translation>
+        <translation>XP otorgados</translation>
     </message>
 </context>
 <context>
@@ -1486,6 +1486,49 @@
     <message>
         <source>effect, materials, provenance…</source>
         <translation>efecto, materiales, procedencia…</translation>
+    </message>
+</context>
+<context>
+    <name>DamageHealDialog</name>
+    <message>
+        <source>Heal Wounds</source>
+        <translation>Curar heridas</translation>
+    </message>
+    <message>
+        <source>Inflict Wounds</source>
+        <translation>Infligir heridas</translation>
+    </message>
+    <message>
+        <source>bind the body&apos;s hurts</source>
+        <translation>venda las heridas del cuerpo</translation>
+    </message>
+    <message>
+        <source>the strike lands and the flesh remembers</source>
+        <translation>el golpe acierta y la carne recuerda</translation>
+    </message>
+    <message>
+        <source>Heal</source>
+        <translation>Curar</translation>
+    </message>
+    <message>
+        <source>Inflict</source>
+        <translation>Infligir</translation>
+    </message>
+    <message>
+        <source>Wounds: %1 → %2 of %3</source>
+        <translation>Heridas: %1 → %2 de %3</translation>
+    </message>
+    <message>
+        <source>Enter how many wounds to apply.</source>
+        <translation>Indica cuántas heridas aplicar.</translation>
+    </message>
+    <message>
+        <source>AMOUNT</source>
+        <translation>CANTIDAD</translation>
+    </message>
+    <message>
+        <source>number of wounds</source>
+        <translation>número de heridas</translation>
     </message>
 </context>
 <context>
@@ -2213,6 +2256,18 @@
         <source>This character has changes that are not saved to a .l5r file. Starting a new character will discard them. Continue?</source>
         <translation>Este personaje tiene cambios que no se han guardado en un archivo .l5r. Crear un nuevo personaje los descartará. ¿Continuar?</translation>
     </message>
+    <message>
+        <source>&amp;View</source>
+        <translation>&amp;Ver</translation>
+    </message>
+    <message>
+        <source>Show section</source>
+        <translation>Mostrar sección</translation>
+    </message>
+    <message>
+        <source>Hide section</source>
+        <translation>Ocultar sección</translation>
+    </message>
 </context>
 <context>
     <name>MiscSection</name>
@@ -2322,11 +2377,11 @@
     </message>
     <message>
         <source>Granted by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Otorgado por %1</translation>
     </message>
     <message>
         <source>Granted automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Otorgado automáticamente</translation>
     </message>
 </context>
 <context>
@@ -2796,6 +2851,10 @@
         <source>This skill has no mastery abilities.</source>
         <translation>Esta habilidad no tiene aptitudes de maestría.</translation>
     </message>
+    <message>
+        <source>click on skill name to see description and mastery</source>
+        <translation>haz clic en el nombre de la habilidad para ver su descripción y maestría</translation>
+    </message>
 </context>
 <context>
     <name>SpellsSection</name>
@@ -3249,7 +3308,7 @@ Haz clic en una carta para saltar ahí · ± con el selector · mayús+clic para
     </message>
     <message>
         <source>current</source>
-        <translation>actual</translation>
+        <translation type="vanished">actual</translation>
     </message>
     <message>
         <source>· +%1 TN to all rolls</source>
@@ -3274,6 +3333,10 @@ Haz clic en una carta para saltar ahí · ± con el selector · mayús+clic para
     <message>
         <source>+%1</source>
         <translation>+%1</translation>
+    </message>
+    <message>
+        <source>Heal / Damage</source>
+        <translation>Curar / Daño</translation>
     </message>
 </context>
 </TS>

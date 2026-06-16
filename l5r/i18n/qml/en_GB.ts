@@ -1489,6 +1489,49 @@
     </message>
 </context>
 <context>
+    <name>DamageHealDialog</name>
+    <message>
+        <source>Heal Wounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inflict Wounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bind the body&apos;s hurts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>the strike lands and the flesh remembers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Heal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inflict</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wounds: %1 → %2 of %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter how many wounds to apply.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AMOUNT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>number of wounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EditPerkDialog</name>
     <message>
         <source>Edit Burden</source>
@@ -2213,6 +2256,18 @@
         <source>This character has changes that are not saved to a .l5r file. Starting a new character will discard them. Continue?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide section</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MiscSection</name>
@@ -2796,6 +2851,10 @@
         <source>This skill has no mastery abilities.</source>
         <translation>This skill has no mastery abilities.</translation>
     </message>
+    <message>
+        <source>click on skill name to see description and mastery</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SpellsSection</name>
@@ -3249,7 +3308,7 @@ Click a card to jump there · ± with the stepper · shift+click to reset</trans
     </message>
     <message>
         <source>current</source>
-        <translation>current</translation>
+        <translation type="vanished">current</translation>
     </message>
     <message>
         <source>· +%1 TN to all rolls</source>
@@ -3274,6 +3333,10 @@ Click a card to jump there · ± with the stepper · shift+click to reset</trans
     <message>
         <source>+%1</source>
         <translation>+%1</translation>
+    </message>
+    <message>
+        <source>Heal / Damage</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
