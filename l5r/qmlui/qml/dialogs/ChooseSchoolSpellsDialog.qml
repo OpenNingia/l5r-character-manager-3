@@ -100,24 +100,14 @@ Widgets.L5RDialog {
         return (i >= 0 && i < dlg._picks.length) ? (dlg._picks[i] || "") : "";
     }
 
-    // Assign a spell to the active slot, then jump to the next still-empty
-    // slot (a convenience -- the tabs still let the player revisit any slot).
+    // Assign a spell to the active slot. We deliberately do NOT auto-advance
+    // to the next empty slot (issue #403): the player stays on this slot so
+    // they can read the spell's description, and moves on by clicking another
+    // tab when ready. "Inscribe" stays disabled until every slot is filled.
     function _setActivePick(spellId) {
         var copy = dlg._picks.slice();
         copy[dlg._activeSlot] = spellId;
         dlg._picks = copy;
-        var next = dlg._nextEmpty(dlg._activeSlot);
-        if (next >= 0)
-            dlg._activeSlot = next;
-    }
-
-    function _nextEmpty(from) {
-        for (var k = 1; k <= dlg._slots.length; ++k) {
-            var idx = (from + k) % dlg._slots.length;
-            if (dlg._pickAt(idx).length === 0)
-                return idx;
-        }
-        return -1;
     }
 
     // The active slot's options, minus spells already taken by OTHER slots,
