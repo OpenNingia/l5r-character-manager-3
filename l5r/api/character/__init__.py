@@ -913,3 +913,31 @@ def touch_modifiers():
     fields); this is the setter that owns the dirty flag for that path,
     mirroring api.character.weapons.touch()."""
     set_dirty_flag(True)
+
+
+# Public submodules reached via attribute access (e.g. ``api.character.schools``).
+# They are resolved lazily on first access so they are always available
+# regardless of import order — running a single test module in isolation no
+# longer fails with ``module 'l5r.api.character' has no attribute 'schools'``.
+# Lazy (PEP 562) rather than eager imports here to avoid the circular import
+# between these submodules and ``l5r.models.chmodel`` during package init.
+_SUBMODULES = frozenset((
+    'books',
+    'flaws',
+    'merits',
+    'powers',
+    'rankadv',
+    'schools',
+    'skills',
+    'spells',
+    'weapons',
+))
+
+
+def __getattr__(name):
+    if name in _SUBMODULES:
+        import importlib
+        mod = importlib.import_module(f'{__name__}.{name}')
+        globals()[name] = mod
+        return mod
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
