@@ -63,7 +63,7 @@ from l5r.l5rcmcore import (
 )
 from l5r.qmlui.proxies.pc import opportunities
 from l5r.exporters.model_form import ModelExportForm
-from l5r.util import log, names, session
+from l5r.util import log, names, section_visibility, session
 from l5r.util.fsutil import get_app_file, get_app_icon_path
 from l5r.util.settings import L5RCMSettings
 from l5r.util.worker import Worker
@@ -102,6 +102,12 @@ _TAB_DEFS = [
     ("settings",      QT_TRANSLATE_NOOP("AppController", "Settings"),     "設"),  # setsu -- setup
     ("about",         QT_TRANSLATE_NOOP("AppController", "About"),        "紋"),  # mon -- clan crest
 ]
+
+
+# Sections the user may never hide from the sheet: the character summary
+# (the sheet would have no home page) and About. Everything else can be
+# toggled off per-character via the sidebar eye / the View menu.
+_FIXED_SECTIONS = ("pc_info", "about")
 
 
 _FLAG_SETTERS = {
@@ -390,6 +396,10 @@ class AppController(QObject):
     # list them and point the player at the Library. The working character
     # is left untouched.
     loadFailedMissingBooks = Signal("QVariantList", str)
+    # Emitted when the per-character set of hidden sheet sections changes,
+    # so the sidebar eye state, the dimming, the content-block visibility
+    # and the View menu ticks all re-evaluate together.
+    hiddenSectionsChanged = Signal()
 
     # Debounce window for the recovery autosave: coalesce a burst of
     # edits (dragging a spinbox, typing a name) into one write, fired
@@ -399,6 +409,10 @@ class AppController(QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._save_path = ""
+        # Section ids the user has hidden for the working character. Loaded
+        # from section_visibility on open/restore, reset on New, flushed on
+        # Save (so an unsaved character's choices migrate once it has a path).
+        self._hidden_sections = set()
         # Holds the running export Worker so the QRunnable + its signals
         # outlive exportPdf's stack frame until the thread finishes.
         self._export_worker = None
@@ -422,6 +436,36 @@ class AppController(QObject):
             {"id": tid, "title": self.tr(title), "icon": icon}
             for tid, title, icon in _TAB_DEFS
         ]
+
+    # --- section visibility -------------------------------------------
+
+    @Property("QVariantList", constant=True)
+    def fixedSections(self):
+        """Section ids that can never be hidden (no eye / no View row)."""
+        return list(_FIXED_SECTIONS)
+
+    @Property("QVariantList", notify=hiddenSectionsChanged)
+    def hiddenSections(self):
+        """Section ids currently hidden for the working character."""
+        return sorted(self._hidden_sections)
+
+    @Slot(str, bool)
+    def setSectionHidden(self, section_id, hidden):
+        """Hide / show a sheet section for the working character and
+        persist the choice (keyed by the character's file path; held in
+        memory until the first Save for a never-saved character)."""
+        if section_id in _FIXED_SECTIONS:
+            return
+        if hidden:
+            if section_id in self._hidden_sections:
+                return
+            self._hidden_sections.add(section_id)
+        else:
+            if section_id not in self._hidden_sections:
+                return
+            self._hidden_sections.discard(section_id)
+        section_visibility.store(self._save_path, self._hidden_sections)
+        self.hiddenSectionsChanged.emit()
 
     # --- about page ---------------------------------------------------
 
@@ -473,6 +517,9 @@ class AppController(QObject):
         self._autosave_timer.stop()
         session.clear()
         session.write_pointer("", dirty=False)
+        # Fresh character: every section visible again.
+        self._hidden_sections = set()
+        self.hiddenSectionsChanged.emit()
 
     @Slot()
     def requestFileOpen(self):
@@ -529,6 +576,9 @@ class AppController(QObject):
         self._autosave_timer.stop()
         session.remove_recovery()
         session.write_pointer(path, dirty=False)
+        # Restore this character's hidden-section choices.
+        self._hidden_sections = section_visibility.load(path)
+        self.hiddenSectionsChanged.emit()
 
     @Slot()
     def fileSave(self):
@@ -564,6 +614,10 @@ class AppController(QObject):
             self._autosave_timer.stop()
             session.remove_recovery()
             session.write_pointer(path, dirty=False)
+            # Now that a path exists, persist the hidden-section choices
+            # (migrates an unsaved character's in-memory set; on Save-As,
+            # copies them to the new file's key).
+            section_visibility.store(path, self._hidden_sections)
             log.app.info(u"QML UI: saved character to %s", path)
         else:
             log.app.warning(u"QML UI: failed to save character to %s", path)
@@ -622,6 +676,8 @@ class AppController(QObject):
             if os.path.exists(rec) and pc.load_from(rec):
                 api.character.set_model(pc)
                 self._save_path = path
+                self._hidden_sections = section_visibility.load(path)
+                self.hiddenSectionsChanged.emit()
                 # load_from clears unsaved; the work is NOT in the real
                 # .l5r yet, so re-mark the session dirty.
                 api.character.set_dirty_flag(True)
@@ -636,6 +692,8 @@ class AppController(QObject):
             if pc.load_from(path):
                 api.character.set_model(pc)
                 self._save_path = path
+                self._hidden_sections = section_visibility.load(path)
+                self.hiddenSectionsChanged.emit()
                 api.character.set_dirty_flag(False)
                 log.app.info(u"QML UI: reopened last character %s", path)
                 return True
