@@ -41,9 +41,9 @@ Source: "fonts/OLDSSCH_.TTF"; DestDir: "{commonfonts}"; FontInstall: "Oldstyle S
 Source: "fonts/OLDSIH__.TTF"; DestDir: "{commonfonts}"; FontInstall: "Oldstyle Italic"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontOldStyle
 Source: "fonts/OLDSH___.TTF"; DestDir: "{commonfonts}"; FontInstall: "Oldstyle 1"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontOldStyle
 Source: "fonts/LiberationSans-Regular.ttf"; DestDir: "{commonfonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
-Source: "fonts/LiberationSans-Italic.ttf"; DestDir: "{commonfonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
-Source: "fonts/LiberationSans-BoldItalic.ttf"; DestDir: "{commonfonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
-Source: "fonts/LiberationSans-Bold.ttf"; DestDir: "{commonfonts}"; FontInstall: "Liberation Sans"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
+Source: "fonts/LiberationSans-Italic.ttf"; DestDir: "{commonfonts}"; FontInstall: "Liberation Sans Italic"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
+Source: "fonts/LiberationSans-BoldItalic.ttf"; DestDir: "{commonfonts}"; FontInstall: "Liberation Sans Bold Italic"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
+Source: "fonts/LiberationSans-Bold.ttf"; DestDir: "{commonfonts}"; FontInstall: "Liberation Sans Bold"; Flags: onlyifdoesntexist uninsneveruninstall; Tasks: fontLiberations
 ; core pack
 Source: "core.l5rcmpack"; DestDir: "{app}";
 
