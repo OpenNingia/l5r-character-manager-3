@@ -159,7 +159,13 @@ def get_tech_by_rank(rank):
     if not school_:
         return None
 
-    return query(school_.techs).where(lambda x: x.rank == (rank_[0].school_rank)).select(a_('id')).first_or_default(None)
+    # backwards compatibility: characters saved before school_rank was tracked
+    # on the Rank advancement (commit 22b28a1) have school_rank == 0. Those old
+    # versions matched the technique on the insight rank directly, so fall back
+    # to that behaviour when school_rank is missing.
+    school_rank = rank_[0].school_rank or rank
+
+    return query(school_.techs).where(lambda x: x.rank == school_rank).select(a_('id')).first_or_default(None)
 
 
 def get_school_rank(sid):
