@@ -930,6 +930,13 @@ class AppController(QObject):
             log.api.warning(u"QML UI: invalid health multiplier %r", value)
 
     @Slot(int)
+    def setBaseHealthMultiplier(self, value):
+        try:
+            api.character.set_base_health_multiplier(int(value))
+        except ValueError:
+            log.api.warning(u"QML UI: invalid base health multiplier %r", value)
+
+    @Slot(int)
     def damageHealth(self, delta):
         api.character.damage_health(int(delta))
 

@@ -1071,7 +1071,7 @@
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Aggiungi</translation>
+        <translation>Aggiungi</translation>
     </message>
     <message>
         <source>XP awarded</source>
@@ -1164,35 +1164,35 @@
     <name>ChooseSchoolSpellsDialog</name>
     <message>
         <source>All Elements</source>
-        <translation type="unfinished">Tutti gli Elementi</translation>
+        <translation>Tutti gli Elementi</translation>
     </message>
     <message>
         <source>Earth</source>
-        <translation type="unfinished">Terra</translation>
+        <translation>Terra</translation>
     </message>
     <message>
         <source>Air</source>
-        <translation type="unfinished">Aria</translation>
+        <translation>Aria</translation>
     </message>
     <message>
         <source>Water</source>
-        <translation type="unfinished">Acqua</translation>
+        <translation>Acqua</translation>
     </message>
     <message>
         <source>Fire</source>
-        <translation type="unfinished">Fuoco</translation>
+        <translation>Fuoco</translation>
     </message>
     <message>
         <source>Void</source>
-        <translation type="unfinished">Vuoto</translation>
+        <translation>Vuoto</translation>
     </message>
     <message>
         <source>Multi-Element</source>
-        <translation type="unfinished">Multi-Elemento</translation>
+        <translation>Multi-Elemento</translation>
     </message>
     <message>
         <source>Dragon</source>
-        <translation type="unfinished">Drago</translation>
+        <translation>Drago</translation>
     </message>
     <message>
         <source>Choose School Spells</source>
@@ -1204,7 +1204,7 @@
     </message>
     <message>
         <source>Inscribe</source>
-        <translation type="unfinished">Trascrivi</translation>
+        <translation>Trascrivi</translation>
     </message>
     <message>
         <source>MAHO</source>
@@ -1240,9 +1240,9 @@
     </message>
     <message numerus="yes">
         <source>Choose %n more spell(s) to continue.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Scegli ancora %n incantesimo per continuare.</numerusform>
+            <numerusform>Scegli ancora %n incantesimi per continuare.</numerusform>
         </translation>
     </message>
     <message>
@@ -1259,15 +1259,15 @@
     </message>
     <message>
         <source>seek a spell by name…</source>
-        <translation type="unfinished">cerca un incantesimo per nome…</translation>
+        <translation>cerca un incantesimo per nome…</translation>
     </message>
     <message>
         <source>(unnamed)</source>
-        <translation type="unfinished">(senza nome)</translation>
+        <translation>(senza nome)</translation>
     </message>
     <message>
         <source>M%1</source>
-        <translation type="unfinished">M%1</translation>
+        <translation>M%1</translation>
     </message>
     <message>
         <source>no spell answers this slot&apos;s calling</source>
@@ -1283,35 +1283,35 @@
     </message>
     <message>
         <source>Mastery %1</source>
-        <translation type="unfinished">Maestria %1</translation>
+        <translation>Maestria %1</translation>
     </message>
     <message>
         <source>AFFINITY +%1</source>
-        <translation type="unfinished">AFFINITÀ +%1</translation>
+        <translation>AFFINITÀ +%1</translation>
     </message>
     <message>
         <source>DEFICIENCY %1</source>
-        <translation type="unfinished">DEFICIENZA %1</translation>
+        <translation>DEFICIENZA %1</translation>
     </message>
     <message>
         <source>RANGE</source>
-        <translation type="unfinished">GITTATA</translation>
+        <translation>GITTATA</translation>
     </message>
     <message>
         <source>AREA</source>
-        <translation type="unfinished">AREA</translation>
+        <translation>AREA</translation>
     </message>
     <message>
         <source>DURATION</source>
-        <translation type="unfinished">DURATA</translation>
+        <translation>DURATA</translation>
     </message>
     <message>
         <source>RAISES</source>
-        <translation type="unfinished">RILANCI</translation>
+        <translation>RILANCI</translation>
     </message>
     <message>
         <source>No description provided in the datapack.</source>
-        <translation type="unfinished">Nessuna descrizione fornita nel datapack.</translation>
+        <translation>Nessuna descrizione fornita nel datapack.</translation>
     </message>
 </context>
 <context>
@@ -1698,6 +1698,45 @@
     <message>
         <source>+1 %1</source>
         <translation>+1 %1</translation>
+    </message>
+</context>
+<context>
+    <name>HealthLevelsDialog</name>
+    <message>
+        <source>Health Levels</source>
+        <translation>Livelli di Salute</translation>
+    </message>
+    <message>
+        <source>how the body&apos;s endurance is measured</source>
+        <translation>come si misura la resistenza del corpo</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation>Applica</translation>
+    </message>
+    <message>
+        <source>Healthy = Earth × %1   ·   later levels add Earth × %2</source>
+        <translation>Sano = Terra × %1   ·   i livelli successivi aggiungono Terra × %2</translation>
+    </message>
+    <message>
+        <source>HEALTHY LEVEL</source>
+        <translation>LIVELLO SANO</translation>
+    </message>
+    <message>
+        <source>Earth × %1 = %2</source>
+        <translation>Terra × %1 = %2</translation>
+    </message>
+    <message>
+        <source>LEVEL MULTIPLIER</source>
+        <translation>MOLTIPLICATORE LIVELLO</translation>
+    </message>
+    <message>
+        <source>each later level adds Earth × %1 = %2</source>
+        <translation>ogni livello successivo aggiunge Terra × %1 = %2</translation>
+    </message>
+    <message>
+        <source>reset to default</source>
+        <translation>ripristina i valori predefiniti</translation>
     </message>
 </context>
 <context>
@@ -2396,11 +2435,11 @@
     </message>
     <message>
         <source>Open Library</source>
-        <translation type="unfinished">Apri Libreria</translation>
+        <translation>Apri Libreria</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annulla</translation>
+        <translation>Annulla</translation>
     </message>
     <message>
         <source>This character references datapacks that are not installed or enabled. Install or enable them in the Library, then open the character again.</source>
@@ -2853,7 +2892,7 @@
     </message>
     <message>
         <source>click on skill name to see description and mastery</source>
-        <translation>clicca sul nome dell'abilità per vedere descrizione e maestria</translation>
+        <translation>clicca sul nome dell&apos;abilità per vedere descrizione e maestria</translation>
     </message>
 </context>
 <context>
@@ -3291,24 +3330,8 @@
         <translation>FERITE</translation>
     </message>
     <message>
-        <source>Cell layout: name · threshold · TN penalty · wounds in level
-Formula: HEALTHY = Earth × 5; next levels add Earth × multiplier
-Click a card to jump there · ± with the stepper · shift+click to reset</source>
-        <translation>Disposizione cella: nome · soglia · penalità TN · ferite nel livello
-Formula: SANO = Terra × 5; i livelli successivi aggiungono Terra × moltiplicatore
-Clicca una carta per saltarci · ± con lo stepper · shift+clic per azzerare</translation>
-    </message>
-    <message>
         <source>Earth %1</source>
         <translation>Terra %1</translation>
-    </message>
-    <message>
-        <source>multiplier</source>
-        <translation>moltiplicatore</translation>
-    </message>
-    <message>
-        <source>current</source>
-        <translation type="vanished">attuale</translation>
     </message>
     <message>
         <source>· +%1 TN to all rolls</source>
@@ -3337,6 +3360,18 @@ Clicca una carta per saltarci · ± con lo stepper · shift+clic per azzerare</t
     <message>
         <source>Heal / Damage</source>
         <translation>Cura / Danni</translation>
+    </message>
+    <message>
+        <source>Cell layout: name · threshold · TN penalty · wounds in level
+Formula: HEALTHY = Earth × base; next levels add Earth × multiplier (edit via Levels)
+Click a card to jump there · ± with the stepper · shift+click to reset</source>
+        <translation>Disposizione cella: nome · soglia · penalità TN · ferite nel livello
+Formula: SANO = Terra × base; i livelli successivi aggiungono Terra × moltiplicatore (modifica con Livelli)
+Clicca una scheda per saltarci · ± con il selettore · shift+clic per azzerare</translation>
+    </message>
+    <message>
+        <source>Levels</source>
+        <translation>Livelli</translation>
     </message>
 </context>
 </TS>

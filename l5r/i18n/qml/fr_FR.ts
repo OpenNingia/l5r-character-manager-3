@@ -1063,7 +1063,7 @@
     </message>
     <message>
         <source>Add Experience Points</source>
-        <translation>Ajouter des points d'expérience</translation>
+        <translation>Ajouter des points d&apos;expérience</translation>
     </message>
     <message>
         <source>the chronicle rewards its heroes</source>
@@ -1504,7 +1504,7 @@
     </message>
     <message>
         <source>the strike lands and the flesh remembers</source>
-        <translation>le coup porte et la chair s'en souvient</translation>
+        <translation>le coup porte et la chair s&apos;en souvient</translation>
     </message>
     <message>
         <source>Heal</source>
@@ -1698,6 +1698,45 @@
     <message>
         <source>+1 %1</source>
         <translation>+1 %1</translation>
+    </message>
+</context>
+<context>
+    <name>HealthLevelsDialog</name>
+    <message>
+        <source>Health Levels</source>
+        <translation>Niveaux de Santé</translation>
+    </message>
+    <message>
+        <source>how the body&apos;s endurance is measured</source>
+        <translation>comment se mesure l'endurance du corps</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation>Appliquer</translation>
+    </message>
+    <message>
+        <source>Healthy = Earth × %1   ·   later levels add Earth × %2</source>
+        <translation>Indemne = Terre × %1   ·   les niveaux suivants ajoutent Terre × %2</translation>
+    </message>
+    <message>
+        <source>HEALTHY LEVEL</source>
+        <translation>NIVEAU INDEMNE</translation>
+    </message>
+    <message>
+        <source>Earth × %1 = %2</source>
+        <translation>Terre × %1 = %2</translation>
+    </message>
+    <message>
+        <source>LEVEL MULTIPLIER</source>
+        <translation>MULTIPLICATEUR DE NIVEAU</translation>
+    </message>
+    <message>
+        <source>each later level adds Earth × %1 = %2</source>
+        <translation>chaque niveau suivant ajoute Terre × %1 = %2</translation>
+    </message>
+    <message>
+        <source>reset to default</source>
+        <translation>réinitialiser par défaut</translation>
     </message>
 </context>
 <context>
@@ -3291,24 +3330,8 @@
         <translation>BLESSURES</translation>
     </message>
     <message>
-        <source>Cell layout: name · threshold · TN penalty · wounds in level
-Formula: HEALTHY = Earth × 5; next levels add Earth × multiplier
-Click a card to jump there · ± with the stepper · shift+click to reset</source>
-        <translation>Disposition de la cellule : nom · seuil · pénalité de ND · blessures dans le niveau
-Formule : INDEMNE = Terre × 5 ; les niveaux suivants ajoutent Terre × multiplicateur
-Clique une carte pour t&apos;y rendre · ± avec le sélecteur · maj+clic pour réinitialiser</translation>
-    </message>
-    <message>
         <source>Earth %1</source>
         <translation>Terre %1</translation>
-    </message>
-    <message>
-        <source>multiplier</source>
-        <translation>multiplicateur</translation>
-    </message>
-    <message>
-        <source>current</source>
-        <translation type="vanished">actuel</translation>
     </message>
     <message>
         <source>· +%1 TN to all rolls</source>
@@ -3337,6 +3360,18 @@ Clique une carte pour t&apos;y rendre · ± avec le sélecteur · maj+clic pour 
     <message>
         <source>Heal / Damage</source>
         <translation>Soin / Dégâts</translation>
+    </message>
+    <message>
+        <source>Cell layout: name · threshold · TN penalty · wounds in level
+Formula: HEALTHY = Earth × base; next levels add Earth × multiplier (edit via Levels)
+Click a card to jump there · ± with the stepper · shift+click to reset</source>
+        <translation>Disposition de cellule : nom · seuil · pénalité ND · blessures dans le niveau
+Formule : INDEMNE = Terre × base ; les niveaux suivants ajoutent Terre × multiplicateur (modifier via Niveaux)
+Cliquez sur une carte pour y aller · ± avec le sélecteur · shift+clic pour réinitialiser</translation>
+    </message>
+    <message>
+        <source>Levels</source>
+        <translation>Niveaux</translation>
     </message>
 </context>
 </TS>

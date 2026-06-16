@@ -770,6 +770,31 @@ def set_health_multiplier(value):
     log.api.info("set health multiplier to: %d", value)
 
 
+def get_base_health_multiplier():
+    """return the base (Healthy level) multiplier (default 5, per L5R 4e)"""
+    return getattr(get_context().pc, 'health_base_multiplier', 5)
+
+
+def set_base_health_multiplier(value):
+    """set the base (Healthy level) multiplier and mark the character dirty.
+
+    This scales the first wound level (Healthy = Earth * base). RAW is 5.
+    Values < 1 are rejected because they would collapse starting health.
+    """
+    value = int(value)
+    if value < 1:
+        raise ValueError("health_base_multiplier must be >= 1, got %r" % value)
+
+    pc = get_context().pc
+    if getattr(pc, 'health_base_multiplier', 5) == value:
+        return
+    pc.health_base_multiplier = value
+    set_dirty_flag(True)
+    # Narrow signal: only the wound table (combat slice) is affected.
+    l5r.api.signals.bus().wounds_changed.emit()
+    log.api.info("set base health multiplier to: %d", value)
+
+
 def get_wounds_taken():
     """return the total wounds (HP damage) currently on the character."""
     pc = get_context().pc

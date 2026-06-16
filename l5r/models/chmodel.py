@@ -211,6 +211,7 @@ class AdvancedPcModel(object):
         self.attrib_costs = [4, 4, 4, 4, 4, 4, 4, 4]
         self.void_cost = 6
         self.health_multiplier = 2
+        self.health_base_multiplier = 5
         self.spells_per_rank = 3
         self.exp_limit = 40
         self.wounds = 0

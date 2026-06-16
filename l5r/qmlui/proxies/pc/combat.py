@@ -112,6 +112,11 @@ class CombatMixin:
         return int(pc.health_multiplier) if pc else 2
 
     @Property(int, notify=combatChanged)
+    def baseHealthMultiplier(self):
+        pc = api.character.model()
+        return int(api.character.get_base_health_multiplier()) if pc else 5
+
+    @Property(int, notify=combatChanged)
     def currentWounds(self):
         pc = api.character.model()
         return int(pc.wounds) if pc else 0
