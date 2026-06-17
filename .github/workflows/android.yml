@@ -49,6 +49,18 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: System build dependencies (autotools for p4a recipes)
+        run: |
+          # python-for-android builds native recipes (e.g. libffi) from source
+          # with autoreconf. libffi's configure.ac uses the libtool macro
+          # LT_SYS_SYMBOL_USCORE, so libtool MUST be installed or autoreconf
+          # fails with "possibly undefined macro". Install the full autotools +
+          # common native-build toolchain p4a expects.
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            autoconf automake libtool libltdl-dev pkg-config m4 \
+            build-essential zlib1g-dev libffi-dev libssl-dev
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
