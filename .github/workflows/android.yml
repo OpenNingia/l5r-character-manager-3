@@ -136,6 +136,14 @@ jobs:
           # and the generated buildozer.spec to line up. Copy the canonical spec
           # (kept under tools/deploy/android/) to the repo root and run there.
           cp tools/deploy/android/pysidedeploy.spec ./pysidedeploy.spec
+          echo "::group::pysidedeploy.spec [qt] modules as the deploy tool parses it"
+          python - <<'PY'
+          from configparser import ConfigParser
+          c = ConfigParser(comment_prefixes="/", strict=False)
+          c.read("pysidedeploy.spec")
+          print("get_value('qt','modules') ->", repr(c.has_option("qt", "modules") and c.get("qt", "modules")))
+          PY
+          echo "::endgroup::"
           # Use the runner's pre-installed SDK (it already has build-tools /
           # platform-tools / aidl). Dropping --sdk-path made buildozer download
           # a bare SDK with NO build-tools ("Aidl not found"). Its only problem
@@ -150,6 +158,16 @@ jobs:
             --sdk-path "$ANDROID_SDK_ROOT" \
             --keep-deployment-files \
             -f -v || (echo "::error::APK build failed -- see log; check wheel/NDK versions (see android.yml header)"; exit 1)
+
+      - name: Show generated buildozer.spec qt-libs (diagnostic)
+        if: always()
+        run: |
+          echo "::group::buildozer.spec p4a.extra_args (actual --qt-libs order used)"
+          grep -nE "p4a.extra_args|qt-libs" buildozer.spec || echo "(buildozer.spec not found)"
+          echo "::endgroup::"
+          echo "::group::rendered libs.xml qt_libs array (load order)"
+          find .buildozer -name "libs.xml" -path "*res*" -exec sh -c 'echo "--- $1"; cat "$1"' _ {} \; 2>/dev/null | grep -iE "qt_libs|item|Qt6" | head -40 || echo "(libs.xml not found)"
+          echo "::endgroup::"
 
       - name: Upload APK
         if: success()
