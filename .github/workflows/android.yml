@@ -124,17 +124,18 @@ jobs:
           # and the generated buildozer.spec to line up. Copy the canonical spec
           # (kept under tools/deploy/android/) to the repo root and run there.
           cp tools/deploy/android/pysidedeploy.spec ./pysidedeploy.spec
-          # Keep --ndk-path (the deploy tool itself needs the NDK's llvm-readobj
-          # to analyse Qt module deps in the wheel: android_config.py ->
-          # get_llvm_readobj(self.ndk_path); without it ndk_path is None and it
-          # crashes). DROP --sdk-path so buildozer manages its OWN SDK under
-          # ~/.buildozer (modern commandlinetools) instead of the runner's
-          # pre-installed SDK, whose legacy tools/bin/sdkmanager crashes on JDK17.
+          # Use the runner's pre-installed SDK (it already has build-tools /
+          # platform-tools / aidl). Dropping --sdk-path made buildozer download
+          # a bare SDK with NO build-tools ("Aidl not found"). Its only problem
+          # -- the legacy tools/bin/sdkmanager crashing on JDK17 -- is handled
+          # by the shim step above. --ndk-path is required by the deploy tool
+          # itself (get_llvm_readobj(self.ndk_path)).
           pyside6-android-deploy \
             -c pysidedeploy.spec \
             --wheel-pyside "$WHEEL_PYSIDE" \
             --wheel-shiboken "$WHEEL_SHIBOKEN" \
             --ndk-path "$ANDROID_NDK_ROOT" \
+            --sdk-path "$ANDROID_SDK_ROOT" \
             --keep-deployment-files \
             -f -v || (echo "::error::APK build failed -- see log; check wheel/NDK versions (see android.yml header)"; exit 1)
 
