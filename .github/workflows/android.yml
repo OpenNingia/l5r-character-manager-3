@@ -95,6 +95,26 @@ jobs:
           echo "WHEEL_PYSIDE=$PWD/android_wheels/${pyw}" >> "$GITHUB_ENV"
           echo "WHEEL_SHIBOKEN=$PWD/android_wheels/${shw}" >> "$GITHUB_ENV"
 
+      - name: Make buildozer's sdkmanager JDK17-compatible
+        run: |
+          # buildozer 1.5.0 hardcodes <sdk>/tools/bin/sdkmanager (the obsolete
+          # 'tools' package; targets/android.py:sdkmanager_path) and even calls
+          # `sdkmanager --list`. That launcher needs JAXB (javax.xml.bind),
+          # removed from the JDK in 11+, so it crashes on the JDK 17 we need for
+          # gradle. Replace it with a shim forwarding to the modern
+          # cmdline-tools sdkmanager, which runs fine on JDK 17.
+          SDK="$ANDROID_SDK_ROOT"
+          CMDTOOLS_SM="$(ls "$SDK"/cmdline-tools/*/bin/sdkmanager 2>/dev/null | sort -V | tail -1)"
+          echo "modern sdkmanager: $CMDTOOLS_SM"
+          test -n "$CMDTOOLS_SM"
+          mkdir -p "$SDK/tools/bin"
+          printf '#!/usr/bin/env bash\nexec "%s" "$@"\n' "$CMDTOOLS_SM" > "$SDK/tools/bin/sdkmanager"
+          chmod +x "$SDK/tools/bin/sdkmanager"
+          # Sanity: must print a version, not the JAXB NoClassDefFoundError.
+          "$SDK/tools/bin/sdkmanager" --version
+          # Pre-accept all SDK licenses so buildozer's installs are non-interactive.
+          yes | "$CMDTOOLS_SM" --sdk_root="$SDK" --licenses >/dev/null 2>&1 || true
+
       - name: Build APK (pyside6-android-deploy)
         run: |
           # pyside6-android-deploy resolves project_dir / input_file / qml_files
