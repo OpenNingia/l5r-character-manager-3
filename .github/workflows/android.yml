@@ -86,7 +86,7 @@ jobs:
             --ndk-path "$ANDROID_NDK_ROOT" \
             --sdk-path "$ANDROID_SDK_ROOT" \
             --keep-deployment-files \
-            --force-verbose || (echo "::error::APK build failed -- see log; likely NDK/wheel version mismatch (see android.yml header)"; exit 1)
+            -f -v || (echo "::error::APK build failed -- see log; likely NDK/wheel version mismatch (see android.yml header)"; exit 1)
 
       - name: Upload APK
         if: success()
