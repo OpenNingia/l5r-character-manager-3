@@ -226,9 +226,12 @@ jobs:
           # project_dir resolve to Core/Gui/OpenGL/Qml -- all in the wheel -- and
           # nothing pulls QtWidgets (which is why the app can stay QtWidgets-free,
           # see the related code changes + the Widgets strip above).
+          # NB: "packaging" is qtpy's only runtime dependency (qtpy/__init__.py
+          # imports packaging.version) -- it is pure Python and must be bundled
+          # too, else: ModuleNotFoundError: No module named 'packaging'.
           python - <<'PY'
           import importlib.util, os, re, shutil
-          for name in ("qtpy", "asq", "l5rdal", "pypdf"):
+          for name in ("qtpy", "asq", "l5rdal", "pypdf", "packaging"):
               spec = importlib.util.find_spec(name)
               if spec is None or not spec.origin:
                   raise SystemExit(f"::error::dependency {name} not importable")
