@@ -4,6 +4,13 @@
 / so comments MUST start with '/'. '#' and ';' are treated as content and break
 / the parse with MissingSectionHeaderError. Keep all comments '/'-prefixed.
 /
+/ IMPORTANT: pyside6-android-deploy resolves project_dir / input_file /
+/ qml_files RELATIVE TO THIS FILE's directory, and `buildozer init` writes
+/ buildozer.spec into the cwd. So this spec must be RUN FROM THE PROJECT ROOT
+/ (copy it there): the paths below (project_dir=., android_main.py,
+/ l5r/qmlui/qml) are repo-root-relative. CI copies it to the root before
+/ running; the canonical copy lives here.
+/
 / Starting point committed for reproducibility. pyside6-android-deploy may
 / normalise/extend this file on first run -- if it does, commit the updated
 / version. The entry point is android_main.py (QML-only, never imports the

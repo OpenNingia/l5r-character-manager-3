@@ -50,7 +50,11 @@ base=https://download.qt.io/official_releases/QtForPython
 curl -fSLO "$base/pyside6/pyside6-6.11.1-6.11.1-cp311-cp311-android_aarch64.whl"
 curl -fSLO "$base/shiboken6/shiboken6-6.11.1-6.11.1-cp311-cp311-android_aarch64.whl"
 
-pyside6-android-deploy -c tools/deploy/android/pysidedeploy.spec \
+# The spec must run from the PROJECT ROOT: pyside6-android-deploy resolves
+# project_dir/input_file/qml_files relative to the spec's directory, and
+# `buildozer init` writes buildozer.spec into the cwd. Copy it to the root:
+cp tools/deploy/android/pysidedeploy.spec ./pysidedeploy.spec
+pyside6-android-deploy -c pysidedeploy.spec \
   --wheel-pyside  pyside6-6.11.1-6.11.1-cp311-cp311-android_aarch64.whl \
   --wheel-shiboken shiboken6-6.11.1-6.11.1-cp311-cp311-android_aarch64.whl \
   --ndk-path "$ANDROID_NDK_ROOT" --sdk-path "$ANDROID_SDK_ROOT" \

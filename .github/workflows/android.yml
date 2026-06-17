@@ -97,8 +97,15 @@ jobs:
 
       - name: Build APK (pyside6-android-deploy)
         run: |
+          # pyside6-android-deploy resolves project_dir / input_file / qml_files
+          # RELATIVE TO THE SPEC FILE's directory, and `buildozer init` writes
+          # buildozer.spec into the cwd. So the spec must sit at the project
+          # root for those paths (project_dir=., android_main.py, l5r/qmlui/qml)
+          # and the generated buildozer.spec to line up. Copy the canonical spec
+          # (kept under tools/deploy/android/) to the repo root and run there.
+          cp tools/deploy/android/pysidedeploy.spec ./pysidedeploy.spec
           pyside6-android-deploy \
-            -c tools/deploy/android/pysidedeploy.spec \
+            -c pysidedeploy.spec \
             --wheel-pyside "$WHEEL_PYSIDE" \
             --wheel-shiboken "$WHEEL_SHIBOKEN" \
             --ndk-path "$ANDROID_NDK_ROOT" \
