@@ -69,6 +69,10 @@ jobs:
           # Desktop PySide6 provides the pyside6-android-deploy CLI; its
           # version determines which Android wheels are fetched.
           pip install "PySide6==${PYSIDE_VERSION}"
+          # pyside6-android-deploy needs extra helpers (jinja2, pkginfo, tqdm)
+          # that ship as a requirements file alongside the tool, not as hard
+          # PySide6 deps. Install from that exact file so it tracks the version.
+          pip install -r "$(python -c 'import os, PySide6; print(os.path.join(os.path.dirname(PySide6.__file__), "scripts", "requirements-android.txt"))')"
           # Our pure-Python runtime deps (no lxml: l5rdal >= v1.4.2 is stdlib
           # xml only) so python-for-android needs no C-extension recipes.
           pip install "asq>=2.0" "qtpy>=2.4" \
