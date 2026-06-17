@@ -60,5 +60,5 @@ jars_dir =
 ndk_path =
 sdk_path =
 local_recipes =
-arch = arm64-v8a
+arch = aarch64
 python_version = 3.11
