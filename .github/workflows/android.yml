@@ -48,7 +48,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-
+          
       - name: Pin Python 3.11 for python-for-android
         run: |
           PY311=$(which python)   # setup-python lo mette primo nel PATH
@@ -56,7 +56,7 @@ jobs:
           echo "PYTHON3=$PY311" >> "$GITHUB_ENV"
           # p4a legge anche questa variabile per scegliere la versione target
           echo "BUILDOZER_PYTHON_VERSION=3.11" >> "$GITHUB_ENV"
-          $PY311 --version
+          $PY311 --version          
 
       - name: System build dependencies (autotools for p4a recipes)
         run: |
@@ -136,56 +136,29 @@ jobs:
           # Pre-accept all SDK licenses so buildozer's installs are non-interactive.
           yes | "$CMDTOOLS_SM" --sdk_root="$SDK" --licenses >/dev/null 2>&1 || true
 
-      - name: Generate buildozer.spec (no build) with --init
+      - name: Build APK (pyside6-android-deploy)
         run: |
           # pyside6-android-deploy resolves project_dir / input_file / qml_files
           # RELATIVE TO THE SPEC FILE's directory, and `buildozer init` writes
-          # buildozer.spec into the cwd. So run from the project root with the
-          # spec copied there (project_dir=., android_main.py, l5r/qmlui/qml).
+          # buildozer.spec into the cwd. So the spec must sit at the project
+          # root for those paths (project_dir=., android_main.py, l5r/qmlui/qml)
+          # and the generated buildozer.spec to line up. Copy the canonical spec
+          # (kept under tools/deploy/android/) to the repo root and run there.
           cp tools/deploy/android/pysidedeploy.spec ./pysidedeploy.spec
-          # --init generates buildozer.spec and EXITS before building, so we can
-          # patch the Qt lib list before the real build below.
-          pyside6-android-deploy \
-            -c pysidedeploy.spec \
-            --wheel-pyside "$WHEEL_PYSIDE" \
-            --wheel-shiboken "$WHEEL_SHIBOKEN" \
-            --ndk-path "$ANDROID_NDK_ROOT" \
-            --sdk-path "$ANDROID_SDK_ROOT" \
-            --init -f -v
-
-      - name: Force Core-first Qt lib load order (+ Widgets/Svg)
-        run: |
-          # pyside6-android-deploy ignores our spec [qt] modules and auto-detects
-          # the Qt libs as an UNORDERED set (list(set(...))). Qt's Android loader
-          # System.loadLibrary's them in array order, and libQt6Core's JNI_OnLoad
-          # must run first to register the JavaVM -- otherwise the next module's
-          # JNI_OnLoad hits QJniEnvironment::getJniEnv() on a null VM and SIGSEGVs
-          # (the on-device crash). The set order is per-process random, so the
-          # crash is intermittent. Force Core first, deterministically, and add
-          # Widgets/Svg (our app imports QtWidgets and renders SVG icons; both
-          # have PySide6 bindings + libs in the wheel).
+          echo "::group::pysidedeploy.spec [qt] modules as the deploy tool parses it"
           python - <<'PY'
-          import re
-          p = "buildozer.spec"
-          s = open(p).read()
-          m = re.search(r'--qt-libs=(\S+)', s)
-          libs = m.group(1).split(",")
-          libs = ["Core"] + [x for x in libs if x != "Core"]
-          for extra in ("Widgets", "Svg"):
-              if extra not in libs:
-                  libs.append(extra)
-          new = ",".join(libs)
-          s = re.sub(r'--qt-libs=\S+', "--qt-libs=" + new, s)
-          open(p, "w").write(s)
-          print("forced --qt-libs=" + new)
+          from configparser import ConfigParser
+          c = ConfigParser(comment_prefixes="/", strict=False)
+          c.read("pysidedeploy.spec")
+          print("get_value('qt','modules') ->", repr(c.has_option("qt", "modules") and c.get("qt", "modules")))
           PY
-          grep -n "p4a.extra_args" buildozer.spec
-
-      - name: Build APK (reuses patched buildozer.spec)
-        run: |
-          # The real build: pyside6-android-deploy's Buildozer.initialize sees
-          # buildozer.spec already exists and reuses it (it does NOT regenerate),
-          # so our forced Core-first --qt-libs survives into the p4a build.
+          echo "::endgroup::"
+          # Use the runner's pre-installed SDK (it already has build-tools /
+          # platform-tools / aidl). Dropping --sdk-path made buildozer download
+          # a bare SDK with NO build-tools ("Aidl not found"). Its only problem
+          # -- the legacy tools/bin/sdkmanager crashing on JDK17 -- is handled
+          # by the shim step above. --ndk-path is required by the deploy tool
+          # itself (get_llvm_readobj(self.ndk_path)).
           pyside6-android-deploy \
             -c pysidedeploy.spec \
             --wheel-pyside "$WHEEL_PYSIDE" \
@@ -194,6 +167,16 @@ jobs:
             --sdk-path "$ANDROID_SDK_ROOT" \
             --keep-deployment-files \
             -f -v || (echo "::error::APK build failed -- see log; check wheel/NDK versions (see android.yml header)"; exit 1)
+
+      - name: Show generated buildozer.spec qt-libs (diagnostic)
+        if: always()
+        run: |
+          echo "::group::buildozer.spec p4a.extra_args (actual --qt-libs order used)"
+          grep -nE "p4a.extra_args|qt-libs" buildozer.spec || echo "(buildozer.spec not found)"
+          echo "::endgroup::"
+          echo "::group::rendered libs.xml qt_libs array (load order)"
+          find .buildozer -name "libs.xml" -path "*res*" -exec sh -c 'echo "--- $1"; cat "$1"' _ {} \; 2>/dev/null | grep -iE "qt_libs|item|Qt6" | head -40 || echo "(libs.xml not found)"
+          echo "::endgroup::"
 
       - name: Upload APK
         if: success()
