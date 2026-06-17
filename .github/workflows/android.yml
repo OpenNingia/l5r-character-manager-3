@@ -124,12 +124,15 @@ jobs:
           # and the generated buildozer.spec to line up. Copy the canonical spec
           # (kept under tools/deploy/android/) to the repo root and run there.
           cp tools/deploy/android/pysidedeploy.spec ./pysidedeploy.spec
+          # EXPERIMENT: do NOT pass --ndk-path/--sdk-path. With empty sdk/ndk
+          # paths buildozer downloads and manages its OWN tooling under
+          # ~/.buildozer (modern commandlinetools), instead of the runner's
+          # pre-installed SDK whose legacy tools/bin/sdkmanager crashes on
+          # JDK17. If this works we can drop the runner SDK/NDK + the shim.
           pyside6-android-deploy \
             -c pysidedeploy.spec \
             --wheel-pyside "$WHEEL_PYSIDE" \
             --wheel-shiboken "$WHEEL_SHIBOKEN" \
-            --ndk-path "$ANDROID_NDK_ROOT" \
-            --sdk-path "$ANDROID_SDK_ROOT" \
             --keep-deployment-files \
             -f -v || (echo "::error::APK build failed -- see log; check wheel/NDK versions (see android.yml header)"; exit 1)
 
