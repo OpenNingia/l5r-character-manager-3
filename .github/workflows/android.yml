@@ -49,6 +49,15 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Pin Python 3.11 for python-for-android
+        run: |
+          PY311=$(which python)   # setup-python lo mette primo nel PATH
+          echo "PYTHON=$PY311" >> "$GITHUB_ENV"
+          echo "PYTHON3=$PY311" >> "$GITHUB_ENV"
+          # p4a legge anche questa variabile per scegliere la versione target
+          echo "BUILDOZER_PYTHON_VERSION=3.11" >> "$GITHUB_ENV"
+          $PY311 --version
+
       - name: System build dependencies (autotools for p4a recipes)
         run: |
           # python-for-android builds native recipes (e.g. libffi) from source
