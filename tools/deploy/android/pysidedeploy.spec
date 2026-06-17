@@ -38,9 +38,13 @@ qml_files = l5r/qmlui/qml
 excluded_qml_plugins =
 / Qt modules the app links. QtQuick.Controls/Layouts pull in QuickControls2.
 / Network is needed for the in-app datapack download (stdlib urllib uses the
-/ platform stack, but QtNetwork is a safe inclusion). Svg/widgets are kept
-/ because some Quick Controls styling and the QApplication base need them.
-modules = Core,Gui,Network,Qml,Quick,QuickControls2,QuickTemplates2,QuickLayouts,Svg,Widgets
+/ platform stack, but QtNetwork is a safe inclusion). NOTE: no Widgets -- the
+/ mobile entry point (android_main.py) runs on a QGuiApplication and the QML
+/ proxies import QtWidgets only lazily on desktop-only paths, so QtWidgets must
+/ NOT be linked (the Java QtLoader would preload QtWidgets.abi3.so and crash).
+/ pyside6-android-deploy ignores this list and auto-detects modules anyway;
+/ it is kept accurate for documentation / local builds.
+modules = Core,Gui,Network,Qml,Quick,QuickControls2,QuickTemplates2,QuickLayouts,Svg
 plugins =
 
 [android]

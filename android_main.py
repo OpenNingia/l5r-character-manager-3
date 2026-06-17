@@ -39,7 +39,7 @@ os.environ.setdefault("L5RCM_UI", "qml")
 # but setting it here as well is harmless and explicit.
 os.environ.setdefault("QT_QUICK_CONTROLS_STYLE", "Fusion")
 
-from qtpy import QtCore, QtWidgets
+from qtpy import QtCore, QtGui
 
 import l5r.api as api  # noqa: F401  (kept explicit; run_qml_app reads the ctx)
 from l5r.qmlui import run_qml_app
@@ -48,7 +48,14 @@ from l5r.l5rcmcore import APP_NAME, APP_ORG, APP_VERSION
 
 
 def main():
-    app = QtWidgets.QApplication([])
+    # QML-only UI: a QGuiApplication is enough (no QtWidgets). Using
+    # QApplication here would pull in the QtWidgets binding, which on Android
+    # makes pyside6-android-deploy add Widgets to --qt-libs; the Java QtLoader
+    # then tries to preload QtWidgets.abi3.so from lib/arm64 before Python
+    # starts and SIGSEGV/exits because that module is only bundled under
+    # site-packages. The desktop entry point (l5r/main.py) keeps QApplication
+    # for the legacy QWidget UI.
+    app = QtGui.QGuiApplication([])
 
     QtCore.QCoreApplication.setApplicationName(APP_NAME)
     QtCore.QCoreApplication.setApplicationVersion(APP_VERSION)

@@ -641,6 +641,11 @@ ApplicationWindow {
         function onAdvanceRankBlocked() {
             toast.show(qsTr("Resolve your pending opportunities before advancing rank."));
         }
+        // A purchase was refused for lack of experience points. Replaces a
+        // QtWidgets QMessageBox so the Android/QML path needs no QtWidgets.
+        function onNotEnoughXp() {
+            toast.show(qsTr("You don't have enough experience points to complete this purchase."));
+        }
         // A destructive File action (New / Open) was requested on a dirty
         // model: both discard the autosave recovery snapshot, so confirm
         // before dropping the unsaved work. The action id picks the wording

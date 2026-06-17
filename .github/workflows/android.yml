@@ -148,13 +148,16 @@ jobs:
           # still carrying the qt bootstrap + NDK r27 support. buildozer honours
           # p4a.commit via `git reset --hard <commit>` after cloning the branch.
           #
-          # Also force Core-first Qt lib load order (+ Widgets/Svg): Qt's Android
-          # loader System.loadLibrary's the modules in array order and libQt6Core's
+          # Also force Core-first Qt lib load order: Qt's Android loader
+          # System.loadLibrary's the modules in array order and libQt6Core's
           # JNI_OnLoad must run first to register the JavaVM, else the next
-          # module's JNI_OnLoad SIGSEGVs on a null VM. Our pysidedeploy.spec [qt]
-          # modules already lists Core first + Widgets,Svg; we additionally
-          # normalise the generator's module list so order is deterministic
-          # regardless of how the installed tool version assembles it.
+          # module's JNI_OnLoad SIGSEGVs on a null VM. We only REORDER the
+          # auto-detected module list (Core first) -- we deliberately do NOT
+          # inject extra modules. In particular Widgets must stay out: the
+          # QML UI runs on a QGuiApplication (android_main.py) and never
+          # imports QtWidgets, so it is not auto-detected; forcing it in made
+          # the Java QtLoader preload QtWidgets.abi3.so from lib/arm64 (only
+          # bundled under site-packages) and exit before Python even started.
           BZ="$(python -c 'import os, PySide6; print(os.path.join(os.path.dirname(PySide6.__file__), "scripts", "deploy_lib", "android", "buildozer.py"))')"
           echo "patching deploy tool: $BZ"
           test -f "$BZ"
@@ -173,22 +176,69 @@ jobs:
                   + f'self.set_value("app", "p4a.commit", "{P4A_COMMIT}")',
                   s)
               assert n == 1, f"expected exactly 1 p4a.branch set_value, found {n}"
-          # (2) best-effort Core-first + Widgets/Svg on the modules list the tool
-          #     turns into --qt-libs. Skip silently if the source shape differs.
+          # (2) Core-first reorder of the auto-detected modules list the tool
+          #     turns into --qt-libs, AND strip Widgets. The build machine has
+          #     no ANDROID_ARGUMENT so api.is_android() is False during the
+          #     deploy tool's dependency scan -> it imports QtWidgets (via the
+          #     desktop QWidget base in l5rcmcore) and would add Widgets to
+          #     --qt-libs. On device the app runs QtWidgets-free, so Widgets
+          #     must not be loaded: the Java QtLoader preloads every --qt-libs
+          #     entry's *.abi3.so from lib/arm64, but QtWidgets.abi3.so is only
+          #     bundled under site-packages -> startup crash. Stripping it keeps
+          #     libQt6Widgets.so out too, which is fine (never imported).
+          #     Skip silently if the source shape differs.
           s2, n2 = re.subn(
               r'(?m)^([ \t]*)modules\s*=\s*",".join\(\s*pysidedeploy_config\.modules\s*\)\s*$',
-              r'\1modules = ",".join(["Core"] + [m for m in dict.fromkeys('
-              r'list(pysidedeploy_config.modules) + ["Widgets", "Svg"]) if m != "Core"])',
+              r'\1modules = ",".join(["Core"] + [m for m in '
+              r'dict.fromkeys(pysidedeploy_config.modules) '
+              r'if m not in ("Core", "Widgets")])',
               s)
           if n2:
               s = s2
-              print("normalised modules list (Core-first + Widgets/Svg)")
+              print("normalised modules list (Core-first, Widgets stripped)")
           else:
               print("WARNING: modules join line not found; relying on spec [qt] order")
           open(p, "w", encoding="utf-8").write(s)
           print(f"pinned p4a.commit={P4A_COMMIT}")
           PY
           grep -nE "p4a\.(branch|commit)|modules = " "$BZ" | head -20
+
+      - name: Make qtpy.QtGui not pull QtWidgets on Android (runtime guard)
+        run: |
+          # qtpy.QtGui backports QFileSystemModel via an unconditional
+          # `from PySide6.QtWidgets import QFileSystemModel` at module import.
+          # That makes EVERY `from qtpy import QtGui` eagerly load the QtWidgets
+          # binding -- which the QML app does at startup (android_main, app.py,
+          # the view-models). Two consequences on Android:
+          #   * the deploy tool's dependency scan sees QtWidgets and adds it to
+          #     --qt-libs (we strip it again in the buildozer.spec patch above);
+          #   * at runtime the import would need libQt6Widgets.so, which we do
+          #     NOT bundle (Widgets is stripped) -> ImportError.
+          # The patched qtpy is the copy pip-installed here, which p4a bundles
+          # into the APK, so guarding the backport under python-for-android
+          # (ANDROID_ARGUMENT is set on-device by the p4a bootstrap) makes the
+          # on-device import QtWidgets-free. The app never uses QFileSystemModel.
+          QTGUI="$(python -c 'import os, qtpy; print(os.path.join(os.path.dirname(qtpy.__file__), "QtGui.py"))')"
+          echo "patching qtpy: $QTGUI"
+          test -f "$QTGUI"
+          python - "$QTGUI" <<'PY'
+          import re, sys
+          p = sys.argv[1]
+          s = open(p, encoding="utf-8").read()
+          if "ANDROID_ARGUMENT" in s:
+              print("qtpy.QtGui already guarded")
+          else:
+              pat = re.compile(
+                  r'(?m)^([ \t]*)from PySide6\.QtWidgets import QFileSystemModel[ \t]*$')
+              repl = (r'\g<1>import os as _qtpy_os\n'
+                      r'\g<1>if "ANDROID_ARGUMENT" not in _qtpy_os.environ:\n'
+                      r'\g<1>    from PySide6.QtWidgets import QFileSystemModel')
+              s, n = pat.subn(repl, s)
+              assert n == 1, f"expected 1 QFileSystemModel backport line, found {n}"
+              open(p, "w", encoding="utf-8").write(s)
+              print("guarded qtpy.QtGui QFileSystemModel backport for Android")
+          PY
+          grep -n "QFileSystemModel" "$QTGUI" || true
 
       - name: Build APK (pyside6-android-deploy)
         run: |

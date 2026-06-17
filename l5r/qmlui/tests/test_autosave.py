@@ -168,9 +168,11 @@ class TestDiscardChangesGate(_AutosaveTestBase):
 
         # stub the native file dialog so the clean path runs headless and
         # the user "cancels" (no selection) -- we only assert that no
-        # confirmation was raised and the picker was reached.
-        from l5r.qmlui.proxies import app_controller as ac
-        with mock.patch.object(ac.QFileDialog, "getOpenFileName",
+        # confirmation was raised and the picker was reached. QFileDialog is
+        # imported lazily inside the desktop-only branch (the Android/QML build
+        # has no QtWidgets), so patch it at its qtpy.QtWidgets source.
+        from qtpy import QtWidgets
+        with mock.patch.object(QtWidgets.QFileDialog, "getOpenFileName",
                                return_value=("", "")) as picker:
             self.ctrl.requestFileOpen()
 

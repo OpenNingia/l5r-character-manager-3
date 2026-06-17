@@ -19,7 +19,7 @@ from subprocess import Popen
 import os
 import sys
 
-from qtpy import QtCore, QtGui, QtWidgets
+from qtpy import QtCore, QtGui
 
 APP_NAME = 'l5rcm'
 HERE = os.path.abspath(os.path.dirname(__file__))

@@ -19,7 +19,7 @@ from subprocess import Popen
 import os
 import sys
 
-from qtpy import QtCore, QtGui, QtWidgets
+from qtpy import QtCore, QtGui
 
 
 def detect_desktop_environment():
@@ -73,8 +73,8 @@ def get_system_font():
                 font_size = t[1]
                 return QtGui.QFont(font_name, int(font_size))
             except:
-                return QtWidgets.QApplication.font()
-    return QtWidgets.QApplication.font()
+                return QtGui.QGuiApplication.font()
+    return QtGui.QGuiApplication.font()
 
 
 def get_user_data_path(rel_path=''):

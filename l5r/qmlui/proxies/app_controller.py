@@ -21,7 +21,15 @@ from asq.initiators import query
 from asq.selectors import a_
 from qtpy.QtCore import QObject, Property, QT_TRANSLATE_NOOP, QThreadPool, QTimer, QUrl, Signal, Slot
 from qtpy.QtGui import QDesktopServices, QGuiApplication
-from qtpy.QtWidgets import QFileDialog, QMessageBox
+
+# NOTE: QtWidgets (QFileDialog / QMessageBox) is imported LAZILY inside the
+# desktop-only methods below, never at module scope. The QML UI runs on
+# Android with a QGuiApplication and no QtWidgets binding; importing QtWidgets
+# here would drag it into pyside6-android-deploy's --qt-libs and crash the
+# Android QtLoader at startup. Every QtWidgets use site is guarded by
+# `api.is_android()` (file pickers are desktop-only) and the one mobile-
+# reachable prompt (_show_not_enough_xp) is surfaced via the notEnoughXp
+# signal -> QML toast instead.
 
 import l5r.api as api
 import l5r.api.character
@@ -382,6 +390,10 @@ class AppController(QObject):
     # then opens the AdvanceRankDialog. Keeps the "may I advance?" decision
     # in the controller while the dialog stays a pure view concern.
     advanceRankReady = Signal()
+    # Emitted when a purchase is refused for lack of XP. Drives a QML toast
+    # (the message is built QML-side). Replaces a QtWidgets QMessageBox so the
+    # Android/QML path needs no QtWidgets binding.
+    notEnoughXp = Signal()
     # Emitted when a destructive action is requested on a dirty model --
     # File > New and File > Open both replace the working character and
     # discard the autosave recovery snapshot. The argument names the
@@ -544,6 +556,7 @@ class AppController(QObject):
             # for now rather than popping a desktop dialog that can't render.
             log.app.info(u"QML UI: File > Open unavailable on Android (deferred)")
             return
+        from qtpy.QtWidgets import QFileDialog  # desktop-only; see module note
         path, _ = QFileDialog.getOpenFileName(
             None,
             self.tr("Open Character"),
@@ -602,6 +615,7 @@ class AppController(QObject):
             # character store under a name derived from the character.
             self._save(self._android_save_path())
             return
+        from qtpy.QtWidgets import QFileDialog  # desktop-only; see module note
         path, _ = QFileDialog.getSaveFileName(
             None,
             self.tr("Save Character"),
@@ -745,6 +759,7 @@ class AppController(QObject):
         suggested = "{}.pdf".format(full_name) if full_name else ""
         proposed = os.path.join(last_dir, suggested)
 
+        from qtpy.QtWidgets import QFileDialog  # desktop-only; see module note
         path, _ = QFileDialog.getSaveFileName(
             None,
             self.tr("Export Character Sheet"),
@@ -808,6 +823,8 @@ class AppController(QObject):
         if api.is_android():
             log.app.info(u"QML UI: NPC export unavailable on Android (deferred)")
             return
+        # desktop-only; see module note
+        from qtpy.QtWidgets import QFileDialog, QMessageBox
         settings = L5RCMSettings()
         last_dir = settings.app.last_open_dir or ""
 
@@ -922,15 +939,9 @@ class AppController(QObject):
         api.character.set_void_points(int(value))
 
     def _show_not_enough_xp(self):
-        # Stopgap: QMessageBox bubbled out of the QML window. Slated for
-        # replacement with a QML toast/dialog -- see the
-        # `project-qmlui-msgbox-refactor` memory.
-        QMessageBox.warning(
-            None,
-            self.tr("Not enough XP"),
-            self.tr("You don't have enough experience points "
-                    "to complete this purchase."),
-        )
+        # Surfaced as a QML toast (the message lives QML-side). This path is
+        # reachable on Android, so it must not touch QtWidgets.
+        self.notEnoughXp.emit()
 
     # --- social/spiritual flags --------------------------------------
 

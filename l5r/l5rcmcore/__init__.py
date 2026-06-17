@@ -17,7 +17,7 @@
 
 import os
 
-from qtpy import QtCore, QtGui, QtWidgets
+from qtpy import QtCore, QtGui
 
 import l5r.models as models
 
@@ -67,7 +67,20 @@ DATA_PACKS_DOWNLOADS_LINK = 'https://github.com/OpenNingia/l5rcm-data-packs/rele
 DONATE_LINK = 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=Q87Q5BVS3ZKTE&lc=US&item_name=Daniele%20Simonetti&item_number=l5rcm_donate&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted'
 
 
-class L5RCMCore(QtWidgets.QMainWindow):
+# L5RCMCore is the desktop QWidget main-window base. The QML/mobile build
+# (android_main.py) imports this module only for the APP_* constants and never
+# instantiates L5RCMCore, so on Android we avoid importing QtWidgets at all --
+# the mobile package ships no QtWidgets binding (a QGuiApplication-only QML
+# app; see android_main.py). The class is still defined (with a plain object
+# base) so the module-level symbol resolves; it is simply never used there.
+if api.is_android():
+    _L5RCMCoreBase = object
+else:
+    from qtpy import QtWidgets
+    _L5RCMCoreBase = QtWidgets.QMainWindow
+
+
+class L5RCMCore(_L5RCMCoreBase):
     dstore = None
 
     def __init__(self, locale, parent=None):

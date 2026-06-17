@@ -23,7 +23,12 @@
 import os
 
 from qtpy.QtCore import QObject, Property, QThreadPool, Signal, Slot
-from qtpy.QtWidgets import QFileDialog
+
+# QtWidgets (QFileDialog) is imported LAZILY inside installFromFileDialog,
+# never at module scope: the Android/QML build runs on a QGuiApplication with
+# no QtWidgets binding (see app_controller's module note). On Android the
+# file-picker install path is unavailable -- datapacks are installed by
+# downloading them from the official repo instead.
 
 import l5r.api as api
 import l5r.api.character
@@ -31,6 +36,7 @@ import l5r.api.data
 import l5r.api.data.datapacks as datapacks
 
 from l5r.util import datapack_catalog
+from l5r.util import log
 from l5r.util.settings import L5RCMSettings
 from l5r.util.worker import Worker
 
@@ -226,6 +232,13 @@ class DatapackProxy(QObject):
 
     @Slot()
     def installFromFileDialog(self):
+        if api.is_android():
+            # No native file picker on Android: datapacks are installed by
+            # downloading them from the official repo (see the download flow).
+            log.app.info(
+                u"QML UI: install-from-file unavailable on Android (use download)")
+            return
+        from qtpy.QtWidgets import QFileDialog  # desktop-only; see module note
         start_dir = self._settings.app.last_open_data_dir or ""
         path, _ = QFileDialog.getOpenFileName(
             None,
