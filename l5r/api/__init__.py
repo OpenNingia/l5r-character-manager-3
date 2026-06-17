@@ -25,9 +25,23 @@ ORG = 'openningia'
 APP = 'l5rcm'
 
 
+def is_android():
+    """True when running under python-for-android (the Android packaging
+    used by pyside6-android-deploy). ``ANDROID_ARGUMENT`` is set by the p4a
+    bootstrap and is the canonical "am I on Android" marker."""
+    return 'ANDROID_ARGUMENT' in os.environ
+
+
 def get_user_data_path(rel_path=None):
     user_data = '.'
-    if os.name == 'posix':  # Linux is ok but Macosx ???
+    if is_android():
+        # python-for-android exposes the app's private, always-writable
+        # internal storage via ANDROID_PRIVATE (it also points HOME there).
+        # There is no XDG/APPDATA equivalent on Android, so anchor our
+        # config tree directly under it.
+        base = os.environ.get('ANDROID_PRIVATE') or os.environ.get('HOME', '.')
+        user_data = os.path.join(base, '.config')
+    elif os.name == 'posix':  # Linux is ok but Macosx ???
         user_data = '%s/.config' % (os.environ['HOME'])
     elif os.name == 'nt':
         user_data = os.environ['APPDATA']

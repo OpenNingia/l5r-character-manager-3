@@ -1,0 +1,87 @@
+name: Android (QML, experimental)
+
+# Builds a debug APK of the QML-only UI via pyside6-android-deploy
+# (python-for-android under the hood). This is an EXPERIMENTAL spike target
+# kept separate from release.yml so it can never destabilise the desktop
+# release pipeline. python-for-android only runs on Linux, which is why this
+# job exists at all (the desktop CI is Windows-first).
+#
+# Entry point: android_main.py (QML-only, PySide6, no legacy QWidget UI).
+# Config:      tools/deploy/android/pysidedeploy.spec
+#
+# Two things are expected to need iteration here (the make-or-break of the
+# spike), and are intentionally surfaced rather than hidden:
+#   1. The Android Qt wheels for PySide6/shiboken must MATCH the desktop
+#      PySide6 version installed below. pyside6-android-deploy downloads
+#      matching wheels automatically when they are published for the version;
+#      pin PYSIDE_VERSION to a version that has Android wheels.
+#   2. The NDK version must be the one the chosen Qt-for-Android expects.
+
+on:
+  workflow_dispatch:
+    inputs:
+      pyside_version:
+        description: "PySide6 version to build against (must have published Android wheels)."
+        required: false
+        default: "6.8.1"
+
+permissions:
+  contents: read
+
+jobs:
+  android-apk:
+    runs-on: ubuntu-latest
+    env:
+      PYSIDE_VERSION: ${{ inputs.pyside_version || '6.8.1' }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK + NDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install NDK (version expected by Qt for Android)
+        run: |
+          # Qt 6.7/6.8 expect NDK 26.1.x. Adjust together with PYSIDE_VERSION.
+          sdkmanager --install "ndk;26.1.10909125" "platforms;android-34" "build-tools;34.0.0"
+          echo "ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/26.1.10909125" >> "$GITHUB_ENV"
+
+      - name: Install deploy tooling
+        run: |
+          python -m pip install --upgrade pip
+          # Desktop PySide6 provides the pyside6-android-deploy CLI; its
+          # version determines which Android wheels are fetched.
+          pip install "PySide6==${PYSIDE_VERSION}"
+          # Our pure-Python runtime deps (no lxml: l5rdal >= v1.4.2 is stdlib
+          # xml only) so python-for-android needs no C-extension recipes.
+          pip install "asq>=2.0" "qtpy>=2.4" \
+            "git+https://github.com/OpenNingia/pypdf.git@fix_escape" \
+            "git+https://github.com/OpenNingia/l5rcm-data-access.git@v1.4.2"
+
+      - name: Build APK (pyside6-android-deploy)
+        run: |
+          pyside6-android-deploy \
+            -c tools/deploy/android/pysidedeploy.spec \
+            --ndk-path "$ANDROID_NDK_ROOT" \
+            --sdk-path "$ANDROID_SDK_ROOT" \
+            --keep-deployment-files \
+            --force-verbose || (echo "::error::APK build failed -- see log; likely NDK/wheel version mismatch (see android.yml header)"; exit 1)
+
+      - name: Upload APK
+        if: success()
+        uses: actions/upload-artifact@v5
+        with:
+          name: l5rcm-android-debug-apk
+          path: |
+            *.apk
+            **/*.apk
+          if-no-files-found: error

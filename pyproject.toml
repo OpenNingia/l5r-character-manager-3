@@ -33,9 +33,24 @@ dependencies = [
     "pyqtwaitingspinner >= 1.3",
     "darkdetect >= 0.8.0",
     "pypdf @ git+https://github.com/OpenNingia/pypdf.git@fix_escape",
-    "l5rdal @ git+https://github.com/OpenNingia/l5rcm-data-access.git@v1.4.1",
+    "l5rdal @ git+https://github.com/OpenNingia/l5rcm-data-access.git@v1.4.2",
 ]
 dynamic = ["version"]
+
+[project.optional-dependencies]
+# Mobile (Android) build: QML UI only, via PySide6 (the only Qt-for-Python
+# binding that targets Android -- PyQt6 ships no Android wheels). This set is
+# deliberately pure-Python so it cross-compiles under python-for-android:
+# lxml is dropped (l5rdal >= v1.4.2 is stdlib-xml only), and the desktop-only
+# PyQt6 / pyqtwaitingspinner / darkdetect are excluded. Entry point is
+# android_main.py, which never imports the legacy QWidget UI.
+android = [
+    "asq >= 2.0",
+    "qtpy >= 2.4",
+    "PySide6 >= 6.7",
+    "pypdf @ git+https://github.com/OpenNingia/pypdf.git@fix_escape",
+    "l5rdal @ git+https://github.com/OpenNingia/l5rcm-data-access.git@v1.4.2",
+]
 
 [project.urls]
 Homepage = "https://github.com/OpenNingia/l5r-character-manager-3"

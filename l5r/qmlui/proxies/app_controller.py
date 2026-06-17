@@ -14,6 +14,7 @@
 # comment blocks.
 
 import os
+import re
 from pathlib import Path
 
 from asq.initiators import query
@@ -536,6 +537,13 @@ class AppController(QObject):
 
     @Slot()
     def fileOpenDialog(self):
+        if api.is_android():
+            # No native file picker on Android (a QML/SAF browser is
+            # deferred): the last character is restored automatically on
+            # launch via session resume, so explicit File > Open is a no-op
+            # for now rather than popping a desktop dialog that can't render.
+            log.app.info(u"QML UI: File > Open unavailable on Android (deferred)")
+            return
         path, _ = QFileDialog.getOpenFileName(
             None,
             self.tr("Open Character"),
@@ -589,6 +597,11 @@ class AppController(QObject):
 
     @Slot()
     def fileSaveAs(self):
+        if api.is_android():
+            # No native save picker on Android: save into the app's private
+            # character store under a name derived from the character.
+            self._save(self._android_save_path())
+            return
         path, _ = QFileDialog.getSaveFileName(
             None,
             self.tr("Save Character"),
@@ -599,6 +612,15 @@ class AppController(QObject):
             if not path.lower().endswith(".l5r"):
                 path += ".l5r"
             self._save(path)
+
+    def _android_save_path(self):
+        """Destination .l5r inside the app's private storage, named after the
+        character (used in place of the save picker on Android)."""
+        full_name = self._character_full_name() or "character"
+        safe = re.sub(r"[^\w.-]+", "_", full_name).strip("_") or "character"
+        out_dir = api.get_user_data_path("characters")
+        os.makedirs(out_dir, exist_ok=True)
+        return os.path.join(out_dir, safe + ".l5r")
 
     def _save(self, path):
         pc = api.character.model()
@@ -710,6 +732,11 @@ class AppController(QObject):
         so the sheet stays responsive; exportFinished(ok, path) drives the
         QML toast, and the finished file is opened on success.
         """
+        if api.is_android():
+            # PDF sheet export is out of scope for the mobile build (no
+            # native file picker, and on-device PDF UX is deferred).
+            log.app.info(u"QML UI: PDF export unavailable on Android (deferred)")
+            return
         settings = L5RCMSettings()
         last_dir = settings.app.last_open_dir or ""
         # Pre-fill "<Family> <Name>.pdf" in the last-used directory, like the
@@ -778,6 +805,9 @@ class AppController(QObject):
         _run_npc_export) -- otherwise it would leave the session showing the
         last NPC instead of the player's character.
         """
+        if api.is_android():
+            log.app.info(u"QML UI: NPC export unavailable on Android (deferred)")
+            return
         settings = L5RCMSettings()
         last_dir = settings.app.last_open_dir or ""
 
