@@ -18,6 +18,13 @@ name: Android (QML, experimental)
 #   2. The NDK version must be the one the chosen Qt-for-Android expects.
 
 on:
+  # workflow_dispatch only runs from the default branch, so the primary way to
+  # build this experimental target from a feature branch is to push a tag.
+  # Use an `android-*` tag (distinct from release.yml's v3.*/v4.*), e.g.
+  # `git tag android-0.1 && git push origin android-0.1`.
+  push:
+    tags:
+      - "android-*"
   workflow_dispatch:
     inputs:
       pyside_version:
