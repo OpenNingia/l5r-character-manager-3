@@ -32,7 +32,7 @@ on:
       pyside_version:
         description: "PySide6 version to build against (must have published Android wheels)."
         required: false
-        default: "6.11.1"
+        default: "6.8.3"
 
 permissions:
   contents: read
@@ -41,7 +41,7 @@ jobs:
   android-apk:
     runs-on: ubuntu-latest
     env:
-      PYSIDE_VERSION: ${{ inputs.pyside_version || '6.11.1' }}
+      PYSIDE_VERSION: ${{ inputs.pyside_version || '6.8.3' }}
     steps:
       - uses: actions/checkout@v5
 
