@@ -203,70 +203,63 @@ jobs:
           PY
           grep -nE "p4a\.(branch|commit)|modules = " "$BZ" | head -20
 
-      - name: Make qtpy.QtGui not pull QtWidgets on Android (runtime guard)
-        run: |
-          # qtpy.QtGui backports QFileSystemModel via an unconditional
-          # `from PySide6.QtWidgets import QFileSystemModel` at module import.
-          # That makes EVERY `from qtpy import QtGui` eagerly load the QtWidgets
-          # binding -- which the QML app does at startup (android_main, app.py,
-          # the view-models). Two consequences on Android:
-          #   * the deploy tool's dependency scan sees QtWidgets and adds it to
-          #     --qt-libs (we strip it again in the buildozer.spec patch above);
-          #   * at runtime the import would need libQt6Widgets.so, which we do
-          #     NOT bundle (Widgets is stripped) -> ImportError.
-          # The patched qtpy is the copy pip-installed here, which p4a bundles
-          # into the APK, so guarding the backport under python-for-android
-          # (ANDROID_ARGUMENT is set on-device by the p4a bootstrap) makes the
-          # on-device import QtWidgets-free. The app never uses QFileSystemModel.
-          QTGUI="$(python -c 'import os, qtpy; print(os.path.join(os.path.dirname(qtpy.__file__), "QtGui.py"))')"
-          echo "patching qtpy: $QTGUI"
-          test -f "$QTGUI"
-          python - "$QTGUI" <<'PY'
-          import re, sys
-          p = sys.argv[1]
-          s = open(p, encoding="utf-8").read()
-          if "ANDROID_ARGUMENT" in s:
-              print("qtpy.QtGui already guarded")
-          else:
-              pat = re.compile(
-                  r'(?m)^([ \t]*)from PySide6\.QtWidgets import QFileSystemModel[ \t]*$')
-              repl = (r'\g<1>import os as _qtpy_os\n'
-                      r'\g<1>if "ANDROID_ARGUMENT" not in _qtpy_os.environ:\n'
-                      r'\g<1>    from PySide6.QtWidgets import QFileSystemModel')
-              s, n = pat.subn(repl, s)
-              assert n == 1, f"expected 1 QFileSystemModel backport line, found {n}"
-              open(p, "w", encoding="utf-8").write(s)
-              print("guarded qtpy.QtGui QFileSystemModel backport for Android")
-          PY
-          grep -n "QFileSystemModel" "$QTGUI" || true
-
-      - name: Vendor pure-Python deps into project_dir for bundling
+      - name: Vendor pure-Python deps into project_dir (+ trim qtpy)
         run: |
           # pyside6-android-deploy sets buildozer requirements to
           # python3,shiboken6,PySide6 only, so our pure-Python runtime deps
           # (qtpy, asq, l5rdal, pypdf) are NOT bundled -> the app dies with
           # ModuleNotFoundError: No module named 'qtpy'. They are all pure
-          # Python, so the simplest reliable fix is to drop them into
-          # project_dir (=repo root) next to the app code; p4a bundles the
-          # whole project_dir, so they become importable on device.
-          # IMPORTANT: this runs AFTER the qtpy QtGui patch above, so the
-          # vendored qtpy carries the Android QtWidgets guard.
+          # Python, so we drop them into project_dir (=repo root) next to the
+          # app code; p4a bundles the whole project_dir, so they import on
+          # device.
+          #
+          # qtpy needs special care: pyside6-android-deploy finds the Qt modules
+          # to bundle by AST-scanning EVERY .py in project_dir for
+          # `from PySide6.QtX import ...` (see deploy_lib/dependency_util.py).
+          # qtpy ships a shim per Qt module (`QtAxContainer.py` does
+          # `from PySide6.QtAxContainer import *`, etc.), so vendoring qtpy whole
+          # makes the tool think the app uses every Qt module and it dies with
+          # "libQt6AxContainer ... not found inside the wheel". So we trim the
+          # vendored qtpy to only the shims the app imports (QtCore/QtGui/QtQml),
+          # drop uic.py (pulls QtUiTools), and delete QtGui's QtWidgets backport
+          # line. After trimming, the only PySide6.Qt* references under
+          # project_dir resolve to Core/Gui/OpenGL/Qml -- all in the wheel -- and
+          # nothing pulls QtWidgets (which is why the app can stay QtWidgets-free,
+          # see the related code changes + the Widgets strip above).
           python - <<'PY'
-          import importlib.util, os, shutil
+          import importlib.util, os, re, shutil
           for name in ("qtpy", "asq", "l5rdal", "pypdf"):
               spec = importlib.util.find_spec(name)
               if spec is None or not spec.origin:
                   raise SystemExit(f"::error::dependency {name} not importable")
               src = os.path.dirname(spec.origin)
               dst = os.path.join(os.getcwd(), name)
-              if os.path.abspath(src) == os.path.abspath(dst):
-                  print("skip (already in project root):", name)
-                  continue
-              shutil.rmtree(dst, ignore_errors=True)
-              shutil.copytree(src, dst)
+              if os.path.abspath(src) != os.path.abspath(dst):
+                  shutil.rmtree(dst, ignore_errors=True)
+                  shutil.copytree(src, dst)
               print(f"vendored {name} <- {src}")
+
+          # --- trim the vendored qtpy ---
+          q = os.path.join(os.getcwd(), "qtpy")
+          keep = {"QtCore.py", "QtGui.py", "QtQml.py"}
+          removed = []
+          for fn in os.listdir(q):
+              if re.match(r"Qt.*\.py$", fn) and fn not in keep:
+                  os.remove(os.path.join(q, fn)); removed.append(fn)
+          uic = os.path.join(q, "uic.py")
+          if os.path.exists(uic):
+              os.remove(uic); removed.append("uic.py")
+          # drop QtGui's `from PySide6.QtWidgets import QFileSystemModel` backport
+          qtgui = os.path.join(q, "QtGui.py")
+          s = open(qtgui, encoding="utf-8").read()
+          s2 = re.sub(r'(?m)^[ \t]*from PySide6\.QtWidgets import QFileSystemModel[ \t]*$\n?',
+                      '', s)
+          assert s2 != s, "QtGui QFileSystemModel backport line not found"
+          open(qtgui, "w", encoding="utf-8").write(s2)
+          print("trimmed qtpy; removed shims:", ", ".join(sorted(removed)))
           PY
-          ls -d qtpy asq l5rdal pypdf
+          echo "--- remaining PySide6.Qt refs under project_dir ---"
+          grep -rhoE "from PySide6\.Qt[A-Za-z0-9]+" qtpy l5r android_main.py main.py 2>/dev/null | sort -u
 
       - name: Build APK (pyside6-android-deploy)
         run: |
