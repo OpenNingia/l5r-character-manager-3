@@ -61,3 +61,4 @@ ndk_path =
 sdk_path =
 local_recipes =
 arch = arm64-v8a
+python_version = 3.11
