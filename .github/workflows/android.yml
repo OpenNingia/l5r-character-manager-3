@@ -32,7 +32,7 @@ on:
       pyside_version:
         description: "PySide6 version to build against (must have published Android wheels)."
         required: false
-        default: "6.8.3"
+        default: "6.11.1"
 
 permissions:
   contents: read
@@ -41,22 +41,13 @@ jobs:
   android-apk:
     runs-on: ubuntu-latest
     env:
-      PYSIDE_VERSION: ${{ inputs.pyside_version || '6.8.3' }}
+      PYSIDE_VERSION: ${{ inputs.pyside_version || '6.11.1' }}
     steps:
       - uses: actions/checkout@v5
 
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-          
-      - name: Pin Python 3.11 for python-for-android
-        run: |
-          PY311=$(which python)   # setup-python lo mette primo nel PATH
-          echo "PYTHON=$PY311" >> "$GITHUB_ENV"
-          echo "PYTHON3=$PY311" >> "$GITHUB_ENV"
-          # p4a legge anche questa variabile per scegliere la versione target
-          echo "BUILDOZER_PYTHON_VERSION=3.11" >> "$GITHUB_ENV"
-          $PY311 --version          
 
       - name: System build dependencies (autotools for p4a recipes)
         run: |
@@ -136,29 +127,79 @@ jobs:
           # Pre-accept all SDK licenses so buildozer's installs are non-interactive.
           yes | "$CMDTOOLS_SM" --sdk_root="$SDK" --licenses >/dev/null 2>&1 || true
 
+      - name: Pin p4a to Python 3.11 in the deploy tool (generator-level)
+        run: |
+          # WHY patch the deploy tool itself and NOT buildozer.spec:
+          # the previous two-phase approach (--init, patch buildozer.spec, build)
+          # did NOT survive -- pyside6-android-deploy regenerates/cleans the
+          # generated buildozer.spec on the real build run (-f without
+          # --keep-deployment-files wipes it), so any edit between the two phases
+          # is lost. The values must be BAKED INTO THE GENERATOR so whatever spec
+          # it writes already contains them. The generator is
+          # deploy_lib/android/buildozer.py:BuildozerConfig.__init__, which does
+          # `self.set_value("app", "p4a.branch", "develop")`; we inject a
+          # `p4a.commit` set_value right after it.
+          #
+          # WHY pin the commit: the official PySide6 Android wheels are cp311, so
+          # shiboken6.abi3.so needs libpython3.11.so. p4a's `develop` branch
+          # (hardcoded by the deploy tool) bumped the python3/hostpython3 recipes
+          # to 3.14, so the build would ship libpython3.14.so and dlopen fails.
+          # 6b66944 is the last p4a commit whose python3 recipe == 3.11.13 while
+          # still carrying the qt bootstrap + NDK r27 support. buildozer honours
+          # p4a.commit via `git reset --hard <commit>` after cloning the branch.
+          #
+          # Also force Core-first Qt lib load order (+ Widgets/Svg): Qt's Android
+          # loader System.loadLibrary's the modules in array order and libQt6Core's
+          # JNI_OnLoad must run first to register the JavaVM, else the next
+          # module's JNI_OnLoad SIGSEGVs on a null VM. Our pysidedeploy.spec [qt]
+          # modules already lists Core first + Widgets,Svg; we additionally
+          # normalise the generator's module list so order is deterministic
+          # regardless of how the installed tool version assembles it.
+          BZ="$(python -c 'import os, PySide6; print(os.path.join(os.path.dirname(PySide6.__file__), "scripts", "deploy_lib", "android", "buildozer.py"))')"
+          echo "patching deploy tool: $BZ"
+          test -f "$BZ"
+          python - "$BZ" <<'PY'
+          import re, sys
+          P4A_COMMIT = "6b66944a2f51e0c848c7ac51e04a771324067ecc"  # last p4a on Python 3.11.13
+          p = sys.argv[1]
+          s = open(p, encoding="utf-8").read()
+          # (1) inject p4a.commit right after the hardcoded p4a.branch set_value,
+          #     reusing that line's indentation. Idempotent.
+          if "p4a.commit" not in s:
+              pat = re.compile(
+                  r'(?m)^([ \t]*)self\.set_value\(\s*["\']app["\']\s*,\s*["\']p4a\.branch["\']\s*,\s*["\']develop["\']\s*\).*$')
+              s, n = pat.subn(
+                  lambda m: m.group(0) + "\n" + m.group(1)
+                  + f'self.set_value("app", "p4a.commit", "{P4A_COMMIT}")',
+                  s)
+              assert n == 1, f"expected exactly 1 p4a.branch set_value, found {n}"
+          # (2) best-effort Core-first + Widgets/Svg on the modules list the tool
+          #     turns into --qt-libs. Skip silently if the source shape differs.
+          s2, n2 = re.subn(
+              r'(?m)^([ \t]*)modules\s*=\s*",".join\(\s*pysidedeploy_config\.modules\s*\)\s*$',
+              r'\1modules = ",".join(["Core"] + [m for m in dict.fromkeys('
+              r'list(pysidedeploy_config.modules) + ["Widgets", "Svg"]) if m != "Core"])',
+              s)
+          if n2:
+              s = s2
+              print("normalised modules list (Core-first + Widgets/Svg)")
+          else:
+              print("WARNING: modules join line not found; relying on spec [qt] order")
+          open(p, "w", encoding="utf-8").write(s)
+          print(f"pinned p4a.commit={P4A_COMMIT}")
+          PY
+          grep -nE "p4a\.(branch|commit)|modules = " "$BZ" | head -20
+
       - name: Build APK (pyside6-android-deploy)
         run: |
           # pyside6-android-deploy resolves project_dir / input_file / qml_files
-          # RELATIVE TO THE SPEC FILE's directory, and `buildozer init` writes
-          # buildozer.spec into the cwd. So the spec must sit at the project
-          # root for those paths (project_dir=., android_main.py, l5r/qmlui/qml)
-          # and the generated buildozer.spec to line up. Copy the canonical spec
-          # (kept under tools/deploy/android/) to the repo root and run there.
+          # RELATIVE TO THE SPEC FILE's directory, and writes buildozer.spec into
+          # the cwd, so run from the project root with the spec copied there
+          # (project_dir=., android_main.py, l5r/qmlui/qml). The generator was
+          # patched above, so the buildozer.spec it writes already pins p4a to
+          # Python 3.11 and orders the Qt libs Core-first -- single invocation,
+          # nothing to patch in between.
           cp tools/deploy/android/pysidedeploy.spec ./pysidedeploy.spec
-          echo "::group::pysidedeploy.spec [qt] modules as the deploy tool parses it"
-          python - <<'PY'
-          from configparser import ConfigParser
-          c = ConfigParser(comment_prefixes="/", strict=False)
-          c.read("pysidedeploy.spec")
-          print("get_value('qt','modules') ->", repr(c.has_option("qt", "modules") and c.get("qt", "modules")))
-          PY
-          echo "::endgroup::"
-          # Use the runner's pre-installed SDK (it already has build-tools /
-          # platform-tools / aidl). Dropping --sdk-path made buildozer download
-          # a bare SDK with NO build-tools ("Aidl not found"). Its only problem
-          # -- the legacy tools/bin/sdkmanager crashing on JDK17 -- is handled
-          # by the shim step above. --ndk-path is required by the deploy tool
-          # itself (get_llvm_readobj(self.ndk_path)).
           pyside6-android-deploy \
             -c pysidedeploy.spec \
             --wheel-pyside "$WHEEL_PYSIDE" \
@@ -168,14 +209,28 @@ jobs:
             --keep-deployment-files \
             -f -v || (echo "::error::APK build failed -- see log; check wheel/NDK versions (see android.yml header)"; exit 1)
 
-      - name: Show generated buildozer.spec qt-libs (diagnostic)
+      - name: Verify embedded Python is 3.11 (not 3.14)
         if: always()
         run: |
-          echo "::group::buildozer.spec p4a.extra_args (actual --qt-libs order used)"
-          grep -nE "p4a.extra_args|qt-libs" buildozer.spec || echo "(buildozer.spec not found)"
+          # Definitive proof the p4a.commit pin landed: the cloned p4a must be
+          # at the pinned commit and the build must ship libpython3.11.so (the
+          # cp311 wheels' shiboken6.abi3.so needs it). If libpython3.14.so shows
+          # up instead, the pin did NOT take effect (p4a develop = 3.14).
+          echo "::group::cloned p4a HEAD"
+          p4a_dir="$(find .buildozer -maxdepth 4 -type d -name python-for-android 2>/dev/null | head -1)"
+          if [ -n "$p4a_dir" ]; then
+            git -C "$p4a_dir" rev-parse HEAD || true
+            grep -RnE "version = '3\.(11|14)" "$p4a_dir/pythonforandroid/recipes/python3/__init__.py" || true
+          else
+            echo "(python-for-android clone not found)"
+          fi
           echo "::endgroup::"
-          echo "::group::rendered libs.xml qt_libs array (load order)"
-          find .buildozer -name "libs.xml" -path "*res*" -exec sh -c 'echo "--- $1"; cat "$1"' _ {} \; 2>/dev/null | grep -iE "qt_libs|item|Qt6" | head -40 || echo "(libs.xml not found)"
+          echo "::group::libpython shipped in build tree"
+          found="$(find .buildozer -name 'libpython3*.so' 2>/dev/null | sort -u)"
+          echo "${found:-（none found）}"
+          if echo "$found" | grep -q 'libpython3.14'; then
+            echo "::error::APK embeds libpython3.14 -- p4a.commit pin did NOT take effect"
+          fi
           echo "::endgroup::"
 
       - name: Upload APK
