@@ -144,52 +144,33 @@ jobs:
             --sdk-path "$ANDROID_SDK_ROOT" \
             --init -f -v
 
-      - name: Patch buildozer.spec (Core-first qt-libs + pin p4a to Python 3.11)
+      - name: Force Core-first Qt lib load order (+ Widgets/Svg)
         run: |
-          # Two fixes applied to the generated buildozer.spec before the build:
-          #
-          # 1) Core-first Qt lib load order (+ Widgets/Svg).
-          #    pyside6-android-deploy ignores our spec [qt] modules and auto-detects
-          #    the Qt libs as an UNORDERED set (list(set(...))). Qt's Android loader
-          #    System.loadLibrary's them in array order, and libQt6Core's JNI_OnLoad
-          #    must run first to register the JavaVM -- otherwise the next module's
-          #    JNI_OnLoad hits QJniEnvironment::getJniEnv() on a null VM and SIGSEGVs.
-          #    The set order is per-process random, so the crash is intermittent.
-          #    Also add Widgets/Svg (our app imports QtWidgets and renders SVG icons).
-          #
-          # 2) Pin python-for-android to the last commit before it bumped the
-          #    python3/hostpython3 recipes to 3.14 (#3180^ vs #3242). The official
-          #    PySide6 Android wheels are cp311, so shiboken6.abi3.so needs
-          #    libpython3.11.so; with p4a develop (now 3.14) the build ships
-          #    libpython3.14.so and dlopen fails ("libpython3.11.so not found").
-          #    pyside6-android-deploy hardcodes p4a.branch=develop, so we pin a
-          #    commit (python3 == hostpython3 == 3.11.13) that still has the qt
-          #    bootstrap + NDK r27 support.
+          # pyside6-android-deploy ignores our spec [qt] modules and auto-detects
+          # the Qt libs as an UNORDERED set (list(set(...))). Qt's Android loader
+          # System.loadLibrary's them in array order, and libQt6Core's JNI_OnLoad
+          # must run first to register the JavaVM -- otherwise the next module's
+          # JNI_OnLoad hits QJniEnvironment::getJniEnv() on a null VM and SIGSEGVs
+          # (the on-device crash). The set order is per-process random, so the
+          # crash is intermittent. Force Core first, deterministically, and add
+          # Widgets/Svg (our app imports QtWidgets and renders SVG icons; both
+          # have PySide6 bindings + libs in the wheel).
           python - <<'PY'
           import re
-          P4A_COMMIT = "6b66944a2f51e0c848c7ac51e04a771324067ecc"  # last p4a on Python 3.11.13
           p = "buildozer.spec"
           s = open(p).read()
-          # (1) qt-libs order + extras
           m = re.search(r'--qt-libs=(\S+)', s)
           libs = m.group(1).split(",")
           libs = ["Core"] + [x for x in libs if x != "Core"]
           for extra in ("Widgets", "Svg"):
               if extra not in libs:
                   libs.append(extra)
-          s = re.sub(r'--qt-libs=\S+', "--qt-libs=" + ",".join(libs), s)
-          # (2) pin p4a commit (add or replace under [app], next to p4a.branch)
-          if re.search(r'^p4a\.commit\s*=', s, re.M):
-              s = re.sub(r'^p4a\.commit\s*=.*$', f"p4a.commit = {P4A_COMMIT}", s, flags=re.M)
-          elif re.search(r'^p4a\.branch\s*=.*$', s, re.M):
-              s = re.sub(r'^(p4a\.branch\s*=.*)$', r"\1" + f"\np4a.commit = {P4A_COMMIT}", s, flags=re.M)
-          else:
-              s = s.replace("[app]", f"[app]\np4a.commit = {P4A_COMMIT}", 1)
+          new = ",".join(libs)
+          s = re.sub(r'--qt-libs=\S+', "--qt-libs=" + new, s)
           open(p, "w").write(s)
-          print("forced --qt-libs=" + ",".join(libs))
-          print("pinned p4a.commit=" + P4A_COMMIT)
+          print("forced --qt-libs=" + new)
           PY
-          grep -nE "p4a.extra_args|p4a.commit|p4a.branch" buildozer.spec
+          grep -n "p4a.extra_args" buildozer.spec
 
       - name: Build APK (reuses patched buildozer.spec)
         run: |
