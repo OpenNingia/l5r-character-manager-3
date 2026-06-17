@@ -37,10 +37,10 @@ CI does this on Linux (python-for-android does not run on Windows):
 Locally on Linux/WSL2:
 
 ```bash
-pip install "PySide6==6.8.1"        # version must have published Android wheels
+pip install "PySide6==6.11.1"       # version must have published Android wheels
 pip install -e ".[android]"          # pure-Python runtime deps
-sdkmanager --install "ndk;26.1.10909125" "platforms;android-34" "build-tools;34.0.0"
-export ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/26.1.10909125
+sdkmanager --install "ndk;27.2.12479018" "platforms;android-35" "build-tools;35.0.0"
+export ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/27.2.12479018
 pyside6-android-deploy -c tools/deploy/android/pysidedeploy.spec \
   --ndk-path "$ANDROID_NDK_ROOT" --sdk-path "$ANDROID_SDK_ROOT" \
   --keep-deployment-files
@@ -53,7 +53,8 @@ pyside6-android-deploy -c tools/deploy/android/pysidedeploy.spec \
    `PYSIDE_VERSION` (workflow input) to a version with published Android
    wheels; bump the NDK version in lockstep.
 2. **NDK version.** Must be the one the chosen Qt-for-Android expects
-   (26.1.x for Qt 6.7/6.8). A mismatch is the most common build failure.
+   (r27 / 27.2.12479018 for Qt 6.11; r26 / 26.1.10909125 for Qt 6.7/6.8).
+   A mismatch is the most common build failure.
 
 ## Spike success criteria (verify on an emulator)
 
