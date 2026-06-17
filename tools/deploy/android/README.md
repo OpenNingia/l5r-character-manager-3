@@ -37,11 +37,22 @@ CI does this on Linux (python-for-android does not run on Windows):
 Locally on Linux/WSL2:
 
 ```bash
-pip install "PySide6==6.11.1"       # version must have published Android wheels
+pip install "PySide6==6.11.1"       # provides the pyside6-android-deploy CLI
+pip install -r "$(python -c 'import os,PySide6;print(os.path.join(os.path.dirname(PySide6.__file__),"scripts","requirements-android.txt"))')"
 pip install -e ".[android]"          # pure-Python runtime deps
 sdkmanager --install "ndk;27.2.12479018" "platforms;android-35" "build-tools;35.0.0"
 export ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/27.2.12479018
+
+# OSS Android wheels (aarch64, cp311) from download.qt.io. pyside6-android-deploy
+# does NOT fetch these, and `qtpip --android` pulls the COMMERCIAL wheels (needs a
+# Qt commercial licence), so download the open-source wheels directly:
+base=https://download.qt.io/official_releases/QtForPython
+curl -fSLO "$base/pyside6/pyside6-6.11.1-6.11.1-cp311-cp311-android_aarch64.whl"
+curl -fSLO "$base/shiboken6/shiboken6-6.11.1-6.11.1-cp311-cp311-android_aarch64.whl"
+
 pyside6-android-deploy -c tools/deploy/android/pysidedeploy.spec \
+  --wheel-pyside  pyside6-6.11.1-6.11.1-cp311-cp311-android_aarch64.whl \
+  --wheel-shiboken shiboken6-6.11.1-6.11.1-cp311-cp311-android_aarch64.whl \
   --ndk-path "$ANDROID_NDK_ROOT" --sdk-path "$ANDROID_SDK_ROOT" \
   --keep-deployment-files
 ```

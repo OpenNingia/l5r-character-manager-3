@@ -37,9 +37,9 @@ modules = Core,Gui,Network,Qml,Quick,QuickControls2,QuickTemplates2,QuickLayouts
 plugins =
 
 [android]
-/ Leave empty so the deploy tool downloads the Android wheels that MATCH the
-/ desktop PySide6 version installed in CI. Pin a version with published
-/ Android wheels (see .github/workflows/android.yml header).
+/ Left empty here: CI passes the OSS Android wheels explicitly via
+/ --wheel-pyside / --wheel-shiboken (downloaded from download.qt.io). For a
+/ local build, either fill these in or pass the same two flags.
 wheel_pyside =
 wheel_shiboken =
 / Single ABI for the spike to keep build time/size down. Add armeabi-v7a /

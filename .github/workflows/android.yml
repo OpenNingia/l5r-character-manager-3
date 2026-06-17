@@ -12,9 +12,11 @@ name: Android (QML, experimental)
 # Two things are expected to need iteration here (the make-or-break of the
 # spike), and are intentionally surfaced rather than hidden:
 #   1. The Android Qt wheels for PySide6/shiboken must MATCH the desktop
-#      PySide6 version installed below. pyside6-android-deploy downloads
-#      matching wheels automatically when they are published for the version;
-#      pin PYSIDE_VERSION to a version that has Android wheels.
+#      PySide6 version installed below, and must be aarch64/cp311 (the runner
+#      Python is 3.11). pyside6-android-deploy does NOT fetch them; we download
+#      the open-source wheels from download.qt.io and pass them via
+#      --wheel-pyside / --wheel-shiboken. (qtpip --android pulls the COMMERCIAL
+#      wheels and needs a Qt commercial licence, so it's unusable in OSS CI.)
 #   2. The NDK version must be the one the chosen Qt-for-Android expects.
 
 on:
@@ -66,8 +68,7 @@ jobs:
       - name: Install deploy tooling
         run: |
           python -m pip install --upgrade pip
-          # Desktop PySide6 provides the pyside6-android-deploy CLI; its
-          # version determines which Android wheels are fetched.
+          # Desktop PySide6 provides the pyside6-android-deploy CLI.
           pip install "PySide6==${PYSIDE_VERSION}"
           # pyside6-android-deploy needs extra helpers (jinja2, pkginfo, tqdm)
           # that ship as a requirements file alongside the tool, not as hard
@@ -79,14 +80,31 @@ jobs:
             "git+https://github.com/OpenNingia/pypdf.git@fix_escape" \
             "git+https://github.com/OpenNingia/l5rcm-data-access.git@v1.4.2"
 
+      - name: Download Android wheels (open-source, aarch64/cp311)
+        run: |
+          # The OSS Android wheels are published on download.qt.io (the qtpip
+          # --android route needs a Qt COMMERCIAL licence). Filenames embed the
+          # version twice and the cp311 tag (runner Python is 3.11).
+          base="https://download.qt.io/official_releases/QtForPython"
+          pyw="pyside6-${PYSIDE_VERSION}-${PYSIDE_VERSION}-cp311-cp311-android_aarch64.whl"
+          shw="shiboken6-${PYSIDE_VERSION}-${PYSIDE_VERSION}-cp311-cp311-android_aarch64.whl"
+          mkdir -p android_wheels
+          curl -fSL --retry 3 -o "android_wheels/${pyw}" "${base}/pyside6/${pyw}"
+          curl -fSL --retry 3 -o "android_wheels/${shw}" "${base}/shiboken6/${shw}"
+          ls -la android_wheels
+          echo "WHEEL_PYSIDE=$PWD/android_wheels/${pyw}" >> "$GITHUB_ENV"
+          echo "WHEEL_SHIBOKEN=$PWD/android_wheels/${shw}" >> "$GITHUB_ENV"
+
       - name: Build APK (pyside6-android-deploy)
         run: |
           pyside6-android-deploy \
             -c tools/deploy/android/pysidedeploy.spec \
+            --wheel-pyside "$WHEEL_PYSIDE" \
+            --wheel-shiboken "$WHEEL_SHIBOKEN" \
             --ndk-path "$ANDROID_NDK_ROOT" \
             --sdk-path "$ANDROID_SDK_ROOT" \
             --keep-deployment-files \
-            -f -v || (echo "::error::APK build failed -- see log; likely NDK/wheel version mismatch (see android.yml header)"; exit 1)
+            -f -v || (echo "::error::APK build failed -- see log; check wheel/NDK versions (see android.yml header)"; exit 1)
 
       - name: Upload APK
         if: success()
