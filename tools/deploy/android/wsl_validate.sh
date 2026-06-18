@@ -206,9 +206,13 @@ cp tools/deploy/android/pysidedeploy.spec ./pysidedeploy.spec
 # for faster re-runs with: CLEAN=0 bash tools/deploy/android/wsl_validate.sh
 if [ "${CLEAN:-1}" = "1" ]; then
   echo "    cleaning stale recipes + PySide6/shiboken6 installs (CLEAN=0 to skip)"
-  rm -rf deployment
-  find .buildozer -type d \( -name PySide6 -o -name shiboken6 \) -path '*python-installs*' \
-    -exec rm -rf {} + 2>/dev/null || true
+  # Surgical: only the generated recipes/jars, NOT deployment/.buildozer -- on a
+  # successful build the deploy tool moves the whole .buildozer cache (incl. the
+  # compiled hostpython3 / CPython) into deployment/, and nuking that would force
+  # a full rebuild next run. Keep it.
+  rm -rf deployment/recipes deployment/jar
+  find .buildozer deployment/.buildozer -type d \( -name PySide6 -o -name shiboken6 \) \
+    -path '*python-installs*' -exec rm -rf {} + 2>/dev/null || true
 else
   echo "    CLEAN=0: keeping existing recipes/installs (fast re-run)"
 fi
