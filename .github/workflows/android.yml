@@ -40,23 +40,14 @@ permissions:
 jobs:
   android-apk:
     runs-on: ubuntu-latest
-    # Build both flavours in parallel so they can be compared side by side.
-    # fail-fast: false keeps the debug leg producing its artifact even if the
-    # (newer, less battle-tested) release leg fails. The build mode is fed
-    # into pysidedeploy.spec's [buildozer] `mode` per leg; everything else is
-    # identical. NOTE on .aab vs .apk: `buildozer android release` defaults to
-    # an Android App Bundle (.aab) -- a Play-Store *publishing* format that is
-    # NOT directly installable (Play repacks it into per-device APKs). For a
-    # like-for-like, sideloadable comparison we force the release leg to emit
-    # an .apk too (android.release_artifact=apk, injected into the generated
-    # buildozer.spec) and sign it with a throwaway key below.
-    strategy:
-      fail-fast: false
-      matrix:
-        mode: [debug, release]
+    # Debug APK only. A release leg was tried (matrix debug+release) but the
+    # release build needs extractNativeLibs=true for PySide6's QtLoader to
+    # find the *.abi3.so on disk, and the only buildozer/p4a lever for that
+    # (at our pinned p4a) is unusable -- so a release APK builds but crashes
+    # at startup. Not worth the invasive workaround for this POC; the debug
+    # APK is the usable artifact.
     env:
       PYSIDE_VERSION: ${{ inputs.pyside_version || '6.11.1' }}
-      BUILD_MODE: ${{ matrix.mode }}
     steps:
       - uses: actions/checkout@v5
 
@@ -181,43 +172,19 @@ jobs:
           echo "patching deploy tool: $BZ"
           test -f "$BZ"
           python - "$BZ" <<'PY'
-          import os, re, sys
+          import re, sys
           P4A_COMMIT = "6b66944a2f51e0c848c7ac51e04a771324067ecc"  # last p4a on Python 3.11.13
-          MODE = os.environ.get("BUILD_MODE", "debug")
           p = sys.argv[1]
           s = open(p, encoding="utf-8").read()
           # (1) inject p4a.commit right after the hardcoded p4a.branch set_value,
           #     reusing that line's indentation. Idempotent.
-          #     ALSO force android.release_artifact=apk here: buildozer 1.5
-          #     defaults the release artifact to an .aab (Play publishing
-          #     format, not directly installable). We want a sideloadable
-          #     .apk from the release leg so it compares like-for-like with
-          #     the debug .apk. Inert for the debug leg (which uses
-          #     android.debug_artifact, already apk). Baked into the
-          #     generator for the same reason as the p4a pin: the build run
-          #     regenerates buildozer.spec, wiping any direct edit.
-          #
-          #     AND, for the RELEASE leg only, bump android.api to 35: the
-          #     release build runs `lintVitalRelease`, which fails fatally on
-          #     ExpiredTargetSdkVersion unless targetSdk >= 33 (the debug
-          #     build skips that lint, so it builds fine at the lower default
-          #     -- that's why we gate this on MODE so the debug artifact stays
-          #     byte-for-byte unchanged). API 35 matches the installed
-          #     platforms;android-35 / build-tools;35.0.0.
           if "p4a.commit" not in s:
               pat = re.compile(
                   r'(?m)^([ \t]*)self\.set_value\(\s*["\']app["\']\s*,\s*["\']p4a\.branch["\']\s*,\s*["\']develop["\']\s*\).*$')
-
-              def _inject(m):
-                  ind = m.group(1)
-                  out = [m.group(0),
-                         ind + f'self.set_value("app", "p4a.commit", "{P4A_COMMIT}")',
-                         ind + 'self.set_value("app", "android.release_artifact", "apk")']
-                  if MODE == "release":
-                      out.append(ind + 'self.set_value("app", "android.api", "35")')
-                  return "\n".join(out)
-
-              s, n = pat.subn(_inject, s)
+              s, n = pat.subn(
+                  lambda m: m.group(0) + "\n" + m.group(1)
+                  + f'self.set_value("app", "p4a.commit", "{P4A_COMMIT}")',
+                  s)
               assert n == 1, f"expected exactly 1 p4a.branch set_value, found {n}"
           # (2) Core-first reorder of the auto-detected modules list the tool
           #     turns into --qt-libs, AND strip Widgets. The build machine has
@@ -244,7 +211,7 @@ jobs:
           open(p, "w", encoding="utf-8").write(s)
           print(f"pinned p4a.commit={P4A_COMMIT}")
           PY
-          grep -nE "p4a\.(branch|commit)|release_artifact|android\.api|modules = " "$BZ" | head -20
+          grep -nE "p4a\.(branch|commit)|modules = " "$BZ" | head -20
 
       - name: Vendor pure-Python deps into project_dir (+ trim qtpy)
         run: |
@@ -317,10 +284,6 @@ jobs:
           # Python 3.11 and orders the Qt libs Core-first -- single invocation,
           # nothing to patch in between.
           cp tools/deploy/android/pysidedeploy.spec ./pysidedeploy.spec
-          # Per-leg build flavour: rewrite [buildozer] mode (debug|release).
-          # The canonical spec stays at debug; only this run's copy is flipped.
-          sed -i "s/^mode = .*/mode = ${BUILD_MODE}/" ./pysidedeploy.spec
-          echo "building in '${BUILD_MODE}' mode:"; grep -n "^mode = " ./pysidedeploy.spec
           pyside6-android-deploy \
             -c pysidedeploy.spec \
             --wheel-pyside "$WHEEL_PYSIDE" \
@@ -354,50 +317,11 @@ jobs:
           fi
           echo "::endgroup::"
 
-      - name: Sign release APK (throwaway key — sideload/comparison only)
-        if: success() && matrix.mode == 'release'
-        run: |
-          # `buildozer android release` emits an UNSIGNED apk
-          # (*-release-unsigned.apk); Android won't install an unsigned apk,
-          # so sign it here with an ephemeral keystore generated on the fly.
-          # This is strictly for testing/size comparison -- a real Play
-          # release would use a managed signing key, never this throwaway.
-          set -e
-          BT="$(ls -d "$ANDROID_SDK_ROOT"/build-tools/*/ | sort -V | tail -1)"
-          echo "build-tools: $BT"
-          APK="$(find . -name '*-release-unsigned.apk' | head -1)"
-          if [ -z "$APK" ]; then
-            echo "::error::no *-release-unsigned.apk found -- did the release leg emit an .aab instead?"
-            echo "artifacts present:"; find . \( -name '*.apk' -o -name '*.aab' \) -printf '%s\t%p\n'
-            exit 1
-          fi
-          echo "unsigned release apk: $APK"
-          keytool -genkeypair -dname "CN=L5RCM Test, O=L5RCM, C=IT" -alias test \
-            -keystore test.keystore -storepass android -keypass android \
-            -keyalg RSA -keysize 2048 -validity 10000
-          # Emit the signed apk at the repo ROOT: buildozer leaves it under
-          # .buildozer/... (a *hidden* dir), which actions/upload-artifact
-          # does NOT descend into (include-hidden-files defaults to false), so
-          # the upload glob would find nothing. A non-hidden root path is
-          # picked up by `*.apk`.
-          OUT="$GITHUB_WORKSPACE/L5RCM-release.apk"
-          "${BT}zipalign" -f -p 4 "$APK" "$OUT.tmp"
-          "${BT}apksigner" sign --ks test.keystore --ks-pass pass:android \
-            --out "$OUT" "$OUT.tmp"
-          rm -f "$OUT.tmp"
-          # Drop every unsigned copy (buildozer may leave one in bin/ and one
-          # in cwd) so the upload glob can't pick up an uninstallable apk.
-          find . -name '*-release-unsigned.apk' -delete
-          "${BT}apksigner" verify "$OUT"
-          echo "signed release apk: $OUT"
-          ls -la "$OUT"
-
       - name: Upload APK
         if: success()
         uses: actions/upload-artifact@v5
         with:
-          # Per-leg name so the debug and release artifacts don't collide.
-          name: l5rcm-android-${{ matrix.mode }}-apk
+          name: l5rcm-android-debug-apk
           path: |
             *.apk
             **/*.apk
