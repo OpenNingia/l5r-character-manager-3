@@ -371,7 +371,12 @@ jobs:
           keytool -genkeypair -dname "CN=L5RCM Test, O=L5RCM, C=IT" -alias test \
             -keystore test.keystore -storepass android -keypass android \
             -keyalg RSA -keysize 2048 -validity 10000
-          OUT="${APK%-unsigned.apk}.apk"
+          # Emit the signed apk at the repo ROOT: buildozer leaves it under
+          # .buildozer/... (a *hidden* dir), which actions/upload-artifact
+          # does NOT descend into (include-hidden-files defaults to false), so
+          # the upload glob would find nothing. A non-hidden root path is
+          # picked up by `*.apk`.
+          OUT="$GITHUB_WORKSPACE/L5RCM-release.apk"
           "${BT}zipalign" -f -p 4 "$APK" "$OUT.tmp"
           "${BT}apksigner" sign --ks test.keystore --ks-pass pass:android \
             --out "$OUT" "$OUT.tmp"
