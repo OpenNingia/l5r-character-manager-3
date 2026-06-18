@@ -16,10 +16,13 @@
 # AppImage / .deb builds for a cosmetic gain. TLS certificates are
 # verified by urllib's default opener on every supported platform.
 #
-# (On Android the python-for-android CPython has no system CA store, so the
-# mobile entry point android_main.py points stdlib ssl at certifi's bundled
-# roots via SSL_CERT_FILE before any TLS happens -- transparent here, the
-# default opener just works. Desktop is untouched.)
+# (On Android the python-for-android CPython has no system CA store, so stdlib
+# ssl's default verification fails app-wide with "unable to get local issuer
+# certificate". We don't trust the SSL_CERT_FILE env route there -- it is
+# silent if the file is missing and isn't reliably honoured by the p4a OpenSSL
+# build -- so ``_ssl_context()`` below builds an explicit context off certifi's
+# bundled roots and we pass it to every urlopen. Desktop falls back to the
+# system trust store untouched.)
 #
 # Trust model: we only ever fetch from the pinned GitHub API URL, and the
 # download URLs we follow come from GitHub's own JSON response (not user
@@ -30,6 +33,7 @@
 import json
 import os
 import re
+import ssl
 import tempfile
 import urllib.error
 import urllib.request
@@ -90,6 +94,58 @@ def parse_version(asset_name):
     return m.group(1) if m else ""
 
 
+_ssl_ctx = None  # memoised; built on first request
+
+
+def _ssl_context():
+    """Return an ``ssl.SSLContext`` for our HTTPS requests, or ``None`` to
+    use urllib's default.
+
+    On a normal desktop, ``None`` lets urllib use the system trust store as
+    before. On Android the system store is unreachable, so we build a context
+    explicitly off certifi's bundled CA roots (vendored into the APK). This
+    does not depend on the ``SSL_CERT_FILE`` env var being honoured and, unlike
+    that route, fails loudly if the bundled ``cacert.pem`` is missing instead
+    of silently verifying nothing.
+    """
+    global _ssl_ctx
+    if _ssl_ctx is not None:
+        return _ssl_ctx
+
+    try:
+        from l5r import api
+        on_android = api.is_android()
+    except Exception:  # noqa: BLE001 -- be conservative if api isn't ready
+        on_android = False
+
+    if not on_android:
+        _ssl_ctx = False  # sentinel: "use urllib default"
+        return None
+
+    try:
+        import certifi
+        cafile = certifi.where()
+        if not os.path.exists(cafile):
+            log.app.error(
+                u"datapack catalog: certifi CA bundle missing at %s -- "
+                u"TLS verification will fail (check the APK bundling)", cafile)
+        ctx = ssl.create_default_context(cafile=cafile)
+        _ssl_ctx = ctx
+        return ctx
+    except Exception:  # noqa: BLE001
+        log.app.warning(
+            u"datapack catalog: could not build certifi SSL context; "
+            u"falling back to urllib default", exc_info=True)
+        _ssl_ctx = False
+        return None
+
+
+def _urlopen(url):
+    """``urllib.request.urlopen`` with our certifi-backed context on Android."""
+    return urllib.request.urlopen(
+        _request(url), timeout=HTTP_TIMEOUT, context=_ssl_context())
+
+
 def _request(url):
     return urllib.request.Request(
         url,
@@ -121,8 +177,7 @@ def fetch_catalog():
         raise CatalogError("releases API host is not allow-listed")
 
     try:
-        with urllib.request.urlopen(_request(RELEASES_API),
-                                    timeout=HTTP_TIMEOUT) as resp:
+        with _urlopen(RELEASES_API) as resp:
             payload = json.load(resp)
     except urllib.error.HTTPError as ex:
         if _is_rate_limited(ex):
@@ -180,8 +235,7 @@ def download_to_temp(url, progress_cb=None):
     try:
         with os.fdopen(fd, "wb") as out:
             try:
-                resp = urllib.request.urlopen(_request(url),
-                                              timeout=HTTP_TIMEOUT)
+                resp = _urlopen(url)
             except urllib.error.HTTPError as ex:
                 if _is_rate_limited(ex):
                     raise RateLimitError(str(ex))
