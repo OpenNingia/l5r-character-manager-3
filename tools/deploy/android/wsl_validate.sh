@@ -192,11 +192,24 @@ PY
 # --- 7. build the APK (single pyside6-android-deploy invocation) ---
 echo "==> [7/7] pyside6-android-deploy build (this is the long step)"
 cp tools/deploy/android/pysidedeploy.spec ./pysidedeploy.spec
+# Purge stale generated recipes: the p4a PySide6 recipe bakes the module list
+# into deployment/recipes/PySide6/__init__.py and copies one Qt{module}.abi3.so
+# per module. A previous run's recipe (with a bad module) would be reused
+# (recipes_exist() short-circuits regeneration), so wipe it. Also drop any
+# half-installed PySide6/shiboken6 under .buildozer so the recipe re-copies
+# cleanly (cheap; does NOT touch the expensive NDK/CPython build cache).
+rm -rf deployment
+find .buildozer -type d \( -name PySide6 -o -name shiboken6 \) -path '*python-installs*' \
+  -exec rm -rf {} + 2>/dev/null || true
 set +e
 # --extra-ignore-dirs qtpy : keep qtpy out of the AST module scan (scan-only;
 #                            p4a still bundles it) -> no bogus AxContainer/Widgets.
 # --extra-modules <list>   : declare the Qt module set explicitly (qt.modules in
 #                            the spec is clobbered by Config.__init__, see header).
+#                            ONLY real PySide6 Python modules: QuickTemplates2 /
+#                            QuickLayouts are native-only (no Qt*.abi3.so) and are
+#                            pulled transitively; listing them makes the recipe's
+#                            per-module abi3 copy crash (FileNotFoundError).
 pyside6-android-deploy \
   -c pysidedeploy.spec \
   --wheel-pyside "$WHEEL_PYSIDE" \
@@ -204,15 +217,21 @@ pyside6-android-deploy \
   --ndk-path "$ANDROID_NDK_ROOT" \
   --sdk-path "$ANDROID_SDK_ROOT" \
   --extra-ignore-dirs qtpy \
-  --extra-modules Core,Gui,Network,Qml,Quick,QuickControls2,QuickTemplates2,QuickLayouts,Svg \
+  --extra-modules Core,Gui,Network,Qml,Quick,QuickControls2,Svg \
   --keep-deployment-files \
   -f -v
-BUILD_RC=$?
+DEPLOY_RC=$?
 set -e
+# pyside6-android-deploy wraps the buildozer run in try/except and returns 0 even
+# when buildozer fails (it just prints "Exception occurred"). So the tool's exit
+# code is NOT reliable -- judge success by whether an APK was actually produced.
+APK="$(find . -maxdepth 3 -name '*.apk' 2>/dev/null | head -1)"
+if [ -n "$APK" ]; then BUILD_RC=0; else BUILD_RC=1; fi
 
 echo ""
 echo "============================================================"
-echo " BUILD EXIT CODE: $BUILD_RC"
+echo " VERDICT: $([ "$BUILD_RC" -eq 0 ] && echo 'APK PRODUCED (success)' || echo 'NO APK (failure)')"
+echo " (deploy-tool exit code was $DEPLOY_RC -- unreliable, see note above)"
 echo "============================================================"
 echo ""
 echo "----- GENERATED buildozer.spec (paste this back) -----------"
