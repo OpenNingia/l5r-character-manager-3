@@ -2,18 +2,27 @@
 # =============================================================================
 # WSL validation build for the L5RCM Android (QML) target.
 #
-# PURPOSE: prove that the "simplified" deploy config builds a working APK, so we
-# can delete the fragile bits of .github/workflows/android.yml:
-#   - the whole qtpy-trimming step               (REMOVED here)
-#   - the Core-first reorder + Widgets-strip      (REMOVED here)
-# ...keeping only the single irreducible patch:
-#   - the p4a -> Python 3.11 commit pin           (KEPT here, one set_value line)
+# PURPOSE: prove that a CLEANER deploy config builds a working APK, so we can
+# replace the fragile bits of .github/workflows/android.yml:
+#   - the whole in-place qtpy-trimming step  -> two CLI flags (see below)
+#   - the Widgets-strip generator patch      -> no longer needed
+# ...keeping:
+#   - the p4a -> Python 3.11 commit pin       (irreducible: hardcoded in the tool)
+#   - the Core-first reorder of --qt-libs      (load-order safety, set-derived list)
 #
-# The hypothesis (grounded in PySide6 6.11.1 sources, deploy_lib/android/
-# android_config.py): when `qt.modules` is set in pysidedeploy.spec, the tool
-# uses that list verbatim for --qt-libs and SKIPS module auto-detection + the
-# project_dir AST scan -> qtpy no longer needs trimming, Widgets never enters
-# --qt-libs, and Core stays first because the spec lists it first.
+# ROOT CAUSE we proved (run #1 + reading config.py): setting `qt.modules` in
+# pysidedeploy.spec does NOT work, because Config.__init__ (base class) ends with
+# `self.modules = []`, whose setter writes "" into qt.modules in the in-memory
+# parser BEFORE AndroidConfig reads it -> get_value("qt","modules") is empty ->
+# the tool always falls back to AST auto-detection, which scans qtpy's shims and
+# finds bogus modules (AxContainer, Widgets, ...) -> crash. So qt.modules is a
+# dead end on 6.11.1; we must instead steer the auto-detection:
+#   --extra-ignore-dirs qtpy  -> get_py_files() skips qtpy in the AST scan
+#                                (scan-only; p4a still bundles qtpy at runtime),
+#                                so no bogus modules and NO need to delete files.
+#   --extra-modules <list>    -> main() does config.modules += these, declaring
+#                                the exact Qt module set explicitly.
+# This is the run #2 hypothesis: the two flags fully replace the qtpy-trim hack.
 #
 # Run it from the repo root checkout (even on /mnt/c -- it copies the tree into
 # the native WSL filesystem first, where p4a builds correctly and fast):
@@ -105,23 +114,45 @@ mkdir -p android_wheels
 WHEEL_PYSIDE="$PWD/android_wheels/$pyw"
 WHEEL_SHIBOKEN="$PWD/android_wheels/$shw"
 
-# --- 5. p4a Python-3.11 pin (THE ONLY source patch we keep) ---
-echo "==> [5/7] inject p4a.commit pin into the deploy tool generator"
-# NOTE: deliberately NOT touching the modules-join line -- testing the
-# hypothesis that qt.modules in the spec already controls --qt-libs.
+# --- 5. patch the deploy tool generator: p4a pin + Core-first --qt-libs ---
+echo "==> [5/7] patch deploy tool: p4a.commit pin + Core-first module order"
+# Two idempotent injections into deploy_lib/android/buildozer.py:
+#  (a) p4a.commit pin -- irreducible (p4a.branch=develop is hardcoded, no spec
+#      lever; the develop branch ships Python 3.14, our wheels are cp311).
+#  (b) Core-first reorder of the --qt-libs list -- libQt6Core's JNI_OnLoad must
+#      run first to register the JavaVM; config.modules is set-derived (arbitrary
+#      order), so we force Core to the front. NOTE: no Widgets-strip anymore --
+#      with --extra-ignore-dirs qtpy, Widgets is never auto-detected and we don't
+#      pass it via --extra-modules, so it can't appear in the list.
 BZ="$(python -c 'import os, PySide6; print(os.path.join(os.path.dirname(PySide6.__file__), "scripts", "deploy_lib", "android", "buildozer.py"))')"
 python - "$BZ" "$P4A_COMMIT" <<'PY'
 import re, sys
 path, commit = sys.argv[1], sys.argv[2]
 s = open(path, encoding="utf-8").read()
+changed = False
+# (a) p4a.commit right after the hardcoded p4a.branch set_value
 if "p4a.commit" not in s:
     pat = re.compile(r'(?m)^([ \t]*)self\.set_value\(\s*["\']app["\']\s*,\s*["\']p4a\.branch["\']\s*,\s*["\']develop["\']\s*\).*$')
     s, n = pat.subn(lambda m: m.group(0) + "\n" + m.group(1) + f'self.set_value("app", "p4a.commit", "{commit}")', s)
     assert n == 1, f"expected 1 p4a.branch set_value, found {n}"
-    open(path, "w", encoding="utf-8").write(s)
+    changed = True
     print(f"    pinned p4a.commit={commit}")
 else:
     print("    p4a.commit already present")
+# (b) Core-first reorder of the modules join feeding --qt-libs
+if 'modules = ",".join(["Core"]' not in s:
+    s2, n2 = re.subn(
+        r'(?m)^([ \t]*)modules\s*=\s*",".join\(\s*pysidedeploy_config\.modules\s*\)\s*$',
+        r'\1modules = ",".join(["Core"] + [m for m in dict.fromkeys(pysidedeploy_config.modules) if m != "Core"])',
+        s)
+    assert n2 == 1, f"expected 1 modules-join line, found {n2}"
+    s = s2
+    changed = True
+    print("    forced Core-first --qt-libs order")
+else:
+    print("    Core-first order already present")
+if changed:
+    open(path, "w", encoding="utf-8").write(s)
 PY
 
 # --- 6. vendor pure-Python deps into project_dir (NO qtpy trim this time) ---
@@ -143,12 +174,18 @@ PY
 echo "==> [7/7] pyside6-android-deploy build (this is the long step)"
 cp tools/deploy/android/pysidedeploy.spec ./pysidedeploy.spec
 set +e
+# --extra-ignore-dirs qtpy : keep qtpy out of the AST module scan (scan-only;
+#                            p4a still bundles it) -> no bogus AxContainer/Widgets.
+# --extra-modules <list>   : declare the Qt module set explicitly (qt.modules in
+#                            the spec is clobbered by Config.__init__, see header).
 pyside6-android-deploy \
   -c pysidedeploy.spec \
   --wheel-pyside "$WHEEL_PYSIDE" \
   --wheel-shiboken "$WHEEL_SHIBOKEN" \
   --ndk-path "$ANDROID_NDK_ROOT" \
   --sdk-path "$ANDROID_SDK_ROOT" \
+  --extra-ignore-dirs qtpy \
+  --extra-modules Core,Gui,Network,Qml,Quick,QuickControls2,QuickTemplates2,QuickLayouts,Svg \
   --keep-deployment-files \
   -f -v
 BUILD_RC=$?
@@ -171,9 +208,17 @@ echo "----- produced APK(s) --------------------------------------"
 find . -maxdepth 3 -name '*.apk' 2>/dev/null || true
 echo "------------------------------------------------------------"
 echo ""
+echo "----- effective --qt-libs (what got bundled) --------------"
+[ -f buildozer.spec ] && grep -E "p4a.extra_args" buildozer.spec || echo "(no buildozer.spec)"
+echo "------------------------------------------------------------"
+echo ""
 if [ "$BUILD_RC" -eq 0 ]; then
-  echo "OK: build succeeded WITHOUT qtpy-trim / Widgets-strip / Core-reorder."
-  echo "Next: install the APK and confirm the QML UI loads (no QtWidgets crash)."
+  echo "OK: build succeeded WITHOUT the in-place qtpy-trim step."
+  echo "    The two flags (--extra-ignore-dirs qtpy / --extra-modules) replaced it."
+  echo "Next: install the APK and confirm the QML UI loads. Watch specifically for a"
+  echo "runtime ImportError on QtWidgets (qtpy.QtGui may import QFileSystemModel from"
+  echo "QtWidgets) -- if that happens we add back ONLY that one qtpy line, not the"
+  echo "whole trim. Capture logcat: adb logcat | grep -iE 'python|qtpy|widgets'"
 else
-  echo "Build failed -- paste the last ~60 lines of output above + the spec dump."
+  echo "Build failed -- paste the last ~60 lines of output above + the --qt-libs line."
 fi
