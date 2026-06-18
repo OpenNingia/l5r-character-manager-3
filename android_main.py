@@ -47,6 +47,36 @@ from l5r.util.settings import L5RCMSettings
 from l5r.l5rcmcore import APP_NAME, APP_ORG, APP_VERSION
 
 
+def _enable_rotation():
+    """Unlock screen rotation on Android.
+
+    The packaged APK is portrait-locked by p4a's default
+    ``orientation = portrait`` (and buildozer/p4a reject the spec values
+    that would unlock all four sides), so we flip it at runtime through the
+    Android activity instead: ``SCREEN_ORIENTATION_USER`` lets the device
+    rotate according to the user's auto-rotate preference. The responsive
+    QML UI (the nav sidebar collapses to a hamburger drawer in portrait,
+    pins as a fixed column in landscape) reflows live on the resulting
+    configuration change.
+
+    No-op off Android, and best-effort: a failure here must never stop the
+    app from starting, so any error is logged and swallowed.
+    """
+    if not api.is_android():
+        return
+    try:
+        from jnius import autoclass
+
+        PythonActivity = autoclass("org.kivy.android.PythonActivity")
+        ActivityInfo = autoclass("android.content.pm.ActivityInfo")
+        activity = PythonActivity.mActivity
+        activity.setRequestedOrientation(
+            ActivityInfo.SCREEN_ORIENTATION_USER)
+    except Exception:  # noqa: BLE001 -- never block startup on this
+        from l5r.util import log
+        log.app.warning("could not unlock screen rotation", exc_info=True)
+
+
 def main():
     # QML-only UI: a QGuiApplication is enough (no QtWidgets). Using
     # QApplication here would pull in the QtWidgets binding, which on Android
@@ -56,6 +86,10 @@ def main():
     # site-packages. The desktop entry point (l5r/main.py) keeps QApplication
     # for the legacy QWidget UI.
     app = QtGui.QGuiApplication([])
+
+    # Unlock device rotation (no-op off Android). Done here, after the
+    # activity exists, so the responsive QML layout can reflow on rotate.
+    _enable_rotation()
 
     QtCore.QCoreApplication.setApplicationName(APP_NAME)
     QtCore.QCoreApplication.setApplicationVersion(APP_VERSION)

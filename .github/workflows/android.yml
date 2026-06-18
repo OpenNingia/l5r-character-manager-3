@@ -168,24 +168,12 @@ jobs:
           s = open(p, encoding="utf-8").read()
           # (1) inject p4a.commit right after the hardcoded p4a.branch set_value,
           #     reusing that line's indentation. Idempotent.
-          #     ALSO set orientation here: the generated buildozer.spec
-          #     defaults `orientation = portrait`, which locks the device
-          #     upright. The QML UI is responsive (sidebar collapses to a
-          #     hamburger drawer below Theme.bpCompact), so we want the app
-          #     to follow the device sensor and rotate freely. `sensor`
-          #     maps to android:screenOrientation="sensor" -> all four
-          #     orientations, driven by the accelerometer. Baked into the
-          #     generator (not buildozer.spec) for the same reason as the
-          #     p4a pin: the build run regenerates buildozer.spec, wiping
-          #     any edit made to it directly.
           if "p4a.commit" not in s:
               pat = re.compile(
                   r'(?m)^([ \t]*)self\.set_value\(\s*["\']app["\']\s*,\s*["\']p4a\.branch["\']\s*,\s*["\']develop["\']\s*\).*$')
               s, n = pat.subn(
                   lambda m: m.group(0) + "\n" + m.group(1)
-                  + f'self.set_value("app", "p4a.commit", "{P4A_COMMIT}")'
-                  + "\n" + m.group(1)
-                  + 'self.set_value("app", "orientation", "sensor")',
+                  + f'self.set_value("app", "p4a.commit", "{P4A_COMMIT}")',
                   s)
               assert n == 1, f"expected exactly 1 p4a.branch set_value, found {n}"
           # (2) Core-first reorder of the auto-detected modules list the tool
@@ -213,7 +201,7 @@ jobs:
           open(p, "w", encoding="utf-8").write(s)
           print(f"pinned p4a.commit={P4A_COMMIT}")
           PY
-          grep -nE "p4a\.(branch|commit)|orientation|modules = " "$BZ" | head -20
+          grep -nE "p4a\.(branch|commit)|modules = " "$BZ" | head -20
 
       - name: Vendor pure-Python deps into project_dir (+ trim qtpy)
         run: |
