@@ -20,9 +20,11 @@
 # ssl's default verification fails app-wide with "unable to get local issuer
 # certificate". We don't trust the SSL_CERT_FILE env route there -- it is
 # silent if the file is missing and isn't reliably honoured by the p4a OpenSSL
-# build -- so ``_ssl_context()`` below builds an explicit context off certifi's
-# bundled roots and we pass it to every urlopen. Desktop falls back to the
-# system trust store untouched.)
+# build, and gating on is_android() proved unreliable too -- so
+# ``_ssl_context()`` below simply prefers certifi's bundled roots whenever
+# certifi is importable (Mozilla's CA set, valid on desktop too) and passes
+# that context to every urlopen, falling back to urllib's default only if
+# certifi is missing.)
 #
 # Trust model: we only ever fetch from the pinned GitHub API URL, and the
 # download URLs we follow come from GitHub's own JSON response (not user
@@ -101,41 +103,40 @@ def _ssl_context():
     """Return an ``ssl.SSLContext`` for our HTTPS requests, or ``None`` to
     use urllib's default.
 
-    On a normal desktop, ``None`` lets urllib use the system trust store as
-    before. On Android the system store is unreachable, so we build a context
-    explicitly off certifi's bundled CA roots (vendored into the APK). This
-    does not depend on the ``SSL_CERT_FILE`` env var being honoured and, unlike
-    that route, fails loudly if the bundled ``cacert.pem`` is missing instead
-    of silently verifying nothing.
+    We *prefer* certifi's bundled CA roots whenever certifi is importable.
+    On Android the python-for-android CPython has no reachable system CA
+    store, so urllib's default verifies nothing and every HTTPS fetch fails
+    with "unable to get local issuer certificate"; certifi (vendored into the
+    APK) is the fix. On desktop certifi is Mozilla's CA bundle -- the same set
+    ``requests`` ships -- so it is a safe, equivalent choice there too, and
+    using it unconditionally removes any dependence on ``is_android()``
+    detection or the ``SSL_CERT_FILE`` env var being honoured (both of which
+    proved unreliable on device). If certifi is unavailable we fall back to
+    urllib's default (``None``). The decision is logged once so a missing /
+    broken bundle is diagnosable from logcat instead of looking like a
+    generic "offline" error.
     """
     global _ssl_ctx
     if _ssl_ctx is not None:
-        return _ssl_ctx
-
-    try:
-        from l5r import api
-        on_android = api.is_android()
-    except Exception:  # noqa: BLE001 -- be conservative if api isn't ready
-        on_android = False
-
-    if not on_android:
-        _ssl_ctx = False  # sentinel: "use urllib default"
-        return None
+        return _ssl_ctx or None  # False sentinel -> None ("urllib default")
 
     try:
         import certifi
         cafile = certifi.where()
-        if not os.path.exists(cafile):
+        exists = os.path.exists(cafile)
+        if not exists:
             log.app.error(
                 u"datapack catalog: certifi CA bundle missing at %s -- "
                 u"TLS verification will fail (check the APK bundling)", cafile)
         ctx = ssl.create_default_context(cafile=cafile)
+        log.app.info(u"datapack catalog: using certifi CA bundle %s "
+                     u"(exists=%s)", cafile, exists)
         _ssl_ctx = ctx
         return ctx
     except Exception:  # noqa: BLE001
         log.app.warning(
-            u"datapack catalog: could not build certifi SSL context; "
-            u"falling back to urllib default", exc_info=True)
+            u"datapack catalog: certifi unavailable; falling back to "
+            u"urllib default trust store", exc_info=True)
         _ssl_ctx = False
         return None
 
