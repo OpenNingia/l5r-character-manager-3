@@ -31,7 +31,15 @@ project_dir = .
 input_file = android_main.py
 project_file =
 exec_directory = .
-icon =
+/ App icon. MUST be a real PNG: left empty, the deploy tool falls back to
+/ its bundled pyside_icon.JPG and p4a copies it to res/mipmap/icon.PNG --
+/ a JPEG with a .png extension. Debug AAPT2 waves it through, but the
+/ release build crunches/validates PNGs and rejects it
+/ ("icon.png: AAPT: error: file failed to compile" -> mergeReleaseResources
+/ FAILED). Point it at the real 256x256 app icon (repo-root-relative, since
+/ CI runs the spec from the root). Fixes the release build and gives the
+/ debug build a proper icon too.
+icon = l5r/share/icons/l5rcm/256x256/l5rcm.png
 
 [python]
 python_path =
