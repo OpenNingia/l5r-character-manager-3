@@ -76,37 +76,6 @@ def _configure_ca_certs():
         log.app.warning("could not configure certifi CA bundle", exc_info=True)
 
 
-def _enable_rotation():
-    """Unlock screen rotation on Android via the Activity.
-
-    p4a packages the app portrait-locked (its default orientation), so to
-    let the device rotate we call the Android Activity's
-    ``setRequestedOrientation`` at runtime through pyjnius. We use
-    ``SCREEN_ORIENTATION_SENSOR`` so it follows the physical sensor even if
-    the user's system auto-rotate toggle is off (``SCREEN_ORIENTATION_USER``
-    would instead respect that toggle). The responsive QML UI reflows on the
-    resulting configuration change: compact (hamburger drawer) in portrait,
-    fixed sidebar in landscape.
-
-    Requires pyjnius in the APK (added to the buildozer requirements by the
-    Android workflow). No-op off Android, and best-effort: any failure is
-    logged and swallowed so it can never block startup.
-    """
-    if not api.is_android():
-        return
-    try:
-        from jnius import autoclass
-
-        PythonActivity = autoclass("org.kivy.android.PythonActivity")
-        ActivityInfo = autoclass("android.content.pm.ActivityInfo")
-        activity = PythonActivity.mActivity
-        activity.setRequestedOrientation(
-            ActivityInfo.SCREEN_ORIENTATION_SENSOR)
-    except Exception:  # noqa: BLE001 -- never block startup on this
-        from l5r.util import log
-        log.app.warning("could not unlock screen rotation", exc_info=True)
-
-
 def main():
     # QML-only UI: a QGuiApplication is enough (no QtWidgets). Using
     # QApplication here would pull in the QtWidgets binding, which on Android
@@ -120,11 +89,14 @@ def main():
     # before any TLS handshake (e.g. the datapack download), so do it first.
     _configure_ca_certs()
 
+    # NOTE: the APK is intentionally portrait-locked (p4a's default). Runtime
+    # auto-rotation via setRequestedOrientation didn't take on device and
+    # isn't worth chasing for a POC -- the responsive QML UI already targets
+    # portrait phones (width < Theme.bpCompact -> the nav sidebar collapses
+    # behind a hamburger drawer). If rotation is wanted later, the lever is
+    # the Android activity's setRequestedOrientation (try SCREEN_ORIENTATION_
+    # SENSOR, on the UI thread).
     app = QtGui.QGuiApplication([])
-
-    # Unlock device rotation (no-op off Android). After the activity exists,
-    # so the responsive QML layout can reflow on rotate.
-    _enable_rotation()
 
     QtCore.QCoreApplication.setApplicationName(APP_NAME)
     QtCore.QCoreApplication.setApplicationVersion(APP_VERSION)
