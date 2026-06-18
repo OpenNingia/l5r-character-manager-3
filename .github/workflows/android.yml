@@ -241,10 +241,29 @@ jobs:
               print("normalised modules list (Core-first, Widgets stripped)")
           else:
               print("WARNING: modules join line not found; relying on spec [qt] order")
+          # (3) Append pyjnius to the buildozer requirements. The deploy tool
+          #     sets requirements to "python3,shiboken6,PySide6"; the app needs
+          #     pyjnius to reach the Android Activity (setRequestedOrientation
+          #     for screen rotation -- android_main._enable_rotation). pyjnius
+          #     is a Cython module, so it can't be vendored like the pure-Python
+          #     deps; it must be built by p4a (which has a recipe), hence a
+          #     requirements entry rather than a project_dir drop. Non-fatal:
+          #     if the requirements set_value isn't found we warn and carry on
+          #     (rotation simply stays unavailable) rather than break the build.
+          s3, n3 = re.subn(
+              r'(set_value\(\s*["\']app["\']\s*,\s*["\']requirements["\']\s*,\s*["\'])([^"\']*)(["\'])',
+              lambda m: m.group(1) + (m.group(2) if "pyjnius" in m.group(2)
+                                      else m.group(2) + ",pyjnius") + m.group(3),
+              s)
+          if n3:
+              s = s3
+              print("added pyjnius to requirements")
+          else:
+              print("WARNING: requirements set_value not found; pyjnius NOT added (rotation unavailable)")
           open(p, "w", encoding="utf-8").write(s)
           print(f"pinned p4a.commit={P4A_COMMIT}")
           PY
-          grep -nE "p4a\.(branch|commit)|release_artifact|android\.api|modules = " "$BZ" | head -20
+          grep -nE "p4a\.(branch|commit)|release_artifact|android\.api|requirements|modules = " "$BZ" | head -20
 
       - name: Vendor pure-Python deps into project_dir (+ trim qtpy)
         run: |

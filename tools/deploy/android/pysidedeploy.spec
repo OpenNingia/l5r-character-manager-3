@@ -18,12 +18,14 @@
 / l5rdal >= v1.4.2 uses stdlib xml.etree), so python-for-android needs no
 / C-extension recipes.
 
-/ Orientation note: the app is intentionally PORTRAIT-LOCKED (the generated
-/ buildozer.spec defaults to `orientation = portrait`, and we keep it). A
-/ runtime setRequestedOrientation() unlock was tried and didn't take on
-/ device; for a POC portrait is fine, and the responsive QML UI already
-/ targets portrait phones (width < Theme.bpCompact -> the sidebar collapses
-/ behind a hamburger drawer). No orientation override here.
+/ Orientation note: the generated buildozer.spec defaults to
+/ `orientation = portrait`, but buildozer/p4a reject the spec values that
+/ would unlock all four sides. So rotation is unlocked at RUNTIME instead:
+/ android_main._enable_rotation() calls the Activity's
+/ setRequestedOrientation(SCREEN_ORIENTATION_SENSOR) via pyjnius (added to
+/ the buildozer requirements by the Android workflow). The responsive QML UI
+/ reflows on rotation (compact hamburger drawer in portrait, fixed sidebar
+/ in landscape). No orientation override here.
 [app]
 title = L5RCM
 project_dir = .
