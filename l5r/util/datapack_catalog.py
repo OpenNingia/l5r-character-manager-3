@@ -16,6 +16,11 @@
 # AppImage / .deb builds for a cosmetic gain. TLS certificates are
 # verified by urllib's default opener on every supported platform.
 #
+# (On Android the python-for-android CPython has no system CA store, so the
+# mobile entry point android_main.py points stdlib ssl at certifi's bundled
+# roots via SSL_CERT_FILE before any TLS happens -- transparent here, the
+# default opener just works. Desktop is untouched.)
+#
 # Trust model: we only ever fetch from the pinned GitHub API URL, and the
 # download URLs we follow come from GitHub's own JSON response (not user
 # input). A final-host check after the redirect keeps a tampered release

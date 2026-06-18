@@ -103,7 +103,11 @@ jobs:
           pip install -r "$(python -c 'import os, PySide6; print(os.path.join(os.path.dirname(PySide6.__file__), "scripts", "requirements-android.txt"))')"
           # Our pure-Python runtime deps (no lxml: l5rdal >= v1.4.2 is stdlib
           # xml only) so python-for-android needs no C-extension recipes.
-          pip install "asq>=2.0" "qtpy>=2.4" \
+          # certifi: bundled CA roots. The python-for-android CPython has no
+          # system CA store, so stdlib ssl fails verification on device;
+          # android_main.py points SSL_CERT_FILE at certifi.where(). Pure
+          # Python, vendored into the APK below.
+          pip install "asq>=2.0" "qtpy>=2.4" "certifi" \
             "git+https://github.com/OpenNingia/pypdf.git@fix_escape" \
             "git+https://github.com/OpenNingia/l5rcm-data-access.git@v1.4.2"
 
@@ -270,7 +274,7 @@ jobs:
           # too, else: ModuleNotFoundError: No module named 'packaging'.
           python - <<'PY'
           import importlib.util, os, re, shutil
-          for name in ("qtpy", "asq", "l5rdal", "pypdf", "packaging"):
+          for name in ("qtpy", "asq", "l5rdal", "pypdf", "packaging", "certifi"):
               spec = importlib.util.find_spec(name)
               if spec is None or not spec.origin:
                   raise SystemExit(f"::error::dependency {name} not importable")
