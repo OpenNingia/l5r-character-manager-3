@@ -95,6 +95,14 @@ QtObject {
     readonly property int s6: 32   // dialog internal sections
     readonly property int s7: 48   // top/bottom margins on major containers
 
+    // --- responsive breakpoint (design system §4.4) ---------------
+    // Below this window width the main-window layout switches from the
+    // fixed-sidebar form to the compact form: the nav sidebar collapses
+    // behind a hamburger drawer and a slim top app-bar appears. Sized so
+    // a 240px sidebar + a >=520px content area no longer fit comfortably
+    // -- i.e. phones in portrait go compact, tablets / desktop stay wide.
+    readonly property int bpCompact: 760
+
     // Component-local metrics, NOT part of the global scale: the
     // social / void point-track dots (design §6.12 fixes the dot at
     // 14px with a 4px gap).

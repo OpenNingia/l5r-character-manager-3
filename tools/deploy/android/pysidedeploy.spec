@@ -18,6 +18,14 @@
 / l5rdal >= v1.4.2 uses stdlib xml.etree), so python-for-android needs no
 / C-extension recipes.
 
+/ Orientation note: this tool does NOT expose an orientation knob here; the
+/ generated buildozer.spec defaults to `orientation = portrait` (upright lock).
+/ The QML UI is responsive (the nav sidebar collapses to a hamburger drawer
+/ below Theme.bpCompact), so CI patches the deploy-tool generator to write
+/ `orientation = sensor` into buildozer.spec (free rotation, all four sides).
+/ For a LOCAL build, apply the same generator patch (see android.yml, step
+/ "Pin p4a ... (generator-level)") or edit the generated buildozer.spec's
+/ `orientation` before the build run completes.
 [app]
 title = L5RCM
 project_dir = .
