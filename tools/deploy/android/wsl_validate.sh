@@ -38,6 +38,12 @@ set -euo pipefail
 
 # --- knobs (keep in sync with android.yml) ---
 PYSIDE_VERSION="${PYSIDE_VERSION:-6.11.1}"
+# HOST interpreter used to CREATE the venv -- must be 3.11 (the cp311 wheels need
+# libpython3.11). On Ubuntu `python3` may be 3.12+, so pin the binary explicitly.
+# Override with `PYTHON=python3.11 bash ...` if your binary is named differently.
+# NB: only for the host; inside the activated venv we call `python`/`python3`,
+# which already resolve to this 3.11.
+PYTHON="${PYTHON:-python3.11}"
 P4A_COMMIT="6b66944a2f51e0c848c7ac51e04a771324067ecc"   # last p4a on Python 3.11.13
 NDK_VER="27.2.12479018"
 SDK_ROOT="$HOME/android-sdk"
@@ -93,9 +99,22 @@ chmod +x "$SDK_ROOT/tools/bin/sdkmanager"
 
 # --- 3. python venv + deploy tooling ---
 echo "==> [3/7] venv + pyside6-android-deploy tooling"
-python3 -m venv "$HOME/.l5rcm-android-venv"
+if ! command -v "$PYTHON" >/dev/null 2>&1; then
+  echo "::error:: host interpreter '$PYTHON' not found. Install it"
+  echo "          (sudo apt-get install python3.11 python3.11-venv) or pass PYTHON=..."
+  exit 1
+fi
+echo "    host interpreter: $("$PYTHON" --version 2>&1) ($("$PYTHON" -c 'import sys;print(sys.executable)'))"
+VENV="$HOME/.l5rcm-android-venv"
+# Recreate the venv if it was built with a non-3.11 interpreter (e.g. a previous
+# run picked the system python3). The cp311 wheels require libpython3.11.
+if [ -x "$VENV/bin/python" ] && ! "$VENV/bin/python" -c 'import sys;sys.exit(0 if sys.version_info[:2]==(3,11) else 1)'; then
+  echo "    existing venv is not 3.11 -> recreating"
+  rm -rf "$VENV"
+fi
+"$PYTHON" -m venv "$VENV"
 # shellcheck disable=SC1091
-source "$HOME/.l5rcm-android-venv/bin/activate"
+source "$VENV/bin/activate"
 pip install -q --upgrade pip
 pip install -q "PySide6==${PYSIDE_VERSION}"
 pip install -q -r "$(python -c 'import os, PySide6; print(os.path.join(os.path.dirname(PySide6.__file__), "scripts", "requirements-android.txt"))')"
