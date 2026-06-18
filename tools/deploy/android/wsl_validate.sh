@@ -197,13 +197,21 @@ echo "==> [7/7] pyside6-android-deploy build (this is the long step)"
 cp tools/deploy/android/pysidedeploy.spec ./pysidedeploy.spec
 # Purge stale generated recipes: the p4a PySide6 recipe bakes the module list
 # into deployment/recipes/PySide6/__init__.py and copies one Qt{module}.abi3.so
-# per module. A previous run's recipe (with a bad module) would be reused
+# per module. A previous run's recipe (with a bad module list) would be reused
 # (recipes_exist() short-circuits regeneration), so wipe it. Also drop any
 # half-installed PySide6/shiboken6 under .buildozer so the recipe re-copies
-# cleanly (cheap; does NOT touch the expensive NDK/CPython build cache).
-rm -rf deployment
-find .buildozer -type d \( -name PySide6 -o -name shiboken6 \) -path '*python-installs*' \
-  -exec rm -rf {} + 2>/dev/null || true
+# cleanly. This is CHEAP (re-unzips wheels + regenerates recipes, seconds) and
+# does NOT touch the expensive cache (NDK, CPython compile, openssl/libffi).
+# Needed only while iterating on the --extra-modules list; once stable, skip it
+# for faster re-runs with: CLEAN=0 bash tools/deploy/android/wsl_validate.sh
+if [ "${CLEAN:-1}" = "1" ]; then
+  echo "    cleaning stale recipes + PySide6/shiboken6 installs (CLEAN=0 to skip)"
+  rm -rf deployment
+  find .buildozer -type d \( -name PySide6 -o -name shiboken6 \) -path '*python-installs*' \
+    -exec rm -rf {} + 2>/dev/null || true
+else
+  echo "    CLEAN=0: keeping existing recipes/installs (fast re-run)"
+fi
 set +e
 # --extra-ignore-dirs qtpy : keep qtpy out of the AST module scan (scan-only;
 #                            p4a still bundles it) -> no bogus AxContainer/Widgets.
