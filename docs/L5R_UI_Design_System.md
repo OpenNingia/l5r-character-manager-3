@@ -236,8 +236,9 @@ pinned as a fixed column, the content area fills the rest.
   identity normally pinned in the sidebar header) beside it.
 - Selecting a section in the drawer navigates and dismisses the drawer.
 - The breakpoint is a **window-width** test, so the layout reflows live on
-  desktop resize and on device rotation alike — landscape phones/tablets get
-  the wide form, portrait phones get the compact form.
+  desktop resize. On Android the app is portrait-locked (a POC choice), so
+  phones get the compact form; the wide form is what desktop and wide
+  windows see.
 
 The active-section state is a single source of truth shared by both the fixed
 sidebar and the drawer copy, so the highlight never desyncs between them.
