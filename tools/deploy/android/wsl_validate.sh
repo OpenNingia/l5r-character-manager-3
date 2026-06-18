@@ -60,7 +60,10 @@ sudo apt-get update -qq
 sudo apt-get install -y --no-install-recommends \
   autoconf automake libtool libltdl-dev pkg-config m4 \
   build-essential zlib1g-dev libffi-dev libssl-dev \
-  openjdk-17-jdk unzip wget git rsync python3-venv >/dev/null
+  openjdk-17-jdk zip unzip wget git rsync python3-venv >/dev/null
+  # zip: p4a's create_python_bundle shells out to `zip` to pack the stdlib
+  #      (sh.CommandNotFound: zip otherwise). Preinstalled on ubuntu-latest CI,
+  #      but not on a bare WSL.
 export JAVA_HOME="$(dirname "$(dirname "$(readlink -f "$(which javac)")")")"
 echo "    JAVA_HOME=$JAVA_HOME"
 
