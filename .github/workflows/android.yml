@@ -215,6 +215,22 @@ jobs:
                          ind + 'self.set_value("app", "android.release_artifact", "apk")']
                   if MODE == "release":
                       out.append(ind + 'self.set_value("app", "android.api", "35")')
+                      # Force extractNativeLibs=true for the release build.
+                      # AGP uses legacy packaging (libs extracted to disk) for
+                      # DEBUG but NOT for RELEASE -- there the .so stay packed
+                      # inside the apk. PySide6's QtLoader loads the binding
+                      # modules (QtCore.abi3.so, ...) from a real lib/<abi>/
+                      # path, so a release build crashes at startup with
+                      # "QtLoader: Can't find .../QtCore.abi3.so". The p4a qt
+                      # manifest template exposes
+                      # {{ args.extra_manifest_application_arguments }} inside
+                      # <application>; inject the attribute through the matching
+                      # buildozer spec key. (Debug already extracts, so this is
+                      # release-only and leaves the debug artifact unchanged.)
+                      out.append(
+                          ind + 'self.set_value("app", '
+                          '"android.extra_manifest_application_arguments", '
+                          + repr('android:extractNativeLibs="true"') + ')')
                   return "\n".join(out)
 
               s, n = pat.subn(_inject, s)
@@ -244,7 +260,7 @@ jobs:
           open(p, "w", encoding="utf-8").write(s)
           print(f"pinned p4a.commit={P4A_COMMIT}")
           PY
-          grep -nE "p4a\.(branch|commit)|release_artifact|android\.api|modules = " "$BZ" | head -20
+          grep -nE "p4a\.(branch|commit)|release_artifact|android\.api|extra_manifest|modules = " "$BZ" | head -20
 
       - name: Vendor pure-Python deps into project_dir (+ trim qtpy)
         run: |
