@@ -177,8 +177,9 @@ jobs:
           echo "patching deploy tool: $BZ"
           test -f "$BZ"
           python - "$BZ" <<'PY'
-          import re, sys
+          import os, re, sys
           P4A_COMMIT = "6b66944a2f51e0c848c7ac51e04a771324067ecc"  # last p4a on Python 3.11.13
+          MODE = os.environ.get("BUILD_MODE", "debug")
           p = sys.argv[1]
           s = open(p, encoding="utf-8").read()
           # (1) inject p4a.commit right after the hardcoded p4a.branch set_value,
@@ -191,15 +192,28 @@ jobs:
           #     android.debug_artifact, already apk). Baked into the
           #     generator for the same reason as the p4a pin: the build run
           #     regenerates buildozer.spec, wiping any direct edit.
+          #
+          #     AND, for the RELEASE leg only, bump android.api to 35: the
+          #     release build runs `lintVitalRelease`, which fails fatally on
+          #     ExpiredTargetSdkVersion unless targetSdk >= 33 (the debug
+          #     build skips that lint, so it builds fine at the lower default
+          #     -- that's why we gate this on MODE so the debug artifact stays
+          #     byte-for-byte unchanged). API 35 matches the installed
+          #     platforms;android-35 / build-tools;35.0.0.
           if "p4a.commit" not in s:
               pat = re.compile(
                   r'(?m)^([ \t]*)self\.set_value\(\s*["\']app["\']\s*,\s*["\']p4a\.branch["\']\s*,\s*["\']develop["\']\s*\).*$')
-              s, n = pat.subn(
-                  lambda m: m.group(0) + "\n" + m.group(1)
-                  + f'self.set_value("app", "p4a.commit", "{P4A_COMMIT}")'
-                  + "\n" + m.group(1)
-                  + 'self.set_value("app", "android.release_artifact", "apk")',
-                  s)
+
+              def _inject(m):
+                  ind = m.group(1)
+                  out = [m.group(0),
+                         ind + f'self.set_value("app", "p4a.commit", "{P4A_COMMIT}")',
+                         ind + 'self.set_value("app", "android.release_artifact", "apk")']
+                  if MODE == "release":
+                      out.append(ind + 'self.set_value("app", "android.api", "35")')
+                  return "\n".join(out)
+
+              s, n = pat.subn(_inject, s)
               assert n == 1, f"expected exactly 1 p4a.branch set_value, found {n}"
           # (2) Core-first reorder of the auto-detected modules list the tool
           #     turns into --qt-libs, AND strip Widgets. The build machine has
@@ -226,7 +240,7 @@ jobs:
           open(p, "w", encoding="utf-8").write(s)
           print(f"pinned p4a.commit={P4A_COMMIT}")
           PY
-          grep -nE "p4a\.(branch|commit)|release_artifact|modules = " "$BZ" | head -20
+          grep -nE "p4a\.(branch|commit)|release_artifact|android\.api|modules = " "$BZ" | head -20
 
       - name: Vendor pure-Python deps into project_dir (+ trim qtpy)
         run: |
