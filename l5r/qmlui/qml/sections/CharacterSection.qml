@@ -274,10 +274,60 @@ ColumnLayout {
         }
     }
 
+    // Origin summary line + single edit/choose action
+    ColumnLayout {
+        Layout.fillWidth: true
+        Layout.topMargin: 4
+        spacing: 2
+
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 10
+
+            Label {
+                text: qsTr("Origin")
+                font.family: Theme.fontDisplay
+                font.pixelSize: Theme.fsCaption
+                font.weight: Theme.wSemiBold
+                font.letterSpacing: 1.2
+                color: Theme.inkMuted
+                Layout.alignment: Qt.AlignVCenter
+            }
+            Label {
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignVCenter
+                text: section._originComplete ? section._originSummary() : qsTr("— not chosen —")
+                color: section._originComplete ? Theme.heading : Theme.inkFaint
+                font.italic: !section._originComplete
+                elide: Text.ElideRight
+            }
+            Widgets.L5RButton {
+                // Filled CTA while unset (the first thing a new character
+                // must do), a quiet secondary Edit once chosen. Disabled the
+                // moment XP is spent -- the origin freezes (#448).
+                text: section._originComplete ? qsTr("Edit") : qsTr("Choose Origin")
+                primary: !section._originComplete
+                glyph: section._originComplete ? "" : "源"
+                accent: Theme.secondary
+                accentDark: Theme.secondaryDark
+                enabled: section._canEditOrigin
+                Layout.alignment: Qt.AlignVCenter
+                onClicked: originDlg.open()
+            }
+        }
+        Label {
+            visible: section._originComplete && text.length > 0
+            text: section._originBonuses()
+            color: Theme.positive
+            font.family: Theme.fontBody
+            font.pixelSize: Theme.fsCaption
+        }
+    }
+
     // Progression stat strip — Rank | Insight | Exp Points
     RowLayout {
         Layout.fillWidth: true
-        Layout.topMargin: 2
+        Layout.topMargin: 4
         spacing: 14
 
         component StatCell: ColumnLayout {
@@ -352,56 +402,6 @@ ColumnLayout {
                 ToolTip.text: qsTr("Add awarded XP")
                 onClicked: addXpDlg.openFresh()
             }
-        }
-    }
-
-    // Origin summary line + single edit/choose action
-    ColumnLayout {
-        Layout.fillWidth: true
-        Layout.topMargin: 4
-        spacing: 2
-
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: 10
-
-            Label {
-                text: qsTr("Origin")
-                font.family: Theme.fontDisplay
-                font.pixelSize: Theme.fsCaption
-                font.weight: Theme.wSemiBold
-                font.letterSpacing: 1.2
-                color: Theme.inkMuted
-                Layout.alignment: Qt.AlignVCenter
-            }
-            Label {
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignVCenter
-                text: section._originComplete ? section._originSummary() : qsTr("— not chosen —")
-                color: section._originComplete ? Theme.heading : Theme.inkFaint
-                font.italic: !section._originComplete
-                elide: Text.ElideRight
-            }
-            Widgets.L5RButton {
-                // Filled CTA while unset (the first thing a new character
-                // must do), a quiet secondary Edit once chosen. Disabled the
-                // moment XP is spent -- the origin freezes (#448).
-                text: section._originComplete ? qsTr("Edit") : qsTr("Choose Origin")
-                primary: !section._originComplete
-                glyph: section._originComplete ? "" : "源"
-                accent: Theme.secondary
-                accentDark: Theme.secondaryDark
-                enabled: section._canEditOrigin
-                Layout.alignment: Qt.AlignVCenter
-                onClicked: originDlg.open()
-            }
-        }
-        Label {
-            visible: section._originComplete && text.length > 0
-            text: section._originBonuses()
-            color: Theme.positive
-            font.family: Theme.fontBody
-            font.pixelSize: Theme.fsCaption
         }
     }
 
