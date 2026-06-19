@@ -300,14 +300,17 @@ ColumnLayout {
             }
             Widgets.L5RButton {
                 // Filled CTA while unset (the first thing a new character
-                // must do), a quiet secondary Edit once chosen. Disabled the
-                // moment XP is spent -- the origin freezes (#448).
+                // must do), a quiet secondary Edit once chosen. Hidden once
+                // XP is spent -- the origin freezes (#448) and a disabled
+                // button reads as misleading rather than informative. (A
+                // frozen origin is always complete, since XP can't be spent
+                // before the origin is set.)
                 text: section._originComplete ? qsTr("Edit") : qsTr("Choose Origin")
                 primary: !section._originComplete
                 glyph: section._originComplete ? "" : "源"
                 accent: Theme.secondary
                 accentDark: Theme.secondaryDark
-                enabled: section._canEditOrigin
+                visible: section._canEditOrigin
                 Layout.alignment: Qt.AlignVCenter
                 onClicked: originDlg.open()
             }
