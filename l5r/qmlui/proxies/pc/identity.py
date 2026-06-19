@@ -102,13 +102,14 @@ class IdentityMixin:
 
     @Property(bool, notify=canEditOriginChanged)
     def canEditOrigin(self):
-        """Origin (family/school) edits are blocked once any advancement
-        has been recorded -- mirrors the QWidget side's disabled edit
-        buttons. Exposed as a NOTIFY property (not a one-shot Slot call)
-        so the Family/School edit icons re-enable/disable when the active
-        character is replaced or refreshed (issue #433)."""
-        pc = api.character.model()
-        return bool(pc and len(pc.advans) == 0)
+        """Origin (clan/family/school) edits stay open until the first *paid*
+        advancement -- api.character.can_edit_origin gates on spent XP, not the
+        advancement count, so choosing the school (which appends the cost-0
+        rank-1 advancement) doesn't lock out the family, while the origin still
+        freezes the instant XP is spent (issue #448). Exposed as a NOTIFY
+        property (not a one-shot Slot call) so the edit icons re-enable/disable
+        when the active character is replaced or refreshed (issue #433)."""
+        return bool(api.character.model() and api.character.can_edit_origin())
 
     @Property("QVariantMap", notify=progressionChanged)
     @memoize

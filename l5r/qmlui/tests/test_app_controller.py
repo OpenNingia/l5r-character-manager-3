@@ -20,6 +20,7 @@ import l5r.api as api
 import l5r.api.character
 import l5r.api.character.rankadv
 import l5r.api.character.schools
+import l5r.api.character.skills
 import l5r.api.character.spells
 import l5r.api.data
 from l5r.api.context import L5RCMContext, use
@@ -260,3 +261,57 @@ class TestControllerActions(unittest.TestCase):
 
         proxy.setBuyForFree(False)
         self.assertFalse(l5r.models.Advancement.get_buy_for_free())
+
+
+class TestOriginController(unittest.TestCase):
+    """Controller-level guards for the origin flow (issue #448): the QML
+    advanceRank slot must never crash on a school-less character, canEditOrigin
+    tracks spent XP (not the advancement count), and a blocked purchase emits a
+    notice toast instead of bubbling a QMessageBox."""
+
+    def setUp(self):
+        self._stack = contextlib.ExitStack()
+        self.addCleanup(self._stack.close)
+        self._stack.enter_context(use(L5RCMContext()))
+
+        data_ = dal.Data([], [])
+        api.data.set_model(data_)
+        data_.clans.append(test_clan_1)
+        data_.families.append(test_family_1)
+        data_.schools.append(test_school_1)
+        data_.skcategs.append(test_skill_categ_1)
+        data_.skills.append(test_skill_1)
+
+        api.character.new()
+        api.character.model().exp_limit = 100
+        self.ctrl = AppController()
+
+    def test_advanceRank_slot_noop_without_school(self):
+        """The original #448 crash: a rank-up offered on a school-less PC.
+        The slot must not raise and must append no rank."""
+        def fake_insight_rank(strict=False):
+            return 1 if strict else 2
+        self._stack.enter_context(
+            mock.patch.object(api.character, 'insight_rank',
+                              fake_insight_rank))
+
+        self.ctrl.advanceRank()  # must not raise
+
+        self.assertEqual([], api.character.rankadv.get_all())
+
+    def test_canEditOrigin_tracks_spent_xp(self):
+        self.assertTrue(self.ctrl.canEditOrigin())
+        api.character.set_family('test_family_1')
+        api.character.schools.set_first('test_school_1')
+        self.assertTrue(self.ctrl.canEditOrigin(),
+                        "school chosen but no XP spent -> still editable")
+        api.character.skills.purchase_skill_rank('test_skill_1')
+        self.assertFalse(self.ctrl.canEditOrigin())
+
+    def test_blocked_purchase_emits_notice(self):
+        notices = []
+        self.ctrl.notice.connect(lambda m: notices.append(m))
+        # no origin yet -> buying a skill is refused with a notice toast
+        self.ctrl.buySkillRank('test_skill_1')
+        self.assertEqual(1, len(notices))
+        self.assertEqual([], api.character.model().advans)

@@ -104,6 +104,17 @@ class AdviseMixin:
                                       self.tr("Cannot purchase.\nYou've reached the XP Limit."))
         return
 
+    def missing_origin_advise(self, parent=None):
+        """The clan/family/school grant the starting trait bonuses, so the
+        origin must be chosen before any XP is spent (issue #448)."""
+        if parent is None:
+            parent = self
+        QtWidgets.QMessageBox.warning(
+            parent, self.tr("Choose your origin first"),
+            self.tr("Select your clan, family and school "
+                    "before spending experience points."))
+        return
+
     def warn_about_missing_books(self):
         text = self.tr("<h3>Missing books</h3>")
         text += self.tr("<p>To load this character you need this additional books:</p>")
