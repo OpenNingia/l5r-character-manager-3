@@ -40,11 +40,12 @@ class TestCharacterSnapshot(unittest.TestCase):
         data_.skills.append(test_skill_1)
         data_.skills.append(test_skill_2)
 
-        # create new character
+        # create new character. The origin (family + school) must be complete
+        # before any XP may be spent (test_purchased_skills buys a skill rank);
+        # see api.character.can_buy_advancements / issue #448.
         api.character.new()
+        api.character.set_family('test_family_1')
         api.character.schools.set_first('test_school_1')
-
-        # set starting school
 
     def tearDown(self):
         pass

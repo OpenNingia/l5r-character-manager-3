@@ -115,6 +115,8 @@ class SkillsTabMixin:
             if err_ != CMErrors.NO_ERROR:
                 if err_ == CMErrors.NOT_ENOUGH_XP:
                     self.not_enough_xp_advise(self)
+                elif err_ == CMErrors.MISSING_ORIGIN:
+                    self.missing_origin_advise(self)
                 return
 
             idx = None

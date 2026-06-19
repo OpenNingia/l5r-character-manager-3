@@ -400,6 +400,12 @@ class AppController(QObject):
     # so the sidebar eye state, the dimming, the content-block visibility
     # and the View menu ticks all re-evaluate together.
     hiddenSectionsChanged = Signal()
+    # Generic transient notice -> the bottom-centred Widgets.Toast in
+    # MainSheet. Replaces the old QMessageBox stopgaps for purchase feedback
+    # ("not enough XP", "choose your origin first") in the modern UI
+    # (issues #450 / #448). The message is built here so the wording lives
+    # next to the logic that raises it.
+    notice = Signal(str)
 
     # Debounce window for the recovery autosave: coalesce a burst of
     # edits (dragging a spinbox, typing a name) into one write, fired
@@ -866,24 +872,19 @@ class AppController(QObject):
 
     @Slot(str)
     def increaseTrait(self, trait_name):
-        """Buy the next rank in a trait. Surfaces a QMessageBox if the
-        character is short on XP. TODO: replace the message box with a
-        proper QML notification surface (see project memory)."""
+        """Buy the next rank in a trait. A transient toast explains a refusal
+        (short on XP, or origin not chosen yet)."""
         idx = l5r.models.chmodel.attrib_from_name(trait_name)
         if idx < 0:
             log.api.warning(u"QML UI: unknown trait %r", trait_name)
             return
-        res = api.character.purchase_trait_rank(idx)
-        if res == CMErrors.NOT_ENOUGH_XP:
-            self._show_not_enough_xp()
+        if self._purchase_blocked(api.character.purchase_trait_rank(idx)):
             return
         api.character.notify_character_refreshed()
 
     @Slot()
     def increaseVoid(self):
-        res = api.character.purchase_void_rank()
-        if res == CMErrors.NOT_ENOUGH_XP:
-            self._show_not_enough_xp()
+        if self._purchase_blocked(api.character.purchase_void_rank()):
             return
         api.character.notify_character_refreshed()
 
@@ -891,16 +892,20 @@ class AppController(QObject):
     def setVoidPoints(self, value):
         api.character.set_void_points(int(value))
 
-    def _show_not_enough_xp(self):
-        # Stopgap: QMessageBox bubbled out of the QML window. Slated for
-        # replacement with a QML toast/dialog -- see the
-        # `project-qmlui-msgbox-refactor` memory.
-        QMessageBox.warning(
-            None,
-            self.tr("Not enough XP"),
-            self.tr("You don't have enough experience points "
-                    "to complete this purchase."),
-        )
+    def _purchase_blocked(self, res):
+        """Common handling for a purchase result: emit the matching notice
+        toast and return True when the purchase did NOT go through (so the
+        caller skips the refresh). Returns False on NO_ERROR."""
+        if res == CMErrors.NOT_ENOUGH_XP:
+            self.notice.emit(
+                self.tr("Not enough XP to complete this purchase."))
+            return True
+        if res == CMErrors.MISSING_ORIGIN:
+            self.notice.emit(
+                self.tr("Choose your clan, family and school "
+                        "before spending experience points."))
+            return True
+        return False
 
     # --- social/spiritual flags --------------------------------------
 
@@ -958,8 +963,7 @@ class AppController(QObject):
         if not skill_id:
             return
         res = api.character.skills.purchase_skill_rank(skill_id)
-        if res == CMErrors.NOT_ENOUGH_XP:
-            self._show_not_enough_xp()
+        if self._purchase_blocked(res):
             return
         api.character.notify_character_refreshed()
 
@@ -977,8 +981,7 @@ class AppController(QObject):
         adv = l5r.models.advances.SkillEmph(skill_id, text, 2)
         adv.desc = self.tr("{0}, Skill {1}. Cost: {2} xp").format(
             text, sk.name, adv.cost)
-        if api.character.purchase_advancement(adv) == CMErrors.NOT_ENOUGH_XP:
-            self._show_not_enough_xp()
+        if self._purchase_blocked(api.character.purchase_advancement(adv)):
             return
         api.character.notify_character_refreshed()
 
@@ -1179,8 +1182,7 @@ class AppController(QObject):
         if not spell_id:
             return
         res = api.character.spells.purchase_memo_spell(spell_id)
-        if res == CMErrors.NOT_ENOUGH_XP:
-            self._show_not_enough_xp()
+        if self._purchase_blocked(res):
             return
         if res == CMErrors.NO_ERROR:
             api.character.set_dirty_flag(True)
@@ -1780,8 +1782,7 @@ class AppController(QObject):
         if not kata_id:
             return
         res = api.character.powers.buy_kata(kata_id)
-        if res == CMErrors.NOT_ENOUGH_XP:
-            self._show_not_enough_xp()
+        if self._purchase_blocked(res):
             return
         api.character.notify_character_refreshed()
 
@@ -1813,8 +1814,7 @@ class AppController(QObject):
         if not kiho_id:
             return
         res = api.character.powers.buy_kiho(kiho_id)
-        if res == CMErrors.NOT_ENOUGH_XP:
-            self._show_not_enough_xp()
+        if self._purchase_blocked(res):
             return
         api.character.notify_character_refreshed()
 
@@ -2268,10 +2268,10 @@ class AppController(QObject):
 
     @Slot(result=bool)
     def canEditOrigin(self):
-        """Origin (family/school) edits are blocked once XP has been
-        spent -- mirrors the QWidget side's disabled edit buttons."""
-        pc = api.character.model()
-        return bool(pc and len(pc.advans) == 0)
+        """Origin (clan/family/school) edits stay open until the first paid
+        advancement (api.character.can_edit_origin gates on spent XP, not the
+        advancement count -- issue #448). Mirrors PcProxy.identity.canEditOrigin."""
+        return bool(api.character.model() and api.character.can_edit_origin())
 
     @Slot(str)
     def setFamily(self, family_id):

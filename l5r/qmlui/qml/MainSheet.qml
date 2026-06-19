@@ -572,6 +572,16 @@ ApplicationWindow {
         }
     }
 
+    // Generic purchase/origin feedback from the controller (not enough XP,
+    // origin not chosen yet). Replaces the old QMessageBox stopgaps in the
+    // modern UI (issues #450 / #448) -- same transient-toast channel.
+    Connections {
+        target: appCtrl
+        function onNotice(message) {
+            toast.show(message);
+        }
+    }
+
     // Persistent empty-state nudge. Shown whenever no datapack is loaded
     // (active) -- so it also covers "every pack disabled", not just a fresh
     // install. Pinned across the top of the sheet area (past the fixed

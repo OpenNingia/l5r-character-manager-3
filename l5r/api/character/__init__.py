@@ -525,8 +525,44 @@ def append_advancement(adv):
     return None
 
 
+def can_buy_advancements():
+    """True once the character's origin is complete (a family AND a starting
+    school are set).
+
+    By the rules a character picks clan -> family -> school *before* spending
+    any XP, because the family and school grant starting trait bonuses. If XP
+    could be spent first, a player could raise a trait cheaply and then collect
+    the bonus on top of the already-bought rank (issue #448). So no advancement
+    may be purchased until the origin is locked in."""
+    if not get_context().pc:
+        return False
+    return bool(get_family()) and bool(api.character.schools.get_first())
+
+
+def can_edit_origin():
+    """True while the character's origin (clan/family/school) may still be
+    (re)chosen -- i.e. while no *paid* advancement has been made.
+
+    The gate is `xp() == 0`, not `len(advans) == 0`: the rank-1 origin
+    advancement and the starting skills it grants all cost 0, so `xp()` stays
+    at 0 until the first purchase. Gating on the advancement count instead
+    would lock the origin the moment a school is chosen (which appends the
+    rank-1 advancement), trapping a player who picked the school before the
+    family (issue #448). Gating on spent XP keeps editing and purchasing in
+    agreement and still freezes the origin the instant XP is spent, so the
+    starting-bonus exploit stays closed."""
+    if not get_context().pc:
+        return False
+    return xp() == 0
+
+
 def purchase_advancement(adv):
     """returns True if there are enought xp to purchase the advancement"""
+    if not can_buy_advancements():
+        log.api.warning(u"cannot purchase advancement before the character's "
+                        u"origin (family/school) is set: %s", adv.desc)
+        return api.data.CMErrors.MISSING_ORIGIN
+
     if (adv.cost + xp()) > xp_limit():
         log.api.warning(u"not enough xp to purchase advancement: %s. xp left: %d",
                         adv.desc, xp_left())
@@ -651,6 +687,61 @@ def get_family():
 def get_starting_school():
     """returns character starting school"""
     return api.character.schools.get_first()
+
+
+def clear_origin():
+    """Strip the character back to its freshly-created baseline, dropping the
+    whole origin (clan/family/school and everything it seeded) but preserving
+    the identity the player has typed (name, notes, personal info, XP limit,
+    health settings, loaded books, ...).
+
+    All origin-derived content -- the rank-1 advancement and the starting
+    skills / spells / perks / money it carries -- lives in the advancement
+    stack (set_school is a no-op; skills & spells hang off the rank-1 Rank),
+    so clearing the stack removes it. Family/clan and the school-reset social
+    flags live on the model and are reset here too.
+
+    Only meaningful while the origin is still editable (no paid advancement);
+    callers gate on can_edit_origin(). Owns the dirty flag."""
+    pc = get_context().pc
+    if not pc:
+        return
+    pc.advans = []
+    pc.family = None
+    pc.clan = None
+    # set_first_with_path zeroes these for the new school; reset them so a
+    # cleared origin starts from the same baseline a fresh character has.
+    pc.honor = pc.glory = pc.status = 0.0
+    set_dirty_flag(True)
+
+
+def set_origin(family_id, school_id, path_id=None):
+    """Atomically (re)set the character's whole origin: family (+ clan) and
+    starting school (+ optional rank-1 path).
+
+    This is the single entry point behind the unified Origin Selection dialog
+    (issue #451). It refuses once any XP has been spent -- the starting trait
+    bonuses must not change after a rank has been bought against them
+    (issue #448) -- and otherwise replaces any previous origin wholesale via
+    clear_origin(). Owns the dirty flag and emits character_refreshed so every
+    binding re-projects. Returns True on success, False if frozen."""
+    pc = get_context().pc
+    if not pc:
+        return False
+    if not can_edit_origin():
+        log.api.warning(u"set_origin refused: the origin is frozen "
+                        u"(XP already spent)")
+        return False
+
+    clear_origin()
+    if family_id:
+        set_family(family_id)
+    if school_id:
+        api.character.schools.set_first_with_path(school_id, path_id)
+
+    set_dirty_flag(True)
+    l5r.api.signals.bus().character_refreshed.emit()
+    return True
 
 
 def is_monk():
