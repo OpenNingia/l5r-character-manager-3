@@ -100,13 +100,8 @@ ColumnLayout {
             "label": qsTr("Infamy")
         }]
 
-    Dialogs.FamilyChooserDialog {
-        id: familyDlg
-        parent: Overlay.overlay
-        anchors.centerIn: Overlay.overlay
-    }
-    Dialogs.FirstSchoolChooserDialog {
-        id: schoolDlg
+    Dialogs.OriginSelectionDialog {
+        id: originDlg
         parent: Overlay.overlay
         anchors.centerIn: Overlay.overlay
     }
@@ -267,8 +262,18 @@ ColumnLayout {
             elide: Text.ElideRight
         }
 
-        Label {
-            text: qsTr("Clan")
+        RowLayout {
+            spacing: 4
+            Label {
+                text: qsTr("Clan")
+            }
+            ToolButton {
+                text: "✎"
+                enabled: section._canEditOrigin
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Choose clan, family and school")
+                onClicked: originDlg.open()
+            }
         }
         Label {
             Layout.fillWidth: true
@@ -305,21 +310,8 @@ ColumnLayout {
             }
         }
 
-        RowLayout {
-            spacing: 4
-            Label {
-                text: qsTr("Family")
-            }
-            ToolButton {
-                text: "✎"
-                enabled: section._canEditOrigin
-                ToolTip.visible: hovered
-                ToolTip.text: qsTr("Edit character family and clan")
-                onClicked: {
-                    familyDlg.initialFamilyId = appCtrl ? appCtrl.currentFamilyId() : "";
-                    familyDlg.open();
-                }
-            }
+        Label {
+            text: qsTr("Family")
         }
         Label {
             Layout.fillWidth: true
@@ -341,21 +333,8 @@ ColumnLayout {
             elide: Text.ElideRight
         }
 
-        RowLayout {
-            spacing: 4
-            Label {
-                text: qsTr("School")
-            }
-            ToolButton {
-                text: "✎"
-                enabled: section._canEditOrigin
-                ToolTip.visible: hovered
-                ToolTip.text: qsTr("Edit character first school")
-                onClicked: {
-                    schoolDlg.initialSchoolId = appCtrl ? appCtrl.currentFirstSchoolId() : "";
-                    schoolDlg.open();
-                }
-            }
+        Label {
+            text: qsTr("School")
         }
         Label {
             Layout.fillWidth: true
