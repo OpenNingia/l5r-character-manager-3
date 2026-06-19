@@ -26,6 +26,9 @@ class IdentityMixin:
     progressionChanged = Signal()
     displayTitleChanged = Signal()
     canEditOriginChanged = Signal()
+    # Fires whenever the origin (family/clan/school) changes -- drives the
+    # Character section's origin summary line and its family+school bonuses.
+    originChanged = Signal()
 
     def _wire_identity(self, bus):
         bus.name_changed.connect(self._on_name_changed)
@@ -45,10 +48,12 @@ class IdentityMixin:
         invalidate(self, "progression")
         self.progressionChanged.emit()
         self.canEditOriginChanged.emit()
+        self.originChanged.emit()
 
     def _on_clan_changed(self, _value):
         self.clanChanged.emit()
         self.displayTitleChanged.emit()
+        self.originChanged.emit()
 
     def _on_dirty_changed_for_title(self, _value):
         self.displayTitleChanged.emit()
@@ -58,6 +63,7 @@ class IdentityMixin:
         invalidate(self, "progression")
         self.progressionChanged.emit()
         self.canEditOriginChanged.emit()
+        self.originChanged.emit()
 
     def _on_model_replaced_identity(self):
         self.nameChanged.emit()
@@ -68,6 +74,7 @@ class IdentityMixin:
         self.progressionChanged.emit()
         self.displayTitleChanged.emit()
         self.canEditOriginChanged.emit()
+        self.originChanged.emit()
 
     @Property(str, notify=nameChanged)
     def name(self):
@@ -99,6 +106,25 @@ class IdentityMixin:
             return ""
         school_ = api.data.schools.get(sid)
         return school_.name if school_ else ""
+
+    @Property(bool, notify=originChanged)
+    def originComplete(self):
+        """True once both a family (clan) and a first school are set."""
+        return bool(api.character.get_family()
+                    and api.character.schools.get_first())
+
+    @Property(str, notify=originChanged)
+    def familyTrait(self):
+        """The +1 starting trait granted by the family, as a (lowercase)
+        trait id -- "" when no family. The QML maps it to a localized label."""
+        family_ = api.data.families.get(api.character.get_family())
+        return (getattr(family_, "trait", "") or "") if family_ else ""
+
+    @Property(str, notify=originChanged)
+    def schoolTrait(self):
+        """The +1 starting trait granted by the first school, as a trait id."""
+        school_ = api.data.schools.get(api.character.schools.get_first())
+        return (getattr(school_, "trait", "") or "") if school_ else ""
 
     @Property(bool, notify=canEditOriginChanged)
     def canEditOrigin(self):
