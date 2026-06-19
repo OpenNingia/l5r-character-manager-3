@@ -315,3 +315,10 @@ class TestOriginController(unittest.TestCase):
         self.ctrl.buySkillRank('test_skill_1')
         self.assertEqual(1, len(notices))
         self.assertEqual([], api.character.model().advans)
+
+    def test_setOrigin_slot_commits_family_and_school(self):
+        """The unified OriginSelectionDialog entry point (#451)."""
+        self.ctrl.setOrigin('test_family_1', 'test_school_1', '')
+        self.assertEqual('test_family_1', api.character.get_family())
+        self.assertEqual('test_school_1', api.character.schools.get_first())
+        self.assertEqual(1, len(api.character.rankadv.get_all()))

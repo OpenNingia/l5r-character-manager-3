@@ -1480,7 +1480,7 @@ class AppController(QObject):
         SchoolChooserWidget.get_filtered_school_list, but the QML flow
         picks ONE category up front rather than toggling three checkboxes.
         Filtered by clan when one is given and serialised with
-        _school_record (the same shape FirstSchoolChooserDialog consumes)."""
+        _school_record (the same shape the OriginSelectionDialog consumes)."""
         if api.character.model() is None:
             return []
         if category == "advanced":
@@ -2273,23 +2273,16 @@ class AppController(QObject):
         advancement count -- issue #448). Mirrors PcProxy.identity.canEditOrigin."""
         return bool(api.character.model() and api.character.can_edit_origin())
 
-    @Slot(str)
-    def setFamily(self, family_id):
-        if not family_id:
+    @Slot(str, str, str)
+    def setOrigin(self, family_id, school_id, path_id):
+        """Commit the whole origin (clan via family, first school, optional
+        rank-1 path) in one atomic step -- the unified OriginSelectionDialog
+        (#451). Delegates to api.character.set_origin, which replaces any
+        previous origin while editable and refuses once XP is spent (#448).
+        notify_character_refreshed is fired by set_origin on success."""
+        if not school_id and not family_id:
             return
-        api.character.set_family(family_id)
-        api.character.notify_character_refreshed()
-
-    @Slot(str, str)
-    def setFirstSchool(self, school_id, path_id):
-        if not school_id:
-            return
-        if path_id:
-            api.character.schools.set_first_with_path(school_id, path_id)
-        else:
-            api.character.schools.set_first(school_id)
-        api.character.set_dirty_flag(True)
-        api.character.notify_character_refreshed()
+        api.character.set_origin(family_id, school_id, path_id or None)
 
     # --- startup hooks ------------------------------------------------
 
