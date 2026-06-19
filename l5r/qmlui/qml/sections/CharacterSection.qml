@@ -285,12 +285,9 @@ ColumnLayout {
             spacing: 10
 
             Label {
+                // Same plain styling as the "Name" label above (default
+                // font/colour), per design feedback.
                 text: qsTr("Origin")
-                font.family: Theme.fontDisplay
-                font.pixelSize: Theme.fsCaption
-                font.weight: Theme.wSemiBold
-                font.letterSpacing: 1.2
-                color: Theme.inkMuted
                 Layout.alignment: Qt.AlignVCenter
             }
             Label {
