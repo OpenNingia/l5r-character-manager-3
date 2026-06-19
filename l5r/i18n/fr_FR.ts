@@ -12,83 +12,83 @@
   <context>
     <name>AdvanceMixin</name>
     <message>
-      <location filename="../ui/advance.py" line="48" />
+      <location filename="../ui/advance.py" line="55" />
       <source>You reached the next rank, you have an opportunity to decide your destiny.</source>
       <translation>Vous avez atteint le rang suivant, vous pouvez maintenant décider de votre destin.</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="50" />
+      <location filename="../ui/advance.py" line="57" />
       <source>Advance rank</source>
       <translation>Avancer en Rang</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="63" />
+      <location filename="../ui/advance.py" line="70" />
       <source>You now fit the requirements to learn other Spells</source>
       <translation>Vous avez maintenant les pré-requis pour apprendre d'autre sorts</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="64" />
+      <location filename="../ui/advance.py" line="71" />
       <source>Learn Spells</source>
       <translation>Apprendre des sorts</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="77" />
+      <location filename="../ui/advance.py" line="84" />
       <source>You can learn {0} kihos for free</source>
       <translation>Vous pouvez apprendre gratuitement {0} kihos</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="78" />
+      <location filename="../ui/advance.py" line="85" />
       <source>Learn Kihos</source>
       <translation>Apprendre un Kiho</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="91" />
+      <location filename="../ui/advance.py" line="98" />
       <source>Your school gives you the choice of certain skills</source>
       <translation>Votre école vous donne le choix de certaines compétences</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="92" />
+      <location filename="../ui/advance.py" line="99" />
       <source>Choose Skills</source>
       <translation>Choisir des compétences</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="112" />
+      <location filename="../ui/advance.py" line="119" />
       <source>You school grant you to choose an elemental affinity.</source>
       <translation>Votre école vous donne le droit de choisir une affinité élémentaire.</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="113" />
+      <location filename="../ui/advance.py" line="120" />
       <source>Choose Affinity</source>
       <translation>Choisir une Affinité</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="120" />
+      <location filename="../ui/advance.py" line="127" />
       <source>You school grant you to choose an elemental deficiency.</source>
       <translation>You school grant you to choose an elemental deficiency.</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="121" />
+      <location filename="../ui/advance.py" line="128" />
       <source>Choose Deficiency</source>
       <translation>Choisir une Deficience</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="129" />
+      <location filename="../ui/advance.py" line="136" />
       <source>Choose School Spells</source>
       <translation>Choisir les sorts de votre école</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="130" />
+      <location filename="../ui/advance.py" line="137" />
       <source>&lt;center&gt;&lt;h2&gt;Your school has granted you                                      the right to choose some spells.&lt;/h2&gt;                                      &lt;h3&gt;&lt;i&gt;Choose with care.&lt;/i&gt;&lt;/h3&gt;&lt;/center&gt;</source>
       <translation>&lt;center&gt;&lt;h2&gt;Votre École vous permet de choisir certains sorts.&lt;/h2&gt;
 &lt;h3&gt;&lt;i&gt;Choisissez avec soin.&lt;/i&gt;&lt;/h3&gt;&lt;/center&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="163" />
+      <location filename="../ui/advance.py" line="170" />
       <source>Select your elemental affinity</source>
       <translation>Sélectionner votre affinité élémentaire</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="191" />
+      <location filename="../ui/advance.py" line="198" />
       <source>Select your elemental deficiency</source>
       <translation>Sélectionner votre déficience élémentaire</translation>
     </message>
@@ -201,12 +201,22 @@ You've reached the XP Limit.</source>
 Vous avez atteint votre limite d'XP</translation>
     </message>
     <message>
-      <location filename="../ui/advise.py" line="108" />
+      <location filename="../ui/advise.py" line="113" />
+      <source>Choose your origin first</source>
+      <translation>Choisissez d'abord votre origine</translation>
+    </message>
+    <message>
+      <location filename="../ui/advise.py" line="114" />
+      <source>Select your clan, family and school before spending experience points.</source>
+      <translation>Sélectionnez votre clan, votre famille et votre école avant de dépenser des points d'expérience.</translation>
+    </message>
+    <message>
+      <location filename="../ui/advise.py" line="119" />
       <source>&lt;h3&gt;Missing books&lt;/h3&gt;</source>
       <translation>&lt;h3&gt;Livres manquant&lt;/h3&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/advise.py" line="109" />
+      <location filename="../ui/advise.py" line="120" />
       <source>&lt;p&gt;To load this character you need this additional books:&lt;/p&gt;</source>
       <translation>&lt;p&gt;Pour charger ce personnage, vous avez besoin des livres suivants :&lt;/p&gt;</translation>
     </message>
@@ -289,184 +299,184 @@ Vous avez atteint votre limite d'XP</translation>
       <translation>À Propos</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="128" />
+      <location filename="../qmlui/proxies/app_controller.py" line="134" />
       <source>Damage Roll</source>
       <translation>Jet de dégâts</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="131" />
-      <location filename="../qmlui/proxies/app_controller.py" line="128" />
+      <location filename="../qmlui/proxies/app_controller.py" line="137" />
+      <location filename="../qmlui/proxies/app_controller.py" line="134" />
       <source>Weapon</source>
       <translation>Arme</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="129" />
+      <location filename="../qmlui/proxies/app_controller.py" line="135" />
       <source>Any Roll</source>
       <translation>N'importe quel jet</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="130" />
+      <location filename="../qmlui/proxies/app_controller.py" line="136" />
       <source>Skill Roll</source>
       <translation>Jet de compétence</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="130" />
+      <location filename="../qmlui/proxies/app_controller.py" line="136" />
       <source>Skill</source>
       <translation>Compétence</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="131" />
+      <location filename="../qmlui/proxies/app_controller.py" line="137" />
       <source>Attack Roll</source>
       <translation>Jet d'attaque</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="132" />
+      <location filename="../qmlui/proxies/app_controller.py" line="138" />
       <source>Trait Roll</source>
       <translation>Jet de trait</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="132" />
+      <location filename="../qmlui/proxies/app_controller.py" line="138" />
       <source>Trait</source>
       <translation>Trait</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="133" />
+      <location filename="../qmlui/proxies/app_controller.py" line="139" />
       <source>Ring Roll</source>
       <translation>Jet d'anneau</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="133" />
+      <location filename="../qmlui/proxies/app_controller.py" line="139" />
       <source>Ring</source>
       <translation>Anneau</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="134" />
+      <location filename="../qmlui/proxies/app_controller.py" line="140" />
       <source>Health Rank</source>
       <translation>Rang de Santé</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="135" />
+      <location filename="../qmlui/proxies/app_controller.py" line="141" />
       <source>Armor TN</source>
       <translation>ND d'Armure</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="136" />
+      <location filename="../qmlui/proxies/app_controller.py" line="142" />
       <source>Armor RD</source>
       <translation>RD d'Armure</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="137" />
+      <location filename="../qmlui/proxies/app_controller.py" line="143" />
       <source>Initiative</source>
       <translation>Initiative</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="138" />
+      <location filename="../qmlui/proxies/app_controller.py" line="144" />
       <source>Wound Penalty</source>
       <translation>Malus de blessure</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="494" />
+      <location filename="../qmlui/proxies/app_controller.py" line="547" />
       <source>Open Character</source>
       <translation>Ouvrir un personnage</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="730" />
-      <location filename="../qmlui/proxies/app_controller.py" line="546" />
-      <location filename="../qmlui/proxies/app_controller.py" line="496" />
+      <location filename="../qmlui/proxies/app_controller.py" line="794" />
+      <location filename="../qmlui/proxies/app_controller.py" line="602" />
+      <location filename="../qmlui/proxies/app_controller.py" line="549" />
       <source>L5R Character (*.l5r);;All Files (*)</source>
       <translation>Personnage L5R (*.l5r);;Tous les fichiers (*)</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="544" />
+      <location filename="../qmlui/proxies/app_controller.py" line="600" />
       <source>Save Character</source>
       <translation>Sauvegarder le personnage</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="665" />
+      <location filename="../qmlui/proxies/app_controller.py" line="729" />
       <source>Export Character Sheet</source>
       <translation>Exporter la feuille de personnage</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="746" />
-      <location filename="../qmlui/proxies/app_controller.py" line="667" />
+      <location filename="../qmlui/proxies/app_controller.py" line="810" />
+      <location filename="../qmlui/proxies/app_controller.py" line="731" />
       <source>PDF Documents (*.pdf);;All Files (*)</source>
       <translation>Documents PDF (*.pdf);;Tous les fichiers (*)</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="728" />
+      <location filename="../qmlui/proxies/app_controller.py" line="792" />
       <source>Select NPC Characters (up to two)</source>
       <translation>Sélectionnez des PNJ (jusqu'à deux)</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="738" />
+      <location filename="../qmlui/proxies/app_controller.py" line="802" />
       <source>NPC Sheet</source>
       <translation>Feuille de PNJ</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="739" />
+      <location filename="../qmlui/proxies/app_controller.py" line="803" />
       <source>Only the first two characters fit on an NPC sheet.</source>
       <translation>Une feuille de PNJ ne peut contenir que les deux premiers personnages.</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="744" />
+      <location filename="../qmlui/proxies/app_controller.py" line="808" />
       <source>Export NPC Sheet</source>
       <translation>Exporter la feuille de PNJ</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="842" />
-      <source>Not enough XP</source>
-      <translation>XP insuffisant</translation>
+      <location filename="../qmlui/proxies/app_controller.py" line="901" />
+      <source>Not enough XP to complete this purchase.</source>
+      <translation>Pas assez d'XP pour effectuer cet achat.</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="843" />
-      <source>You don't have enough experience points to complete this purchase.</source>
-      <translation>Vous n'avez pas assez de points d'expérience pour effectuer cet achat.</translation>
+      <location filename="../qmlui/proxies/app_controller.py" line="905" />
+      <source>Choose your clan, family and school before spending experience points.</source>
+      <translation>Choisissez votre clan, votre famille et votre école avant de dépenser des points d'expérience.</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="913" />
+      <location filename="../qmlui/proxies/app_controller.py" line="982" />
       <source>{0}, Skill {1}. Cost: {2} xp</source>
       <translation>{0}, Compétence {1}. Coût: {2} XP</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="963" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1031" />
       <source>Any skill (rank {0}):</source>
       <translation>N'importe quelle compétence (rang {0}) :</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="976" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1044" />
       <source>skill</source>
       <translation>compétence</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="978" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1046" />
       <source>Any {0}, but {1} (rank {2}):</source>
       <translation>N'importe quel {0}, mais {1} (rang {2}):</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="979" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1047" />
       <source>Any {0} skill (rank {1}):</source>
       <translation>N'importe quelle compétence de {0} (rang {1}):</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1699" />
-      <location filename="../qmlui/proxies/app_controller.py" line="1614" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1766" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1681" />
       <source>{0} Rank {1}, XP Gain: {2}</source>
       <translation>{0} Rang {1}, Gain d'XP : {2}</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1702" />
-      <location filename="../qmlui/proxies/app_controller.py" line="1617" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1769" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1684" />
       <source>{0} Rank {1}, XP Cost: {2}</source>
       <translation>{0} Rang {1}, Coût en XP : {2}</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1925" />
-      <location filename="../qmlui/proxies/app_controller.py" line="1924" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1990" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1989" />
       <source>N/A</source>
       <translation>N/A</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="2119" />
+      <location filename="../qmlui/proxies/app_controller.py" line="2184" />
       <source>New item</source>
       <translation>Nouvel objet</translation>
     </message>
@@ -1343,12 +1353,12 @@ Vous avez atteint votre limite d'XP</translation>
       <translation>Aucun Datapack installé</translation>
     </message>
     <message>
-      <location filename="../l5rcmcore/__init__.py" line="203" />
+      <location filename="../l5rcmcore/__init__.py" line="207" />
       <source>Cannot import data pack.</source>
       <translation>Impossible d'importer le Datapack.</translation>
     </message>
     <message>
-      <location filename="../l5rcmcore/__init__.py" line="210" />
+      <location filename="../l5rcmcore/__init__.py" line="214" />
       <source>Invalid data pack.</source>
       <translation>Pack non valide.</translation>
     </message>
@@ -1368,12 +1378,12 @@ Vous avez atteint votre limite d'XP</translation>
     <message>
       <location filename="../main.py" line="111" />
       <source>Spells/Techniques</source>
-      <translation type="unfinished" />
+      <translation>Sorts/Techniques</translation>
     </message>
     <message>
       <location filename="../main.py" line="112" />
       <source>Kata/Kiho</source>
-      <translation type="unfinished" />
+      <translation>Kata/Kiho</translation>
     </message>
     <message>
       <location filename="../main.py" line="113" />
@@ -1398,7 +1408,7 @@ Vous avez atteint votre limite d'XP</translation>
     <message>
       <location filename="../main.py" line="117" />
       <source>Notes/Personal Info</source>
-      <translation type="unfinished" />
+      <translation>Notes/Informations personnelles</translation>
     </message>
     <message>
       <location filename="../main.py" line="118" />
@@ -1460,158 +1470,158 @@ Vous avez atteint votre limite d'XP</translation>
   <context>
     <name>MenuMixin</name>
     <message>
-      <location filename="../ui/menu.py" line="144" />
+      <location filename="../ui/menu.py" line="164" />
       <source>&amp;New Character</source>
       <translation>&amp;Nouveau Personnage</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="145" />
+      <location filename="../ui/menu.py" line="165" />
       <source>&amp;Open Character...</source>
       <translation>&amp;Charger un Personnage...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="146" />
+      <location filename="../ui/menu.py" line="166" />
       <source>&amp;Save Character...</source>
       <translation>&amp;Sauvegarder un Personnage...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="147" />
+      <location filename="../ui/menu.py" line="167" />
       <source>Ex&amp;port as PDF...</source>
       <translation>Exp&amp;orter en tant que PDF...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="148" />
+      <location filename="../ui/menu.py" line="168" />
       <source>Export NPC sheet...</source>
       <translation>Exporter la feuille de PNJ...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="149" />
+      <location filename="../ui/menu.py" line="169" />
       <source>E&amp;xit</source>
       <translation>Q&amp;uitter</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="166" />
+      <location filename="../ui/menu.py" line="186" />
       <source>&amp;Reset advancements</source>
       <translation>&amp;Annuler les dépenses</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="167" />
+      <location filename="../ui/menu.py" line="187" />
       <source>Refund last advancement</source>
       <translation>Rembourser la dernière dépense</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="176" />
+      <location filename="../ui/menu.py" line="196" />
       <source>Wear Armor...</source>
       <translation>Porter une Armure...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="178" />
+      <location filename="../ui/menu.py" line="198" />
       <source>Wear Custom Armor...</source>
       <translation>Porter une Armure Personnalisée...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="179" />
+      <location filename="../ui/menu.py" line="199" />
       <source>Add Weapon...</source>
       <translation>Ajouter une Arme...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="181" />
+      <location filename="../ui/menu.py" line="201" />
       <source>Add Custom Weapon...</source>
       <translation>Ajouter une Arme personnalisée...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="190" />
-      <source>Set Health Multiplier...</source>
-      <translation>Définir le multiplicateur de santé...</translation>
+      <location filename="../ui/menu.py" line="210" />
+      <source>Set Health Levels...</source>
+      <translation>Définir les niveaux de santé...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="192" />
+      <location filename="../ui/menu.py" line="212" />
       <source>Cure/Inflict Damage...</source>
       <translation>Soigner/Infliger des Dommages...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="196" />
+      <location filename="../ui/menu.py" line="216" />
       <source>Insight Calculation</source>
       <translation>Calcul de la Réputation</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="217" />
-      <location filename="../ui/menu.py" line="199" />
+      <location filename="../ui/menu.py" line="237" />
+      <location filename="../ui/menu.py" line="219" />
       <source>Default</source>
       <translation>Par défaut</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="201" />
+      <location filename="../ui/menu.py" line="221" />
       <source>Ignore Rank 1 Skills</source>
       <translation>Ignorer les compétences de Rang 1</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="203" />
+      <location filename="../ui/menu.py" line="223" />
       <source>Account Rank 1 School Skills</source>
       <translation>Prendre en compte les Compétences d’École de Rang 1</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="215" />
+      <location filename="../ui/menu.py" line="235" />
       <source>Health Display</source>
       <translation>Montrer la santé</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="218" />
+      <location filename="../ui/menu.py" line="238" />
       <source>Health left</source>
       <translation>Santé restante</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="219" />
+      <location filename="../ui/menu.py" line="239" />
       <source>Total wounds</source>
       <translation>Blessures totales</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="236" />
+      <location filename="../ui/menu.py" line="256" />
       <source>Import Data pack...</source>
       <translation>Importer un Datapack...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="238" />
+      <location filename="../ui/menu.py" line="258" />
       <source>Manage Data packs...</source>
       <translation>Gérer les Datapacks...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="239" />
+      <location filename="../ui/menu.py" line="259" />
       <source>Reload data</source>
       <translation>Recharger les Datapacks</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="243" />
+      <location filename="../ui/menu.py" line="263" />
       <source>Options</source>
       <translation>Options</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="248" />
+      <location filename="../ui/menu.py" line="268" />
       <source>Toggle banner display</source>
       <translation>Affichage de la bannière</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="250" />
+      <location filename="../ui/menu.py" line="270" />
       <source>Free Shopping</source>
       <translation>Shopping gratuit</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="252" />
+      <location filename="../ui/menu.py" line="272" />
       <source>Open Data Directory</source>
       <translation>Ouvrir le répertoire des Datapacks</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="254" />
+      <location filename="../ui/menu.py" line="274" />
       <source>Dice &amp;Roller...</source>
       <translation>Jeter des &amp;Dés...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="288" />
+      <location filename="../ui/menu.py" line="308" />
       <source>File/Menu</source>
-      <translation type="unfinished" />
+      <translation>Fichier/Menu</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="338" />
+      <location filename="../ui/menu.py" line="358" />
       <source>You can donate to the project by clicking on the button</source>
       <translation>Vous pouvez faire un don au projet en cliquant sur le bouton</translation>
     </message>
@@ -1965,7 +1975,7 @@ que souhaitez-vous faire ?</translation>
     <message>
       <location filename="../ui/tabs/pc_info.py" line="175" />
       <source>Add experience points</source>
-      <translation type="unfinished" />
+      <translation>Ajouter des points d'expérience</translation>
     </message>
     <message>
       <location filename="../ui/tabs/pc_info.py" line="182" />
@@ -2125,17 +2135,17 @@ que souhaitez-vous faire ?</translation>
       <translation>Hors de Combat</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="518" />
+      <location filename="../ui/tabs/pc_info.py" line="524" />
       <source>No Clan</source>
       <translation>Pas de Clan</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="526" />
+      <location filename="../ui/tabs/pc_info.py" line="532" />
       <source>No Family</source>
       <translation>Pas de famille</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="534" />
+      <location filename="../ui/tabs/pc_info.py" line="540" />
       <source>No School</source>
       <translation>Pas d'école</translation>
     </message>
