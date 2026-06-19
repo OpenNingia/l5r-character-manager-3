@@ -205,6 +205,43 @@ All spacing derives from an **8 px base unit**.
 - **Header bar height:** 56 px; background `--color-accent-crimson-bg` (Burden) or `--color-accent-blue-bg` (Blessing)
 - **Status/footer bar height:** 48 px; background `--color-paper-dark`; 1 px top border `--color-parchment-border`
 
+### 4.4 Responsive Layout (compact / mobile)
+
+The main-window layout has two forms, switched at a single breakpoint:
+
+- **`--bp-compact` = 760 px** (`Theme.bpCompact`): the window-width threshold
+  below which the fixed sidebar can no longer share the row with a usable
+  (≥ 520 px) content area.
+
+**Wide (≥ `--bp-compact`)** — the standard form of §4.2: the nav sidebar is
+pinned as a fixed column, the content area fills the rest.
+
+**Compact (< `--bp-compact`)** — phones in portrait, narrow windows:
+
+```
+┌──────────────────────────────────────┐
+│ ☰  Character Name            (app bar)│  ← slim top bar, paper-dark band
+├──────────────────────────────────────┤
+│              CONTENT AREA             │  ← full width
+│              (full width)             │
+└──────────────────────────────────────┘
+   ☰ opens the sidebar as a left-edge Drawer overlay
+```
+
+- The sidebar collapses out of the row and is hosted instead in a **left-edge
+  `Drawer`** overlay (width `min(280, 85% of window)`), opened by a **hamburger
+  button** in a slim top app-bar.
+- The top app-bar is a paper-dark band (same treatment as the menu bar, §6.1 /
+  §8.3) carrying the hamburger on the left and the **character name** (the
+  identity normally pinned in the sidebar header) beside it.
+- Selecting a section in the drawer navigates and dismisses the drawer.
+- The breakpoint is a **window-width** test, so the layout reflows live on
+  desktop resize and on device rotation alike — landscape phones/tablets get
+  the wide form, portrait phones get the compact form.
+
+The active-section state is a single source of truth shared by both the fixed
+sidebar and the drawer copy, so the highlight never desyncs between them.
+
 ---
 
 ## 5. Clan Accent Overrides
