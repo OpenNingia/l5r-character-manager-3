@@ -950,52 +950,8 @@
         <translation>Character name</translation>
     </message>
     <message>
-        <source>Rank</source>
-        <translation>Rank</translation>
-    </message>
-    <message>
-        <source>Clan</source>
-        <translation>Clan</translation>
-    </message>
-    <message>
-        <source>No Clan</source>
-        <translation>No Clan</translation>
-    </message>
-    <message>
-        <source>Exp. Points</source>
-        <translation>Exp. Points</translation>
-    </message>
-    <message>
         <source>Edit XP limit</source>
         <translation>Edit XP limit</translation>
-    </message>
-    <message>
-        <source>Family</source>
-        <translation>Family</translation>
-    </message>
-    <message>
-        <source>Edit character family and clan</source>
-        <translation>Edit character family and clan</translation>
-    </message>
-    <message>
-        <source>No Family</source>
-        <translation>No Family</translation>
-    </message>
-    <message>
-        <source>Insight</source>
-        <translation>Insight</translation>
-    </message>
-    <message>
-        <source>School</source>
-        <translation>School</translation>
-    </message>
-    <message>
-        <source>Edit character first school</source>
-        <translation>Edit character first school</translation>
-    </message>
-    <message>
-        <source>No School</source>
-        <translation>No School</translation>
     </message>
     <message>
         <source>Rings and Attributes</source>
@@ -1075,6 +1031,38 @@
     </message>
     <message>
         <source>XP awarded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>+1 %1</source>
+        <translation type="unfinished">+1 %1</translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>— not chosen —</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RANK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INSIGHT</source>
+        <translation type="unfinished">INSIGHT</translation>
+    </message>
+    <message>
+        <source>EXP. POINTS</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1604,100 +1592,6 @@
     <message>
         <source>reset to %1</source>
         <translation>reset to %1</translation>
-    </message>
-</context>
-<context>
-    <name>FamilyChooserDialog</name>
-    <message>
-        <source>Clan and Family</source>
-        <translation>Clan and Family</translation>
-    </message>
-    <message>
-        <source>a Samurai should serve its clan first and foremost</source>
-        <translation>a Samurai should serve its clan first and foremost</translation>
-    </message>
-    <message>
-        <source>Accept</source>
-        <translation>Accept</translation>
-    </message>
-    <message>
-        <source>Clan:</source>
-        <translation>Clan:</translation>
-    </message>
-    <message>
-        <source>No Clan</source>
-        <translation>No Clan</translation>
-    </message>
-    <message>
-        <source>Family:</source>
-        <translation>Family:</translation>
-    </message>
-    <message>
-        <source>Source:</source>
-        <translation>Source:</translation>
-    </message>
-    <message>
-        <source>%1, page %2</source>
-        <translation>%1, page %2</translation>
-    </message>
-    <message>
-        <source>Bonus:</source>
-        <translation>Bonus:</translation>
-    </message>
-    <message>
-        <source>+1 %1</source>
-        <translation>+1 %1</translation>
-    </message>
-</context>
-<context>
-    <name>FirstSchoolChooserDialog</name>
-    <message>
-        <source>Join your First School</source>
-        <translation>Join your First School</translation>
-    </message>
-    <message>
-        <source>in this phase you&apos;re limited to base schools</source>
-        <translation>in this phase you&apos;re limited to base schools</translation>
-    </message>
-    <message>
-        <source>Accept</source>
-        <translation>Accept</translation>
-    </message>
-    <message>
-        <source>Clan:</source>
-        <translation>Clan:</translation>
-    </message>
-    <message>
-        <source>No Clan</source>
-        <translation>No Clan</translation>
-    </message>
-    <message>
-        <source>School:</source>
-        <translation>School:</translation>
-    </message>
-    <message>
-        <source>Path:</source>
-        <translation>Path:</translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation>None</translation>
-    </message>
-    <message>
-        <source>Source:</source>
-        <translation>Source:</translation>
-    </message>
-    <message>
-        <source>%1, page %2</source>
-        <translation>%1, page %2</translation>
-    </message>
-    <message>
-        <source>Bonus:</source>
-        <translation>Bonus:</translation>
-    </message>
-    <message>
-        <source>+1 %1</source>
-        <translation>+1 %1</translation>
     </message>
 </context>
 <context>
@@ -2586,6 +2480,61 @@
     <message>
         <source>Personal Informations</source>
         <translation>Personal Informations</translation>
+    </message>
+</context>
+<context>
+    <name>OriginSelectionDialog</name>
+    <message>
+        <source>Choose your Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>clan, family and school define who a Samurai is</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished">Accept</translation>
+    </message>
+    <message>
+        <source>+1 %1</source>
+        <translation type="unfinished">+1 %1</translation>
+    </message>
+    <message>
+        <source>Clan:</source>
+        <translation type="unfinished">Clan:</translation>
+    </message>
+    <message>
+        <source>No Clan</source>
+        <translation type="unfinished">No Clan</translation>
+    </message>
+    <message>
+        <source>Family:</source>
+        <translation type="unfinished">Family:</translation>
+    </message>
+    <message>
+        <source>School:</source>
+        <translation type="unfinished">School:</translation>
+    </message>
+    <message>
+        <source>Path:</source>
+        <translation type="unfinished">Path:</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished">None</translation>
+    </message>
+    <message>
+        <source>Source:</source>
+        <translation type="unfinished">Source:</translation>
+    </message>
+    <message>
+        <source>%1, page %2</source>
+        <translation type="unfinished">%1, page %2</translation>
+    </message>
+    <message>
+        <source>Bonus:</source>
+        <translation type="unfinished">Bonus:</translation>
     </message>
 </context>
 <context>

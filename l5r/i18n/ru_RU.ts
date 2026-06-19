@@ -12,82 +12,82 @@
   <context>
     <name>AdvanceMixin</name>
     <message>
-      <location filename="../ui/advance.py" line="48" />
+      <location filename="../ui/advance.py" line="55" />
       <source>You reached the next rank, you have an opportunity to decide your destiny.</source>
       <translation>Вы достигли следующего ранга, Вы вольны выбрать свою судьбу.</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="50" />
+      <location filename="../ui/advance.py" line="57" />
       <source>Advance rank</source>
       <translation>Улучшить ранг</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="63" />
+      <location filename="../ui/advance.py" line="70" />
       <source>You now fit the requirements to learn other Spells</source>
       <translation>Вы выполнили условия для изучения других Заклинаний</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="64" />
+      <location filename="../ui/advance.py" line="71" />
       <source>Learn Spells</source>
       <translation>Выучить Заклинания</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="77" />
+      <location filename="../ui/advance.py" line="84" />
       <source>You can learn {0} kihos for free</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../ui/advance.py" line="78" />
+      <location filename="../ui/advance.py" line="85" />
       <source>Learn Kihos</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../ui/advance.py" line="91" />
+      <location filename="../ui/advance.py" line="98" />
       <source>Your school gives you the choice of certain skills</source>
       <translation>Ваша школа предлагает выбор из следующих умений</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="92" />
+      <location filename="../ui/advance.py" line="99" />
       <source>Choose Skills</source>
       <translation>Выбрать Умения</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="112" />
+      <location filename="../ui/advance.py" line="119" />
       <source>You school grant you to choose an elemental affinity.</source>
       <translation>Ваша школа позволяет выбрать Вам расположенность к элементу.</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="113" />
+      <location filename="../ui/advance.py" line="120" />
       <source>Choose Affinity</source>
       <translation>Выбрать Расположенность</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="120" />
+      <location filename="../ui/advance.py" line="127" />
       <source>You school grant you to choose an elemental deficiency.</source>
       <translation>Ваша школа позволяет выбрать Вам отторжение к элементу.</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="121" />
+      <location filename="../ui/advance.py" line="128" />
       <source>Choose Deficiency</source>
       <translation>Выберите отторжение</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="129" />
+      <location filename="../ui/advance.py" line="136" />
       <source>Choose School Spells</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../ui/advance.py" line="130" />
+      <location filename="../ui/advance.py" line="137" />
       <source>&lt;center&gt;&lt;h2&gt;Your school has granted you                                      the right to choose some spells.&lt;/h2&gt;                                      &lt;h3&gt;&lt;i&gt;Choose with care.&lt;/i&gt;&lt;/h3&gt;&lt;/center&gt;</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../ui/advance.py" line="163" />
+      <location filename="../ui/advance.py" line="170" />
       <source>Select your elemental affinity</source>
       <translation>Выберите элементную расположенность</translation>
     </message>
     <message>
-      <location filename="../ui/advance.py" line="191" />
+      <location filename="../ui/advance.py" line="198" />
       <source>Select your elemental deficiency</source>
       <translation>Выберите элементное отторжение</translation>
     </message>
@@ -197,12 +197,22 @@ You've reached the XP Limit.</source>
       <translation>Невозможно купить.⏎ Вы достигли предел Опыта.</translation>
     </message>
     <message>
-      <location filename="../ui/advise.py" line="108" />
+      <location filename="../ui/advise.py" line="113" />
+      <source>Choose your origin first</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../ui/advise.py" line="114" />
+      <source>Select your clan, family and school before spending experience points.</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../ui/advise.py" line="119" />
       <source>&lt;h3&gt;Missing books&lt;/h3&gt;</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../ui/advise.py" line="109" />
+      <location filename="../ui/advise.py" line="120" />
       <source>&lt;p&gt;To load this character you need this additional books:&lt;/p&gt;</source>
       <translation type="unfinished" />
     </message>
@@ -285,184 +295,184 @@ You've reached the XP Limit.</source>
       <translation>Справка</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="128" />
+      <location filename="../qmlui/proxies/app_controller.py" line="134" />
       <source>Damage Roll</source>
       <translation>Бросок урона</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="131" />
-      <location filename="../qmlui/proxies/app_controller.py" line="128" />
+      <location filename="../qmlui/proxies/app_controller.py" line="137" />
+      <location filename="../qmlui/proxies/app_controller.py" line="134" />
       <source>Weapon</source>
       <translation>Оружие</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="129" />
+      <location filename="../qmlui/proxies/app_controller.py" line="135" />
       <source>Any Roll</source>
       <translation>Любой бросок</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="130" />
+      <location filename="../qmlui/proxies/app_controller.py" line="136" />
       <source>Skill Roll</source>
       <translation>Бросок навыка</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="130" />
+      <location filename="../qmlui/proxies/app_controller.py" line="136" />
       <source>Skill</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="131" />
+      <location filename="../qmlui/proxies/app_controller.py" line="137" />
       <source>Attack Roll</source>
       <translation>Бросок атаки</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="132" />
+      <location filename="../qmlui/proxies/app_controller.py" line="138" />
       <source>Trait Roll</source>
       <translation>Бросок черты</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="132" />
+      <location filename="../qmlui/proxies/app_controller.py" line="138" />
       <source>Trait</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="133" />
+      <location filename="../qmlui/proxies/app_controller.py" line="139" />
       <source>Ring Roll</source>
       <translation>Бросок кольца</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="133" />
+      <location filename="../qmlui/proxies/app_controller.py" line="139" />
       <source>Ring</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="134" />
+      <location filename="../qmlui/proxies/app_controller.py" line="140" />
       <source>Health Rank</source>
       <translation>Ранг здоровья</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="135" />
+      <location filename="../qmlui/proxies/app_controller.py" line="141" />
       <source>Armor TN</source>
       <translation>УС Брони</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="136" />
+      <location filename="../qmlui/proxies/app_controller.py" line="142" />
       <source>Armor RD</source>
       <translation>Снижение Брони</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="137" />
+      <location filename="../qmlui/proxies/app_controller.py" line="143" />
       <source>Initiative</source>
       <translation>Инициатива</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="138" />
+      <location filename="../qmlui/proxies/app_controller.py" line="144" />
       <source>Wound Penalty</source>
       <translation>Штраф за ранение</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="494" />
+      <location filename="../qmlui/proxies/app_controller.py" line="547" />
       <source>Open Character</source>
       <translation>Открыть персонажа</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="730" />
-      <location filename="../qmlui/proxies/app_controller.py" line="546" />
-      <location filename="../qmlui/proxies/app_controller.py" line="496" />
+      <location filename="../qmlui/proxies/app_controller.py" line="794" />
+      <location filename="../qmlui/proxies/app_controller.py" line="602" />
+      <location filename="../qmlui/proxies/app_controller.py" line="549" />
       <source>L5R Character (*.l5r);;All Files (*)</source>
       <translation>Персонаж L5R (*.l5r);;Все файлы (*)</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="544" />
+      <location filename="../qmlui/proxies/app_controller.py" line="600" />
       <source>Save Character</source>
       <translation>Сохранить Персонажа</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="665" />
+      <location filename="../qmlui/proxies/app_controller.py" line="729" />
       <source>Export Character Sheet</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="746" />
-      <location filename="../qmlui/proxies/app_controller.py" line="667" />
+      <location filename="../qmlui/proxies/app_controller.py" line="810" />
+      <location filename="../qmlui/proxies/app_controller.py" line="731" />
       <source>PDF Documents (*.pdf);;All Files (*)</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="728" />
+      <location filename="../qmlui/proxies/app_controller.py" line="792" />
       <source>Select NPC Characters (up to two)</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="738" />
+      <location filename="../qmlui/proxies/app_controller.py" line="802" />
       <source>NPC Sheet</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="739" />
+      <location filename="../qmlui/proxies/app_controller.py" line="803" />
       <source>Only the first two characters fit on an NPC sheet.</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="744" />
+      <location filename="../qmlui/proxies/app_controller.py" line="808" />
       <source>Export NPC Sheet</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="842" />
-      <source>Not enough XP</source>
-      <translation>Недостаточно Опыта</translation>
+      <location filename="../qmlui/proxies/app_controller.py" line="901" />
+      <source>Not enough XP to complete this purchase.</source>
+      <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="843" />
-      <source>You don't have enough experience points to complete this purchase.</source>
-      <translation>У вас недостаточно очков опыта для совершения этой покупки.</translation>
+      <location filename="../qmlui/proxies/app_controller.py" line="905" />
+      <source>Choose your clan, family and school before spending experience points.</source>
+      <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="913" />
+      <location filename="../qmlui/proxies/app_controller.py" line="982" />
       <source>{0}, Skill {1}. Cost: {2} xp</source>
       <translation>{0}, Умение {1}. цена: {2} ОО</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="963" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1031" />
       <source>Any skill (rank {0}):</source>
       <translation>Любой навык (ранг {0}):</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="976" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1044" />
       <source>skill</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="978" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1046" />
       <source>Any {0}, but {1} (rank {2}):</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="979" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1047" />
       <source>Any {0} skill (rank {1}):</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1699" />
-      <location filename="../qmlui/proxies/app_controller.py" line="1614" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1766" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1681" />
       <source>{0} Rank {1}, XP Gain: {2}</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1702" />
-      <location filename="../qmlui/proxies/app_controller.py" line="1617" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1769" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1684" />
       <source>{0} Rank {1}, XP Cost: {2}</source>
       <translation>{0} Ранг {1}, Цена ОО: {2}</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1925" />
-      <location filename="../qmlui/proxies/app_controller.py" line="1924" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1990" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1989" />
       <source>N/A</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="2119" />
+      <location filename="../qmlui/proxies/app_controller.py" line="2184" />
       <source>New item</source>
       <translation>Новый предмет</translation>
     </message>
@@ -1317,12 +1327,12 @@ You've reached the XP Limit.</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../l5rcmcore/__init__.py" line="203" />
+      <location filename="../l5rcmcore/__init__.py" line="207" />
       <source>Cannot import data pack.</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../l5rcmcore/__init__.py" line="210" />
+      <location filename="../l5rcmcore/__init__.py" line="214" />
       <source>Invalid data pack.</source>
       <translation type="unfinished" />
     </message>
@@ -1434,158 +1444,158 @@ You've reached the XP Limit.</source>
   <context>
     <name>MenuMixin</name>
     <message>
-      <location filename="../ui/menu.py" line="144" />
+      <location filename="../ui/menu.py" line="164" />
       <source>&amp;New Character</source>
       <translation>&amp;Новый персонаж</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="145" />
+      <location filename="../ui/menu.py" line="165" />
       <source>&amp;Open Character...</source>
       <translation>&amp;Открыть персонажа...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="146" />
+      <location filename="../ui/menu.py" line="166" />
       <source>&amp;Save Character...</source>
       <translation>&amp;Сохранить персонажа...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="147" />
+      <location filename="../ui/menu.py" line="167" />
       <source>Ex&amp;port as PDF...</source>
       <translation>&amp;Экспортировать в PDF,,,</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="148" />
+      <location filename="../ui/menu.py" line="168" />
       <source>Export NPC sheet...</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../ui/menu.py" line="149" />
+      <location filename="../ui/menu.py" line="169" />
       <source>E&amp;xit</source>
       <translation>&amp;Выход</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="166" />
+      <location filename="../ui/menu.py" line="186" />
       <source>&amp;Reset advancements</source>
       <translation>С&amp;бросить улучшения</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="167" />
+      <location filename="../ui/menu.py" line="187" />
       <source>Refund last advancement</source>
       <translation>Отменить последнее улучшение</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="176" />
+      <location filename="../ui/menu.py" line="196" />
       <source>Wear Armor...</source>
       <translation>Надеть броню...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="178" />
+      <location filename="../ui/menu.py" line="198" />
       <source>Wear Custom Armor...</source>
       <translation>Надеть нестандартную броню...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="179" />
+      <location filename="../ui/menu.py" line="199" />
       <source>Add Weapon...</source>
       <translation>Добавить оружие...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="181" />
+      <location filename="../ui/menu.py" line="201" />
       <source>Add Custom Weapon...</source>
       <translation>Добавить нестандартное оружие...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="190" />
-      <source>Set Health Multiplier...</source>
-      <translation>Установить множитель здоровья...</translation>
+      <location filename="../ui/menu.py" line="210" />
+      <source>Set Health Levels...</source>
+      <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../ui/menu.py" line="192" />
+      <location filename="../ui/menu.py" line="212" />
       <source>Cure/Inflict Damage...</source>
       <translation>Причинить/излечить повреждения...</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="196" />
+      <location filename="../ui/menu.py" line="216" />
       <source>Insight Calculation</source>
       <translation>Подсчет Озарения</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="217" />
-      <location filename="../ui/menu.py" line="199" />
+      <location filename="../ui/menu.py" line="237" />
+      <location filename="../ui/menu.py" line="219" />
       <source>Default</source>
       <translation>По-умолчанию</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="201" />
+      <location filename="../ui/menu.py" line="221" />
       <source>Ignore Rank 1 Skills</source>
       <translation>Игнорировать Умения 1 ранга</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="203" />
+      <location filename="../ui/menu.py" line="223" />
       <source>Account Rank 1 School Skills</source>
       <translation>Учитывать Умения Школы 1 ранга</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="215" />
+      <location filename="../ui/menu.py" line="235" />
       <source>Health Display</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../ui/menu.py" line="218" />
+      <location filename="../ui/menu.py" line="238" />
       <source>Health left</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../ui/menu.py" line="219" />
+      <location filename="../ui/menu.py" line="239" />
       <source>Total wounds</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../ui/menu.py" line="236" />
+      <location filename="../ui/menu.py" line="256" />
       <source>Import Data pack...</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../ui/menu.py" line="238" />
+      <location filename="../ui/menu.py" line="258" />
       <source>Manage Data packs...</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../ui/menu.py" line="239" />
+      <location filename="../ui/menu.py" line="259" />
       <source>Reload data</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../ui/menu.py" line="243" />
+      <location filename="../ui/menu.py" line="263" />
       <source>Options</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../ui/menu.py" line="248" />
+      <location filename="../ui/menu.py" line="268" />
       <source>Toggle banner display</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../ui/menu.py" line="250" />
+      <location filename="../ui/menu.py" line="270" />
       <source>Free Shopping</source>
       <translation>Свободная покупка</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="252" />
+      <location filename="../ui/menu.py" line="272" />
       <source>Open Data Directory</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../ui/menu.py" line="254" />
+      <location filename="../ui/menu.py" line="274" />
       <source>Dice &amp;Roller...</source>
       <translation>Кубо&amp;мёт</translation>
     </message>
     <message>
-      <location filename="../ui/menu.py" line="288" />
+      <location filename="../ui/menu.py" line="308" />
       <source>File/Menu</source>
       <translation type="unfinished" />
     </message>
     <message>
-      <location filename="../ui/menu.py" line="338" />
+      <location filename="../ui/menu.py" line="358" />
       <source>You can donate to the project by clicking on the button</source>
       <translation type="unfinished" />
     </message>
@@ -2088,17 +2098,17 @@ what would you want to do?
       <translation>Вне игры</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="518" />
+      <location filename="../ui/tabs/pc_info.py" line="524" />
       <source>No Clan</source>
       <translation>Без Клана</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="526" />
+      <location filename="../ui/tabs/pc_info.py" line="532" />
       <source>No Family</source>
       <translation>Без Семьи</translation>
     </message>
     <message>
-      <location filename="../ui/tabs/pc_info.py" line="534" />
+      <location filename="../ui/tabs/pc_info.py" line="540" />
       <source>No School</source>
       <translation>Без Школы</translation>
     </message>

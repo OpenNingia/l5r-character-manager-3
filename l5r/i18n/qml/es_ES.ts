@@ -950,52 +950,8 @@
         <translation>Nombre del personaje</translation>
     </message>
     <message>
-        <source>Rank</source>
-        <translation>Rango</translation>
-    </message>
-    <message>
-        <source>Clan</source>
-        <translation>Clan</translation>
-    </message>
-    <message>
-        <source>No Clan</source>
-        <translation>Sin clan</translation>
-    </message>
-    <message>
-        <source>Exp. Points</source>
-        <translation>Puntos de exp.</translation>
-    </message>
-    <message>
         <source>Edit XP limit</source>
         <translation>Editar límite de XP</translation>
-    </message>
-    <message>
-        <source>Family</source>
-        <translation>Familia</translation>
-    </message>
-    <message>
-        <source>Edit character family and clan</source>
-        <translation>Editar la familia y el clan del personaje</translation>
-    </message>
-    <message>
-        <source>No Family</source>
-        <translation>Sin familia</translation>
-    </message>
-    <message>
-        <source>Insight</source>
-        <translation>Reconocimiento</translation>
-    </message>
-    <message>
-        <source>School</source>
-        <translation>Escuela</translation>
-    </message>
-    <message>
-        <source>Edit character first school</source>
-        <translation>Editar la primera escuela del personaje</translation>
-    </message>
-    <message>
-        <source>No School</source>
-        <translation>Sin escuela</translation>
     </message>
     <message>
         <source>Rings and Attributes</source>
@@ -1076,6 +1032,38 @@
     <message>
         <source>XP awarded</source>
         <translation>XP otorgados</translation>
+    </message>
+    <message>
+        <source>+1 %1</source>
+        <translation type="unfinished">+1 %1</translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation>Origen</translation>
+    </message>
+    <message>
+        <source>— not chosen —</source>
+        <translation>— sin elegir —</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation>Editar</translation>
+    </message>
+    <message>
+        <source>Choose Origin</source>
+        <translation>Elegir origen</translation>
+    </message>
+    <message>
+        <source>RANK</source>
+        <translation>RANGO</translation>
+    </message>
+    <message>
+        <source>INSIGHT</source>
+        <translation type="unfinished">RECONOCIMIENTO</translation>
+    </message>
+    <message>
+        <source>EXP. POINTS</source>
+        <translation>PUNTOS EXP.</translation>
     </message>
 </context>
 <context>
@@ -1604,100 +1592,6 @@
     <message>
         <source>reset to %1</source>
         <translation>restablecer a %1</translation>
-    </message>
-</context>
-<context>
-    <name>FamilyChooserDialog</name>
-    <message>
-        <source>Clan and Family</source>
-        <translation>Clan y familia</translation>
-    </message>
-    <message>
-        <source>a Samurai should serve its clan first and foremost</source>
-        <translation>un samurái debe servir a su clan ante todo</translation>
-    </message>
-    <message>
-        <source>Accept</source>
-        <translation>Aceptar</translation>
-    </message>
-    <message>
-        <source>Clan:</source>
-        <translation>Clan:</translation>
-    </message>
-    <message>
-        <source>No Clan</source>
-        <translation>Sin clan</translation>
-    </message>
-    <message>
-        <source>Family:</source>
-        <translation>Familia:</translation>
-    </message>
-    <message>
-        <source>Source:</source>
-        <translation>Fuente:</translation>
-    </message>
-    <message>
-        <source>%1, page %2</source>
-        <translation>%1, página %2</translation>
-    </message>
-    <message>
-        <source>Bonus:</source>
-        <translation>Bonificación:</translation>
-    </message>
-    <message>
-        <source>+1 %1</source>
-        <translation>+1 %1</translation>
-    </message>
-</context>
-<context>
-    <name>FirstSchoolChooserDialog</name>
-    <message>
-        <source>Join your First School</source>
-        <translation>Únete a tu primera escuela</translation>
-    </message>
-    <message>
-        <source>in this phase you&apos;re limited to base schools</source>
-        <translation>en esta fase estás limitado a las escuelas base</translation>
-    </message>
-    <message>
-        <source>Accept</source>
-        <translation>Aceptar</translation>
-    </message>
-    <message>
-        <source>Clan:</source>
-        <translation>Clan:</translation>
-    </message>
-    <message>
-        <source>No Clan</source>
-        <translation>Sin clan</translation>
-    </message>
-    <message>
-        <source>School:</source>
-        <translation>Escuela:</translation>
-    </message>
-    <message>
-        <source>Path:</source>
-        <translation>Senda:</translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation>Ninguna</translation>
-    </message>
-    <message>
-        <source>Source:</source>
-        <translation>Fuente:</translation>
-    </message>
-    <message>
-        <source>%1, page %2</source>
-        <translation>%1, página %2</translation>
-    </message>
-    <message>
-        <source>Bonus:</source>
-        <translation>Bonificación:</translation>
-    </message>
-    <message>
-        <source>+1 %1</source>
-        <translation>+1 %1</translation>
     </message>
 </context>
 <context>
@@ -2586,6 +2480,61 @@
     <message>
         <source>Personal Informations</source>
         <translation>Información personal</translation>
+    </message>
+</context>
+<context>
+    <name>OriginSelectionDialog</name>
+    <message>
+        <source>Choose your Origin</source>
+        <translation>Elige tu origen</translation>
+    </message>
+    <message>
+        <source>clan, family and school define who a Samurai is</source>
+        <translation>el clan, la familia y la escuela definen quién es un samurái</translation>
+    </message>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished">Aceptar</translation>
+    </message>
+    <message>
+        <source>+1 %1</source>
+        <translation type="unfinished">+1 %1</translation>
+    </message>
+    <message>
+        <source>Clan:</source>
+        <translation type="unfinished">Clan:</translation>
+    </message>
+    <message>
+        <source>No Clan</source>
+        <translation type="unfinished">Sin clan</translation>
+    </message>
+    <message>
+        <source>Family:</source>
+        <translation type="unfinished">Familia:</translation>
+    </message>
+    <message>
+        <source>School:</source>
+        <translation type="unfinished">Escuela:</translation>
+    </message>
+    <message>
+        <source>Path:</source>
+        <translation type="unfinished">Senda:</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished">Ninguna</translation>
+    </message>
+    <message>
+        <source>Source:</source>
+        <translation type="unfinished">Fuente:</translation>
+    </message>
+    <message>
+        <source>%1, page %2</source>
+        <translation type="unfinished">%1, página %2</translation>
+    </message>
+    <message>
+        <source>Bonus:</source>
+        <translation type="unfinished">Bonificación:</translation>
     </message>
 </context>
 <context>
