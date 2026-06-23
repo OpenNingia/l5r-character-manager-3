@@ -1643,6 +1643,15 @@ class AppController(QObject):
         cost overrides)."""
         if not rule_id:
             return
+        # Origin must be chosen before any merit/flaw is recorded -- this
+        # path appends the advancement directly (bypassing
+        # purchase_advancement's gate), so enforce it here and nudge with the
+        # same toast the trait/skill purchases use (#448/#450). Without this a
+        # player could buy an advantage first, spend XP, and freeze themselves
+        # out of the (now hidden) "Choose Origin" button.
+        if not api.character.can_buy_advancements():
+            self._purchase_blocked(CMErrors.MISSING_ORIGIN)
+            return
         is_flaw = kind == "flaw"
 
         if is_flaw:
@@ -2246,6 +2255,25 @@ class AppController(QObject):
         return [_school_record(s)
                 for s in sorted(base, key=lambda x: x.name)]
 
+    @Slot(result=int)
+    def differentSchoolCost(self):
+        """XP cost of the rank-1 'Different School' advantage, for the Origin
+        dialog's cross-clan note. 0 if the datapack doesn't define it."""
+        try:
+            return abs(int(api.data.merits.get_rank_cost('different_school', 1) or 0))
+        except Exception:
+            return 0
+
+    @Slot(str, result=str)
+    def clanOfSchool(self, school_id):
+        """Clan id that owns ``school_id`` (empty if unknown). Lets the Origin
+        dialog detect a cross-clan starting school on reopen and pre-arm its
+        'Different School' mode."""
+        if not school_id:
+            return ""
+        s = api.data.schools.get(school_id)
+        return (getattr(s, "clanid", "") or "") if s else ""
+
     @Slot(str, result="QVariantList")
     def rank1PathsForClan(self, clan_id):
         paths = api.data.schools.get_paths_with_rank(1)
@@ -2273,16 +2301,19 @@ class AppController(QObject):
         advancement count -- issue #448). Mirrors PcProxy.identity.canEditOrigin."""
         return bool(api.character.model() and api.character.can_edit_origin())
 
-    @Slot(str, str, str)
-    def setOrigin(self, family_id, school_id, path_id):
+    @Slot(str, str, str, bool)
+    def setOrigin(self, family_id, school_id, path_id, different_school=False):
         """Commit the whole origin (clan via family, first school, optional
         rank-1 path) in one atomic step -- the unified OriginSelectionDialog
         (#451). Delegates to api.character.set_origin, which replaces any
         previous origin while editable and refuses once XP is spent (#448).
+        ``different_school`` buys the Different School advantage when the school
+        comes from a clan other than the family's (#451).
         notify_character_refreshed is fired by set_origin on success."""
         if not school_id and not family_id:
             return
-        api.character.set_origin(family_id, school_id, path_id or None)
+        api.character.set_origin(family_id, school_id, path_id or None,
+                                 buy_different_school=bool(different_school))
 
     # --- startup hooks ------------------------------------------------
 

@@ -715,7 +715,7 @@ def clear_origin():
     set_dirty_flag(True)
 
 
-def set_origin(family_id, school_id, path_id=None):
+def set_origin(family_id, school_id, path_id=None, buy_different_school=False):
     """Atomically (re)set the character's whole origin: family (+ clan) and
     starting school (+ optional rank-1 path).
 
@@ -724,7 +724,12 @@ def set_origin(family_id, school_id, path_id=None):
     bonuses must not change after a rank has been bought against them
     (issue #448) -- and otherwise replaces any previous origin wholesale via
     clear_origin(). Owns the dirty flag and emits character_refreshed so every
-    binding re-projects. Returns True on success, False if frozen."""
+    binding re-projects. Returns True on success, False if frozen.
+
+    When ``buy_different_school`` is set (the school comes from a clan other
+    than the family's), the 'Different School' advantage is purchased at its
+    full rulebook cost as part of the same atomic commit -- so the origin then
+    freezes (xp() > 0), matching the legacy FirstSchoolChooserDialog."""
     pc = get_context().pc
     if not pc:
         return False
@@ -738,6 +743,12 @@ def set_origin(family_id, school_id, path_id=None):
         set_family(family_id)
     if school_id:
         api.character.schools.set_first_with_path(school_id, path_id)
+    # Purchased after the school is set so can_buy_advancements() passes
+    # (the origin is now complete). Full cost, so this is what tips xp()
+    # above zero and freezes the origin afterwards.
+    if buy_different_school:
+        from l5r.api.character import merits as _merits
+        _merits.add('different_school')
 
     set_dirty_flag(True)
     l5r.api.signals.bus().character_refreshed.emit()

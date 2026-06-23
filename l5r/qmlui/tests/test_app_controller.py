@@ -322,3 +322,13 @@ class TestOriginController(unittest.TestCase):
         self.assertEqual('test_family_1', api.character.get_family())
         self.assertEqual('test_school_1', api.character.schools.get_first())
         self.assertEqual(1, len(api.character.rankadv.get_all()))
+
+    def test_inscribePerk_before_origin_is_refused_with_notice(self):
+        """Merits/flaws must not be recorded before the origin is chosen --
+        this path appends directly (bypassing purchase_advancement's gate), so
+        it must enforce the same rule and nudge with a toast (#448/#450)."""
+        notices = []
+        self.ctrl.notice.connect(lambda m: notices.append(m))
+        self.ctrl.inscribePerk('merit', 'test_merit_1', 1, '', -1)
+        self.assertEqual(1, len(notices))
+        self.assertEqual([], api.character.model().advans)
