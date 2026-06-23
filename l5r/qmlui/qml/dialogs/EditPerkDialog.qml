@@ -254,7 +254,7 @@ Widgets.L5RDialog {
                                 anchors.rightMargin: 6
                                 text: qsTr("XP")
                                 font.family: Theme.fontDisplay
-                                font.pixelSize: 9
+                                font.pixelSize: Theme.fsMicro
                                 font.weight: Theme.headingWeight
                                 font.letterSpacing: 2.0
                                 color: dlg._isFlaw ? Theme.highlight : dlg._accent
@@ -347,7 +347,7 @@ Widgets.L5RDialog {
                         contentItem: Label {
                             text: qsTr("reset to %1").arg(dlg.suggestedCost)
                             font.family: Theme.fontDisplay
-                            font.pixelSize: 10
+                            font.pixelSize: Theme.fsMicro
                             font.weight: Theme.wSemiBold
                             font.letterSpacing: 1.2
                             color: resetBtn.hovered ? Theme.parchmentBase : Theme.heading

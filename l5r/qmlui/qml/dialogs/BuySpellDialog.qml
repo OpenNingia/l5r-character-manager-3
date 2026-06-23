@@ -455,7 +455,7 @@ Widgets.L5RDialog {
                         Layout.fillWidth: true
                         text: dlg._selected ? dlg._selected.name : ""
                         font.family: Theme.fontDisplay
-                        font.pixelSize: 22
+                        font.pixelSize: Theme.fsDisplay
                         font.weight: Theme.headingWeight
                         font.letterSpacing: 1.0
                         color: Theme.heading
@@ -487,7 +487,7 @@ Widgets.L5RDialog {
                                 anchors.centerIn: parent
                                 text: dlg._selected ? (dlg._selected.elementLabel || "").toUpperCase() : ""
                                 font.family: Theme.fontDisplay
-                                font.pixelSize: 10
+                                font.pixelSize: Theme.fsMicro
                                 font.weight: Theme.wSemiBold
                                 font.letterSpacing: 1.4
                                 color: Theme.whiteWash
@@ -507,7 +507,7 @@ Widgets.L5RDialog {
                                 anchors.centerIn: parent
                                 text: qsTr("Mastery %1").arg(dlg._selected ? (dlg._selected.mastery || 0) : 0)
                                 font.family: Theme.fontDisplay
-                                font.pixelSize: 10
+                                font.pixelSize: Theme.fsMicro
                                 font.weight: Theme.wSemiBold
                                 font.letterSpacing: 1.2
                                 color: detailPane._ringColor
@@ -531,7 +531,7 @@ Widgets.L5RDialog {
                                 anchors.centerIn: parent
                                 text: parent.parent._mod > 0 ? qsTr("AFFINITY +%1").arg(parent.parent._mod) : qsTr("DEFICIENCY %1").arg(parent.parent._mod)
                                 font.family: Theme.fontDisplay
-                                font.pixelSize: 10
+                                font.pixelSize: Theme.fsMicro
                                 font.weight: Theme.wSemiBold
                                 font.letterSpacing: 1.2
                                 color: parent.parent._mod > 0 ? Theme.positive : Theme.accent
@@ -569,7 +569,7 @@ Widgets.L5RDialog {
                                 Label {
                                     text: modelData.k
                                     font.family: Theme.fontDisplay
-                                    font.pixelSize: 9
+                                    font.pixelSize: Theme.fsMicro
                                     font.weight: Theme.wSemiBold
                                     font.letterSpacing: 1.6
                                     color: Theme.heading
@@ -684,7 +684,7 @@ Widgets.L5RDialog {
                                             anchors.centerIn: parent
                                             text: (modelData || "").toUpperCase()
                                             font.family: Theme.fontDisplay
-                                            font.pixelSize: 9
+                                            font.pixelSize: Theme.fsMicro
                                             font.weight: Theme.wSemiBold
                                             font.letterSpacing: 1.0
                                             color: Theme.inkMuted

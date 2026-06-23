@@ -59,6 +59,24 @@ _INSIGHT_METHODS = [
     (3, "Account Rank 1 School Skills"),
 ]
 
+# UI text-size choices. The id is the persisted key (settings.app
+# ui_font_size); the scale is the multiplier pushed onto Theme.fontScale
+# (see _FONT_SCALES). Only two choices are offered, per the design intent:
+# "Standard" (1.0) and "Large" (1.25).
+_FONT_SIZES = [
+    ("standard", "Standard"),
+    ("large", "Large"),
+    ("larger", "Larger"),
+    ("huge", "Huge"),
+]
+
+_FONT_SCALES = {
+    "standard": 1.0,
+    "large": 1.15,
+    "larger": 1.25,
+    "huge": 1.45,
+}
+
 
 class SettingsProxy(QObject):
     """Read/write bridge over L5RCMSettings for the QML Settings section."""
@@ -70,6 +88,7 @@ class SettingsProxy(QObject):
     printCurrentArmorTnChanged = Signal()
     useQmlUiChanged = Signal()
     buyForFreeChanged = Signal()
+    fontSizeChanged = Signal()
 
     # Emitted when a setting was persisted but cannot take effect until the
     # app is restarted (language, front-end switch). Carries the message
@@ -91,6 +110,11 @@ class SettingsProxy(QObject):
     def insightMethods(self):
         return [{"id": value, "name": self.tr(label)}
                 for value, label in _INSIGHT_METHODS]
+
+    @Property("QVariantList", constant=True)
+    def fontSizes(self):
+        return [{"id": key, "name": self.tr(label)}
+                for key, label in _FONT_SIZES]
 
     # --- localization ------------------------------------------------
 
@@ -172,6 +196,29 @@ class SettingsProxy(QObject):
             return
         l5r.models.Advancement.set_buy_for_free(value)
         self.buyForFreeChanged.emit()
+
+    # --- UI text size (applied live via Theme.fontScale) -------------
+    # Persisted preference that scales the whole type scale. The QML
+    # root binds Theme.fontScale to `fontScale` below, so changing it
+    # takes effect at once -- no restart needed.
+
+    @Property(str, notify=fontSizeChanged)
+    def fontSize(self):
+        value = self._settings.app.ui_font_size or "standard"
+        return value if value in _FONT_SCALES else "standard"
+
+    @Property(float, notify=fontSizeChanged)
+    def fontScale(self):
+        return _FONT_SCALES.get(self.fontSize, 1.0)
+
+    @Slot(str)
+    def setFontSize(self, value):
+        value = value if value in _FONT_SCALES else "standard"
+        if value == self.fontSize:
+            return
+        self._settings.app.ui_font_size = value
+        self._settings.sync()
+        self.fontSizeChanged.emit()
 
     # --- PDF export (read by the exporter at export time) ------------
 

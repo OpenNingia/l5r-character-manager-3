@@ -323,7 +323,7 @@ ColumnLayout {
                         Layout.alignment: Qt.AlignHCenter
                         text: qsTr("MASTERY")
                         font.family: Theme.fontDisplay
-                        font.pixelSize: 8
+                        font.pixelSize: Theme.fsMicro
                         font.weight: Theme.wSemiBold
                         font.letterSpacing: 1.5
                         color: card._ringColor
@@ -387,7 +387,7 @@ ColumnLayout {
                         Layout.fillWidth: true
                         text: card._cost
                         font.family: Theme.fontStat
-                        font.pixelSize: 22
+                        font.pixelSize: Theme.fsStatMedium
                         font.weight: Theme.wMedium
                         font.features: Theme.tabularNumbers
                         horizontalAlignment: Text.AlignRight
@@ -397,7 +397,7 @@ ColumnLayout {
                         Layout.fillWidth: true
                         text: qsTr("XP")
                         font.family: Theme.fontDisplay
-                        font.pixelSize: 9
+                        font.pixelSize: Theme.fsMicro
                         font.weight: Theme.headingWeight
                         font.letterSpacing: 2.0
                         horizontalAlignment: Text.AlignRight

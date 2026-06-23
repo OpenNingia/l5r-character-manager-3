@@ -351,7 +351,7 @@ Widgets.L5RDialog {
                         Layout.fillWidth: true
                         text: dlg._selected ? dlg._selected.name : ""
                         font.family: Theme.fontDisplay
-                        font.pixelSize: 22
+                        font.pixelSize: Theme.fsDisplay
                         font.weight: Theme.headingWeight
                         font.letterSpacing: 1.0
                         color: Theme.heading
@@ -380,7 +380,7 @@ Widgets.L5RDialog {
                                 anchors.centerIn: parent
                                 text: dlg._selected ? (dlg._selected.elementLabel || "").toUpperCase() : ""
                                 font.family: Theme.fontDisplay
-                                font.pixelSize: 10
+                                font.pixelSize: Theme.fsMicro
                                 font.weight: Theme.wSemiBold
                                 font.letterSpacing: 1.4
                                 color: Theme.whiteWash
@@ -400,7 +400,7 @@ Widgets.L5RDialog {
                                 anchors.centerIn: parent
                                 text: qsTr("Mastery %1").arg(dlg._selected ? (dlg._selected.mastery || 0) : 0)
                                 font.family: Theme.fontDisplay
-                                font.pixelSize: 10
+                                font.pixelSize: Theme.fsMicro
                                 font.weight: Theme.wSemiBold
                                 font.letterSpacing: 1.2
                                 color: detailPane._ringColor
@@ -491,7 +491,7 @@ Widgets.L5RDialog {
                                         Layout.bottomMargin: 5
                                         text: qsTr("XP")
                                         font.family: Theme.fontDisplay
-                                        font.pixelSize: 9
+                                        font.pixelSize: Theme.fsMicro
                                         font.weight: Theme.headingWeight
                                         font.letterSpacing: 2.0
                                         color: dlg._accent

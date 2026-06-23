@@ -400,7 +400,7 @@ ColumnLayout {
             Layout.alignment: Qt.AlignHCenter
             text: coinField.label.toUpperCase()
             font.family: Theme.fontDisplay
-            font.pixelSize: 9
+            font.pixelSize: Theme.fsMicro
             font.weight: Theme.wSemiBold
             font.letterSpacing: 1.4
             color: Theme.inkMuted
@@ -495,7 +495,7 @@ ColumnLayout {
                     anchors.centerIn: parent
                     text: qsTr("SCHOOL")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: 9
+                    font.pixelSize: Theme.fsMicro
                     font.weight: Theme.wSemiBold
                     font.letterSpacing: 1.2
                     color: Theme.heading
@@ -692,7 +692,7 @@ ColumnLayout {
                     Layout.alignment: Qt.AlignRight
                     text: qsTr("VALUE")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: 9
+                    font.pixelSize: Theme.fsMicro
                     font.weight: Theme.wSemiBold
                     font.letterSpacing: 1.2
                     color: Theme.inkMuted
@@ -716,7 +716,7 @@ ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
                     text: qsTr("APPLIED")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: 9
+                    font.pixelSize: Theme.fsMicro
                     font.weight: Theme.wSemiBold
                     font.letterSpacing: 1.2
                     color: Theme.inkMuted
