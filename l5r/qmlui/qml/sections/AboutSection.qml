@@ -99,7 +99,7 @@ ColumnLayout {
         Layout.fillWidth: true
         text: qsTr("© 2014–%1 %2").arg(new Date().getFullYear()).arg(about.info.author)
         opacity: 0.55
-        font.pixelSize: 11
+        font.pixelSize: Theme.fsCaption
     }
 
     Label {
@@ -107,6 +107,6 @@ ColumnLayout {
         text: qsTr("Special thanks: Paul Tar Jr (Geiko) and Derrick D. Cochran.")
         wrapMode: Text.WordWrap
         opacity: 0.55
-        font.pixelSize: 11
+        font.pixelSize: Theme.fsCaption
     }
 }

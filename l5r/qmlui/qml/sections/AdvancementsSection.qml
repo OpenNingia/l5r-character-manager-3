@@ -577,7 +577,7 @@ ColumnLayout {
                                 anchors.centerIn: parent
                                 text: qsTr("LATEST")
                                 font.family: Theme.fontDisplay
-                                font.pixelSize: 9
+                                font.pixelSize: Theme.fsMicro
                                 font.weight: Theme.headingWeight
                                 font.letterSpacing: 2.0
                                 color: Theme.accent
@@ -613,7 +613,7 @@ ColumnLayout {
                                     Layout.fillWidth: true
                                     text: _meta.label.toUpperCase()
                                     font.family: Theme.fontDisplay
-                                    font.pixelSize: 9
+                                    font.pixelSize: Theme.fsMicro
                                     font.weight: Theme.headingWeight
                                     font.letterSpacing: 1.6
                                     horizontalAlignment: Text.AlignHCenter
@@ -693,7 +693,7 @@ ColumnLayout {
                                     Layout.fillWidth: true
                                     text: qsTr("XP")
                                     font.family: Theme.fontDisplay
-                                    font.pixelSize: 9
+                                    font.pixelSize: Theme.fsMicro
                                     font.weight: Theme.headingWeight
                                     font.letterSpacing: 2.0
                                     horizontalAlignment: Text.AlignRight

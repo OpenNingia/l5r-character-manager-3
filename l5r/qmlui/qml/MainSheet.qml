@@ -53,7 +53,13 @@ ApplicationWindow {
     // changes, so the sidebar accent re-tints while the layout stays
     // put. Guarded for the null first pass; the Connections covers
     // File>New / open / family edit (all routed through clanChanged).
+    // Bind the global text-scale multiplier to the user's "Text size"
+    // preference. QML singletons can't see context properties, so the
+    // binding is installed here (the root sees appSettings) and pushed
+    // onto Theme.fontScale; the whole type scale then re-scales live.
     Component.onCompleted: {
+        Theme.fontScale = Qt.binding(
+            () => appSettings ? appSettings.fontScale : 1.0);
         if (pcProxy)
             ClanTheme.setClan(pcProxy.clanId);
         // First-run nudge: with no datapacks the app is near-useless, so

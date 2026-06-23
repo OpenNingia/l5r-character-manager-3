@@ -225,7 +225,7 @@ Item {
                         anchors.centerIn: parent
                         text: qsTr("Section '%1' content coming soon").arg(section.tabId)
                         opacity: 0.7
-                        font.pixelSize: 13
+                        font.pixelSize: Theme.fsBody
                     }
                 }
             }

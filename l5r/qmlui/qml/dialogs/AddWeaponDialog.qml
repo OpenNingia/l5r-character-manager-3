@@ -408,7 +408,7 @@ Widgets.L5RDialog {
                         Layout.fillWidth: true
                         text: dlg._selected ? dlg._selected.name : ""
                         font.family: Theme.fontDisplay
-                        font.pixelSize: 22
+                        font.pixelSize: Theme.fsDisplay
                         font.weight: Theme.headingWeight
                         font.letterSpacing: 1.0
                         color: Theme.heading
@@ -547,7 +547,7 @@ Widgets.L5RDialog {
             anchors.centerIn: parent
             text: badge.tag.toUpperCase()
             font.family: Theme.fontDisplay
-            font.pixelSize: 9
+            font.pixelSize: Theme.fsMicro
             font.weight: Theme.wSemiBold
             font.letterSpacing: 1.0
             color: badge._c
@@ -567,7 +567,7 @@ Widgets.L5RDialog {
         Label {
             text: label.toUpperCase()
             font.family: Theme.fontDisplay
-            font.pixelSize: 9
+            font.pixelSize: Theme.fsMicro
             font.weight: Theme.wSemiBold
             font.letterSpacing: 1.2
             color: Theme.inkMuted

@@ -262,6 +262,10 @@ class L5RCMSettings_App(object):
     def use_system_locale(self):
         return _is_true(self._qsettings.value('use_machine_locale', True))
 
+    @property
+    def ui_font_size(self):
+        return self._qsettings.value('ui_font_size', 'standard')
+
     # setter
     @health_method.setter
     def health_method(self, value):
@@ -306,3 +310,7 @@ class L5RCMSettings_App(object):
     @user_locale.setter
     def user_locale(self, value):
         self._qsettings.setValue('user_locale', value)
+
+    @ui_font_size.setter
+    def ui_font_size(self, value):
+        self._qsettings.setValue('ui_font_size', value)
