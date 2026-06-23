@@ -35,36 +35,61 @@ Widgets.L5RDialog {
     acceptEnabled: _selectedFamilyId.length > 0 && _selectedSchoolId.length > 0
 
     // Working state, separate from the model until Accept fires.
-    property string _selectedClanId: ""
+    property string _selectedClanId: ""        // family's clan
     property string _selectedFamilyId: ""
+    property string _selectedSchoolClanId: ""  // school's clan (== family's unless Different School)
     property string _selectedSchoolId: ""
     property string _selectedPathId: ""
+    // Different School: the starting school comes from a clan other than the
+    // family's. Unlocks the School-clan combo and buys the advantage on Accept.
+    property bool _differentSchool: false
     property var _families: []
     property var _schools: []
     property var _paths: []
+    readonly property int _differentSchoolCost: appCtrl ? appCtrl.differentSchoolCost() : 0
+    // True when the chosen school's clan actually differs from the family's --
+    // the condition that makes the Different School advantage due.
+    readonly property bool _isCrossClan: _selectedSchoolClanId !== _selectedClanId
 
     onAboutToShow: {
         _selectedClanId = appCtrl ? appCtrl.currentClanId() : "";
         _selectedFamilyId = appCtrl ? appCtrl.currentFamilyId() : "";
         _selectedSchoolId = appCtrl ? appCtrl.currentFirstSchoolId() : "";
+        // Pre-arm Different School when the saved school is from another clan
+        // (kept robust even though a frozen cross-clan origin is rarely reopened).
+        var schoolClan = (appCtrl && _selectedSchoolId) ? appCtrl.clanOfSchool(_selectedSchoolId) : "";
+        _selectedSchoolClanId = schoolClan || _selectedClanId;
+        _differentSchool = (_selectedSchoolId.length > 0 && schoolClan.length > 0 && schoolClan !== _selectedClanId);
         _selectedPathId = "";
         _refreshLists();
+        // Explicit sync: the toggle's `checked` binding is severed the first
+        // time the user flips it, so re-assert it on each open.
+        differentSchoolToggle.checked = _differentSchool;
         _syncClanCombo();
         _syncFamilyCombo();
+        _syncSchoolClanCombo();
         _syncSchoolCombo();
         pathCombo.currentIndex = 0;
     }
 
     onAccepted: {
         if (appCtrl && _selectedFamilyId && _selectedSchoolId) {
-            appCtrl.setOrigin(_selectedFamilyId, _selectedSchoolId, _selectedPathId);
+            // Buy the advantage only when the school truly is from another clan.
+            appCtrl.setOrigin(_selectedFamilyId, _selectedSchoolId,
+                              _selectedPathId, root._isCrossClan);
         }
+    }
+
+    // Effective clan the school list / paths are drawn from.
+    function _effectiveSchoolClan() {
+        return _differentSchool ? _selectedSchoolClanId : _selectedClanId;
     }
 
     function _refreshLists() {
         _families = appCtrl ? appCtrl.familiesForClan(_selectedClanId) : [];
-        _schools = appCtrl ? appCtrl.basicSchoolsForClan(_selectedClanId) : [];
-        _paths = appCtrl ? appCtrl.rank1PathsForClan(_selectedClanId) : [];
+        var schoolClan = _effectiveSchoolClan();
+        _schools = appCtrl ? appCtrl.basicSchoolsForClan(schoolClan) : [];
+        _paths = appCtrl ? appCtrl.rank1PathsForClan(schoolClan) : [];
     }
 
     function _syncClanCombo() {
@@ -76,6 +101,17 @@ Widgets.L5RDialog {
             }
         }
         clanCombo.currentIndex = idx >= 0 ? idx : 0;
+    }
+
+    function _syncSchoolClanCombo() {
+        var idx = -1;
+        for (var i = 0; i < schoolClanCombo.count; ++i) {
+            if (schoolClanCombo.model[i].id === _selectedSchoolClanId) {
+                idx = i;
+                break;
+            }
+        }
+        schoolClanCombo.currentIndex = idx >= 0 ? idx : 0;
     }
 
     function _syncFamilyCombo() {
@@ -150,8 +186,13 @@ Widgets.L5RDialog {
             onActivated: function (index) {
                 var rec = clanCombo.model[index];
                 root._selectedClanId = rec ? rec.id : "";
+                // While not in Different School mode the school follows the
+                // family's clan; keep the two in lock-step.
+                if (!root._differentSchool)
+                    root._selectedSchoolClanId = root._selectedClanId;
                 root._refreshLists();
                 root._syncFamilyCombo();
+                root._syncSchoolClanCombo();
                 root._syncSchoolCombo();
                 pathCombo.currentIndex = 0;
                 root._selectedPathId = "";
@@ -170,6 +211,58 @@ Widgets.L5RDialog {
             onActivated: function (index) {
                 var rec = root._families[index];
                 root._selectedFamilyId = rec ? rec.id : "";
+            }
+        }
+
+        // Different School advantage: lets the starting school come from a
+        // clan other than the family's. The all-clans school list would be
+        // dozens long, so we keep the per-clan School combo and add a second
+        // clan combo here (mirrors the legacy FirstSchoolChooserDialog).
+        Label {
+            text: qsTr("Different School:")
+        }
+        Widgets.L5RToggle {
+            id: differentSchoolToggle
+            checked: root._differentSchool
+            onToggled: {
+                root._differentSchool = checked;
+                // Default the school clan to the family's when turning the
+                // option off (or on for the first time).
+                if (!checked || !root._selectedSchoolClanId)
+                    root._selectedSchoolClanId = root._selectedClanId;
+                root._refreshLists();
+                root._syncSchoolClanCombo();
+                root._syncSchoolCombo();
+                pathCombo.currentIndex = 0;
+                root._selectedPathId = "";
+            }
+        }
+
+        // School-clan combo -- only shown in Different School mode.
+        Label {
+            text: qsTr("School Clan:")
+            visible: root._differentSchool
+        }
+        Widgets.L5RComboBox {
+            id: schoolClanCombo
+            Layout.fillWidth: true
+            visible: root._differentSchool
+            textRole: "name"
+            accent: root.accent
+            model: {
+                var clans = appCtrl ? appCtrl.clansList() : [];
+                return [{
+                        "id": "",
+                        "name": qsTr("No Clan")
+                    }].concat(clans);
+            }
+            onActivated: function (index) {
+                var rec = schoolClanCombo.model[index];
+                root._selectedSchoolClanId = rec ? rec.id : "";
+                root._refreshLists();
+                root._syncSchoolCombo();
+                pathCombo.currentIndex = 0;
+                root._selectedPathId = "";
             }
         }
 
@@ -239,6 +332,21 @@ Widgets.L5RDialog {
             Layout.fillWidth: true
             color: Theme.positive
             text: root._bonusText()
+        }
+
+        // Cross-clan advisory: explains the XP that Accept will spend and
+        // that the origin freezes afterwards (the advantage costs XP).
+        Label {
+            Layout.columnSpan: 2
+            Layout.fillWidth: true
+            visible: root._isCrossClan
+            wrapMode: Text.WordWrap
+            font.italic: true
+            font.pixelSize: Theme.fsCaption
+            color: Theme.accent
+            text: root._differentSchoolCost > 0
+                  ? qsTr("A school outside your clan requires the Different School advantage (−%1 XP). The origin locks once accepted.").arg(root._differentSchoolCost)
+                  : qsTr("A school outside your clan requires the Different School advantage. The origin locks once accepted.")
         }
     }
 }
