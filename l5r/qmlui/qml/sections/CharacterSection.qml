@@ -53,26 +53,6 @@ ColumnLayout {
     function _traitLabel(traitId) {
         return traitId ? (section._attrLabels[traitId] || traitId) : "";
     }
-    function _originSummary() {
-        if (!pcProxy)
-            return "";
-        var parts = [];
-        if (pcProxy.clan)
-            parts.push(pcProxy.clan);
-        if (pcProxy.family)
-            parts.push(pcProxy.family);
-        if (pcProxy.school)
-            parts.push(pcProxy.school);
-        return parts.join("   ·   ");
-    }
-    function _originBonuses() {
-        var parts = [];
-        if (section._familyTrait)
-            parts.push(qsTr("+1 %1").arg(section._traitLabel(section._familyTrait)));
-        if (section._schoolTrait)
-            parts.push(qsTr("+1 %1").arg(section._traitLabel(section._schoolTrait)));
-        return parts.join("   ·   ");
-    }
 
     // A pending rank-up (the root opportunity -- every grant flows from
     // it). Drives the callout below; the matching TOC badge comes from the
@@ -129,6 +109,58 @@ ColumnLayout {
             "key": "infamy",
             "label": qsTr("Infamy")
         }]
+
+    // Shared stat-strip primitives -- used by both the Origin grid and
+    // the progression strip below so the two read as one ledger.
+    component StatCell: ColumnLayout {
+        Layout.fillWidth: true
+        spacing: 1
+        property alias caption: capLabel.text
+        // Optional bonus/footnote rendered under the value (e.g. the
+        // origin "+1 <trait>" starting bonus). Empty for plain cells.
+        property alias subCaption: subLabel.text
+        default property alias cellData: valueHolder.data
+        Label {
+            id: capLabel
+            font.family: Theme.fontDisplay
+            font.pixelSize: Theme.fsCaption
+            font.weight: Theme.wSemiBold
+            font.letterSpacing: 1.2
+            color: Theme.inkMuted
+        }
+        RowLayout {
+            id: valueHolder
+            Layout.fillWidth: true
+            spacing: 6
+        }
+        Label {
+            id: subLabel
+            Layout.fillWidth: true
+            visible: text.length > 0
+            color: Theme.positive
+            font.family: Theme.fontBody
+            font.pixelSize: Theme.fsCaption
+            elide: Text.ElideRight
+        }
+    }
+
+    component StatValue: Label {
+        font.family: Theme.fontStat
+        font.pixelSize: Theme.fsStatMedium
+        font.weight: Theme.wMedium
+        font.features: Theme.tabularNumbers
+        color: Theme.heading
+        elide: Text.ElideRight
+    }
+
+    component StatDivider: Rectangle {
+        Layout.preferredWidth: 1
+        Layout.fillHeight: true
+        Layout.topMargin: 2
+        Layout.bottomMargin: 2
+        color: Theme.divider
+        opacity: Theme.dividerOpacity
+    }
 
     Dialogs.OriginSelectionDialog {
         id: originDlg
@@ -274,7 +306,9 @@ ColumnLayout {
         }
     }
 
-    // Origin summary line + single edit/choose action
+    // Origin grid -- Clan | Family | School as a stat strip mirroring the
+    // progression strip below, plus a single edit/choose action and the
+    // starting-bonus caption underneath.
     ColumnLayout {
         Layout.fillWidth: true
         Layout.topMargin: 4
@@ -282,21 +316,38 @@ ColumnLayout {
 
         RowLayout {
             Layout.fillWidth: true
-            spacing: 10
+            spacing: 14
 
-            Label {
-                // Same plain styling as the "Name" label above (default
-                // font/colour), per design feedback.
-                text: qsTr("Origin")
-                Layout.alignment: Qt.AlignVCenter
+            StatCell {
+                caption: qsTr("CLAN")
+                StatValue {
+                    Layout.fillWidth: true
+                    text: (pcProxy && pcProxy.clan) ? pcProxy.clan : qsTr("—")
+                    color: (pcProxy && pcProxy.clan) ? Theme.heading : Theme.inkFaint
+                    font.italic: !(pcProxy && pcProxy.clan)
+                }
             }
-            Label {
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignVCenter
-                text: section._originComplete ? section._originSummary() : qsTr("— not chosen —")
-                color: section._originComplete ? Theme.heading : Theme.inkFaint
-                font.italic: !section._originComplete
-                elide: Text.ElideRight
+            StatDivider {}
+            StatCell {
+                caption: qsTr("FAMILY")
+                subCaption: section._familyTrait ? qsTr("+1 %1").arg(section._traitLabel(section._familyTrait)) : ""
+                StatValue {
+                    Layout.fillWidth: true
+                    text: (pcProxy && pcProxy.family) ? pcProxy.family : qsTr("—")
+                    color: (pcProxy && pcProxy.family) ? Theme.heading : Theme.inkFaint
+                    font.italic: !(pcProxy && pcProxy.family)
+                }
+            }
+            StatDivider {}
+            StatCell {
+                caption: qsTr("SCHOOL")
+                subCaption: section._schoolTrait ? qsTr("+1 %1").arg(section._traitLabel(section._schoolTrait)) : ""
+                StatValue {
+                    Layout.fillWidth: true
+                    text: (pcProxy && pcProxy.school) ? pcProxy.school : qsTr("—")
+                    color: (pcProxy && pcProxy.school) ? Theme.heading : Theme.inkFaint
+                    font.italic: !(pcProxy && pcProxy.school)
+                }
             }
             Widgets.L5RButton {
                 // Filled CTA while unset (the first thing a new character
@@ -315,13 +366,6 @@ ColumnLayout {
                 onClicked: originDlg.open()
             }
         }
-        Label {
-            visible: section._originComplete && text.length > 0
-            text: section._originBonuses()
-            color: Theme.positive
-            font.family: Theme.fontBody
-            font.pixelSize: Theme.fsCaption
-        }
     }
 
     // Progression stat strip — Rank | Insight | Exp Points
@@ -329,44 +373,6 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.topMargin: 4
         spacing: 14
-
-        component StatCell: ColumnLayout {
-            Layout.fillWidth: true
-            spacing: 1
-            property alias caption: capLabel.text
-            default property alias cellData: valueHolder.data
-            Label {
-                id: capLabel
-                font.family: Theme.fontDisplay
-                font.pixelSize: Theme.fsCaption
-                font.weight: Theme.wSemiBold
-                font.letterSpacing: 1.2
-                color: Theme.inkMuted
-            }
-            RowLayout {
-                id: valueHolder
-                Layout.fillWidth: true
-                spacing: 6
-            }
-        }
-
-        component StatValue: Label {
-            font.family: Theme.fontStat
-            font.pixelSize: Theme.fsStatMedium
-            font.weight: Theme.wMedium
-            font.features: Theme.tabularNumbers
-            color: Theme.heading
-            elide: Text.ElideRight
-        }
-
-        component StatDivider: Rectangle {
-            Layout.preferredWidth: 1
-            Layout.fillHeight: true
-            Layout.topMargin: 2
-            Layout.bottomMargin: 2
-            color: Theme.divider
-            opacity: Theme.dividerOpacity
-        }
 
         StatCell {
             caption: qsTr("RANK")
