@@ -186,6 +186,10 @@ class CMErrors(object):
     NO_ERROR = 'no_error'
     NOT_ENOUGH_XP = 'not_enough_xp'
     INTERNAL_ERROR = 'internal_error'
+    # the character's origin (family + school) is not yet set, so XP may not
+    # be spent: the family/school starting trait bonuses must be locked in
+    # first or they could be stacked on an already-bought rank (issue #448)
+    MISSING_ORIGIN = 'missing_origin'
 
 
 # Public submodules reached via attribute access (e.g. ``api.data.families``).

@@ -274,7 +274,7 @@ ColumnLayout {
                         Layout.alignment: Qt.AlignHCenter
                         text: qsTr("INSIGHT")
                         font.family: Theme.fontDisplay
-                        font.pixelSize: 8
+                        font.pixelSize: Theme.fsMicro
                         font.weight: Theme.wSemiBold
                         font.letterSpacing: 1.5
                         color: ClanTheme.primary
@@ -345,7 +345,7 @@ ColumnLayout {
                         anchors.centerIn: parent
                         text: qsTr("School Rank %1").arg(card._techRank)
                         font.family: Theme.fontDisplay
-                        font.pixelSize: 10
+                        font.pixelSize: Theme.fsMicro
                         font.weight: Theme.wSemiBold
                         font.letterSpacing: 1.2
                         color: ClanTheme.primary

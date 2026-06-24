@@ -195,11 +195,12 @@ ColumnLayout {
                         // always positive magnitude.
                         text: (parent._netCost ? "" : "+") + Math.abs(section._netXp)
                         font.family: Theme.fontStat
-                        // 44px is an intentional above-scale focal size for the
-                        // net-XP verdict (the centre of the "scale" metaphor);
-                        // the spec type scale tops out at fsStatLarge=36, so this
-                        // one stays a literal until/unless a hero token is added.
-                        font.pixelSize: 44
+                        // Above-scale focal size for the net-XP verdict (the
+                        // centre of the "scale" metaphor): larger than the
+                        // §3.2 ceiling fsStatLarge=36. Routed through the
+                        // dedicated fsHeroStat token so it scales with the
+                        // user's Text-size preference like the rest.
+                        font.pixelSize: Theme.fsHeroStat
                         font.weight: Theme.wSemiBold
                         font.features: Theme.tabularNumbers
                         horizontalAlignment: Text.AlignHCenter
@@ -480,7 +481,7 @@ ColumnLayout {
                         anchors.centerIn: parent
                         text: qsTr("%1 / %2 XP").arg(section._flawsXp).arg(section._flawsCap)
                         font.family: Theme.fontDisplay
-                        font.pixelSize: 10
+                        font.pixelSize: Theme.fsMicro
                         font.weight: Theme.headingWeight
                         font.letterSpacing: 1.2
                         font.features: Theme.tabularNumbers
@@ -775,7 +776,7 @@ ColumnLayout {
                             anchors.centerIn: parent
                             text: card._categoryText
                             font.family: Theme.fontDisplay
-                            font.pixelSize: 10
+                            font.pixelSize: Theme.fsMicro
                             font.weight: Theme.headingWeight
                             font.letterSpacing: 1.2
                             color: card.accentColor
@@ -798,7 +799,7 @@ ColumnLayout {
                             anchors.centerIn: parent
                             text: qsTr("Rank %1").arg(card.item ? card.item.rank : 0)
                             font.family: Theme.fontDisplay
-                            font.pixelSize: 10
+                            font.pixelSize: Theme.fsMicro
                             font.weight: Theme.headingWeight
                             font.letterSpacing: 1.2
                             color: card.accentColor
@@ -857,7 +858,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     text: card._isFlaw && card._cost !== 0 ? "+" + card._cost : card._cost
                     font.family: Theme.fontDisplay
-                    font.pixelSize: 22
+                    font.pixelSize: Theme.fsStatMedium
                     font.weight: Font.Bold
                     font.features: Theme.tabularNumbers
                     horizontalAlignment: Text.AlignRight
@@ -868,7 +869,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     text: qsTr("XP")
                     font.family: Theme.fontDisplay
-                    font.pixelSize: 9
+                    font.pixelSize: Theme.fsMicro
                     font.weight: Theme.headingWeight
                     font.letterSpacing: 2.0
                     horizontalAlignment: Text.AlignRight

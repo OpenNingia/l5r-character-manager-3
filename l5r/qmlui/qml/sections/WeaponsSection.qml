@@ -484,7 +484,7 @@ ColumnLayout {
             anchors.centerIn: parent
             text: badge.tag.toUpperCase()
             font.family: Theme.fontDisplay
-            font.pixelSize: 9
+            font.pixelSize: Theme.fsMicro
             font.weight: Theme.wSemiBold
             font.letterSpacing: 1.0
             color: badge._c
@@ -507,7 +507,7 @@ ColumnLayout {
         Label {
             text: label.toUpperCase()
             font.family: Theme.fontDisplay
-            font.pixelSize: 9
+            font.pixelSize: Theme.fsMicro
             font.weight: Theme.wSemiBold
             font.letterSpacing: 1.2
             color: Theme.inkMuted
@@ -955,7 +955,7 @@ ColumnLayout {
                         Layout.alignment: Qt.AlignHCenter
                         text: qsTr("QUANTITY")
                         font.family: Theme.fontDisplay
-                        font.pixelSize: 9
+                        font.pixelSize: Theme.fsMicro
                         font.weight: Theme.wSemiBold
                         font.letterSpacing: 1.2
                         color: Theme.inkMuted

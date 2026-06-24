@@ -261,6 +261,46 @@ ColumnLayout {
             RowLayout {
                 Layout.fillWidth: true
                 Label {
+                    text: qsTr("Text size")
+                    font.family: Theme.fontDisplay
+                    font.pixelSize: Theme.fsLabel
+                    font.weight: Theme.wSemiBold
+                    color: Theme.ink
+                    Layout.fillWidth: true
+                }
+                Widgets.L5RComboBox {
+                    id: fontSizeCombo
+                    Layout.preferredWidth: 260
+                    textRole: "name"
+                    model: appSettings ? appSettings.fontSizes : []
+                    Component.onCompleted: currentIndex = root.indexOfId(
+                        model, appSettings ? appSettings.fontSize : "standard")
+                    onActivated: function (i) {
+                        if (appSettings && model[i])
+                            appSettings.setFontSize(model[i].id);
+                    }
+                }
+            }
+
+            Label {
+                Layout.fillWidth: true
+                text: qsTr("Makes the sheet text larger and easier to read. Applies immediately.")
+                font.family: Theme.fontBody
+                font.pixelSize: Theme.fsCaption
+                font.italic: true
+                color: Theme.inkMuted
+                wrapMode: Text.WordWrap
+            }
+
+            Widgets.OrnateDivider {
+                Layout.fillWidth: true
+                Layout.topMargin: Theme.s2
+                Layout.bottomMargin: Theme.s2
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Label {
                     text: qsTr("Use the new interface")
                     font.family: Theme.fontDisplay
                     font.pixelSize: Theme.fsLabel

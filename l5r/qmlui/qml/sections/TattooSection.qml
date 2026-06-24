@@ -314,7 +314,7 @@ ColumnLayout {
                         Layout.alignment: Qt.AlignHCenter
                         text: qsTr("MARK")
                         font.family: Theme.fontDisplay
-                        font.pixelSize: 8
+                        font.pixelSize: Theme.fsMicro
                         font.weight: Theme.wSemiBold
                         font.letterSpacing: 1.5
                         color: section._mark

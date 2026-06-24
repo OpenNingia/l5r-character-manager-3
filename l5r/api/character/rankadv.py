@@ -85,6 +85,14 @@ def advance_rank():
     adv.rank = api.character.insight_rank(strict=True) + 1
     # this is the current school for this rank
     adv.school = api.character.schools.get_current()
+
+    # a character with no school (origin never set) cannot advance in
+    # "the same path" -- there is none. Bail out instead of dereferencing
+    # a missing school below (issue #448).
+    if not adv.school:
+        log.api.warning(u"cannot advance rank: the character has no school")
+        return False
+
     # this is the current school_rank for this school
     adv.school_rank = api.character.schools.get_school_rank(adv.school) + 1
 

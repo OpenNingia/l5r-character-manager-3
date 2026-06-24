@@ -36,6 +36,7 @@ from qtpy.QtCore import Property, Signal
 import l5r.api as api
 import l5r.api.character
 import l5r.api.character.rankadv
+import l5r.api.character.schools
 
 from l5r.qmlui.proxies.pc.memo import invalidate, memoize
 from l5r.util import log
@@ -57,8 +58,15 @@ _SURFACED_OPPORTUNITIES = {"pc_info", "kiho", "skills", "spells"}
 def _can_advance_rank():
     """True when the character's potential Insight Rank outruns the rank
     actually taken -- i.e. a rank-up is waiting. Shared by the badge map and
-    the `canAdvanceRank` property so both agree."""
+    the `canAdvanceRank` property so both agree.
+
+    A character with no school (origin never set) can never advance rank --
+    advancing means "continue in the current school" and there is none. We
+    must not offer the rank-up in that state or it crashes on advance
+    (issue #448)."""
     try:
+        if not api.character.schools.get_current():
+            return False
         return api.character.insight_rank() > api.character.insight_rank(strict=True)
     except Exception:
         return False

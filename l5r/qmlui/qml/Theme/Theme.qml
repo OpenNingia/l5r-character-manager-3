@@ -95,6 +95,14 @@ QtObject {
     readonly property int s6: 32   // dialog internal sections
     readonly property int s7: 48   // top/bottom margins on major containers
 
+    // --- responsive breakpoint (design system §4.4) ---------------
+    // Below this window width the main-window layout switches from the
+    // fixed-sidebar form to the compact form: the nav sidebar collapses
+    // behind a hamburger drawer and a slim top app-bar appears. Sized so
+    // a 240px sidebar + a >=520px content area no longer fit comfortably
+    // -- i.e. phones in portrait go compact, tablets / desktop stay wide.
+    readonly property int bpCompact: 760
+
     // Component-local metrics, NOT part of the global scale: the
     // social / void point-track dots (design §6.12 fixes the dot at
     // 14px with a 4px gap).
@@ -164,20 +172,47 @@ QtObject {
     readonly property int wBold: 700        // Font.Bold
     readonly property int wBlack: 900       // Font.Black -- Cinzel display only
 
+    // --- text-size accessibility scale -----------------------------
+    // Global UI text-scale multiplier (1.0 = Standard, 1.25 = Large).
+    // Bound at runtime from appSettings (see MainSheet.qml); only the
+    // type-scale tokens below react to it -- the decorative kanji /
+    // watermark / icon pixel sizes stay fixed by design, so the layout
+    // balance is preserved while the readable text grows.
+    property real fontScale: 1.0
+
     // --- type scale (design system §3.2) ---------------------------
     // fs* = "font size", keyed to the spec's named roles. Display /
     // heading / label / caption pair with fontDisplay or fontBody;
-    // the stat* + xpValue sizes pair with fontStat.
-    readonly property int fsDisplay: 22     // page / section title (Cinzel)
-    readonly property int fsHeading1: 18    // dialog title (Cinzel)
-    readonly property int fsHeading2: 15    // sub-section header (Cinzel)
-    readonly property int fsLabel: 13       // field label, column header (Cinzel)
-    readonly property int fsBody: 13        // description paragraphs, notes (IM Fell)
-    readonly property int fsCaption: 11     // hints, metadata, taglines (IM Fell)
-    readonly property int fsStatLarge: 36   // ring numeral / hero stat (EB Garamond)
-    readonly property int fsStatMedium: 20  // attribute value, insight, rank
-    readonly property int fsStatSmall: 15   // skill rank, xp-cost labels
-    readonly property int fsXpValue: 28     // "+N XP" cost figure (EB Garamond bold)
+    // the stat* + xpValue sizes pair with fontStat. The base px values
+    // below are the §3.2 spec; each is multiplied by fontScale so the
+    // user "Text size" preference scales the whole type scale at once.
+    readonly property int fsDisplay: Math.round(22 * fontScale)     // page / section title (Cinzel)
+    readonly property int fsHeading1: Math.round(18 * fontScale)    // dialog title (Cinzel)
+    readonly property int fsHeading2: Math.round(15 * fontScale)    // sub-section header (Cinzel)
+    readonly property int fsLabel: Math.round(13 * fontScale)       // field label, column header (Cinzel)
+    readonly property int fsBody: Math.round(13 * fontScale)        // description paragraphs, notes (IM Fell)
+    readonly property int fsCaption: Math.round(11 * fontScale)     // hints, metadata, taglines (IM Fell)
+    readonly property int fsStatLarge: Math.round(36 * fontScale)   // ring numeral / hero stat (EB Garamond)
+    readonly property int fsStatMedium: Math.round(20 * fontScale)  // attribute value, insight, rank
+    readonly property int fsStatSmall: Math.round(15 * fontScale)   // skill rank, xp-cost labels
+    readonly property int fsXpValue: Math.round(28 * fontScale)     // "+N XP" cost figure (EB Garamond bold)
+
+    // Sub-caption tier -- below --text-caption (11). Not in the §3.2
+    // role table, but needed for the dense list rows: small inline meta
+    // (fsBodySmall, 12 -- nav/TOC labels, list captions) and the tiny
+    // cost / count / "p.NN" micro-text (fsMicro, 10). Kept equal to the
+    // values previously hard-coded so Standard mode looks identical; they
+    // scale with fontScale like the rest of the type scale. Decorative
+    // kanji / watermark / control glyphs (±, carets, brush icons) stay
+    // fixed and must NOT be migrated onto these tokens.
+    readonly property int fsBodySmall: Math.round(12 * fontScale)   // dense list label / nav TOC row
+    readonly property int fsMicro: Math.round(10 * fontScale)       // cost / count / micro-meta
+
+    // Above-scale focal numeral -- larger than fsStatLarge (36). Used for
+    // the single "hero" figure that anchors a view (the Perks net-XP
+    // verdict at the centre of the scale metaphor). Not a §3.2 role; kept
+    // here so even the focal stat scales with the Text-size preference.
+    readonly property int fsHeroStat: Math.round(44 * fontScale)
 
     // Convenience alias for the Cinzel display weight: wBlack (900).
     // This is the ONLY weight the shipped variable Cinzel renders

@@ -78,7 +78,7 @@ Rectangle {
                     color: "white"
                     font.family: Theme.fontDisplay
                     font.weight: Theme.headingWeight
-                    font.pixelSize: 15
+                    font.pixelSize: Theme.fsHeading2
                     font.letterSpacing: 1.2
                     Layout.fillWidth: true
                     elide: Text.ElideRight

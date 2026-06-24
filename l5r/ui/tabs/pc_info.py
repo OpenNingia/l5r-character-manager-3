@@ -449,13 +449,19 @@ class PcInfoTabMixin:
             log.ui.error(u"trait not found by index: %s", tag)
             return
 
-        if self.increase_trait(int(tag)) == CMErrors.NOT_ENOUGH_XP:
+        res = self.increase_trait(int(tag))
+        if res == CMErrors.NOT_ENOUGH_XP:
             self.not_enough_xp_advise(self)
+        elif res == CMErrors.MISSING_ORIGIN:
+            self.missing_origin_advise(self)
 
     def on_void_increase(self):
         """raised when user click on the small '+' button near void ring"""
-        if self.increase_void() == CMErrors.NOT_ENOUGH_XP:
+        res = self.increase_void()
+        if res == CMErrors.NOT_ENOUGH_XP:
             self.not_enough_xp_advise(self)
+        elif res == CMErrors.MISSING_ORIGIN:
+            self.missing_origin_advise(self)
 
     def on_pc_name_change(self):
         self.pc.name = self.tx_pc_name.text()

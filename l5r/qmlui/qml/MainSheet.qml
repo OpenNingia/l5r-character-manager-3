@@ -28,12 +28,38 @@ ApplicationWindow {
     // the whole sheet reads in the clan's hue.
     color: ClanTheme.paper
 
+    // Responsive layout (design system §4.4). Below bpCompact the nav
+    // sidebar can't share the row with a usable content area, so it
+    // collapses behind a hamburger drawer and a slim top app-bar appears.
+    // Phones in portrait go compact; tablets / desktop stay wide.
+    readonly property bool compact: width < Theme.bpCompact
+
+    // Single source of truth for the active section. Both the fixed
+    // sidebar and the drawer sidebar bind their TOC currentIndex to this
+    // (one-way), and the scroll-sync timer writes it, so the highlight
+    // never desyncs between the two hosted copies of the sidebar.
+    property int currentSection: 0
+
+    // Navigate to a section: highlight its TOC row and scroll the sheet
+    // to it. Routed through here by every nav source (TOC click, library
+    // nudge) so the single currentSection stays authoritative.
+    function navigateTo(index) {
+        currentSection = index;
+        jumpTo(index);
+    }
+
     // Drive the per-clan accent (design system §5): push the active
     // character's clan id into the ClanTheme singleton whenever it
     // changes, so the sidebar accent re-tints while the layout stays
     // put. Guarded for the null first pass; the Connections covers
     // File>New / open / family edit (all routed through clanChanged).
+    // Bind the global text-scale multiplier to the user's "Text size"
+    // preference. QML singletons can't see context properties, so the
+    // binding is installed here (the root sees appSettings) and pushed
+    // onto Theme.fontScale; the whole type scale then re-scales live.
     Component.onCompleted: {
+        Theme.fontScale = Qt.binding(
+            () => appSettings ? appSettings.fontScale : 1.0);
         if (pcProxy)
             ClanTheme.setClan(pcProxy.clanId);
         // First-run nudge: with no datapacks the app is near-useless, so
@@ -127,6 +153,136 @@ ApplicationWindow {
         }
     }
 
+    // Compact top app-bar (design system §4.4): shown only below the
+    // bpCompact width, where the fixed sidebar is collapsed into navDrawer.
+    // It carries the hamburger that opens the drawer plus the character
+    // name (the identity block normally pinned in the sidebar), so the
+    // player never loses sight of who they're editing. Styled as the same
+    // darker-parchment band as the menu bar. On wide layouts it is hidden
+    // and collapsed to zero height, so the desktop chrome is unchanged
+    // (ApplicationWindow reserves no space for a hidden header).
+    header: ToolBar {
+        id: compactBar
+        visible: root.compact
+        height: root.compact ? implicitHeight : 0
+
+        background: Rectangle {
+            color: ClanTheme.paperSidebar
+            Widgets.RicePaperOverlay {
+            }
+            Rectangle {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                height: 1
+                color: Theme.divider
+                opacity: Theme.dividerOpacity
+            }
+        }
+        RowLayout {
+            anchors.fill: parent
+            anchors.leftMargin: Theme.s2
+            anchors.rightMargin: Theme.s3
+            spacing: Theme.s2
+
+            // Hamburger: three ink strokes on a transparent button that
+            // warms to the clan accent wash on press, matching the menu
+            // bar items' feedback language.
+            ToolButton {
+                id: hamburger
+                implicitWidth: 40
+                implicitHeight: 40
+                padding: 0
+                Layout.alignment: Qt.AlignVCenter
+                onClicked: navDrawer.open()
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Sections")
+                background: Rectangle {
+                    radius: 4
+                    color: (hamburger.down || hamburger.hovered) ? ClanTheme.selectedBg : "transparent"
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: Theme.durHover
+                            easing.type: Easing.OutQuad
+                        }
+                    }
+                }
+                // The contentItem fills the button's content area, so the
+                // three strokes must be centred within it (both axes) --
+                // otherwise they sit top-left and read as misaligned with
+                // the name label beside them.
+                contentItem: Item {
+                    Column {
+                        anchors.centerIn: parent
+                        spacing: 4
+                        Repeater {
+                            model: 3
+                            delegate: Rectangle {
+                                width: 20
+                                height: 2
+                                radius: 1
+                                color: (hamburger.down || hamburger.hovered) ? ClanTheme.primary : Theme.ink
+                            }
+                        }
+                    }
+                }
+            }
+
+            Label {
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignVCenter
+                text: (pcProxy && pcProxy.name) ? pcProxy.name : qsTr("Unnamed")
+                font.family: Theme.fontDisplay
+                font.pixelSize: Theme.fsHeading2
+                font.weight: Theme.wSemiBold
+                font.letterSpacing: 0.5
+                color: Theme.heading
+                elide: Text.ElideRight
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+    }
+
+    // Drawer hosting the nav sidebar in compact mode. Slides in from the
+    // left edge over the sheet; dismissed by tapping outside, by the back
+    // gesture, or by activating a section. Built only when compact so it
+    // never intercepts edge swipes on the desktop layout.
+    Drawer {
+        id: navDrawer
+        edge: Qt.LeftEdge
+        // Roomy enough for the longest section title, capped so it never
+        // swallows the whole phone screen.
+        width: Math.min(280, root.width * 0.85)
+        height: root.height
+        // The fixed sidebar already covers wide layouts; keep the drawer
+        // inert (and its content unbuilt) there.
+        interactive: root.compact
+        dim: true
+        // No padding gap, and a parchment background so no grey Fusion
+        // panel shows behind / around the sidebar while it slides in.
+        padding: 0
+        background: Rectangle {
+            color: ClanTheme.paperSidebar
+        }
+
+        // Loader-gated so the drawer's copy of the sidebar (a second TOC
+        // bound to appCtrl.tabs) is only instantiated in compact mode --
+        // on desktop the fixed sidebar is the only one built.
+        Loader {
+            anchors.fill: parent
+            active: root.compact
+            sourceComponent: Component {
+                Widgets.SheetSidebar {
+                    currentIndex: root.currentSection
+                    onSectionActivated: function (index) {
+                        root.navigateTo(index);
+                        navDrawer.close();
+                    }
+                }
+            }
+        }
+    }
+
     // Children of `sheetColumn` are SectionBlock items in the same order
     // as appCtrl.tabs. We use sheetRepeater.itemAt(i) to read each one's
     // y coordinate, which the Column layout supplies for us.
@@ -184,10 +340,8 @@ ApplicationWindow {
 
     function jumpToLibrary() {
         var i = libraryIndex();
-        if (i >= 0) {
-            toc.currentIndex = i;
-            jumpTo(i);
-        }
+        if (i >= 0)
+            navigateTo(i);
     }
 
     // Update the active-section highlight when scrolling goes idle, not
@@ -203,7 +357,7 @@ ApplicationWindow {
         id: tocSyncTimer
         interval: 120
         repeat: false
-        onTriggered: toc.currentIndex = root.activeSectionFromContentY(flick.contentY)
+        onTriggered: root.currentSection = root.activeSectionFromContentY(flick.contentY)
     }
 
     NumberAnimation {
@@ -244,232 +398,24 @@ ApplicationWindow {
             anchors.fill: parent
             spacing: 0
 
-            // ---- Left TOC --------------------------------------------------
-            Rectangle {
-                Layout.preferredWidth: 220
+            // ---- Left TOC (fixed, wide layouts only) ----------------------
+            // On compact layouts the same SheetSidebar is hosted in
+            // navDrawer instead; here it collapses out of the row (zero
+            // width) so the sheet gets the full width.
+            Widgets.SheetSidebar {
+                Layout.preferredWidth: root.compact ? 0 : 220
                 Layout.fillHeight: true
-                // Slightly darker parchment than the main sheet so the
-                // navigation column reads as a distinct zone without
-                // breaking the "one document" illusion.
-                color: ClanTheme.paperSidebar
-
-                // Same fibre texture as the main sheet so the sidebar
-                // reads as the same paper, just a darker shade -- not a
-                // flat coloured panel glued onto the document.
-                Widgets.RicePaperOverlay {
-                }
-
-                ColumnLayout {
-                    anchors.fill: parent
-                    anchors.topMargin: 14
-                    anchors.bottomMargin: 8
-                    anchors.leftMargin: 10
-                    anchors.rightMargin: 10
-                    spacing: 6
-
-                    // ---- Identity block ----------------------------------
-                    // Three-line character header above the TOC: name in
-                    // burnt-gold display type, clan + rank as a single
-                    // secondary line, school italicised underneath. Reads
-                    // like the title block of a character sheet rather
-                    // than a piece of chrome.
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 1
-
-                        Label {
-                            Layout.fillWidth: true
-                            text: (pcProxy && pcProxy.name) ? pcProxy.name : qsTr("Unnamed")
-                            font.family: Theme.fontDisplay
-                            font.pixelSize: 17
-                            font.weight: Font.DemiBold
-                            font.letterSpacing: 0.5
-                            color: Theme.heading
-                            elide: Text.ElideRight
-                            horizontalAlignment: Text.AlignHCenter
-                        }
-                        Label {
-                            Layout.fillWidth: true
-                            readonly property string _clan: (pcProxy && pcProxy.clan) ? pcProxy.clan : ""
-                            readonly property int _rank: pcProxy ? pcProxy.progression.rank : 0
-                            text: {
-                                var clanFmt = _clan ? _clan.charAt(0).toUpperCase() + _clan.slice(1) : qsTr("No Clan");
-                                return clanFmt + " — " + qsTr("Rank %1").arg(_rank);
-                            }
-                            font.pixelSize:Theme.fsBody 
-                            font.features: Theme.tabularNumbers
-                            color: palette.windowText
-                            opacity: 0.85
-                            elide: Text.ElideRight
-                            horizontalAlignment: Text.AlignHCenter
-                        }
-                        Label {
-                            Layout.fillWidth: true
-                            text: (pcProxy && pcProxy.school) ? pcProxy.school : qsTr("No School")
-                            font.pixelSize: Theme.fsCaption
-                            font.italic: true
-                            color: palette.windowText
-                            opacity: 0.7
-                            elide: Text.ElideRight
-                            horizontalAlignment: Text.AlignHCenter
-                        }
-                    }
-
-                    Widgets.OrnateDivider {
-                        Layout.fillWidth: true
-                        Layout.topMargin: 4
-                        Layout.bottomMargin: 2
-                    }
-
-                    ListView {
-                        id: toc
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-                        model: appCtrl ? appCtrl.tabs : []
-                        clip: true
-                        currentIndex: 0
-                        spacing: 2
-                        interactive: true
-                        boundsBehavior: Flickable.StopAtBounds
-
-                        delegate: ItemDelegate {
-                            id: tocDelegate
-                            width: ListView.view.width
-                            height: 38
-                            highlighted: ListView.isCurrentItem
-                            // Re-evaluate when appCtrl.hiddenSections changes.
-                            readonly property bool sectionIsHidden: root.sectionHidden(modelData.id)
-                            readonly property bool sectionIsFixed: root.sectionFixed(modelData.id)
-                            onClicked: {
-                                // A hidden row is inert, like a disabled
-                                // control: clicking its body does nothing.
-                                // Only the eye toggle brings it back.
-                                if (tocDelegate.sectionIsHidden)
-                                    return;
-                                toc.currentIndex = index;
-                                root.jumpTo(index);
-                            }
-
-                            // Strip the default Control background -- without
-                            // this override, ItemDelegate paints a palette-
-                            // driven fill that reads as flat grey on top of
-                            // the parchment sidebar.  Hover gets a warm wash
-                            // (lighter parchment), idle is fully transparent
-                            // so the sidebar texture shows through.
-                            background: Rectangle {
-                                // No hover wash on a hidden row -- it's inert,
-                                // so it shouldn't invite a click (the eye has
-                                // its own hover feedback).
-                                color: (tocDelegate.hovered && !tocDelegate.sectionIsHidden) ? Qt.lighter(ClanTheme.paperSidebar, 1.07) : "transparent"
-                            }
-
-                            // Active item: accent stripe on the left, accent
-                            // icon, accent-tinted label.  Inactive: normal
-                            // palette text colours so the OS theme is honoured.
-                            Rectangle {
-                                anchors.left: parent.left
-                                anchors.top: parent.top
-                                anchors.bottom: parent.bottom
-                                width: 3
-                                color: ClanTheme.primary
-                                visible: tocDelegate.highlighted
-                            }
-                            contentItem: RowLayout {
-                                spacing: 10
-                                // Brush-script kanji; the Hakushū Higerei face
-                                // has heavier strokes than a system CJK font
-                                // so 20px is comfortable here without crowding
-                                // the column.
-                                Label {
-                                    text: modelData.icon
-                                    font.family: Theme.fontKanji
-                                    font.pixelSize: 22
-                                    Layout.leftMargin: 14
-                                    Layout.preferredWidth: 28
-                                    horizontalAlignment: Text.AlignHCenter
-                                    color: tocDelegate.highlighted ? ClanTheme.primary : palette.windowText
-                                    // Dim a hidden section's row so it reads
-                                    // as "off" yet stays available to re-show.
-                                    opacity: tocDelegate.sectionIsHidden ? 0.35 : (tocDelegate.highlighted ? 1.0 : 0.7)
-                                }
-                                Label {
-                                    text: modelData.title
-                                    font.pixelSize: 12
-                                    Layout.fillWidth: true
-                                    elide: Text.ElideRight
-                                    color: tocDelegate.highlighted ? ClanTheme.primary : palette.windowText
-                                    font.weight: tocDelegate.highlighted ? Font.DemiBold : Font.Normal
-                                    opacity: tocDelegate.sectionIsHidden ? 0.35 : 1.0
-                                }
-
-                                // Opportunity badge -- a count of pending
-                                // "you unlocked something" actions resolved
-                                // in this section (free kiho today; granted
-                                // skills / spells / rank-up as those flows
-                                // are ported). Accent-blue per the §6.16
-                                // positive-action language -- crimson is
-                                // reserved for destructive/unmet, so this
-                                // reads as an invitation, not an alarm.
-                                Rectangle {
-                                    readonly property int _count: (pcProxy && pcProxy.opportunityBadges && pcProxy.opportunityBadges[modelData.id] !== undefined) ? pcProxy.opportunityBadges[modelData.id] : 0
-                                    visible: _count > 0
-                                    Layout.rightMargin: 12
-                                    Layout.alignment: Qt.AlignVCenter
-                                    implicitWidth: Math.max(18, badgeCount.implicitWidth + 10)
-                                    implicitHeight: 18
-                                    radius: 9
-                                    color: Theme.secondary
-                                    Label {
-                                        id: badgeCount
-                                        anchors.centerIn: parent
-                                        text: parent._count
-                                        font.family: Theme.fontStat
-                                        font.pixelSize: Theme.fsCaption
-                                        font.weight: Theme.wSemiBold
-                                        font.features: Theme.tabularNumbers
-                                        color: Theme.whiteWash
-                                    }
-                                }
-
-                                // Visibility toggle: a brush 見 ("view")
-                                // glyph, matching the kanji section icons.
-                                // Shown on hover, or always while the row is
-                                // hidden so it can be brought back. Never on
-                                // the fixed sections (pc_info / about).
-                                ToolButton {
-                                    id: eyeBtn
-                                    visible: !tocDelegate.sectionIsFixed && (tocDelegate.hovered || tocDelegate.sectionIsHidden)
-                                    Layout.rightMargin: 12
-                                    Layout.alignment: Qt.AlignVCenter
-                                    implicitWidth: 22
-                                    implicitHeight: 22
-                                    padding: 0
-                                    background: Rectangle {
-                                        radius: 4
-                                        color: eyeBtn.hovered ? Qt.lighter(ClanTheme.paperSidebar, 1.12) : "transparent"
-                                    }
-                                    contentItem: Label {
-                                        text: "見"
-                                        font.family: Theme.fontKanji
-                                        font.pixelSize: 15
-                                        horizontalAlignment: Text.AlignHCenter
-                                        verticalAlignment: Text.AlignVCenter
-                                        color: tocDelegate.highlighted ? ClanTheme.primary : palette.windowText
-                                        opacity: tocDelegate.sectionIsHidden ? 0.9 : (eyeBtn.hovered ? 1.0 : 0.5)
-                                    }
-                                    onClicked: appCtrl.setSectionHidden(modelData.id, !tocDelegate.sectionIsHidden)
-                                    ToolTip.visible: hovered
-                                    ToolTip.text: tocDelegate.sectionIsHidden ? qsTr("Show section") : qsTr("Hide section")
-                                }
-                            }
-                        }
-                    }
+                visible: !root.compact
+                currentIndex: root.currentSection
+                onSectionActivated: function (index) {
+                    root.navigateTo(index);
                 }
             }
 
             Rectangle {
                 Layout.preferredWidth: 1
                 Layout.fillHeight: true
+                visible: !root.compact
                 color: Theme.divider
                 opacity: Theme.dividerOpacity
             }
@@ -572,6 +518,16 @@ ApplicationWindow {
         }
     }
 
+    // Generic purchase/origin feedback from the controller (not enough XP,
+    // origin not chosen yet). Replaces the old QMessageBox stopgaps in the
+    // modern UI (issues #450 / #448) -- same transient-toast channel.
+    Connections {
+        target: appCtrl
+        function onNotice(message) {
+            toast.show(message);
+        }
+    }
+
     // Persistent empty-state nudge. Shown whenever no datapack is loaded
     // (active) -- so it also covers "every pack disabled", not just a fresh
     // install. Pinned across the top of the sheet area (past the fixed
@@ -587,7 +543,9 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.leftMargin: 221
+        // Clear the fixed sidebar (220px + 1px divider) on wide layouts;
+        // in compact mode there is no sidebar, so span the full width.
+        anchors.leftMargin: root.compact ? 0 : 221
         height: visible ? 44 : 0
         color: Theme.parchmentSidebar
 
