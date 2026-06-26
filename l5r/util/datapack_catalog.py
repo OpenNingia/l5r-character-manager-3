@@ -18,13 +18,13 @@
 #
 # (On Android the python-for-android CPython has no system CA store, so stdlib
 # ssl's default verification fails app-wide with "unable to get local issuer
-# certificate". We don't trust the SSL_CERT_FILE env route there -- it is
-# silent if the file is missing and isn't reliably honoured by the p4a OpenSSL
-# build, and gating on is_android() proved unreliable too -- so
-# ``_ssl_context()`` below simply prefers certifi's bundled roots whenever
-# certifi is importable (Mozilla's CA set, valid on desktop too) and passes
-# that context to every urlopen, falling back to urllib's default only if
-# certifi is missing.)
+# certificate". Neither the SSL_CERT_FILE env route nor passing certifi's
+# bundle as a *file path* (cafile=) is honoured by the p4a OpenSSL build -- both
+# leave verification empty and still fail on device. So ``_ssl_context()`` below
+# reads certifi's PEM in Python and loads it as ``cadata`` (CA roots in memory),
+# bypassing OpenSSL's file access; it prefers certifi whenever importable
+# (Mozilla's CA set, valid on desktop too) and falls back to urllib's default
+# only if certifi is missing.)
 #
 # Trust model: we only ever fetch from the pinned GitHub API URL, and the
 # download URLs we follow come from GitHub's own JSON response (not user
@@ -128,9 +128,20 @@ def _ssl_context():
             log.app.error(
                 u"datapack catalog: certifi CA bundle missing at %s -- "
                 u"TLS verification will fail (check the APK bundling)", cafile)
-        ctx = ssl.create_default_context(cafile=cafile)
-        log.app.info(u"datapack catalog: using certifi CA bundle %s "
-                     u"(exists=%s)", cafile, exists)
+        # Load the CA roots as *data* (cadata) rather than handing OpenSSL a
+        # file path (cafile). On python-for-android the bundled OpenSSL fails
+        # to read the cafile -- create_default_context(cafile=...) succeeds but
+        # verifies nothing, so every HTTPS fetch dies with "unable to get local
+        # issuer certificate" even though the .pem is present (proved on device
+        # 2026-06-26). Reading the PEM in Python and passing it via cadata
+        # bypasses OpenSSL's file access entirely. Logged at WARNING (not INFO)
+        # so the decision -- and `exists` -- is visible in logcat, whose root
+        # logger drops INFO.
+        ctx = ssl.create_default_context()
+        with open(cafile, "r", encoding="ascii") as fh:
+            ctx.load_verify_locations(cadata=fh.read())
+        log.app.warning(u"datapack catalog: using certifi CA bundle %s "
+                        u"(exists=%s) via cadata", cafile, exists)
         _ssl_ctx = ctx
         return ctx
     except Exception:  # noqa: BLE001
