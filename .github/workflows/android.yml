@@ -177,13 +177,25 @@ jobs:
           p = sys.argv[1]
           s = open(p, encoding="utf-8").read()
           # (1) inject p4a.commit right after the hardcoded p4a.branch set_value,
-          #     reusing that line's indentation. Idempotent.
+          #     reusing that line's indentation. Idempotent. Also force
+          #     source.include_exts to carry the non-default extensions the app
+          #     actually ships as bundled DATA: buildozer's default
+          #     (py,png,jpg,kv,atlas) makes p4a's source packaging DROP every
+          #     other file, so the vendored certifi/cacert.pem (TLS trust for the
+          #     datapack download) and l5r/share/fonts/*.ttf never reach the APK
+          #     -- on device this surfaced as "certifi CA bundle missing" ->
+          #     CERTIFICATE_VERIFY_FAILED and "bundled fonts dir missing". pem
+          #     fixes HTTPS; ttf/otf the fonts; json is cheap insurance for any
+          #     bundled JSON resource.
           if "p4a.commit" not in s:
               pat = re.compile(
                   r'(?m)^([ \t]*)self\.set_value\(\s*["\']app["\']\s*,\s*["\']p4a\.branch["\']\s*,\s*["\']develop["\']\s*\).*$')
               s, n = pat.subn(
                   lambda m: m.group(0) + "\n" + m.group(1)
-                  + f'self.set_value("app", "p4a.commit", "{P4A_COMMIT}")',
+                  + f'self.set_value("app", "p4a.commit", "{P4A_COMMIT}")'
+                  + "\n" + m.group(1)
+                  + 'self.set_value("app", "source.include_exts", '
+                  + '"py,png,jpg,kv,atlas,pem,ttf,otf,json")',
                   s)
               assert n == 1, f"expected exactly 1 p4a.branch set_value, found {n}"
           # (2) Core-first reorder of the auto-detected modules list the tool
@@ -211,7 +223,7 @@ jobs:
           open(p, "w", encoding="utf-8").write(s)
           print(f"pinned p4a.commit={P4A_COMMIT}")
           PY
-          grep -nE "p4a\.(branch|commit)|modules = " "$BZ" | head -20
+          grep -nE "p4a\.(branch|commit)|modules = |source\.include_exts" "$BZ" | head -20
 
       - name: Vendor pure-Python deps into project_dir (+ trim qtpy)
         run: |
