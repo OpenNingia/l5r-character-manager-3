@@ -184,9 +184,17 @@ jobs:
           #     other file, so the vendored certifi/cacert.pem (TLS trust for the
           #     datapack download) and l5r/share/fonts/*.ttf never reach the APK
           #     -- on device this surfaced as "certifi CA bundle missing" ->
-          #     CERTIFICATE_VERIFY_FAILED and "bundled fonts dir missing". pem
-          #     fixes HTTPS; ttf/otf the fonts; json is cheap insurance for any
-          #     bundled JSON resource.
+          #     CERTIFICATE_VERIFY_FAILED and "bundled fonts dir missing".
+          #     CAUTION: this set_value OVERWRITES the value the deploy tool puts
+          #     there, so the list must be a SUPERSET -- an earlier attempt that
+          #     listed only pem/ttf/otf/json dropped qml/js and the QML engine
+          #     then failed to load MainSheet.qml ("No such file or directory").
+          #     So enumerate everything the app loads from the project_dir copy:
+          #     py + qml/js (the UI), png/jpg/jpeg/svg (icons/banners),
+          #     ttf/otf (fonts), pem (certifi CA), json, qm (translations),
+          #     kv/atlas (buildozer defaults, harmless). NB: the extension-less
+          #     */qmldir files come via the deploy tool's separate qml_files
+          #     channel, not include_exts, so they are unaffected.
           if "p4a.commit" not in s:
               pat = re.compile(
                   r'(?m)^([ \t]*)self\.set_value\(\s*["\']app["\']\s*,\s*["\']p4a\.branch["\']\s*,\s*["\']develop["\']\s*\).*$')
@@ -195,7 +203,7 @@ jobs:
                   + f'self.set_value("app", "p4a.commit", "{P4A_COMMIT}")'
                   + "\n" + m.group(1)
                   + 'self.set_value("app", "source.include_exts", '
-                  + '"py,png,jpg,kv,atlas,pem,ttf,otf,json")',
+                  + '"py,qml,js,png,jpg,jpeg,svg,kv,atlas,ttf,otf,pem,json,qm")',
                   s)
               assert n == 1, f"expected exactly 1 p4a.branch set_value, found {n}"
           # (2) Core-first reorder of the auto-detected modules list the tool
