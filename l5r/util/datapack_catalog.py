@@ -17,12 +17,14 @@
 # verified by urllib's default opener on every supported platform.
 #
 # (On Android the python-for-android CPython has no system CA store, so stdlib
-# ssl's default verification would fail with "unable to get local issuer
-# certificate". The mobile entry point exports SSL_CERT_FILE=certifi.where()
-# before any handshake -- once certifi's cacert.pem is actually bundled into the
-# APK (source.include_exts must list `pem`; see .github/workflows/android.yml),
-# urllib's default context picks it up app-wide. Nothing certifi-specific is
-# needed here.)
+# ssl's default verification fails app-wide with "unable to get local issuer
+# certificate". Neither the SSL_CERT_FILE env route nor passing certifi's
+# bundle as a *file path* (cafile=) is honoured by the p4a OpenSSL build -- both
+# leave verification empty and still fail on device. So ``_ssl_context()`` below
+# reads certifi's PEM in Python and loads it as ``cadata`` (CA roots in memory),
+# bypassing OpenSSL's file access; it prefers certifi whenever importable
+# (Mozilla's CA set, valid on desktop too) and falls back to urllib's default
+# only if certifi is missing.)
 #
 # Trust model: we only ever fetch from the pinned GitHub API URL, and the
 # download URLs we follow come from GitHub's own JSON response (not user
@@ -33,6 +35,7 @@
 import json
 import os
 import re
+import ssl
 import tempfile
 import urllib.error
 import urllib.request
@@ -93,16 +96,66 @@ def parse_version(asset_name):
     return m.group(1) if m else ""
 
 
-def _urlopen(url):
-    """``urllib.request.urlopen`` against the platform's default trust store.
+_ssl_ctx = None  # memoised; built on first request
 
-    TLS verification uses urllib's default context. On desktop that is the
-    system CA store; on Android the entry point exports ``SSL_CERT_FILE`` to
-    certifi's bundled ``cacert.pem`` before any handshake (see
-    ``android_main.main``), which the default context honours -- so no
-    per-request SSL context is needed here.
+
+def _ssl_context():
+    """Return an ``ssl.SSLContext`` for our HTTPS requests, or ``None`` to
+    use urllib's default.
+
+    We *prefer* certifi's bundled CA roots whenever certifi is importable.
+    On Android the python-for-android CPython has no reachable system CA
+    store, so urllib's default verifies nothing and every HTTPS fetch fails
+    with "unable to get local issuer certificate"; certifi (vendored into the
+    APK) is the fix. On desktop certifi is Mozilla's CA bundle -- the same set
+    ``requests`` ships -- so it is a safe, equivalent choice there too, and
+    using it unconditionally removes any dependence on ``is_android()``
+    detection or the ``SSL_CERT_FILE`` env var being honoured (both of which
+    proved unreliable on device). If certifi is unavailable we fall back to
+    urllib's default (``None``). The decision is logged once so a missing /
+    broken bundle is diagnosable from logcat instead of looking like a
+    generic "offline" error.
     """
-    return urllib.request.urlopen(_request(url), timeout=HTTP_TIMEOUT)
+    global _ssl_ctx
+    if _ssl_ctx is not None:
+        return _ssl_ctx or None  # False sentinel -> None ("urllib default")
+
+    try:
+        import certifi
+        cafile = certifi.where()
+        exists = os.path.exists(cafile)
+        if not exists:
+            log.app.error(
+                u"datapack catalog: certifi CA bundle missing at %s -- "
+                u"TLS verification will fail (check the APK bundling)", cafile)
+        # Load the CA roots as *data* (cadata) rather than handing OpenSSL a
+        # file path (cafile). On python-for-android the bundled OpenSSL fails
+        # to read the cafile -- create_default_context(cafile=...) succeeds but
+        # verifies nothing, so every HTTPS fetch dies with "unable to get local
+        # issuer certificate" even though the .pem is present (proved on device
+        # 2026-06-26). Reading the PEM in Python and passing it via cadata
+        # bypasses OpenSSL's file access entirely. Logged at WARNING (not INFO)
+        # so the decision -- and `exists` -- is visible in logcat, whose root
+        # logger drops INFO.
+        ctx = ssl.create_default_context()
+        with open(cafile, "r", encoding="ascii") as fh:
+            ctx.load_verify_locations(cadata=fh.read())
+        log.app.warning(u"datapack catalog: using certifi CA bundle %s "
+                        u"(exists=%s) via cadata", cafile, exists)
+        _ssl_ctx = ctx
+        return ctx
+    except Exception:  # noqa: BLE001
+        log.app.warning(
+            u"datapack catalog: certifi unavailable; falling back to "
+            u"urllib default trust store", exc_info=True)
+        _ssl_ctx = False
+        return None
+
+
+def _urlopen(url):
+    """``urllib.request.urlopen`` with our certifi-backed context on Android."""
+    return urllib.request.urlopen(
+        _request(url), timeout=HTTP_TIMEOUT, context=_ssl_context())
 
 
 def _request(url):

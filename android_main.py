@@ -47,37 +47,6 @@ from l5r.util.settings import L5RCMSettings
 from l5r.l5rcmcore import APP_NAME, APP_ORG, APP_VERSION
 
 
-def _configure_ca_certs():
-    """Point stdlib ``ssl`` at certifi's CA bundle on Android, app-wide.
-
-    The python-for-android CPython ships no accessible system CA store, so
-    ``ssl.create_default_context()`` -- and therefore urllib and everything
-    built on it -- fails every HTTPS handshake with
-    ``CERTIFICATE_VERIFY_FAILED: unable to get local issuer certificate``
-    (e.g. the in-app datapack download). Exporting ``SSL_CERT_FILE`` before any
-    handshake makes the default context trust certifi's bundled roots; the
-    default ``load_default_certs()`` reads this env var via
-    ``set_default_verify_paths()``. This is the same approach Kivy uses
-    upstream, and it covers the whole app rather than one HTTP call site.
-
-    Requires certifi's ``cacert.pem`` to actually be in the APK -- it only is
-    because ``source.include_exts`` lists ``pem`` (see the Android workflow);
-    without that the file is silently dropped and verification still fails.
-
-    Set unconditionally on Android (not ``setdefault``) so a stale/empty value
-    injected by the launcher can't shadow the real bundle. No-op off Android,
-    and best-effort: a failure here must never stop the app from starting.
-    """
-    if not api.is_android():
-        return
-    try:
-        import certifi
-        os.environ["SSL_CERT_FILE"] = certifi.where()
-    except Exception:  # noqa: BLE001 -- never block startup on this
-        from l5r.util import log
-        log.app.warning("could not configure certifi CA bundle", exc_info=True)
-
-
 def main():
     # QML-only UI: a QGuiApplication is enough (no QtWidgets). Using
     # QApplication here would pull in the QtWidgets binding, which on Android
@@ -87,9 +56,10 @@ def main():
     # site-packages. The desktop entry point (l5r/main.py) keeps QApplication
     # for the legacy QWidget UI.
 
-    # Trust certifi's CA roots on Android (no-op off Android). Must run before
-    # any TLS handshake (e.g. the datapack download), so do it first.
-    _configure_ca_certs()
+    # NOTE: TLS trust is no longer configured app-wide here. The global
+    # SSL_CERT_FILE route proved unreliable on python-for-android (OpenSSL
+    # didn't honour it). HTTPS that needs certifi's CA roots now builds its own
+    # context locally -- see l5r/util/datapack_catalog._ssl_context (cadata).
 
     # NOTE: the APK is intentionally portrait-locked (p4a's default). Runtime
     # auto-rotation via setRequestedOrientation didn't take on device and
