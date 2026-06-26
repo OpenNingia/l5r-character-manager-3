@@ -1,0 +1,55 @@
+# buildozer.spec TEMPLATE (Jinja2) for the QML-only Android build driven by
+# plain `buildozer` (no pyside6-android-deploy). The Android workflow renders
+# this into ./buildozer.spec, substituting only the values that are intrinsically
+# environment-specific (NDK/SDK locations, the Qt jars extracted from the wheel,
+# and the absolute path to the committed p4a recipes). Everything else is static
+# and version-controlled here -- this is the whole point of the migration: the
+# generator patches that used to be injected into pyside6-android-deploy
+# (p4a.commit pin, Core-first --qt-libs, source.include_exts) are now just plain
+# lines below.
+#
+# Captured from a known-good pyside6-android-deploy run (android-0.38) and
+# de-parameterised. Keep p4a.commit / requirements / --qt-libs / the recipe
+# `version` in lockstep with the PySide6 Android wheels the workflow downloads.
+[app]
+title = L5RCM
+package.name = L5RCM
+package.domain = org.L5RCM
+source.dir = .
+# SUPERSET -- must list every extension the app loads from the project_dir copy.
+# pem = certifi CA bundle (TLS), ttf/otf = bundled fonts, qml/js = the UI,
+# qm = translations. Dropping qml/js leaves the QML engine unable to find
+# MainSheet.qml; dropping pem breaks HTTPS (certifi missing on device).
+source.include_exts = py,qml,js,png,jpg,jpeg,svg,kv,atlas,ttf,otf,pem,json,qm
+version = 0.1
+requirements = python3,shiboken6,PySide6
+orientation = portrait
+fullscreen = 0
+android.archs = arm64-v8a
+android.allow_backup = True
+android.permissions = android.permission.INTERNET, android.permission.ACCESS_NETWORK_STATE, android.permission.WRITE_EXTERNAL_STORAGE
+icon.filename = l5r/share/icons/l5rcm/256x256/l5rcm.png
+
+# --- environment-specific (rendered by the workflow) ---
+android.ndk_path = {{ ndk_path }}
+android.sdk_path = {{ sdk_path }}
+android.add_jars = {{ add_jars }}
+
+# --- python-for-android (qt bootstrap) ---
+p4a.bootstrap = qt
+# branch is cloned then `git reset --hard`ed to commit; commit pins CPython 3.11
+# (the cp311 wheels' shiboken6.abi3.so needs libpython3.11.so -- p4a develop
+# moved python3 to 3.14).
+p4a.branch = develop
+p4a.commit = 6b66944a2f51e0c848c7ac51e04a771324067ecc
+p4a.local_recipes = {{ local_recipes }}
+# Core first: Qt's Android loader System.loadLibrary's the modules in array
+# order and libQt6Core's JNI_OnLoad must register the JavaVM before any other
+# module's JNI_OnLoad runs. Widgets is deliberately absent -- the QML UI runs on
+# a QGuiApplication and never imports QtWidgets, and preloading QtWidgets.abi3.so
+# (only bundled under site-packages) would crash the Java QtLoader at startup.
+p4a.extra_args = --qt-libs=Core,Network,QuickControls2,Gui,Quick,OpenGL,Qml --load-local-libs=plugins_platforms_qtforandroid --init-classes=
+
+[buildozer]
+log_level = 2
+warn_on_root = 1

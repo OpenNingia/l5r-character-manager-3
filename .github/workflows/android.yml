@@ -46,6 +46,18 @@ jobs:
     # (at our pinned p4a) is unusable -- so a release APK builds but crashes
     # at startup. Not worth the invasive workaround for this POC; the debug
     # APK is the usable artifact.
+    #
+    # Two build methods run in parallel (fail-fast off so one can't sink the
+    # other -- the working leg always still ships an APK):
+    #   - deploy-tool: the original pyside6-android-deploy flow (generator
+    #     patches + tool invocation). The known-good fallback.
+    #   - buildozer:   a committed buildozer.spec.j2 + in-tree p4a recipes,
+    #     driven by plain `buildozer`. The migration target; once it's reliably
+    #     green the deploy-tool leg (and its generator patches) can be deleted.
+    strategy:
+      fail-fast: false
+      matrix:
+        method: [deploy-tool, buildozer]
     env:
       PYSIDE_VERSION: ${{ inputs.pyside_version || '6.11.1' }}
     steps:
@@ -102,6 +114,10 @@ jobs:
           pip install "asq>=2.0" "qtpy>=2.4" "certifi" \
             "git+https://github.com/OpenNingia/pypdf.git@fix_escape" \
             "git+https://github.com/OpenNingia/l5rcm-data-access.git@v1.4.2"
+          # The `buildozer` matrix leg drives buildozer directly (no deploy
+          # tool), so it needs buildozer + cython on PATH and jinja2 to render
+          # the committed buildozer.spec.j2. Harmless for the deploy-tool leg.
+          pip install "buildozer==1.5.0" "cython==0.29.33" "jinja2"
 
       - name: Download Android wheels (open-source, aarch64/cp311)
         run: |
@@ -139,6 +155,7 @@ jobs:
           yes | "$CMDTOOLS_SM" --sdk_root="$SDK" --licenses >/dev/null 2>&1 || true
 
       - name: Pin p4a to Python 3.11 in the deploy tool (generator-level)
+        if: matrix.method == 'deploy-tool'
         run: |
           # WHY patch the deploy tool itself and NOT buildozer.spec:
           # the previous two-phase approach (--init, patch buildozer.spec, build)
@@ -296,6 +313,7 @@ jobs:
           grep -rhoE "from PySide6\.Qt[A-Za-z0-9]+" qtpy l5r android_main.py main.py 2>/dev/null | sort -u
 
       - name: Build APK (pyside6-android-deploy)
+        if: matrix.method == 'deploy-tool'
         run: |
           # pyside6-android-deploy resolves project_dir / input_file / qml_files
           # RELATIVE TO THE SPEC FILE's directory, and writes buildozer.spec into
@@ -315,7 +333,7 @@ jobs:
             -f -v || (echo "::error::APK build failed -- see log; check wheel/NDK versions (see android.yml header)"; exit 1)
 
       - name: Capture generated buildozer.spec + recipes (migration prep)
-        if: always()
+        if: always() && matrix.method == 'deploy-tool'
         run: |
           # MIGRATION PREP: we plan to drop pyside6-android-deploy and drive a
           # plain `buildozer` build from a committed buildozer.spec, so the
@@ -351,12 +369,71 @@ jobs:
           echo "--- captured files ---"; find _capture -type f | sort | head -80
 
       - name: Upload generated buildozer.spec + recipes
-        if: always()
+        if: always() && matrix.method == 'deploy-tool'
         uses: actions/upload-artifact@v5
         with:
           name: android-buildozer-spec-capture
           path: _capture/**
           if-no-files-found: warn
+
+      - name: Extract Qt jars from the PySide6 wheel (buildozer leg)
+        if: matrix.method == 'buildozer'
+        run: |
+          # The qt bootstrap needs the Qt6Android* Java bindings (android.add_jars).
+          # pyside6-android-deploy extracts these from the PySide6 wheel into its
+          # deployment/jar dir; we do the same ourselves into ./android_jars and
+          # let the render step point android.add_jars at them. No binaries in git.
+          mkdir -p android_jars
+          unzip -o "$WHEEL_PYSIDE" 'PySide6/jar/*.jar' -d android_jars || true
+          echo "--- extracted jars ---"
+          find android_jars -name '*.jar' | sort
+          test -n "$(find android_jars -name '*.jar' -print -quit)" \
+            || { echo "::error::no Qt jars found in $WHEEL_PYSIDE (wheel layout changed?)"; exit 1; }
+
+      - name: Render buildozer.spec from template (buildozer leg)
+        if: matrix.method == 'buildozer'
+        run: |
+          # jinja2 (installed above) renders the committed template into
+          # ./buildozer.spec, filling only the environment-specific values
+          # (NDK/SDK paths, the extracted jars, the in-tree recipes dir). The
+          # p4a.commit pin / Core-first --qt-libs / source.include_exts that used
+          # to be patched into the deploy tool are plain static lines in the
+          # template now -- no generator patching on this leg.
+          python - <<'PY'
+          import glob, os, jinja2
+          jars = sorted(os.path.abspath(p)
+                        for p in glob.glob("android_jars/PySide6/jar/*.jar"))
+          assert jars, "no Qt jars to wire into android.add_jars"
+          tmpl = jinja2.Template(
+              open("tools/deploy/android/buildozer.spec.j2", encoding="utf-8").read(),
+              keep_trailing_newline=True)
+          rendered = tmpl.render(
+              ndk_path=os.environ["ANDROID_NDK_ROOT"],
+              sdk_path=os.environ["ANDROID_SDK_ROOT"],
+              add_jars=",".join(jars),
+              local_recipes=os.path.abspath("tools/deploy/android/recipes"),
+          )
+          with open("buildozer.spec", "w", encoding="utf-8") as fh:
+              fh.write(rendered)
+          PY
+          echo "::group::rendered buildozer.spec"
+          cat buildozer.spec
+          echo "::endgroup::"
+
+      - name: Build APK (buildozer)
+        if: matrix.method == 'buildozer'
+        env:
+          # The committed p4a recipes read their wheel path from these (so the
+          # path stays out of the recipe source). Inherited by the p4a subprocess.
+          L5RCM_PYSIDE6_WHEEL: ${{ env.WHEEL_PYSIDE }}
+          L5RCM_SHIBOKEN6_WHEEL: ${{ env.WHEEL_SHIBOKEN }}
+        run: |
+          # Plain buildozer, no deploy tool. Reads ./buildozer.spec (rendered
+          # above); the qtpy/asq/l5rdal/... vendored into project_dir get bundled
+          # via source.include_exts just like on the deploy-tool leg.
+          buildozer -v android debug \
+            || (echo "::error::buildozer build failed -- see log"; exit 1)
+          echo "--- produced APKs ---"; find bin -name '*.apk' 2>/dev/null | sort
 
       - name: Verify embedded Python is 3.11 (not 3.14)
         if: always()
@@ -386,8 +463,10 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v5
         with:
-          name: l5rcm-android-debug-apk
+          # Per-method name so the two matrix legs don't clobber each other.
+          name: l5rcm-android-debug-apk-${{ matrix.method }}
           path: |
             *.apk
             **/*.apk
+            bin/*.apk
           if-no-files-found: error
