@@ -117,10 +117,14 @@ class ModelRefreshMixin:
         self.check_school_new_spells()
         self.check_free_kihos()
 
-        # disable step 0-1-2 if any xp are spent
-        has_adv = len(self.pc.advans) > 0
-        self.bt_edit_family.setEnabled(not has_adv)
-        self.bt_edit_school.setEnabled(not has_adv)
+        # Origin (family/school) edits stay open until the first *paid*
+        # advancement -- gating on spent XP, not the advancement count, so
+        # choosing the school (which appends the cost-0 rank-1 advancement)
+        # doesn't lock out the family, while still freezing the origin the
+        # instant XP is spent (issue #448).
+        can_edit_origin = api.character.can_edit_origin()
+        self.bt_edit_family.setEnabled(can_edit_origin)
+        self.bt_edit_school.setEnabled(can_edit_origin)
 
         # Update view-models
         self.sk_view_model    .update_from_model(self.pc)

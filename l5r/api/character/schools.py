@@ -58,11 +58,28 @@ def set_first(sid):
 
 
 def set_first_with_path(sid, pid):
-    """set first school to PC"""
+    """set first school to PC.
+
+    Idempotent while the origin is still editable: re-selecting the first
+    school replaces the previous one instead of appending a second rank-1
+    advancement. The replacement is only allowed before any XP is spent
+    (api.character.can_edit_origin); once a paid advancement exists the
+    school is frozen and this is a no-op (issue #448)."""
     school_ = api.data.schools.get(sid)
     if not school_:
         return
-          
+
+    # replacing an already-chosen first school: only safe before any paid
+    # advancement, where the whole advancement stack is origin-derived and
+    # can be cleared wholesale. Family/clan stay; they are re-applied (or
+    # left as-is) by the caller.
+    if api.character.schools.get_first() is not None:
+        if not api.character.can_edit_origin():
+            log.api.warning(u"set_first_with_path: origin is frozen "
+                            u"(XP already spent); ignoring school change")
+            return
+        get_context().pc.advans = []
+
     # rank advancement
     rank_ = api.character.rankadv.join_new(school_.id)
 

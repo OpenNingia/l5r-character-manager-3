@@ -43,6 +43,16 @@ ColumnLayout {
             "desc": ""
         })
     readonly property bool _canEditOrigin: pcProxy ? pcProxy.canEditOrigin : true
+    // Origin summary line: a "Clan · Family · School" breadcrumb plus the
+    // summed family/school +1 trait bonuses. originComplete drives the
+    // edit-vs-choose affordance.
+    readonly property bool _originComplete: pcProxy ? pcProxy.originComplete : false
+    readonly property string _familyTrait: pcProxy ? pcProxy.familyTrait : ""
+    readonly property string _schoolTrait: pcProxy ? pcProxy.schoolTrait : ""
+
+    function _traitLabel(traitId) {
+        return traitId ? (section._attrLabels[traitId] || traitId) : "";
+    }
 
     // A pending rank-up (the root opportunity -- every grant flows from
     // it). Drives the callout below; the matching TOC badge comes from the
@@ -100,13 +110,60 @@ ColumnLayout {
             "label": qsTr("Infamy")
         }]
 
-    Dialogs.FamilyChooserDialog {
-        id: familyDlg
-        parent: Overlay.overlay
-        anchors.centerIn: Overlay.overlay
+    // Shared stat-strip primitives -- used by both the Origin grid and
+    // the progression strip below so the two read as one ledger.
+    component StatCell: ColumnLayout {
+        Layout.fillWidth: true
+        spacing: 1
+        property alias caption: capLabel.text
+        // Optional bonus/footnote rendered under the value (e.g. the
+        // origin "+1 <trait>" starting bonus). Empty for plain cells.
+        property alias subCaption: subLabel.text
+        default property alias cellData: valueHolder.data
+        Label {
+            id: capLabel
+            font.family: Theme.fontDisplay
+            font.pixelSize: Theme.fsCaption
+            font.weight: Theme.wSemiBold
+            font.letterSpacing: 1.2
+            color: Theme.inkMuted
+        }
+        RowLayout {
+            id: valueHolder
+            Layout.fillWidth: true
+            spacing: 6
+        }
+        Label {
+            id: subLabel
+            Layout.fillWidth: true
+            visible: text.length > 0
+            color: Theme.positive
+            font.family: Theme.fontBody
+            font.pixelSize: Theme.fsCaption
+            elide: Text.ElideRight
+        }
     }
-    Dialogs.FirstSchoolChooserDialog {
-        id: schoolDlg
+
+    component StatValue: Label {
+        font.family: Theme.fontStat
+        font.pixelSize: Theme.fsStatMedium
+        font.weight: Theme.wMedium
+        font.features: Theme.tabularNumbers
+        color: Theme.heading
+        elide: Text.ElideRight
+    }
+
+    component StatDivider: Rectangle {
+        Layout.preferredWidth: 1
+        Layout.fillHeight: true
+        Layout.topMargin: 2
+        Layout.bottomMargin: 2
+        color: Theme.divider
+        opacity: Theme.dividerOpacity
+    }
+
+    Dialogs.OriginSelectionDialog {
+        id: originDlg
         parent: Overlay.overlay
         anchors.centerIn: Overlay.overlay
     }
@@ -202,39 +259,20 @@ ColumnLayout {
     }
 
     // -----------------------------------------------------------------
-    // Identity row: name + clan/family/school + rank/XP/insight
+    // Identity: name field, a 3-up progression stat strip (Rank / Insight
+    // / Exp), and a single origin summary line (Clan · Family · School +
+    // their starting bonuses) with one clear edit/choose action.
     // -----------------------------------------------------------------
-    GridLayout {
+    RowLayout {
         Layout.fillWidth: true
-        columns: 4
-        columnSpacing: 14
-        rowSpacing: 6
+        spacing: 8
 
-        // Column 0 — labels (with adornments)
-        RowLayout {
-            spacing: 4
-            Label {
-                text: qsTr("Name")
-            }
-            ToolButton {
-                text: "♂"
-                ToolTip.visible: hovered
-                ToolTip.text: qsTr("Random male name")
-                onClicked: if (appCtrl)
-                    appCtrl.generateName("male")
-            }
-            ToolButton {
-                text: "♀"
-                ToolTip.visible: hovered
-                ToolTip.text: qsTr("Random female name")
-                onClicked: if (appCtrl)
-                    appCtrl.generateName("female")
-            }
+        Label {
+            text: qsTr("Name")
         }
         TextField {
             id: nameField
             Layout.fillWidth: true
-            Layout.columnSpan: 1
             text: pcProxy ? pcProxy.name : ""
             placeholderText: qsTr("Character name")
             onEditingFinished: {
@@ -252,44 +290,111 @@ ColumnLayout {
                 }
             }
         }
-        Label {
-            text: qsTr("Rank")
-            Layout.alignment: Qt.AlignRight
+        ToolButton {
+            text: "♂"
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Random male name")
+            onClicked: if (appCtrl)
+                appCtrl.generateName("male")
         }
-        Label {
-            Layout.fillWidth: true
-            text: section._prog.rank
-            font.family: Theme.fontStat
-            font.pixelSize: Theme.fsStatMedium
-            font.weight: Theme.wMedium
-            font.features: Theme.tabularNumbers
-            color: Theme.heading
-            elide: Text.ElideRight
+        ToolButton {
+            text: "♀"
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Random female name")
+            onClicked: if (appCtrl)
+                appCtrl.generateName("female")
         }
+    }
 
-        Label {
-            text: qsTr("Clan")
-        }
-        Label {
-            Layout.fillWidth: true
-            text: (pcProxy && pcProxy.clan) ? pcProxy.clan : qsTr("No Clan")
-            elide: Text.ElideRight
-        }
-        Label {
-            text: qsTr("Exp. Points")
-            Layout.alignment: Qt.AlignRight
-        }
+    // Origin grid -- Clan | Family | School as a stat strip mirroring the
+    // progression strip below, plus a single edit/choose action and the
+    // starting-bonus caption underneath.
+    ColumnLayout {
+        Layout.fillWidth: true
+        Layout.topMargin: 4
+        spacing: 2
+
         RowLayout {
             Layout.fillWidth: true
-            spacing: 6
-            Label {
+            spacing: 14
+
+            StatCell {
+                caption: qsTr("CLAN")
+                StatValue {
+                    Layout.fillWidth: true
+                    text: (pcProxy && pcProxy.clan) ? pcProxy.clan : qsTr("—")
+                    color: (pcProxy && pcProxy.clan) ? Theme.heading : Theme.inkFaint
+                    font.italic: !(pcProxy && pcProxy.clan)
+                }
+            }
+            StatDivider {}
+            StatCell {
+                caption: qsTr("FAMILY")
+                subCaption: section._familyTrait ? qsTr("+1 %1").arg(section._traitLabel(section._familyTrait)) : ""
+                StatValue {
+                    Layout.fillWidth: true
+                    text: (pcProxy && pcProxy.family) ? pcProxy.family : qsTr("—")
+                    color: (pcProxy && pcProxy.family) ? Theme.heading : Theme.inkFaint
+                    font.italic: !(pcProxy && pcProxy.family)
+                }
+            }
+            StatDivider {}
+            StatCell {
+                caption: qsTr("SCHOOL")
+                subCaption: section._schoolTrait ? qsTr("+1 %1").arg(section._traitLabel(section._schoolTrait)) : ""
+                StatValue {
+                    Layout.fillWidth: true
+                    text: (pcProxy && pcProxy.school) ? pcProxy.school : qsTr("—")
+                    color: (pcProxy && pcProxy.school) ? Theme.heading : Theme.inkFaint
+                    font.italic: !(pcProxy && pcProxy.school)
+                }
+            }
+            Widgets.L5RButton {
+                // Filled CTA while unset (the first thing a new character
+                // must do), a quiet secondary Edit once chosen. Hidden once
+                // XP is spent -- the origin freezes (#448) and a disabled
+                // button reads as misleading rather than informative. (A
+                // frozen origin is always complete, since XP can't be spent
+                // before the origin is set.)
+                text: section._originComplete ? qsTr("Edit") : qsTr("Choose Origin")
+                primary: !section._originComplete
+                glyph: section._originComplete ? "" : "源"
+                accent: Theme.secondary
+                accentDark: Theme.secondaryDark
+                visible: section._canEditOrigin
+                Layout.alignment: Qt.AlignVCenter
+                onClicked: originDlg.open()
+            }
+        }
+    }
+
+    // Progression stat strip — Rank | Insight | Exp Points
+    RowLayout {
+        Layout.fillWidth: true
+        Layout.topMargin: 4
+        spacing: 14
+
+        StatCell {
+            caption: qsTr("RANK")
+            StatValue {
+                Layout.fillWidth: true
+                text: section._prog.rank
+            }
+        }
+        StatDivider {}
+        StatCell {
+            caption: qsTr("INSIGHT")
+            StatValue {
+                Layout.fillWidth: true
+                text: section._prog.insight
+            }
+        }
+        StatDivider {}
+        StatCell {
+            caption: qsTr("EXP. POINTS")
+            StatValue {
                 Layout.fillWidth: true
                 text: section._prog.xp + " / " + section._prog.xpLimit
-                font.family: Theme.fontStat
-                font.pixelSize: Theme.fsStatMedium
-                font.weight: Theme.wMedium
-                color: Theme.heading
-                elide: Text.ElideRight
             }
             ToolButton {
                 text: "✎"
@@ -303,72 +408,6 @@ ColumnLayout {
                 ToolTip.text: qsTr("Add awarded XP")
                 onClicked: addXpDlg.openFresh()
             }
-        }
-
-        RowLayout {
-            spacing: 4
-            Label {
-                text: qsTr("Family")
-            }
-            ToolButton {
-                text: "✎"
-                enabled: section._canEditOrigin
-                ToolTip.visible: hovered
-                ToolTip.text: qsTr("Edit character family and clan")
-                onClicked: {
-                    familyDlg.initialFamilyId = appCtrl ? appCtrl.currentFamilyId() : "";
-                    familyDlg.open();
-                }
-            }
-        }
-        Label {
-            Layout.fillWidth: true
-            text: (pcProxy && pcProxy.family) ? pcProxy.family : qsTr("No Family")
-            elide: Text.ElideRight
-        }
-        Label {
-            text: qsTr("Insight")
-            Layout.alignment: Qt.AlignRight
-        }
-        Label {
-            Layout.fillWidth: true
-            text: section._prog.insight
-            font.family: Theme.fontStat
-            font.pixelSize: Theme.fsStatMedium
-            font.weight: Theme.wMedium
-            font.features: Theme.tabularNumbers
-            color: Theme.heading
-            elide: Text.ElideRight
-        }
-
-        RowLayout {
-            spacing: 4
-            Label {
-                text: qsTr("School")
-            }
-            ToolButton {
-                text: "✎"
-                enabled: section._canEditOrigin
-                ToolTip.visible: hovered
-                ToolTip.text: qsTr("Edit character first school")
-                onClicked: {
-                    schoolDlg.initialSchoolId = appCtrl ? appCtrl.currentFirstSchoolId() : "";
-                    schoolDlg.open();
-                }
-            }
-        }
-        Label {
-            Layout.fillWidth: true
-            text: (pcProxy && pcProxy.school) ? pcProxy.school : qsTr("No School")
-            elide: Text.ElideRight
-        }
-        Item {
-            Layout.preferredWidth: 1
-            Layout.preferredHeight: 1
-        }
-        Item {
-            Layout.preferredWidth: 1
-            Layout.preferredHeight: 1
         }
     }
 

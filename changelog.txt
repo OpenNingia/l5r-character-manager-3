@@ -1,3 +1,43 @@
+=== L5RCM v4.0.0 ===
+* [NEW] Brand-new QML user interface, rebuilt from the ground up: every tab
+        (character, skills, techniques, spells, kata, kiho, tattoos, weapons,
+        armor, advancements, notes, modifiers, settings, about) ported to a
+        themed "character sheet" surface with per-clan accent colours
+* [NEW] Unified Origin Selection dialog — pick clan, family and school in one
+        place, with Different School support (#448, #450, #451)
+* [NEW] Library section to manage datapacks: install from file, enable/disable,
+        delete, and download the official packs from within the app
+* [NEW] Autosave and resume-last-session, with discard guards on New/Open
+* [NEW] Per-character section visibility (sidebar eye + View menu)
+* [NEW] Responsive main-window layout with a hamburger drawer sidebar
+* [NEW] User-selectable UI text size (Standard / Large / …)
+* [NEW] "+" button to quickly award experience points (#404)
+* [NEW] Editable base health multiplier, e.g. Earth ×5 (#389)
+* [NEW] Batch heal/damage dialog for wounds, with a vertical wound ladder
+* [NEW] Join a new school (multiclass) directly in the rank-advancement flow
+* [NEW] Datapack-driven declarative stat modifiers (TN, rings, …) evaluated
+        from owned datapack records
+* [NEW] PDF and NPC sheet export from the new UI; optional pre-printing of the
+        current Armor TN (default off)
+* [NEW] New typography (Cinzel headers, IM Fell English / Garamond body) and a
+        bundled brush-kanji font for CJK section icons
+* [NEW] Per-user Windows installer that does not require administrator rights
+* [NEW] Automatic light/dark theme detection
+* [NEW] Tooltips on tabs (#396)
+* [NEW] New en_US and en_GB English locales; updated Italian, French, Spanish,
+        Portuguese (Brazil) and Russian translations
+* [FIX] Accept decimal Honor/Glory/Status input (#380)
+* [FIX] Social flag tracks now read as rank-tenths (#402)
+* [FIX] Spell slots no longer auto-advance on selection (#403)
+* [FIX] Rehydrate nested Rank objects when loading older saves (#397)
+* [FIX] Taking off / wearing armor now works correctly (#379)
+* [FIX] Adjusting wounds no longer re-renders the whole sheet (#419)
+* [FIX] Re-evaluate Family/School edit state when the character changes (#433)
+* [FIX] Register each Liberation Sans face under its own name on Windows (#426)
+* [FIX] Backwards-compatible school rank for legacy saves
+* [FIX] Truly flatten exported PDFs and fix word-wrap and non-ASCII issues
+* [FIX] Fixed obsolete install instructions in the README (#382)
+
 === CORE PACK 4.3 ===
 * [NEW] Crab Alternate Paths
 * [NEW] Crane Alternate Paths

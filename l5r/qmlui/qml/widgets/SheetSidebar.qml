@@ -84,7 +84,7 @@ Rectangle {
                 Layout.fillWidth: true
                 text: (pcProxy && pcProxy.name) ? pcProxy.name : qsTr("Unnamed")
                 font.family: Theme.fontDisplay
-                font.pixelSize: 17
+                font.pixelSize: Theme.fsHeading1
                 font.weight: Font.DemiBold
                 font.letterSpacing: 0.5
                 color: Theme.heading
@@ -194,7 +194,7 @@ Rectangle {
                     }
                     Label {
                         text: modelData.title
-                        font.pixelSize: 12
+                        font.pixelSize: Theme.fsBodySmall
                         Layout.fillWidth: true
                         elide: Text.ElideRight
                         color: tocDelegate.highlighted ? ClanTheme.primary : palette.windowText

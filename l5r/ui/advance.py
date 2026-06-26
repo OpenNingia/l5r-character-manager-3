@@ -18,6 +18,7 @@ from qtpy import QtCore, QtWidgets
 import l5r.api as api
 import l5r.api.character
 import l5r.api.character.rankadv
+import l5r.api.character.schools
 import l5r.api.data
 import l5r.dialogs as dialogs
 
@@ -35,6 +36,12 @@ class AdvanceMixin:
 
     def check_rank_advancement(self):
         if self.nicebar:
+            return
+
+        # A character with no school (origin never set) can't advance in the
+        # "current school" -- there is none -- so don't offer the rank-up; it
+        # would crash on advance (issue #448).
+        if not api.character.schools.get_current():
             return
 
         potential_insight_rank_ = api.character.insight_rank()

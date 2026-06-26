@@ -413,6 +413,12 @@ class AppController(QObject):
     # so the sidebar eye state, the dimming, the content-block visibility
     # and the View menu ticks all re-evaluate together.
     hiddenSectionsChanged = Signal()
+    # Generic transient notice -> the bottom-centred Widgets.Toast in
+    # MainSheet. Replaces the old QMessageBox stopgaps for purchase feedback
+    # ("not enough XP", "choose your origin first") in the modern UI
+    # (issues #450 / #448). The message is built here so the wording lives
+    # next to the logic that raises it.
+    notice = Signal(str)
 
     # Debounce window for the recovery autosave: coalesce a burst of
     # edits (dragging a spinbox, typing a name) into one write, fired
@@ -913,24 +919,19 @@ class AppController(QObject):
 
     @Slot(str)
     def increaseTrait(self, trait_name):
-        """Buy the next rank in a trait. Surfaces a QMessageBox if the
-        character is short on XP. TODO: replace the message box with a
-        proper QML notification surface (see project memory)."""
+        """Buy the next rank in a trait. A transient toast explains a refusal
+        (short on XP, or origin not chosen yet)."""
         idx = l5r.models.chmodel.attrib_from_name(trait_name)
         if idx < 0:
             log.api.warning(u"QML UI: unknown trait %r", trait_name)
             return
-        res = api.character.purchase_trait_rank(idx)
-        if res == CMErrors.NOT_ENOUGH_XP:
-            self._show_not_enough_xp()
+        if self._purchase_blocked(api.character.purchase_trait_rank(idx)):
             return
         api.character.notify_character_refreshed()
 
     @Slot()
     def increaseVoid(self):
-        res = api.character.purchase_void_rank()
-        if res == CMErrors.NOT_ENOUGH_XP:
-            self._show_not_enough_xp()
+        if self._purchase_blocked(api.character.purchase_void_rank()):
             return
         api.character.notify_character_refreshed()
 
@@ -938,10 +939,20 @@ class AppController(QObject):
     def setVoidPoints(self, value):
         api.character.set_void_points(int(value))
 
-    def _show_not_enough_xp(self):
-        # Surfaced as a QML toast (the message lives QML-side). This path is
-        # reachable on Android, so it must not touch QtWidgets.
-        self.notEnoughXp.emit()
+    def _purchase_blocked(self, res):
+        """Common handling for a purchase result: emit the matching notice
+        toast and return True when the purchase did NOT go through (so the
+        caller skips the refresh). Returns False on NO_ERROR."""
+        if res == CMErrors.NOT_ENOUGH_XP:
+            self.notice.emit(
+                self.tr("Not enough XP to complete this purchase."))
+            return True
+        if res == CMErrors.MISSING_ORIGIN:
+            self.notice.emit(
+                self.tr("Choose your clan, family and school "
+                        "before spending experience points."))
+            return True
+        return False
 
     # --- social/spiritual flags --------------------------------------
 
@@ -999,8 +1010,7 @@ class AppController(QObject):
         if not skill_id:
             return
         res = api.character.skills.purchase_skill_rank(skill_id)
-        if res == CMErrors.NOT_ENOUGH_XP:
-            self._show_not_enough_xp()
+        if self._purchase_blocked(res):
             return
         api.character.notify_character_refreshed()
 
@@ -1018,8 +1028,7 @@ class AppController(QObject):
         adv = l5r.models.advances.SkillEmph(skill_id, text, 2)
         adv.desc = self.tr("{0}, Skill {1}. Cost: {2} xp").format(
             text, sk.name, adv.cost)
-        if api.character.purchase_advancement(adv) == CMErrors.NOT_ENOUGH_XP:
-            self._show_not_enough_xp()
+        if self._purchase_blocked(api.character.purchase_advancement(adv)):
             return
         api.character.notify_character_refreshed()
 
@@ -1220,8 +1229,7 @@ class AppController(QObject):
         if not spell_id:
             return
         res = api.character.spells.purchase_memo_spell(spell_id)
-        if res == CMErrors.NOT_ENOUGH_XP:
-            self._show_not_enough_xp()
+        if self._purchase_blocked(res):
             return
         if res == CMErrors.NO_ERROR:
             api.character.set_dirty_flag(True)
@@ -1519,7 +1527,7 @@ class AppController(QObject):
         SchoolChooserWidget.get_filtered_school_list, but the QML flow
         picks ONE category up front rather than toggling three checkboxes.
         Filtered by clan when one is given and serialised with
-        _school_record (the same shape FirstSchoolChooserDialog consumes)."""
+        _school_record (the same shape the OriginSelectionDialog consumes)."""
         if api.character.model() is None:
             return []
         if category == "advanced":
@@ -1682,6 +1690,15 @@ class AppController(QObject):
         cost overrides)."""
         if not rule_id:
             return
+        # Origin must be chosen before any merit/flaw is recorded -- this
+        # path appends the advancement directly (bypassing
+        # purchase_advancement's gate), so enforce it here and nudge with the
+        # same toast the trait/skill purchases use (#448/#450). Without this a
+        # player could buy an advantage first, spend XP, and freeze themselves
+        # out of the (now hidden) "Choose Origin" button.
+        if not api.character.can_buy_advancements():
+            self._purchase_blocked(CMErrors.MISSING_ORIGIN)
+            return
         is_flaw = kind == "flaw"
 
         if is_flaw:
@@ -1821,8 +1838,7 @@ class AppController(QObject):
         if not kata_id:
             return
         res = api.character.powers.buy_kata(kata_id)
-        if res == CMErrors.NOT_ENOUGH_XP:
-            self._show_not_enough_xp()
+        if self._purchase_blocked(res):
             return
         api.character.notify_character_refreshed()
 
@@ -1854,8 +1870,7 @@ class AppController(QObject):
         if not kiho_id:
             return
         res = api.character.powers.buy_kiho(kiho_id)
-        if res == CMErrors.NOT_ENOUGH_XP:
-            self._show_not_enough_xp()
+        if self._purchase_blocked(res):
             return
         api.character.notify_character_refreshed()
 
@@ -2287,6 +2302,25 @@ class AppController(QObject):
         return [_school_record(s)
                 for s in sorted(base, key=lambda x: x.name)]
 
+    @Slot(result=int)
+    def differentSchoolCost(self):
+        """XP cost of the rank-1 'Different School' advantage, for the Origin
+        dialog's cross-clan note. 0 if the datapack doesn't define it."""
+        try:
+            return abs(int(api.data.merits.get_rank_cost('different_school', 1) or 0))
+        except Exception:
+            return 0
+
+    @Slot(str, result=str)
+    def clanOfSchool(self, school_id):
+        """Clan id that owns ``school_id`` (empty if unknown). Lets the Origin
+        dialog detect a cross-clan starting school on reopen and pre-arm its
+        'Different School' mode."""
+        if not school_id:
+            return ""
+        s = api.data.schools.get(school_id)
+        return (getattr(s, "clanid", "") or "") if s else ""
+
     @Slot(str, result="QVariantList")
     def rank1PathsForClan(self, clan_id):
         paths = api.data.schools.get_paths_with_rank(1)
@@ -2309,28 +2343,24 @@ class AppController(QObject):
 
     @Slot(result=bool)
     def canEditOrigin(self):
-        """Origin (family/school) edits are blocked once XP has been
-        spent -- mirrors the QWidget side's disabled edit buttons."""
-        pc = api.character.model()
-        return bool(pc and len(pc.advans) == 0)
+        """Origin (clan/family/school) edits stay open until the first paid
+        advancement (api.character.can_edit_origin gates on spent XP, not the
+        advancement count -- issue #448). Mirrors PcProxy.identity.canEditOrigin."""
+        return bool(api.character.model() and api.character.can_edit_origin())
 
-    @Slot(str)
-    def setFamily(self, family_id):
-        if not family_id:
+    @Slot(str, str, str, bool)
+    def setOrigin(self, family_id, school_id, path_id, different_school=False):
+        """Commit the whole origin (clan via family, first school, optional
+        rank-1 path) in one atomic step -- the unified OriginSelectionDialog
+        (#451). Delegates to api.character.set_origin, which replaces any
+        previous origin while editable and refuses once XP is spent (#448).
+        ``different_school`` buys the Different School advantage when the school
+        comes from a clan other than the family's (#451).
+        notify_character_refreshed is fired by set_origin on success."""
+        if not school_id and not family_id:
             return
-        api.character.set_family(family_id)
-        api.character.notify_character_refreshed()
-
-    @Slot(str, str)
-    def setFirstSchool(self, school_id, path_id):
-        if not school_id:
-            return
-        if path_id:
-            api.character.schools.set_first_with_path(school_id, path_id)
-        else:
-            api.character.schools.set_first(school_id)
-        api.character.set_dirty_flag(True)
-        api.character.notify_character_refreshed()
+        api.character.set_origin(family_id, school_id, path_id or None,
+                                 buy_different_school=bool(different_school))
 
     # --- startup hooks ------------------------------------------------
 
