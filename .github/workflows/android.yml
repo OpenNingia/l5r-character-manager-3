@@ -95,9 +95,10 @@ jobs:
           # Our pure-Python runtime deps (no lxml: l5rdal >= v1.4.2 is stdlib
           # xml only) so python-for-android needs no C-extension recipes.
           # certifi: bundled CA roots. The python-for-android CPython has no
-          # system CA store, so stdlib ssl fails verification on device;
-          # android_main.py points SSL_CERT_FILE at certifi.where(). Pure
-          # Python, vendored into the APK below.
+          # system CA store, AND its OpenSSL ignores SSL_CERT_FILE / cafile=
+          # even when the bundle is present -- so datapack_catalog loads the PEM
+          # via cadata (CA bytes in memory). Pure Python, vendored into the APK
+          # below; cacert.pem only ships because source.include_exts lists pem.
           pip install "asq>=2.0" "qtpy>=2.4" "certifi" \
             "git+https://github.com/OpenNingia/pypdf.git@fix_escape" \
             "git+https://github.com/OpenNingia/l5rcm-data-access.git@v1.4.2"
@@ -312,6 +313,50 @@ jobs:
             --sdk-path "$ANDROID_SDK_ROOT" \
             --keep-deployment-files \
             -f -v || (echo "::error::APK build failed -- see log; check wheel/NDK versions (see android.yml header)"; exit 1)
+
+      - name: Capture generated buildozer.spec + recipes (migration prep)
+        if: always()
+        run: |
+          # MIGRATION PREP: we plan to drop pyside6-android-deploy and drive a
+          # plain `buildozer` build from a committed buildozer.spec, so the
+          # generator patches above disappear. To know exactly what to commit,
+          # snapshot what the deploy tool actually produced on a green run:
+          #   - the generated buildozer.spec (with our injected p4a.commit,
+          #     source.include_exts, Core-first modules);
+          #   - any local recipes it wired in (p4a.local_recipes);
+          #   - the pyside6/shiboken6/python3 recipe dirs from the cloned p4a
+          #     fork (the pinned commit carries the qt bootstrap + these
+          #     recipes), and how the Qt wheels are referenced.
+          # Pure capture -- changes nothing about the build.
+          echo "::group::generated buildozer.spec"
+          [ -f buildozer.spec ] && cat buildozer.spec || echo "(no buildozer.spec produced)"
+          echo "::endgroup::"
+          mkdir -p _capture
+          [ -f buildozer.spec ] && cp buildozer.spec _capture/
+          [ -f pysidedeploy.spec ] && cp pysidedeploy.spec _capture/
+          lr="$(grep -E '^[[:space:]]*p4a\.local_recipes[[:space:]]*=' buildozer.spec 2>/dev/null | sed -E 's/.*=[[:space:]]*//')"
+          echo "p4a.local_recipes = '${lr:-<unset>}'"
+          if [ -n "$lr" ] && [ -d "$lr" ]; then
+            mkdir -p _capture/local_recipes && cp -r "$lr"/. _capture/local_recipes/
+          fi
+          p4a_dir="$(find .buildozer -maxdepth 4 -type d -name python-for-android 2>/dev/null | head -1)"
+          if [ -n "$p4a_dir" ]; then
+            for r in pyside6 shiboken6 python3 hostpython3; do
+              src="$p4a_dir/pythonforandroid/recipes/$r"
+              [ -d "$src" ] && { mkdir -p "_capture/p4a_recipes/$r"; cp -r "$src"/. "_capture/p4a_recipes/$r/"; }
+            done
+          fi
+          echo "--- how the build references the Qt wheels / bootstrap ---"
+          grep -nE 'wheel|requirements|bootstrap|p4a\.|source\.include_exts' buildozer.spec 2>/dev/null || true
+          echo "--- captured files ---"; find _capture -type f | sort | head -80
+
+      - name: Upload generated buildozer.spec + recipes
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: android-buildozer-spec-capture
+          path: _capture/**
+          if-no-files-found: warn
 
       - name: Verify embedded Python is 3.11 (not 3.14)
         if: always()
