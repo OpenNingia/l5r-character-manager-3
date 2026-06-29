@@ -125,6 +125,30 @@ class TestChModelRoundtrip(unittest.TestCase):
         self.assertEqual([('fire', 1, 'attack')], choices)
         self.assertIsInstance(choices[0], tuple)
 
+    def test_uuid_survives_roundtrip(self):
+        """A character's stable uuid is preserved across save/load."""
+        pc = AdvancedPcModel()
+        pc.uuid = 'fixed-uuid-1234'
+        reloaded = self._save_and_reload(pc)
+        self.assertEqual('fixed-uuid-1234', reloaded.uuid)
+
+    def test_legacy_save_without_uuid_loads_as_none(self):
+        """A save predating the uuid field loads with uuid = None (the
+        back-fill happens later, on demand, via api.character.ensure_uuid)."""
+        import json
+        # Save a normal document, then strip the `uuid` key to mimic a file
+        # written by a version that predates the field.
+        AdvancedPcModel().save_to(self.path)
+        with open(self.path, 'rt') as fp:
+            doc = json.load(fp)
+        doc.pop('uuid', None)
+        with open(self.path, 'wt') as fp:
+            json.dump(doc, fp)
+
+        reloaded = AdvancedPcModel()
+        self.assertTrue(reloaded.load_from(self.path))
+        self.assertIsNone(reloaded.uuid)
+
     def test_non_rank_advancement_stays_generic(self):
         """A plain advancement keeps its flat attributes and type tag."""
         pc = AdvancedPcModel()

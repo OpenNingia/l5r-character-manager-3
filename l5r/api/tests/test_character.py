@@ -59,6 +59,29 @@ class TestCharacterBll(unittest.TestCase):
         api.character.set_family('test_family_1')
         self.assertEqual('test_family_1', api.character.model().family)
 
+    def test_new_character_has_uuid(self):
+        """A freshly created character is assigned a stable uuid up-front."""
+        uid = api.character.model().uuid
+        self.assertTrue(uid)
+        self.assertEqual(uid, api.character.get_uuid())
+
+    def test_ensure_uuid_is_idempotent(self):
+        """ensure_uuid returns the existing id without changing it."""
+        first = api.character.model().uuid
+        self.assertEqual(first, api.character.ensure_uuid())
+        self.assertEqual(first, api.character.model().uuid)
+
+    def test_ensure_uuid_backfills_legacy_model(self):
+        """A model with no uuid (old save) gets one minted on demand, and is
+        marked dirty so the new id is persisted."""
+        pc = api.character.model()
+        pc.uuid = None
+        pc.unsaved = False
+        minted = api.character.ensure_uuid()
+        self.assertTrue(minted)
+        self.assertEqual(minted, pc.uuid)
+        self.assertTrue(pc.unsaved)
+
     def test_get_family(self):
         """
         get_family should return 'test_family'

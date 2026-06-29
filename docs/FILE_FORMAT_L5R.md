@@ -41,6 +41,7 @@ def default(self, obj):
 | Key | Type | Default | Meaning |
 |---|---|---|---|
 | `name` | string | `""` | Character display name |
+| `uuid` | string \| null | `null` | **Stable character identity** — a random UUID4 string (e.g. `"3f2a…"`), independent of `name` and file path. Assigned when the character is created; **back-filled on demand** for saves that predate this field (notably the first time a companion QR code is generated). Lets the Android companion keep its data overlay aligned with the same character across edits, renames and re-shares. May be `null`/absent in old saves that have never been re-shared or re-saved since the field was introduced — treat absence as "no stable id yet". Once present it is stable across saves. |
 | `clan` | string \| null | `null` | Clan id (datapack reference) |
 | `family` | string \| null | `null` | Family id (datapack reference) |
 | `version` | string | `"0.0"` | Format version (not meaningful — see §1) |
@@ -341,6 +342,7 @@ A non-Python reader doesn't need to replicate the class machinery — it just ne
 ```json
 {
   "name": "Doji Test",
+  "uuid": "3f2a9c10-7b4e-4a2d-9f1c-2e5b8d6a0c11",
   "clan": "crane",
   "family": "doji",
   "version": "0.0",

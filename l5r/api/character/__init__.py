@@ -17,6 +17,7 @@
 __author__ = 'Daniele'
 
 import operator
+import uuid as _uuid
 
 import l5r.api as api
 import l5r.api.data
@@ -41,9 +42,38 @@ def new():
     """creates new player character model"""
     get_context().pc = l5r.models.AdvancedPcModel()
     get_context().pc.load_default()
+    # Fresh characters get a stable identity up-front, so it is present in
+    # the very first save (see ensure_uuid for the backward-compat path).
+    get_context().pc.uuid = str(_uuid.uuid4())
 
     log.api.info("Created new character")
     l5r.api.signals.bus().model_replaced.emit()
+
+
+def get_uuid():
+    """return the character's stable uuid, or None if it has none yet"""
+    pc = get_context().pc
+    return getattr(pc, 'uuid', None) if pc else None
+
+
+def ensure_uuid():
+    """Return the character's stable uuid, assigning (and persisting) one if
+    the model has none.
+
+    This is the backward-compat path for ``.l5r`` files saved before the
+    ``uuid`` field existed: the first time such a character needs a stable
+    identity (e.g. when generating a companion QR code) we mint one and mark
+    the model dirty so the close-the-window prompt nudges the user to save
+    it -- keeping the id stable across future sessions and re-shares.
+    """
+    pc = get_context().pc
+    if pc is None:
+        return None
+    if not getattr(pc, 'uuid', None):
+        pc.uuid = str(_uuid.uuid4())
+        set_dirty_flag(True)
+        log.api.info(u"assigned character uuid: %s", pc.uuid)
+    return pc.uuid
 
 
 def set_model(value):

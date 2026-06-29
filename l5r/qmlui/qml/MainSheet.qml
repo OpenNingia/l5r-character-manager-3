@@ -111,6 +111,10 @@ ApplicationWindow {
                 text: qsTr("Export &NPC Sheet...")
                 onTriggered: appCtrl.exportNpcDialog()
             }
+            Widgets.L5RMenuItem {
+                text: qsTr("Share via QR &code...")
+                onTriggered: qrShareDlg.open()
+            }
             Widgets.L5RMenuSeparator {
             }
             Widgets.L5RMenuItem {
@@ -670,5 +674,12 @@ ApplicationWindow {
     Dialogs.MissingBooksDialog {
         id: missingBooksDlg
         onAccepted: root.jumpToLibrary()
+    }
+
+    // Share the active character with the Android companion as an animated
+    // loop of QR codes (File > Share via QR code). Pulls frames from
+    // appCtrl.qrFrames() on open; see QrShareDialog / docs/QR_IMPORT_FORMAT.
+    Dialogs.QrShareDialog {
+        id: qrShareDlg
     }
 }

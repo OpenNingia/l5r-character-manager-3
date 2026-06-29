@@ -204,6 +204,13 @@ class AdvancedPcModel(object):
         self.unsaved = False
         self.version = '0.0'
 
+        # Stable identity for the character, independent of name/file path.
+        # Lets the Android companion keep its own data overlay aligned with
+        # this character across edits and re-shares. Assigned by
+        # api.character.new() / ensure_uuid(); None here so old saves (which
+        # predate the field) are detected and back-filled on demand.
+        self.uuid = None
+
         self.name = ''
         self.clan = None
         self.family = None

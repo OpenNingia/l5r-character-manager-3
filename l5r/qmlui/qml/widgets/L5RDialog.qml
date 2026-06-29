@@ -50,6 +50,11 @@ Dialog {
     property string acceptText: qsTr("OK")
     property string acceptGlyph: ""
     property bool acceptEnabled: true
+    // Either button can be hidden for single-action dialogs (e.g. a
+    // share/info modal that only needs "Close"). Both default visible so
+    // existing two-button consumers are unaffected.
+    property bool acceptVisible: true
+    property bool cancelVisible: true
     property string cancelText: qsTr("Cancel")
     property string statusText: ""
 
@@ -210,12 +215,14 @@ Dialog {
                     Layout.fillWidth: true
                 }
                 L5RButton {
+                    visible: dlg.cancelVisible
                     text: dlg.cancelText
                     primary: false
                     Layout.alignment: Qt.AlignVCenter
                     onClicked: dlg.reject()
                 }
                 L5RButton {
+                    visible: dlg.acceptVisible
                     text: dlg.acceptText
                     glyph: dlg.acceptGlyph
                     accent: dlg.accent

@@ -841,6 +841,32 @@ class AppController(QObject):
             sheet.export_npc(paths, out_path)
         return out_path
 
+    @Slot(result="QVariantList")
+    def qrFrames(self):
+        """Encode the active character into QR transfer frame strings.
+
+        Returns the list of ``L5RQR1|...`` frame lines (see
+        docs/QR_IMPORT_FORMAT.md) that QrShareDialog renders as an animated
+        loop of QR codes for the Android companion to scan. Returns an
+        empty list (dialog shows a "nothing to share" state) when there is
+        no active character. Compression + framing is fast; no worker
+        thread needed.
+        """
+        from l5r.exporters.qr_transfer import character_frames
+        pc = api.character.model()
+        if pc is None:
+            return []
+        # A QR transfer is only meaningful with a stable identity the
+        # companion can anchor its overlay to. Back-fill one for legacy
+        # saves (marks the model dirty so the new id gets persisted).
+        api.character.ensure_uuid()
+        try:
+            return character_frames(pc)
+        except Exception as err:
+            log.app.error(u"QML UI: QR frame generation failed: %s", err)
+            self.notice.emit(self.tr("Could not generate the QR code."))
+            return []
+
     # --- notes / personal info ---------------------------------------
 
     @Slot(str)

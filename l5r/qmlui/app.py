@@ -22,6 +22,7 @@ import l5r.api.data
 from l5r.qmlui.proxies.app_controller import AppController
 from l5r.qmlui.proxies.datapack_proxy import DatapackProxy
 from l5r.qmlui.proxies.pc_proxy import PcProxy
+from l5r.qmlui.proxies.qr_image_provider import QrImageProvider
 from l5r.qmlui.proxies.settings_proxy import SettingsProxy
 from l5r.util import log
 from l5r.util.fsutil import get_app_file
@@ -182,6 +183,9 @@ def run_qml_app(qapp, locale, startup_action):
     # directory.
     qml_dir = Path(__file__).parent / "qml"
     engine.addImportPath(str(qml_dir))
+    # QR transfer frames are rendered on demand by this provider; QML
+    # requests them as image://qr/<url-encoded-frame-text> (QrShareDialog).
+    engine.addImageProvider("qr", QrImageProvider())
     engine.rootContext().setContextProperty("pcProxy", pc_proxy)
     engine.rootContext().setContextProperty("appCtrl", controller)
     engine.rootContext().setContextProperty("appSettings", settings_proxy)
