@@ -52,9 +52,12 @@ Widgets.L5RDialog {
     onClosed: frames = []
 
     // Advance the loop only while visible and only when there is more than
-    // one frame (a single-frame transfer is a static QR).
+    // one frame (a single-frame transfer is a static QR). ~2.5 fps: a phone
+    // scanning off a screen needs time to focus *and* decode each symbol, so
+    // a slower dwell is far more reliable than the theoretical max rate. The
+    // loop repeats forever, so missed frames simply come around again.
     Timer {
-        interval: 200   // ~5 fps, the spec's recommended cadence
+        interval: 400
         running: root.visible && root.frames.length > 1
         repeat: true
         onTriggered: root.currentIndex = (root.currentIndex + 1) % root.frames.length

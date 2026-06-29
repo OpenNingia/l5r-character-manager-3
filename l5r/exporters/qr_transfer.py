@@ -31,11 +31,13 @@ from l5r.models.chmodel import MyJsonEncoder
 # the version on any breaking change to the frame grammar.
 MAGIC = u"L5RQR1"
 
-# Base64 characters per frame. ~768 keeps each QR symbol a low version so
-# it scans easily off a laptop screen with a phone; an 11 KB character
-# (~3 KB gzip ~4 KB b64) becomes a handful of frames. Tunable without
-# touching the contract -- the reader concatenates all chunks first.
-DEFAULT_CHUNK_CHARS = 768
+# Base64 characters per frame. Kept deliberately small (~448) so each QR
+# stays a low-version, low-density symbol a phone can focus on and decode
+# quickly off a screen -- the bottleneck for animated transfer is per-frame
+# scan reliability, not frame count. An 11 KB character (~3 KB gzip ~4 KB
+# b64) becomes ~9 frames at this size. Tunable without touching the
+# contract -- the reader concatenates all chunks first.
+DEFAULT_CHUNK_CHARS = 448
 
 # `id` alphabet/length: a short random transfer id lets the reader notice
 # the user pointing the camera at a *different* character mid-scan. Spec

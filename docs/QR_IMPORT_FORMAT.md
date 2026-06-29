@@ -53,6 +53,12 @@ frame[0..total-1]  ── render each as a QR code, display in an animated loop 
 
 Notes:
 
+0. **Back-fill `uuid` first (required).** Before encoding, ensure the `.l5r` payload carries a
+   stable `uuid` (see `FILE_FORMAT_L5R.md` §2.1) — generate one if the character lacks it and
+   persist it back to the save. The companion keys its local `<uuid>.l5r` copy and (future) data
+   overlay by this id, so the QR and the file must agree. **The companion rejects any payload
+   without a `uuid`** (it does not mint one), prompting the user to re-save with the latest
+   L5RCM or use QR export — so the writer MUST include it.
 1. **UTF-8** without BOM.
 2. **gzip** = the gzip *container* (RFC 1952: `1f 8b` magic, deflate, trailer), not raw
    deflate. `gzip.compress()` in Python and `GZIPOutputStream` in Java both produce this.
@@ -162,12 +168,14 @@ agnostic to QR version/ECC/timing):
 - **Error correction**: level **M** is a good balance for on-screen scanning. Let the QR
   library auto-select the smallest version that fits each frame.
 - **Chunk size**: keep frames small so QR symbols stay low-version and easy to scan from a
-  laptop screen with a phone. **Recommended ~512–1024 Base64 chars per frame.** Smaller =
-  more frames but faster, more reliable individual scans. With ~768 chars/frame an 11 KB
-  character (≈3 KB gzip ≈4 KB b64) needs ~6 frames.
-- **Animation**: display frames in a repeating loop at **~4–8 fps** (≈125–250 ms/frame).
-  Loop forever; the reader stops you once it has everything. Show `seq+1/total` under each
-  QR so a human can see progress too.
+  laptop screen with a phone. **Recommended ~400–512 Base64 chars per frame.** Smaller =
+  more frames but faster, more reliable individual scans (the real bottleneck is per-frame
+  capture, not frame count). The desktop writer uses ~448 chars/frame, so an 11 KB character
+  (≈3 KB gzip ≈4 KB b64) becomes ~9 frames.
+- **Animation**: display frames in a repeating loop at **~2–3 fps** (≈350–450 ms/frame).
+  A phone scanning off a screen needs time to focus *and* decode each symbol, so err slower:
+  faster cadences look snappy but routinely drop frames. Loop forever; the reader stops you
+  once it has everything. Show `seq+1/total` under each QR so a human can see progress too.
 - **Quiet zone**: keep the standard ≥4-module margin; render large and high-contrast.
 
 ---
