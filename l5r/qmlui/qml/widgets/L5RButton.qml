@@ -49,19 +49,19 @@ Button {
                     return Theme.disabledBg;
                 if (control.down)
                     return Qt.darker(control.accentDark, 1.1);
-                if (control.hovered)
+                if (control.hovered || control.focus)
                     return control.accentDark;
                 return control.accent;
             }
             // secondary
             if (control.down)
                 return Theme.parchmentSidebar;   // paper-dark pressed
-            if (control.hovered)
+            if (control.hovered || control.focus)
                 return Theme.parchment;          // paper hover
             return "transparent";
         }
         border.width: control.primary ? 0 : 1
-        border.color: control.primary ? "transparent" : (control.hovered ? Theme.inkMuted : Theme.borderSubtle)
+        border.color: control.primary ? "transparent" : (control.hovered || control.focus ? Theme.inkMuted : Theme.borderSubtle)
         // §9: button hover/press 120 ms ease-out.
         Behavior on color {
             ColorAnimation {
