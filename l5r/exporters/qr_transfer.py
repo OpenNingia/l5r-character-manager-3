@@ -75,12 +75,17 @@ def make_frames(json_text, chunk_chars=DEFAULT_CHUNK_CHARS, transfer_id=None):
     the gzip blob is embedded identically in every frame so the reader can
     verify integrity after reassembly.
 
-    gzip is pinned to ``mtime=0`` / ``compresslevel=9`` so the bytes are
-    reproducible (the contract's golden test vector depends on it); the
-    reader only ever decompresses, so the exact header bytes are immaterial
-    to interop -- only to the test.
+    gzip is pinned to ``mtime=0`` / ``compresslevel=9`` and the header's OS
+    byte is normalized to ``0xff`` ("unknown") so the bytes are reproducible
+    across platforms (CPython otherwise stamps a platform-specific OS byte --
+    ``0x0a`` on Windows, ``0x03`` on Linux -- which would break the contract's
+    golden test vector). The reader only ever decompresses, so the exact
+    header bytes are immaterial to interop -- only to the test.
     """
-    blob = gzip.compress(json_text.encode(u"utf-8"), compresslevel=9, mtime=0)
+    blob = bytearray(
+        gzip.compress(json_text.encode(u"utf-8"), compresslevel=9, mtime=0))
+    blob[9] = 0xFF  # OS byte -> "unknown", for cross-platform reproducibility
+    blob = bytes(blob)
     b64 = base64.b64encode(blob).decode(u"ascii")
     crc = format(zlib.crc32(blob) & 0xFFFFFFFF, u"08x")
     tid = transfer_id or _new_transfer_id()

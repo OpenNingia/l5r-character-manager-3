@@ -196,7 +196,7 @@ agnostic to QR version/ECC/timing):
 
 ## 7. Golden test vector
 
-Reproducible (`gzip mtime=0`, level 9, chunk size 32 chars, `id = 7F3A`). Both
+Reproducible (`gzip mtime=0`, level 9, header OS byte forced to `0xff`, chunk size 32 chars, `id = 7F3A`). Both
 implementations SHOULD ship a unit test that decodes these four frames back to the exact
 payload, and the Python writer SHOULD regenerate these exact frames from the payload.
 
@@ -209,7 +209,7 @@ payload, and the Python writer SHOULD regenerate these exact frames from the pay
 **blob — gzip bytes (86 bytes, hex):**
 
 ```
-1f8b080000000000020aab562a4b2d2acecccf53b25232d13350d2514ace482c52b2aa56ca4b
+1f8b08000000000002ffab562a4b2d2acecccf53b25232d13350d2514ace482c52b2aa56ca4b
 cc4d050abae467652a84a4169780a4721241ea928b12f352956a75941253ca12f38a95aca263
 6b012e52ebe348000000
 ```
@@ -217,18 +217,18 @@ cc4d050abae467652a84a4169780a4721241ea928b12f352956a75941253ca12f38a95aca263
 **b64 (116 chars):**
 
 ```
-H4sIAAAAAAACCqtWKkstKs7Mz1OyUjLRM1DSUUrOSCxSsqpWykvMTQUKuuRnZSqEpBaXgKRyEkHqkosS81KVanWUElPKEvOKlayiY2sBLlLr40gAAAA=
+H4sIAAAAAAAC/6tWKkstKs7Mz1OyUjLRM1DSUUrOSCxSsqpWykvMTQUKuuRnZSqEpBaXgKRyEkHqkosS81KVanWUElPKEvOKlayiY2sBLlLr40gAAAA=
 ```
 
-**crc** = `CRC32(blob)` = `97dae91d`
+**crc** = `CRC32(blob)` = `4c21ece1`
 
 **Frames** (4 frames, chunk size 32):
 
 ```
-L5RQR1|7F3A|0|4|97dae91d|H4sIAAAAAAACCqtWKkstKs7Mz1OyUjLR
-L5RQR1|7F3A|1|4|97dae91d|M1DSUUrOSCxSsqpWykvMTQUKuuRnZSqE
-L5RQR1|7F3A|2|4|97dae91d|pBaXgKRyEkHqkosS81KVanWUElPKEvOK
-L5RQR1|7F3A|3|4|97dae91d|layiY2sBLlLr40gAAAA=
+L5RQR1|7F3A|0|4|4c21ece1|H4sIAAAAAAAC/6tWKkstKs7Mz1OyUjLR
+L5RQR1|7F3A|1|4|4c21ece1|M1DSUUrOSCxSsqpWykvMTQUKuuRnZSqE
+L5RQR1|7F3A|2|4|4c21ece1|pBaXgKRyEkHqkosS81KVanWUElPKEvOK
+L5RQR1|7F3A|3|4|4c21ece1|layiY2sBLlLr40gAAAA=
 ```
 
 Concatenating the four `data` fields in `seq` order reproduces the b64 above.
@@ -252,7 +252,9 @@ Concatenating the four `data` fields in `seq` order reproduces the b64 above.
 import gzip, base64, zlib, secrets, string
 
 def make_qr_frames(json_text: str, chunk_chars: int = 768, transfer_id: str | None = None) -> list[str]:
-    blob = gzip.compress(json_text.encode("utf-8"), compresslevel=9, mtime=0)
+    blob = bytearray(gzip.compress(json_text.encode("utf-8"), compresslevel=9, mtime=0))
+    blob[9] = 0xff  # normalize gzip OS byte for cross-platform reproducibility
+    blob = bytes(blob)
     b64 = base64.b64encode(blob).decode("ascii")
     crc = format(zlib.crc32(blob) & 0xFFFFFFFF, "08x")
     tid = transfer_id or "".join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(6))

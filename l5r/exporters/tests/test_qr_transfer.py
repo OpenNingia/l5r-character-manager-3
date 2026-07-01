@@ -15,15 +15,15 @@ from l5r.exporters import qr_transfer
 # --- §7 golden test vector ------------------------------------------------
 GOLDEN_PAYLOAD = (
     u'{"version":"4.0","char":{"name":"Doji Test","clan":"crane"},"advans":[]}')
-GOLDEN_CRC = u"97dae91d"
+GOLDEN_CRC = u"4c21ece1"
 GOLDEN_B64 = (
-    u"H4sIAAAAAAACCqtWKkstKs7Mz1OyUjLRM1DSUUrOSCxSsqpWykvMTQUKuuRnZSqE"
+    u"H4sIAAAAAAAC/6tWKkstKs7Mz1OyUjLRM1DSUUrOSCxSsqpWykvMTQUKuuRnZSqE"
     u"pBaXgKRyEkHqkosS81KVanWUElPKEvOKlayiY2sBLlLr40gAAAA=")
 GOLDEN_FRAMES = [
-    u"L5RQR1|7F3A|0|4|97dae91d|H4sIAAAAAAACCqtWKkstKs7Mz1OyUjLR",
-    u"L5RQR1|7F3A|1|4|97dae91d|M1DSUUrOSCxSsqpWykvMTQUKuuRnZSqE",
-    u"L5RQR1|7F3A|2|4|97dae91d|pBaXgKRyEkHqkosS81KVanWUElPKEvOK",
-    u"L5RQR1|7F3A|3|4|97dae91d|layiY2sBLlLr40gAAAA=",
+    u"L5RQR1|7F3A|0|4|4c21ece1|H4sIAAAAAAAC/6tWKkstKs7Mz1OyUjLR",
+    u"L5RQR1|7F3A|1|4|4c21ece1|M1DSUUrOSCxSsqpWykvMTQUKuuRnZSqE",
+    u"L5RQR1|7F3A|2|4|4c21ece1|pBaXgKRyEkHqkosS81KVanWUElPKEvOK",
+    u"L5RQR1|7F3A|3|4|4c21ece1|layiY2sBLlLr40gAAAA=",
 ]
 
 
