@@ -78,28 +78,54 @@ ApplicationWindow {
 
     menuBar: Widgets.L5RMenuBar {
         Widgets.L5RMenu {
+            id: fileMenu
             title: qsTr("&File")
+
             Widgets.L5RMenuItem {
-                text: qsTr("&New")
+                // text: qsTr("&New")
+                action: newFile
                 // requestFileNew gates on unsaved changes: New discards the
                 // autosave recovery file, so a dirty model pops newConfirmDlg
                 // first (via fileNewRequiresConfirm) instead of dropping work.
-                onTriggered: appCtrl.requestFileNew()
+  
+                Action {
+                    id: newFile
+                    text: qsTr("&New")
+                    shortcut: "Ctrl+N"
+                    onTriggered: appCtrl.requestFileNew()
+                }
             }
             Widgets.L5RMenuItem {
-                text: qsTr("&Open...")
+                action: openFile
                 // requestFileOpen gates on unsaved changes: opening replaces
                 // the working character and discards the recovery file, so a
                 // dirty model confirms first (via confirmDiscardChanges).
-                onTriggered: appCtrl.requestFileOpen()
+                Action {
+                    id: openFile
+                    text: qsTr("&Open...")
+                    shortcut: "Ctrl+O"
+                    onTriggered: appCtrl.requestFileOpen()
+                }
             }
             Widgets.L5RMenuItem {
-                text: qsTr("&Save")
-                onTriggered: appCtrl.fileSave()
+                action: saveFile
+
+                Action {
+                    id: saveFile
+                    text: qsTr("&Save")
+                    shortcut: "Ctrl+S"
+                    onTriggered: appCtrl.fileSave()
+                }
             }
             Widgets.L5RMenuItem {
-                text: qsTr("Save &As...")
-                onTriggered: appCtrl.fileSaveAs()
+                action: saveAsFile
+
+                Action {
+                    id: saveAsFile
+                    text: qsTr("Save &As...")
+                    shortcut: "Ctrl+Shift+S"
+                    onTriggered: appCtrl.fileSaveAs()
+                }
             }
             Widgets.L5RMenuSeparator {
             }
@@ -114,10 +140,18 @@ ApplicationWindow {
             Widgets.L5RMenuSeparator {
             }
             Widgets.L5RMenuItem {
-                text: qsTr("&Quit")
-                onTriggered: appCtrl.fileQuit()
+                action: fileQuit
+
+                Action {
+                    id: fileQuit
+                    text: qsTr("&Quit")
+                    shortcut: "Ctrl+Q"
+                    onTriggered: appCtrl.fileQuit()
+                }
+
             }
         }
+
 
         // View: one checkable row per hideable section (checked = shown),
         // a discoverable alternative to the sidebar eye. Built from
