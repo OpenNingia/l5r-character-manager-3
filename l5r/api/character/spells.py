@@ -255,6 +255,44 @@ def add_school_spell(spell_id):
     return True
 
 
+def replace_school_spell(old_spell_id, new_spell_id):
+    """swap a school-granted spell for another, in place, within the rank
+    advancement that granted it.
+
+    This is a correction / GM-override tool. Unlike add_school_spell it is
+    not tied to a pending grant slot and applies *no* eligibility gate --
+    the caller (the QML swap picker) decides what is legal, so a GM can
+    substitute a spell that lies beyond the character's present reach.
+    Returns True on success; False if the old spell is not a school spell,
+    the new spell is unknown to the data store, or the new spell is already
+    known by the character (which would create a duplicate)."""
+    if not old_spell_id or not new_spell_id or old_spell_id == new_spell_id:
+        return False
+
+    new_spell_ = api.data.spells.get(new_spell_id)
+    if not new_spell_:
+        log.api.error(u"replace_school_spell. spell not found: %s", new_spell_id)
+        return False
+
+    # Refuse a swap that would duplicate a spell the character already
+    # knows through any channel (another rank grant, a free-form learn).
+    already_known = set(get_all())
+    already_known.discard(old_spell_id)
+    if new_spell_id in already_known:
+        log.api.warning(
+            u"replace_school_spell. %s already known; refusing swap", new_spell_id)
+        return False
+
+    for r in api.character.rankadv.get_all():
+        if old_spell_id in r.spells:
+            r.spells[r.spells.index(old_spell_id)] = new_spell_id
+            return True
+
+    log.api.warning(
+        u"replace_school_spell. %s is not a school spell", old_spell_id)
+    return False
+
+
 def add_spell(spell_id):
     """add a spell, not bound to a specific rank advancement"""
     spell_ = api.data.spells.get(spell_id)

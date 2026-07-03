@@ -20,8 +20,9 @@
 //
 // A spell reaches the register through one of three channels, flagged so
 // the card can act on each correctly:
-//   - SCHOOL    -- granted by a rank advancement; not removable here
-//                  (managed on Advancements).
+//   - SCHOOL    -- granted by a rank advancement; not removable here, but
+//                  swappable in place (change one granted spell for another
+//                  without unwinding the rank -- a correction / GM override).
 //   - LEARNED   -- a free-form spell, learned at no cost; removable.
 //   - MEMORIZED -- carries an XP cost equal to its mastery; can be
 //                  forgotten (refunding the cost).
@@ -50,7 +51,8 @@
 //   pcProxy.isShugenja : bool
 // Required controller methods on appCtrl:
 //   learnSpell(id) · removeSpell(id) · memorizeSpell(id) · forgetSpell(id)
-//   availableSpellsToBuy() -> [...]  (consumed by the dialog)
+//   replaceSchoolSpell(oldId, newId)   (the school-spell swap)
+//   availableSpellsToBuy() -> [...]  (consumed by the dialog, both modes)
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -114,6 +116,16 @@ ColumnLayout {
     function _requestRemove(item) {
         if (item && appCtrl)
             appCtrl.removeSpell(item.id);
+    }
+
+    // Change a school-granted spell for another. School spells cannot be
+    // removed here (they belong to a rank advancement), but they can be
+    // swapped in place -- the fix for a mis-picked spell or a GM-requested
+    // change, without unwinding the whole rank. Reuses the learn dialog in
+    // its "swap" mode (no mastery-reach gate: a GM override).
+    function _requestSwap(item) {
+        if (item && item.id)
+            buySpellDlg.presentSwap(item.id, item.name || "");
     }
 
     // The memorize toggle: forget when already memorized (refunding the
@@ -788,6 +800,50 @@ ColumnLayout {
                         ToolTip.visible: hovered
                         ToolTip.delay: 400
                         ToolTip.text: card._isMemorized ? qsTr("Forget this memorized spell (refunds %1 XP)").arg(card._mastery) : qsTr("Memorize this spell (%1 XP)").arg(card._mastery)
+                    }
+                }
+
+                // ---- Swap handle -- hover-revealed, school spells only --
+                // School spells belong to a rank advancement and cannot be
+                // removed here, but they can be swapped in place: a "換"
+                // (change) affordance in the blue action hue, distinct from
+                // the gold memorize toggle and the crimson remove cross.
+                // A correction / GM-override, so it has no reach gate.
+                Item {
+                    Layout.preferredWidth: 22
+                    Layout.preferredHeight: 22
+                    Layout.alignment: Qt.AlignVCenter
+                    visible: card._isSchool
+
+                    AbstractButton {
+                        id: swapBtn
+                        anchors.fill: parent
+                        visible: cardHover.hovered || swapBtn.hovered
+                        onClicked: section._requestSwap(card.item)
+
+                        background: Rectangle {
+                            radius: 11
+                            color: swapBtn.hovered ? Theme.secondary : "transparent"
+                            border.color: Theme.secondary
+                            border.width: 1
+                            opacity: swapBtn.hovered ? 1.0 : 0.55
+                            Behavior on opacity {
+                                NumberAnimation {
+                                    duration: 120
+                                }
+                            }
+                        }
+                        contentItem: Label {
+                            text: "換"   // exchange -- swap this school spell
+                            font.family: Theme.fontKanji
+                            font.pixelSize: 12
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            color: swapBtn.hovered ? Theme.whiteWash : Theme.secondary
+                        }
+                        ToolTip.visible: hovered
+                        ToolTip.delay: 400
+                        ToolTip.text: qsTr("Change this school spell")
                     }
                 }
 

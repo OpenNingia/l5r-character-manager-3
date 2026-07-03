@@ -1198,6 +1198,21 @@ class AppController(QObject):
             api.character.set_dirty_flag(True)
             api.character.notify_character_refreshed()
 
+    @Slot(str, str)
+    def replaceSchoolSpell(self, old_id, new_id):
+        """Swap a school-granted spell for another, in place, in the rank
+        that granted it -- the '換' (change) handle on a SCHOOL spell card.
+        A correction / GM-override tool: unlike the school-spell grant it
+        applies no eligibility gate, so the picker may offer (and a GM may
+        choose) a spell beyond the character's present reach. The api
+        helper mutates the rank directly and does not own the dirty flag,
+        so this slot does (mirrors applySchoolSpellChoices)."""
+        if not old_id or not new_id:
+            return
+        if api.character.spells.replace_school_spell(old_id, new_id):
+            api.character.set_dirty_flag(True)
+            api.character.notify_character_refreshed()
+
     @Slot(str)
     def memorizeSpell(self, spell_id):
         """Memorize a spell -- a MemoSpellAdv costing XP equal to the
