@@ -300,6 +300,45 @@ class TestCharacterBll(unittest.TestCase):
         self.assertEqual(0, api.character.rankadv.get_pending_spells_count())
         self.assertEqual([], api.character.rankadv.get_starting_spells_to_choose())
 
+    def test_replace_school_spell(self):
+        """replace_school_spell swaps a granted spell in place on its owning
+        rank, without touching the rest of the rank; it refuses unknown
+        targets, duplicates, and non-school spells."""
+        import l5r.api.character.rankadv
+        import l5r.api.character.schools
+        import l5r.api.character.spells
+        from l5rdal.spell import Spell
+
+        for sid, name, elem in (('spell_a', 'Spell A', 'fire'),
+                                ('spell_b', 'Spell B', 'water'),
+                                ('spell_c', 'Spell C', 'air')):
+            sp = Spell()
+            sp.id, sp.name, sp.element, sp.mastery = sid, name, elem, 1
+            api.data.model().spells.append(sp)
+
+        api.character.schools.set_first('test_school_1')
+        rank_ = api.character.rankadv.get_last()
+        rank_.gained_spells_count = 2
+        api.character.spells.add_school_spell('spell_a')
+        api.character.spells.add_school_spell('spell_b')
+        api.character.rankadv.clear_spells_to_choose()
+
+        # A plain swap: spell_a -> spell_c, in place.
+        self.assertTrue(
+            api.character.spells.replace_school_spell('spell_a', 'spell_c'))
+        school_spells = api.character.spells.get_school_spells()
+        self.assertIn('spell_c', school_spells)
+        self.assertNotIn('spell_a', school_spells)
+        self.assertIn('spell_b', school_spells)   # untouched
+
+        # Unknown target, duplicate, and non-school source are all refused.
+        self.assertFalse(
+            api.character.spells.replace_school_spell('spell_c', 'no_such_spell'))
+        self.assertFalse(
+            api.character.spells.replace_school_spell('spell_c', 'spell_b'))
+        self.assertFalse(
+            api.character.spells.replace_school_spell('not_a_school_spell', 'spell_a'))
+
     # --- reset advancements (QML resetAdvancements slot) --------------
 
     def test_reset_advancements(self):
