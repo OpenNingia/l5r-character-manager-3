@@ -19,6 +19,7 @@
 import os
 import shutil
 from tempfile import mkstemp
+from types import NoneType
 
 from pypdf import PdfReader, PdfWriter
 from pypdf.generic import ArrayObject, NameObject
@@ -28,7 +29,7 @@ import l5r.api.character
 import l5r.api.character.powers
 import l5r.api.character.skills
 import l5r.api.character.spells
-import l5r.models
+import l5r.models as models
 
 from l5r.exporters.fdfexporter import (
     FDFExporterAll,
@@ -53,8 +54,7 @@ def _create_form_fields(form, exporter):
     exporter.set_model(api.character.model())
     return exporter.get_fields()
 
-
-def _strip_form_widgets(writer):
+def _strip_form_widgets(writer, exception_list=None):
     """Remove form widget annotations and /AcroForm from a flattened PDF.
 
     pypdf's ``update_page_form_field_values(..., flatten=True)`` bakes the
@@ -62,19 +62,23 @@ def _strip_form_widgets(writer):
     annotations in place, so the now-empty field overlays still render on
     top. Drop them to get a truly flattened, no-form output.
     """
+    if exception_list is None: exception_list = []
+
     for p in writer.pages:
         if "/Annots" not in p:
             continue
-        kept = [
-            a for a in p["/Annots"]
-            if a.get_object().get("/Subtype") != "/Widget"
-        ]
+        kept = []
+        for a in p["/Annots"]:
+            obj = a.get_object()
+            fieldName = obj.get("/T")
+            if obj.get("/Subtype") != "/Widget" or fieldName in exception_list:
+                kept.append(a)
         p[NameObject("/Annots")] = ArrayObject(kept)
     if "/AcroForm" in writer._root_object:
         del writer._root_object[NameObject("/AcroForm")]
 
 
-def _fill_pdf(form_fields, source_pdf, target_pdf, target_suffix=None):
+def _fill_pdf(form_fields, source_pdf, target_pdf, target_suffix=None, exception_list=None):
     basen = os.path.splitext(os.path.basename(target_pdf))[0]
     based = os.path.dirname(target_pdf)
 
@@ -94,7 +98,7 @@ def _fill_pdf(form_fields, source_pdf, target_pdf, target_suffix=None):
         flatten=True,
     )
 
-    _strip_form_widgets(writer)
+    _strip_form_widgets(writer,exception_list)
 
     with open(target_pdf, "wb") as output_stream:
         writer.write(output_stream)
@@ -127,10 +131,15 @@ def _merge_pdf(input_files, output_file):
 def _write_pdf(form, source, exporter, temp_files):
     source_pdf = get_app_file(source)
     form_fields = _create_form_fields(form, exporter)
+    exception_list = []
 
     fd, fpath = mkstemp(suffix='.pdf')
     os.fdopen(fd, 'wb').close()
-    _fill_pdf(form_fields, source_pdf, fpath)
+    
+    if type(exporter) is FDFExporterShugenja: 
+        exception_list = exporter.get_unused_spell_slots()
+
+    _fill_pdf(form_fields, source_pdf, fpath, exception_list=exception_list)
     temp_files.append(fpath)
 
 

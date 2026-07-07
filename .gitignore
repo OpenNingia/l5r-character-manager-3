@@ -72,3 +72,4 @@ tools/deploy/windows/Output/
 
 # local documentation
 local_docs/
+/.vs

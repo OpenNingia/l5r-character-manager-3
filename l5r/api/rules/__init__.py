@@ -341,6 +341,26 @@ def calculate_mod_skill_roll(pc, skill):
             base_roll += m
     return base_roll
 
+def calculate_base_spell_roll(pc, ring):
+    """calculate the base skill roll for a given skill"""
+
+    # base spell roll is calculated
+    # as xky where x is total shugengja school ranks + ring rank
+    # and y is ring rank
+
+    ring_value = api.character.ring_rank(ring)
+    rank_value = l5r.api.character.insight_rank()
+
+    base_roll = DicePool().from_values(roll=ring_value + rank_value,keep=ring_value)
+
+    #check for +1k0 from Spellcraft Mastery
+    sc_rank = api.character.skills.get_skill_rank('spellcraft')
+
+    if sc_rank >= 5:
+        base_roll.roll += 1
+
+    #mastery_ability_rank = api.data.skills.
+    return base_roll
 
 def calculate_kiho_cost(kiho_id):
 

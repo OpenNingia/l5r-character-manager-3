@@ -101,6 +101,7 @@ class FDFExporter(object):
     def get_exp(self):
         return u'%s / %s' % (api.character.xp(), api.character.xp_limit())
 
+    
 
 def zigzag(l1, l2):
     def _zigzag(l1_, l2_):
@@ -331,6 +332,17 @@ class FDFExporterShugenja(FDFExporter):
         super(FDFExporterShugenja, self).__init__()
         self.spell_per_page = 0
 
+    
+    def get_unused_spell_slots(self):
+        slots = []
+        for i in range(0, 5):
+            ring_nm = models.ring_name_from_id(i)
+            for i in range (0, 10):
+                if api.character.ring_rank(ring_nm) < i+1:
+                        slots.append('SLOT_%s%d' % (ring_nm.upper(), i + 1))
+
+        return slots
+
     def export_spells(self, fields, pg=1, ctrl=1, off=0):
 
         m = self.model
@@ -378,6 +390,7 @@ class FDFExporterShugenja(FDFExporter):
         f = self.form
 
         fields = {}
+        spell_mod = {"AIR":0, "EARTH":0, "FIRE":0, "WATER":0,"VOID":0 }
 
         def get_affinity_text_(element_or_tag):
             ring_ = api.data.get_ring(element_or_tag)
@@ -390,6 +403,7 @@ class FDFExporterShugenja(FDFExporter):
         schools = api.character.schools.get_schools_by_tag('shugenja')
         count = min(3, len(schools))
         for i in range(0, count):
+           
 
             affinities_ = api.character.spells.affinities_by_school(schools[i])
             deficiencies_ = api.character.spells.deficiencies_by_school(schools[i])
@@ -397,13 +411,19 @@ class FDFExporterShugenja(FDFExporter):
             affinities_str_ = ""
             if len(affinities_):
                 affinities_str_ = u", ".join(map(get_affinity_text_, affinities_))
+                for affinities in affinities_:
+                    spell_mod[affinities.upper()] += 1
 
             deficiencies_str_ = ""
             if len(deficiencies_):
                 deficiencies_str_ = u", ".join(map(get_affinity_text_, deficiencies_))
+                for deficiencies in deficiencies_:
+                    spell_mod[deficiencies.upper()] -= 1
 
             school = api.data.schools.get(schools[i])
+
             if school:
+           
                 for tech in school.techs:
                     fields['SCHOOL_NM.%d' % (i + 1)] = school.name
                     fields['AFFINITY.%d' % (i + 1)] = affinities_str_
@@ -412,8 +432,14 @@ class FDFExporterShugenja(FDFExporter):
             else:
                 log.app.error(f'cannot export character school: {schools[i]}')
 
-        return fields
+            for ring, mod in spell_mod.items():
+                roll = api.rules.calculate_base_spell_roll(m,ring)
+                if mod != 0 : roll.roll += mod
+                fields['ROLL_%s' % ring] =  "(" + str(roll) + ")"
 
+        return fields
+    
+        
 
 class FDFExporterSpells(FDFExporterShugenja):
 
