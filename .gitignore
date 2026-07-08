@@ -73,3 +73,5 @@ tools/deploy/windows/Output/
 # local documentation
 local_docs/
 /.vs
+/l5r-character-manager-4.0rc1.pyproj.user
+/l5r-character-manager-4.0rc1.sln
