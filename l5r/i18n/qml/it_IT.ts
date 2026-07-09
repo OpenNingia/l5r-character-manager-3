@@ -1038,14 +1038,6 @@
         <translation type="unfinished">+1 %1</translation>
     </message>
     <message>
-        <source>Origin</source>
-        <translation>Origine</translation>
-    </message>
-    <message>
-        <source>— not chosen —</source>
-        <translation>— non scelta —</translation>
-    </message>
-    <message>
         <source>Edit</source>
         <translation>Modifica</translation>
     </message>
@@ -1064,6 +1056,22 @@
     <message>
         <source>EXP. POINTS</source>
         <translation>PUNTI ESP.</translation>
+    </message>
+    <message>
+        <source>CLAN</source>
+        <translation>CLAN</translation>
+    </message>
+    <message>
+        <source>—</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FAMILY</source>
+        <translation>FAMIGLIA</translation>
+    </message>
+    <message>
+        <source>SCHOOL</source>
+        <translation type="unfinished">SCUOLA</translation>
     </message>
 </context>
 <context>
@@ -2118,18 +2126,6 @@
         <translation>Senza nome</translation>
     </message>
     <message>
-        <source>No Clan</source>
-        <translation>Nessun Clan</translation>
-    </message>
-    <message>
-        <source>Rank %1</source>
-        <translation>Rango %1</translation>
-    </message>
-    <message>
-        <source>No School</source>
-        <translation>Nessuna Scuola</translation>
-    </message>
-    <message>
         <source>Ex&amp;port as PDF...</source>
         <translation>Es&amp;porta come PDF...</translation>
     </message>
@@ -2194,12 +2190,12 @@
         <translation>&amp;Visualizza</translation>
     </message>
     <message>
-        <source>Show section</source>
-        <translation>Mostra sezione</translation>
+        <source>Share via QR &amp;code...</source>
+        <translation>Condividi tramite codice &amp;QR...</translation>
     </message>
     <message>
-        <source>Hide section</source>
-        <translation>Nascondi sezione</translation>
+        <source>Sections</source>
+        <translation>Sezioni</translation>
     </message>
 </context>
 <context>
@@ -2536,6 +2532,22 @@
         <source>Bonus:</source>
         <translation type="unfinished">Bonus:</translation>
     </message>
+    <message>
+        <source>Different&#xa0;School:</source>
+        <translation>Scuola diversa:</translation>
+    </message>
+    <message>
+        <source>School Clan:</source>
+        <translation>Clan della scuola:</translation>
+    </message>
+    <message>
+        <source>A school outside your clan requires the Different School advantage (−%1 XP). The origin locks once accepted.</source>
+        <translation>Una scuola esterna al tuo clan richiede il vantaggio Scuola Diversa (−%1 PX). L'origine si blocca una volta accettata.</translation>
+    </message>
+    <message>
+        <source>A school outside your clan requires the Different School advantage. The origin locks once accepted.</source>
+        <translation>Una scuola esterna al tuo clan richiede il vantaggio Scuola Diversa. L'origine si blocca una volta accettata.</translation>
+    </message>
 </context>
 <context>
     <name>PerksSection</name>
@@ -2669,6 +2681,37 @@
     </message>
 </context>
 <context>
+    <name>QrShareDialog</name>
+    <message>
+        <source>Share via QR code</source>
+        <translation>Condividi tramite codice QR</translation>
+    </message>
+    <message>
+        <source>Import into the companion app</source>
+        <translation>Importa nell'app companion</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Chiudi</translation>
+    </message>
+    <message>
+        <source>There is nothing to share yet. Create or open a character first.</source>
+        <translation>Non c'è ancora nulla da condividere. Crea o apri prima un personaggio.</translation>
+    </message>
+    <message>
+        <source>Frame %1 of %2</source>
+        <translation>Fotogramma %1 di %2</translation>
+    </message>
+    <message>
+        <source>Open the companion app and point its camera at this code. Keep the window in view — the frames cycle automatically until every part has been scanned.</source>
+        <translation>Apri l'app companion e inquadra questo codice con la fotocamera. Mantieni la finestra in vista — i fotogrammi si susseguono automaticamente finché ogni parte non è stata scansionata.</translation>
+    </message>
+    <message>
+        <source>Open the companion app and point its camera at this code to import the character.</source>
+        <translation>Apri l'app companion e inquadra questo codice con la fotocamera per importare il personaggio.</translation>
+    </message>
+</context>
+<context>
     <name>RingCard</name>
     <message>
         <source>Buy the next rank of Void</source>
@@ -2751,6 +2794,41 @@
     <message>
         <source>The current Armor TN changes constantly during play; leave this off to print a blank field you can fill in by hand.</source>
         <translation>Il TN Armatura attuale cambia di continuo durante il gioco; lascialo disattivato per stampare un campo vuoto da compilare a mano.</translation>
+    </message>
+    <message>
+        <source>Text size</source>
+        <translation>Dimensione del testo</translation>
+    </message>
+    <message>
+        <source>Makes the sheet text larger and easier to read. Applies immediately.</source>
+        <translation>Ingrandisce il testo della scheda per renderlo più leggibile. Viene applicato immediatamente.</translation>
+    </message>
+</context>
+<context>
+    <name>SheetSidebar</name>
+    <message>
+        <source>Unnamed</source>
+        <translation type="unfinished">Senza nome</translation>
+    </message>
+    <message>
+        <source>No Clan</source>
+        <translation type="unfinished">Nessun Clan</translation>
+    </message>
+    <message>
+        <source>Rank %1</source>
+        <translation type="unfinished">Rango %1</translation>
+    </message>
+    <message>
+        <source>No School</source>
+        <translation type="unfinished">Nessuna Scuola</translation>
+    </message>
+    <message>
+        <source>Show section</source>
+        <translation type="unfinished">Mostra sezione</translation>
+    </message>
+    <message>
+        <source>Hide section</source>
+        <translation type="unfinished">Nascondi sezione</translation>
     </message>
 </context>
 <context>
