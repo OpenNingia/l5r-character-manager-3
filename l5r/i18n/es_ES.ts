@@ -422,60 +422,65 @@ Has alcanzado el Límite de Experiencia.</translation>
       <translation>Exportar hoja de PNJ</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="901" />
+      <location filename="../qmlui/proxies/app_controller.py" line="867" />
+      <source>Could not generate the QR code.</source>
+      <translation>No se pudo generar el código QR.</translation>
+    </message>
+    <message>
+      <location filename="../qmlui/proxies/app_controller.py" line="927" />
       <source>Not enough XP to complete this purchase.</source>
       <translation>No tienes suficiente experiencia para completar esta compra.</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="905" />
+      <location filename="../qmlui/proxies/app_controller.py" line="931" />
       <source>Choose your clan, family and school before spending experience points.</source>
       <translation>Elige tu clan, familia y escuela antes de gastar puntos de experiencia.</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="982" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1008" />
       <source>{0}, Skill {1}. Cost: {2} xp</source>
       <translation>{0}, Habilidad {1}. Coste: {2} px</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1031" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1057" />
       <source>Any skill (rank {0}):</source>
       <translation>Cualquier habilidad (rango {0}):</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1044" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1070" />
       <source>skill</source>
       <translation>habilidad</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1046" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1072" />
       <source>Any {0}, but {1} (rank {2}):</source>
       <translation>Cualquier {0}, excepto {1} (rank {2}):</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1047" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1073" />
       <source>Any {0} skill (rank {1}):</source>
       <translation>{0} habilidades cualquiera (rango {1}):</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1766" />
-      <location filename="../qmlui/proxies/app_controller.py" line="1681" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1801" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1716" />
       <source>{0} Rank {1}, XP Gain: {2}</source>
       <translation>{0} Rango {1}, Otorga: {2}</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1769" />
-      <location filename="../qmlui/proxies/app_controller.py" line="1684" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1804" />
+      <location filename="../qmlui/proxies/app_controller.py" line="1719" />
       <source>{0} Rank {1}, XP Cost: {2}</source>
       <translation>{0} Rango {1}, Coste: {2} px</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="1990" />
-      <location filename="../qmlui/proxies/app_controller.py" line="1989" />
+      <location filename="../qmlui/proxies/app_controller.py" line="2025" />
+      <location filename="../qmlui/proxies/app_controller.py" line="2024" />
       <source>N/A</source>
       <translation>N/A</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/app_controller.py" line="2184" />
+      <location filename="../qmlui/proxies/app_controller.py" line="2219" />
       <source>New item</source>
       <translation>Nuevo objeto</translation>
     </message>
@@ -2503,18 +2508,18 @@ Si eliges una escuela avanzada o una senda alternativa estáte seguro de revisar
   <context>
     <name>SettingsProxy</name>
     <message>
-      <location filename="../qmlui/proxies/settings_proxy.py" line="125" />
-      <location filename="../qmlui/proxies/settings_proxy.py" line="114" />
+      <location filename="../qmlui/proxies/settings_proxy.py" line="149" />
+      <location filename="../qmlui/proxies/settings_proxy.py" line="138" />
       <source>The language will change the next time you start the app.</source>
       <translation>El idioma cambiará la próxima vez que inicies la aplicación.</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/settings_proxy.py" line="219" />
+      <location filename="../qmlui/proxies/settings_proxy.py" line="266" />
       <source>Restart the app to keep using the new interface.</source>
       <translation>Reinicia la aplicación para seguir usando la nueva interfaz.</translation>
     </message>
     <message>
-      <location filename="../qmlui/proxies/settings_proxy.py" line="221" />
+      <location filename="../qmlui/proxies/settings_proxy.py" line="268" />
       <source>Restart the app to switch back to the classic interface.</source>
       <translation>Reinicia la aplicación para volver a la interfaz clásica.</translation>
     </message>

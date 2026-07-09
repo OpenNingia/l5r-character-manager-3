@@ -49,6 +49,7 @@ SOURCES = __init__.py \
           exporters/fdfexporter.py \
           exporters/model_form.py \
           exporters/npc.py \
+          exporters/qr_transfer.py \
           exporters/sheet.py \
           l5rcmcore/__init__.py \
           l5rcmcore/qtsignalsutils.py \
@@ -94,6 +95,7 @@ SOURCES = __init__.py \
           qmlui/proxies/pc/traits.py \
           qmlui/proxies/pc/weapons.py \
           qmlui/proxies/pc_proxy.py \
+          qmlui/proxies/qr_image_provider.py \
           qmlui/proxies/settings_proxy.py \
           tools/__init__.py \
           ui/__init__.py \
@@ -125,6 +127,7 @@ SOURCES = __init__.py \
           util/log.py \
           util/names.py \
           util/osutil.py \
+          util/section_visibility.py \
           util/session.py \
           util/settings.py \
           util/worker.py \
