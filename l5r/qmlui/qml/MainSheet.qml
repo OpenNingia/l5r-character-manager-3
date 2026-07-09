@@ -668,16 +668,24 @@ ApplicationWindow {
         property string pendingAction: "new"
         readonly property bool _isOpen: pendingAction === "open"
 
-        title: qsTr("Discard unsaved changes?")
+        title: qsTr("You have unsaved changes.")
         tagline: _isOpen ? qsTr("Open another character")
                          : qsTr("Start a new character")
         seal: _isOpen ? "開" : "新"
         accent: Theme.accent
         accentDark: Theme.accentMuted
         padding: Theme.s6
-        acceptText: _isOpen ? qsTr("Discard & Open") : qsTr("Discard & New")
+        acceptText: _isOpen ? qsTr("Save & Open") : qsTr("Save & New")
+        
+        denyText: _isOpen ? qsTr("Discard & Open") : qsTr("Discard & New")
+        denyVisible: true
+        denyEnabled: true
+
         cancelText: qsTr("Keep editing")
         onAccepted: {
+            if (discardConfirmDlg.accepted)
+                appCtrl.fileSave();
+
             if (discardConfirmDlg._isOpen)
                 appCtrl.fileOpenDialog();
             else
@@ -688,11 +696,11 @@ ApplicationWindow {
             width: 360
             text: discardConfirmDlg._isOpen
                 ? qsTr("This character has changes that are not saved to a "
-                    + ".l5r file. Opening another character will discard "
-                    + "them. Continue?")
+                    + ".l5r file. Would you like to save or discard these changes before "
+                    + "opening another character?")
                 : qsTr("This character has changes that are not saved to a "
-                    + ".l5r file. Starting a new character will discard "
-                    + "them. Continue?")
+                    + ".l5r file. Would you like to save or discard these changes before "
+                    + "opening a new character?")
             wrapMode: Text.WordWrap
             font.family: Theme.fontBody
             font.pixelSize: Theme.fsBody

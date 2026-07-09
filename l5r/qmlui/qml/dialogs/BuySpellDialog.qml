@@ -36,7 +36,11 @@
 //     description:  "...",
 //     reach:        4,             // highest mastery the caster can learn
 //     eligible:     true }
-// On accept the dialog calls appCtrl.learnSpell(id).
+// Opened two ways:
+//   present()               -- learn free-form; accept -> learnSpell(id).
+//   presentSwap(oldId, name) -- replace a school-granted spell; accept ->
+//                              replaceSchoolSpell(oldId, id). No reach gate
+//                              (a GM correction), so any spell is pickable.
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -48,6 +52,15 @@ Widgets.L5RDialog {
     id: dlg
 
     // --- state ----------------------------------------------------
+    // Two modes share this catalogue picker. "learn" (the default) adds a
+    // free-form spell, gated on mastery-reach. "swap" replaces one
+    // school-granted spell with another -- a correction / GM-override, so
+    // it is NOT gated: any spell may be chosen (out-of-reach ones stay
+    // dimmed as a warning, but remain pickable).
+    property string _mode: "learn"
+    property string _swapOldId: ""
+    property string _swapOldName: ""
+
     property var _catalogue: []
     property var _selected: null
     property string _search: ""
@@ -131,27 +144,42 @@ Widgets.L5RDialog {
 
     // --- chrome (via L5RDialog) -----------------------------------
     seal: "呪"
-    title: qsTr("Learn a Spell")
-    tagline: qsTr("a spell is yours to inscribe only when your understanding runs deep enough")
+    title: dlg._mode === "swap" ? qsTr("Change a Spell") : qsTr("Learn a Spell")
+    tagline: dlg._mode === "swap" ? qsTr("choose another prayer to take the place of the one your school granted") : qsTr("a spell is yours to inscribe only when your understanding runs deep enough")
     accent: _accent
     accentDark: Theme.secondaryDark
-    acceptText: qsTr("Learn")
+    acceptText: dlg._mode === "swap" ? qsTr("Change") : qsTr("Learn")
     acceptGlyph: "呪"
-    acceptEnabled: dlg._eligible
+    // Learn gates on mastery-reach; swap is a GM override, so any picked
+    // spell may be confirmed (the reach box still warns when out of reach).
+    acceptEnabled: dlg._mode === "swap" ? (dlg._selected !== null) : dlg._eligible
     statusText: {
         if (!dlg._selected)
             return "";
+        if (dlg._mode === "swap") {
+            if (dlg._eligible)
+                return qsTr("Replace %1 with this spell.").arg(dlg._swapOldName);
+            return qsTr("This lies beyond the character's present reach — swap it in anyway as the GM decrees.");
+        }
         if (dlg._eligible)
             return qsTr("This spell is within your reach — inscribe it into your library at no cost.");
         return dlg._reasonFor(dlg._selected);
     }
     onAccepted: {
-        if (dlg._selected && dlg._eligible && appCtrl)
+        if (!dlg._selected || !appCtrl)
+            return;
+        if (dlg._mode === "swap") {
+            if (dlg._swapOldId)
+                appCtrl.replaceSchoolSpell(dlg._swapOldId, dlg._selected.id);
+        } else if (dlg._eligible) {
             appCtrl.learnSpell(dlg._selected.id);
+        }
     }
 
-    // --- entrypoint -----------------------------------------------
-    function present() {
+    // --- entrypoints ----------------------------------------------
+    // Shared reset for both modes -- refresh the catalogue and clear the
+    // selection and filters.
+    function _reset() {
         dlg._refreshCatalogue();
         dlg._selected = null;
         dlg._search = "";
@@ -159,6 +187,25 @@ Widgets.L5RDialog {
         dlg._tagMode = "all";
         dlg._tagKey = "";
         tagCombo.currentIndex = 0;
+    }
+
+    // Learn a spell free-form (the default).
+    function present() {
+        dlg._mode = "learn";
+        dlg._swapOldId = "";
+        dlg._swapOldName = "";
+        dlg._reset();
+        dlg.open();
+    }
+
+    // Replace a school-granted spell (oldId) with another. The same
+    // catalogue feed applies -- spells the character already knows are
+    // excluded, so a swap can never duplicate an existing spell.
+    function presentSwap(oldId, oldName) {
+        dlg._mode = "swap";
+        dlg._swapOldId = oldId || "";
+        dlg._swapOldName = oldName || "";
+        dlg._reset();
         dlg.open();
     }
 

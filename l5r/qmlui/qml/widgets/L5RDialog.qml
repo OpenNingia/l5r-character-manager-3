@@ -58,6 +58,18 @@ Dialog {
     property string cancelText: qsTr("Cancel")
     property string statusText: ""
 
+    // optional third button to allow for Yes/No/Cancel flows (e.g. "Save / Don't Save / Cancel"). 
+    // The "No" button is styled like the primary action, but sets `accepted` to false so the consumer 
+    // can distinguish it from the "Yes" button.
+    // The "No" button is hidden by default, and can be enabled by setting `denyVisible` to true.
+    // The "No" button is disabled by default, and can be enabled by setting `denyEnabled` to true.
+    property string denyText: qsTr("Dismiss")
+    property string denyGlyph: ""
+    property bool denyEnabled: false
+    property bool denyVisible: false
+    property bool accepted: true
+
+
     // --- base config (overridable) --------------------------------
     parent: Overlay.overlay
     anchors.centerIn: Overlay.overlay
@@ -222,6 +234,20 @@ Dialog {
                     onClicked: dlg.reject()
                 }
                 L5RButton {
+                    visible: dlg.denyVisible
+                    text: dlg.denyText
+                    glyph: dlg.acceptGlyph
+                    accent: dlg.accent
+                    accentDark: dlg.accentDark
+                    enabled: dlg.denyEnabled
+                    Layout.alignment: Qt.AlignVCenter
+
+                    onClicked: {
+                        dlg.accepted = false
+                        dlg.accept()
+                    }
+                }
+                L5RButton {
                     visible: dlg.acceptVisible
                     text: dlg.acceptText
                     glyph: dlg.acceptGlyph
@@ -229,7 +255,10 @@ Dialog {
                     accentDark: dlg.accentDark
                     enabled: dlg.acceptEnabled
                     Layout.alignment: Qt.AlignVCenter
-                    onClicked: dlg.accept()
+                    onClicked: {
+                        dlg.accepted = true
+                        dlg.accept()
+                    }
                 }
             }
         }

@@ -213,6 +213,37 @@ class TestControllerActions(unittest.TestCase):
         self.assertEqual([], pc.advans)
         self.assertTrue(pc.unsaved)
 
+    # --- school-spell swap (replaceSchoolSpell slot) -----------------
+
+    def test_replace_school_spell_slot(self):
+        """The replaceSchoolSpell slot swaps a granted spell in place and
+        leaves the model dirty; a swap the api refuses (unknown target)
+        leaves both the spell and the clean flag untouched."""
+        from l5rdal.spell import Spell
+
+        for sid, elem in (('spell_a', 'fire'), ('spell_b', 'water')):
+            sp = Spell()
+            sp.id, sp.name, sp.element, sp.mastery = sid, sid.upper(), elem, 1
+            api.data.model().spells.append(sp)
+
+        api.character.schools.set_first('test_school_1')
+        api.character.rankadv.get_last().gained_spells_count = 1
+        api.character.spells.add_school_spell('spell_a')
+        api.character.set_dirty_flag(False)
+
+        self.ctrl.replaceSchoolSpell('spell_a', 'spell_b')
+
+        school_spells = api.character.spells.get_school_spells()
+        self.assertIn('spell_b', school_spells)
+        self.assertNotIn('spell_a', school_spells)
+        self.assertTrue(api.character.model().unsaved)
+
+        # A refused swap (unknown target) is a silent no-op: no dirtying.
+        api.character.set_dirty_flag(False)
+        self.ctrl.replaceSchoolSpell('spell_b', 'no_such_spell')
+        self.assertIn('spell_b', api.character.spells.get_school_spells())
+        self.assertFalse(api.character.model().unsaved)
+
     # --- File > Open missing-datapack gate ---------------------------
 
     def test_file_open_refused_on_missing_books(self):
