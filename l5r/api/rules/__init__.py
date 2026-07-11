@@ -348,7 +348,7 @@ def calculate_base_spell_roll(pc, ring):
     # as xky where x is total shugengja school ranks + ring rank
     # and y is ring rank
 
-    ring_value = api.character.ring_rank(ring)
+    ring_value = api.character.ring_rank(ring.lower())
     rank_value = l5r.api.character.insight_rank()
 
     base_roll = DicePool().from_values(roll=ring_value + rank_value,keep=ring_value)
