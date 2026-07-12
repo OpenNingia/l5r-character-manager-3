@@ -22,7 +22,7 @@ ColumnLayout {
             "insight": 0,
             "xp": 0,
             "xpLimit": 0,
-            "rawXpLimit": 0
+            "rawXpLimit": 0,
         })
     readonly property var _rings: pcProxy ? pcProxy.rings : ({})
     readonly property var _attrs: pcProxy ? pcProxy.attribs : ({})
@@ -109,7 +109,17 @@ ColumnLayout {
             "key": "infamy",
             "label": qsTr("Infamy")
         }]
-
+    
+    function _expLabel(displayType,xpUsed, xpTotal) {
+        var xpAvailable = xpTotal - xpUsed;
+        if (displayType == 3) {
+            return qsTr("Available: ") + xpAvailable + qsTr(" / Applied: ") + xpUsed;
+        } else if (displayType == 2) {
+            return qsTr("Available: ") + xpAvailable + qsTr(" / Earned: ") + xpTotal;
+        } else {
+            return qsTr("Applied: ") + xpUsed +  qsTr("/ Earned: ") + xpTotal;
+        }
+    }
     // Shared stat-strip primitives -- used by both the Origin grid and
     // the progression strip below so the two read as one ledger.
     component StatCell: ColumnLayout {
@@ -394,19 +404,19 @@ ColumnLayout {
             caption: qsTr("EXP. POINTS")
             StatValue {
                 Layout.fillWidth: true
-                text: section._prog.xp + " / " + section._prog.xpLimit
-            }
-            ToolButton {
-                text: "✎"
-                ToolTip.visible: hovered
-                ToolTip.text: qsTr("Edit XP limit")
-                onClicked: expLimitDlg.openWithCurrent()
+                text: _expLabel(appSettings.expDisplay, section._prog.xp, section._prog.xpLimit)
             }
             ToolButton {
                 text: "+"
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Add awarded XP")
                 onClicked: addXpDlg.openFresh()
+            }
+            ToolButton {
+                text: "✎"
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Edit XP limit")
+                onClicked: expLimitDlg.openWithCurrent()
             }
         }
     }

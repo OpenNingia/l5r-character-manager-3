@@ -77,6 +77,18 @@ _FONT_SCALES = {
     "huge": 1.45,
 }
 
+_EXP_DISPLAYS = [
+    (1, "Points Used / Earned"),
+    (2, "Points Available / Earned"),
+    (3, "Points Available / Points Used")
+]
+
+_HEALTH_METHODS = [
+    ('default', "Default"),
+    ('stacked', "Health left"),
+    ('wounds', "Total wounds")
+]
+
 
 class SettingsProxy(QObject):
     """Read/write bridge over L5RCMSettings for the QML Settings section."""
@@ -89,6 +101,9 @@ class SettingsProxy(QObject):
     useQmlUiChanged = Signal()
     buyForFreeChanged = Signal()
     fontSizeChanged = Signal()
+    expDisplayChanged = Signal()
+    healthMethodChanged = Signal()
+
 
     # Emitted when a setting was persisted but cannot take effect until the
     # app is restarted (language, front-end switch). Carries the message
@@ -115,6 +130,16 @@ class SettingsProxy(QObject):
     def fontSizes(self):
         return [{"id": key, "name": self.tr(label)}
                 for key, label in _FONT_SIZES]
+
+    @Property("QVariantList", constant=True)
+    def expDisplays(self):
+        return [{"id": key, "name": self.tr(label)}
+                for key, label in _EXP_DISPLAYS]
+
+    @Property("QVariantList", constant=True)
+    def healthMethods(self):
+        return [{"id": key, "name": self.tr(label)}
+                for key, label in _HEALTH_METHODS]
 
     # --- localization ------------------------------------------------
 
@@ -219,6 +244,45 @@ class SettingsProxy(QObject):
         self._settings.app.ui_font_size = value
         self._settings.sync()
         self.fontSizeChanged.emit()
+
+    @Property(str, notify=healthMethodChanged)
+    def healthMethod(self):
+        return (self._settings.app.health_method or "default")
+        
+    @Slot(str)
+    def setHealthMethod(self, value):
+        if value == self.healthMethod:
+            return
+        self._settings.app.health_method = value
+        self._settings.sync()
+        api.signals.bus().wounds_changed.emit()
+        self.healthMethodChanged.emit()
+
+    # --- EXP display (applied live via Theme.expDisplay) -------------
+    @Property(int, notify=expDisplayChanged)
+    def expDisplay(self):
+        try:
+            return int(self._settings.app.ui_exp_display)
+        except (TypeError, ValueError):
+            return 1
+
+    @Slot(int)
+    def setExpDisplay(self, value):
+        try:
+            value = int(value)
+        except (TypeError, ValueError):
+            log.app.warning(u"QML UI: invalid experience display %r", value)
+            return
+
+        if value == self.expDisplay:
+            return
+
+        self._settings.app.ui_exp_display = value
+        self._settings.sync()
+        self.expDisplayChanged.emit()
+
+
+
 
     # --- PDF export (read by the exporter at export time) ------------
 
