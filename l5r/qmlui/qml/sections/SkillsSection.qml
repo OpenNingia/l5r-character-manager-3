@@ -48,7 +48,7 @@ ColumnLayout {
 
     readonly property var _skills: pcProxy ? pcProxy.skills : []
     readonly property bool _canEdit: !pcProxy || pcProxy.canEdit !== false
-
+    readonly property var _rank: pcProxy.progression.rank
     // Pending school-granted wildcard skill/emphasis picks (the datapack's
     // <PlayerChoose>, surfaced as the "skills" opportunity). Drives the
     // callout below; the matching TOC badge comes from the same proxy.
@@ -531,6 +531,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                     spacing: 4
                     Repeater {
+                        id: skillEmph
                         model: rowItem.row.emph || []
                         delegate: Rectangle {
                             radius: 3
@@ -551,6 +552,7 @@ ColumnLayout {
                     ToolButton {
                         text: "＋"
                         enabled: section._canEdit
+                        visible: (skillEmph.count < section._rank)
                         flat: true
                         implicitWidth: 22
                         implicitHeight: 18

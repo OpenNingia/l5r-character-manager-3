@@ -22,7 +22,7 @@ ColumnLayout {
             "insight": 0,
             "xp": 0,
             "xpLimit": 0,
-            "rawXpLimit": 0,
+            "rawXpLimit": 0
         })
     readonly property var _rings: pcProxy ? pcProxy.rings : ({})
     readonly property var _attrs: pcProxy ? pcProxy.attribs : ({})
