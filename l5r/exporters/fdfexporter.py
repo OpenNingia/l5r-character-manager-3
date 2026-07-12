@@ -99,7 +99,18 @@ class FDFExporter(object):
         return self.form.lb_pc_school.text()
 
     def get_exp(self):
-        return u'%s / %s' % (api.character.xp(), api.character.xp_limit())
+        settings = L5RCMSettings()
+        displayType = int(settings.app.ui_exp_display)
+        xpUsed = api.character.xp()
+        xpTotal = api.character.xp_limit()
+        xpAvailable = xpTotal - xpUsed
+        
+        if (displayType == 3):
+            return u'Available: %s / Applied: %s' %  (xpAvailable, xpUsed)
+        elif (displayType == 2): 
+            return u'%s of %s Available' % (xpAvailable, xpTotal)
+        else:
+            return u'%s of %s Applied' % (xpUsed, xpTotal)
 
     
 

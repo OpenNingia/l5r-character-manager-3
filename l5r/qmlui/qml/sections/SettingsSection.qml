@@ -194,14 +194,27 @@ ColumnLayout {
 
             RowLayout {
                 Layout.fillWidth: true
-                Label {
-                    text: qsTr("Print skills on the first page")
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.fsLabel
-                    font.weight: Theme.wSemiBold
-                    color: Theme.ink
-                    Layout.fillWidth: true
+                ColumnLayout {
+                    Label {
+                        text: qsTr("Print skills on the first page")
+                        font.family: Theme.fontDisplay
+                        font.pixelSize: Theme.fsLabel
+                        font.weight: Theme.wSemiBold
+                        color: Theme.ink
+                        Layout.fillWidth: true
+                    }
+                    Label {
+                        Layout.fillWidth: true
+                        text: qsTr("Used when you export your character sheet to PDF.")
+                        font.family: Theme.fontBody
+                        font.pixelSize: Theme.fsCaption
+                        font.italic: true
+                        color: Theme.inkMuted
+                        wrapMode: Text.WordWrap
+                    }
                 }
+           
+            
                 Widgets.L5RToggle {
                     checked: appSettings ? appSettings.firstPageSkills : false
                     onToggled: if (appSettings)
@@ -209,43 +222,77 @@ ColumnLayout {
                 }
             }
 
-            Label {
-                Layout.fillWidth: true
-                text: qsTr("Used when you export your character sheet to PDF.")
-                font.family: Theme.fontBody
-                font.pixelSize: Theme.fsCaption
-                font.italic: true
-                color: Theme.inkMuted
-                wrapMode: Text.WordWrap
-            }
-
             RowLayout {
                 Layout.fillWidth: true
                 Layout.topMargin: Theme.s2
-                Label {
-                    text: qsTr("Print the current Armor TN")
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.fsLabel
-                    font.weight: Theme.wSemiBold
-                    color: Theme.ink
-                    Layout.fillWidth: true
+                
+                ColumnLayout {
+                    Label {
+                        text: qsTr("Print the current Armor TN")
+                        font.family: Theme.fontDisplay
+                        font.pixelSize: Theme.fsLabel
+                        font.weight: Theme.wSemiBold
+                        color: Theme.ink
+                        Layout.fillWidth: true
+                    }
+                    Label {
+                        //Layout.fillWidth: true
+                        width: 320
+                        text: qsTr("The current Armor TN changes constantly during play; leave this off to print a blank field you can fill in by hand.")
+                        font.family: Theme.fontBody
+                        font.pixelSize: Theme.fsCaption
+                        font.italic: true
+                        color: Theme.inkMuted
+                        wrapMode: Text.WordWrap
+                    }
                 }
+            
+        
                 Widgets.L5RToggle {
                     checked: appSettings ? appSettings.printCurrentArmorTn : false
                     onToggled: if (appSettings)
                         appSettings.setPrintCurrentArmorTn(checked)
                 }
             }
-
-            Label {
+            
+            RowLayout {Layout.fillWidth: true}
+            RowLayout {
                 Layout.fillWidth: true
-                text: qsTr("The current Armor TN changes constantly during play; leave this off to print a blank field you can fill in by hand.")
-                font.family: Theme.fontBody
-                font.pixelSize: Theme.fsCaption
-                font.italic: true
-                color: Theme.inkMuted
-                wrapMode: Text.WordWrap
+
+                ColumnLayout {
+                    Label {
+                        text: qsTr("Health Display")
+                        font.family: Theme.fontDisplay
+                        font.pixelSize: Theme.fsLabel
+                        font.weight: Theme.wSemiBold
+                        color: Theme.ink
+                        Layout.fillWidth: true
+                    }
+                    Label {
+                        Layout.fillWidth: true
+                        text: qsTr("Determines how health levels are displayed when you export your character sheet to PDF.")
+                        font.family: Theme.fontBody
+                        font.pixelSize: Theme.fsCaption
+                        font.italic: true
+                        color: Theme.inkMuted
+                        wrapMode: Text.WordWrap
+                    }
+                }
+
+                Widgets.L5RComboBox {
+                    id: healthMethodCombo
+                    Layout.preferredWidth: 260
+                    textRole: "name"
+                    model: appSettings ? appSettings.healthMethods : []
+                    Component.onCompleted: currentIndex = root.indexOfId(
+                        model, appSettings ? appSettings.healthMethod : "default")
+                    onActivated: function (i) {
+                        if (appSettings && model[i])
+                            appSettings.setHealthMethod(model[i].id);
+                    }
+                }
             }
+
         }
     }
 
@@ -260,13 +307,24 @@ ColumnLayout {
 
             RowLayout {
                 Layout.fillWidth: true
-                Label {
-                    text: qsTr("Text size")
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.fsLabel
-                    font.weight: Theme.wSemiBold
-                    color: Theme.ink
-                    Layout.fillWidth: true
+                ColumnLayout {
+                    Label {
+                        text: qsTr("Text size")
+                        font.family: Theme.fontDisplay
+                        font.pixelSize: Theme.fsLabel
+                        font.weight: Theme.wSemiBold
+                        color: Theme.ink
+                        Layout.fillWidth: true
+                    }
+                    Label {
+                        Layout.fillWidth: true
+                        text: qsTr("Makes the sheet text larger and easier to read. Applies immediately.")
+                        font.family: Theme.fontBody
+                        font.pixelSize: Theme.fsCaption
+                        font.italic: true
+                        color: Theme.inkMuted
+                        wrapMode: Text.WordWrap
+                    }
                 }
                 Widgets.L5RComboBox {
                     id: fontSizeCombo
@@ -282,31 +340,70 @@ ColumnLayout {
                 }
             }
 
-            Label {
+            RowLayout {Layout.fillWidth: true}
+            RowLayout {
                 Layout.fillWidth: true
-                text: qsTr("Makes the sheet text larger and easier to read. Applies immediately.")
-                font.family: Theme.fontBody
-                font.pixelSize: Theme.fsCaption
-                font.italic: true
-                color: Theme.inkMuted
-                wrapMode: Text.WordWrap
+
+                ColumnLayout {
+                    Label {
+                        text: qsTr("Experience Display Style")
+                        font.family: Theme.fontDisplay
+                        font.pixelSize: Theme.fsLabel
+                        font.weight: Theme.wSemiBold
+                        color: Theme.ink
+                        Layout.fillWidth: true
+                    }
+                    Label {
+                        Layout.fillWidth: true
+                        text: qsTr("Changes how the experience points are displayed. Applies immediately.")
+                        font.family: Theme.fontBody
+                        font.pixelSize: Theme.fsCaption
+                        font.italic: true
+                        color: Theme.inkMuted
+                        wrapMode: Text.WordWrap
+                    }
+                }
+
+                Widgets.L5RComboBox {
+                    id: expDisplayCombo
+                    Layout.preferredWidth: 260
+                    textRole: "name"
+                    model: appSettings ? appSettings.expDisplays : []
+                    Component.onCompleted: currentIndex = root.indexOfId(
+                        model, appSettings ? appSettings.expDisplay : 1)
+                    onActivated: function (i) {
+                        if (appSettings && model[i])
+                            appSettings.setExpDisplay(model[i].id);
+                    }
+                }
             }
+            
 
             Widgets.OrnateDivider {
                 Layout.fillWidth: true
                 Layout.topMargin: Theme.s2
                 Layout.bottomMargin: Theme.s2
             }
-
             RowLayout {
                 Layout.fillWidth: true
-                Label {
-                    text: qsTr("Use the new interface")
-                    font.family: Theme.fontDisplay
-                    font.pixelSize: Theme.fsLabel
-                    font.weight: Theme.wSemiBold
-                    color: Theme.ink
-                    Layout.fillWidth: true
+                ColumnLayout {
+                    Label {
+                        text: qsTr("Use the new interface")
+                        font.family: Theme.fontDisplay
+                        font.pixelSize: Theme.fsLabel
+                        font.weight: Theme.wSemiBold
+                        color: Theme.ink
+                        Layout.fillWidth: true
+                    }
+                    Label {
+                        Layout.fillWidth: true
+                        text: qsTr("Turn this off to return to the classic interface. Takes effect after a restart.")
+                        font.family: Theme.fontBody
+                        font.pixelSize: Theme.fsCaption
+                        font.italic: true
+                        color: Theme.inkMuted
+                        wrapMode: Text.WordWrap
+                    }
                 }
                 Widgets.L5RToggle {
                     checked: appSettings ? appSettings.useQmlUi : true
@@ -315,15 +412,7 @@ ColumnLayout {
                 }
             }
 
-            Label {
-                Layout.fillWidth: true
-                text: qsTr("Turn this off to return to the classic interface. Takes effect after a restart.")
-                font.family: Theme.fontBody
-                font.pixelSize: Theme.fsCaption
-                font.italic: true
-                color: Theme.inkMuted
-                wrapMode: Text.WordWrap
-            }
+           
         }
     }
 }

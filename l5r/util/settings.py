@@ -213,6 +213,7 @@ class L5RCMSettings_App(object):
         self.last_open_dir = self.last_open_dir
         self.insight_calculation = self.insight_calculation
         self.advise_successful_import = self.advise_successful_import
+        #self.ui_exp_display = self.ui_exp_display
         # skip geometry
         self.user_locale = self.user_locale
         self.use_system_locale = self.use_system_locale
@@ -266,6 +267,10 @@ class L5RCMSettings_App(object):
     def ui_font_size(self):
         return self._qsettings.value('ui_font_size', 'standard')
 
+    @property
+    def ui_exp_display(self):
+        return self._qsettings.value('ui_exp_display', 1)
+
     # setter
     @health_method.setter
     def health_method(self, value):
@@ -314,3 +319,8 @@ class L5RCMSettings_App(object):
     @ui_font_size.setter
     def ui_font_size(self, value):
         self._qsettings.setValue('ui_font_size', value)
+
+    @ui_exp_display.setter
+    def ui_exp_display(self, value):
+        self._qsettings.setValue('ui_exp_display', value)
+
