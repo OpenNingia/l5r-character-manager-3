@@ -795,6 +795,26 @@
         <source>Mastery %1 — your understanding presently reaches Mastery %2</source>
         <translation>Maestria %1 — la tua comprensione raggiunge attualmente la Maestria %2</translation>
     </message>
+    <message>
+        <source>Change a Spell</source>
+        <translation>Cambia un incantesimo</translation>
+    </message>
+    <message>
+        <source>choose another prayer to take the place of the one your school granted</source>
+        <translation>scegli un'altra preghiera che prenda il posto di quella concessa dalla tua scuola</translation>
+    </message>
+    <message>
+        <source>Change</source>
+        <translation>Cambia</translation>
+    </message>
+    <message>
+        <source>Replace %1 with this spell.</source>
+        <translation>Sostituisci %1 con questo incantesimo.</translation>
+    </message>
+    <message>
+        <source>This lies beyond the character&apos;s present reach — swap it in anyway as the GM decrees.</source>
+        <translation>Questo va oltre la portata attuale del personaggio — inseriscilo comunque come decreta il GM.</translation>
+    </message>
 </context>
 <context>
     <name>BuyTattooDialog</name>
@@ -1072,6 +1092,26 @@
     <message>
         <source>SCHOOL</source>
         <translation type="unfinished">SCUOLA</translation>
+    </message>
+    <message>
+        <source>Available: </source>
+        <translation>Disponibili: </translation>
+    </message>
+    <message>
+        <source> / Applied: </source>
+        <translation> / Applicati: </translation>
+    </message>
+    <message>
+        <source> / Earned: </source>
+        <translation> / Guadagnati: </translation>
+    </message>
+    <message>
+        <source>Applied: </source>
+        <translation>Applicati: </translation>
+    </message>
+    <message>
+        <source>/ Earned: </source>
+        <translation>/ Guadagnati: </translation>
     </message>
 </context>
 <context>
@@ -1975,6 +2015,10 @@
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
+    <message>
+        <source>Dismiss</source>
+        <translation>Chiudi</translation>
+    </message>
 </context>
 <context>
     <name>LibrarySection</name>
@@ -2154,10 +2198,6 @@
         <translation>Risolvi le opportunità in sospeso prima di avanzare di rango.</translation>
     </message>
     <message>
-        <source>Discard unsaved changes?</source>
-        <translation>Scartare le modifiche non salvate?</translation>
-    </message>
-    <message>
         <source>Open another character</source>
         <translation>Apri un altro personaggio</translation>
     </message>
@@ -2178,14 +2218,6 @@
         <translation>Continua a modificare</translation>
     </message>
     <message>
-        <source>This character has changes that are not saved to a .l5r file. Opening another character will discard them. Continue?</source>
-        <translation>Questo personaggio ha modifiche non salvate in un file .l5r. Aprire un altro personaggio le scarterà. Continuare?</translation>
-    </message>
-    <message>
-        <source>This character has changes that are not saved to a .l5r file. Starting a new character will discard them. Continue?</source>
-        <translation>Questo personaggio ha modifiche non salvate in un file .l5r. Creare un nuovo personaggio le scarterà. Continuare?</translation>
-    </message>
-    <message>
         <source>&amp;View</source>
         <translation>&amp;Visualizza</translation>
     </message>
@@ -2196,6 +2228,26 @@
     <message>
         <source>Sections</source>
         <translation>Sezioni</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes.</source>
+        <translation>Hai modifiche non salvate.</translation>
+    </message>
+    <message>
+        <source>Save &amp; Open</source>
+        <translation>Salva e apri</translation>
+    </message>
+    <message>
+        <source>Save &amp; New</source>
+        <translation>Salva e nuovo</translation>
+    </message>
+    <message>
+        <source>This character has changes that are not saved to a .l5r file. Would you like to save or discard these changes before opening another character?</source>
+        <translation>Questo personaggio ha modifiche non salvate in un file .l5r. Vuoi salvare o scartare queste modifiche prima di aprire un altro personaggio?</translation>
+    </message>
+    <message>
+        <source>This character has changes that are not saved to a .l5r file. Would you like to save or discard these changes before opening a new character?</source>
+        <translation>Questo personaggio ha modifiche non salvate in un file .l5r. Vuoi salvare o scartare queste modifiche prima di creare un nuovo personaggio?</translation>
     </message>
 </context>
 <context>
@@ -2534,7 +2586,7 @@
     </message>
     <message>
         <source>Different&#xa0;School:</source>
-        <translation>Scuola diversa:</translation>
+        <translation>Scuola&#xa0;diversa:</translation>
     </message>
     <message>
         <source>School Clan:</source>
@@ -2542,11 +2594,11 @@
     </message>
     <message>
         <source>A school outside your clan requires the Different School advantage (−%1 XP). The origin locks once accepted.</source>
-        <translation>Una scuola esterna al tuo clan richiede il vantaggio Scuola Diversa (−%1 PX). L'origine si blocca una volta accettata.</translation>
+        <translation>Una scuola esterna al tuo clan richiede il vantaggio Scuola Diversa (−%1 PX). L&apos;origine si blocca una volta accettata.</translation>
     </message>
     <message>
         <source>A school outside your clan requires the Different School advantage. The origin locks once accepted.</source>
-        <translation>Una scuola esterna al tuo clan richiede il vantaggio Scuola Diversa. L'origine si blocca una volta accettata.</translation>
+        <translation>Una scuola esterna al tuo clan richiede il vantaggio Scuola Diversa. L&apos;origine si blocca una volta accettata.</translation>
     </message>
 </context>
 <context>
@@ -2688,7 +2740,7 @@
     </message>
     <message>
         <source>Import into the companion app</source>
-        <translation>Importa nell'app companion</translation>
+        <translation>Importa nell&apos;app companion</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2696,7 +2748,7 @@
     </message>
     <message>
         <source>There is nothing to share yet. Create or open a character first.</source>
-        <translation>Non c'è ancora nulla da condividere. Crea o apri prima un personaggio.</translation>
+        <translation>Non c&apos;è ancora nulla da condividere. Crea o apri prima un personaggio.</translation>
     </message>
     <message>
         <source>Frame %1 of %2</source>
@@ -2704,11 +2756,11 @@
     </message>
     <message>
         <source>Open the companion app and point its camera at this code. Keep the window in view — the frames cycle automatically until every part has been scanned.</source>
-        <translation>Apri l'app companion e inquadra questo codice con la fotocamera. Mantieni la finestra in vista — i fotogrammi si susseguono automaticamente finché ogni parte non è stata scansionata.</translation>
+        <translation>Apri l&apos;app companion e inquadra questo codice con la fotocamera. Mantieni la finestra in vista — i fotogrammi si susseguono automaticamente finché ogni parte non è stata scansionata.</translation>
     </message>
     <message>
         <source>Open the companion app and point its camera at this code to import the character.</source>
-        <translation>Apri l'app companion e inquadra questo codice con la fotocamera per importare il personaggio.</translation>
+        <translation>Apri l&apos;app companion e inquadra questo codice con la fotocamera per importare il personaggio.</translation>
     </message>
 </context>
 <context>
@@ -2802,6 +2854,22 @@
     <message>
         <source>Makes the sheet text larger and easier to read. Applies immediately.</source>
         <translation>Ingrandisce il testo della scheda per renderlo più leggibile. Viene applicato immediatamente.</translation>
+    </message>
+    <message>
+        <source>Health Display</source>
+        <translation>Visualizzazione della salute</translation>
+    </message>
+    <message>
+        <source>Determines how health levels are displayed when you export your character sheet to PDF.</source>
+        <translation>Determina come vengono visualizzati i livelli di salute quando esporti la scheda del personaggio in PDF.</translation>
+    </message>
+    <message>
+        <source>Experience Display Style</source>
+        <translation>Stile di visualizzazione dell'esperienza</translation>
+    </message>
+    <message>
+        <source>Changes how the experience points are displayed. Applies immediately.</source>
+        <translation>Cambia come vengono visualizzati i punti esperienza. Ha effetto immediato.</translation>
     </message>
 </context>
 <context>
@@ -3071,6 +3139,10 @@
     <message>
         <source>Choose Spells</source>
         <translation>Scegli incantesimi</translation>
+    </message>
+    <message>
+        <source>Change this school spell</source>
+        <translation>Cambia questo incantesimo di scuola</translation>
     </message>
 </context>
 <context>

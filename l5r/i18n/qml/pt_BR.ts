@@ -795,6 +795,26 @@
         <source>Mastery %1 — your understanding presently reaches Mastery %2</source>
         <translation>Maestria %1 — sua compreensão atualmente atinge a Maestria %2</translation>
     </message>
+    <message>
+        <source>Change a Spell</source>
+        <translation>Trocar uma magia</translation>
+    </message>
+    <message>
+        <source>choose another prayer to take the place of the one your school granted</source>
+        <translation>escolha outra prece para tomar o lugar da que sua escola concedeu</translation>
+    </message>
+    <message>
+        <source>Change</source>
+        <translation>Trocar</translation>
+    </message>
+    <message>
+        <source>Replace %1 with this spell.</source>
+        <translation>Substituir %1 por esta magia.</translation>
+    </message>
+    <message>
+        <source>This lies beyond the character&apos;s present reach — swap it in anyway as the GM decrees.</source>
+        <translation>Isto está além do alcance atual do personagem — troque-o mesmo assim conforme o Mestre decidir.</translation>
+    </message>
 </context>
 <context>
     <name>BuyTattooDialog</name>
@@ -1072,6 +1092,26 @@
     <message>
         <source>SCHOOL</source>
         <translation type="unfinished">ESCOLA</translation>
+    </message>
+    <message>
+        <source>Available: </source>
+        <translation>Disponíveis: </translation>
+    </message>
+    <message>
+        <source> / Applied: </source>
+        <translation> / Aplicados: </translation>
+    </message>
+    <message>
+        <source> / Earned: </source>
+        <translation> / Ganhos: </translation>
+    </message>
+    <message>
+        <source>Applied: </source>
+        <translation>Aplicados: </translation>
+    </message>
+    <message>
+        <source>/ Earned: </source>
+        <translation>/ Ganhos: </translation>
     </message>
 </context>
 <context>
@@ -1975,6 +2015,10 @@
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
+    <message>
+        <source>Dismiss</source>
+        <translation>Dispensar</translation>
+    </message>
 </context>
 <context>
     <name>LibrarySection</name>
@@ -2154,10 +2198,6 @@
         <translation>Resolva suas oportunidades pendentes antes de avançar de rank.</translation>
     </message>
     <message>
-        <source>Discard unsaved changes?</source>
-        <translation>Descartar as alterações não salvas?</translation>
-    </message>
-    <message>
         <source>Open another character</source>
         <translation>Abrir outro personagem</translation>
     </message>
@@ -2178,14 +2218,6 @@
         <translation>Continuar editando</translation>
     </message>
     <message>
-        <source>This character has changes that are not saved to a .l5r file. Opening another character will discard them. Continue?</source>
-        <translation>Este personagem tem alterações que não foram salvas em um arquivo .l5r. Abrir outro personagem as descartará. Continuar?</translation>
-    </message>
-    <message>
-        <source>This character has changes that are not saved to a .l5r file. Starting a new character will discard them. Continue?</source>
-        <translation>Este personagem tem alterações que não foram salvas em um arquivo .l5r. Criar um novo personagem as descartará. Continuar?</translation>
-    </message>
-    <message>
         <source>&amp;View</source>
         <translation>&amp;Exibir</translation>
     </message>
@@ -2196,6 +2228,26 @@
     <message>
         <source>Sections</source>
         <translation>Seções</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes.</source>
+        <translation>Você tem alterações não salvas.</translation>
+    </message>
+    <message>
+        <source>Save &amp; Open</source>
+        <translation>Salvar e abrir</translation>
+    </message>
+    <message>
+        <source>Save &amp; New</source>
+        <translation>Salvar e novo</translation>
+    </message>
+    <message>
+        <source>This character has changes that are not saved to a .l5r file. Would you like to save or discard these changes before opening another character?</source>
+        <translation>Este personagem tem alterações que não foram salvas em um arquivo .l5r. Deseja salvar ou descartar essas alterações antes de abrir outro personagem?</translation>
+    </message>
+    <message>
+        <source>This character has changes that are not saved to a .l5r file. Would you like to save or discard these changes before opening a new character?</source>
+        <translation>Este personagem tem alterações que não foram salvas em um arquivo .l5r. Deseja salvar ou descartar essas alterações antes de criar um novo personagem?</translation>
     </message>
 </context>
 <context>
@@ -2534,7 +2586,7 @@
     </message>
     <message>
         <source>Different&#xa0;School:</source>
-        <translation>Escola diferente:</translation>
+        <translation>Escola&#xa0;diferente:</translation>
     </message>
     <message>
         <source>School Clan:</source>
@@ -2802,6 +2854,22 @@
     <message>
         <source>Makes the sheet text larger and easier to read. Applies immediately.</source>
         <translation>Aumenta o texto da ficha para facilitar a leitura. Aplica-se imediatamente.</translation>
+    </message>
+    <message>
+        <source>Health Display</source>
+        <translation>Exibição da saúde</translation>
+    </message>
+    <message>
+        <source>Determines how health levels are displayed when you export your character sheet to PDF.</source>
+        <translation>Determina como os níveis de saúde são exibidos quando você exporta a ficha de personagem para PDF.</translation>
+    </message>
+    <message>
+        <source>Experience Display Style</source>
+        <translation>Estilo de exibição da experiência</translation>
+    </message>
+    <message>
+        <source>Changes how the experience points are displayed. Applies immediately.</source>
+        <translation>Altera como os pontos de experiência são exibidos. Aplica-se imediatamente.</translation>
     </message>
 </context>
 <context>
@@ -3071,6 +3139,10 @@
     <message>
         <source>Choose Spells</source>
         <translation>Escolher magias</translation>
+    </message>
+    <message>
+        <source>Change this school spell</source>
+        <translation>Trocar esta magia de escola</translation>
     </message>
 </context>
 <context>

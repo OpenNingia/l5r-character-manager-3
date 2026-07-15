@@ -795,6 +795,26 @@
         <source>Mastery %1 — your understanding presently reaches Mastery %2</source>
         <translation>Maîtrise %1 — ta compréhension atteint actuellement la Maîtrise %2</translation>
     </message>
+    <message>
+        <source>Change a Spell</source>
+        <translation>Changer un sort</translation>
+    </message>
+    <message>
+        <source>choose another prayer to take the place of the one your school granted</source>
+        <translation>choisissez une autre prière pour remplacer celle accordée par votre école</translation>
+    </message>
+    <message>
+        <source>Change</source>
+        <translation>Changer</translation>
+    </message>
+    <message>
+        <source>Replace %1 with this spell.</source>
+        <translation>Remplacer %1 par ce sort.</translation>
+    </message>
+    <message>
+        <source>This lies beyond the character&apos;s present reach — swap it in anyway as the GM decrees.</source>
+        <translation>Ceci dépasse la portée actuelle du personnage — intégrez-le tout de même selon la décision du MJ.</translation>
+    </message>
 </context>
 <context>
     <name>BuyTattooDialog</name>
@@ -1072,6 +1092,26 @@
     <message>
         <source>SCHOOL</source>
         <translation type="unfinished">ÉCOLE</translation>
+    </message>
+    <message>
+        <source>Available: </source>
+        <translation>Disponibles : </translation>
+    </message>
+    <message>
+        <source> / Applied: </source>
+        <translation> / Appliqués : </translation>
+    </message>
+    <message>
+        <source> / Earned: </source>
+        <translation> / Gagnés : </translation>
+    </message>
+    <message>
+        <source>Applied: </source>
+        <translation>Appliqués : </translation>
+    </message>
+    <message>
+        <source>/ Earned: </source>
+        <translation>/ Gagnés : </translation>
     </message>
 </context>
 <context>
@@ -1975,6 +2015,10 @@
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
+    <message>
+        <source>Dismiss</source>
+        <translation>Fermer</translation>
+    </message>
 </context>
 <context>
     <name>LibrarySection</name>
@@ -2154,10 +2198,6 @@
         <translation>Résolvez vos opportunités en attente avant de monter de rang.</translation>
     </message>
     <message>
-        <source>Discard unsaved changes?</source>
-        <translation>Abandonner les modifications non enregistrées ?</translation>
-    </message>
-    <message>
         <source>Open another character</source>
         <translation>Ouvrir un autre personnage</translation>
     </message>
@@ -2178,14 +2218,6 @@
         <translation>Continuer l&apos;édition</translation>
     </message>
     <message>
-        <source>This character has changes that are not saved to a .l5r file. Opening another character will discard them. Continue?</source>
-        <translation>Ce personnage comporte des modifications non enregistrées dans un fichier .l5r. Ouvrir un autre personnage les abandonnera. Continuer ?</translation>
-    </message>
-    <message>
-        <source>This character has changes that are not saved to a .l5r file. Starting a new character will discard them. Continue?</source>
-        <translation>Ce personnage comporte des modifications non enregistrées dans un fichier .l5r. Créer un nouveau personnage les abandonnera. Continuer ?</translation>
-    </message>
-    <message>
         <source>&amp;View</source>
         <translation>&amp;Affichage</translation>
     </message>
@@ -2196,6 +2228,26 @@
     <message>
         <source>Sections</source>
         <translation>Sections</translation>
+    </message>
+    <message>
+        <source>You have unsaved changes.</source>
+        <translation>Vous avez des modifications non enregistrées.</translation>
+    </message>
+    <message>
+        <source>Save &amp; Open</source>
+        <translation>Enregistrer et ouvrir</translation>
+    </message>
+    <message>
+        <source>Save &amp; New</source>
+        <translation>Enregistrer et nouveau</translation>
+    </message>
+    <message>
+        <source>This character has changes that are not saved to a .l5r file. Would you like to save or discard these changes before opening another character?</source>
+        <translation>Ce personnage comporte des modifications qui ne sont pas enregistrées dans un fichier .l5r. Voulez-vous enregistrer ou abandonner ces modifications avant d'ouvrir un autre personnage ?</translation>
+    </message>
+    <message>
+        <source>This character has changes that are not saved to a .l5r file. Would you like to save or discard these changes before opening a new character?</source>
+        <translation>Ce personnage comporte des modifications qui ne sont pas enregistrées dans un fichier .l5r. Voulez-vous enregistrer ou abandonner ces modifications avant de créer un nouveau personnage ?</translation>
     </message>
 </context>
 <context>
@@ -2534,19 +2586,19 @@
     </message>
     <message>
         <source>Different&#xa0;School:</source>
-        <translation>École différente :</translation>
+        <translation>École&#xa0;différente&#xa0;:</translation>
     </message>
     <message>
         <source>School Clan:</source>
-        <translation>Clan de l'école :</translation>
+        <translation>Clan de l&apos;école&#xa0;:</translation>
     </message>
     <message>
         <source>A school outside your clan requires the Different School advantage (−%1 XP). The origin locks once accepted.</source>
-        <translation>Une école extérieure à votre clan nécessite l'avantage École Différente (−%1 XP). L'origine se verrouille une fois acceptée.</translation>
+        <translation>Une école extérieure à votre clan nécessite l&apos;avantage École Différente (−%1 XP). L&apos;origine se verrouille une fois acceptée.</translation>
     </message>
     <message>
         <source>A school outside your clan requires the Different School advantage. The origin locks once accepted.</source>
-        <translation>Une école extérieure à votre clan nécessite l'avantage École Différente. L'origine se verrouille une fois acceptée.</translation>
+        <translation>Une école extérieure à votre clan nécessite l&apos;avantage École Différente. L&apos;origine se verrouille une fois acceptée.</translation>
     </message>
 </context>
 <context>
@@ -2688,7 +2740,7 @@
     </message>
     <message>
         <source>Import into the companion app</source>
-        <translation>Importer dans l'application compagnon</translation>
+        <translation>Importer dans l&apos;application compagnon</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2696,7 +2748,7 @@
     </message>
     <message>
         <source>There is nothing to share yet. Create or open a character first.</source>
-        <translation>Il n'y a rien à partager pour l'instant. Créez ou ouvrez d'abord un personnage.</translation>
+        <translation>Il n&apos;y a rien à partager pour l&apos;instant. Créez ou ouvrez d&apos;abord un personnage.</translation>
     </message>
     <message>
         <source>Frame %1 of %2</source>
@@ -2704,11 +2756,11 @@
     </message>
     <message>
         <source>Open the companion app and point its camera at this code. Keep the window in view — the frames cycle automatically until every part has been scanned.</source>
-        <translation>Ouvrez l'application compagnon et dirigez son appareil photo vers ce code. Gardez la fenêtre visible — les images défilent automatiquement jusqu'à ce que toutes les parties aient été scannées.</translation>
+        <translation>Ouvrez l&apos;application compagnon et dirigez son appareil photo vers ce code. Gardez la fenêtre visible — les images défilent automatiquement jusqu&apos;à ce que toutes les parties aient été scannées.</translation>
     </message>
     <message>
         <source>Open the companion app and point its camera at this code to import the character.</source>
-        <translation>Ouvrez l'application compagnon et dirigez son appareil photo vers ce code pour importer le personnage.</translation>
+        <translation>Ouvrez l&apos;application compagnon et dirigez son appareil photo vers ce code pour importer le personnage.</translation>
     </message>
 </context>
 <context>
@@ -2801,7 +2853,23 @@
     </message>
     <message>
         <source>Makes the sheet text larger and easier to read. Applies immediately.</source>
-        <translation>Agrandit le texte de la feuille pour en faciliter la lecture. S'applique immédiatement.</translation>
+        <translation>Agrandit le texte de la feuille pour en faciliter la lecture. S&apos;applique immédiatement.</translation>
+    </message>
+    <message>
+        <source>Health Display</source>
+        <translation>Affichage de la santé</translation>
+    </message>
+    <message>
+        <source>Determines how health levels are displayed when you export your character sheet to PDF.</source>
+        <translation>Détermine comment les niveaux de santé sont affichés lorsque vous exportez la feuille de personnage en PDF.</translation>
+    </message>
+    <message>
+        <source>Experience Display Style</source>
+        <translation>Style d'affichage de l'expérience</translation>
+    </message>
+    <message>
+        <source>Changes how the experience points are displayed. Applies immediately.</source>
+        <translation>Modifie l'affichage des points d'expérience. S'applique immédiatement.</translation>
     </message>
 </context>
 <context>
@@ -3071,6 +3139,10 @@
     <message>
         <source>Choose Spells</source>
         <translation>Choisir des sorts</translation>
+    </message>
+    <message>
+        <source>Change this school spell</source>
+        <translation>Changer ce sort d'école</translation>
     </message>
 </context>
 <context>
