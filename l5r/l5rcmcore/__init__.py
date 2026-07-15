@@ -53,7 +53,7 @@ from qtpy.QtCore import QUrl
 
 APP_NAME = 'l5rcm'
 APP_DESC = 'Legend of the Five Rings: Character Manager'
-APP_VERSION = '4.0.0'
+APP_VERSION = '4.1.0'
 DB_VERSION = '3.20'
 APP_ORG = 'openningia'
 
