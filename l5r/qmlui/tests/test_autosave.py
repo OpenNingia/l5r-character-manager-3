@@ -121,6 +121,23 @@ class TestExplicitSaveCleansSession(_AutosaveTestBase):
         self.assertFalse(api.character.model().unsaved)
         self.assertEqual(path, self.ctrl._save_path)
 
+    def test_save_backfills_uuid_for_legacy_model(self):
+        """A character with no uuid (legacy save, or one never shared via QR)
+        must get one minted and written to the .l5r on Save -- so the Android
+        companion can open it directly (issue #475)."""
+        import json
+        pc = api.character.model()
+        pc.uuid = None  # mimic a model loaded from a pre-uuid save
+
+        path = self._tmp_l5r()
+        self.ctrl._save(path)
+
+        self.assertTrue(pc.uuid, "Save did not mint a uuid")
+        with open(path, "rt") as fp:
+            doc = json.load(fp)
+        self.assertEqual(pc.uuid, doc.get("uuid"),
+                         "the minted uuid was not persisted to the .l5r")
+
 
 class TestDiscardChangesGate(_AutosaveTestBase):
     """File > New and File > Open are destructive (they discard the

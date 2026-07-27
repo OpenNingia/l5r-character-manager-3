@@ -611,6 +611,10 @@ class AppController(QObject):
         if pc is None:
             return
         pc.version = DB_VERSION
+        # Guarantee a stable identity in every saved file so the Android
+        # companion can open it directly -- not only after a QR share
+        # happens to have minted one (issue #475). Back-fills legacy saves.
+        api.character.ensure_uuid()
         if pc.save_to(path):
             self._save_path = path
             api.character.set_dirty_flag(False)

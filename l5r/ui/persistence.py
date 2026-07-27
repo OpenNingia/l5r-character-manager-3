@@ -81,6 +81,11 @@ class PersistenceSink(QtCore.QObject):
             window.pc.version = DB_VERSION
             window.pc.extra_notes = window.tx_pc_notes.get_content()
 
+            # Guarantee a stable identity in every saved file so the Android
+            # companion can open it directly -- not only after a QR share
+            # happens to have minted one (issue #475). Back-fills legacy saves.
+            api.character.ensure_uuid()
+
             # set book dependencies
             api.character.books.set_dependencies()
 
