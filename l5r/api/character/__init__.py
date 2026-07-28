@@ -169,10 +169,14 @@ def get_school_rules():
 
     rules_ = []
 
+    # a single insight rank can carry more than one Rank advancement (a
+    # rank-1 path replacement) -- resolve each distinct rank only once.
+    seen_ranks = set()
     for r in api.character.rankadv.get_all():
-        tech_ = api.character.schools.get_tech_by_rank(r.rank)
-        if tech_:
-            rules_.append(tech_)
+        if r.rank in seen_ranks:
+            continue
+        seen_ranks.add(r.rank)
+        rules_.extend(api.character.schools.get_techs_by_rank(r.rank))
 
     return rules_
 

@@ -62,10 +62,9 @@ class TechniquesMixin:
         rows = []
         for insight_rank in range(1, _MAX_INSIGHT_RANK):
             try:
-                tech_id = api.character.schools.get_tech_by_rank(insight_rank)
-                if not tech_id:
-                    continue
-                school, tech = api.data.schools.get_technique(tech_id)
+                # a rank can grant more than one technique (Topaz Champion
+                # keeps the technique it replaces alongside its own).
+                tech_ids = api.character.schools.get_techs_by_rank(insight_rank)
             except Exception:
                 # Datapack not loaded, or a character file referencing a
                 # school/tech from a pack the user removed. Skip the row
@@ -74,18 +73,27 @@ class TechniquesMixin:
                     u"techniques proxy: could not resolve tech at insight %d",
                     insight_rank, exc_info=1)
                 continue
-            if not (school and tech):
-                continue
 
-            rows.append({
-                "id":          tech_id,
-                "name":        tech.name or "",
-                "schoolName":  school.name or "",
-                "schoolId":    school.id or "",
-                # Insight rank at which the technique was gained (1..9).
-                "insightRank": int(insight_rank),
-                # The technique's own rank within its school.
-                "techRank":    int(tech.rank) if tech.rank is not None else 0,
-                "description": tech.desc or "",
-            })
+            for tech_id in tech_ids:
+                try:
+                    school, tech = api.data.schools.get_technique(tech_id)
+                except Exception:
+                    log.api.debug(
+                        u"techniques proxy: could not resolve tech %s at insight %d",
+                        tech_id, insight_rank, exc_info=1)
+                    continue
+                if not (school and tech):
+                    continue
+
+                rows.append({
+                    "id":          tech_id,
+                    "name":        tech.name or "",
+                    "schoolName":  school.name or "",
+                    "schoolId":    school.id or "",
+                    # Insight rank at which the technique was gained (1..9).
+                    "insightRank": int(insight_rank),
+                    # The technique's own rank within its school.
+                    "techRank":    int(tech.rank) if tech.rank is not None else 0,
+                    "description": tech.desc or "",
+                })
         return rows

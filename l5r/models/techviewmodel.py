@@ -111,8 +111,7 @@ class TechViewModel(QtCore.QAbstractTableModel):
         #         self.add_item(tech_, r.rank)
 
         for i in range(1, 10):
-            tech_ = api.character.schools.get_tech_by_rank(i)
-            if tech_:
+            for tech_ in api.character.schools.get_techs_by_rank(i):
                 self.add_item(tech_, i)
  
         # sort by rank

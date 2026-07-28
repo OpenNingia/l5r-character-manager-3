@@ -153,36 +153,93 @@ def get_school_by_rank(rank):
 
 
 def get_tech_by_rank(rank):
-    """returns the technique learned at the given insight rank, or None"""
+    """returns the technique learned at the given insight rank, or None.
 
-    # get the school rank at that insight rank
+    A rank can grant more than one technique (see get_techs_by_rank for the
+    Topaz-Champion case); this returns the primary one for callers that only
+    expect a single technique.
+    """
+    techs_ = get_techs_by_rank(rank)
+    return techs_[0] if techs_ else None
+
+
+def get_techs_by_rank(rank):
+    """returns the list of technique ids gained at the given insight rank.
+
+    Normally a single technique. An alternate path carrying the
+    ``keep_replaced_tech`` tag (the Topaz Champion) additionally grants the
+    technique the replaced school would have provided at that rank -- "When
+    you advance in Insight Rank and into this Path, you gain the Technique it
+    would normally replace."
+    """
+
+    # every advancement recorded at that insight rank
     rank_ = query(api.character.rankadv.get_all()).where(
         lambda x: x.rank == rank).to_list()
 
     if not rank_:
-        #log.api.error(u"get_tech_by_rank. rank advancement not found: %d", rank)
-        return None
+        return []
 
-
-    school_id = rank_[0].school
-    if len(rank_) > 1:        
-        # find a replacement
-        replacement_ = query(rank_).where(lambda x: x.replaced == school_id).first_or_default(None)
+    # resolve which advancement actually provides the technique this rank: a
+    # path that replaces a same-rank school (a rank-1 path) wins over it.
+    adv = rank_[0]
+    if len(rank_) > 1:
+        replacement_ = query(rank_).where(
+            lambda x: x.replaced == adv.school).first_or_default(None)
         if replacement_:
-            school_id = replacement_.school
+            adv = replacement_
 
-    school_ = api.data.schools.get(school_id)
-
+    school_ = api.data.schools.get(adv.school)
     if not school_:
+        return []
+
+    techs_ = []
+
+    if api.data.schools.is_path(adv.school):
+        # A path grants its own technique. The path's technique sits at the
+        # path's (possibly 0) tech-rank, so the legacy school_rank fallback
+        # below must NOT apply -- deriving the rank from the datapack keeps
+        # rank-0 paths (all the Imperial paths) and legacy saves correct.
+        path_rank = get_school_rank(adv.school)
+        tech_ = query(school_.techs).where(
+            lambda x: x.rank == path_rank).select(a_('id')).first_or_default(None)
+        if tech_:
+            techs_.append(tech_)
+
+        # Topaz-style paths additionally keep the technique they replaced.
+        if adv.replaced and 'keep_replaced_tech' in school_.tags:
+            replaced_ = _get_replaced_tech(adv.replaced, rank)
+            if replaced_:
+                techs_.append(replaced_)
+    else:
+        # backwards compatibility: characters saved before school_rank was
+        # tracked on the Rank advancement (commit 22b28a1) have
+        # school_rank == 0. Those old versions matched the technique on the
+        # insight rank directly, so fall back to that when it is missing.
+        school_rank = adv.school_rank or rank
+        tech_ = query(school_.techs).where(
+            lambda x: x.rank == school_rank).select(a_('id')).first_or_default(None)
+        if tech_:
+            techs_.append(tech_)
+
+    return techs_
+
+
+def _get_replaced_tech(replaced_school_id, upto_rank):
+    """the technique the replaced school would have granted at the insight
+    rank a Topaz-style path replaced."""
+    replaced_school_ = api.data.schools.get(replaced_school_id)
+    if not replaced_school_:
         return None
 
-    # backwards compatibility: characters saved before school_rank was tracked
-    # on the Rank advancement (commit 22b28a1) have school_rank == 0. Those old
-    # versions matched the technique on the insight rank directly, so fall back
-    # to that behaviour when school_rank is missing.
-    school_rank = rank_[0].school_rank or rank
+    # the school rank the replaced school had reached by this insight rank
+    # (advancements in that school, plus the ones a path replaced from it)
+    replaced_rank = query(api.character.rankadv.get_all()).where(
+        lambda x: (x.school == replaced_school_id or
+                   x.replaced == replaced_school_id) and x.rank <= upto_rank).count()
 
-    return query(school_.techs).where(lambda x: x.rank == school_rank).select(a_('id')).first_or_default(None)
+    return query(replaced_school_.techs).where(
+        lambda x: x.rank == replaced_rank).select(a_('id')).first_or_default(None)
 
 
 def get_school_rank(sid):
