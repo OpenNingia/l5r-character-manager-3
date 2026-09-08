@@ -207,9 +207,8 @@ jobs:
           cat > "$APPDIR/AppRun" <<'EOF'
           #!/bin/bash
           HERE="$(dirname "$(readlink -f "$0")")"
-          export PYTHONHOME="$HERE/usr"
-          export PYTHONPATH="$HERE/usr/lib/python3.11/site-packages"
-          exec "$HERE/usr/bin/l5rcm-gui" "$@"
+          export PYTHONPATH="$HERE/usr/lib/python3.11/site-packages:$PYTHONPATH"
+          exec python3.11 -c 'import sys; from l5r.main import main; sys.exit(main())' "$@"
           EOF
           chmod +x "$APPDIR/AppRun"
 
